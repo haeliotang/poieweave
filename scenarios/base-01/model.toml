@@ -35,6 +35,13 @@ mass_per_unit = "0.8 kg"
 description = "Inspected, accepted pump shaft sleeve."
 
 [[resource]]
+id = "sleeve-p1-quarantined"
+unit = "item"
+mass_per_unit = "0.8 kg"
+quality = "quarantined"
+description = "Supplier-certificate hold; a resource type so quality cannot be silently bypassed."
+
+[[resource]]
 id = "worn-sleeve-p1"
 unit = "item"
 mass_per_unit = "0.78 kg"
@@ -153,7 +160,7 @@ location = "store-a"
 
 [[lot]]
 id = "lot-sleeve-02"
-resource = "sleeve-p1"
+resource = "sleeve-p1-quarantined"
 quantity = "1 item"
 quality = "quarantined"
 location = "store-a"

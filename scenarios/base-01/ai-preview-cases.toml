@@ -21,6 +21,7 @@ goal = { service = "potable-water" }
 min_verification = "demonstrated"
 tags = ["stock-contention"]
 [case.patch]
+lot_resource = { "lot-sleeve-01" = "sleeve-p1-quarantined" }
 lot_quality = { "lot-sleeve-01" = "quarantined" }
 lot_quantity = { "lot-energy" = "2.5 kWh" }
 [case.expect]
@@ -41,6 +42,7 @@ goal = { service = "potable-water" }
 min_verification = "demonstrated"
 tags = ["stock-contention"]
 [case.patch]
+lot_resource = { "lot-sleeve-01" = "sleeve-p1-quarantined" }
 lot_quality = { "lot-sleeve-01" = "quarantined" }
 lot_quantity = { "lot-energy" = "2.6 kWh" }
 [case.expect]
@@ -166,6 +168,7 @@ min_verification = "demonstrated"
 tags = ["unknown", "quality-gate"]
 [case.patch]
 asset_status = { "gauge-1" = "unknown" }
+lot_resource = { "lot-sleeve-01" = "sleeve-p1-quarantined" }
 lot_quality = { "lot-sleeve-01" = "quarantined" }
 [case.expect]
 verdict = "unknown"
@@ -185,6 +188,7 @@ min_verification = "verified"
 tags = ["other", "verification"]
 [case.patch]
 asset_degraded = { "pump-p1" = { occupiable = true } }
+lot_resource = { "lot-sleeve-01" = "sleeve-p1-quarantined" }
 lot_quality = { "lot-sleeve-01" = "quarantined" }
 [case.expect]
 verdict = "blocked"
