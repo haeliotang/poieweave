@@ -603,3 +603,4 @@ flowchart LR
 | 0.1.107 | 2026-11-03 | 桌面执行门宿主化：`execution_gate_set` 维护 takeover/degraded 并重算执行快照；移除未使用的 notes/events SQLite 层与命令；宿主测试 12 个 |
 | 0.1.108 | 2026-11-03 | 桌面推理生产化：Windows Credential Manager / Linux Secret Service 凭据库；原生 `ureq` + rustls 平台校验替代系统 curl；检查器新增 Agent 面板调用 `inference_complete`；宿主 12 个测试 |
 | 0.1.109 | 2026-11-03 | 桌面 UI 冒烟：Playwright + 系统 Chrome 覆盖六视图、主题令牌、中英切换、设置、Agent 面板、聚焦窗口与可访问名称；CI 在 Ubuntu/Windows 运行并上传报告 |
+| 0.1.110 | 2026-11-03 | 桌面三平台构建与发布：macOS universal（arm64+x86_64）`.app.zip` 由 CI 构建并 lipo 验证；tag 触发 release job 自动创建 Release、上传 `.deb`/NSIS/universal zip 与 SHA256SUMS；Apple 签名/公证走可选 secrets |
