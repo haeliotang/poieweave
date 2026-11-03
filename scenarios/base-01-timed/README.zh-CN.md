@@ -57,3 +57,7 @@ cargo run -p poie-sim --bin poie-timed -- scenarios/base-01-timed/cases.toml \
 ```
 
 **复现清单**：模型版本 = 本仓库提交（结构模型 `../base-01/model.toml` + 本目录两个输入文件）；事件顺序 = 时间 + 调度顺序（确定性，无随机源，种子字段留待随机扰动引入）；浮点容差 = 资源检查 1e-6、时间比较 1e-6 秒、digest 以 3 位小数格式化。任意一次运行都应与 `digests.toml` 逐位一致；CI 会执行该校验（M5.5）。
+
+## 储能功率上限
+
+时间版场景新增 `[[storage]]` 声明：`bat-1` 放电上限 3 kW。求解器在库存检查之外，还会检查每个步骤的平均放电功率；超过上限时结论为 `power_limited`（PO §3.9、§3.11，issue #112/P19）。

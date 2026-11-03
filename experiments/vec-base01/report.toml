@@ -5,7 +5,7 @@ horizon_s = 86400.0
 seeds = []
 solver_version = "poie-viability 0.1.0 + poie-sim timed 0.1.0"
 solver_settings = "finite fixed-trajectory set (20 pre-registered cases); no random sampling"
-actual_cost_s = 1.049570833
+actual_cost_s = 0.846072
 metric_definition_version = "vec-metrics/0.1"
 registered_in = "scenarios/base-01-timed/cases.toml (20 pre-registered cases; fnv1a b18c7dcee53e59c2)"
 seed_sets_drawn = 0
@@ -13,8 +13,8 @@ terminal_condition = "none declared: the timed Base-01 cases carry no terminal s
 confidence_intervals = []
 
 [input_hashes]
-initial_state = "b4d9ce2a451a4a7b"
-scenario_set = "7c3970f1a2695bdb"
+initial_state = "f2897e3de910ec9f"
+scenario_set = "7fdd576326c94d10"
 models = "d169fdfbd3280ee2"
 policy = "559e3937a92e400b"
 contract_version = "viability-expansion/0.2"

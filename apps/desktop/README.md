@@ -49,7 +49,7 @@ Views:
 | Planning | Goal/completion/digest, action timeline and action table; the inspector keeps preconditions, allocations and verification level. |
 | Execution | **`poie-state`** action ledger (validated → authorized), the seven SAP dispatch checks, a **host-driven** execution gate (human takeover / safe degradation) and the deliberate "executor not wired" warning. Gate changes go through `execution_gate_set`, not local UI state. |
 | Federation | **`poie-federation`** sites (HLC, records, reservations, leases), exchange counts and all preserved reconciliation conflicts. |
-| Evidence | Pre-registered experiments with replay badges, contract revisions and the 387-test evidence summary. |
+| Evidence | Pre-registered experiments with replay badges, contract revisions and the 388-test evidence summary. |
 
 `open_workspace_window` opens focused secondary windows rather than another full
 cockpit: federation uses a wide wall, execution an execution monitor, evidence a

@@ -87,3 +87,14 @@ initial = "4 item"
 [[stock_timeline.change]]
 at = "10 h"
 delta = "-4 item"
+# Storage bank power limits (PO §3.9/§3.11): the stock timeline still tracks
+# available energy, but timed conclusions must reject a step whose average
+# discharge exceeds this limit.
+[[storage]]
+id = "bat-1"
+asset = "bat-1"
+resource = "electric-energy"
+capacity = "40 kWh"
+initial = "1 kWh"
+max_charge_power = "2 kW"
+max_discharge_power = "3 kW"

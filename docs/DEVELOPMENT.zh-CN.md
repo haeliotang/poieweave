@@ -606,3 +606,4 @@ flowchart LR
 | 0.1.110 | 2026-11-03 | 桌面三平台构建与发布：macOS universal（arm64+x86_64）`.app.zip` 由 CI 构建并 lipo 验证；tag 触发 release job 自动创建 Release、上传 `.deb`/NSIS/universal zip 与 SHA256SUMS；Apple 签名/公证走可选 secrets |
 | 0.1.111 | 2026-11-03 | PO 服务级 N+1：`requires_any` 表达一用一备，服务求解支持替代支撑并保留各分支根因；新增契约测试；Rust 列表测试 385 |
 | 0.1.112 | 2026-11-03 | PO #112/P20：资源类型增加 `quality` 类，批次质量必须与资源一致；新增隔离/拒绝资源与 `lot_resource` patch；基础模型/质量门用例迁移；Rust 列表测试 387 |
+| 0.1.113 | 2026-11-03 | PO #112/P19：时间版场景增加 `[[storage]]` 放电功率上限，超限结论 `power_limited`；基础时间场景加入 bat-1 3kW 限制与回放测试；Rust 列表测试 388 |
