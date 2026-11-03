@@ -5,6 +5,8 @@
 The name comes from Greek *poiesis* (making) and *autopoiesis* (a system that produces and maintains itself).
 
 [![CI](https://github.com/haeliotang/poieweave/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/haeliotang/poieweave/actions/workflows/ci.yml)
+[![Desktop build](https://github.com/haeliotang/poieweave/actions/workflows/desktop-build.yml/badge.svg?branch=main)](https://github.com/haeliotang/poieweave/actions/workflows/desktop-build.yml)
+[![Release v0.1.1](https://img.shields.io/badge/release-v0.1.1-blue.svg)](https://github.com/haeliotang/poieweave/releases/tag/v0.1.1)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 ### Build the open foundation for self-sustaining industrial systems.
@@ -21,11 +23,37 @@ Our central question is simple:
 
 [中文研究文档 / Research & architecture](docs/research/FOUNDATIONS.zh-CN.md) · [开发文档 / Development plan](docs/DEVELOPMENT.zh-CN.md)
 
+
+**Latest release:** [**v0.1.1**](https://github.com/haeliotang/poieweave/releases/tag/v0.1.1) — Linux `.deb`, Windows NSIS installer / portable executable, and a universal macOS DMG (Apple Silicon + Intel). The desktop app is built by CI from the release tag; signing/notarization requires repository Apple secrets and is otherwise explicitly unsigned.
+
+## Screenshots
+
+A Tauri 2 operations cockpit with six views, light/dark themes, English/Chinese UI,
+a contextual inspector and an agent composer. These are the current English UI
+screenshots; full-resolution PNGs live in
+[`apps/desktop/screenshots/`](apps/desktop/screenshots).
+
+| Overview | Capabilities |
+| --- | --- |
+| ![Overview](apps/desktop/screenshots/en-overview.png) | ![Capabilities](apps/desktop/screenshots/en-capabilities.png) |
+| **Planning** | **Execution** |
+| ![Planning](apps/desktop/screenshots/en-planning.png) | ![Execution](apps/desktop/screenshots/en-execution.png) |
+| **Federation** | **Evidence** |
+| ![Federation](apps/desktop/screenshots/en-federation.png) | ![Evidence](apps/desktop/screenshots/en-evidence.png) |
+| **Settings** | **Dark theme** |
+| ![Settings](apps/desktop/screenshots/en-settings.png) | ![Overview, dark](apps/desktop/screenshots/en-overview-dark.png) |
+
+![Focused federation window](apps/desktop/screenshots/en-federation-focus.png)
+
+> The browser-rendered screenshots use the built-in preview snapshot; the native
+> app uses the same UI with real `poie-*` snapshots, platform credential storage
+> and native inference transport.
+
 ## What exists today
 
 | Artifact | State |
 | --- | --- |
-| [Physical Ontology](specifications/physical-ontology.zh-CN.md) | v0.3-draft. Units, entities, verification levels, capability-graph semantics (alternative supports, multi-source top-ups, degraded occupation, conservative yield/rework, bounded route enumeration, external-dependency tracing), time-aware state and stock with failure predictions, process instances and scheduling feasibility, energy/power clipping, discrete-event simulation with conservation, and timed scenario verdicts. 2026-11-01 revisions: mass-balance tolerance cap and directional checks, `unchecked` processes cannot enter candidate routes, and `blocked` is relative to the current snapshot and the bounded solver (consistent between solve and enumerate). |
+| [Physical Ontology](specifications/physical-ontology.zh-CN.md) | v0.3-draft. Units, entities, verification levels, capability-graph semantics (alternative supports, multi-source top-ups, degraded occupation, conservative yield/rework, bounded route enumeration, external-dependency tracing), time-aware state and stock with failure predictions, process instances and scheduling feasibility, energy/power clipping, discrete-event simulation with conservation, and timed scenario verdicts. 2026-11-01 revisions: mass-balance tolerance cap and directional checks, `unchecked` processes cannot enter candidate routes, and `blocked` is relative to the current snapshot and the bounded solver (consistent between solve and enumerate). 2026-11-03 revisions (#112): service-level N+1 `requires_any`, resource quality classes with lot-quality consistency, and timed storage discharge power limits. |
 | [State & Action Protocol](specifications/state-action-protocol.zh-CN.md) | v0.2-draft. Record types and envelope, action lifecycle, projection/state versions, seven dispatch checks, ownership and leases with fencing, reservations, simulation isolation, append-only persistence, and 15 acceptance cases. Reference implementation: `crates/poie-state`. 2026-11-01 revisions: one idempotency-key rule (occupation/redispatch), DUPLICATE receipts, dedup window bound to command validity, lease epochs and takeover, `as_of` projection, sequence high-water marks, reservation lifecycle. |
 | [Viability & Expansion Contract](specifications/viability-expansion.zh-CN.md) | v0.2-draft. Feasibility queries and six verdict classes, disturbances, four metric groups, reporting and reproduction checklist; reference implementation in `crates/poie-viability`, with the Base-01 v0.2 report generated and checked in CI. 2026-11-01 revisions: three-point expansion accounting (construction, commissioning, operation), censored-quantile estimator, terminal conditions, non-anticipativity checks, method/verdict compatibility and query-level aggregation, stricter reporting rules (#109/#110). |
 | [`crates/poie-ontology`](crates/poie-ontology) | Structural prototype: dimensioned quantities, model validation, mass balance, single-ledger capability-graph solver with root-cause reporting, alternative (`requires_any`) supports, multi-source top-ups, a degraded-use occupation policy, conservative yield with explicit reject/rework flows, capability-level verification on top of process-level verification, bounded enumeration of distinct candidate routes, external-dependency tracing across all candidate routes, time-aware status with failure predictions, earliest-start scheduling feasibility under precedence and unit capacity, mass-balance tolerance caps and `mass_unchecked` blocking, and snapshot-relative `blocked` semantics consistent between solve and enumerate. |
@@ -41,7 +69,7 @@ Our central question is simple:
 | [`crates/poie-state`](crates/poie-state) | State & Action Protocol: the nine record kinds with the common envelope and schema validation; versioned projections with state versions and evidence expiry; the exhaustive action lifecycle table with an idempotency-key dispatch guard (10⁵-sequence property test) and redispatch policy; the seven pre-dispatch review checks with traceable rejections; an append-only local log with crash-tail recovery ([ADR-0003](docs/adr/0003-append-only-local-log.zh-CN.md)); restart replay/decisions; lease epochs/fencing and takeover; DUPLICATE receipts, dedup-window bounds and sequence high-water marks; reservation lifecycle; and a simulated executor with ACK-loss, duplicate-delivery, NACK and lost-dedup fault injection. SAP-T1–T15 are all automated, including a crash at every persistent write point of the dispatch flow, command ownership/leases with clock-skew detection, partition-safe reservations, and a bridge feeding projected states into capability-graph queries. |
 | [Base-01 scenario](scenarios/base-01/README.zh-CN.md) | Structural v0.1 with synthetic data and 40 stratified cases whose expectations were written before the first run. All 40 match. |
 | [Base-01 v0.2 VEC report](experiments/vec-base01/report.md) | VEC §7 feasibility report over all 20 pre-registered timed scenarios: `held_on_tested`, counterexamples, in-model infeasibility certificates and one unknown input; the water service level comes from the synthetic `water-treatment` process model (provenance and validity in the report); 78 metric records; validated and replay-checked in CI. |
-| [Timed Base-01](scenarios/base-01-timed/README.zh-CN.md) | v0.1 timed scenario: asset/stock timelines with failure predictions, day/night energy and supply interruption; 20 pre-registered cases with a committed replay digest checked in CI. |
+| [Timed Base-01](scenarios/base-01-timed/README.zh-CN.md) | v0.1 timed scenario: asset/stock timelines with failure predictions, day/night energy and supply interruption, plus storage discharge power limits (`power_limited`); 20 pre-registered cases with a committed replay digest checked in CI. |
 | [H1 structural experiment](experiments/h1-structural/PREREG.md) | Pre-registered protocol; 40 stratified cases with a committed 25% holdout; the per-device baseline misses 2/7 blocked holdout cases while the capability-graph solver misses 0/7. H1 is weakly supported, but the conclusion is internal evidence only: the ≥1/4 external-contribution quota is not met and the ground truth was authored with the same model. Details in the [report](experiments/h1-structural/REPORT.md). |
 | [Shadow-run demo](experiments/shadow-run/REPORT.md) | Projects the observed field, plans in shadow mode, records actions only (`dispatched=false`), and compares the "would do" plan with a simulated operator log; the shadow guard rejects dispatch. 7/7 assertions, CI replay. |
 | [Two-site shadow integration](experiments/two-site-shadow/REPORT.md) | Site A projects field observations and plans; site B shares inventory and leases; over-reservation and overlapping leases block dispatch, a clean reconciliation allows the SAP-validated action through, with independent verification. 7/7 assertions, CI replay. |
@@ -50,7 +78,8 @@ Our central question is simple:
 | [Dual-container partition preview](experiments/federation-docker/REPORT.md) | Two containers, real network-layer partitions via `docker network disconnect`; D0–D4 14/14. Containers share the host kernel and clock; **not real multi-node**, and clock skew, asymmetric partitions, crash/restart and auth are untested. **AI preview, not M12.6 exit evidence.** |
 | [Localhost TCP federation demo](experiments/federation-tcp/REPORT.md) | Two OS processes exchange records, reservations and leases over real loopback TCP sockets; both sites report the same three expected conflicts (over-reservation, double ownership, duplicate idempotency key). Localhost only — not real multi-site. |
 | [End-to-end pipeline demo](experiments/e2e-pipeline/REPORT.md) | Simulated field observation → projection with evidence expiry → joint plan → SAP-validated authorized actions → execution gate (takeover, degradation) → simulated executor → independent verification → prediction check; 9/9 assertions, CI replay. |
-| [Desktop shell](apps/desktop) | Tauri 2 host + React 19/TypeScript **operations cockpit** with six views (overview, capabilities, planning, execution, federation, evidence), light/dark themes, Chinese/English shell, and focused secondary windows. The host embeds the Base-01 model and runs `poie-ontology` + `poie-plan` for a real domain snapshot, `poie-state` for the SAP action ledger/seven dispatch checks, and `poie-federation` for site reconciliation. SQLite, sandbox and packaging are wired. A local operator authenticates with a PBKDF2 verifier and an eight-hour host-only session; remote inference is opt-in, requires that operator, keeps the API key in the platform credential store (macOS Keychain, Windows Credential Manager, Linux Secret Service) or an environment override, uses a native OpenAI-compatible call, and audits every request. There is no remote account service yet. See [apps/desktop/README.md](apps/desktop/README.md). |
+| [Desktop shell](apps/desktop) | Tauri 2 host + React 19/TypeScript **operations cockpit** with six views (overview, capabilities, planning, execution, federation, evidence), light/dark themes, Chinese/English shell, focused secondary windows, an inspector agent composer and a host-driven execution gate. The host embeds the Base-01 model and runs `poie-ontology` + `poie-plan`, `poie-state` for the SAP ledger/seven dispatch checks, and `poie-federation` for site reconciliation. SQLite, sandbox and packaging are wired. A local operator authenticates with a PBKDF2 verifier and an eight-hour host-only session; remote inference is opt-in, requires that operator, uses a native `ureq` + rustls OpenAI-compatible call, keeps the API key in the platform credential store (macOS Keychain, Windows Credential Manager, Linux Secret Service) or an environment override, and audits every request. See [apps/desktop/README.md](apps/desktop/README.md). |
+| [Desktop release v0.1.1](https://github.com/haeliotang/poieweave/releases/tag/v0.1.1) | CI-built Linux `.deb`, Windows NSIS installer / portable `.exe`, and universal macOS DMG/app zip (x86_64 + arm64), with `SHA256SUMS`. Unsigned unless release secrets are configured. |
 | [Base-02 shared depot](scenarios/base-02/model.toml) | Second scenario sharing inventory and a transport truck with Base-01 (heat-treatment workshop); 8 pre-registered structural cases run in CI. |
 | [M12.6 simulated partition](experiments/federation-partition/REPORT.sim.md) | Pre-registered simulated partition/reconnect experiment: over-reservation, overlapping leases, duplicate keys and double dispatch are all reported (not silently merged); repeated exchanges are idempotent. **Simulated only** — real multi-node tests remain external. |
 | [H4 expansion accounting](experiments/h4-expansion/REPORT.md) | Pre-registered H4 on the Base-01 recycling-furnace proposal. Re-run on 2026-11-01 under the revised VEC expansion accounting (issues #109/#110): judged at the operating threshold (`demonstrated`), with the construction draw deducted and the occupied robot unavailable during construction. The structural gain (`obtain sleeve-p1 4` blocked → candidate) exists only once commissioning reaches `demonstrated`; during construction the potable-water recovery route is **lost**, and the 20 kWh construction draw cannot be paid from the 0.5–2 kWh stored in any of the 16 scenarios. Verdict **net gain negative**, claim level `proposed`. The first run (2026-10-31) reported **uncertain** because the costs were not deducted; both are kept in the report. |
@@ -77,7 +106,7 @@ evidence, with a contextual inspector and status bar. The host owns the app-data
 directory, SQLite, a size-limited sandbox and packaging, and embeds the Base-01
 model to run `poie-ontology` + `poie-plan` for the overview and planning views.
 A local operator sign-in also gates the inference settings; API keys live in the
-the platform credential store (or an environment override), and remote
+platform credential store (or an environment override), and remote
 inference calls are opt-in and audited.
 
 ```bash
@@ -86,26 +115,9 @@ pnpm install
 pnpm tauri dev
 ```
 
-![Poieweave frontend — capability overview](apps/desktop/screenshots/en-overview.png)
-
-See [apps/desktop/README.md](apps/desktop/README.md) for the host commands,
-build steps and current boundaries.
-
-### Frontend screenshots (English UI)
-
-Full-size PNGs are in [`apps/desktop/screenshots/`](apps/desktop/screenshots).
-
-| Overview | Capabilities |
-| --- | --- |
-| ![Overview](apps/desktop/screenshots/en-overview.png) | ![Capabilities](apps/desktop/screenshots/en-capabilities.png) |
-| **Planning** | **Execution** |
-| ![Planning](apps/desktop/screenshots/en-planning.png) | ![Execution](apps/desktop/screenshots/en-execution.png) |
-| **Federation** | **Evidence** |
-| ![Federation](apps/desktop/screenshots/en-federation.png) | ![Evidence](apps/desktop/screenshots/en-evidence.png) |
-| **Settings** | **Dark theme** |
-| ![Settings](apps/desktop/screenshots/en-settings.png) | ![Overview, dark](apps/desktop/screenshots/en-overview-dark.png) |
-
-![Focused federation window](apps/desktop/screenshots/en-federation-focus.png)
+Screenshots are at the top of this README; see
+[apps/desktop/README.md](apps/desktop/README.md) for host commands, build steps and
+current boundaries.
 
 ## The ambition
 
