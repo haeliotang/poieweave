@@ -118,7 +118,7 @@ fn map_verdict(case: &CaseDoc, outcome: &TimedOutcome, start_s: f64) -> Verdict 
                 state: outcome.detail.clone(),
             }
         }
-        TimedVerdict::InsufficientResource | TimedVerdict::CapacityConflict => {
+        TimedVerdict::InsufficientResource | TimedVerdict::CapacityConflict | TimedVerdict::PowerLimited => {
             let violation = outcome.violation.as_ref();
             Verdict::Counterexample {
                 scenario_id: case.id.clone(),

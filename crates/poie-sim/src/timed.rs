@@ -63,6 +63,11 @@ struct ScenarioDoc {
     asset_timelines: Vec<AssetTimelineDoc>,
     #[serde(default, rename = "stock_timeline")]
     stock_timelines: Vec<StockTimelineDoc>,
+    /// Optional storage banks. Their discharge power limits participate in the
+    /// timed conclusion (PO §3.9/§3.11); energy availability remains the stock
+    /// timeline.
+    #[serde(default, rename = "storage")]
+    storages: Vec<StorageDoc>,
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -107,6 +112,18 @@ struct StockChangeDoc {
 
 #[derive(Clone, Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
+struct StorageDoc {
+    id: String,
+    asset: String,
+    resource: String,
+    capacity: String,
+    initial: String,
+    max_charge_power: String,
+    max_discharge_power: String,
+}
+
+#[derive(Clone, Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
 struct CasesDoc {
     schema: String,
     scenario: String,
@@ -147,6 +164,7 @@ pub enum TimedVerdict {
     TooLate,
     InsufficientResource,
     CapacityConflict,
+    PowerLimited,
 }
 
 impl TimedVerdict {
@@ -159,6 +177,7 @@ impl TimedVerdict {
             TimedVerdict::TooLate => "too_late",
             TimedVerdict::InsufficientResource => "insufficient_resource",
             TimedVerdict::CapacityConflict => "capacity_conflict",
+            TimedVerdict::PowerLimited => "power_limited",
         }
     }
 }
@@ -207,6 +226,8 @@ pub struct TimedScenario {
     pub model: Model,
     pub asset_timelines: BTreeMap<String, AssetTimeline>,
     pub stock_timelines: BTreeMap<String, StockTimeline>,
+    /// resource id -> maximum discharge power in watts.
+    pub storage_discharge_w: BTreeMap<String, f64>,
     pub description: String,
     /// Evidence validity in seconds; `None` only for programmatic scenarios
     /// built with [`TimedScenario::from_parts`], whose evidence never expires.
@@ -283,10 +304,43 @@ impl TimedScenario {
             }
         }
 
+        let mut storage_discharge_w = BTreeMap::new();
+        for storage in &doc.storages {
+            let Some(resource) = model.resources.get(&storage.resource) else {
+                return error(format!("storage {:?} names unknown resource {:?}", storage.id, storage.resource));
+            };
+            if !model.assets.contains_key(&storage.asset) {
+                return error(format!("storage {:?} names unknown asset {:?}", storage.id, storage.asset));
+            }
+            if !resource.is_energy() {
+                return error(format!("storage {:?} resource {:?} is not energy", storage.id, storage.resource));
+            }
+            let capacity = parse_quantity(&storage.capacity)?;
+            let initial = parse_quantity(&storage.initial)?;
+            if capacity.dim != resource.unit.dim || initial.dim != resource.unit.dim {
+                return error(format!("storage {:?} capacity/initial have the wrong dimension", storage.id));
+            }
+            if capacity.si <= 0.0 || initial.si < 0.0 || initial.si > capacity.si {
+                return error(format!("storage {:?} has an invalid capacity/state of charge", storage.id));
+            }
+            let charge = parse_quantity(&storage.max_charge_power)?;
+            let discharge = parse_quantity(&storage.max_discharge_power)?;
+            if charge.dim != Dimension::POWER || discharge.dim != Dimension::POWER {
+                return error(format!("storage {:?} power limits must be power", storage.id));
+            }
+            if charge.si < 0.0 || discharge.si < 0.0 {
+                return error(format!("storage {:?} power limits must be non-negative", storage.id));
+            }
+            if storage_discharge_w.insert(storage.resource.clone(), discharge.si).is_some() {
+                return error(format!("duplicate storage for resource {:?}", storage.resource));
+            }
+        }
+
         Ok(TimedScenario {
             model,
             asset_timelines,
             stock_timelines,
+            storage_discharge_w,
             description: doc.description,
             evidence_validity_s: Some(evidence_validity_s),
         })
@@ -297,7 +351,14 @@ impl TimedScenario {
         asset_timelines: BTreeMap<String, AssetTimeline>,
         stock_timelines: BTreeMap<String, StockTimeline>,
     ) -> TimedScenario {
-        TimedScenario { model, asset_timelines, stock_timelines, description: String::new(), evidence_validity_s: None }
+        TimedScenario {
+            model,
+            asset_timelines,
+            stock_timelines,
+            storage_discharge_w: BTreeMap::new(),
+            description: String::new(),
+            evidence_validity_s: None,
+        }
     }
 }
 
@@ -441,6 +502,38 @@ impl TimedRunner {
                         detail: detail.clone(),
                         violation: Some(TimedViolation {
                             at_s: step_start,
+                            constraint: allocation.resource.clone(),
+                            detail,
+                        }),
+                        warnings,
+                    });
+                }
+            }
+        }
+
+        for (position, step) in result.steps.iter().enumerate() {
+            let id = format!("step{}-{}", position + 1, step.process);
+            let Some(instance) = report.instances.iter().find(|instance| instance.id == id) else {
+                continue;
+            };
+            let duration_s = (instance.end_s - instance.start_s).max(1e-9);
+            for allocation in &step.allocations {
+                let Some(max_discharge_w) = self.scenario.storage_discharge_w.get(&allocation.resource) else {
+                    continue;
+                };
+                let required_w = allocation.si / duration_s;
+                if required_w > max_discharge_w + poie_ontology::units::rounding_tolerance(*max_discharge_w) {
+                    let detail = format!(
+                        "{} needs {:.3} W average over {:.0}s, storage limit is {:.3} W",
+                        allocation.resource, required_w, duration_s, max_discharge_w
+                    );
+                    return Ok(TimedOutcome {
+                        verdict: TimedVerdict::PowerLimited,
+                        structural,
+                        completion_s: Some(completion_s),
+                        detail: detail.clone(),
+                        violation: Some(TimedViolation {
+                            at_s: instance.start_s,
                             constraint: allocation.resource.clone(),
                             detail,
                         }),
@@ -734,6 +827,18 @@ verdict = "feasible"
 "#
         ))
         .unwrap()
+    }
+
+    #[test]
+    fn storage_discharge_power_limit_enters_the_timed_conclusion() {
+        let (cases, scenario_path) = TimedCases::load(&repo_path("../../scenarios/base-01-timed/cases.toml")).unwrap();
+        let mut scenario = TimedScenario::load(&scenario_path).unwrap();
+        scenario.storage_discharge_w.insert("electric-energy".to_string(), 0.0);
+        let runner = TimedRunner::new(scenario);
+        let t0 = cases.cases.iter().find(|case| case.id == "T0").unwrap();
+        let outcome = runner.run(t0).unwrap();
+        assert_eq!(outcome.verdict, TimedVerdict::PowerLimited, "{outcome:?}");
+        assert!(outcome.detail.contains("storage limit"), "{}", outcome.detail);
     }
 
     #[test]
