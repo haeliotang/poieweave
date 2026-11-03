@@ -6,7 +6,7 @@
 
 | crate | 列出测试数 | 其中随机性质测试 | 主要里程碑 |
 | --- | ---: | --- | --- |
-| `poie-ontology` | 93 | 图求解 120 trials；调度 120 trials；TOML 变异不 panic（120×2）；单位换算/解析 200×2；路线枚举 120+80 | M2、M4 |
+| `poie-ontology` | 94 | 图求解 120 trials；调度 120 trials；TOML 变异不 panic（120×2）；单位换算/解析 200×2；路线枚举 120+80 | M2、M4 |
 | `poie-state` | 97 | 状态机 10⁵ 序列（单元内）；投影 120 trials；记录验证/往返 120 trials；日志重开/崩溃尾部随机测试 | M4、M5、M12 |
 | `poie-sim` | 19 | 仿真 80 trials | M4、M6 |
 | `poie-viability` | 61 | 指标 60 轨迹；报告 20 份 × 16 类变异 | M6 |
@@ -17,7 +17,7 @@
 | `poie-expansion` | 24 | 结构 40/时序 40 trials；提案 TOML 变异不 panic（120） | M11 |
 | `poie-federation` | 13 | HLC 80 trials；分区/重连 120 trials | M12 |
 
-**库 crate 测试合计：368 个已列出的测试**；另有其他包 16 个（`poie-h1-baseline` 5、`poie-vec-base01` 2、`poie-basyx-shadow` 9），总计 384。
+**库 crate 测试合计：369 个已列出的测试**；另有其他包 16 个（`poie-h1-baseline` 5、`poie-vec-base01` 2、`poie-basyx-shadow` 9），总计 385。
 
 ## 2. 场景与实验重放
 

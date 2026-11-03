@@ -277,10 +277,35 @@ impl<'m> Solver<'m> {
 
     fn service(&mut self, id: &str, ledger: &mut Ledger) -> Outcome {
         self.enter(Frame::Service(id.to_string()))?;
+        let service = &self.model.services[id];
         let mut errs = Vec::new();
-        for a in &self.model.services[id].requires {
+        for a in &service.requires {
             if let Err(e) = self.restore(a, ledger) {
                 errs.extend(e);
+            }
+        }
+        if errs.is_empty() && !service.requires_any.is_empty() {
+            let mut alternative_errors = Vec::new();
+            let mut restored = false;
+            for alternative in rotated(&service.requires_any, self.shift) {
+                let mut trial = ledger.clone();
+                match self.restore(alternative, &mut trial) {
+                    Ok(()) => {
+                        *ledger = trial;
+                        restored = true;
+                        break;
+                    }
+                    Err(e) => alternative_errors.extend(e),
+                }
+            }
+            if !restored {
+                errs.push(self.blocker(
+                    BlockerKind::NoAlternativeSupport,
+                    id,
+                    format!("service {id} has no usable support among {}", service.requires_any.join(", ")),
+                    false,
+                ));
+                errs.extend(alternative_errors);
             }
         }
         self.leave();
@@ -1118,6 +1143,47 @@ status = "{second}"
         assert_eq!(summary.subject, "target");
         assert!(!summary.root);
         assert!(summary.detail.contains("alt-a, alt-b"), "{}", summary.detail);
+    }
+
+    #[test]
+    fn service_requires_any_expresses_n_plus_one_support() {
+        let model = |first: &str, second: &str| {
+            model_from_toml(&format!(
+                r#"
+[[asset]]
+id = "primary-pump"
+kind = "pump"
+status = "{first}"
+
+[[asset]]
+id = "standby-pump"
+kind = "pump"
+status = "{second}"
+
+[[service]]
+id = "potable-water"
+requires = []
+requires_any = ["primary-pump", "standby-pump"]
+"#
+            ))
+        };
+        let query = Query {
+            goal: Goal::Service("potable-water".to_string()),
+            min_verification: Verification::Declared,
+            max_depth: DEFAULT_MAX_DEPTH,
+        };
+        let with_standby = model("failed", "available");
+        assert_eq!(solve(&with_standby, &query).verdict, Verdict::Candidate);
+
+        let both_failed = model("failed", "failed");
+        let result = solve(&both_failed, &query);
+        assert_eq!(result.verdict, Verdict::Blocked);
+        assert!(result
+            .blockers
+            .iter()
+            .any(|blocker| blocker.kind == BlockerKind::NoAlternativeSupport && blocker.subject == "potable-water"));
+        assert!(result.root_causes().any(|blocker| blocker.subject == "primary-pump"));
+        assert!(result.root_causes().any(|blocker| blocker.subject == "standby-pump"));
     }
 
     #[test]

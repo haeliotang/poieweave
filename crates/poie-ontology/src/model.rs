@@ -217,6 +217,10 @@ pub struct ServiceDoc {
     #[serde(default)]
     pub description: String,
     pub requires: Vec<String>,
+    /// Alternative supports: at least one must be usable, in addition to every
+    /// `requires` asset. This is the service-level N+1 expression (PO §3.7).
+    #[serde(default)]
+    pub requires_any: Vec<String>,
 }
 
 // ---------------------------------------------------------------------------
@@ -319,6 +323,7 @@ impl Process {
 pub struct Service {
     pub id: String,
     pub requires: Vec<String>,
+    pub requires_any: Vec<String>,
 }
 
 /// Result of the per-process mass check (§5).
@@ -590,20 +595,19 @@ impl Model {
         let mut services = BTreeMap::new();
         for s in &doc.services {
             check_slug("service", &s.id)?;
-            if s.requires.is_empty() {
+            if s.requires.is_empty() && s.requires_any.is_empty() {
                 bail!("service {} must require at least one asset", s.id);
             }
-            for a in &s.requires {
+            for a in s.requires.iter().chain(s.requires_any.iter()) {
                 if !assets.contains_key(a) {
                     bail!("service {} requires unknown asset {a:?}", s.id);
                 }
             }
-            let svc = Service { id: s.id.clone(), requires: s.requires.clone() };
+            let svc = Service { id: s.id.clone(), requires: s.requires.clone(), requires_any: s.requires_any.clone() };
             if services.insert(s.id.clone(), svc).is_some() {
                 bail!("duplicate service id {:?}", s.id);
             }
         }
-
         let mut producers: BTreeMap<String, Vec<usize>> = BTreeMap::new();
         let mut restorers: BTreeMap<String, Vec<usize>> = BTreeMap::new();
         for (i, p) in processes.iter().enumerate() {
