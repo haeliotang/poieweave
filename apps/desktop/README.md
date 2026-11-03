@@ -168,9 +168,28 @@ pnpm dev                  # browser-only cockpit with preview data
 
 pnpm exec tsc --noEmit -p tsconfig.json
 pnpm build
-cd src-tauri && cargo test --offline    # 12 tests: DB, sandbox, domain, execution, federation, auth, inference, HTTP
+pnpm test:ui                              # Playwright + installed Chrome
+cd src-tauri && cargo test --offline      # 12 tests: DB, sandbox, domain, execution, federation, auth, inference, HTTP
 cd .. && pnpm tauri build --no-bundle
 ```
+
+### Browser UI smoke tests
+
+`tests/ui/cockpit.spec.ts` (Playwright, system Chrome) checks:
+
+- all six views navigate and render;
+- the four-column cockpit and light/dark token values are stable;
+- Chinese/English switching leaves no untranslated key fragments;
+- Settings opens and keeps auth/inference host-only in browser preview;
+- the inspector agent composer is present and disabled without a host;
+- focused-window mode hides rail/sidebar/inspector;
+- all icon controls have accessible names.
+
+The `Desktop build` workflow runs this suite on Ubuntu and Windows against
+Chrome, uploading `playwright-report`/`test-results` when a run fails. Pixel
+baselines are intentionally not committed because macOS/Linux/Windows font
+rasterization differs; the stable layout/token assertions and view screenshots in
+the test report are the cross-platform visual guard.
 
 ## Cross-platform builds
 
@@ -182,7 +201,7 @@ every push/PR that touches the desktop app, and on `v*` tags:
 | `ubuntu-24.04` | `.deb` | `poieweave-desktop-linux-x86_64` |
 | `windows-latest` | NSIS `.exe` | `poieweave-desktop-windows-x86_64` |
 
-Both jobs run the frontend build and the 12 host tests before bundling. The Linux
+Both build jobs run the frontend build and the 12 host tests before bundling; separate UI smoke jobs run Playwright on Ubuntu and Windows. The Linux
 job installs WebKitGTK 4.1, GTK/AppIndicator and patchelf prerequisites; Windows
 uses the runner's WebView2 and Tauri's NSIS bundler.
 
