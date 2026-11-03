@@ -626,6 +626,7 @@ goal = { service = "potable-water" }
 min_verification = "demonstrated"
 tags = ["quality-gate"]
 [case.patch]
+lot_resource = { "lot-sleeve-01" = "sleeve-p1-quarantined" }
 lot_quality = { "lot-sleeve-01" = "quarantined" }
 [case.expect]
 verdict = "candidate"
@@ -639,8 +640,15 @@ goal = { service = "potable-water" }
 min_verification = "demonstrated"
 tags = ["quality-gate"]
 [case.patch]
+lot_resource = { "lot-sleeve-01" = "sleeve-p1-rejected" }
 lot_quality = { "lot-sleeve-01" = "rejected" }
 lot_quantity = { "lot-insert" = "0 item" }
+
+[[case.patch.add_resource]]
+id = "sleeve-p1-rejected"
+unit = "item"
+mass_per_unit = "0.8 kg"
+quality = "rejected"
 [case.expect]
 verdict = "blocked"
 root_causes = [{ kind = "missing_resource", subject = "cutting-insert" }]

@@ -258,6 +258,11 @@ status = "unknown"
 id = "part"
 unit = "item"
 
+[[resource]]
+id = "part-quarantined"
+unit = "item"
+quality = "quarantined"
+
 [[lot]]
 id = "lot-part"
 resource = "part"
@@ -266,7 +271,7 @@ quality = "accepted"
 
 [[lot]]
 id = "lot-quarantined"
-resource = "part"
+resource = "part-quarantined"
 quantity = "5 item"
 quality = "quarantined"
 "#;

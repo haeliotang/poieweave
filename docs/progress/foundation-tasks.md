@@ -178,4 +178,5 @@ M12 多站点联邦：**进行中（模拟部分完成）**——M12.1–M12.4 �
 - 2026-11-03：桌面 UI 冒烟：Playwright（系统 Chrome）7 个用例覆盖六视图、主题令牌、中英切换、设置、Agent 面板、聚焦窗口、可访问名称；CI 在 Ubuntu/Windows 运行并上传报告。
 - 2026-11-03：桌面三平台构建/发布：macOS universal（arm64+x86_64）CI 通过并 lipo 验证；Release job 在 `v*` tag 自动创建 Release、上传 Linux/Windows/macOS 产物与 SHA256SUMS；Apple 签名/公证通过可选 secrets 接入。
 - 2026-11-03：PO #112/P18 落地：服务级 `requires_any`（N+1 一用一备），求解支持替代支撑并保留各分支根因；契约/测试更新；Rust 列表测试 385。
+- 2026-11-03：PO #112/P20 落地：资源类型 `quality` 类成为质量唯一真相，批次质量校验一致；新增 `lot_resource` patch、隔离/拒绝资源，迁移质量门用例；Rust 列表测试 387。
 - 2026-11-01：issue #106–#111 修复已集成（PR 待开）：H4 结论由「不确定」改为「净增益为负」（VEC 修订后重跑，原结论保留在 H4 REPORT §7 与 PREREG 变更记录）；vec-base01 原 4 个 `infeasible_in_model` 改为 counterexample。测试：库 crate 291→368，总计 306→384。

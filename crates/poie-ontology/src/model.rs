@@ -39,9 +39,10 @@ pub enum AssetStatus {
     Unknown,
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Deserialize)]
+#[derive(Clone, Copy, Default, PartialEq, Eq, Debug, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum LotQuality {
+    #[default]
     Accepted,
     Quarantined,
     Rejected,
@@ -110,6 +111,11 @@ pub struct ResourceDoc {
     pub mass_per_unit: Option<String>,
     #[serde(default)]
     pub description: String,
+    /// Quality class carried by this resource type. Different quality states
+    /// must be different resource types (PO §3.2); lot quality mirrors this
+    /// class and is validated against it.
+    #[serde(default)]
+    pub quality: LotQuality,
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -233,6 +239,7 @@ pub struct Resource {
     pub unit: &'static Unit,
     /// Mass in kg of one declared unit; `None` for energy or undeclared.
     pub mass_per_unit_kg: Option<f64>,
+    pub quality: LotQuality,
 }
 
 impl Resource {
@@ -419,7 +426,7 @@ impl Model {
                 }
                 None => None,
             };
-            let res = Resource { id: r.id.clone(), unit, mass_per_unit_kg };
+            let res = Resource { id: r.id.clone(), unit, mass_per_unit_kg, quality: r.quality };
             if resources.insert(r.id.clone(), res).is_some() {
                 bail!("duplicate resource id {:?}", r.id);
             }
@@ -485,6 +492,19 @@ impl Model {
             let q = parse_dim(&format!("lot {}", l.id), &l.quantity, res.unit.dim)?;
             if q.si < 0.0 {
                 bail!("lot {}: quantity must not be negative", l.id);
+            }
+            let quality = resources
+                .get(&l.resource)
+                .ok_or_else(|| ModelError(format!("lot {:?} references unknown resource {:?}", l.id, l.resource)))?
+                .quality;
+            if quality != l.quality {
+                bail!(
+                    "lot {:?} quality {:?} does not match resource {:?} quality {:?}",
+                    l.id,
+                    l.quality,
+                    l.resource,
+                    quality
+                );
             }
             lots.push(Lot { id: l.id.clone(), resource: l.resource.clone(), si: q.si, quality: l.quality });
         }
@@ -765,6 +785,12 @@ impl Model {
             };
             l.quantity = qty.clone();
         }
+        for (id, resource) in &patch.lot_resource {
+            let Some(l) = doc.lots.iter_mut().find(|l| &l.id == id) else {
+                bail!("patch: unknown lot {id:?}");
+            };
+            l.resource = resource.clone();
+        }
         for (id, quality) in &patch.lot_quality {
             let Some(l) = doc.lots.iter_mut().find(|l| &l.id == id) else {
                 bail!("patch: unknown lot {id:?}");
@@ -791,6 +817,9 @@ pub struct Patch {
     pub lot_quantity: BTreeMap<String, String>,
     #[serde(default)]
     pub lot_quality: BTreeMap<String, LotQuality>,
+    /// Move a lot to another resource type (e.g. a quarantined resource type).
+    #[serde(default)]
+    pub lot_resource: BTreeMap<String, String>,
     #[serde(default)]
     pub process_verification: BTreeMap<String, Verification>,
     /// Replace an asset's AND supports.
@@ -930,6 +959,45 @@ status = "available"
 "#
         );
         toml::from_str(&text).unwrap()
+    }
+
+    #[test]
+    fn lot_quality_must_match_resource_quality() {
+        let bad = doc(r#"
+[[lot]]
+id = "lot-quarantined"
+resource = "part"
+quantity = "1 item"
+quality = "quarantined"
+"#);
+        let error = Model::from_doc(bad).unwrap_err().to_string();
+        assert!(error.contains("does not match resource"), "{error}");
+    }
+
+    #[test]
+    fn patch_can_move_a_lot_to_a_quality_resource() {
+        let base = doc(r#"
+[[lot]]
+id = "lot-part"
+resource = "part"
+quantity = "1 item"
+quality = "accepted"
+"#);
+        let mut patch = Patch::default();
+        patch.add_resource.push(ResourceDoc {
+            id: "part-quarantined".into(),
+            unit: "item".into(),
+            mass_per_unit: Some("0.8 kg".into()),
+            description: String::new(),
+            quality: LotQuality::Quarantined,
+        });
+        patch.lot_resource.insert("lot-part".into(), "part-quarantined".into());
+        patch.lot_quality.insert("lot-part".into(), LotQuality::Quarantined);
+        let model = Model::from_doc(base).unwrap().patched(&patch).unwrap();
+        let lot = model.lots.iter().find(|lot| lot.id == "lot-part").unwrap();
+        assert_eq!(lot.resource, "part-quarantined");
+        assert_eq!(lot.quality, LotQuality::Quarantined);
+        assert_eq!(model.resources["part-quarantined"].quality, LotQuality::Quarantined);
     }
 
     #[test]
