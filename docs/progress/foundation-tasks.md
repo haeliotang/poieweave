@@ -181,3 +181,4 @@ M12 多站点联邦：**进行中（模拟部分完成）**——M12.1–M12.4 �
 - 2026-11-03：PO #112/P20 落地：资源类型 `quality` 类成为质量唯一真相，批次质量校验一致；新增 `lot_resource` patch、隔离/拒绝资源，迁移质量门用例；Rust 列表测试 387。
 - 2026-11-03：PO #112/P19 落地：时间版场景 `[[storage]]` 放电功率上限进入结论（`power_limited`）；Base-01 timed 加入 bat-1 3kW；新增回放测试；Rust 列表测试 388。
 - 2026-11-01：issue #106–#111 修复已集成（PR 待开）：H4 结论由「不确定」改为「净增益为负」（VEC 修订后重跑，原结论保留在 H4 REPORT §7 与 PREREG 变更记录）；vec-base01 原 4 个 `infeasible_in_model` 改为 counterexample。测试：库 crate 291→368，总计 306→384。
+- 2026-11-03：准备 v0.1.1：桌面版本 0.1.1；tag 自动发布 Linux/Windows/macOS universal 产物；#112 P18–P20 全部完成并关闭。
