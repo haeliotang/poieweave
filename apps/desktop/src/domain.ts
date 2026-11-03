@@ -96,12 +96,19 @@ export interface CheckView {
   detail: string;
 }
 
+export interface GateState {
+  takeover: boolean;
+  degraded: boolean;
+}
+
 export interface ExecutionSnapshot {
   state: string;
   actions: ExecutionActionView[];
   checks: CheckView[];
   reviewStatus: string;
   rejections: number;
+  gate: GateState;
+  dispatchAllowed: boolean;
 }
 
 export interface FederationSiteView {
@@ -244,6 +251,8 @@ export const fallbackExecution: ExecutionSnapshot = {
   checks: CHECK_NAMES.map((check) => ({ check, passed: true, detail: "ok" })),
   reviewStatus: "ready",
   rejections: 0,
+  gate: { takeover: false, degraded: false },
+  dispatchAllowed: true,
 };
 
 export const fallbackFederation: FederationSnapshot = {
