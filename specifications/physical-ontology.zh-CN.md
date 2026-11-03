@@ -1,6 +1,6 @@
 # Poieweave 契约一：Physical Ontology（物理运营本体）
 
-版本：0.3-draft / 2026-10-31（2026-11-01 修订：守恒条款收紧，见 issue #105；`blocked` 只相对当前快照与有界搜索、单次求解与枚举一致，见 issue #106；状态时间线与证据过期统一、预测只作警告、声明状态即合成观测，见 issue #111）
+版本：0.3-draft / 2026-10-31（2026-11-03 修订：服务级 N+1 `requires_any`，见 issue #112/P18；2026-11-01 修订：守恒条款收紧，见 issue #105；`blocked` 只相对当前快照与有界搜索、单次求解与枚举一致，见 issue #106；状态时间线与证据过期统一、预测只作警告、声明状态即合成观测，见 issue #111）
 状态：可反驳草案。参考实现见 `crates/poie-ontology`，参考场景见 `scenarios/base-01`。接口尚未冻结。
 
 相关契约：[State & Action Protocol](state-action-protocol.zh-CN.md) · [Viability & Expansion](viability-expansion.zh-CN.md)
@@ -169,8 +169,9 @@
 | --- | --- | --- |
 | `id` | 必须 | 标识 |
 | `requires` | 必须 | 服务成立所需的资产（全部可用） |
+| `requires_any` | 可以 | 替代支撑资产：其中至少一个可用即可（N+1 / 一用一备）；与 `requires` 是 AND 关系 |
 
-v0.2 的服务只是结构性条件（"所需资产都可用"），不含产量或质量指标。服务水平、服务损失积分属于 VEC。
+服务级 `requires_any` 与资产级 `requires_any` 语义一致（§6.3 规则 9），用于表达"主泵故障时备用泵接管"这类 N+1 冗余。无可用替代支撑时报告 `no_alternative_support`，并保留每个替代分支的根因。v0.2 的服务只是结构性条件（"所需资产都可用"），不含产量或质量指标。服务水平、服务损失积分属于 VEC。
 
 ### 3.8 时间（v0.3 草案，M5.1–M5.2）
 
