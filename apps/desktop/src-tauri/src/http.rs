@@ -1,14 +1,11 @@
-//! Small HTTP helper for remote inference.
+//! HTTP/TLS helper for remote inference.
 //!
-//! We deliberately do not bundle an HTTP/TLS stack in the host: the desktop app
-//! uses the system `curl` (present on macOS and Windows 10+). The API key is
-//! written to a 0600 temporary config file, never to argv, and the file is
-//! removed before the call returns. Tests use the real curl binary against a
-//! loopback server; a future iteration can replace this with rustls.
+//! Uses `ureq` with rustls and the platform certificate verifier (Security
+//! framework on macOS, SChannel roots on Windows, the system trust store on
+//! Linux). The API key only lives in memory as an `Authorization` header; there
+//! is no temporary curl config file or system-binary dependency.
 
-use std::path::{Path, PathBuf};
-use std::process::Command;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::Duration;
 
 pub struct HttpResponse {
     pub status: u16,
@@ -19,81 +16,25 @@ pub trait HttpTransport: Send + Sync {
     fn post_json(&self, url: &str, api_key: &str, body: &str) -> Result<HttpResponse, String>;
 }
 
-pub struct CurlTransport;
+pub struct NativeHttpTransport;
 
-struct TempWorkspace {
-    path: PathBuf,
-}
-
-impl TempWorkspace {
-    fn new() -> Result<TempWorkspace, String> {
-        let nanos = SystemTime::now().duration_since(UNIX_EPOCH).map(|d| d.as_nanos()).unwrap_or(0);
-        let path = std::env::temp_dir().join(format!("poie-inference-{}-{nanos}", std::process::id()));
-        std::fs::create_dir_all(&path).map_err(|error| format!("temp dir: {error}"))?;
-        restrict(&path);
-        Ok(TempWorkspace { path })
-    }
-
-    fn file(&self, name: &str) -> PathBuf {
-        self.path.join(name)
+impl NativeHttpTransport {
+    fn agent(&self) -> ureq::Agent {
+        ureq::Agent::config_builder().timeout_global(Some(Duration::from_secs(30))).build().into()
     }
 }
 
-impl Drop for TempWorkspace {
-    fn drop(&mut self) {
-        let _ = std::fs::remove_dir_all(&self.path);
-    }
-}
-
-#[cfg(unix)]
-fn restrict(path: &Path) {
-    use std::os::unix::fs::PermissionsExt;
-    let mode = if path.is_dir() { 0o700 } else { 0o600 };
-    let _ = std::fs::set_permissions(path, std::fs::Permissions::from_mode(mode));
-}
-
-#[cfg(not(unix))]
-fn restrict(_path: &Path) {}
-
-fn config_quote(value: &str) -> String {
-    format!("\"{}\"", value.replace('\\', "\\\\").replace('"', "\\\""))
-}
-
-impl HttpTransport for CurlTransport {
+impl HttpTransport for NativeHttpTransport {
     fn post_json(&self, url: &str, api_key: &str, body: &str) -> Result<HttpResponse, String> {
-        let workspace = TempWorkspace::new()?;
-        let body_path = workspace.file("request.json");
-        let response_path = workspace.file("response.json");
-        let config_path = workspace.file("curl.conf");
-        std::fs::write(&body_path, body).map_err(|error| format!("request body: {error}"))?;
-        restrict(&body_path);
-        let config = format!(
-            "silent\nshow-error\nmax-time = 30\noutput = {}\nwrite-out = {}\nurl = {}\nheader = {}\nheader = {}\ndata-binary = {}\n",
-            config_quote(&response_path.display().to_string()),
-            config_quote("%{http_code}"),
-            config_quote(url),
-            config_quote("Content-Type: application/json"),
-            config_quote(&format!("Authorization: Bearer {api_key}")),
-            config_quote(&format!("@{}", body_path.display())),
-        );
-        std::fs::write(&config_path, config).map_err(|error| format!("curl config: {error}"))?;
-        restrict(&config_path);
-
-        let output = Command::new("curl")
-            .arg("--config")
-            .arg(&config_path)
-            .env("NO_PROXY", "127.0.0.1,localhost")
-            .env("no_proxy", "127.0.0.1,localhost")
-            .output()
-            .map_err(|error| format!("system curl is unavailable: {error}"))?;
-        if !output.status.success() {
-            return Err(format!("curl failed: {}", String::from_utf8_lossy(&output.stderr).trim()));
-        }
-        let status = String::from_utf8_lossy(&output.stdout)
-            .trim()
-            .parse::<u16>()
-            .map_err(|_| "curl returned no HTTP status".to_string())?;
-        let body = std::fs::read_to_string(&response_path).unwrap_or_default();
+        let mut response = self
+            .agent()
+            .post(url)
+            .header("Content-Type", "application/json")
+            .header("Authorization", format!("Bearer {api_key}"))
+            .send(body)
+            .map_err(|error| format!("HTTP request failed: {error}"))?;
+        let status = response.status().as_u16();
+        let body = response.body_mut().read_to_string().map_err(|error| format!("HTTP response body: {error}"))?;
         Ok(HttpResponse { status, body })
     }
 }
@@ -129,7 +70,7 @@ mod tests {
     }
 
     #[test]
-    fn curl_posts_json_with_bearer_header() {
+    fn http_posts_json_with_bearer_header() {
         let listener = TcpListener::bind("127.0.0.1:0").unwrap();
         let address = listener.local_addr().unwrap();
         let server = std::thread::spawn(move || {
@@ -145,7 +86,7 @@ mod tests {
             );
             stream.write_all(response.as_bytes()).unwrap();
         });
-        let transport = CurlTransport;
+        let transport = NativeHttpTransport;
         let response = transport
             .post_json(
                 &format!("http://{address}/v1/chat/completions"),

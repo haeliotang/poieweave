@@ -118,8 +118,8 @@ pnpm tauri build --no-bundle
 - 外壳已接入 `poie-ontology` + `poie-plan`：宿主嵌入 Base-01 模型并把 `pump-p1` 置为 degraded，`domain_overview` 返回服务、实体、外部依赖和 24h 规划快照；
 - `execution_snapshot` 由 `poie-state` 生成 SAP 动作账本并执行七项 dispatch 复核；`federation_snapshot` 由 `poie-federation` 交换日志并 `reconcile`；
 - 本地认证使用 PBKDF2-HMAC-SHA256（210k 迭代）与 8 小时宿主会话；审计写入 SQLite；
-- 远程推理需要登录，API key 存 macOS Keychain 或 `POIEWEAVE_INFERENCE_API_KEY`，HTTP 由系统 `curl` 发送；非 macOS 凭据存储尚未实现；
-- `cargo test` 现有 12 个测试（认证、推理配置、curl 本地回环、领域快照、执行门等）；
+- 远程推理需要登录，API key 存平台凭据库（macOS Keychain / Windows Credential Manager / Linux Secret Service 的 `secret-tool`）或 `POIEWEAVE_INFERENCE_API_KEY`；HTTP 由原生 `ureq` + rustls + 平台证书验证器发送；
+- `cargo test` 现有 12 个测试（认证、推理配置、本机回环 HTTP、领域快照、执行门等）；
 - 桌面 SQLite 已移除旧 `notes`/`events` 演示表，仅保留操作员、审计和推理配置；执行门状态由宿主命令维护；
 - 设计令牌来自 Inceptless 浅色/深色主题（见 `apps/desktop/src/styles.css`）；
 - 认证与远程推理均为 opt-in；不会自动上传项目数据。
