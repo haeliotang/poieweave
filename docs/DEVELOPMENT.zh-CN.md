@@ -601,3 +601,4 @@ flowchart LR
 | 0.1.105 | 2026-11-01 | 桌面本地认证与远程推理：本机操作员 PBKDF2 校验、8 小时宿主会话、审计表；远程推理配置/密钥存储（macOS Keychain 或环境变量）、OpenAI 兼容测试调用、系统 curl 传输与请求审计；Settings 表单与状态栏；宿主 13 个测试 |
 | 0.1.106 | 2026-11-01 | 桌面跨平台构建：新增 Desktop build workflow（Ubuntu 24.04 `.deb` + Windows NSIS `.exe`），运行前端构建与 13 个宿主测试；Windows ICO 图标、跨平台 bundle 配置与本地构建依赖文档 |
 | 0.1.107 | 2026-11-03 | 桌面执行门宿主化：`execution_gate_set` 维护 takeover/degraded 并重算执行快照；移除未使用的 notes/events SQLite 层与命令；宿主测试 12 个 |
+| 0.1.108 | 2026-11-03 | 桌面推理生产化：Windows Credential Manager / Linux Secret Service 凭据库；原生 `ureq` + rustls 平台校验替代系统 curl；检查器新增 Agent 面板调用 `inference_complete`；宿主 12 个测试 |

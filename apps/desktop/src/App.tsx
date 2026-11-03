@@ -956,6 +956,10 @@ function Inspector({
   onNavigate,
   execution,
   federation,
+  auth,
+  inference,
+  hosted,
+  onOpenSettings,
 }: {
   lang: Lang;
   nav: NavKey;
@@ -964,8 +968,29 @@ function Inspector({
   onNavigate: (nav: NavKey, selection: Selection) => void;
   execution: ExecutionSnapshot;
   federation: FederationSnapshot;
+  auth: AuthStatus;
+  inference: InferenceStatus;
+  hosted: boolean;
+  onOpenSettings: () => void;
 }) {
   const t = (key: string) => messagesFor(lang)[key] ?? key;
+  const [prompt, setPrompt] = useState("");
+  const [agentBusy, setAgentBusy] = useState(false);
+  const [agentResult, setAgentResult] = useState<InferenceResult | null>(null);
+  const [agentError, setAgentError] = useState("");
+  const canCallAgent = hosted && auth.signedIn && inference.configured;
+  const runAgent = async () => {
+    if (!prompt.trim() || !canCallAgent) return;
+    setAgentBusy(true);
+    setAgentError("");
+    try {
+      setAgentResult(await invoke<InferenceResult>("inference_complete", { prompt }));
+    } catch (caught) {
+      setAgentError(String(caught));
+    } finally {
+      setAgentBusy(false);
+    }
+  };
   let title = t("inspector.noSelection");
   let kind = "";
   let body: React.ReactNode = <p className="empty">{t("inspector.noSelection")}</p>;
@@ -1088,6 +1113,40 @@ function Inspector({
         <span className="pill pill--neutral">{kind || nav}</span>
       </header>
       <div className="inspector__body">{body}</div>
+      <section className="agent-panel">
+        <div className="agent-panel__head">
+          <span>{t("agent.title")}</span>
+          <span className={`pill pill--${inference.configured ? "ok" : "neutral"}`}>
+            {inference.configured ? t("agent.configured") : t("agent.notConfigured")}
+          </span>
+        </div>
+        {!hosted ? <p className="agent-panel__hint">{t("agent.preview")}</p> : null}
+        {hosted && !auth.signedIn ? (
+          <p className="agent-panel__hint">{t("agent.needAuth")} <button className="text-button" type="button" onClick={onOpenSettings}>{t("agent.openSettings")}</button></p>
+        ) : null}
+        {hosted && auth.signedIn && !inference.configured ? (
+          <p className="agent-panel__hint">{t("agent.needConfig")} <button className="text-button" type="button" onClick={onOpenSettings}>{t("agent.openSettings")}</button></p>
+        ) : null}
+        <textarea
+          value={prompt}
+          onChange={(event) => setPrompt(event.target.value)}
+          placeholder={t("agent.prompt")}
+          disabled={!canCallAgent || agentBusy}
+          rows={2}
+        />
+        <div className="agent-panel__actions">
+          <button className="primary agent-panel__send" type="button" onClick={runAgent} disabled={!canCallAgent || agentBusy || !prompt.trim()}>
+            {agentBusy ? t("agent.running") : t("agent.send")}
+          </button>
+        </div>
+        {agentError ? <p className="form-error">{agentError}</p> : null}
+        {agentResult ? (
+          <div className="agent-panel__result">
+            <span className="eyebrow">{t("agent.response")} · {agentResult.latencyMs} ms</span>
+            <p>{agentResult.text}</p>
+          </div>
+        ) : null}
+      </section>
     </aside>
   );
 }
@@ -1491,6 +1550,10 @@ export default function App() {
           selection={selection}
           execution={execution}
           federation={federation}
+          auth={auth}
+          inference={inference}
+          hosted={isTauri()}
+          onOpenSettings={() => setSettingsOpen(true)}
           onNavigate={(nextNav, nextSelection) => {
             setNav(nextNav);
             setSelection(nextSelection);

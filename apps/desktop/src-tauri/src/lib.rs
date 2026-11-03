@@ -26,7 +26,7 @@ use crate::db::{AuditRow, Db};
 use crate::domain::DomainOverview;
 use crate::execution::{ExecutionSnapshot, GateState};
 use crate::federation_view::FederationSnapshot;
-use crate::http::CurlTransport;
+use crate::http::NativeHttpTransport;
 use crate::inference::{InferenceResult, InferenceStatus};
 use crate::secrets::SystemSecretStore;
 
@@ -111,8 +111,7 @@ fn inference_forget(state: State<'_, AppState>) -> Result<InferenceStatus, Strin
     inference::forget(&db, state.secrets.as_ref(), &state.session)
 }
 
-#[tauri::command]
-async fn inference_test(prompt: String, state: State<'_, AppState>) -> Result<InferenceResult, String> {
+async fn run_inference(prompt: String, state: State<'_, AppState>) -> Result<InferenceResult, String> {
     let db = Arc::clone(&state.db);
     let secrets = Arc::clone(&state.secrets);
     let http = Arc::clone(&state.http);
@@ -123,6 +122,16 @@ async fn inference_test(prompt: String, state: State<'_, AppState>) -> Result<In
     })
     .await
     .map_err(|error| error.to_string())?
+}
+
+#[tauri::command]
+async fn inference_complete(prompt: String, state: State<'_, AppState>) -> Result<InferenceResult, String> {
+    run_inference(prompt, state).await
+}
+
+#[tauri::command]
+async fn inference_test(prompt: String, state: State<'_, AppState>) -> Result<InferenceResult, String> {
+    run_inference(prompt, state).await
 }
 
 #[tauri::command]
@@ -239,7 +248,7 @@ pub fn run() {
                 federation,
                 session: Arc::new(SessionState::new(None)),
                 secrets: Arc::new(SystemSecretStore),
-                http: Arc::new(CurlTransport),
+                http: Arc::new(NativeHttpTransport),
             });
             Ok(())
         })
@@ -252,6 +261,7 @@ pub fn run() {
             inference_status,
             inference_configure,
             inference_forget,
+            inference_complete,
             inference_test,
             open_workspace_window,
             host_info,

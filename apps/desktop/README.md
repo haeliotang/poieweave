@@ -139,22 +139,24 @@ Remote inference is opt-in and unavailable until a signed-in operator configures
 
 - endpoint, model and API key are entered in Settings; the endpoint must be HTTPS
   (HTTP is accepted only for loopback testing);
-- the API key goes to the **macOS Keychain** through the system `security` command,
-  or to the `POIEWEAVE_INFERENCE_API_KEY` environment variable for headless use;
-  it is never written to SQLite or to the frontend;
-- configuration is stored in SQLite; the HTTP call is an OpenAI-compatible
-  `/chat/completions` request made by the host through the system `curl` (the API
-  key is placed in a 0600 temporary config file, never argv);
-- the Settings test button sends the test prompt only; there is no automatic
-  project-data upload, and the request/response metadata (not prompt text) is
-  audited;
-- non-macOS credential stores are not implemented yet; the host returns an explicit
-  error instead of pretending to save a key.
+- the API key goes to the platform credential store — **macOS Keychain**,
+  **Windows Credential Manager** or **Linux Secret Service** (`secret-tool`) — or
+  to the `POIEWEAVE_INFERENCE_API_KEY` environment variable for headless use; it
+  is never written to SQLite or to the frontend;
+- configuration is stored in SQLite; the HTTP call is a native OpenAI-compatible
+  `/chat/completions` request through `ureq` + rustls with the platform
+  certificate verifier, so there is no system `curl` dependency;
+- the inspector has an **Agent** panel for sending a prompt in the current
+  work context; Settings keeps the configuration/test surface. Only explicit
+  prompts are sent, and request/response metadata (not prompt text) is audited;
+- Linux requires `secret-tool` (package `libsecret-tools`); when it is absent the
+  host returns an explicit error rather than silently storing a key elsewhere.
 
 Host tests cover PBKDF2 registration/sign-in, the credential-store abstraction, the
-inference configuration, and a real curl POST against a loopback server. The macOS
-Keychain path itself is not exercised by the automated test because the test runner
-has no interactive Keychain; verification is by build + explicit UI error handling.
+inference configuration, and a real HTTP POST against a loopback server. Platform
+keychain/credential-store paths are not exercised by automated tests because they
+require an interactive desktop session; verification is by build + explicit UI
+error handling.
 
 ## Run and verify
 
@@ -166,7 +168,7 @@ pnpm dev                  # browser-only cockpit with preview data
 
 pnpm exec tsc --noEmit -p tsconfig.json
 pnpm build
-cd src-tauri && cargo test --offline    # 12 tests: DB, sandbox, domain, execution, federation, auth, inference, curl
+cd src-tauri && cargo test --offline    # 12 tests: DB, sandbox, domain, execution, federation, auth, inference, HTTP
 cd .. && pnpm tauri build --no-bundle
 ```
 
@@ -202,10 +204,8 @@ Rust CI and `scripts/verify-all.sh` do not require WebKit.
 
 ## Next
 
-1. Drive the execution gate from host-side takeover/degraded state instead of the
-   local UI toggle.
-2. Add a Windows Credential Manager / Linux Secret Service store and a native
-   TLS/HTTP client to replace the system curl dependency.
-3. Add site-specific federation windows and an execution monitor window that can
+1. Add macOS CI builds (including Intel/universal) and signing/notarization.
+2. Add site-specific federation windows and an execution monitor window that can
    stay open while the full cockpit changes scenario.
-4. Add a host command for replaying an evidence artifact from the desktop shell.
+3. Add a host command for replaying an evidence artifact from the desktop shell.
+4. Add UI automation/visual regression coverage for the cockpit.
