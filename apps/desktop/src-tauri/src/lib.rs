@@ -1,8 +1,9 @@
 //! Poieweave desktop host.
 //!
-//! The webview only gets a small, explicit command surface: host info, seeded
-//! notes/events backed by SQLite, and a size-limited read/write sandbox under
-//! the app data directory. Packaging lives in `tauri.conf.json`.
+//! The webview only gets a small, explicit command surface: host/domain snapshots,
+//! local operator auth/audit, inference configuration, and a size-limited
+//! read/write sandbox under the app data directory. Packaging lives in
+//! `tauri.conf.json`.
 
 mod auth;
 mod db;
@@ -21,9 +22,9 @@ use serde::Serialize;
 use tauri::{Manager, State, WebviewUrl, WebviewWindowBuilder};
 
 use crate::auth::{AuthStatus, SessionState};
-use crate::db::{AuditRow, Db, EventRow};
+use crate::db::{AuditRow, Db};
 use crate::domain::DomainOverview;
-use crate::execution::ExecutionSnapshot;
+use crate::execution::{ExecutionSnapshot, GateState};
 use crate::federation_view::FederationSnapshot;
 use crate::http::CurlTransport;
 use crate::inference::{InferenceResult, InferenceStatus};
@@ -34,7 +35,8 @@ struct AppState {
     data_dir: PathBuf,
     sandbox_root: PathBuf,
     domain: DomainOverview,
-    execution: ExecutionSnapshot,
+    execution: Mutex<ExecutionSnapshot>,
+    gate: Mutex<GateState>,
     federation: FederationSnapshot,
     session: Arc<SessionState>,
     secrets: Arc<dyn secrets::SecretStore>,
@@ -166,31 +168,37 @@ fn domain_overview(state: State<'_, AppState>) -> DomainOverview {
 }
 
 #[tauri::command]
-fn execution_snapshot(state: State<'_, AppState>) -> ExecutionSnapshot {
-    state.execution.clone()
+fn execution_snapshot(state: State<'_, AppState>) -> Result<ExecutionSnapshot, String> {
+    Ok(state.execution.lock().map_err(|_| "execution lock poisoned".to_string())?.clone())
+}
+
+#[tauri::command]
+fn execution_gate_set(takeover: bool, degraded: bool, state: State<'_, AppState>) -> Result<ExecutionSnapshot, String> {
+    let gate = GateState { takeover, degraded };
+    {
+        let mut current = state.gate.lock().map_err(|_| "gate lock poisoned".to_string())?;
+        *current = gate;
+    }
+    let snapshot = crate::execution::snapshot(&state.domain, gate)?;
+    {
+        let mut current = state.execution.lock().map_err(|_| "execution lock poisoned".to_string())?;
+        *current = snapshot.clone();
+    }
+    if let Ok(operator) = auth::require(&state.session) {
+        let db = lock_db(&state)?;
+        let _ = db.append_audit(
+            auth::now_ms(),
+            &operator.display_name,
+            "execution.gate",
+            &format!("takeover={takeover} degraded={degraded}"),
+        );
+    }
+    Ok(snapshot)
 }
 
 #[tauri::command]
 fn federation_snapshot(state: State<'_, AppState>) -> FederationSnapshot {
     state.federation.clone()
-}
-
-#[tauri::command]
-fn notes_all(state: State<'_, AppState>) -> Result<Vec<serde_json::Value>, String> {
-    lock_db(&state)?.notes()
-}
-
-#[tauri::command]
-fn events_list(note_id: String, state: State<'_, AppState>) -> Result<Vec<EventRow>, String> {
-    lock_db(&state)?.events(&note_id)
-}
-
-#[tauri::command]
-fn event_append(note_id: String, text: String, at: String, state: State<'_, AppState>) -> Result<EventRow, String> {
-    if text.trim().is_empty() {
-        return Err("event text must not be empty".into());
-    }
-    lock_db(&state)?.append_event(&note_id, &at, text.trim())
 }
 
 #[tauri::command]
@@ -215,17 +223,19 @@ pub fn run() {
             std::fs::create_dir_all(&data_dir).map_err(|error| format!("data dir: {error}"))?;
             let sandbox_root = data_dir.join("sandbox");
             std::fs::create_dir_all(&sandbox_root).map_err(|error| format!("sandbox: {error}"))?;
-            let mut db = Db::open(&data_dir.join("poieweave.sqlite3"))?;
-            db.seed(include_str!("../../src/data/notes.json"))?;
+            let db = Db::open(&data_dir.join("poieweave.sqlite3"))?;
             let domain = domain::overview().map_err(|error| format!("domain snapshot: {error}"))?;
-            let execution = execution::snapshot(&domain).map_err(|error| format!("execution snapshot: {error}"))?;
+            let gate = GateState::default();
+            let execution =
+                execution::snapshot(&domain, gate).map_err(|error| format!("execution snapshot: {error}"))?;
             let federation = federation_view::snapshot().map_err(|error| format!("federation snapshot: {error}"))?;
             app.manage(AppState {
                 db: Arc::new(Mutex::new(db)),
                 data_dir,
                 sandbox_root,
                 domain,
-                execution,
+                execution: Mutex::new(execution),
+                gate: Mutex::new(gate),
                 federation,
                 session: Arc::new(SessionState::new(None)),
                 secrets: Arc::new(SystemSecretStore),
@@ -247,10 +257,8 @@ pub fn run() {
             host_info,
             domain_overview,
             execution_snapshot,
+            execution_gate_set,
             federation_snapshot,
-            notes_all,
-            events_list,
-            event_append,
             sandbox_read,
             sandbox_write,
             sandbox_root

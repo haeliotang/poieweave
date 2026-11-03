@@ -780,8 +780,9 @@ function Plan({ lang, overview, selection, onSelect }: { lang: Lang; overview: D
   );
 }
 
-function Execution({ lang, execution, selection, onSelect, gate, onGate }: { lang: Lang; execution: ExecutionSnapshot; selection: Selection | null; onSelect: (selection: Selection) => void; gate: { takeover: boolean; degraded: boolean }; onGate: (gate: { takeover: boolean; degraded: boolean }) => void }) {
+function Execution({ lang, execution, selection, onSelect, onGate, hosted }: { lang: Lang; execution: ExecutionSnapshot; selection: Selection | null; onSelect: (selection: Selection) => void; onGate: (gate: ExecutionSnapshot["gate"]) => void; hosted: boolean }) {
   const t = (key: string) => messagesFor(lang)[key] ?? key;
+  const gate = execution.gate;
   const stateFor = (): string => {
     if (gate.takeover) return t("execution.recorded");
     if (gate.degraded) return t("execution.fallback");
@@ -802,11 +803,11 @@ function Execution({ lang, execution, selection, onSelect, gate, onGate }: { lan
           <ShieldIcon size={17} />
         </div>
         <div className="gate-row">
-          <button type="button" className={`toggle${gate.takeover ? " toggle--on" : ""}`} onClick={() => onGate({ ...gate, takeover: !gate.takeover })}>
+          <button type="button" className={`toggle${gate.takeover ? " toggle--on" : ""}`} disabled={!hosted} onClick={() => onGate({ takeover: !gate.takeover, degraded: false })}>
             <span className="toggle__knob" />
             {t("execution.takeover")}
           </button>
-          <button type="button" className={`toggle${gate.degraded ? " toggle--on" : ""}`} onClick={() => onGate({ ...gate, degraded: !gate.degraded })}>
+          <button type="button" className={`toggle${gate.degraded ? " toggle--on" : ""}`} disabled={!hosted} onClick={() => onGate({ takeover: false, degraded: !gate.degraded })}>
             <span className="toggle__knob" />
             {t("execution.degraded")}
           </button>
@@ -953,7 +954,6 @@ function Inspector({
   overview,
   selection,
   onNavigate,
-  gate,
   execution,
   federation,
 }: {
@@ -962,7 +962,6 @@ function Inspector({
   overview: DomainOverview;
   selection: Selection | null;
   onNavigate: (nav: NavKey, selection: Selection) => void;
-  gate: { takeover: boolean; degraded: boolean };
   execution: ExecutionSnapshot;
   federation: FederationSnapshot;
 }) {
@@ -1027,7 +1026,7 @@ function Inspector({
           <Row label={t("inspector.runs")} value={String(action.runs)} />
           <Row label={t("plan.preconditions")} value={action.preconditions.join(" · ")} />
           <Row label={t("plan.allocations")} value={action.allocations.map(([resource, amount]) => `${resource} ${amount}`).join(" · ")} />
-          <Row label={t("execution.state")} value={gate.takeover ? t("execution.recorded") : gate.degraded ? t("execution.fallback") : (execution.actions.find((entry) => entry.id === action.id)?.state ?? t("execution.authorized"))} />
+          <Row label={t("execution.state")} value={execution.gate.takeover ? t("execution.recorded") : execution.gate.degraded ? t("execution.fallback") : (execution.actions.find((entry) => entry.id === action.id)?.state ?? t("execution.authorized"))} />
           <button className="primary" type="button" onClick={() => onNavigate("execution", { kind: "action", id: action.id })}>
             {t("inspector.openExecution")} <ArrowRightIcon size={14} />
           </button>
@@ -1367,7 +1366,6 @@ export default function App() {
   const [selection, setSelection] = useState<Selection | null>(() => defaultSelection(initialNav(), fallbackOverview));
   const [query, setQuery] = useState("");
   const [mode, setMode] = useState<Mode>("model");
-  const [gate, setGate] = useState({ takeover: false, degraded: false });
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [focusMode] = useState(initialFocusMode);
   const [auth, setAuth] = useState<AuthStatus>(fallbackAuth);
@@ -1424,6 +1422,12 @@ export default function App() {
     }
   };
 
+  const updateGate = async (next: ExecutionSnapshot["gate"]) => {
+    if (!isTauri()) return;
+    const snapshot = await invoke<ExecutionSnapshot>("execution_gate_set", { takeover: next.takeover, degraded: next.degraded });
+    setExecution(snapshot);
+  };
+
   const toggleTheme = () => setTheme((current) => (current === "light" ? "dark" : "light"));
   const toggleLang = () => setLang((current) => (current === "zh" ? "en" : "zh"));
 
@@ -1431,10 +1435,10 @@ export default function App() {
     if (nav === "overview") return <Overview lang={lang} overview={overview} selection={selection} onSelect={select} />;
     if (nav === "capabilities") return <Capabilities lang={lang} overview={overview} selection={selection} onSelect={select} />;
     if (nav === "plan") return <Plan lang={lang} overview={overview} selection={selection} onSelect={select} />;
-    if (nav === "execution") return <Execution lang={lang} execution={execution} selection={selection} onSelect={select} gate={gate} onGate={setGate} />;
+    if (nav === "execution") return <Execution lang={lang} execution={execution} selection={selection} onSelect={select} onGate={(next) => void updateGate(next)} hosted={isTauri()} />;
     if (nav === "federation") return <Federation lang={lang} federation={federation} selection={selection} onSelect={select} />;
     return <Evidence lang={lang} selection={selection} onSelect={select} />;
-  }, [nav, lang, overview, execution, federation, selection, gate]);
+  }, [nav, lang, overview, execution, federation, selection]);
 
   return (
     <div className={`cockpit${focusMode ? " cockpit--focus" : ""}`}>
@@ -1485,7 +1489,6 @@ export default function App() {
           nav={nav}
           overview={overview}
           selection={selection}
-          gate={gate}
           execution={execution}
           federation={federation}
           onNavigate={(nextNav, nextSelection) => {

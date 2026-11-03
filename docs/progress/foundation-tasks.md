@@ -173,4 +173,5 @@ M12 多站点联邦：**进行中（模拟部分完成）**——M12.1–M12.4 �
 - 2026-11-01：桌面驾驶舱接入 `poie-state` / `poie-federation`：执行视图显示真实 SAP 账本与七项 dispatch 复核，联邦视图显示真实 exchange/reconcile 冲突；多窗口改为视图专属聚焦窗口；宿主 8 个测试通过。
 - 2026-11-01：桌面本地认证与远程推理：本机操作员 PBKDF2 校验、宿主会话、审计；Settings 登录/创建操作员与推理配置表单；API key 存 macOS Keychain 或环境变量，OpenAI 兼容调用经系统 curl，13 个宿主测试通过（含本地回环 HTTP）。
 - 2026-11-01：新增 `Desktop build` CI（Linux `.deb` / Windows NSIS）：Windows ICO 图标、跨平台 bundle 配置、WebKitGTK/NSIS 构建依赖与 artifact 上传；桌面 README 增加跨平台构建说明。
+- 2026-11-03：桌面执行门改由宿主 `execution_gate_set` 驱动（takeover/degraded 重算快照并审计）；去除旧 `notes`/`events` SQLite 表和前端遗留类型；宿主测试 12 个。
 - 2026-11-01：issue #106–#111 修复已集成（PR 待开）：H4 结论由「不确定」改为「净增益为负」（VEC 修订后重跑，原结论保留在 H4 REPORT §7 与 PREREG 变更记录）；vec-base01 原 4 个 `infeasible_in_model` 改为 counterexample。测试：库 crate 291→368，总计 306→384。

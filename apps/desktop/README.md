@@ -47,7 +47,7 @@ Views:
 | Overview | KPI strip, capability graph, current plan, service viability, external dependencies, open alerts. |
 | Capabilities | Assets, resources and processes from the projected Base-01 model, plus the structural graph and external dependencies. |
 | Planning | Goal/completion/digest, action timeline and action table; the inspector keeps preconditions, allocations and verification level. |
-| Execution | **`poie-state`** action ledger (validated → authorized), the seven SAP dispatch checks, execution gate (human takeover / safe degradation) and the deliberate "executor not wired" warning. |
+| Execution | **`poie-state`** action ledger (validated → authorized), the seven SAP dispatch checks, a **host-driven** execution gate (human takeover / safe degradation) and the deliberate "executor not wired" warning. Gate changes go through `execution_gate_set`, not local UI state. |
 | Federation | **`poie-federation`** sites (HLC, records, reservations, leases), exchange counts and all preserved reconciliation conflicts. |
 | Evidence | Pre-registered experiments with replay badges, contract revisions and the 384-test evidence summary. |
 
@@ -100,13 +100,22 @@ solver, ledger or reconciler access from the webview.
 | `host_info` | Version, app-data dir, DB path, sandbox root, platform. |
 | `domain_overview` | Base-01 snapshot from `poie-ontology` + `poie-plan`. |
 | `execution_snapshot` | `poie-state` ledgers + seven dispatch checks. |
+| `execution_gate_set` | Host-side takeover/degraded gate; recomputes the execution snapshot and audits the change when signed in. |
 | `federation_snapshot` | `poie-federation` exchange/reconcile snapshot. |
 | `auth_status` / `auth_register` / `auth_sign_in` / `auth_sign_out` | Local operator session. |
 | `audit_list` | Audit events (requires sign-in). |
 | `inference_status` / `inference_configure` / `inference_forget` / `inference_test` | Remote inference settings and OpenAI-compatible test call. |
-| `notes_all` / `events_list` / `event_append` | SQLite-backed workline data kept for the next integration step. |
 | `sandbox_read` / `sandbox_write` / `sandbox_root` | Relative-path, 1 MiB-limited access under `<app-data>/sandbox`; traversal and absolute paths rejected. |
 | `open_workspace_window` | Opens a focused secondary window for one of the six views. |
+
+## Host boundary
+
+Every command goes through the Rust host; the webview never receives SQL or the
+sandbox root path except through `host_info`/`sandbox_root`. Path traversal,
+absolute paths and oversized files are rejected in `src/sandbox.rs`.
+
+SQLite now contains only the operator, audit and inference-configuration tables;
+the earlier demo `notes`/`events` tables are dropped and their commands removed.
 
 ## Local authentication
 
@@ -157,7 +166,7 @@ pnpm dev                  # browser-only cockpit with preview data
 
 pnpm exec tsc --noEmit -p tsconfig.json
 pnpm build
-cd src-tauri && cargo test --offline    # 13 tests: DB, sandbox, domain, execution, federation, auth, inference, curl
+cd src-tauri && cargo test --offline    # 12 tests: DB, sandbox, domain, execution, federation, auth, inference, curl
 cd .. && pnpm tauri build --no-bundle
 ```
 
@@ -171,7 +180,7 @@ every push/PR that touches the desktop app, and on `v*` tags:
 | `ubuntu-24.04` | `.deb` | `poieweave-desktop-linux-x86_64` |
 | `windows-latest` | NSIS `.exe` | `poieweave-desktop-windows-x86_64` |
 
-Both jobs run the frontend build and the 13 host tests before bundling. The Linux
+Both jobs run the frontend build and the 12 host tests before bundling. The Linux
 job installs WebKitGTK 4.1, GTK/AppIndicator and patchelf prerequisites; Windows
 uses the runner's WebView2 and Tauri's NSIS bundler.
 

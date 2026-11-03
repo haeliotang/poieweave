@@ -36,6 +36,13 @@ pub struct CheckView {
     pub detail: String,
 }
 
+#[derive(Clone, Copy, Debug, Default, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct GateState {
+    pub takeover: bool,
+    pub degraded: bool,
+}
+
 #[derive(Clone, Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ExecutionSnapshot {
@@ -44,6 +51,8 @@ pub struct ExecutionSnapshot {
     pub checks: Vec<CheckView>,
     pub review_status: String,
     pub rejections: usize,
+    pub gate: GateState,
+    pub dispatch_allowed: bool,
 }
 
 const CHECKS: [ReviewCheck; 7] = [
@@ -94,7 +103,7 @@ fn build_action(source: &crate::domain::ActionView, plan_id: &str) -> Action {
     }
 }
 
-pub fn snapshot(overview: &DomainOverview) -> Result<ExecutionSnapshot, String> {
+pub fn snapshot(overview: &DomainOverview, gate: GateState) -> Result<ExecutionSnapshot, String> {
     let mut ledger = ActionLedger::new();
     let mut actions = Vec::new();
     let mut review_rejections = Vec::new();
@@ -146,12 +155,22 @@ pub fn snapshot(overview: &DomainOverview) -> Result<ExecutionSnapshot, String> 
         })
         .collect();
 
+    let review_status = if review_rejections.is_empty() { "ready" } else { "blocked" }.to_string();
+    let state = if gate.takeover {
+        "takeover".to_string()
+    } else if gate.degraded {
+        "degraded".to_string()
+    } else {
+        review_status.clone()
+    };
     Ok(ExecutionSnapshot {
-        state: if review_rejections.is_empty() { "ready".to_string() } else { "blocked".to_string() },
+        state,
         actions,
         checks,
-        review_status: if review_rejections.is_empty() { "ready" } else { "blocked" }.to_string(),
+        review_status,
         rejections: review_rejections.len(),
+        gate,
+        dispatch_allowed: !gate.takeover && !gate.degraded && review_rejections.is_empty(),
     })
 }
 
@@ -162,16 +181,32 @@ mod tests {
     #[test]
     fn plan_actions_become_authorized_sap_actions() {
         let overview = crate::domain::overview().unwrap();
-        let snapshot = snapshot(&overview).unwrap();
+        let snapshot = snapshot(&overview, GateState::default()).unwrap();
         assert!(!snapshot.actions.is_empty());
         assert_eq!(snapshot.review_status, "ready");
         assert_eq!(snapshot.rejections, 0);
         assert_eq!(snapshot.checks.len(), 7);
         assert!(snapshot.checks.iter().all(|check| check.passed));
         assert!(snapshot.actions.iter().all(|action| action.state == "authorized"));
+        assert!(snapshot.dispatch_allowed);
         let json = serde_json::to_value(&snapshot).unwrap();
         assert!(json.get("reviewStatus").is_some());
         assert!(json.get("rejections").is_some());
+        assert!(json.get("dispatchAllowed").is_some());
         assert!(json["actions"][0].get("idempotencyKey").is_some());
+    }
+
+    #[test]
+    fn gate_blocks_dispatch_but_keeps_the_technical_review() {
+        let overview = crate::domain::overview().unwrap();
+        let takeover = snapshot(&overview, GateState { takeover: true, degraded: false }).unwrap();
+        assert_eq!(takeover.state, "takeover");
+        assert!(!takeover.dispatch_allowed);
+        assert_eq!(takeover.review_status, "ready");
+        assert!(takeover.checks.iter().all(|check| check.passed));
+
+        let degraded = snapshot(&overview, GateState { takeover: false, degraded: true }).unwrap();
+        assert_eq!(degraded.state, "degraded");
+        assert!(!degraded.dispatch_allowed);
     }
 }
