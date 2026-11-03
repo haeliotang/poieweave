@@ -176,4 +176,5 @@ M12 多站点联邦：**进行中（模拟部分完成）**——M12.1–M12.4 �
 - 2026-11-03：桌面执行门改由宿主 `execution_gate_set` 驱动（takeover/degraded 重算快照并审计）；去除旧 `notes`/`events` SQLite 表和前端遗留类型；宿主测试 12 个。
 - 2026-11-03：桌面推理生产化：Windows Credential Manager/Linux Secret Service 凭据存储；原生 ureq+rustls 平台证书校验替代 curl；检查器 Agent 面板接入 `inference_complete`；宿主 12 个测试。
 - 2026-11-03：桌面 UI 冒烟：Playwright（系统 Chrome）7 个用例覆盖六视图、主题令牌、中英切换、设置、Agent 面板、聚焦窗口、可访问名称；CI 在 Ubuntu/Windows 运行并上传报告。
+- 2026-11-03：桌面三平台构建/发布：macOS universal（arm64+x86_64）CI 通过并 lipo 验证；Release job 在 `v*` tag 自动创建 Release、上传 Linux/Windows/macOS 产物与 SHA256SUMS；Apple 签名/公证通过可选 secrets 接入。
 - 2026-11-01：issue #106–#111 修复已集成（PR 待开）：H4 结论由「不确定」改为「净增益为负」（VEC 修订后重跑，原结论保留在 H4 REPORT §7 与 PREREG 变更记录）；vec-base01 原 4 个 `infeasible_in_model` 改为 counterexample。测试：库 crate 291→368，总计 306→384。

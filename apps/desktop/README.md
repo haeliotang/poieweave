@@ -200,10 +200,22 @@ every push/PR that touches the desktop app, and on `v*` tags:
 | --- | --- | --- |
 | `ubuntu-24.04` | `.deb` | `poieweave-desktop-linux-x86_64` |
 | `windows-latest` | NSIS `.exe` | `poieweave-desktop-windows-x86_64` |
+| `macos-latest` | universal `.app.zip` (x86_64 + arm64) | `poieweave-desktop-macos-universal` |
 
 Both build jobs run the frontend build and the 12 host tests before bundling; separate UI smoke jobs run Playwright on Ubuntu and Windows. The Linux
 job installs WebKitGTK 4.1, GTK/AppIndicator and patchelf prerequisites; Windows
-uses the runner's WebView2 and Tauri's NSIS bundler.
+uses the runner's WebView2 and Tauri's NSIS bundler. The macOS job installs the
+Intel Rust target and builds a lipo-verified universal binary.
+
+Apple signing/notarization is optional and driven by repository secrets
+(`APPLE_CERTIFICATE`, `APPLE_CERTIFICATE_PASSWORD`, `APPLE_SIGNING_IDENTITY`,
+`APPLE_ID`, `APPLE_PASSWORD`, `APPLE_TEAM_ID`). Without them the CI build uses
+`--no-sign` and produces an unsigned app; the release job uploads the zipped app
+and refreshes checksums.
+
+On a `v*` tag, the `release` job downloads all platform artifacts, creates the
+GitHub Release if necessary, attaches `.deb` / NSIS `.exe` / universal `.app.zip`,
+and uploads `SHA256SUMS`.
 
 Local Linux prerequisites (Debian/Ubuntu):
 
