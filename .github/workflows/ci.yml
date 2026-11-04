@@ -35,6 +35,8 @@ jobs:
         run: cargo clippy --locked --all-targets -- -D warnings
       - name: Test
         run: cargo test --locked
+      - name: Ontology SDK drift
+        run: cargo run --locked -q -p poie-sdkgen -- --check
       - name: rustdoc (warnings as errors)
         run: RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --offline
       - name: Markdown relative links

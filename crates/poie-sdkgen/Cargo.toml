@@ -1,0 +1,11 @@
+[package]
+name = "poie-sdkgen"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Generate the TypeScript Ontology SDK from the formal model"
+
+[dependencies]
+poie-ontology = { path = "../poie-ontology", version = "0.1.0" }
+poie-objects = { path = "../poie-objects", version = "0.1.0" }

@@ -271,6 +271,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "poie-sdkgen"
+version = "0.1.0"
+dependencies = [
+ "poie-objects",
+ "poie-ontology",
+]
+
+[[package]]
 name = "poie-shadow-run"
 version = "0.1.0"
 dependencies = [
