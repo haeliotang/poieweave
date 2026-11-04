@@ -27,6 +27,7 @@ poie-ontology = { path = "../../../crates/poie-ontology" }
 poie-objects = { path = "../../../crates/poie-objects" }
 poie-governance = { path = "../../../crates/poie-governance" }
 poie-whatif = { path = "../../../crates/poie-whatif" }
+poie-delivery = { path = "../../../crates/poie-delivery" }
 poie-digest = { path = "../../../crates/poie-digest" }
 poie-plan = { path = "../../../crates/poie-plan" }
 poie-state = { path = "../../../crates/poie-state" }

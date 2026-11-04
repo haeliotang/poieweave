@@ -6,6 +6,7 @@ members = [
     "crates/poie-objects",
     "crates/poie-governance",
     "crates/poie-whatif",
+    "crates/poie-delivery",
     "crates/poie-sdkgen",
     "crates/poie-ontology",
     "crates/poie-plan",

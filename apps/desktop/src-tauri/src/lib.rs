@@ -8,6 +8,7 @@
 mod agent;
 mod auth;
 mod db;
+mod delivery;
 mod domain;
 mod execution;
 mod federation_view;
@@ -294,7 +295,13 @@ pub fn run() {
             whatif::whatif_variant_run,
             whatif::whatif_result_get,
             whatif::whatif_result_list,
-            whatif::whatif_compare
+            whatif::whatif_compare,
+            delivery::delivery_manifest_inspect,
+            delivery::delivery_import,
+            delivery::delivery_state,
+            delivery::delivery_rollback,
+            delivery::delivery_clear,
+            delivery::delivery_diagnostics_export
         ])
         .run(tauri::generate_context!())
         .expect("error while running Poieweave desktop");

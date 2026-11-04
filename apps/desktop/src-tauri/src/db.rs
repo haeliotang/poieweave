@@ -132,7 +132,13 @@ impl Db {
                      schema_version TEXT NOT NULL, mode TEXT NOT NULL, settings_json TEXT NOT NULL,
                      result_json TEXT NOT NULL, result_sha256 TEXT NOT NULL, created_at INTEGER NOT NULL
                  );
-                 PRAGMA user_version = 3;",
+                 CREATE TABLE IF NOT EXISTS delivery_manifests (
+                     manifest_sha256 TEXT PRIMARY KEY, manifest_json TEXT NOT NULL, imported_at INTEGER NOT NULL
+                 );
+                 CREATE TABLE IF NOT EXISTS delivery_state (
+                     id INTEGER PRIMARY KEY CHECK (id = 1), state_json TEXT NOT NULL, updated_at INTEGER NOT NULL
+                 );
+                 PRAGMA user_version = 4;",
             )
             .map_err(|error| format!("migrate: {error}"))?;
         // Existing databases created before B0 have an audit table without the
@@ -298,6 +304,65 @@ impl Db {
             )
             .map_err(|error| format!("transition approval: {error}"))?;
         Ok(changed == 1)
+    }
+
+    #[allow(dead_code)]
+    pub fn delivery_manifest(&self, sha: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT manifest_json FROM delivery_manifests WHERE manifest_sha256=?1", [sha], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+
+    pub fn delivery_state(&self) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT state_json FROM delivery_state WHERE id=1", [], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+
+    pub fn save_delivery_import(
+        &self,
+        manifest_json: &str,
+        sha: &str,
+        state_json: &str,
+        at: i64,
+    ) -> Result<(), String> {
+        self.connection.execute_batch("BEGIN IMMEDIATE").map_err(|error| format!("delivery begin: {error}"))?;
+        let result = (|| {
+            self.connection
+                .execute(
+                    "INSERT OR IGNORE INTO delivery_manifests (manifest_sha256,manifest_json,imported_at) VALUES (?1,?2,?3)",
+                    params![sha, manifest_json, at],
+                )
+                .map_err(|error| format!("delivery manifest: {error}"))?;
+            self.connection
+                .execute(
+                    "INSERT INTO delivery_state (id,state_json,updated_at) VALUES (1,?1,?2)
+                     ON CONFLICT(id) DO UPDATE SET state_json=?1, updated_at=?2",
+                    params![state_json, at],
+                )
+                .map_err(|error| format!("delivery state: {error}"))?;
+            Ok(())
+        })();
+        match result {
+            Ok(()) => self.connection.execute_batch("COMMIT").map_err(|error| format!("delivery commit: {error}")),
+            Err(error) => {
+                let _ = self.connection.execute_batch("ROLLBACK");
+                Err(error)
+            }
+        }
+    }
+
+    pub fn save_delivery_state(&self, state_json: &str, at: i64) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO delivery_state (id,state_json,updated_at) VALUES (1,?1,?2)
+                 ON CONFLICT(id) DO UPDATE SET state_json=?1, updated_at=?2",
+                params![state_json, at],
+            )
+            .map_err(|error| format!("delivery state: {error}"))?;
+        Ok(())
     }
 
     pub fn save_whatif_snapshot(
