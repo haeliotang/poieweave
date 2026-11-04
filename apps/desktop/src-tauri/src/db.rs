@@ -5,7 +5,8 @@
 
 use std::path::Path;
 
-use rusqlite::{params, Connection};
+use poie_governance::ApprovalToken;
+use rusqlite::{params, Connection, OptionalExtension};
 use serde::Serialize;
 
 #[derive(Clone, Debug)]
@@ -212,6 +213,78 @@ impl Db {
             })
             .map_err(|error| error.to_string())?;
         rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    #[allow(dead_code)]
+    pub fn save_agent_run(
+        &self,
+        run_id: &str,
+        schema: &str,
+        session_id: &str,
+        state_json: &str,
+        created_at_ms: i64,
+        updated_at_ms: i64,
+        expires_at_ms: i64,
+    ) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO agent_runs (run_id, schema_version, session_id, state_json, created_at_ms, updated_at_ms, expires_at_ms)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
+                 ON CONFLICT(run_id) DO UPDATE SET state_json=?4, updated_at_ms=?6, expires_at_ms=?7",
+                params![run_id, schema, session_id, state_json, created_at_ms, updated_at_ms, expires_at_ms],
+            )
+            .map_err(|error| format!("save agent run: {error}"))?;
+        Ok(())
+    }
+
+    #[allow(dead_code)]
+    pub fn agent_run(&self, run_id: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT state_json FROM agent_runs WHERE run_id=?1", [run_id], |row| row.get(0))
+            .optional()
+            .map_err(|error| format!("read agent run: {error}"))
+    }
+
+    #[allow(dead_code)]
+    pub fn save_approval_token(&self, token: &ApprovalToken) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO approval_tokens (id, session_id, run_id, call_id, tool, tool_version, subject_digest, policy_version, args_json_redacted, impact_json, citations_json, state, created_at_ms, decided_at_ms, started_at_ms, expires_at_ms)
+                 VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?13,?14,?15,?16)",
+                params![token.id, token.session_id, token.run_id, token.call_id, token.tool, token.tool_version,
+                    token.subject_digest, token.policy_version, token.args_json_redacted, token.impact_json,
+                    token.citations_json, token.state, token.created_at_ms, token.decided_at_ms,
+                    token.started_at_ms, token.expires_at_ms],
+            )
+            .map_err(|error| format!("save approval token: {error}"))?;
+        Ok(())
+    }
+
+    #[allow(dead_code)]
+    pub fn approval_token(&self, id: &str) -> Result<Option<ApprovalToken>, String> {
+        self.connection.query_row(
+            "SELECT id, session_id, run_id, call_id, tool, tool_version, subject_digest, policy_version, args_json_redacted, impact_json, citations_json, state, created_at_ms, decided_at_ms, started_at_ms, expires_at_ms FROM approval_tokens WHERE id=?1",
+            [id],
+            |row| Ok(ApprovalToken {
+                id: row.get(0)?, session_id: row.get(1)?, run_id: row.get(2)?, call_id: row.get(3)?,
+                tool: row.get(4)?, tool_version: row.get(5)?, subject_digest: row.get(6)?, policy_version: row.get(7)?,
+                args_json_redacted: row.get(8)?, impact_json: row.get(9)?, citations_json: row.get(10)?, state: row.get(11)?,
+                created_at_ms: row.get(12)?, decided_at_ms: row.get(13)?, started_at_ms: row.get(14)?, expires_at_ms: row.get(15)?,
+            }),
+        ).optional().map_err(|error| format!("read approval token: {error}"))
+    }
+
+    #[allow(dead_code)]
+    pub fn transition_approval(&self, id: &str, from: &str, to: &str, at_ms: i64) -> Result<bool, String> {
+        let changed = self
+            .connection
+            .execute(
+                "UPDATE approval_tokens SET state=?3, decided_at_ms=?4 WHERE id=?1 AND state=?2 AND expires_at_ms>?4",
+                params![id, from, to, at_ms],
+            )
+            .map_err(|error| format!("transition approval: {error}"))?;
+        Ok(changed == 1)
     }
 
     pub fn inference_config(&self) -> Result<Option<InferenceConfigRow>, String> {
