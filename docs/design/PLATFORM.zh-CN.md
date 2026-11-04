@@ -16,7 +16,7 @@ schema = "poie.<domain>/<major>.<minor>"
 
 规则：
 
-- 客户端/宿主收到未知 **major** 必须拒绝（`unsupported_schema`）；未知 **minor** 可接受，但忽略未知字段并记录警告。
+- 客户端/宿主收到未知 **major** 必须拒绝（`unsupported_schema`）；未知 **minor** 可接受，但忽略未知字段并记录警告。**例外：自哈希 payload（D1 `SiteBundle`/`SiteManifest`）必须拒绝未知字段**，否则无法保证 `manifestSha256`/`stale_manifest` 一致；该例外在 SCHEMAS D1 行登记。
 - 每个持久化结构（`Variant`/`VariantResult`/`DeliveryState`/`AgentRun`）必须带 `schemaVersion`。
 - 兼容矩阵与迁移函数写入实现；MVP 不支持跨 major 自动迁移，只报错。
 - 表结构由 `PRAGMA user_version` 管理；每次迁移单向、可备份、失败回滚。

@@ -47,7 +47,7 @@ SiteManifest {
 ```
 
 - `manifestSha256 = sha256("poie.manifest/0.1\n" + canonical_json(manifest_without_manifestSha256))`（digest domain 使用 DIGEST 的 `poie.manifest/0.1`；wire schema 仍是 `poie.site-manifest/0.1`）。
-- 必须先按原始字节解析为 JSON 并拒绝未知字段，再做 canonicalization；D1 的 manifest **不接受**未知 minor 字段（PLATFORM §2 的 general tolerance 不适用于自哈希 payload）。
+- 必须先按原始字节解析为 JSON 并拒绝未知字段，再做 canonicalization；D1 的 manifest **不接受**未知 minor 字段（PLATFORM §1 的 general tolerance 例外；SCHEMAS D1 行登记）。
 - 上限：bundle ≤256 KiB、manifest ≤128 KiB、单字符串 ≤1 KiB、数组 ≤64、嵌套 ≤8；超限 `invalid_parameter`。
 - `target` 单值；D1 不支持多 OS artifact。
 - `policy` 仅展示，不写入 HostPolicy、不改变 channel。
@@ -101,7 +101,7 @@ ManifestSummary {
 | `delivery_diagnostics_export` | outputDir, overwrite? | DiagnosticsSummary | 写；登录；无审批 |
 
 - 命令通过 `auth::require` + 统一 `{code,message,details}` 错误包络；D1 的 import/rollback 是 **登录会话内的本地元数据写**，不需要 ApprovalToken/HostPolicy/Window（这与 PLATFORM D1 行一致；D2 若改为远程/策略变更再引入审批）。
-- 错误码：`invalid_parameter`、`unsupported_schema`、`stale_manifest`、`manifest_invalid`、`delivery_conflict`、`rollback_unavailable`、`unauthorized`、`scope_denied`、`io_error`。
+- 错误码：`invalid_parameter`、`unsupported_schema`、`stale_manifest`、`manifest_invalid`、`delivery_conflict`、`rollback_unavailable`、`unauthorized`、`io_error`。D1 没有 Window/scope 机制，不产生 `scope_denied`。
 - `import` 的 `expectedManifestSha256` 必填；空/不匹配拒绝。
 - `rollback` 无 previous → `rollback_unavailable`。
 - 审计事件：`delivery.inspect`、`delivery.import`、`delivery.rollback`、`delivery.clear`、`delivery.diagnostics`，写入现有 audit（不含 manifest 原文/路径）。
@@ -166,7 +166,7 @@ DiagnosticsSummary {
 - Settings “站点交付”区：
   - 输入 sandbox 相对 JSON 路径（不使用系统文件选择器，避免 capability/绝对路径）；显示 inspect 的 site/target/channel/sha；
   - Import 需再次确认 sha；成功后显示 current/previous；
-  - Rollback 按钮；
+  - Rollback 按钮；Conflict 时 Clear 按钮（清空 current/previous 后重新导入）；
   - 输入 sandbox 相对 outputDir 导出诊断。
 - 所有状态只来自 host；浏览器预览显示 host-only 占位。
 - Recall 状态用文字 + 颜色，不能只靠颜色。
