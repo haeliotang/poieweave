@@ -18,11 +18,12 @@ EXPECTED = 72
 
 def main() -> int:
     if not EVALS.exists():
-        print("agent eval fixtures not present yet")
-        return 0
+        print("agent eval fixtures are missing")
+        return 1
     problems = []
     seen = set()
     covered = set()
+    approval_actions = set()
     files = sorted(EVALS.glob("*.toml"))
     for path in files:
         try:
@@ -44,13 +45,17 @@ def main() -> int:
                 problems.append(f"{path.name}: unknown tool {tool}")
             covered.add(tool)
         approval = data.get("approval")
-        if approval is not None and approval.get("action") not in {"approve", "reject", "expire"}:
-            problems.append(f"{path.name}: invalid approval action {approval.get('action')!r}")
+        if approval is not None:
+            approval_actions.add(approval.get("action"))
+            if approval.get("action") not in {"approve", "reject", "expire"}:
+                problems.append(f"{path.name}: invalid approval action {approval.get('action')!r}")
     if len(files) < EXPECTED:
         problems.append(f"expected at least {EXPECTED} fixtures, found {len(files)}")
     missing_tools = TOOLS - covered
     if missing_tools:
         problems.append(f"missing tool coverage: {sorted(missing_tools)}")
+    if approval_actions != {"approve", "reject", "expire"}:
+        problems.append(f"missing approval script coverage: {sorted(approval_actions)}")
     if problems:
         for problem in problems:
             print(problem)

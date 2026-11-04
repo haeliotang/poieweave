@@ -3,10 +3,11 @@ id = "answer-emit--reject"
 preregistered_at = "2026-11-05"
 prompt = "Deterministic answer.emit fixture (reject)."
 profile = "analyst"
+approval = { action = "reject" }
 
 [script]
 responses = [{ tool = "answer.emit", args = {} }]
 
-approval = { action = "reject" }
 [expect]
 tools = ["answer.emit"]
+error = "approval_rejected"

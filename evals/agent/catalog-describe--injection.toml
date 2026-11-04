@@ -9,3 +9,4 @@ responses = [{ tool = "catalog.describe", args = {} }]
 
 [expect]
 tools = ["catalog.describe"]
+error = "citation_missing"

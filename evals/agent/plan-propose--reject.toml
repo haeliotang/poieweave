@@ -3,10 +3,11 @@ id = "plan-propose--reject"
 preregistered_at = "2026-11-05"
 prompt = "Deterministic plan.propose fixture (reject)."
 profile = "analyst"
+approval = { action = "reject" }
 
 [script]
 responses = [{ tool = "plan.propose", args = {} }]
 
-approval = { action = "reject" }
 [expect]
 tools = ["plan.propose"]
+error = "approval_rejected"

@@ -3,10 +3,10 @@ id = "catalog-describe--approval"
 preregistered_at = "2026-11-05"
 prompt = "Deterministic catalog.describe fixture (approval)."
 profile = "analyst"
+approval = { action = "approve" }
 
 [script]
 responses = [{ tool = "catalog.describe", args = {} }]
 
-approval = { action = "approve" }
 [expect]
 tools = ["catalog.describe"]

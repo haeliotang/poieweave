@@ -83,7 +83,7 @@ A 的 `poie-objects::functions()` 在 B 首 PR 同步改为这同一组六个函
 - 只使用函数内 throwaway ledger 做 precondition/review；**不写任何 live/external ledger、不创建/保存 Authorization、不产生 Authorized transition**；返回 `authorizedActions=0`、`authorizationCreated=false`；
 - ownership/reservations/authorization 默认 `assumed`，UI 单独显示；
 - `ActionDraft` 只能使用该 preview，禁止调用 `validate_plan_through_sap`；
-- 结构测试：`poie-governance` 无 `poie-exec` 依赖；源码中不出现 `Authorization {`；preview 前后 ledger/authorization 计数不变。
+- 结构测试：`poie-governance` 无 `poie-exec` 依赖；源码中不出现 `Authorization {`；preview 只写 throwaway local ledger，返回 `authorizedActions=0`/`authorizationCreated=false`，不触碰 live/external ledger。
 
 ## 7. 审批状态机（B3/B5）
 
@@ -252,7 +252,7 @@ pub struct CommandError { pub code: String, pub message: String, pub details: se
 
 - 工具参数严格拒绝未知字段；无 dispatch 工具；profile 白名单；
 - 审批：pending→approve/reject/expire/executing/interrupted/cancelled/consumed 原子性；参数/session/subject 改变 → mismatch；过期拒绝；崩溃后 executing→interrupted→重试/取消；
-- preview 不创建 Authorization/不推进 ledger；
+- preview 只写 throwaway local ledger，不创建 Authorization、不产生 Authorized transition；返回 authorizedActions=0/authorizationCreated=false；
 - `answer.emit` 无 citation/未知 citation 拒绝；suggestions 不校验为事实；
 - 审计链 genesis/prevHash/hash/锚点/尾部残行/重建/迁移；
 - capability 签发/过期/撤销/跨会话复用；

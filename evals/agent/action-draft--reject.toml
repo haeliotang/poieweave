@@ -3,10 +3,11 @@ id = "action-draft--reject"
 preregistered_at = "2026-11-05"
 prompt = "Deterministic action.draft fixture (reject)."
 profile = "dispatcher"
+approval = { action = "reject" }
 
 [script]
 responses = [{ tool = "action.draft", args = {} }]
 
-approval = { action = "reject" }
 [expect]
 tools = ["action.draft"]
+error = "approval_rejected"

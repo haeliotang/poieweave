@@ -9,3 +9,4 @@ responses = [{ tool = "action.draft", args = {} }]
 
 [expect]
 tools = ["action.draft"]
+error = "invalid_tool_arguments"

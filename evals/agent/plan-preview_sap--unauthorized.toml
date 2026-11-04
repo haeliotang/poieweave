@@ -9,3 +9,4 @@ responses = [{ tool = "plan.preview_sap", args = {} }]
 
 [expect]
 tools = ["plan.preview_sap"]
+error = "approval_required"

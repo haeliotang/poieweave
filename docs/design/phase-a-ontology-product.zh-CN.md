@@ -372,7 +372,7 @@ MVP 不发布 npm 包；先把 SDK 作为桌面内共享类型层，后续可独
 - 链接端点类型与数量校验；
 - 每个 process 都有一个 process-id 动作，inputs/outputs/occupies/restores/durationS/requiresCapabilities/verification 与模型逐字段一致；不暴露通用参数；
 - SDK 重生成一致；
-- `preview_plan_through_sap` 前后 ledger/authorization/transition 计数不变，`assumed` 项单独标注；
+- `preview_plan_through_sap` 只写 throwaway local ledger，不创建 Authorization、不产生 Authorized transition；返回 `authorized_actions=0`/`authorization_created=false`，`assumed` 项单独标注；
 - host 的 catalog/domain 使用同一 `SourceModel`（digest 一致），不能出现两个 pump 状态；
 - host 命令未登录/scope 不符时拒绝（execution_gate_set、sandbox_write、inference_configure）；
 - 对象图节点集合来自 Catalog，删除 `GRAPH_NODES` 后仍能渲染。

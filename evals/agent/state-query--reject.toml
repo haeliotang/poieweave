@@ -3,10 +3,11 @@ id = "state-query--reject"
 preregistered_at = "2026-11-05"
 prompt = "Deterministic state.query fixture (reject)."
 profile = "analyst"
+approval = { action = "reject" }
 
 [script]
 responses = [{ tool = "state.query", args = {} }]
 
-approval = { action = "reject" }
 [expect]
 tools = ["state.query"]
+error = "approval_rejected"

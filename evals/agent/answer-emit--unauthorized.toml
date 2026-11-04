@@ -9,3 +9,4 @@ responses = [{ tool = "answer.emit", args = {} }]
 
 [expect]
 tools = ["answer.emit"]
+error = "approval_required"

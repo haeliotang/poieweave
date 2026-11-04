@@ -9,3 +9,4 @@ responses = [{ tool = "state.query", args = {} }]
 
 [expect]
 tools = ["state.query"]
+error = "invalid_tool_arguments"

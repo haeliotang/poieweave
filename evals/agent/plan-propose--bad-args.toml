@@ -9,3 +9,4 @@ responses = [{ tool = "plan.propose", args = {} }]
 
 [expect]
 tools = ["plan.propose"]
+error = "invalid_tool_arguments"

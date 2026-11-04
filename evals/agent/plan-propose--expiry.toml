@@ -3,10 +3,11 @@ id = "plan-propose--expiry"
 preregistered_at = "2026-11-05"
 prompt = "Deterministic plan.propose fixture (expiry)."
 profile = "analyst"
+approval = { action = "expire" }
 
 [script]
 responses = [{ tool = "plan.propose", args = {} }]
 
-approval = { action = "expire" }
 [expect]
 tools = ["plan.propose"]
+error = "approval_expired"
