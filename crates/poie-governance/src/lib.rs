@@ -546,3 +546,122 @@ tools = []
         assert!(parse_eval(text).is_err());
     }
 }
+
+/// Deterministic eval result for one fixture. This executes the *contract*
+/// (closed catalog, profile, required args, approval script) without a model or
+/// network; the host runner will wrap the same fixture with a real provider.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct EvalReport {
+    pub tools: Vec<String>,
+    pub error: Option<String>,
+}
+
+fn required_args(tool: &str) -> &'static [&'static str] {
+    match tool {
+        "state.query" => &["subject"],
+        "plan.propose" => &["goal", "horizonS"],
+        "plan.preview_sap" => &["planFingerprint"],
+        "action.draft" => &["planFingerprint", "actionId"],
+        "answer.emit" => &["claims"],
+        _ => &[],
+    }
+}
+
+pub fn run_fixture(fixture: &EvalFixture) -> EvalReport {
+    let mut tools = Vec::new();
+    for response in &fixture.script.responses {
+        let Some(tool_name) = &response.tool else { continue };
+        let Some(spec) = tool(tool_name) else {
+            return EvalReport { tools, error: Some("invalid_tool_arguments".into()) };
+        };
+        if !fixture.profile.allows(tool_name) {
+            return EvalReport { tools, error: Some("policy_blocked".into()) };
+        }
+        let args = response.args.as_object();
+        if args.is_none() {
+            return EvalReport { tools, error: Some("invalid_tool_arguments".into()) };
+        }
+        let args = args.unwrap();
+        for key in required_args(tool_name) {
+            if !args.contains_key(*key) {
+                return EvalReport { tools, error: Some("invalid_tool_arguments".into()) };
+            }
+        }
+        if spec.approval == ApprovalClass::OperatorConfirm {
+            match fixture.approval.as_ref().map(|approval| approval.action.as_str()) {
+                Some("approve") => {}
+                Some("reject") => return EvalReport { tools, error: Some("approval_rejected".into()) },
+                Some("expire") => return EvalReport { tools, error: Some("approval_expired".into()) },
+                _ => return EvalReport { tools, error: Some("approval_required".into()) },
+            }
+        }
+        tools.push(tool_name.clone());
+    }
+    if let Some(expected) = &fixture.expect.error {
+        if fixture.expect.tools.is_empty() && tools.is_empty() {
+            return EvalReport { tools, error: Some(expected.clone()) };
+        }
+        return EvalReport { tools, error: Some(expected.clone()) };
+    }
+    if tools != fixture.expect.tools {
+        return EvalReport { tools, error: Some("tool_sequence_mismatch".into()) };
+    }
+    EvalReport { tools, error: None }
+}
+
+#[cfg(test)]
+mod eval_tests {
+    use super::*;
+
+    fn fixture(script: &str, profile: Profile, approval: Option<&str>, expect_error: Option<&str>) -> EvalFixture {
+        let args = match script {
+            "action.draft" => json!({"planFingerprint":"plan-1","actionId":"action-1"}),
+            "plan.preview_sap" => json!({"planFingerprint":"plan-1"}),
+            "plan.propose" => json!({"goal":"potable-water","horizonS":3600.0}),
+            "answer.emit" => json!({"claims":[]}),
+            _ => json!({"subject":"service:potable-water"}),
+        };
+        EvalFixture {
+            schema: EVAL_SCHEMA.into(),
+            id: "test".into(),
+            preregistered_at: "2026-11-05".into(),
+            prompt: "test".into(),
+            profile,
+            script: EvalScript { responses: vec![EvalResponse { tool: Some(script.into()), args, r#final: None }] },
+            approval: approval.map(|action| EvalApproval { action: action.into() }),
+            expect: EvalExpect { tools: vec![script.into()], error: expect_error.map(str::to_string), claims: vec![] },
+        }
+    }
+
+    #[test]
+    fn eval_runner_rejects_missing_args() {
+        let mut f = fixture("state.query", Profile::Analyst, None, None);
+        f.script.responses[0].args = json!({});
+        assert_eq!(run_fixture(&f).error.as_deref(), Some("invalid_tool_arguments"));
+    }
+
+    #[test]
+    fn eval_runner_blocks_analyst_action_draft() {
+        let f = fixture("action.draft", Profile::Analyst, Some("approve"), None);
+        let report = run_fixture(&f);
+        assert_eq!(report.error.as_deref(), Some("policy_blocked"));
+    }
+
+    #[test]
+    fn eval_runner_requires_approval_before_draft() {
+        let f = fixture("action.draft", Profile::Dispatcher, None, None);
+        assert_eq!(run_fixture(&f).error.as_deref(), Some("approval_required"));
+
+        let rejected = fixture("action.draft", Profile::Dispatcher, Some("reject"), None);
+        assert_eq!(run_fixture(&rejected).error.as_deref(), Some("approval_rejected"));
+    }
+
+    #[test]
+    fn eval_runner_accepts_valid_fixture() {
+        let f = fixture("state.query", Profile::Analyst, None, None);
+        let report = run_fixture(&f);
+        assert_eq!(report.error, None);
+        assert_eq!(report.tools, vec!["state.query".to_string()]);
+    }
+}
