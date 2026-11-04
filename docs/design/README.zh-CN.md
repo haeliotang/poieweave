@@ -124,6 +124,7 @@
 - 四份阶段设计 + `DIGEST`/`PLATFORM`/`SCHEMAS`/三份研究备忘：已起草并入库预冻结
 - **Phase A 门禁：PASS**（[`VALIDATION-A.zh-CN.md`](VALIDATION-A.zh-CN.md)，快照 `907b246`）
 - **A0 已落地**（PR #137）
-- **A1 已落地**（PR #139 + #141）：`poie-digest`、`poie-objects`、`poie-sdkgen`、host `ontology_*`、Capabilities 对象详情、SDK 漂移门禁、只读 action preview；测试矩阵 396
-- 下一步：Phase B 门禁校验与实现
-- B/C/D：设计已入库，B 阶段门禁待跑，C/D 未开始
+- **A1 已落地**（PR #139 + #141）：Catalog/SDK/action preview；测试矩阵 396
+- **Phase B 设计门禁 PASS**（`VALIDATION-B`，快照 `053f529`）
+- **B0 部分落地**（PR #144）：session id、approval_tokens/agent_runs、user_version 迁移；B0 剩余 governance/runner/evals
+- C/D：设计已入库，阶段门禁未跑

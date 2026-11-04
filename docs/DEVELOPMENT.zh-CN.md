@@ -611,3 +611,4 @@ flowchart LR
 | 0.1.115 | 2026-11-05 | Phase A0：`execution_gate_set`/sandbox 强制会话；sandbox read/write 拒绝 symlink、write 原子 rename；移除 demo Authorization，执行视图改为合成预览（authorized/dispatched=0）；桌面宿主测试 13 |
 | 0.1.116 | 2026-11-05 | Phase A1 核心：`poie-digest` canonical JSON/SHA-256；`poie-objects` Catalog/对象/链接/ActionType；桌面只读对象详情；Rust 列表测试 395 |
 | 0.1.117 | 2026-11-05 | Phase A1 完成：`poie-sdkgen` 生成 TypeScript SDK + CI 漂移检查；host 只读 action preview；Rust 列表测试 396 |
+| 0.1.118 | 2026-11-05 | Phase B 门禁 PASS；B0 部分：session id、approval_tokens/agent_runs 表、`PRAGMA user_version` 迁移；B0 剩余 governance/runner/evals |
