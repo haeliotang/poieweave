@@ -21,7 +21,8 @@ domain/version "\n" canonical_json(payload)
 | `poie.catalog/0.1` | Catalog（不含 digest 字段） | Catalog digest |
 | `poie.plan/0.1` | 计划摘要 + actions | 需要 SHA-256 时使用；不替代现有 `Plan::digest()` 字符串 |
 | `poie.simulation/0.1` | 仿真摘要 + 关键状态 | 需要 SHA-256 时使用；不替代现有 `Simulation::digest()` |
-| `poie.variant/0.1` | snapshotSha256 + canonical patch/goal/verification/deadline + mode + settings | C1 What-if 结果 |
+| `poie.snapshot/0.1` | Snapshot without snapshotSha/id/createdAt/createdBy/seed | C1 Snapshot |
+| `poie.variant/0.1` | snapshotSha256 + canonical patch/goal/verification/deadline + mode + settings + outcome/actions/rootCauses/deps + planSha256/completionS | C1 What-if 结果 |
 | `poie.manifest/0.1` | manifest（不含 integrity 字段） | site bundle |
 
 输出统一为小写 64 位十六进制，不带 `sha256:` 前缀；对外字段命名为 `*Digest`，类型为字符串。

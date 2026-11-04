@@ -29,7 +29,7 @@ schema = "poie.<domain>/<major>.<minor>"
 
 - `AssetStatus`、`LotQuality`、`Verification`、`Patch` 保持 Deserialize-only；`StateId` 当前没有 serde，公开 DTO 用字符串表示，不直接序列化领域类型。
 - A 定义公开 DTO：`ObjectInstance`、`LinkInstance`、`ActionType`、`SapPreview`、`OntologyCatalog`（这些类型本身就是公开 DTO，不再加 `Dto` 后缀）；从 `Model` 构建。
-- C 定义 `PatchDto`、`PerturbationDto`、`SnapshotDto`、`VariantDto`、`VariantResultDto`；`PatchDto -> Patch` 的唯一转换在 `poie-whatif`，拒绝未知/多余字段。
+- C1 定义 `PatchDto`、`SnapshotDto`、`VariantDto`、`VariantResultDto`、`CompareResultDto`；`PatchDto -> Patch` 的唯一转换在 `poie-whatif`，拒绝未知/多余字段。`PerturbationDto` 属 C2。
 - D 定义 `SiteManifestDto`、`DeliveryStateDto`、`DiagnosticsDto`。
 - DTO 字段稳定、排序稳定；`serde(rename_all="camelCase")`；枚举用 `snake_case` 字符串并显式列出。
 - 转换测试：DTO round-trip；领域类型新增字段时测试失败提醒更新 DTO/版本。

@@ -101,7 +101,7 @@ VariantResult {
 }
 ```
 
-- `resultSha256 = sha256("poie.variant/0.1\n" + canonical_json({snapshotSha256, variant:{patch,goal,minVerification,deadlineS}, mode, settings}))`；排除 variant id/createdAt/createdBy、result id/runId；同输入同 digest。
+- `resultSha256 = sha256("poie.variant/0.1\n" + canonical_json({snapshotSha256, variant:{patch,goal,minVerification,deadlineS}, mode, settings, outcome, planSha256?, completionS?, actions, rootCauses, externalDependencies}))`；排除 variant id/createdAt/createdBy、result id/runId；同输入同 digest。
 - 结果持久化到 SQLite `whatif_results`；`compare` 使用 resultId。
 
 ## 6. 架构
@@ -129,7 +129,14 @@ apps/desktop/src          Sim mode + variant editor + compare; host-only
    - structure: graph solve goal;
    - plan: `poie-plan::plan`。
      `PlanningRequest { model, now_s: snapshot.nowS, horizon_s: snapshot.horizonS, goals: [PlanningGoal { goal, deadline_s: variant.deadlineS ?? snapshot.deadlineS, priority }], min_verification: variant.minVerification ?? snapshot.minVerification, max_actions: snapshot.maxActions }`；`startS` 仅记录为调度起点提示，C1 不把 `startS` 传给当前 `PlanningRequest`。
-     `PlanError` 映射：`InvalidRequest`/`NoCandidate` → `infeasible`；`ActionBudget`/`Horizon` → `search_limit`；未知状态/未知根因 → `unknown`；成功 → `planned`。
+     `PlanError` 只有 `InvalidRequest/Model/Schedule`：`InvalidRequest` → 命令错误 `invalid_patch`（不是 infeasible）；`Model`/`Schedule` → `unknown`。
+     `plan()` 成功时检查 `Plan.goals_unmet` 的 `GoalFailure.reason`：
+     - 全部 goals_met 且无 unmet → `planned`；
+     - 任一 `"unknown state"` → `unknown`；
+     - 任一 `"search limit"` 或 `"action budget exhausted"` → `search_limit`；
+     - `"horizon exceeded"`/`"no plan found"`/`"no restorable blocker"` → `infeasible`；
+     - 多种原因按 unknown > search_limit > infeasible 优先级。
+     不能把 `Ok(Plan)` 且 goals_unmet 非空当成 `planned`。
      `deadlineS` 只进入 `PlanningGoal.deadline_s`，不是 `PlanningRequest` 字段。
    - 覆盖优先级：variant 的 goal/minVerification/deadline > snapshot；未设置时用 snapshot。
    - result digest; store DB; no writes to live.
@@ -210,7 +217,7 @@ whatif_results(result_id PK, variant_id, snapshot_id, schema_version, mode, sett
 
 - Snapshot digest 稳定；id/createdAt 不影响 digest；model mismatch 拒绝。
 - PatchDto 13 字段转换/未知字段/上限；同一 variant 两次运行 resultSha256 相同。
-- structure/plan outcomes 分离，caveat 存在；plan failure 映射 `infeasible`。
+- structure/plan outcomes 分离，caveat 存在；PlanError 与 goals_unmet 的映射按 §6.1，invalid request 不是 infeasible。
 - compare 排序稳定、完整差异；result 持久化恢复。
 - 运行前后无 SAP/ActionLedger/federation 写入；DB 只写 whatif 表。
 - 错误码/权限：未登录/scope 拒绝。
