@@ -612,3 +612,4 @@ flowchart LR
 | 0.1.116 | 2026-11-05 | Phase A1 核心：`poie-digest` canonical JSON/SHA-256；`poie-objects` Catalog/对象/链接/ActionType；桌面只读对象详情；Rust 列表测试 395 |
 | 0.1.117 | 2026-11-05 | Phase A1 完成：`poie-sdkgen` 生成 TypeScript SDK + CI 漂移检查；host 只读 action preview；Rust 列表测试 396 |
 | 0.1.118 | 2026-11-05 | Phase B 门禁 PASS；B0 部分：session id、approval_tokens/agent_runs 表、`PRAGMA user_version` 迁移；B0 剩余 governance/runner/evals |
+| 0.1.119 | 2026-11-05 | B0 治理核心：`poie-governance` 六工具/画像、审批摘要、审计链、RunState/评测 schema；Rust 列表测试 401 |
