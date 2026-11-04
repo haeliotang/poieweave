@@ -6,7 +6,7 @@
 
 ## 1. Schema 注册表与版本策略
 
-统一注册表 [`SCHEMAS.md`](SCHEMAS.md)（A0 将新增 `scripts/check-schema-registry.py` 校验；当前先以文档表为唯一来源），每个对外 JSON/TOML 结构必须有：
+统一注册表 [`SCHEMAS.md`](SCHEMAS.md)（A0 新增 `scripts/check-schema-registry.py` 校验；当前先以文档表为唯一来源），每个对外 JSON/TOML 结构必须有：
 
 ```text
 schema = "poie.<domain>/<major>.<minor>"

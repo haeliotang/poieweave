@@ -100,7 +100,7 @@
 
 | 编号 | 修订 |
 | --- | --- |
-| R1 | 设计文档已提交到 `design/phase-a-d` 分支；Phase A 门禁 PASS（`VALIDATION-A.zh-CN.md`，`0527c7f`） |
+| R1 | 设计文档已提交到 `design/phase-a-d` 分支；Phase A 门禁 PASS（`VALIDATION-A.zh-CN.md`） |
 | R2 | `DIGEST.md` 区分 fingerprint 与 SHA-256，增加 approval/evidence/contracts domain 与指纹规则 |
 | R3 | `PLATFORM.zh-CN.md` 定义 schema 注册、`schemaVersion`、`OutcomeKind` |
 | R4 | 公开 API 使用 DTO，领域类型不加 `Serialize`；`PatchDto` 转换 |
@@ -122,7 +122,7 @@
 ## 当前状态
 
 - 四份阶段设计 + `DIGEST`/`PLATFORM`/`SCHEMAS`/三份研究备忘：已起草并入库预冻结
-- **Phase A 门禁：PASS**（[`VALIDATION-A.zh-CN.md`](VALIDATION-A.zh-CN.md)，快照 `0527c7f`；A0/A1 可开工）
+- **Phase A 门禁：PASS**（[`VALIDATION-A.zh-CN.md`](VALIDATION-A.zh-CN.md)；设计快照以当前分支 HEAD 为准；A0/A1 可开工）
 - 完整跨阶段报告：`VALIDATION.zh-CN.md` 仍含 B/C/D 的阶段前事项；这些在各自阶段开工前重跑，不阻断 A
 - 代码实现：A0/A1 进入开发；B/C/D 未开始
 - 文档入库：`design/phase-a-d` 分支 HEAD；A 校验报告随后提交

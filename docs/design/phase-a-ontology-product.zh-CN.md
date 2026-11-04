@@ -174,7 +174,7 @@ pub struct PropertyDef {
     pub label: String, // 确定性 humanize(id)；不是模型字段
     pub kind: String,            // string|number|quantity|enum|boolean|ref
     pub unit: Option<String>, pub required: bool, pub read_only: bool,
-    pub source: String,          // model|declared|observed
+    pub source: String,          // model|declared|observed|evidence（与 PropertyValue 同一枚举）
 }
 pub struct PropertyValue {
     pub value: serde_json::Value, // 字符串/数字/枚举；不得放自由文本结构
@@ -392,8 +392,8 @@ MVP 不发布 npm 包；先把 SDK 作为桌面内共享类型层，后续可独
 
 ## 12. 实施顺序
 
-0. A0：gate/sandbox/inference 鉴权与命令 scope 修复；`execution.rs`/`federation_view.rs` synthetic preview 替换；测试；
-1. `poie-digest` + `poie-objects` 数据模型 + Model 投影 + 测试；加入根 `members`/根与桌面 `Cargo.lock`/测试矩阵；写 ADR（sha2、serde、生成器），新增 `scripts/check-schema-registry.py`（A1 首 PR），定义 limit 默认/上限（默认 100、最大 500/page；catalog ≤1 MiB；cursor 为 opaque string，缺省从头开始）；
+0. A0：gate/sandbox/inference 鉴权与命令 scope 修复；`execution.rs`/`federation_view.rs` synthetic preview 替换；UI fallback 清理；`scripts/check-schema-registry.py` + 根 CI；测试；
+1. `poie-digest` + `poie-objects` 数据模型 + Model 投影 + 测试；加入根 `members`/根与桌面 `Cargo.lock`/测试矩阵；写 ADR（sha2、serde、生成器），定义 limit 默认/上限（默认 100、最大 500/page；catalog ≤1 MiB；cursor 为 opaque string，缺省从头开始）；
 2. host `objects.rs` 命令 + JSON/schema 快照 + 错误包络；
 3. `poie-sdkgen` + CI 零 diff + 黄金文件；
 4. Capabilities 对象浏览器与动作预览；
