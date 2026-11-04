@@ -119,11 +119,11 @@ MVP 不生成新的 SAP 动作实例；仅把计划动作和目录元数据关�
 | `catalog.describe` | 无 | Ontology Catalog | 无 |
 | `state.query` | subject/type, asOf | 对象/链接/能力/依赖 | 无 |
 | `plan.propose` | goal, horizon, deadline | proposed plan | 无（只返回） |
-| `plan.preview_sap` | Plan object（host 持有；不接受 planRef）, assumed context | SAP validation summary（只读 dry-run，假定项显式标注） | 无 |
-| `evidence.get` | evidence id | 证据引用/摘要 | Phase D 启用 |
-| `sim.run` | variant id | simulated result | Phase C 才启用 |
+| `plan.preview_sap` | planFingerprint, assumed context | SAP validation summary（只读 dry-run，假定项显式标注） | 无 |
+| `action.draft` | planFingerprint, actionId | 动作草稿/预览（需 Phase B 审批后执行） | 无 |
+| `answer.emit` | claims, suggestions | 最终回答协议（Phase B） | 无 |
 
-Phase A 实现前四项。Phase B 的 Tool Catalog 是这些函数的**投影**（同名/同参数），不得另造一套工具语义。
+Phase A 实现前四项；`action.draft`/`answer.emit` 由 Phase B 治理层实现。Phase B 的 Tool Catalog 是这六个函数的**唯一投影**（同名/同参数），不得另造一套工具语义。
 
 ## 7. 架构与模块边界
 

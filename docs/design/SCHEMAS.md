@@ -1,7 +1,7 @@
 # Schema 注册表与兼容矩阵
 
 - 状态：设计冻结候选（Phase A1 前）
-- 实现检查器：`scripts/check-schema-registry.py`（A0 新增并加入 CI；当前尚未存在，本表是唯一来源）
+- 实现检查器：`scripts/check-schema-registry.py`（已加入根 CI；扫描 product-layer 文档）
 - 所有者：`PLATFORM.zh-CN.md` §1
 
 | schema | 所有者 | 当前版本 | 兼容规则 |
@@ -59,4 +59,4 @@ pub fn compatible(ours: SchemaVersion, theirs: SchemaVersion) -> Compatibility;
 3. 同 domain 多个 major 时，必须同时有兼容/迁移说明；
 4. 生成物/SDK 中的 schema 与 Rust 常量一致。
 
-检查器本身在 A0 加入根 CI；本文件先作为注册表唯一来源。
+检查器已加入根 CI；本文件是 schema 注册表唯一来源（DIGEST 域为附加表）。

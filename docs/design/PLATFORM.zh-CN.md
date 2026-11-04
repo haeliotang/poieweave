@@ -6,7 +6,7 @@
 
 ## 1. Schema 注册表与版本策略
 
-统一注册表 [`SCHEMAS.md`](SCHEMAS.md)（A0 新增 `scripts/check-schema-registry.py` 校验；当前先以文档表为唯一来源），每个对外 JSON/TOML 结构必须有：
+统一注册表 [`SCHEMAS.md`](SCHEMAS.md)（`scripts/check-schema-registry.py` 已加入 CI；文档表+代码常量必须一致），每个对外 JSON/TOML 结构必须有：
 
 ```text
 schema = "poie.<domain>/<major>.<minor>"
@@ -60,6 +60,11 @@ schema = "poie.<domain>/<major>.<minor>"
 | `not_promotable` | C | 结果不可提升 |
 | `bundle_tampered` / `bundle_incomplete` / `bundle_incompatible` | D | bundle 校验失败 |
 | `policy_blocked` | B/C/D | 站点策略拒绝 |
+| `citation_missing` / `invalid_tool_arguments` | B | 最终断言引用缺失/工具参数非法 |
+| `provider_timeout` / `provider_response_too_large` / `provider_protocol` | B | provider 调用/协议失败 |
+| `run_active` / `run_not_found` / `run_interrupted` | B | Agent 运行状态 |
+| `audit_integrity_failed` | B | 审计链/锚点损坏 |
+| `not_implemented` | B/C | 工具阶段未启用 |
 
 错误不得回显密钥、完整 prompt、绝对路径；`details` 只放稳定 ID/摘要。
 
@@ -147,18 +152,18 @@ pub struct ApprovalToken {
     pub args_json_redacted: String,
     pub impact_json: String,
     pub citations_json: String,
-    pub state: String, // pending|approved|rejected|expired|consumed
+    pub state: String, // pending|approved|rejected|expired|executing|consumed
     pub created_at_ms: u64,
     pub decided_at_ms: Option<u64>,
     pub expires_at_ms: u64,
 }
 ```
 
-- `OperatorConfirm`：宿主创建 pending token；UI 展示 subject/args/影响/引用；`agent_approve` 原子置 approved，`agent_resume` 消费后置 consumed；任何字段变化使 digest 不匹配。
+- `OperatorConfirm`：宿主创建 pending token；UI 展示 subject/args/影响/引用；`agent_approve` 原子置 approved，`agent_resume` 原子置 executing 后执行一次并置 consumed；任何字段变化使 digest 不匹配。
 - `TwoPerson`：Phase B/D 不开放（删除预留，避免与单操作员冲突）；需要时另立 ADR + 角色模型。
 - `Forbidden`：直接拒绝并审计。
 - B 的 agent、C 的 promote、D 的 channel/import 使用同一原语；不允许布尔 `approved` 参数。
-- 所有 token 持久化（`approval_tokens` 表）以支持暂停/恢复/审计；`UPDATE ... WHERE state='pending' AND expires_at>?` 原子消费；过期自动拒绝。
+- 所有 token 持久化（`approval_tokens` 表）以支持暂停/恢复/审计；批准：`pending → approved`；消费：`approved → executing → consumed`（原子条件更新）；过期自动拒绝。
 - token 与 SAP 记录的关联：写入审计时记录 `sap_record_id`；`Authorization.basis` 包含 `approval:<tokenId>`（或结构化后字段），使 SAP 记录可反查 token。
 
 ## 7. 新 crate/依赖与工作区

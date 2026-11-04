@@ -61,14 +61,16 @@ SQLite agent_runs/approval_tokens + append-only audit log
 
 ## 6. 工具目录（B1 六个，封闭）
 
-| 工具 | 参数（Rust struct） | 输出 | citation | 审批 | 执行入口 | B1 |
-| --- | --- | --- | --- | --- | --- | --- |
-| `catalog.describe` | 无 | `OntologyCatalog` | 无 | auto | A `ontology_catalog` | 是 |
-| `state.query` | `{subject, asOf?}` | `{objects[],links[],verdict?,dependencies[]}` | object/evidence | auto | A objects + `poie-ontology::graph` | 是 |
-| `plan.propose` | `{goal,horizonS,deadlineS?}` | `PlanSummary{planFingerprint,actions[],completionS}` | plan | auto（纯计算） | `poie-plan::plan` | 是 |
-| `plan.preview_sap` | `{planFingerprint}` | `SapPreviewDto{checks[],assumed[],rejections[]}` | plan | auto | 新的只读 `poie-plan::preview_plan_through_sap` | 是 |
-| `action.draft` | `{planFingerprint,actionId}` | `ActionDraft{planFingerprint,action,preview}` | plan/action | **operator_confirm** | 宿主从已算 plan 构造 DTO | 是 |
-| `answer.emit` | `{claims[],suggestions[]}` | `{accepted, rejectedClaims[]}` | claim 内嵌 | auto（终态） | runtime 校验 | 是 |
+| 工具 | 版本 | 参数（Rust struct） | 输出 | citation | 审批 | 每轮上限 | 执行入口 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `catalog.describe` | 1.0.0 | 无 | `OntologyCatalog` | 无 | auto | 1 | A `ontology_catalog` |
+| `state.query` | 1.0.0 | `{subject,asOf?}` | `{objects[],links[],verdict?,dependencies[]}` | object/report | auto | 4 | A objects + `graph` |
+| `plan.propose` | 1.0.0 | `{goal,horizonS,deadlineS?}` | `PlanSummary{planFingerprint,actions[],completionS}` | plan | auto（纯计算） | 2 | `poie-plan::plan` |
+| `plan.preview_sap` | 1.0.0 | `{planFingerprint}` | `SapPreviewDto{checks[],assumed[],rejections[]}` | plan | auto | 2 | 只读 `poie-plan::preview_plan_through_sap`（host 解析 fingerprint） |
+| `action.draft` | 1.0.0 | `{planFingerprint,actionId}` | `ActionDraft{planFingerprint,action,preview}` | plan/action | **operator_confirm** | 2 | 宿主从已算 plan 构造 DTO；审批后才执行 |
+| `answer.emit` | 1.0.0 | `{claims[],suggestions[]}` | `{accepted,rejectedClaims[]}` | claim 内嵌 | auto（终态） | 1 | runtime 校验 |
+
+A 的 `poie-objects::functions()` 在 B 首 PR 同步改为这同一组六个函数（删除 `evidence.get/sim.run`，新增 `action.draft/answer.emit`），SDK 重新生成；**B 的工具名/参数/输出是 A 函数目录的唯一投影**，不得存在第二个目录。
 
 - 没有 `dispatch.*`/`shell.*`/`http.*`/`browser.*`/`secrets.*`；`sim.run`/`evidence.get` 留给 C/D，B1 不向模型暴露。
 - 工具名/版本/参数/输出/citation/approval 在 `poie-governance::tools` 中静态声明；模型提示里的 JSON Schema 只是描述，运行时用对应 Rust struct + `deny_unknown_fields` 校验。
@@ -94,33 +96,37 @@ pub fn preview_plan_through_sap(plan: &Plan, assumed: &AssumedContext) -> Result
 ```text
 id TEXT PRIMARY KEY, session_id, run_id, call_id, tool, tool_version,
 subject_digest, policy_version, args_json_redacted, impact_json,
-citations_json, state TEXT, created_at, decided_at, expires_at
+citations_json, state TEXT, created_at, decided_at, started_at, expires_at
 ```
 
-`state ∈ pending|approved|rejected|expired|consumed`；原子消费：
+`state ∈ pending|approved|rejected|expired|executing|consumed`。
 
-```sql
-UPDATE approval_tokens SET state='consumed', decided_at=? 
-WHERE id=? AND state='approved' AND expires_at>?
-```
+单一原子状态机（并发安全）：
+
+1. `agent_approve`：`UPDATE ... SET state='approved', decided_at=? WHERE id=? AND state='pending' AND expires_at>?`;
+2. `agent_resume`：先 `UPDATE ... SET state='executing', started_at=? WHERE id=? AND state='approved' AND expires_at>? AND session_id=?`；只有影响 1 行才签发 capability 并执行一次；执行完成 `state='consumed'`；失败 `state='approved'`（可重试）或 `expired`；
+3. `agent_reject`：`pending → rejected`；过期由读取/消费时判定并写 `expired`；
+4. 两个 resume 并发时只有一个能 `approved → executing`，另一个得到 `approval_mismatch`。
 
 流程固定为 **审批 → 签发 capability → 执行**：
 
 1. runtime 需执行 `operator_confirm` 工具时，先构造完整 args/impact/citations 与 `subject_digest`，写 `pending` token，暂停；
 2. UI 展示 subject/args/impact/citations/过期；
 3. `agent_approve` 原子置 `approved`；`agent_reject` 置 `rejected`；
-4. `agent_resume` 校验 token subject/args/session/expiry 后签发 capability，执行一次，置 `consumed`；
+4. `agent_resume` 原子置 `executing`，签发 capability（寿命 ≤ min(300s, session 剩余)），执行一次，置 `consumed`；
 5. 任何字段变化返回 `approval_mismatch`；过期返回 `approval_expired`；`action.draft` 审批后才产生 draft。
 
 `plan.propose` auto；`action.draft` 审批；`answer.emit` auto。
 
+Capability 生命周期：审批通过后才签发；绑定 sessionId/tool/version/argsSha256/tokenId；单次使用；登出/接管/降级/取消时从 runtime registry 撤销；过期由执行前检查。
+
 ## 8. Provider 循环与运行状态（B4/R3）
 
 - `Provider` trait 同步；host 在 `spawn_blocking` 中运行；**DB 锁只在读写状态/审计时持有**，不在网络调用期间持有。用 `RuntimeRegistry`（`Mutex<HashMap<runId, RunHandle>>`）管理活跃 run，审批/取消通过 registry + 状态表协调。
-- 请求：`tools`、`tool_choice=auto`、`timeout_ms=30s`、`max_response_chars=256 KiB`、`max_context_chars=32 KiB`；每次请求前检查取消标志；取消后不得落“成功”审计。
+- 请求：`tools`、`tool_choice=auto`、`timeout_ms=30s`、`max_response_bytes=262144`（按 UTF-8 字节，不是字符）、`max_context_bytes=32768`；每次请求前检查取消标志；取消后不得落“成功”审计。
 - 解析：支持多个 `tool_calls`（B1 顺序执行）、坏 JSON/缺参 → `invalid_tool_arguments`；`finish_reason` 缺失/非预期 → `provider_protocol`；超时/超大响应 → `provider_timeout`/`provider_response_too_large`。
 - 同一 session 同时最多一个 active run；`agent_run` 第二个请求返回 `run_active`。
-- 预算：`max_steps=8`、`max_tool_calls=16`、`max_prompt_chars=4000`（与现有 inference 一致）、`max_tool_result_chars=20000`。
+- 预算：`max_steps=8`、`max_tool_calls=16`、`max_prompt_bytes=4096`（与现有 inference 的 4000 字符近似；实现按字节校验）、`max_tool_result_bytes=20480`；工具结果截断必须保留 JSON 合法结构与 citations，截断标记 `truncated=true`。
 
 `RunState`（持久化到 `agent_runs.state_json`，schema `poie.agent-run/0.1`）：
 
@@ -146,7 +152,7 @@ citations[], error?{code,message}, createdAt, updatedAt
 `answer.emit` 协议：
 
 ```json
-{"claims":[{"text":"...","citations":[{"kind":"object","id":"service:potable-water","source":"model"}]}],
+{"claims":[{"text":"...","citations":[{"kind":"object","id":"service:potable-water","sha256":"...","source":"model"}]}],
  "suggestions":[{"text":"...","basis":["..."]}]}
 ```
 
@@ -160,8 +166,10 @@ citations[], error?{code,message}, createdAt, updatedAt
 记录 schema `poie.agent-audit/0.1`（JSONL）：
 
 ```json
-{"eventId":"...","atMs":0,"actor":"operator|agent","sessionId":"...","runId":"...",
- "callId":null,"tool":null,"decision":"allowed|denied|approval_required|approved|rejected|completed|failed",
+{"schema":"poie.agent-audit/0.1","eventId":"...","atMs":0,"actor":"operator|agent",
+ "sessionId":"...","runId":"...","turnId":0,"callId":null,
+ "tool":null,"toolVersion":null,
+ "decision":"allowed|denied|approval_required|approved|rejected|completed|failed|cancelled|interrupted",
  "reason":"...","argsSha256":null,"resultSha256":null,"sapRecordId":null,
  "prevHash":"...","hash":"..."}
 ```
@@ -209,7 +217,7 @@ error = "citation_missing"          # optional
 
 ## 13. Host API 与 UI（R1/R6）
 
-命令：`agent_run`、`agent_status`、`agent_approve`、`agent_reject`、`agent_cancel`、`agent_resume`，全部 `Result<T, CommandError>`。错误码：`unauthorized/scope_denied/run_active/run_not_found/run_interrupted/approval_required/approval_mismatch/approval_expired/approval_rejected/invalid_tool_arguments/provider_timeout/provider_response_too_large/provider_protocol/budget_exceeded/citation_missing/not_implemented`。
+命令：`agent_run`、`agent_status`、`agent_approve`、`agent_reject`、`agent_cancel`、`agent_resume`，全部 `Result<T, CommandError>`。错误码：`unauthorized/scope_denied/run_active/run_not_found/run_interrupted/approval_required/approval_mismatch/approval_expired/approval_rejected/invalid_tool_arguments/provider_timeout/provider_response_too_large/provider_protocol/budget_exceeded/citation_missing/audit_integrity_failed/not_implemented`。
 
 - Agent 面板要求登录 + 已配置推理；显示 profile、工具轨迹、citations、审批卡（subject/args/impact/citations/expiry）、取消/重试。
 - 浏览器预览保持 host-only。

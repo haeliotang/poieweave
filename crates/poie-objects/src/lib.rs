@@ -388,10 +388,10 @@ fn functions() -> Vec<FunctionType> {
     [
         ("catalog.describe", "Return the Ontology Catalog", "read_only"),
         ("state.query", "Query objects, links, capability results and dependencies", "read_only"),
-        ("evidence.get", "Read an evidence reference (Phase D)", "read_only"),
         ("plan.propose", "Produce a proposed plan without authorization", "propose"),
         ("plan.preview_sap", "Read-only SAP dispatch preview with assumptions", "read_only"),
-        ("sim.run", "Run an isolated simulation variant (Phase C)", "simulate"),
+        ("action.draft", "Create a draft action from an existing plan; approval-gated in Phase B", "propose"),
+        ("answer.emit", "Emit validated claims/citations as the terminal agent answer", "read_only"),
     ]
     .iter()
     .map(|(id, description, effect)| FunctionType {
