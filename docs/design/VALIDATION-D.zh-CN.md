@@ -1,42 +1,35 @@
-# Phase D（D1）设计门禁终验（独立）
+# Phase D（D1）设计门禁终验（独立复验）
 
-- 校验对象：[D1](phase-d-site-delivery.zh-CN.md)、[PLATFORM](PLATFORM.zh-CN.md)、[SCHEMAS](SCHEMAS.md)、[DIGEST](DIGEST.md)、[README](README.zh-CN.md)、[Phase A](phase-a-ontology-product.zh-CN.md)。
-- 快照：branch `design/phase-d-d1`，HEAD **`53b63cb`**；写本文件前 `git status --porcelain` 干净；只读校验，只覆盖本文件。
-- 方法：核对 `23e7ac9..53b63cb` 全部 4 文件改动；逐条复验 3 组声称修复；独立重算 DIGEST 固定向量；运行 `check-docs.py`、`check-schema-registry.py`、`cargo metadata`。D1 未实现，不以未实现计失败。
-- 结论：**CHANGES_REQUIRED**。§1 自哈希例外与 UI Clear 控件已落地；`invalid_parameter` 的 D1 注册仍缺失，未达零阻断。
+- 对象：[D1](phase-d-site-delivery.zh-CN.md)、[PLATFORM](PLATFORM.zh-CN.md)、[SCHEMAS](SCHEMAS.md)、[DIGEST](DIGEST.md)、[README](README.zh-CN.md)、[Phase A](phase-a-ontology-product.zh-CN.md)。
+- 快照：branch `design/phase-d-d1`，HEAD **`6ef4e7e`**；写本文件前 `git status --porcelain` 干净；只读校验，仅覆盖本文件。
+- 方法：核对 `53b63cb..6ef4e7e` 全部 3 文件改动；复验上一轮 1 阻断与更早 3 阻断的闭合；独立重算 DIGEST 向量；复跑检查器并核对 host/workflow。D1 未实现，不以未实现计失败。
+- 结论：**PASS**。上一轮唯一阻断（`invalid_parameter` 未登记 D1）已闭合，未发现新的 D1 阻断。
 
-## 声称修复核对
+## 上一轮阻断复验
 
 | 声称 | 结果 |
 | --- | --- |
-| PLATFORM §1 登记 D1 自哈希 payload 拒绝未知字段；SCHEMAS D1 行登记；D 引用 §1 | **成立**：PLATFORM:19 明列 `SiteBundle`/`SiteManifest` 例外；SCHEMAS:22 登记、:23“同上”；D:50 改引 §1。 |
-| D1 错误码移除 `scope_denied`；PLATFORM `invalid_parameter` 改 A/B/C/D1；diagnostics 白名单已排除 | **部分成立**：D:104 已删 `scope_denied` 并声明不产生，D:158 白名单无该码；但 PLATFORM:57 仍为 `A/B/C`，PLATFORM:55 的 D1 行不含 `invalid_parameter`，`git log -S 'A/B/C/D1'` 无记录（见阻断 1）。 |
-| UI 增加 Clear 控件 | **成立（§8）**：D:169 增加 Conflict 时 Clear；但 D:192 的 UI 验收仍只列 import/rollback，未列 clear（非阻断）。 |
+| PLATFORM 错误码行改为 `A/B/C/D1` | **成立**：PLATFORM:57 现为 `invalid_parameter`/`invalid_patch` ｜ `A/B/C/D1` ｜ 参数/变体非法/大小超限；对应 D:51。 |
+| D UI 验收包含 clear | **成立**：D:192 已改为“rollback/clear”，与 D:169 的 Conflict 时 Clear、D:100/107/190 一致。 |
+| 上一轮仅此 1 个阻断 | **成立**：校验 `53b63cb` 的报告（提交于 `6ef4e7e`）仅列 1 阻断；更早 3 阻断中的 §1 例外与 `scope_denied` 已在 `53b63cb` 闭合。 |
 
-## 阻断
+## 独立复核（零阻断）
 
-1. **[阻断] `invalid_parameter` 仍未登记为 D1 错误码。** D1 对 bundle/manifest/字符串/数组/嵌套超限统一用 `invalid_parameter`（D:51），命令错误码（D:104）与 diagnostics 白名单（D:158）也包含它；但 PLATFORM:57 仍把该码限定为 A/B/C，PLATFORM:55 的 D1 行只有 `manifest_invalid/stale_manifest/delivery_conflict/rollback_unavailable/io_error`。`53b63cb` 对 PLATFORM 只改了 §1（:19），未改 §3，故声称的 `A/B/C/D1` 不存在。按 PLATFORM 实现将无法为 D1 超限错误映射合法码，错误契约仍非单一真源。修法：把 `invalid_parameter` 加入 PLATFORM:57 与/或 D1 行（A/B/C/D1），或把 D1 上限错误改为 `manifest_invalid` 并同步 D:51/104/158。
+- 错误码：D:104/158 的 8 个码均在 PLATFORM 登记且含 D1（:49/:51/:55/:57）；`scope_denied` 明确不由 D1 产生（PLATFORM:50）。
+- 自哈希例外：PLATFORM:19、SCHEMAS:22–23、D:50 三处一致；D:50 已正确引用 §1。
+- DIGEST：`poie.manifest/0.1` 域与 D:49、A:153、DIGEST:26/91/94 一致；四字段向量重算得 `0a15…964d`，命中 DIGEST:96。
+- Clear/状态：D:88/128/169/190/192 与 README:83 对齐；clear 是 `delivery_conflict` 的显式出口。
+- host/workflow：`auth::require`（auth.rs:156）、`user_version=3`（db.rs:135）、`sandbox::resolve/read/write`（sandbox.rs:11/46/58）与设计相符；无 `delivery_*` 实现；`targets="all"`、workflow 无 `crates/**` 属 D2/实现项。
 
-## 其他（非阻断）
+## 非阻断残留
 
-- D:192 的 UI 验收未随 D:169 的 Clear 控件更新，建议补“Conflict 时 Clear 后重新 import”。
-- SCHEMAS:23–24 的“同上”把“自哈希”描述一并继承给 `site-bundle`/`delivery-state`；建议仅对 manifest 声明自哈希，其余只声明拒绝未知字段。
-- DIGEST:96 向量仍为 `{schema,siteId,target,channel}` 四字段片段，未钉住 `schemaVersion`/`policy`/null 字段的 canonical 行为（既有非阻断）。
-- README:133“D1：设计门禁 PASS 后进入实现”在门禁未过时仍宜标为“复验中”。
+- SCHEMAS:24 的“同上”易被读成 `delivery-state` 也自哈希；建议只对 manifest 声明。
+- DIGEST:96 仍是四字段片段，未钉住 `schemaVersion`/`policy`/null 的 canonical 行为。
+- D:182 的“D0”未在 README/PLATFORM §8 定义；建议统一命名。
+- `sandbox::reject_symlinks` 为私有，D:159 可注明 delivery 经公开 read/write 间接取得该保证。
 
-## 已执行检查
+已执行：`git rev-parse --short HEAD`→6ef4e7e；写前 status 0 行；diff 3 files；DIGEST 向量 match；`check-docs.py` exit 0；`check-schema-registry.py` 27 schemas exit 0；`cargo metadata --no-deps --offline` 28 members、poie-delivery absent；`git log -S 'A/B/C/D1'` 命中 6ef4e7e。
 
-```text
-git rev-parse --short HEAD                         53b63cb
-git status --porcelain（写前）                      0 行
-git diff --stat 23e7ac9..53b63cb                    4 files（含本文件）
-recompute DIGEST vector                            0a15ba7d…964d，match
-python3 scripts/check-docs.py                      OK, exit 0
-python3 scripts/check-schema-registry.py           27 schemas, exit 0
-cargo metadata --no-deps --offline                 28 members; poie-delivery absent
-git log -S 'A/B/C/D1' -- PLATFORM                  无记录
-```
+边界：只读校验；除本文件外未改任何文件；未跑全量 cargo/Tauri/Playwright；D1 未实现不计失败。
 
-边界：只读校验；除本文件外未改任何文件；未跑全量 cargo/Tauri/Playwright；D1 尚未实现，未以未实现计为失败。
-
-VERDICT: CHANGES_REQUIRED
+VERDICT: PASS

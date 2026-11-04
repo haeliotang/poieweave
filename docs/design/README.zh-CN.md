@@ -130,4 +130,4 @@
 - **B0 host runtime/UI 已落地**（PR #150）：六工具调用、RunState/审批 token、只读工具、answer.emit、Agent 面板切到 `agent_run`
 - B0 剩余：approval resume/draft 执行、审计日志文件/链、真实 fixtures、cancel/reject UI
 - **Phase C1 设计门禁 PASS**（`VALIDATION-C`）
-- D1：设计门禁 PASS 后进入实现
+- **D1 设计门禁 PASS**（`VALIDATION-D`）
