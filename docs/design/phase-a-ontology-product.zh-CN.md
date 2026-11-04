@@ -73,6 +73,8 @@ A0 的验收进入 Phase A PR；没有它，Phase A 不开始。
 
 MVP 先实现前六类；`evidence` 对象只返回引用，不新建证据账本。
 
+**属性证据**：`asOf` 来自 host 快照时间（`nowS`）；没有证据时间的属性 `asOf=null`、`source=declared`，UI 必须显示“声明/合成”，不能显示为观测。`Asset.status` 有 `status_evidence` 时 `source=declared` 并带证据字符串；没有时为合成观测。`Lot.location/evidence` 不进入 MVP（验证后的 `Lot` 无这些字段）。
+
 ### 6.2 链接类型
 
 | 链接 ID | from → to | 语义 |
@@ -170,6 +172,20 @@ crates/poie-objects        NEW: Catalog / Object projection / Action catalog
 建议 API：
 
 ```rust
+pub struct PropertyDef {
+    pub id: String, pub label: String,
+    pub kind: String,            // string|number|quantity|enum|boolean|ref
+    pub unit: Option<String>, pub required: bool, pub read_only: bool,
+    pub source: String,          // model|declared|observed
+}
+pub struct PropertyValue {
+    pub value: serde_json::Value, // 字符串/数字/枚举；不得放自由文本结构
+    pub source: String, pub as_of: Option<String>,
+    pub verification: String,    // declared|modeled|demonstrated|observed
+}
+pub struct LinkType { pub id: String, pub from: String, pub to: String, pub cardinality: String }
+pub struct LinkInstance { pub type_id: String, pub from: String, pub to: String }
+pub struct EvidenceRef { pub kind: String, pub id: String, pub fingerprint: Option<String>, pub sha256: Option<String> }
 pub struct ObjectType {
     pub id: String, pub label: String,
     pub properties: Vec<PropertyDef>, pub links: Vec<LinkType>,
@@ -252,13 +268,13 @@ pub fn preview_plan_through_sap(
 
 ### 7.3 TypeScript SDK
 
-生成器 `crates/poie-sdkgen` 读取 Catalog JSON，输出：
+生成器 `crates/poie-sdkgen` 依赖 `poie-objects`，从固定的 `scenarios/base-01/model.toml` 构造 Catalog（与 host 使用同一 Model），不读取未验证的临时 JSON。输出：
 
 - `apps/desktop/src/sdk/ontology.ts`：对象/链接/动作/函数类型与字符串字面量 ID；
 - `apps/desktop/src/sdk/client.ts`：对 host 命令的薄封装（仅 Tauri 环境）；
 - `apps/desktop/src/sdk/README.md`：生成方法与版本约束。
 
-CI 校验：运行 `cargo run -p poie-sdkgen -- --check`，重新生成后必须与提交文件一致；未知 schema 版本失败。生成器纳入 workspace 测试与 `cargo test` 计数。
+CI 校验：运行 `cargo run -p poie-sdkgen -- --check`，重新生成后必须与提交文件一致（零 diff），否则退出码 2；未知 schema 版本退出码 3。生成器纳入 workspace、`cargo test`、`check-test-matrix` 计数；黄金文件为 `apps/desktop/src/sdk/ontology.ts` 与 `catalog.golden.json`。
 
 MVP 不发布 npm 包；先把 SDK 作为桌面内共享类型层，后续可独立发布。
 
@@ -313,8 +329,12 @@ MVP 不发布 npm 包；先把 SDK 作为桌面内共享类型层，后续可独
 - 同一模型两次生成的 catalog digest 相同；
 - 未知 schema/未知对象/非法参数返回稳定错误码；
 - 链接端点类型与数量校验；
-- `process.*` 动作覆盖所有 process，参数和验证等级来自模型；
-- SDK 重生成一致。
+- `process.*` 动作覆盖所有 process，inputs/outputs/occupies/restores/duration/verification 与模型逐字段一致；不暴露通用参数；
+- SDK 重生成一致；
+- `preview_plan_through_sap` 前后 ledger/authorization/transition 计数不变，`assumed` 项单独标注；
+- host 的 catalog/domain 使用同一 `SourceModel`（digest 一致），不能出现两个 pump 状态；
+- host 命令未登录/scope 不符时拒绝（execution_gate_set、sandbox_write、inference_configure）；
+- 对象图节点集合来自 Catalog，删除 `GRAPH_NODES` 后仍能渲染。
 
 ### 桌面/UI
 

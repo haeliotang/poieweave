@@ -96,10 +96,34 @@
 
 处理这些漂移不改变 A–D 的安全边界，但必须在对应阶段 PR 中一并修复，不能把旧数字/旧声明带进新页面。
 
+## 修订记录（针对校验）
+
+| 编号 | 修订 |
+| --- | --- |
+| R1 | 设计文档已提交到 `design/phase-a-d` 分支，冻结快照 `4a90edc` |
+| R2 | `DIGEST.md` 区分 fingerprint 与 SHA-256，增加 approval/evidence/contracts domain 与指纹规则 |
+| R3 | `PLATFORM.zh-CN.md` 定义 schema 注册、`schemaVersion`、`OutcomeKind` |
+| R4 | 公开 API 使用 DTO，领域类型不加 `Serialize`；`PatchDto` 转换 |
+| R5 | 统一 `{code,message,details}` 错误包络与错误码表 |
+| R6 | A0/PLATFORM §4 定义命令 scope 矩阵；gate/sandbox/inference 鉴权前置 |
+| R7 | 当前模型固定为 Base-01 + degraded 的 `SourceModel`；D 不做模型导入 |
+| R8 | 删除通用 `parameters`/`can_submit`；ActionType 仅模型字段；新增只读 `preview_plan_through_sap` |
+| R9 | SDK 唯一路径 `poie-sdkgen`；删除外部 JSON API 声明 |
+| R10 | B crate 统一 `poie-governance`；六工具与 A 函数映射；无模型 dispatch |
+| R11 | `agent_run/status/approve/reject/cancel/resume` + `RunState` 持久化 |
+| R12 | per-tool approval digest；append-only 审计 + SQLite 索引；`user_version` 迁移 |
+| R13 | C Snapshot 补全 now/seed/horizon/timelines/storage/StateId 可选；`OutcomeKind` 分离 |
+| R14 | C Compare/Promotion/Approval schema；`plan_to_proposed`；checkpoint/storage builder |
+| R15 | D manifest digest 来源、`contracts.toml`、manifest 自哈希 |
+| R16 | D 不做模型/二进制导入；bundle 为 JSON 元数据；policy loader、DB 迁移 |
+| R17 | D 增加 inspect/plan/recall/channel 命令；去掉 DMG/portable 误声明 |
+| R18 | 各阶段实施顺序加入 workspace/Cargo.lock/test-matrix/cargo-deny/ADR/rustdoc/链接检查 |
+
 ## 当前状态
 
 - 四份设计文档：已起草并吸收三份研究备忘
-- 快速独立校验：`VALIDATION-FAST.zh-CN.md` → **CHANGES_REQUIRED**；R1–R5 已修订
-- 最终独立校验：待重跑（前两份报告均为 CHANGES_REQUIRED；已按发现修订，见下节）
+- 快速独立校验：`VALIDATION-FAST.zh-CN.md` → **CHANGES_REQUIRED**
+- 完整独立校验：`VALIDATION.zh-CN.md` → **CHANGES_REQUIRED**；R1–R18 已按修订记录更新
+- 最终独立校验：待重跑（不预设 PASS）
 - 代码实现：未开始（遵守“校验通过后才开发”）
-- 文档入库：待最终 PASS 后与校验报告一并提交
+- 文档入库：快照 `4a90edc`；修订后需提交并重跑校验

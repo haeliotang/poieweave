@@ -107,7 +107,7 @@ MVP 工具：
 `ToolResult` 结构：
 
 ```text
-callId, tool, ok, data, citations[],
+callId, tool, ok, data, citations[], evidenceRefs[], asOf,
 sourceClass: T0|T1|T2|T3, trustProfile: analyst|dispatcher,
 redactions[], truncated, latencyMs
 ```
@@ -149,7 +149,6 @@ approval = {
 | --- | --- |
 | `auto` | 只读/模拟直接执行，写审计 |
 | `operator_confirm` | 暂停运行，UI 显示参数/影响/引用，操作员确认后继续 |
-| `two_person` | Phase B 不开放；Phase D 站点策略预留 |
 | `forbidden` | 运行时拒绝，记录 `policy.blocked` |
 
 审批绑定运行 ID、工具调用 ID、参数摘要、操作员会话和过期时间；一次批准不允许复用到不同参数。
