@@ -16,6 +16,7 @@ mod inference;
 mod objects;
 mod sandbox;
 mod secrets;
+mod whatif;
 
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
@@ -284,7 +285,15 @@ pub fn run() {
             agent::agent_approve,
             agent::agent_resume,
             agent::agent_reject,
-            agent::agent_cancel
+            agent::agent_cancel,
+            whatif::whatif_snapshot_create,
+            whatif::whatif_snapshot_list,
+            whatif::whatif_variant_create,
+            whatif::whatif_variant_list,
+            whatif::whatif_variant_run,
+            whatif::whatif_result_get,
+            whatif::whatif_result_list,
+            whatif::whatif_compare
         ])
         .run(tauri::generate_context!())
         .expect("error while running Poieweave desktop");

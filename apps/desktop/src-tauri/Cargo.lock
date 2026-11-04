@@ -2390,6 +2390,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "poie-whatif"
+version = "0.1.0"
+dependencies = [
+ "poie-digest",
+ "poie-objects",
+ "poie-ontology",
+ "poie-plan",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "poieweave-desktop"
 version = "0.1.1"
 dependencies = [
@@ -2403,6 +2415,7 @@ dependencies = [
  "poie-ontology",
  "poie-plan",
  "poie-state",
+ "poie-whatif",
  "rusqlite",
  "serde",
  "serde_json",

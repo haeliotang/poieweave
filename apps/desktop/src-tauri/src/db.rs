@@ -119,7 +119,20 @@ impl Db {
                      expires_at_ms INTEGER NOT NULL
                  );
                  CREATE INDEX IF NOT EXISTS approval_by_run ON approval_tokens(run_id, state);
-                 PRAGMA user_version = 2;",
+                 CREATE TABLE IF NOT EXISTS whatif_snapshots (
+                     snapshot_id TEXT PRIMARY KEY, schema_version TEXT NOT NULL, session_id TEXT NOT NULL,
+                     snapshot_json TEXT NOT NULL, snapshot_sha256 TEXT NOT NULL, created_at INTEGER NOT NULL
+                 );
+                 CREATE TABLE IF NOT EXISTS whatif_variants (
+                     variant_id TEXT PRIMARY KEY, snapshot_id TEXT NOT NULL, schema_version TEXT NOT NULL,
+                     variant_json TEXT NOT NULL, created_at INTEGER NOT NULL
+                 );
+                 CREATE TABLE IF NOT EXISTS whatif_results (
+                     result_id TEXT PRIMARY KEY, variant_id TEXT NOT NULL, snapshot_id TEXT NOT NULL,
+                     schema_version TEXT NOT NULL, mode TEXT NOT NULL, settings_json TEXT NOT NULL,
+                     result_json TEXT NOT NULL, result_sha256 TEXT NOT NULL, created_at INTEGER NOT NULL
+                 );
+                 PRAGMA user_version = 3;",
             )
             .map_err(|error| format!("migrate: {error}"))?;
         // Existing databases created before B0 have an audit table without the
@@ -287,6 +300,103 @@ impl Db {
         Ok(changed == 1)
     }
 
+    pub fn save_whatif_snapshot(
+        &self,
+        id: &str,
+        schema: &str,
+        session_id: &str,
+        json: &str,
+        sha: &str,
+        at: i64,
+    ) -> Result<(), String> {
+        self.connection.execute(
+            "INSERT INTO whatif_snapshots (snapshot_id,schema_version,session_id,snapshot_json,snapshot_sha256,created_at) VALUES (?1,?2,?3,?4,?5,?6)",
+            params![id, schema, session_id, json, sha, at],
+        ).map_err(|error| format!("save whatif snapshot: {error}"))?;
+        Ok(())
+    }
+    pub fn whatif_snapshot(&self, id: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT snapshot_json FROM whatif_snapshots WHERE snapshot_id=?1", [id], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+    pub fn whatif_snapshots(&self, limit: u32) -> Result<Vec<String>, String> {
+        let mut statement = self
+            .connection
+            .prepare("SELECT snapshot_json FROM whatif_snapshots ORDER BY created_at DESC LIMIT ?1")
+            .map_err(|error| error.to_string())?;
+        let rows = statement.query_map([limit], |row| row.get::<_, String>(0)).map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
+    pub fn save_whatif_variant(
+        &self,
+        id: &str,
+        snapshot_id: &str,
+        schema: &str,
+        json: &str,
+        at: i64,
+    ) -> Result<(), String> {
+        self.connection.execute(
+            "INSERT INTO whatif_variants (variant_id,snapshot_id,schema_version,variant_json,created_at) VALUES (?1,?2,?3,?4,?5)",
+            params![id, snapshot_id, schema, json, at],
+        ).map_err(|error| format!("save whatif variant: {error}"))?;
+        Ok(())
+    }
+    pub fn whatif_variant(&self, id: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT variant_json FROM whatif_variants WHERE variant_id=?1", [id], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+    pub fn whatif_variants(&self, snapshot_id: &str) -> Result<Vec<String>, String> {
+        let mut statement = self
+            .connection
+            .prepare("SELECT variant_json FROM whatif_variants WHERE snapshot_id=?1 ORDER BY created_at ASC")
+            .map_err(|error| error.to_string())?;
+        let rows =
+            statement.query_map([snapshot_id], |row| row.get::<_, String>(0)).map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
+    #[allow(clippy::too_many_arguments)]
+    pub fn save_whatif_result(
+        &self,
+        result_id: &str,
+        variant_id: &str,
+        snapshot_id: &str,
+        schema: &str,
+        mode: &str,
+        settings: &str,
+        json: &str,
+        sha: &str,
+        at: i64,
+    ) -> Result<(), String> {
+        self.connection.execute(
+            "INSERT INTO whatif_results (result_id,variant_id,snapshot_id,schema_version,mode,settings_json,result_json,result_sha256,created_at) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9)",
+            params![result_id, variant_id, snapshot_id, schema, mode, settings, json, sha, at],
+        ).map_err(|error| format!("save whatif result: {error}"))?;
+        Ok(())
+    }
+    pub fn whatif_result(&self, id: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT result_json FROM whatif_results WHERE result_id=?1", [id], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+    pub fn whatif_results(
+        &self,
+        snapshot_id: &str,
+        variant_id: Option<&str>,
+        limit: u32,
+    ) -> Result<Vec<String>, String> {
+        let mut statement = self.connection.prepare(
+            "SELECT result_json FROM whatif_results WHERE snapshot_id=?1 AND (?2 IS NULL OR variant_id=?2) ORDER BY created_at DESC LIMIT ?3",
+        ).map_err(|error| error.to_string())?;
+        let rows = statement
+            .query_map(params![snapshot_id, variant_id, limit], |row| row.get::<_, String>(0))
+            .map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
     pub fn inference_config(&self) -> Result<Option<InferenceConfigRow>, String> {
         let mut statement = self
             .connection
