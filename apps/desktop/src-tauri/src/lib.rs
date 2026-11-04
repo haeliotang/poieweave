@@ -286,6 +286,7 @@ pub fn run() {
             agent::agent_resume,
             agent::agent_reject,
             agent::agent_cancel,
+            whatif::whatif_model_digest,
             whatif::whatif_snapshot_create,
             whatif::whatif_snapshot_list,
             whatif::whatif_variant_create,

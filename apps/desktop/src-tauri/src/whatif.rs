@@ -36,6 +36,12 @@ pub struct VariantCreateInput {
 }
 
 #[tauri::command]
+pub fn whatif_model_digest(state: State<'_, AppState>) -> Result<String, String> {
+    auth::require(&state.session)?;
+    poie_objects::model_digest(&state.model).map_err(|error| error.to_string())
+}
+
+#[tauri::command]
 pub fn whatif_snapshot_create(input: SnapshotInput, state: State<'_, AppState>) -> Result<Snapshot, String> {
     let operator = auth::require(&state.session)?;
     let id = random_id("snap")?;
