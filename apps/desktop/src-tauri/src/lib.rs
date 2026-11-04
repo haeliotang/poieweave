@@ -12,6 +12,7 @@ mod execution;
 mod federation_view;
 mod http;
 mod inference;
+mod objects;
 mod sandbox;
 mod secrets;
 
@@ -35,6 +36,8 @@ struct AppState {
     data_dir: PathBuf,
     sandbox_root: PathBuf,
     domain: DomainOverview,
+    model: Arc<poie_ontology::model::Model>,
+    catalog: poie_objects::OntologyCatalog,
     execution: Mutex<ExecutionSnapshot>,
     gate: Mutex<GateState>,
     federation: FederationSnapshot,
@@ -229,6 +232,8 @@ pub fn run() {
             let sandbox_root = data_dir.join("sandbox");
             std::fs::create_dir_all(&sandbox_root).map_err(|error| format!("sandbox: {error}"))?;
             let db = Db::open(&data_dir.join("poieweave.sqlite3"))?;
+            let model = Arc::new(domain::source_model().map_err(|error| format!("source model: {error}"))?);
+            let catalog = poie_objects::build_catalog(&model).map_err(|error| format!("ontology catalog: {error}"))?;
             let domain = domain::overview().map_err(|error| format!("domain snapshot: {error}"))?;
             let gate = GateState::default();
             let execution =
@@ -239,6 +244,8 @@ pub fn run() {
                 data_dir,
                 sandbox_root,
                 domain,
+                model,
+                catalog,
                 execution: Mutex::new(execution),
                 gate: Mutex::new(gate),
                 federation,
@@ -266,7 +273,10 @@ pub fn run() {
             execution_gate_set,
             federation_snapshot,
             sandbox_read,
-            sandbox_write
+            sandbox_write,
+            objects::ontology_catalog,
+            objects::ontology_objects,
+            objects::ontology_object
         ])
         .run(tauri::generate_context!())
         .expect("error while running Poieweave desktop");

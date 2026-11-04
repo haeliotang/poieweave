@@ -2326,11 +2326,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "poie-digest"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "sha2",
+]
+
+[[package]]
 name = "poie-federation"
 version = "0.1.0"
 dependencies = [
  "poie-state",
  "serde",
+]
+
+[[package]]
+name = "poie-objects"
+version = "0.1.0"
+dependencies = [
+ "poie-digest",
+ "poie-ontology",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -2366,6 +2385,7 @@ dependencies = [
  "hex",
  "pbkdf2",
  "poie-federation",
+ "poie-objects",
  "poie-ontology",
  "poie-plan",
  "poie-state",

@@ -106,9 +106,13 @@ fn verification(value: Verification) -> String {
     value.to_string()
 }
 
-pub fn overview() -> Result<DomainOverview, String> {
+pub fn source_model() -> Result<Model, String> {
     let base = base_model()?;
-    let model = degraded_model(&base)?;
+    degraded_model(&base)
+}
+
+pub fn overview() -> Result<DomainOverview, String> {
+    let model = source_model()?;
     let min_verification = Verification::Modeled;
 
     let mut services = Vec::new();
@@ -197,13 +201,13 @@ pub fn overview() -> Result<DomainOverview, String> {
 
     Ok(DomainOverview {
         scenario: "Base-01 · pump degraded".to_string(),
-        model_name: base.name.clone(),
+        model_name: model.name.clone(),
         counts: Counts {
-            services: base.services.len(),
-            assets: base.assets.len(),
-            resources: base.resources.len(),
-            processes: base.processes.len(),
-            lots: base.lots.len(),
+            services: model.services.len(),
+            assets: model.assets.len(),
+            resources: model.resources.len(),
+            processes: model.processes.len(),
+            lots: model.lots.len(),
         },
         assets,
         resources,
