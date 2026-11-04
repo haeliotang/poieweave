@@ -7,7 +7,7 @@
 use std::collections::BTreeSet;
 
 use poie_digest::{sha256_of, DigestError};
-use poie_objects::EvidenceRef;
+pub use poie_objects::EvidenceRef;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 

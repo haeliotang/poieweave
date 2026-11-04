@@ -5,6 +5,7 @@
 //! read/write sandbox under the app data directory. Packaging lives in
 //! `tauri.conf.json`.
 
+mod agent;
 mod auth;
 mod db;
 mod domain;
@@ -277,7 +278,10 @@ pub fn run() {
             objects::ontology_catalog,
             objects::ontology_objects,
             objects::ontology_object,
-            objects::ontology_action_preview
+            objects::ontology_action_preview,
+            agent::agent_run,
+            agent::agent_status,
+            agent::agent_approve
         ])
         .run(tauri::generate_context!())
         .expect("error while running Poieweave desktop");

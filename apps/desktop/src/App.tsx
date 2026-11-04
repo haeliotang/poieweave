@@ -20,6 +20,7 @@ import {
   type InferenceStatus,
   type NavKey,
   type OntologyDetail,
+  type AgentResult,
 } from "./domain";
 import brandMark from "./assets/poieweave-mono.svg";
 import { detectLang, messagesFor, type Lang } from "./i18n";
@@ -1010,7 +1011,7 @@ function Inspector({
   const t = (key: string) => messagesFor(lang)[key] ?? key;
   const [prompt, setPrompt] = useState("");
   const [agentBusy, setAgentBusy] = useState(false);
-  const [agentResult, setAgentResult] = useState<InferenceResult | null>(null);
+  const [agentResult, setAgentResult] = useState<AgentResult | null>(null);
   const [agentError, setAgentError] = useState("");
   const canCallAgent = hosted && auth.signedIn && inference.configured;
   const runAgent = async () => {
@@ -1018,7 +1019,7 @@ function Inspector({
     setAgentBusy(true);
     setAgentError("");
     try {
-      setAgentResult(await invoke<InferenceResult>("inference_complete", { prompt }));
+      setAgentResult(await invoke<AgentResult>("agent_run", { prompt, profile: "analyst" }));
     } catch (caught) {
       setAgentError(String(caught));
     } finally {
@@ -1176,8 +1177,13 @@ function Inspector({
         {agentError ? <p className="form-error">{agentError}</p> : null}
         {agentResult ? (
           <div className="agent-panel__result">
-            <span className="eyebrow">{t("agent.response")} · {agentResult.latencyMs} ms</span>
-            <p>{agentResult.text}</p>
+            <span className="eyebrow">{t("agent.response")} · {agentResult.status}</span>
+            {agentResult.status === "waiting_approval" ? <p className="agent-panel__hint">{t("agent.waitingApproval")}</p> : null}
+            <p>{agentResult.text || agentResult.error || t("agent.noText")}</p>
+            {agentResult.citations.length > 0 ? (
+              <p className="muted">{t("agent.citations")}: {agentResult.citations.map((citation) => `${citation.kind}:${citation.id}`).join(" · ")}</p>
+            ) : null}
+            {agentResult.tools.length > 0 ? <p className="muted">{t("agent.tools")}: {agentResult.tools.join(" → ")}</p> : null}
           </div>
         ) : null}
       </section>

@@ -69,7 +69,7 @@ fn validate_endpoint(endpoint: &str) -> Result<String, String> {
     Err("endpoint must use HTTPS (HTTP is allowed only for localhost)".into())
 }
 
-fn completion_url(endpoint: &str) -> String {
+pub(crate) fn completion_url(endpoint: &str) -> String {
     let base = endpoint.trim_end_matches('/');
     if base.ends_with("/chat/completions") {
         base.to_string()
@@ -78,6 +78,17 @@ fn completion_url(endpoint: &str) -> String {
     } else {
         format!("{base}/v1/chat/completions")
     }
+}
+
+pub(crate) fn provider_config(db: &Db, secrets: &dyn SecretStore) -> Result<Option<(String, String, String)>, String> {
+    let Some(config) = db.inference_config()? else { return Ok(None) };
+    if !config.has_key {
+        return Err("no API key is configured".into());
+    }
+    let key = secrets
+        .get(SECRET_SERVICE, SECRET_ACCOUNT)?
+        .ok_or_else(|| "API key is missing from the credential store".to_string())?;
+    Ok(Some((config.endpoint, config.model, key)))
 }
 
 pub fn configure(

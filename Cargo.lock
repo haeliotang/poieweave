@@ -261,6 +261,7 @@ version = "0.1.0"
 dependencies = [
  "poie-ontology",
  "poie-state",
+ "serde",
 ]
 
 [[package]]

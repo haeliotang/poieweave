@@ -26,6 +26,7 @@ rusqlite = { version = "0.32", features = ["bundled"] }
 poie-ontology = { path = "../../../crates/poie-ontology" }
 poie-objects = { path = "../../../crates/poie-objects" }
 poie-governance = { path = "../../../crates/poie-governance" }
+poie-digest = { path = "../../../crates/poie-digest" }
 poie-plan = { path = "../../../crates/poie-plan" }
 poie-state = { path = "../../../crates/poie-state" }
 poie-federation = { path = "../../../crates/poie-federation" }
