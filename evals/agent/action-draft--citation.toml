@@ -5,7 +5,7 @@ prompt = "Deterministic action.draft fixture (citation)."
 profile = "dispatcher"
 
 [script]
-responses = [{ tool = "action.draft", args = {} }]
+responses = [{ tool = "action.draft", args = { planFingerprint = "plan-base01", actionId = "act-1" } }]
 
 [expect]
 tools = ["action.draft"]

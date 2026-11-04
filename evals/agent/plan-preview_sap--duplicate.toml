@@ -2,11 +2,10 @@ schema = "poie.agent-eval/0.1"
 id = "plan-preview_sap--duplicate"
 preregistered_at = "2026-11-05"
 prompt = "Deterministic plan.preview_sap fixture (duplicate)."
-profile = "analyst"
+profile = "dispatcher"
 
 [script]
-responses = [{ tool = "plan.preview_sap", args = {} }]
+responses = [{ tool = "plan.preview_sap", args = { planFingerprint = "plan-base01" } }]
 
 [expect]
 tools = ["plan.preview_sap"]
-error = "budget_exceeded"

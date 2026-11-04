@@ -1,0 +1,12 @@
+schema = "poie.agent-eval/0.1"
+id = "plan-propose--unsupported"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic plan.propose fixture (unsupported)."
+profile = "dispatcher"
+
+[script]
+responses = [{ tool = "plan.propose", args = { goal = "potable-water", horizonS = 3600.0 } }]
+
+[expect]
+tools = ["plan.propose"]
+error = "not_implemented"

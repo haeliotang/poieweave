@@ -1,0 +1,12 @@
+schema = "poie.agent-eval/0.1"
+id = "state-query--no-citation"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic state.query fixture (no-citation)."
+profile = "dispatcher"
+
+[script]
+responses = [{ tool = "state.query", args = { subject = "service:potable-water", asOf = "2026-11-05T00:00:00Z" } }]
+
+[expect]
+tools = ["state.query"]
+error = "citation_missing"

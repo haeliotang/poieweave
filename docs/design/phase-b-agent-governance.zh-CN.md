@@ -210,18 +210,9 @@ claims = [{ text = "...", citations = ["object:..."] }]
 error = "citation_missing"          # optional
 ```
 
-- B1 至少 **72** 个确定性用例（6 工具 × 正常/坏参数/超预算/未授权 = 24，再 × 引用/审批/注入 = 72）；覆盖矩阵：
-
-| 工具 | 正常 | 坏参数 | 超预算 | 未授权 |
-| --- | --- | --- | --- | --- |
-| catalog.describe | 3 | 3 | 3 | 3 |
-| state.query | 3 | 3 | 3 | 3 |
-| plan.propose | 3 | 3 | 3 | 3 |
-| plan.preview_sap | 3 | 3 | 3 | 3 |
-| action.draft | 3 | 3 | 3 | 3 |
-| answer.emit | 3 | 3 | 3 | 3 |
-
-`scripts/check-agent-evals.py` 校验 fixture schema、计数、工具覆盖与审批脚本。
+- B1 恰好 72 个确定性用例：六个工具各 12 个；只有 `action.draft` 的用例包含 `approval/reject/expiry`（其余工具为 auto，不伪造审批）。
+- 每个工具覆盖：normal、bad-args、budget、unauthorized、injection、citation、tool-error、duplicate、truncated、no-citation、bad-schema、unsupported；`action.draft` 额外有 approve/reject/expire。
+- `scripts/check-agent-evals.py` 校验 fixture schema、计数、六工具覆盖、每工具必填 args、审批只允许 `action.draft`、approve/reject/expire 覆盖，并在 `evals/agent` 缺失时失败；CI 与 `verify-all.sh` 都调用。
 - 脚本化 provider 只测 runtime/policy，不测模型能力；现场真实 provider 才报 pass^k（k=5），不进 CI 门禁。
 - 注入指标拆成“运行时 containment 必须 0 次越权/外联”与“模型是否被说服（仅现场报告）”。
 

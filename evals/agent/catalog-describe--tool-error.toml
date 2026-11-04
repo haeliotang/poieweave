@@ -2,7 +2,7 @@ schema = "poie.agent-eval/0.1"
 id = "catalog-describe--tool-error"
 preregistered_at = "2026-11-05"
 prompt = "Deterministic catalog.describe fixture (tool-error)."
-profile = "analyst"
+profile = "dispatcher"
 
 [script]
 responses = [{ tool = "catalog.describe", args = {} }]

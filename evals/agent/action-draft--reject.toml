@@ -6,7 +6,7 @@ profile = "dispatcher"
 approval = { action = "reject" }
 
 [script]
-responses = [{ tool = "action.draft", args = {} }]
+responses = [{ tool = "action.draft", args = { planFingerprint = "plan-base01", actionId = "act-1" } }]
 
 [expect]
 tools = ["action.draft"]

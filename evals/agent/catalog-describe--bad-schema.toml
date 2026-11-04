@@ -1,12 +1,12 @@
 schema = "poie.agent-eval/0.1"
-id = "catalog-describe--approval"
+id = "catalog-describe--bad-schema"
 preregistered_at = "2026-11-05"
-prompt = "Deterministic catalog.describe fixture (approval)."
-profile = "analyst"
-approval = { action = "approve" }
+prompt = "Deterministic catalog.describe fixture (bad-schema)."
+profile = "dispatcher"
 
 [script]
 responses = [{ tool = "catalog.describe", args = {} }]
 
 [expect]
 tools = ["catalog.describe"]
+error = "unsupported_schema"

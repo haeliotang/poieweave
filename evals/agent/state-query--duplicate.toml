@@ -2,11 +2,10 @@ schema = "poie.agent-eval/0.1"
 id = "state-query--duplicate"
 preregistered_at = "2026-11-05"
 prompt = "Deterministic state.query fixture (duplicate)."
-profile = "analyst"
+profile = "dispatcher"
 
 [script]
-responses = [{ tool = "state.query", args = {} }]
+responses = [{ tool = "state.query", args = { subject = "service:potable-water", asOf = "2026-11-05T00:00:00Z" } }]
 
 [expect]
 tools = ["state.query"]
-error = "budget_exceeded"

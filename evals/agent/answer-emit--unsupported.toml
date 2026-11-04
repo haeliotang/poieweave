@@ -1,0 +1,12 @@
+schema = "poie.agent-eval/0.1"
+id = "answer-emit--unsupported"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic answer.emit fixture (unsupported)."
+profile = "dispatcher"
+
+[script]
+responses = [{ tool = "answer.emit", args = { claims = [] } }]
+
+[expect]
+tools = ["answer.emit"]
+error = "not_implemented"

@@ -2,10 +2,10 @@ schema = "poie.agent-eval/0.1"
 id = "plan-propose--budget"
 preregistered_at = "2026-11-05"
 prompt = "Deterministic plan.propose fixture (budget)."
-profile = "analyst"
+profile = "dispatcher"
 
 [script]
-responses = [{ tool = "plan.propose", args = {} }]
+responses = [{ tool = "plan.propose", args = { goal = "potable-water", horizonS = 3600.0 } }]
 
 [expect]
 tools = ["plan.propose"]

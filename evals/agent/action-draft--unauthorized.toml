@@ -5,8 +5,8 @@ prompt = "Deterministic action.draft fixture (unauthorized)."
 profile = "dispatcher"
 
 [script]
-responses = [{ tool = "action.draft", args = {} }]
+responses = [{ tool = "action.draft", args = { planFingerprint = "plan-base01", actionId = "act-1" } }]
 
 [expect]
 tools = ["action.draft"]
-error = "approval_required"
+error = "unauthorized"
