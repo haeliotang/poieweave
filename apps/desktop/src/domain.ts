@@ -305,6 +305,7 @@ export interface AuthStatus {
   hasOperator: boolean;
   signedIn: boolean;
   displayName?: string | null;
+  sessionId?: string | null;
   sessionExpiresAtMs?: number | null;
 }
 

@@ -59,8 +59,6 @@ impl Db {
         self.connection
             .execute_batch(
                 "PRAGMA journal_mode = WAL;
-                 DROP TABLE IF EXISTS events;
-                 DROP TABLE IF EXISTS notes;
                  CREATE TABLE IF NOT EXISTS operators (
                      id INTEGER PRIMARY KEY CHECK (id = 1),
                      display_name TEXT NOT NULL,
@@ -74,7 +72,15 @@ impl Db {
                      at_ms INTEGER NOT NULL,
                      actor TEXT NOT NULL,
                      event TEXT NOT NULL,
-                     detail TEXT NOT NULL
+                     detail TEXT NOT NULL,
+                     session_id TEXT,
+                     turn_id INTEGER,
+                     args_sha256 TEXT,
+                     result_sha256 TEXT,
+                     sap_record_id TEXT,
+                     prev_hash TEXT,
+                     hash TEXT,
+                     legacy INTEGER NOT NULL DEFAULT 0
                  );
                  CREATE INDEX IF NOT EXISTS audit_by_time ON audit(at_ms DESC, id DESC);
                  CREATE TABLE IF NOT EXISTS inference_config (
@@ -83,9 +89,63 @@ impl Db {
                      model TEXT NOT NULL,
                      has_key INTEGER NOT NULL,
                      updated_at_ms INTEGER NOT NULL
-                 );",
+                 );
+                 CREATE TABLE IF NOT EXISTS approval_tokens (
+                     id TEXT PRIMARY KEY,
+                     session_id TEXT NOT NULL,
+                     run_id TEXT NOT NULL,
+                     call_id TEXT NOT NULL,
+                     tool TEXT NOT NULL,
+                     tool_version TEXT NOT NULL,
+                     subject_digest TEXT NOT NULL,
+                     policy_version TEXT NOT NULL,
+                     args_json_redacted TEXT NOT NULL,
+                     impact_json TEXT NOT NULL,
+                     citations_json TEXT NOT NULL,
+                     state TEXT NOT NULL,
+                     created_at_ms INTEGER NOT NULL,
+                     decided_at_ms INTEGER,
+                     started_at_ms INTEGER,
+                     expires_at_ms INTEGER NOT NULL
+                 );
+                 CREATE TABLE IF NOT EXISTS agent_runs (
+                     run_id TEXT PRIMARY KEY,
+                     schema_version TEXT NOT NULL,
+                     session_id TEXT NOT NULL,
+                     state_json TEXT NOT NULL,
+                     created_at_ms INTEGER NOT NULL,
+                     updated_at_ms INTEGER NOT NULL,
+                     expires_at_ms INTEGER NOT NULL
+                 );
+                 CREATE INDEX IF NOT EXISTS approval_by_run ON approval_tokens(run_id, state);
+                 PRAGMA user_version = 2;",
             )
-            .map_err(|error| format!("migrate: {error}"))
+            .map_err(|error| format!("migrate: {error}"))?;
+        // Existing databases created before B0 have an audit table without the
+        // new nullable columns; add them without touching historical rows.
+        for column in ["session_id", "turn_id", "args_sha256", "result_sha256", "sap_record_id", "prev_hash", "hash"] {
+            if !self.has_column("audit", column)? {
+                let sql = format!("ALTER TABLE audit ADD COLUMN {column} TEXT");
+                self.connection.execute_batch(&sql).map_err(|error| format!("migrate audit {column}: {error}"))?;
+            }
+        }
+        if !self.has_column("audit", "legacy")? {
+            self.connection
+                .execute_batch("ALTER TABLE audit ADD COLUMN legacy INTEGER NOT NULL DEFAULT 0")
+                .map_err(|error| format!("migrate audit legacy: {error}"))?;
+        }
+        Ok(())
+    }
+
+    fn has_column(&self, table: &str, column: &str) -> Result<bool, String> {
+        let mut statement =
+            self.connection.prepare(&format!("PRAGMA table_info({table})")).map_err(|error| error.to_string())?;
+        let columns = statement
+            .query_map([], |row| row.get::<_, String>(1))
+            .map_err(|error| error.to_string())?
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|error| error.to_string())?;
+        Ok(columns.iter().any(|name| name == column))
     }
 
     pub fn operator(&self) -> Result<Option<OperatorRecord>, String> {

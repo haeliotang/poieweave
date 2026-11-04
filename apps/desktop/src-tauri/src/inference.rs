@@ -216,7 +216,11 @@ mod tests {
     }
 
     fn signed_in_session() -> SessionState {
-        SessionState::new(Some(Session { display_name: "Ada".into(), expires_at_ms: auth::now_ms() + 60_000 }))
+        SessionState::new(Some(Session {
+            session_id: "test-session".into(),
+            display_name: "Ada".into(),
+            expires_at_ms: auth::now_ms() + 60_000,
+        }))
     }
 
     #[test]
