@@ -184,3 +184,4 @@ M12 多站点联邦：**进行中（模拟部分完成）**——M12.1–M12.4 �
 - 2026-11-03：准备 v0.1.1：桌面版本 0.1.1；tag 自动发布 Linux/Windows/macOS universal 产物；#112 P18–P20 全部完成并关闭。
 - 2026-11-05：Phase A 门禁 PASS（`VALIDATION-A`，907b246）；A0 合并（#137）：宿主鉴权、sandbox no-follow/原子写、移除 demo 授权、UI 合成预览；宿主测试 13。
 - 2026-11-05：Phase A1 核心合并（#139）：`poie-digest`、`poie-objects`、host `ontology_*`、Capabilities 对象详情；Rust 列表测试 395；A1 剩余 SDK 生成与 action preview。
+- 2026-11-05：A1 完成（#141）：`poie-sdkgen` + 提交的 TypeScript SDK + CI 漂移检查；host `ontology_action_preview`；Rust 列表测试 396。
