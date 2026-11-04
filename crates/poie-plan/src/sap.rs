@@ -9,6 +9,8 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
+use serde::{Deserialize, Serialize};
+
 use poie_state::action::{
     Action, ActionLedger, ActionState, Authorization, BudgetItem, Precondition, Reversibility, VerificationSpec,
 };
@@ -23,7 +25,7 @@ pub struct SapValidation {
     pub review_checks: usize,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AssumedContext {
     pub now_ms: i64,
     pub holds_command_ownership: bool,
@@ -32,14 +34,14 @@ pub struct AssumedContext {
     pub state_version: BTreeMap<String, u64>,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct CheckPreview {
     pub check: String,
     pub status: String, // observed|assumed|failed|unknown
     pub detail: String,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct SapPreview {
     pub checks: Vec<CheckPreview>,
     pub assumed: Vec<String>,

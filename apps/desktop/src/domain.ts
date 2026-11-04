@@ -368,3 +368,12 @@ export interface OntologyDetail {
   object: OntologyObject;
   links: { typeId: string; from: string; to: string }[];
 }
+
+export interface AgentResult {
+  runId: string;
+  status: string;
+  text: string;
+  citations: { kind: string; id: string; fingerprint?: string | null; sha256?: string | null; asOf?: string | null; source: string }[];
+  tools: string[];
+  error?: string | null;
+}
