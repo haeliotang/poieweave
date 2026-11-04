@@ -119,7 +119,7 @@ MVP 不生成新的 SAP 动作实例；仅把计划动作和目录元数据关�
 | `catalog.describe` | 无 | Ontology Catalog | 无 |
 | `state.query` | subject/type, asOf | 对象/链接/能力/依赖 | 无 |
 | `plan.propose` | goal, horizon, deadline | proposed plan | 无（只返回） |
-| `plan.preview_sap` | planFingerprint, assumed context | SAP validation summary（只读 dry-run，假定项显式标注） | 无 |
+| `plan.preview_sap` | planFingerprint（host 解析） | SAP validation summary（只读 dry-run，假定项显式标注） | 无 |
 | `action.draft` | planFingerprint, actionId | 动作草稿/预览（需 Phase B 审批后执行） | 无 |
 | `answer.emit` | claims, suggestions | 最终回答协议（Phase B） | 无 |
 

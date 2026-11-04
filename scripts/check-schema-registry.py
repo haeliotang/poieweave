@@ -26,6 +26,13 @@ def main() -> int:
         for found in SCHEMA.findall(path.read_text(encoding="utf-8")):
             if found not in registered:
                 problems.append(f"{path.relative_to(ROOT)}: unregistered schema {found}")
+    for root in (ROOT / "crates" / "poie-objects" / "src", ROOT / "crates" / "poie-sdkgen" / "src", ROOT / "apps" / "desktop" / "src" / "sdk"):
+        for path in root.rglob("*"):
+            if path.suffix not in {".rs", ".ts"}:
+                continue
+            for found in SCHEMA.findall(path.read_text(encoding="utf-8")):
+                if found not in registered:
+                    problems.append(f"{path.relative_to(ROOT)}: unregistered schema {found}")
     if problems:
         for problem in problems:
             print(problem)

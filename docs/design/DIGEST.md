@@ -46,6 +46,7 @@ domain/version "\n" canonical_json(payload)
 | `poie.approval/0.1` | tool/action + subject + session + policy version + expiry | B/C/D 审批绑定 |
 | `poie.evidence/0.1` | evidence id + kind + fingerprint + source digest | D 证据绑定 |
 | `poie.contracts/0.1` | contract id/version/revision | D manifests |
+| `poie.agent-audit/0.1` | audit record without hash | B audit chain |
 
 审批 digest 的字段顺序由各工具显式定义；不得把未提供字段拼成空字符串而不声明（用 `null` 并纳入规范）。
 

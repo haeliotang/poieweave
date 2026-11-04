@@ -1,96 +1,88 @@
 # Phase B 设计门禁复验（独立）
 
-- 校验对象：[Phase B](phase-b-agent-governance.zh-CN.md)、[PLATFORM](PLATFORM.zh-CN.md)、[SCHEMAS](SCHEMAS.md)、[DIGEST](DIGEST.md)、[Phase A](phase-a-ontology-product.zh-CN.md)、[README](README.zh-CN.md)；代码 `apps/desktop/src-tauri/src/{auth,db,inference,http,lib,objects}.rs`、`crates/poie-{objects,plan,state}`、`scripts/`、CI。
-- 快照：分支 `design/phase-b-closure`，HEAD **`ef96756`**；写本文件前工作树干净。本报告只对该快照负责。
-- 方法：只读对照；运行 `cargo test -p poie-objects -p poie-plan --locked`（25 通过）、`scripts/check-schema-registry.py`（24 schemas，exit 0）、`check-docs.py`（exit 0）、`check-test-matrix.py`（380/396，exit 0）；用 `cargo tree` 检查依赖。未跑全量 `cargo test`，未调用真实 provider 或 Tauri 运行时，未改源码/设计/git；只覆盖写本文件。
-- 结论：**方向正确，仍有 3 个 B 阻断项与 7 组 R 残留；不能开工。**
+- 校验对象：[Phase B](phase-b-agent-governance.zh-CN.md)、[PLATFORM](PLATFORM.zh-CN.md)、[SCHEMAS](SCHEMAS.md)、[DIGEST](DIGEST.md)、[Phase A](phase-a-ontology-product.zh-CN.md)、[README](README.zh-CN.md)；代码 `crates/poie-objects`、`crates/poie-plan`、`apps/desktop/src/sdk/ontology.ts`、`apps/desktop/src/App.tsx`、`apps/desktop/src-tauri/src/{auth,db}.rs`、`scripts/`、CI。
+- 快照：分支 `design/phase-b-closure`，HEAD **`07f4ee6`**；写本文件前工作树干净。本报告只对该快照负责。
+- 方法：只读对照并运行：`cargo test --locked -p poie-objects -p poie-plan`（25 通过）、`poie-sdkgen --check`（exit 0）、`check-schema-registry.py`（24 schemas，exit 0）、`check-docs.py`（exit 0）、`check-test-matrix.py`（380/396，exit 0）、`cargo tree` 依赖边界。未跑全量 `cargo test`，未调用真实 provider/Tauri；未改源码/设计/git，只覆盖本文件。
+- 结论：**B1/B3/B7 的核心矛盾已闭合；但 R1/R3/R4/R5/R7 及 B1/B3/B7 的字段/文档残留仍为 REQUIRED，不能开工。**
 
 ## 0. 判定矩阵
 
 | 项 | 判定 | 一句理由 |
 | --- | --- | --- |
-| B1 六工具契约 | **BLOCKED** | 与 A 冻结的函数目录不是同一套，且无工具版本/上限 |
-| B2 只读 SAP preview | PASS* | 只读约束已写；但 A/B 都声称拥有该 API，归属与命名需合一 |
-| B3 审批表/状态机/原子消费 | **BLOCKED** | B 与 PLATFORM 的消费前置状态矛盾，且有重复执行窗口 |
-| B4 registry/锁/RunState/取消 | PASS* | 核心已写；`status` 值域与取消落审计未冻结 |
-| B5 先审批后执行/plan digest | PASS | `plan.propose` auto、`action.draft` confirm、subject 含 plan/action 已明确 |
-| B6 `answer.emit` 协议 | PASS* | 协议/`citation_missing`/suggestions 已写；citation 示例不合 EvidenceRef |
-| B7 审计链/迁移/重建 | **BLOCKED** | 日志无 `turnId/toolVersion`，索引却加 `turn_id`，重建不可等价 |
-| R1 | REQUIRED | 错误码表漏 `audit_integrity_failed`；`CommandError` 仍无类型定义 |
-| R2 | PASS | analyst/dispatcher 白名单明确，analyst 无 `action.draft` |
-| R3 | REQUIRED | 预算 char/byte 与 32 KiB context 口径未定义；截断算法未定义 |
-| R4 | REQUIRED | citation kind `evidence` 非法；示例无 digest/fingerprint；`evidenceRefs` 未入 RunState |
-| R5 | REQUIRED | 45 例与“6×4×3”矩阵算术不符；无覆盖表/`check-agent-evals.py` |
-| R6 | REQUIRED | 仍在用 `App.tsx:1021` 的 `inference_complete`；Settings 实际用 `inference_test`；无 UI 测试 |
-| R7 | REQUIRED | checker 只扫 docs/design，未实现 SCHEMAS §检查器的规则 3/4 |
-| R8 | REQUIRED | `SCHEMAS.md:4/62` 仍称 checker “当前尚未存在/A0 加入” |
-| R9 | REQUIRED | capability 生命周期（寿命/会话绑定/撤销/测试）被删掉 |
+| B1 六工具契约 | PASS* | 六个名称/SDK 已对齐，B 表已有版本/上限；A/B preview 参数仍不一致 |
+| B2 只读 SAP preview | PASS* | 只读约束成立；`preview_plan_through_sap` 在 crates 中仍不存在 |
+| B3 审批状态机/原子消费 | PASS* | `pending→approved→executing→consumed` 已一致；`started_at` 与崩溃/取消路径仍有缺口 |
+| B4 registry/锁/取消 | PASS* | 核心已写；`status` 值域与等待审批时取消未冻结 |
+| B5 先审批后执行 | PASS | `plan.propose` auto、`action.draft` confirm、subject 绑定明确 |
+| B6 `answer.emit` | PASS* | `EvidenceRef`/digest/`citation_missing` 已写；`evidenceRefs` 仍悬空（R4） |
+| B7 审计链/迁移/重建 | PASS* | 记录已含 schema/turnId/toolVersion/cancelled/interrupted；索引迁移仍不完整 |
+| R1 错误码/包络 | **REQUIRED** | 缺 `policy_blocked`/`unsupported_schema`，`CommandError` 无 Rust 定义 |
+| R2 profile 白名单 | PASS | analyst 无 `action.draft`，dispatcher 不摄入外部文档 |
+| R3 bytes/截断 | **REQUIRED** | `max_prompt_bytes` 与 `promptCharsUsed` 冲突，截断标记未入模型 |
+| R4 citation/evidenceRefs | **REQUIRED** | 示例已有 sha256；但工具输出/RunState 无 `evidenceRefs` |
+| R5 eval 矩阵 | **REQUIRED** | 45 与 6×4×3=72 不符，且 `check-agent-evals.py` 不存在 |
+| R6 UI 迁移 | OPTIONAL | 设计目标明确；`App.tsx:1021` 仍用 `inference_complete` |
+| R7 schema checker | **REQUIRED** | 只扫 `docs/design`，未实现 SCHEMAS 的规则 3/4 |
+| R8 checker 旧文案/preview 归属 | PARTIAL | 旧文案已修；A:275 与 B:81 仍重复声明 preview，A1 符号缺失 |
+| R9 capability 生命周期 | PARTIAL | 寿命/会话绑定/撤销已写；无测试，随机来源未定义 |
 
-## 1. B 阻断项
+## 1. 已闭合的核心
 
-### B1（阻断）六工具不是 A 函数目录的投影
+- **B1 名称与 SDK**：`crates/poie-objects/src/lib.rs:387-394` 的 `functions()` 已是 `catalog.describe`、`state.query`、`plan.propose`、`plan.preview_sap`、`action.draft`、`answer.emit` 六项，`evidence.get`/`sim.run` 已移除；`apps/desktop/src/sdk/ontology.ts:8` 的 `FunctionId` 与之一致；`poie-sdkgen -- --check` 通过，catalog digest 已更新。B:64-71 现在给出每个工具的 `1.0.0` 版本与每轮上限。A:119-124 也改成同一组六个名称。
+- **B3 状态机**：B:106-107 固定 `agent_approve` 的 `pending→approved`（`WHERE state='pending' AND expires_at>?`）与 `agent_resume` 的 `approved→executing` 原子 claim（`WHERE state='approved' AND expires_at>? AND session_id=?`）；B:116 再执行一次并置 `consumed`，并发第二个 resume 得到 `approval_mismatch`（B:109）。PLATFORM:162/166 已改为同一顺序，不再写“`WHERE state='pending'` 原子消费”。B:121 已写 capability 在审批后签发、绑定 session/tool/version/argsSha256/tokenId、单次使用、登出/接管/降级/取消时撤销。
+- **B7 审计记录**：B:169-174 已含 `schema`、`turnId`、`callId`、`tool`、`toolVersion`、`decision` 的 `cancelled|interrupted`、`sapRecordId`、`prevHash`/`hash`；B:181 要求从日志重建索引；B:220 已登记 `audit_integrity_failed`。原“日志无法派生 `turn_id`”的矛盾已消除。
 
-- A:119–126 冻结了六个函数（含 `evidence.get`/`sim.run`），并明确“B 的 Tool Catalog 是这些函数的投影（同名/同参数），不得另造一套工具语义”；A:122 的 `plan.preview_sap` 接收 host 持有的 **Plan object**，明确“不接受 planRef”。
-- B:64–74 的六工具替换为 `action.draft`/`answer.emit`，移除 `evidence.get`/`sim.run`；B:69 的 `plan.preview_sap` 只接收 `{planFingerprint}`。这不是同名/同参数投影，两个冻结文档对“B1 六工具”给出不同集合。
-- B:66 的 `catalog.describe` 输出 `OntologyCatalog`；A 的 `functions()`（`crates/poie-objects/src/lib.rs:387–405`）仍列出 `evidence.get`/`sim.run`，而 B:73 声称它们不向模型暴露。模型读取 Catalog 时会看到被 B 排除的工具；B 没有定义过滤或改写 A Catalog 的函数目录。
-- B:74/95/129 要求 tool version，但六工具表没有版本号；B:123 只有全局预算，没有逐工具上限。所谓“封闭的版本化 Tool Catalog”仍不可由代码直接落地。
+## 2. 仍未闭合（REQUIRED，除非注明）
 
-**最小修复**：二选一并写死：① 更新 A:119–126，使 B 的六工具成为正式的超集/映射（含 `action.draft`/`answer.emit`、preview 输入、`evidence.get`/`sim.run` 的隐藏规则）；或 ② 把 B 六工具改回 A 的四项投影 + host-only 扩展，并说明 `catalog.describe` 如何过滤。补 `toolVersion`/每工具上限。
+### B1 参数/输出仍未完全同名同参数
+- A:122 写 `plan.preview_sap` 输入为 `planFingerprint, assumed context`，B:69 只接受 `{planFingerprint}`；A:126 却坚持“同名/同参数”。`assumed context` 由 host 解析可以成立，但文档没有这样写死，仍是两份冻结契约的差异。
+- A:120 的 `state.query` 输出含“能力”，B:67 输出只有 `{objects,links,verdict,dependencies}`；A 的 `FunctionType` 的 `input_schema/output_schema` 仍是 `{"type":"object"}`（`lib.rs:400-401`），没有 B 的 args 结构。B:76 把工具契约放在 `poie-governance::tools`，该 crate 尚不存在；实施前需明确 A Catalog 只承载名称，B 才承载参数/版本。
 
-### B3（阻断）审批消费的前置状态矛盾，且“执行后置 consumed”可重复执行
+### B3 共享类型与恢复路径
+- B 的 token 表含 `started_at`（B:99），B:107 也写 `started_at=?`；PLATFORM:143-159 的共享 `ApprovalToken` 没有 `started_at_ms`，且用 `created_at_ms/decided_at_ms` 命名。B3 已对齐状态顺序，但共享原语仍不能表达“开始执行时间”。
+- B:107 的 `executing` 在进程崩溃后没有恢复规则：B:144 只保留“已批准但未消费”的 token，`executing` 会永久卡住；`agent_cancel` 等待审批时的 token 取消路径也未写（state 枚举无 `cancelled`）。B:107 的“失败→approved”可重试也没有说明重复执行的幂等边界。
 
-- B:100–112 的流程是：`agent_approve` 置 `approved` → `agent_resume` 校验后签发 capability → 执行一次 → 置 `consumed`；SQL 也是 `WHERE state='approved'`（B:103–104）。
-- PLATFORM:161 却写“`UPDATE ... WHERE state='pending' AND expires_at>?` 原子消费”。按 PLATFORM 实现，`agent_approve` 之后 token 已不是 `pending`，消费永远匹配不到；按 B 实现，PLATFORM 的“pending 原子消费”又不成立。两份上级契约直接冲突。
-- B:112 的“执行一次，置 consumed”没有说明消费发生在执行前还是执行后。若在执行后，两个并发 `agent_resume` 可同时通过 `approved` 检查并各执行一次；若在执行前，崩溃会丢失已批准的执行。B 没有 `executing`/`consuming` 中间态或 capability 的单一消费点。
-- 该问题同时吞掉 R9：B 没有 capability 的寿命（旧文本要求 ≤300s）、`Session.expires_at` 取 min、登出/接管/降级撤销、随机来源与测试。
+### B7 索引与重建等价
+- B:180 只列 `turn_id/args_sha256/result_sha256/sap_record_id/prev_hash/hash`，没有覆盖日志记录的 `eventId/schema/sessionId/runId/callId/tool/toolVersion/decision`；现有 `audit` 表是 `at_ms/actor/event/detail`（`db.rs:71-79`），按此迁移无法逐字段重建等价索引。
+- B:177 用 `poie.agent-audit/0.1` 作 hash domain；DIGEST §1/§1.2 与 SCHEMAS 的 digest domain 表均未登记该域。B §15 也只写“重建/迁移”，没有 B7 要求的逐字段、含 legacy 段的断言。
 
-**最小修复**：冻结唯一顺序与 SQL：`pending → approved`（`WHERE state='pending' AND expires_at>?`），`approved → consuming`（原子 claim，`WHERE state='approved'`），capability 单次签发，执行后 `consuming → consumed`；失败可 `consuming → failed` 或回退需明确。补 approve/reject/expire 的原子 SQL、capability 寿命/会话绑定/撤销测试，并让 PLATFORM:161 与 B 一致。
+### R1 错误码与类型
+- B:220 有 17 个码，但缺 PLATFORM:62 的 `policy_blocked`（B/C/D）与 PLATFORM:51 的 `unsupported_schema`（B 的 RunState schema 解析需要）；`preview_unavailable` 也未在 B 侧映射。
+- B:60/220 只说 `Result<T, CommandError>`，没有 `CommandError` 的 Rust 类型/`details` 约束；PLATFORM:45 也只有 JSON 形状。R1 仍未闭合。
 
-### B7（阻断）审计记录与可重建索引不等价
+### R3 计量与截断
+- B:129 用 `max_prompt_bytes=4096`，B:140 的 RunState 仍是 `promptCharsUsed`；同一字段在 byte/char 之间自相矛盾。
+- B:129 要求截断标记 `truncated=true`，但 B:135-141 的 `toolCalls`/`RunState` 和 B:67-71 的工具输出都没有 `truncated` 字段；`max_context_bytes` 是否含 system prompt、多个 tool results 也未定义。截断算法仍不可实现/测试。
 
-- B:163–166 的审计记录没有 `toolVersion`，也没有 `turnId`；B:172 却要求 SQLite `audit` 表加 `turn_id`。B:173 要求 `audit_rebuild` 从日志重放且“结果与索引一致”——日志无法派生 `turn_id`，重建必然不等价（除非额外定义 run/turn 映射，但当前没有）。
-- 记录只有 `"tool"`，没有版本；token 和 `RunState` 都有 `toolVersion`。审计无法区分同名工具的不同版本，违反上一轮 B7 的 `tool@version` 要求。
-- B:164 的 `decision` 枚举没有 `cancelled`/`interrupted`；B:140 明确取消后写 `cancelled`。取消/重启事件落不进审计枚举。
-- B:173 的 `audit_integrity_failed` 不在 B:212 的错误码表中，R1 的码表与 B7 的自述不一致。
+### R4 `evidenceRefs` 悬空
+- B:150 的 `Citation` 复用 `EvidenceRef`、B:155 的示例含 `sha256`，digest 部分已修。
+- 但 B:159 要求 citation 精确存在于“工具结果的 `citations/evidenceRefs`”；B:67/70/71 的输出没有 citations/evidenceRefs，RunState 只有 `citations[]`（B:137/141）。实现者无法按字面校验。
 
-**最小修复**：审计记录加入 `toolVersion` 与 `turnId`（或从记录中去掉 `turn_id` 并说明派生规则），加入 `cancelled`/`interrupted` decision，登记 `audit_integrity_failed`；重建测试逐字段断言，包括 legacy 段。
+### R5 eval 覆盖
+- B:214 说“至少 45 个”，同一句又要求“6 工具 × 正常/坏参数/超预算/未授权 × 引用/审批/注入”；按笛卡尔积至少 72 例，既无逐用例覆盖表，`scripts/check-agent-evals.py` 在 scripts 目录中不存在。B 的验收 #5（CI 确定性 eval）仍不可验证。
 
-## 2. 通过项与残留
+### R7 检查器
+- `scripts/check-schema-registry.py:21` 只遍历 `docs/design/**/*.md`，且只做登记检查；SCHEMAS:55 却声称“扫描仓库中的 `schema = "poie.*"` 与 `schemaVersion`”，规则 3/4（多 major 兼容、SDK/Rust 常量一致）均未实现。B:231 还承诺 `check-agent-evals.py`，同样缺失。
 
-- **B2 PASS***：B:77–88 的只读约束、`assumed` 展示、禁止 `validate_plan_through_sap`、ledger/authorization 计数测试均已明确；`cargo tree -p poie-plan` 无 `poie-exec`。但 B:69/79 称“新增”，A:275 已声明 Phase A 新增同一 API；实际 `poie-plan/src/sap.rs` 只有会构造 `Authorization` 的 `validate_plan_through_sap`（sap.rs:77–82），没有 preview。必须明确归属（A 已承诺 vs B 新增）并统一 `SapPreview`/`SapPreviewDto` 命名；这是 R8/R4 的文档修复，不是 B2 的安全否决。
-- **B4 PASS***：B:119–140 的 registry、锁外 provider、多 `tool_calls`、预算、`interrupted`、取消丢弃结果均已写；`RunState` 含 `argsJsonRedacted`/`impact`/`citations`。残留：`status` 没有值域（created/running/waiting_approval/completed/failed/cancelled/interrupted 需列出）；等待审批时的 cancel 路径未写；取消审计 decision 与 B7 冲突。
-- **B5 PASS**：B:75/107–115 固定“审批 → capability → 执行”，`plan.propose` auto、`action.draft` confirm、subject 含 `planFingerprint + actionId + argsSha256`；操作员批的是具体 action，不是未来计划。该通过受 B3 的消费矛盾约束。
-- **B6 PASS***：B:144–156 定义 claims/citations、`citation_missing`、suggestions 不参与事实校验、UI 只渲染文本；满足 B6 枚举。残留见 R4：示例 citation 无 digest/fingerprint，`state.query` 的 `object/evidence` 中 `evidence` 不是 PLATFORM §5.1 的合法 kind，RunState 只写 `citations[]` 却要求匹配 `evidenceRefs`。
-- **B0/现有代码**：`auth.rs:22–26` 仍无 `session_id`，`db.rs:58–89` 仍启动 DROP、无 `user_version`，`lib.rs:112–128` 仍在 DB 锁内做 HTTP。这些是 B0 的实施对象；设计已点名，未计为设计阻断。
-- **A1 实际缺口**：A 文档声明 `preview_plan_through_sap`，但 `crates/poie-plan` 无该符号；B 依赖它。实施前应先补 A1 或明确由 B 实现；否则 B2/B5 的 preview 无法调用。
+### R8/R9 部分残留
+- SCHEMAS:4/62 的“当前尚未存在/A0 加入”已修正，R8 的旧文案部分通过。
+- 但 A:275 仍写 `Phase A 新增 preview_plan_through_sap`，B:81 又写 `poie-plan` 新增；两份文档重复归属。实际 `crates/poie-plan/src/sap.rs` 只有 `validate_plan_through_sap`（sap.rs:88），`SapPreview`/`AssumedContext` 也不存在，A1 缺口未闭合。B2/B5 的 preview 仍无执行入口。
+- R9 的 B:121 已写寿命/绑定/撤销，但 B §15 没有 capability 生命周期测试；`128-bit` 随机来源只覆盖 Session（B:56），未覆盖 capability。
 
-## 3. R 残留
-
-- **R1**：B:212 已列 16 个码，但漏 `audit_integrity_failed`（B:173）与 `preview_unavailable`/`policy_blocked`（PLATFORM:55/62 及 A 的 PreviewError 映射）；`CommandError` 只有 JSON 形状，没有 Rust 类型/`details` 约束。补全码表与类型。
-- **R2 PASS**：B:178–184 白名单正确；analyst 无 `action.draft`，dispatcher 不摄入外部文档；`policyVersion` 固定。
-- **R3**：B:120/123 同时有 `max_prompt_chars=4000`、`max_tool_result_chars=20000`、`max_context_chars=32 KiB`，但没有定义 char 还是 byte、context 是否含 tool results/system prompt、超限时如何截断且保留 citation。现有 `inference.rs:146–151` 用 `.len()`（byte）；CJK 下 20000 chars 可超过 32 KiB。补计量与截断规则。
-- **R4**：B:149 的 citation 只有 `kind/id/source`，不满足 B:144 与 PLATFORM:122 的“至少一个 fingerprint|sha256”；B:67 的 `evidence` kind 不在 PLATFORM:122 的值域；B:153 的 `evidenceRefs` 在 B:131/135 的 RunState 中不存在。统一结构并给合法示例。
-- **R5**：B:206 的“6 工具 × 4 类参数 × 3 类语义”若按笛卡尔积至少 72 例，与“45 例”矛盾；没有逐用例覆盖表，`scripts/check-agent-evals.py` 尚不存在且未定义计数/矩阵校验。补表并明确 45 或 72。
-- **R6**：B:216 说 `inference_complete` 只留 Settings，但 `App.tsx:1021` 仍由 Agent composer 调用，Settings 测试实际用 `inference_test`（App.tsx:1299）；`inference_complete` 没有 Settings 消费者。应删除该命令或改写 Settings，避免保留自由聊天回退；B 没有 Playwright/UI 验收用例。
-- **R7**：`scripts/check-schema-registry.py` 只扫 `docs/design/*.md`，明确跳过 PLATFORM/SCHEMAS/DIGEST，未扫描 Rust/SDK；SCHEMAS:55–60 要求扫描仓库、`schemaVersion`、多 major 兼容说明、生成物与 Rust 常量一致，实际只做了登记检查（4 条规则中的 1–2 条）。CI 步骤已加（`.github/workflows/ci.yml:40`），但 checker 名不副实；`check-agent-evals.py` 仍未建。
-- **R8**：`SCHEMAS.md:4` “当前尚未存在”与 `:62` “A0 加入根 CI”均与事实不符（checker 由本 HEAD 的 B 提交新增）；`PLATFORM:9` “A0 新增”同样时点错误。A:275 与 B:79 对 preview 的归属重复；A:126 与 B:64–74 的工具集冲突（见 B1）。
-- **R9**：见 B3；capability 的 ≤300s、session 绑定、登出/接管/降级撤销、128-bit 随机来源、单次消费测试均未在 B 中保留。
-
-## 4. 已执行的检查
+## 3. 已执行的检查
 
 ```text
-cargo test -p poie-objects -p poie-plan --locked   25 passed
-python3 scripts/check-schema-registry.py            OK (24 schemas)
-python3 scripts/check-docs.py                       OK
-python3 scripts/check-test-matrix.py                OK (380/396)
-cargo tree -p poie-plan --edges normal              no poie-exec
-Cargo.lock / desktop Cargo.lock                     no jsonschema evaluator
+cargo test --locked -p poie-objects -p poie-plan        25 passed
+cargo run --locked -q -p poie-sdkgen -- --check         exit 0
+python3 scripts/check-schema-registry.py                OK (24 schemas)
+python3 scripts/check-docs.py                           OK
+python3 scripts/check-test-matrix.py                    OK (380/396)
+cargo tree -p poie-plan --edges normal                  no poie-exec
+cargo tree -p poie-objects --edges normal               no poie-exec
 ```
 
-`schemars` 只出现在 Tauri 依赖闭包中，是 schema 生成器，不是运行时 JSON Schema 求值器；B1 的“无求值器”方向成立。
+## 4. 边界
 
-## 5. 边界
-
-本报告只读对照 `ef96756`；未验证真实 provider、Tauri 运行时、SQLite 并发与桌面 Playwright。B0 的 session/audit/DB 改动尚未实现，故只按设计契约审查；不要求重写架构，B1/B3/B7 与 R 项都可在现有分层内定点修订。
+本报告是设计门禁审查，不验证真实 provider、Tauri 运行时、SQLite 并发或桌面 Playwright。B0 的 `session_id`/`user_version`/删除启动 DROP 仍未实现（`auth.rs:22-26`、`db.rs:58-89`），按 B §5 属实施第一步，不计为设计阻断；但 `preview_plan_through_sap` 的 A1 缺口和上述 R1/R3/R4/R5/R7 必须在开工前闭合。未改源码/设计/git，只覆盖本文件。
 
 VERDICT: CHANGES_REQUIRED

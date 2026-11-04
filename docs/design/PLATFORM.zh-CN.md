@@ -155,6 +155,7 @@ pub struct ApprovalToken {
     pub state: String, // pending|approved|rejected|expired|executing|consumed
     pub created_at_ms: u64,
     pub decided_at_ms: Option<u64>,
+    pub started_at_ms: Option<u64>,
     pub expires_at_ms: u64,
 }
 ```

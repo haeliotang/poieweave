@@ -78,11 +78,7 @@ A 的 `poie-objects::functions()` 在 B 首 PR 同步改为这同一组六个函
 
 ### 6.1 只读 SAP preview（B2）
 
-`poie-plan` 新增：
-
-```rust
-pub fn preview_plan_through_sap(plan: &Plan, assumed: &AssumedContext) -> Result<SapPreview, PreviewError>;
-```
+复用 Phase A 定义的 `poie-plan::preview_plan_through_sap(plan, assumed)`（A §7.2.1），host 按 `planFingerprint` 解析 Plan：
 
 - 不创建/保存 `Authorization`，不写 `ActionLedger`，不产生 transition；
 - ownership/reservations/authorization 默认 `assumed`，UI 单独显示；
@@ -118,7 +114,7 @@ citations_json, state TEXT, created_at, decided_at, started_at, expires_at
 
 `plan.propose` auto；`action.draft` 审批；`answer.emit` auto。
 
-Capability 生命周期：审批通过后才签发；绑定 sessionId/tool/version/argsSha256/tokenId；单次使用；登出/接管/降级/取消时从 runtime registry 撤销；过期由执行前检查。
+Capability 生命周期：审批通过后才签发；绑定 sessionId/tool/version/argsSha256/tokenId；单次使用；128-bit 随机来自 `getrandom`；寿命取 `min(300s, session.expires_at-now)`；登出/接管/降级/取消时从 runtime registry 撤销；过期由执行前检查。测试覆盖签发时机、过期、参数变更、跨会话复用、撤销。
 
 ## 8. Provider 循环与运行状态（B4/R3）
 
@@ -134,10 +130,11 @@ Capability 生命周期：审批通过后才签发；绑定 sessionId/tool/versi
 schemaVersion, runId, sessionId, profile, status,
 turns[{ index, user?, assistant?, toolCalls[{
   id, tool, toolVersion, argsSha256, argsJsonRedacted,
-  resultSha256, resultSummary, citations[], decision, startedAt, finishedAt
+  resultSha256, resultSummary, citations[], evidenceRefs[], truncated,
+  decision, startedAt, finishedAt
 }]}],
 pendingApproval?{ tokenId, tool, subjectDigest, argsJsonRedacted, impact, citations[], expiresAt },
-budget{stepsUsed,toolCallsUsed,promptCharsUsed},
+budget{stepsUsed,toolCallsUsed,promptBytesUsed},
 citations[], error?{code,message}, createdAt, updatedAt
 ```
 
@@ -177,7 +174,7 @@ citations[], error?{code,message}, createdAt, updatedAt
 - `hash = sha256("poie.agent-audit/0.1\n" + canonical_json(record_without_hash))`，含 `prevHash`；
 - genesis：`prevHash = null`，文件首行；每行单写者、追加 + `fsync`，尾部残行在读取时忽略并记录；
 - 每日 `anchors/<date>.json`：`{date, lastHash, prevAnchorHash}`；锚点链只防本地截断/替换的检测，不防整体替换；
-- `db.rs` 用 `PRAGMA user_version` 迁移：`audit` 表加 `turn_id/args_sha256/result_sha256/sap_record_id/prev_hash/hash`；历史行标记 legacy，不伪造链；删除启动 DROP。
+- `db.rs` 用 `PRAGMA user_version` 迁移：`audit` 表加 `event_id/session_id/run_id/turn_id/call_id/tool/tool_version/decision/args_sha256/result_sha256/sap_record_id/prev_hash/hash`；历史行标记 legacy，不伪造链；删除启动 DROP；重建时按这些字段与日志逐字段比对。
 - 重建：`audit_rebuild`（或测试函数）从日志重放派生 SQLite 索引，结果与索引一致；链断/锚点不匹配 `audit_integrity_failed`。
 
 ## 11. 策略与画像（R2）
@@ -211,13 +208,18 @@ claims = [{ text = "...", citations = ["object:..."] }]
 error = "citation_missing"          # optional
 ```
 
-- B1 至少 45 个确定性用例，覆盖矩阵：6 工具 × 正常/坏参数/超预算/未授权 × 引用/审批/注入；CI 计数由 `scripts/check-agent-evals.py` 校验。
+- B1 至少 **72** 个确定性用例（6 工具 × 正常/坏参数/超预算/未授权 = 24，再 × 引用/审批/注入 = 72），覆盖矩阵与 `scripts/check-agent-evals.py` 计数进 CI。
 - 脚本化 provider 只测 runtime/policy，不测模型能力；现场真实 provider 才报 pass^k（k=5），不进 CI 门禁。
 - 注入指标拆成“运行时 containment 必须 0 次越权/外联”与“模型是否被说服（仅现场报告）”。
 
 ## 13. Host API 与 UI（R1/R6）
 
-命令：`agent_run`、`agent_status`、`agent_approve`、`agent_reject`、`agent_cancel`、`agent_resume`，全部 `Result<T, CommandError>`。错误码：`unauthorized/scope_denied/run_active/run_not_found/run_interrupted/approval_required/approval_mismatch/approval_expired/approval_rejected/invalid_tool_arguments/provider_timeout/provider_response_too_large/provider_protocol/budget_exceeded/citation_missing/audit_integrity_failed/not_implemented`。
+命令：`agent_run`、`agent_status`、`agent_approve`、`agent_reject`、`agent_cancel`、`agent_resume`，全部 `Result<T, CommandError>`：
+
+```rust
+pub struct CommandError { pub code: String, pub message: String, pub details: serde_json::Value }
+```
+错误码：`unauthorized/scope_denied/unsupported_schema/policy_blocked/run_active/run_not_found/run_interrupted/approval_required/approval_mismatch/approval_expired/approval_rejected/invalid_tool_arguments/provider_timeout/provider_response_too_large/provider_protocol/budget_exceeded/citation_missing/audit_integrity_failed/not_implemented`。
 
 - Agent 面板要求登录 + 已配置推理；显示 profile、工具轨迹、citations、审批卡（subject/args/impact/citations/expiry）、取消/重试。
 - 浏览器预览保持 host-only。

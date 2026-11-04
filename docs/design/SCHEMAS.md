@@ -59,4 +59,4 @@ pub fn compatible(ours: SchemaVersion, theirs: SchemaVersion) -> Compatibility;
 3. 同 domain 多个 major 时，必须同时有兼容/迁移说明；
 4. 生成物/SDK 中的 schema 与 Rust 常量一致。
 
-检查器已加入根 CI；本文件是 schema 注册表唯一来源（DIGEST 域为附加表）。
+检查器已加入根 CI，扫描 product-layer 文档与 `poie-objects`/`poie-sdkgen`/SDK 源码；历史实验 schema 不在本检查范围。本文件是 schema 注册表唯一来源（DIGEST 域为附加表）。
