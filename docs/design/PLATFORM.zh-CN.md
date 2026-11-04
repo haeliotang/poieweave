@@ -71,16 +71,16 @@ schema = "poie.<domain>/<major>.<minor>"
 | --- | --- | --- | --- | --- |
 | `host_info` | 否 | 全部 | 读 | 无 |
 | `domain_overview` / `execution_snapshot` / `federation_snapshot` | 否（只读演示） | main/poie-view-* | 读 | 无 |
-| `auth_status/register/sign_in/sign_out` | 否 | 全部 | 写本地 | 仅 auth 命令 |
+| `auth_status/register/sign_in/sign_out` | 否（bootstrap） | 全部 | 写本地 | 仅 auth 命令 |
 | `audit_list` | 是 | main | 读 | 会话 |
 | `inference_status` | 否 | main | 读 | 配置脱敏 |
 | `inference_configure/forget/test/complete` | 是 | main | 写/网络 | 会话 + 站点策略 |
 | `execution_gate_set` | 是 | main/poie-view-execution | 写 | 会话 + 审计（A0 修复） |
-| `sandbox_read/write` | 是 | main | 读写 | 会话 + 路径/大小/窗口 |
+| `sandbox_read/write` | 是 | main | 读写 | 会话 + 路径/大小/窗口（`sandbox_root` 由 `host_info` 只读返回；无 `sandbox_list`） |
 | `open_workspace_window` | 否 | main | 导航 | 允许 view 白名单 |
 | `ontology_*` | 否（只读） | main/poie-view-* | 读 | A0 后按窗口 |
 | `agent_*` | 是 | main | 写/网络 | 会话 + scope + policy |
-| `whatif_*` | 是 | main/poie-view-planning | 写（模拟） | 会话 + policy |
+| `whatif_*` | 是 | main/poie-view-plan | 写（模拟） | 会话 + policy |
 | `delivery_*` | 是 | main | 写 | 会话 + 审批 + policy |
 
 实现要求：

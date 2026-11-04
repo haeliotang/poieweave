@@ -39,7 +39,7 @@ Phase A 把这些能力收束成一个**可读、可预览、可类型化**的�
 
 1. `execution_gate_set` 必须先 `auth::require` 再改 `GateState`/`ExecutionSnapshot`，所有变更强制审计；当前“先改再可选审计”的路径（`apps/desktop/src-tauri/src/lib.rs`）删除。
 2. `sandbox_read/write` 增加会话与路径/大小限制；定义**命令 scope 矩阵**：哪些窗口/命令允许读写、哪些只读、哪些要求登录。
-3. 增加宿主命令白名单测试：未登录/无 scope/错误窗口调用 `execution_gate_set`、`sandbox_write`、`inference_configure`、`auth_*` 必须拒绝并留痕。
+3. 增加宿主命令白名单测试：未登录/无 scope/错误窗口调用 `execution_gate_set`、`sandbox_write`、`inference_configure`、`agent_*` 必须拒绝并留痕；`auth_status/register/sign_in/sign_out` 是**唯一无需先登录的 bootstrap 例外**。
 4. `execution.rs` 和 `federation_view.rs` 的硬编码授权（`Authorization{by:"maintainer", basis:"issue #105"}`）从产品路径移除。A0 **不生成任何 Authorization**：execution 视图把现有动作标为 `synthetic-preview`，只显示 proposed/validated 与“未授权”状态；测试断言 `authorized`/`dispatched` 数量为 0，UI 不再显示“复核通过”，未登录时同样只读。
 5. 命令错误改用 `{code,message,details}` 包络；命令 scope 矩阵见 PLATFORM §4，不新增裸 `String` 错误。
 
@@ -73,7 +73,7 @@ A0 的验收进入 Phase A PR；没有它，Phase A 不开始。**preview 语义
 
 MVP 先实现前六类；`evidence` 对象只返回引用，不新建证据账本。
 
-**属性证据**：`asOf` 来自 host 快照时间（`nowS`）；没有证据时间的属性 `asOf=null`、`source=declared`，UI 必须显示“声明/合成”，不能显示为观测。`Asset.status` 有 `status_evidence` 时 `source=declared` 并带证据字符串；没有时为合成观测。`Lot.location/evidence` 不进入 MVP（验证后的 `Lot` 无这些字段）。
+**属性证据**：`asOf` 来自 host 快照时间（`nowS`）；没有证据时间的属性 `asOf=null`、`source=declared`，UI 必须显示“声明/合成”，不能显示为观测。`Asset.status_evidence` 为 `Some` 时 `source=evidence`、`asOf` 取证据时间（未知则 null）；为 `None` 时 `source=declared`，表示模型作者的合成观测（PO §3.1），UI 必须显示“声明/合成”。`Lot.location/evidence` 不进入 MVP（验证后的 `Lot` 无这些字段）。
 
 ### 6.2 链接类型
 
@@ -200,10 +200,11 @@ pub struct ObjectDetail {
     pub evidence: Vec<EvidenceRef>,
 }
 pub struct ActionType {
-    pub id: String, pub label: String, pub description: String,
+    pub id: String, // 即 process id；UI 可本地 humanize，不伪造 label/description 字段
     pub target_types: Vec<String>, pub inputs: Vec<FlowView>, pub outputs: Vec<FlowView>,
-    pub occupies: Vec<String>, pub restores: Vec<String>, pub duration: Option<String>,
-    pub required_verification: String,
+    pub occupies: Vec<String>, pub restores: Vec<String>,
+    pub requires_capabilities: Vec<String>,
+    pub duration: Option<String>, pub required_verification: String,
 }
 pub struct FlowView { pub resource: String, pub quantity: String, pub unit: String }
 pub struct FunctionType {
@@ -245,18 +246,25 @@ pub enum PreviewError { InvalidPlan, UnsupportedContext, NoPreviewAvailable }
 // 映射：InvalidPlan -> invalid_parameter；UnsupportedContext -> preview_unavailable；
 // NoPreviewAvailable -> preview_unavailable；host 统一包成 {code,message,details}。
 
+pub struct PlannedActionView {
+    pub action_id: String, pub process: String, pub target: String, pub runs: u32,
+    pub start_s: f64, pub end_s: f64, pub preconditions: Vec<String>,
+    pub allocations: Vec<(String, f64)>, pub occupies: Vec<String>,
+    pub restores: Vec<String>, pub verification: String,
+}
 pub struct ActionPreview {
     pub schema: String, // poie.action-preview/0.1
-    pub action: ActionType,
-    pub plan_ref: Option<String>,
-    pub preconditions: Vec<String>, // 来自 plan/model 的前置条件文本；不引入通用谓词语言
-    pub sap_preview: Option<SapPreview>, // host 传入的只读 dry-run；假定项显式标注
+    pub plan_fingerprint: String,
+    pub action: PlannedActionView,       // 来自 poie-plan::PlannedAction
+    pub sap_preview: Option<plan::SapPreview>, // host 传入的只读 dry-run；假定项显式标注
     pub assumptions: Vec<String>,
     pub reasons: Vec<String>,
 }
 ```
 
 所有序列化结构使用 `serde(rename_all = "camelCase")`，字段有稳定顺序；未知 schema 版本必须拒绝。公开 API 使用 DTO（不直接给领域类型加 `Serialize`），错误统一 `{code,message,details}`，见 [PLATFORM](PLATFORM.zh-CN.md) §2–§4。
+
+`SapPreview`/`CheckPreview`/`AssumedContext`/`PreviewError` 定义在 `poie-plan::sap`（不放在 `poie-objects`）；host 调用后作为 DTO 传给 catalog/UI，`poie-objects` 不依赖 `poie-plan`。
 
 ### 7.2.1 只读 SAP preview API
 
@@ -282,7 +290,7 @@ pub fn preview_plan_through_sap(
 | `ontology_catalog` | 无 | `OntologyCatalog` |
 | `ontology_objects` | typeId, cursor?, limit? | `ObjectPage` |
 | `ontology_object` | typeId, id | `ObjectDetail`（属性+链接+证据引用） |
-| `ontology_action_preview` | actionTypeId, params?, assumedContext? | `ActionPreview`（只读 dry-run，假定项显式标注） |
+| `ontology_action_preview` | plan object（host 持有）或 planId, actionId, assumedContext? | `ActionPreview`（基于 PlannedAction 的只读 dry-run） |
 | `ontology_sdk_schema` | 无 | 生成 SDK 所需的 JSON schema |
 
 要求：

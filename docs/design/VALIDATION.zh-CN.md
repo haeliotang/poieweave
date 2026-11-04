@@ -1,115 +1,125 @@
-# Poieweave Phase A–D 设计独立校验（门禁）
+# Poieweave Phase A–D 设计校验（最终门禁）
 
-- 基线：任务指定 `45a2a93`；校验期间分支连续前进到 `f75c31d`、`55bd48d`、`91beea9`。本报告绑定 **`91beea9`**（工作树除本文件外干净），未修改源码、设计文档或 git 状态。
-- 快照 SHA-256（前 10 位）：README `696a371b4a`、DIGEST `61ae5cd0d8`、PLATFORM `7d499342ab`、SCHEMAS `c8e53ff214`、A `7a587c069b`、B `175a797ec7`、C `574c2ff0f0`、D `8fc4edee92`。若在本报告后继续提交，必须按新快照重跑。
-- 记法：[A](phase-a-ontology-product.zh-CN.md)、[B](phase-b-agent-governance.zh-CN.md)、[C](phase-c-what-if.zh-CN.md)、[D](phase-d-site-delivery.zh-CN.md)、[P](PLATFORM.zh-CN.md)、[G](DIGEST.md)、[S](SCHEMAS.md)；代码引用为 `path:line`（链接见 §5）。
-- 方法：逐条对照 R1–R18、三份研究备忘、PO/SAP/VEC 与指定源码；`python3 scripts/check-docs.py` 通过；未运行完整 `cargo test`。
+- 校验对象：[README](README.zh-CN.md)、[Phase A](phase-a-ontology-product.zh-CN.md)、[Phase B](phase-b-agent-governance.zh-CN.md)、[Phase C](phase-c-what-if.zh-CN.md)、[Phase D](phase-d-site-delivery.zh-CN.md)、[DIGEST](DIGEST.md)、[PLATFORM](PLATFORM.zh-CN.md)、[SCHEMAS](SCHEMAS.md) 与 `research/` 三份备忘。
+- 代码基线：`design/phase-a-d`，HEAD **`c4bc294`**；工作树除本报告外干净。设计文档已入库。
+- 文档快照：2026-11-04 23:07（本地）。校验期间文档经历 `4a90edc → 45a2a93 → f75c31d → 55bd48d → 91beea9 → c4bc294` 多轮修订；本报告只对 `c4bc294` 负责。
+- 方法：只读对照 PO/SAP/VEC、`crates/poie-*`、`apps/desktop/src-tauri`、`apps/desktop/src`、根 workspace、CI 与 `scripts/`。`python3 scripts/check-docs.py` 与 `scripts/check-test-matrix.py` 均 exit 0；未跑完整 `cargo test`，未修改应用源码、设计文档或 git 状态（本文件除外）。
+- 结论：方向正确；A0 的假授权、schema 单一来源、StateId、Predicate、PreviewError、dispatch_allowed、scope 主行已在 `91beea9`/`c4bc294` 关闭，R1–R5 大部分实质闭合。但 **Phase A 仍有 4 组可定点修复的契约阻塞**：ActionType/ActionPreview 的建模、SapPreview 的 crate 归属、A0 的 `auth_*`/窗口矩阵残余，以及 `status_evidence` 的 provenance 语义。当前不能开工。
 
 ## 0. 总判定
 
-**CHANGES_REQUIRED。** 本轮最重要的修复已经落地：A0 在 `91beea9` 删除了 synthetic `Authorization`，改为“不生成授权、`authorized`/`dispatched` 为 0”的只读预览（A:43-46），上一轮的“假授权”阻塞已关闭；A 的 Catalog/DTO/digest、B 的 RunState/审批/审计、C 的静态快照/OutcomeKind/`evidenceSha256`、D 的 metadata-only bundle 也都基本闭合。
+**CHANGES_REQUIRED。** 这不是对架构方向的否决。单一 SAP 执行点、只读 Catalog、`SourceModel` 单一来源、C 的 “只创建 proposed”、D 的 “元数据 bundle 不替换 app/模型” 都成立；剩余问题是 A0/A2 会直接变成错误代码或不可测验收的接口细节，且都是局部的。
 
-没有发现架构级 BLOCKER。剩余是 **7 项 A 级契约修复**（scope 矩阵行、schema 单一来源与字段、`StateId` 描述、`Predicate` 映射、`planRef`、`PreviewError` 映射、`dispatch_allowed` 三态）加 1 项低优先的 label 来源，以及 B/C/D 的分阶段前置。完成 A 级 1-7 后，A0+A1 可以在“不造第二套本体、不绕过 SAP”的前提下开工；因此不是 PASS，也不是 FAIL。
+关键判断：
+
+1. **R1 仍未完全闭合。** 删掉 `risk_class/approval_class/budget_template/executor_kind/allowed_in_modes` 与 `lot.location/evidence` 是对的；但 `ActionType.label/description` 不在已验证 `Process` 中，`ActionPreview` 仍是从 `PlannedAction` 借字段（`plan_ref`/`preconditions`），而命令只接收 `actionTypeId`。这仍是“Catalog 字段没有模型来源”。
+2. **R3 在声明层闭合、在 API 层未闭合。** 不再调用 `validate_plan_through_sap`、不再显示“7/7 通过”，这两点已做到；但 `ontology_action_preview(actionTypeId)` 无法调用 `preview_plan_through_sap(&Plan)`，且 `SapPreview` 的 crate 归属与依赖方向未定。
+3. **R4 的 A0 授权语义已正确，但命令矩阵仍有残余。** A:43–46 已改为“不生成任何 Authorization”且 `dispatch_allowed=false`，这是实质进步；但 A:42 要求未登录拒绝 `auth_*`，PLATFORM:74 又把注册/登录列为免登录；PLATFORM:83 的 `poie-view-planning` 与实际 `poie-view-plan` 不符。
+4. **A0 的 `status_evidence` 极性写反。** A:76 说“有证据→declared、无证据→合成观测”，与 `model.rs:270–272` 和 PO §3.1 正好相反。它会把有证据的属性标成最弱等级，把无证据的属性标成观测。
 
 ## 1. 六个最强点
 
-1. **A0 的授权语义已纠正。** A:43-46 明确 A0 不生成任何 `Authorization`，execution 视图只显示 proposed/validated 与 synthetic-preview，测试断言 `authorized`/`dispatched` 为 0；`execution.rs`/`federation_view.rs` 两处硬编码授权都纳入清理。这关闭了上一轮“预览即授权”的核心风险。
-2. **单一执行语义贯穿四阶段。** `preview_plan_through_sap` 只读（A:263-275），C 的 `plan_to_proposed` 不 authorize/dispatch（C:194-195），B 无 dispatch 工具（B:92-101），审计不新增 SAP `RecordKind`（B:318）。
-3. **Digest 规范可复现。** fingerprint 与 SHA-256 分离、domain 分隔、`-0.0` 归一、manifest 排除 `integrity`、固定测试向量（G:20-40、58、89、96-101）；`catalog_digest`/`model_digest` 已在 Catalog 中（A:215-217）。
-4. **B 的治理边界可实现。** 六工具封闭、T0–T3、按工具定义审批 subject、`ApprovalToken`、append-only 日志 + `anchor.json`、`user_version` 迁移、B1 45 个确定性用例且 `sim.run` 返回 `not_implemented`（B:110-115、171-182、224-237、279、308）。
-5. **C 的静态快照范围诚实。** 明确 C MVP 只针对 Base-01 演示快照、删除“live 不变”假阳性、`OutcomeKind` 分离结构/时序并带 caveat、`PatchDto` 13 字段、`evidenceSha256` 有新定义、`startMode=scenario-start`（C:53-66、75-79、100-118、93、60-62）。
-6. **D 的降级正确。** bundle 只做 JSON 元数据、不导入模型/二进制、manifest 自哈希引用 DIGEST、`host_info.build`、`write_atomic`、导出上限、召回/回滚/通道命令、`.app.zip` 替代 DMG（D:35、82-88、162-190、199）。
+1. **A0 的授权语义已纠正**：`execution.rs`/`federation_view.rs` 的硬编码 `Authorization` 移除；execution 只显示 proposed/validated 与 synthetic-preview，`dispatch_allowed` 恒为 `false`，测试断言 `authorized`/`dispatched` 为 0（A:43–46）。这关闭了上一轮“预览即授权”的核心风险。
+2. **单一执行点守得住**：A/B/C 只生成 proposed/草稿；B 的模型工具目录无 `dispatch.request`/`shell.*`/`secrets.*`（B:94–101）；`gate`/`adapter` 仍只在 host/SAP 侧；`preview_plan_through_sap` 只读（A:266–276）。
+3. **Digest 规范可落地**：`poie-digest` + canonical JSON + domain 分离，明确 fingerprint 与 SHA-256 不可互冒充（DIGEST:29–40），覆盖 model/catalog/plan/simulation/variant/manifest/approval/evidence/contracts；`-0.0`、整数值浮点、键序不变性与固定 fixture 均进入验收（DIGEST:58、94–102）。
+4. **跨阶段契约已集中**：`PLATFORM` 定义 DTO/错误包络/命令 scope/`SourceModel`/`ApprovalToken`；`SCHEMAS` 成为唯一注册表（PLATFORM:15 已删内联表）；`PreviewError` 已映射，`StateId` 已改为 DTO 字符串，`Predicate` 已删除（A:244–247、A:252）。
+5. **C 的诚实性明显提高**：明确 MVP 只针对静态 Base-01 演示快照，删除“live 不变”的假阳性；`OutcomeKind.structural/timed` 分离并带 caveat，禁止把 `candidate` 显示成 `feasible`（C:66、100–118、154）。
+6. **D 的边界克制且完整**：不做 updater/遥测/SBOM 强制门禁/模型导入；bundle 是 JSON 元数据，不替换二进制；单一版本源、`host_info.build`、`delivery_plan/recall/channel`、`write_atomic` no-follow、tag release 依赖根 verify 都已写入（D:20–40、82–88、162–205）。
 
-## 2. R1–R18 闭合表
+## 2. REQUIRED（Phase A 开工前必须修复）
 
-| R | 判定 | 证据 | 残余 |
-| --- | --- | --- | --- |
-| R1 冻结/可追溯 | **closed** | `git log`：4a90edc→45a2a93→f75c31d→55bd48d→91beea9；全部设计文档入库；README 改以“分支 HEAD”为快照 | 任务基线 45a2a93 已落后 4 个提交；门禁期间连续提交，报告只能绑定 91beea9；A0 修复与本次校验同批，独立性由本报告重建 |
-| R2 fingerprint/SHA-256/domains/`poie-digest` | **closed** | G:20-40、58、89、96-101；A:215-217；P:169-178 | `poie-digest` 尚未进 `members`（实现前）；`poie.evidence/0.1` 的“source digest”与 `EvidenceRef.sha256` 命名待统一（低） |
-| R3 schemaVersion 注册 | **partial** | S:7-19、32-43；P:9、15-24 | P 的内联表与 S 重复且漏 `poie.diagnostics/0.1`；`ObjectDetail`/`SapPreview` 未登记；`ActionPreview`/`ObjectDetail` 无 `schema` 字段；`check-schema-registry.py` 未进 A0 |
-| R4 DTO/Serialize | **partial** | P:35-44；A:173-253；C:75-79 | `StateId` 被称为 Deserialize-only，实际无 serde（projection.rs:60-66）；`ActionPreview.preconditions: Vec<Predicate>` 无字符串谓词映射；A 的 DTO 缺 `schemaVersion` |
-| R5 错误包络 | **partial** | P:48-73；A:290 | C 的 `unknown_snapshot`、B 的 `citation_missing`、`sim.run` 的 `not_implemented` 未登记；`PreviewError` 未映射到 `CommandError` |
-| R6 命令 scope + A0 | **partial** | P:77-99；A:36-46、380；lib.rs:143、224 | A0 授权语义已闭合；矩阵仍写 `main/execution`、`main/planning`（实际 `poie-view-*`）；`sandbox_list` 不存在、`sandbox_root` 漏列 |
-| R7 单一 SourceModel | **closed** | P:107-113；D:35、193；C:58、145 | P:190 的实现顺序仍写 “model store”（遗留词）；其余一致 |
-| R8 ActionType 模型字段 + 只读预览 | **closed** | A:100-114、263-275 | `can_submit` 已删、预览只读；`label/description` 无模型来源（低） |
-| R9 单一 SDK/无外部 JSON API | **closed** | A:54、279、370；README:80；A:144 | `poie-sdkgen` 唯一路径；外部网络 API 明确另立阶段 |
-| R10 crate/工具映射 | **closed** | B:92-101、319；P:169-178；C:124-131 | 六工具与 A 函数映射齐全；`sim.run` B1 关闭；C 依赖已补 state/digest |
-| R11 Agent run 状态 API | **closed** | B:212-237；P:20 | `RunState` schema、六命令、`agent_runs`、`interrupted` 均已定义 |
-| R12 审批 digest/审计/DB 迁移 | **partial** | B:171-182、237、318；P:141-162；auth.rs:23-26 | `ApprovalToken.session_id` 需要的 `Session` id 不存在；SQLite approvals 表/迁移未定义；`Authorization.basis` 的 `approval:<tokenId>` 已给编码规则 |
-| R13 Snapshot/OutcomeKind | **closed** | C:53-66、100-118；P:107 | `stateId` 为 DTO 字符串；`evidenceSha256` 已给出 `poie.evidence/0.1` 定义（C:60-62） |
-| R14 Compare/Promotion/proposed-only/checkpoint | **partial** | C:70-95、171、194-195 | `ProposedActions`/`plan_to_proposed` 签名未定；promote 的审批 subject 未定义；“C 不写 SAP”与 proposed actions 的存放矛盾；仿真来源已用 `Authorization.basis` 编码 |
-| R15 manifest digest/contracts | **partial** | D:57-88、186-200；P:5.1 | `contracts.toml` 只有 id/version/revision/sha256 一句，无格式/黄金样例；`release.json` 与 `RELEASE.json` 大小写不一致；tag gate 仍是要求，未落 workflow |
-| R16 JSON bundle/policy/DB | **partial** | D:35、82-84、162-190；P:100 | 不导入模型/JSON bundle/原子写/导出上限已定；导入 policy 与本地策略的优先级、能否放宽 scope 未定；`HostPolicy.channel` 与 `DeliveryState.channel` 双源 |
-| R17 命令/DMG 修正 | **closed** | D:164-175、189、199 | inspect/plan/recall/channel/policy 齐全；`.app.zip` 与 workflow 一致。根 `README.md:27,82` 仍写 DMG/portable，需在 D 前清理 |
-| R18 workspace/deps/ADR/test-matrix | **partial** | P:181-182；A:380；B:345；D:271；C:272-279 | A/B/D 有 step 0；C §11 仍从 step 1 开始；SCHEMAS 检查器未进 A0；新 crate 未入 `members`（实现前） |
+### RA1 ActionType/ActionPreview 仍混用两种模型，且有非模型字段
 
-## 3. 剩余发现
+- A:106 的字段表写 `id, label, description, target_types`；A:202–206 的 `ActionType` 也有 `label/description`。
+- 已验证的 `Process` 只有 `id/inputs/outputs/occupies/requires_capabilities/restores/duration_s/verification/asset_mass_change_kg/mass_tolerance/process_yield`（`crates/poie-ontology/src/model.rs:304–315`），**没有 `label/description`**；只有未验证的 `ProcessDoc.description`（`model.rs:197–200`）。读 `Model.doc` 会绕过 `Model::from_doc` 校验，正是 R1 禁止的第二套投影。
+- A:248–253 的 `ActionPreview` 仍带 `plan_ref`、`preconditions: Vec<String>`；这两者属于计划实例 `PlannedAction`（`crates/poie-plan/src/plan.rs:31–43`），不属于 `ActionType`。`PlannedAction.preconditions` 是 `Vec<String>`（plan.rs:38），而 `Process` 没有前置条件；所谓“来自 plan/model”实际只能来自 plan。
+- A:285 的 `ontology_action_preview` 只接收 `actionTypeId`，但 A:276 要求它调用 `preview_plan_through_sap(&Plan)`；A:125 又规定 `plan.preview_sap` 只接受 host 持有的 `Plan`（已删除 planRef）。actionTypeId 与 Plan 之间没有定义转换，`params?` 在删除通用参数后也没有定义。
 
-### BLOCKER
+**最小修复（二选一）**：
+1. 保留 ActionType 预览：新增 `preview_action_through_sap(actionTypeId, assumptions)`，由 host 构造单个 `Action`（target/runs/validity 显式 nullable），只跑七项检查、不建 plan；或
+2. 改成 Plan 预览：`ontology_plan_preview(planRef, assumedContext)`，plan 由 `plan.propose`/现有规划产生，`ActionPreview` 只作为 plan 内动作的行视图（`plan_ref` 有值，`preconditions` 来自 `PlannedAction`）。
 
-**无架构/安全级 BLOCKER。** 上一轮的 A0 synthetic 授权已由 A:43-46 关闭；当前没有必须推翻的契约或执行语义。唯一的过程性要求是：以 `91beea9` 为门禁快照，Phase A 前不再改设计文档；若继续提交，必须重跑本校验（任务基线 45a2a93 已被 4 个提交取代，不能用旧行号引用）。
+同时：MVP 删除 `label`/`description`，或规定 `label=id` 的确定性人类化、`description=None`，明确不得读 `ProcessDoc`。为“每个 `ActionType` 字段逐项来自已验证 `Model`”加黄金 fixture。完成后 R1 才算闭合。
 
-### REQUIRED-BEFORE-PHASE A
+### RA2 `SapPreview` 的 crate 归属与依赖方向未定
 
-1. **Scope 矩阵行与标签不一致。** P:87 仍写 `main/execution`、P:92 仍写 `main/planning`，实际窗口是 `poie-view-execution`/`poie-view-planning`（lib.rs:143）；`sandbox_read/write/list`（P:88）中的 `list` 不存在，`sandbox_root`（lib.rs:224）未列。A0 的窗口拒绝测试若按文字实现，会在错误窗口上通过/失败。
-2. **两个 schema 注册表不同步。** S:7-19 已有 `poie.diagnostics/0.1`，P:15-24 没有；S 是“唯一来源”却又在 P 重复。A 的 `ActionPreview`（A:246）与 `ObjectDetail`（A:197）没有 `schema` 字段，与 S:32“每个对外结构必须有 schema”冲突；`ObjectDetail` 也未登记。应删 P 的内联表，只留 S，并给每个命令输出加 `schema`/`schemaVersion`。
-3. **`StateId` 的描述错误。** P:39 说 `AssetStatus`/`LotQuality`/`Verification`/`Patch`/`StateId` 保持 Deserialize-only；`StateId` 实际只有 `Clone/Debug/PartialEq/Ord/Hash`（projection.rs:60-66），没有任何 serde。C 已改用 DTO 字符串（C:58），P 应同步为“非 serde，DTO 字符串”。
-4. **`Predicate` 无来源映射。** `ActionPreview.preconditions: Vec<Predicate>`（A:246-247），但计划动作的前置条件是 `Vec<String>`（`PlannedAction.preconditions`）和 `BTreeSet<String>`（`Action.precondition.predicates`）；`Predicate{field,op,value}` 无法从这些字符串稳定派生。应改为 `Vec<String>` 或定义谓词语法与转换测试。
-5. **`plan.preview_sap` 的 “or planRef” 重新引入 plan store。** A:125 允许 `planRef`，但没有任何 plan registry；A 的 host 只持有当前 `SourceModel`。Phase A 应只接受 host 持有的 `&Plan`，删除 `planRef` 分支（或明确 planRef 由 host 内存映射并在 A0 定义）。
-6. **`PreviewError` 未映射到错误包络。** A:244 定义了 `PreviewError{InvalidPlan,UnsupportedContext,NoPreviewAvailable}`，P:48-73 没有对应 code；`preview_unavailable` 只在 P:64。应给出 `PreviewError -> CommandError` 映射表。
-7. **`ExecutionSnapshot.dispatch_allowed` 的预览语义未定义。** A0 只断言 `authorized`/`dispatched` 为 0，没有规定 `dispatch_allowed` 在无授权/合成预览下必须为 `false`；现有代码用 `review_rejections.is_empty()` 推导（execution.rs:158-160），而 `review_dispatch` 只检查授权存在/过期/撤销（review.rs:185-207），不检查预览标记。应把三态（无会话/合成预览/真实授权）写成状态表并测试。
-8. **（低）`ActionType.label/description`、`ObjectType.label` 无模型字段。** `Process` 没有 `description`（model.rs:304-316），`Asset`/`Resource` 也没有；A:201-204 却要求这些字段。若采用“id 人类可读化”的确定性派生，必须写明算法并测试；否则删掉字段。
+- A:239–243 在 `poie-objects` 的 API 清单里定义 `SapPreview`；A:253 的 `ActionPreview` 直接包含它；A:266 的 `poie-plan::preview_plan_through_sap` 又返回它。
+- PLATFORM:169–178 的依赖表是 `poie-objects -> ontology/digest`、`poie-governance -> objects/state/plan`，**没有 `poie-plan -> poie-objects`**；A:276 又要求 `poie-objects` 不依赖 `poie-plan`。两边都成立时，`SapPreview` 只能被复制成两份，违反 PLATFORM §2 的“单一公开 DTO”。
+- 若让 `poie-plan` 依赖 `poie-objects`，是产品层反向依赖领域规划层，且未在依赖表/ADR 中声明。
 
-### REQUIRED-BEFORE-PHASE B
+**最小修复**：把 `SapPreview/CheckPreview/AssumedContext` 定义在 `poie-plan`（它拥有七项检查和 plan 输入）；host 组合 `ActionPreview` 时引用 `poie_plan::SapPreview`；`poie-objects` 不持有 plan 类型。或者显式增加 `poie-plan -> poie-objects` 依赖并解释分层，二选一。
 
-1. **`Session` 没有 id。** `auth::Session` 只有 `display_name`/`expires_at_ms`（auth.rs:23-26）；B 的 capability 需要 `sessionId`（B:161），P 的 `ApprovalToken` 需要 `session_id`（P:148）。必须先给 Session 加不可猜测 id 与 epoch，并定义登出/接管时 capability/token 的撤销。
-2. **审批 token 没有表/迁移。** B:237 只定义 `agent_runs(run_id, schema_version, state_json, session_id, created_at, updated_at, expires_at)`；P:162 说“所有 token 持久化（SQLite）”。需要 `approvals` 表（token id/subject/run/expiry/used/sap_record_id）与 `user_version` 迁移；否则暂停/恢复只能靠内存。
-3. **`citation_missing`/`not_implemented` 未登记。** B:122 使用 `citation_missing`，B:99 使用 `not_implemented`，P:56-71 没有；错误码表与实现会分叉。
-4. **`http.rs` 没有响应体上限。** 现有 HTTP 传输只有 30s 超时（http.rs:23-25）；B 的多步工具调用会接收 provider 响应，必须定义最大字节/超时/截断测试，否则“预算”只覆盖步数不覆盖内存。
+### RA3 A0 的 `auth_*` 白名单、窗口矩阵仍有残余
 
-### REQUIRED-BEFORE-PHASE C
+- A:42 要求“未登录调用 `execution_gate_set`、`sandbox_write`、`inference_configure`、`auth_*` 必须拒绝并留痕”。PLATFORM:74 却把 `auth_status/register/sign_in/sign_out` 全部标为“登录：否”。`auth_register`/`auth_sign_in` 是引导入口（`apps/desktop/src-tauri/src/auth.rs:74–110`），按 A 实现会让新装机器永远无法注册/登录。
+- PLATFORM:83 给 `whatif_*` 的允许窗口是 `main/poie-view-planning`，但 `open_workspace_window` 对 view `plan` 生成的标签是 `poie-view-plan`（`apps/desktop/src-tauri/src/lib.rs:139–143`）。仓库没有 `poie-view-planning`。
+- `sandbox_root`（lib.rs:224）仍未列入矩阵；A0 的拒绝测试若按文字实现，会在错误窗口/未列命令上产生盲区。
 
-1. **`plan_to_proposed` 只有名字。** C:194 返回 `ProposedActions`，但类型、签名、每个 action 的字段、由谁写 ledger 都未定义。C:149 又说 C 不写 SAP 记录/ActionLedger；若 `plan_to_proposed` 只返回内存对象，后续“交给现有 SAP 验证命令”需要一个写入点，必须明确是 host 还是 SAP API。
-2. **promote 的审批 subject 未定义。** `whatif_variant_promote(variantId, approvalTokenId)`（C:171）使用 P 的 `ApprovalToken`，但没有像 B:173-178 那样列出 subject 字段（snapshotSha256/variantResultSha256/planSha256/policyVersion/sessionId/expiresAt）。没有这些，审批无法绑定具体结果。
-3. **未登记 `unknown_snapshot`，`delta` 无类型。** C:187 使用 `unknown_snapshot`；P:56-71 没有。C:177 的 `delta` 未定义结构，比较结果无法稳定序列化。
-4. **C 的 step 0 缺失。** C:272-279 仍从 `poie-whatif` 开始，没有 A/B/D 已加的“进 members/Cargo.lock/ADR/测试矩阵”第 0 步；`poie-whatif`/`poie-digest` 的 CI 计数会在第一个 PR 失败。
+**最小修复**：A:42 改为“除 `auth_status/register/sign_in` 三个引导命令外，未登录的 `auth_sign_out`/`audit_list` 等拒绝”；PLATFORM §4 使用 `poie-view-plan`（或让窗口用 `planning`）；补 `sandbox_root`。A0 的拒绝测试按命令逐项列出，而不是 `auth_*` 通配。
 
-### REQUIRED-BEFORE-PHASE D
+### RA4 `status_evidence` 的 source 极性写反
 
-1. **`contracts.toml` 只有一句。** D:88/194 要求 id/version/revision/sha256，但没有文件 schema、生成方式、黄金样例与“契约正文变更时如何更新 revision”的规则；D:68-71 的 manifest 示例又手写三个条目。
-2. **`release.json` 与 `RELEASE.json` 大小写不一致。** D:87/152 用 `release.json`，D:199/275 用 `RELEASE.json`；构建期文件名必须唯一。
-3. **召回不阻止继续使用。** D:28 目标写“召回阻止继续使用”，D:122 只写“已安装则显示召回+允许回滚”；没有启动/导入/派发任一执行点的拒绝规则。应明确“召回 release 的已安装 manifest 在启动时标记 degraded/禁止 promote”等可测行为。
-4. **导入策略可放宽到什么程度未定。** D:173 的 `delivery_policy_set` 与导入 bundle 的 `policy` 可覆盖 `agentScopes/remoteInference`；D:268 只说“MVP 允许，需审批/审计”。这是安全边界，必须定义不可放宽的下限（例如 `remoteInference` 只能从 true→false）与测试。
-5. **`HostPolicy.channel` 与 `DeliveryState.channel` 双源。** P:100 把 `channel` 放进 HostPolicy，D:96-105 又把 channel 放在 DeliveryState 并声明“本地订阅优先”；导入 manifest 时会出现三方冲突。应删除 HostPolicy.channel。
-6. **根 README 仍宣称 DMG/portable。** `README.md:27,82` 与 D:35/199 的“不生成 DMG/便携 exe”冲突；D 的漂移清单只写了 design README。交付前必须改根 README 或恢复构建。
+- A:76 写“`Asset.status` 有 `status_evidence` 时 `source=declared` 并带证据字符串；没有时为合成观测”。
+- 代码与 PO §3.1 的语义相反：`status_evidence: None` 才表示 **declared / synthetic observation**（`crates/poie-ontology/src/model.rs:270–272`）；有证据引用时是证据支撑的状态，应标为 `observed`/`evidence`，并尽量带 `asOf`。
+- 这会把“有证据”的属性标成最弱等级，把“无证据”的属性标成观测，直接违反 Phase A 的属性证据目标（A:166）与 UI 的“声明/合成”提示。
 
-### OPTIONAL
+**最小修复**：改为“有 `status_evidence` → `source=observed`（或新增 `evidence`），`asOf` 取证据时间（未知则 null）；无 `status_evidence` → `source=declared`、`asOf=null`、UI 显示声明/合成”。为两种分支各加 fixture。
 
-- O1 `ActionType.label/description` 的人类可读派生可延后，但必须在 A1 前二选一（派生算法或删字段）。
-- O2 `poie.evidence/0.1` 的 “source digest” 与 `EvidenceRef.sha256` 命名统一（低）。
-- O3 P:190 的 “model store” 遗留词、P:39 的 `StateId` 描述、`sap.rs:87` 的 “six dispatch checks”、`poie-state/src/lib.rs:31` 的 M12 旧注释，可随 A 的清理 PR 一起修。
-- O4 `ObjectDetail` 的 schema 登记与 `poie.object-detail/0.1` 可随 R3 一起补。
-- O5 SBOM/attestation、Ed25519、自动更新器、VEC 指标、跨站点 what-if、`two_person` 继续延后；D 的 O2 已覆盖。
-- O6 C 的 `whatif_variant_delete` 可加审计事件；不影响 MVP。
+## 3. 后续阶段门禁（不阻塞 A，但不能带进 B/C/D）
 
-## 4. Phase A 就绪清单
+- **C 的 `ProposedActions`/`plan_to_proposed` 签名未定。** C:194 只给名字与 `basis` 编码；`ProposedActions` 的字段、每个 action 的 `ActionState`、由谁写 ledger 未定。C:149 又说 C 不写 SAP 记录/ActionLedger；若只返回内存对象，后续“交给现有 SAP 验证命令”需要写入点。**C1 前必须定。**
+- **C 的 promote 审批 subject 未定义。** `whatif_variant_promote(variantId, approvalTokenId)`（C:171）使用 PLATFORM 的 `ApprovalToken`，但没有像 B:173–178 那样列出 `snapshotSha256/variantResultSha256/planSha256/policyVersion/sessionId/expiresAt`。没有这些，审批无法绑定具体结果。
+- **C 的 `delta` 无类型、`unknown_snapshot` 未登记。** C:177 的 `delta` 无结构，C:187 的 `unknown_snapshot` 不在 PLATFORM 错误码表（PLATFORM:48–62）。
+- **B 的 `Session` 没有 id。** `auth::Session` 只有 `display_name`/`expires_at_ms`（auth.rs:23–26）；B 的 capability 需要 `sessionId`（B:161），PLATFORM 的 `ApprovalToken` 需要 `session_id`（PLATFORM:139–153）。必须先给 Session 加不可猜测 id 与 epoch，并定义登出/接管时 capability/token 的撤销。
+- **B 的审批 token 没有表/迁移。** B:237 只定义 `agent_runs`；PLATFORM:155 说“所有 token 持久化（SQLite）”，但没有 `approvals` 表与 `user_version` 迁移。否则暂停/恢复只能靠内存。
+- **B 的 `citation_missing`/`not_implemented` 未登记。** B:122 使用 `citation_missing`，B:99 使用 `not_implemented`，PLATFORM:48–62 没有；错误码表与实现会分叉。
+- **B 的“既有 SAP 验证/授权命令”不存在。** B:317 说审批通过后由既有命令接管；桌面 host 没有 `sap_authorize`/`sap_validate` 命令，A 只做 preview，C 才加 `plan_to_proposed`。应明确由后续 SAP 命令/UI 接管，或补命令契约，不能写成“既有”。
+- **B 的 HTTP 响应上限缺失。** 现有 HTTP 传输只有 30s 超时（http.rs:23–25）；B 的多步工具调用会接收 provider 响应，必须定义最大字节/超时/截断测试，否则“预算”只覆盖步数不覆盖内存。
+- **D 的 `contracts.toml` 只有一句。** D:88/194 要求 id/version/revision/sha256，但没有文件 schema、生成方式、黄金样例与“契约正文变更时如何更新 revision”的规则；D:68–71 的 manifest 示例又手写三个条目。
+- **D 的 `release.json`/`RELEASE.json` 大小写不一致。** D:87/152 用 `release.json`，D:199/275 用 `RELEASE.json`；构建期文件名必须唯一。
+- **D 的召回不阻止继续使用。** D:28 目标写“召回阻止继续使用”，D:122 只写“已安装则显示召回+允许回滚”；没有启动/导入/派发任一执行点的拒绝规则。
+- **D 的导入策略下限未定。** D:173 的 `delivery_policy_set` 与导入 bundle 的 `policy` 可覆盖 `agentScopes/remoteInference`；D:268 只说“MVP 允许，需审批/审计”。这是安全边界，必须定义不可放宽的下限（例如 `remoteInference` 只能从 true→false）与测试。
+- **D 的 `HostPolicy.channel` 与 `DeliveryState.channel` 双源。** PLATFORM:91 把 `channel` 放进 HostPolicy，D:96–105 又把 channel 放在 DeliveryState 并声明“本地订阅优先”；导入 manifest 时会出现三方冲突。
+- **D 的 `ModelStore` 术语残留。** D:35 仍写“构建期/本地 `ModelStore` 提供模型”，PLATFORM:104 明确“不存在 ModelStore 与 SourceModel 两个版本”，D:193 也改为 `SourceModel`。统一为 `SourceModel`。
+- **DIGEST 的 catalog 排除项措辞。** DIGEST:21 写“Catalog（不含 digest 字段）”，A:215–217 明确只排除 `catalog_digest` 自身、保留 `model_digest`。建议同步为“不含 `catalog_digest` 字段；`model_digest` 纳入”，否则两种实现会得到不同 hash。
+- **研究备忘仍是旧词表。** `research/agent-governance.zh-CN.md:98` 仍主张七个工具含 `dispatch.request`，`:125` 仍用 `poie-eval`；`repo-gap-audit.zh-CN.md:104/113/116` 仍用 `poie-agent`/`auto_read`。建议加一行“以 c4bc294 设计决定为准”，避免新读者把提案当契约。
 
-- [x] **A0 授权语义**：不生成 `Authorization`，execution/federation 的 demo 授权移除，测试断言 authorized/dispatched 为 0（A:43-46）。
-- [x] **单一模型**：`SourceModel = Base-01 + pump-p1 degraded`，host 持有 `Arc<Model>`（P:107-111；A:38）。
-- [x] **单一执行路径**：Catalog 只读、`poie-objects` 不依赖 plan、预览不 authorize（A:164-168、263-275）。
-- [x] **Digest**：`model_digest`/`catalog_digest` 命名一致，canonical/domain/manifest 规则齐全（A:215-217；G:20-40、89）。
-- [x] **对象 ID/EvidenceRef**：`<type>:<id>` 与 `EvidenceRef` 统一（P:115-131）。
-- [x] **A0 顺序**：A0 已是实施第 0 步（A:380）。
-- [ ] **Scope 矩阵**：`poie-view-*` 行、`sandbox_root`/`sandbox_list` 修正（A 级 1）。
-- [ ] **Schema 单一来源**：删 P 内联表，补 `ActionPreview`/`ObjectDetail`/`SapPreview` 的 `schema`，登记 `ObjectDetail`，检查器进 A0（A 级 2）。
-- [ ] **A DTO 收尾**：`StateId` 描述、Predicate 映射、`planRef`、`PreviewError` 映射、`dispatch_allowed` 三态（A 级 3-7）。
-- [ ] **快照冻结**：以 91beea9 为唯一基线；Phase A 前不再改设计文档。
+## 4. R1–R5 闭合表
 
-**结论：当前为“否”，但没有架构级阻塞。** A0 的授权问题已关闭；完成 A 级 1-7 后，A0+A1 可以在不制造第二套本体、不绕过 SAP 的前提下开工。B/C/D 的前置项按 §3 分阶段处理；其中 B 的 Session id/approvals 表、C 的 `ProposedActions`/promote subject、D 的 policy 下限最值得优先。
+| 编号 | 判定 | 依据 |
+| --- | --- | --- |
+| R1（Catalog 无来源字段） | **部分** | `risk_class/approval_class/allowed_in_modes/executor_kind/budget_template` 已移入 B 并 fail-closed（A:112）；`lot.location/evidence` 已排除（A:68）。但 `ActionType.label/description` 不在已验证 `Process`，`ActionPreview.preconditions` 仍只能来自 `PlannedAction`；见 RA1。 |
+| R2（digest 规范） | **闭合** | `DIGEST.md` 定义 domain、canonical JSON、fingerprint/SHA-256 分离、manifest 自哈希、固定 fixture 与键序测试；`poie-digest` 已列入 PLATFORM:169–178。唯一建议：DIGEST:21 的 catalog 排除项写清楚（见 §3）。 |
+| R3（预览不授权） | **部分** | 已删除 `validate_plan_through_sap` 调用与“7/7 通过”，新增 `SapPreview`/`assumed`/`rejections`（A:235–276）；A0 不再生成 Authorization（A:43–46）。但 ActionType 级命令无法调用 Plan 级函数（RA1），`SapPreview` 归属未定（RA2）。 |
+| R4（A0 宿主鉴权） | **部分** | A0 已成为实施第 0 步，覆盖 `execution_gate_set` 先鉴权、`sandbox_*`、demo 授权替换（A:36–46、383）；`execution_gate_set` 窗口与 `sandbox_list` 已修正。但 `auth_*` 白名单与 PLATFORM:74 冲突、`poie-view-planning` 标签不存在（RA3）。 |
+| R5（README 门禁对齐） | **闭合** | README:30 同时引用 FAST 与最终报告，并明确“Lead 不要求固定结论”；README:41、99–120 记录 R1–R18；README:80 已改为桌面内消费者；P5 已改为“C 不写 live/ledger；promote 只经 `plan_to_proposed` 产生 proposed”。状态行 README:126–127 仍写“VALIDATION → CHANGES_REQUIRED / 待重跑”，本报告提交后应由 Lead 更新为最终结论。 |
 
-## 5. 证据路径
+## 5. Phase A 就绪清单
 
-- 设计：[README](README.zh-CN.md)、[A](phase-a-ontology-product.zh-CN.md)、[B](phase-b-agent-governance.zh-CN.md)、[C](phase-c-what-if.zh-CN.md)、[D](phase-d-site-delivery.zh-CN.md)、[P](PLATFORM.zh-CN.md)、[G](DIGEST.md)、[S](SCHEMAS.md)。
-- 代码：[sap.rs](../../crates/poie-plan/src/sap.rs)、[review.rs](../../crates/poie-state/src/review.rs)、[action.rs](../../crates/poie-state/src/action.rs)、[projection.rs](../../crates/poie-state/src/projection.rs)、[model.rs](../../crates/poie-ontology/src/model.rs)、[execution.rs](../../apps/desktop/src-tauri/src/execution.rs)、[federation_view.rs](../../apps/desktop/src-tauri/src/federation_view.rs)、[lib.rs](../../apps/desktop/src-tauri/src/lib.rs)、[auth.rs](../../apps/desktop/src-tauri/src/auth.rs)、[db.rs](../../apps/desktop/src-tauri/src/db.rs)、[sandbox.rs](../../apps/desktop/src-tauri/src/sandbox.rs)、[http.rs](../../apps/desktop/src-tauri/src/http.rs)、[inference.rs](../../apps/desktop/src-tauri/src/inference.rs)、[App.tsx](../../apps/desktop/src/App.tsx)、[domain.rs](../../apps/desktop/src-tauri/src/domain.rs)、[ci.yml](../../.github/workflows/ci.yml)、[desktop-build.yml](../../.github/workflows/desktop-build.yml)。
+- [x] A0 授权语义：不生成 `Authorization`，execution/federation 的 demo 授权移除，`dispatch_allowed=false`，测试断言 authorized/dispatched 为 0（A:43–46）。
+- [x] 单一模型：`SourceModel = Base-01 + pump-p1 degraded`，host 持有 `Arc<Model>`（PLATFORM:95–104；A:38）。
+- [x] 单一执行路径：Catalog 只读、`poie-objects` 不依赖 plan、预览不 authorize（A:164–168、263–276）。
+- [x] Digest：`model_digest`/`catalog_digest` 命名一致，canonical/domain/manifest 规则齐全（A:214–217；DIGEST:20–40、89）。
+- [x] 对象 ID/EvidenceRef：`<type>:<id>` 与 `EvidenceRef` 统一（PLATFORM:106–122）。
+- [x] SDK 唯一生成路径、零 diff 退出码、黄金文件（A:271–300）。
+- [x] 六个旧视图、Playwright mock/host 策略、i18n、`check-docs`/`check-test-matrix` 已列入验收。
+- [x] schema 单一来源（SCHEMAS）、`StateId`、`PreviewError`、`ObjectDetail`/`SapPreview` 登记已收尾。
+- [ ] `ActionType` 的每个字段都能追溯到已验证 `Model`（`label/description` 待处理；RA1）。
+- [ ] ActionType 预览与 Plan 预览的 API 二选一已冻结（RA1）。
+- [ ] `SapPreview` 的 crate 归属/依赖方向已定（RA2）。
+- [ ] A0 的 `auth_*` 例外、`poie-view-plan` 标签与 `sandbox_root` 已修正（RA3）。
+- [ ] `status_evidence` 的 source/asOf 极性已修正（RA4）。
+- [ ] 上述修改提交为新 commit，并以该 commit 重跑本报告（当前 HEAD `c4bc294` 不含这些修订）。
+
+## 6. 结论
+
+**当前不能开始 Phase A 编码。** 需要修的是一组局部契约，不是推翻设计：
+
+1. 冻结“ActionType 预览”与“Plan 预览”二选一；删除 `label/description` 或给出确定性派生；把 `plan_ref`/`preconditions` 移到 plan 预览。
+2. 把 `SapPreview/CheckPreview/AssumedContext` 放到 `poie-plan`，host 组合 `ActionPreview`，消除复制/反向依赖。
+3. A0 修正 `auth_*` 例外、`poie-view-plan` 标签与 `sandbox_root`；按命令逐项列拒绝测试。
+4. 修正 `status_evidence` 的 source/asOf 语义。
+
+完成这 4 组后，A0/A1 可以开工；B/C/D 的 §3 门禁项必须在各自阶段开始前关闭。**不要**在未重跑本报告的情况下把本节改成 PASS。
 
 VERDICT: CHANGES_REQUIRED
