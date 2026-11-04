@@ -4,6 +4,7 @@ exclude = ["apps/desktop/src-tauri"]
 members = [
     "crates/poie-digest",
     "crates/poie-objects",
+    "crates/poie-governance",
     "crates/poie-sdkgen",
     "crates/poie-ontology",
     "crates/poie-plan",
