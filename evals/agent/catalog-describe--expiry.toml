@@ -1,0 +1,12 @@
+schema = "poie.agent-eval/0.1"
+id = "catalog-describe--expiry"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic catalog.describe fixture (expiry)."
+profile = "analyst"
+
+[script]
+responses = [{ tool = "catalog.describe", args = {} }]
+
+approval = { action = "expire" }
+[expect]
+tools = ["catalog.describe"]

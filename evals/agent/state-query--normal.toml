@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "state-query--normal"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic state.query fixture (normal)."
+profile = "analyst"
+
+[script]
+responses = [{ tool = "state.query", args = {} }]
+
+[expect]
+tools = ["state.query"]

@@ -33,11 +33,21 @@ def main() -> int:
             for found in SCHEMA.findall(path.read_text(encoding="utf-8")):
                 if found not in registered:
                     problems.append(f"{path.relative_to(ROOT)}: unregistered schema {found}")
+    # Rule 3: multiple majors for one domain need an explicit compatibility note.
+    majors = {}
+    domain_re = re.compile(r"^poie\.([a-z0-9-]+)/(\d+)\.(\d+)$")
+    for schema in registered:
+        match = domain_re.match(schema)
+        if match:
+            majors.setdefault(match.group(1), set()).add(int(match.group(2)))
+    for domain, versions in majors.items():
+        if len(versions) > 1:
+            problems.append(f"domain {domain} has multiple majors {sorted(versions)} without a migration note")
     if problems:
         for problem in problems:
             print(problem)
         return 1
-    print(f"schema registry OK ({len(registered)} schemas)")
+    print(f"schema registry OK ({len(registered)} schemas; rule 3 checked; rule 4 is poie-sdkgen --check)")
     return 0
 
 

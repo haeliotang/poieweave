@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "answer-emit--normal"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic answer.emit fixture (normal)."
+profile = "analyst"
+
+[script]
+responses = [{ tool = "answer.emit", args = {} }]
+
+[expect]
+tools = ["answer.emit"]

@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "action-draft--truncated"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic action.draft fixture (truncated)."
+profile = "dispatcher"
+
+[script]
+responses = [{ tool = "action.draft", args = {} }]
+
+[expect]
+tools = ["action.draft"]

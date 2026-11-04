@@ -66,7 +66,7 @@ SQLite agent_runs/approval_tokens + append-only audit log
 | `catalog.describe` | 1.0.0 | 无 | `OntologyCatalog` | 无 | auto | 1 | A `ontology_catalog` |
 | `state.query` | 1.0.0 | `{subject,asOf?}` | `{objects[],links[],capabilities[],verdict?,dependencies[]}` | object/report | auto | 4 | A objects + `graph` |
 | `plan.propose` | 1.0.0 | `{goal,horizonS,deadlineS?}` | `PlanSummary{planFingerprint,actions[],completionS}` | plan | auto（纯计算） | 2 | `poie-plan::plan` |
-| `plan.preview_sap` | 1.0.0 | `{planFingerprint}` | `SapPreviewDto{checks[],assumed[],rejections[]}` | plan | auto | 2 | 只读 `poie-plan::preview_plan_through_sap`（host 解析 fingerprint） |
+| `plan.preview_sap` | 1.0.0 | `{planFingerprint}` | `SapPreviewDto{checks[],assumed[],rejections[],authorizedActions:0,authorizationCreated:false}` | plan | auto | 2 | 只读 `poie-plan::preview_plan_through_sap`（host 解析 fingerprint） |
 | `action.draft` | 1.0.0 | `{planFingerprint,actionId}` | `ActionDraft{planFingerprint,action,preview}` | plan/action | **operator_confirm** | 2 | 宿主从已算 plan 构造 DTO；审批后才执行 |
 | `answer.emit` | 1.0.0 | `{claims[],suggestions[]}` | `{accepted,rejectedClaims[]}` | claim 内嵌 | auto（终态） | 1 | runtime 校验 |
 
@@ -80,7 +80,7 @@ A 的 `poie-objects::functions()` 在 B 首 PR 同步改为这同一组六个函
 
 复用 Phase A 定义的 `poie-plan::preview_plan_through_sap(plan, assumed)`（A §7.2.1），host 按 `planFingerprint` 解析 Plan：
 
-- 不创建/保存 `Authorization`，不写 `ActionLedger`，不产生 transition；
+- 只使用函数内 throwaway ledger 做 precondition/review；**不写任何 live/external ledger、不创建/保存 Authorization、不产生 Authorized transition**；返回 `authorizedActions=0`、`authorizationCreated=false`；
 - ownership/reservations/authorization 默认 `assumed`，UI 单独显示；
 - `ActionDraft` 只能使用该 preview，禁止调用 `validate_plan_through_sap`；
 - 结构测试：`poie-governance` 无 `poie-exec` 依赖；源码中不出现 `Authorization {`；preview 前后 ledger/authorization 计数不变。

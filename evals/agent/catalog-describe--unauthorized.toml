@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "catalog-describe--unauthorized"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic catalog.describe fixture (unauthorized)."
+profile = "analyst"
+
+[script]
+responses = [{ tool = "catalog.describe", args = {} }]
+
+[expect]
+tools = ["catalog.describe"]

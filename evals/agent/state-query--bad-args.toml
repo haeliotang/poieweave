@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "state-query--bad-args"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic state.query fixture (bad-args)."
+profile = "analyst"
+
+[script]
+responses = [{ tool = "state.query", args = {} }]
+
+[expect]
+tools = ["state.query"]

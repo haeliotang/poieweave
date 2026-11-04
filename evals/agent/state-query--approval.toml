@@ -1,0 +1,12 @@
+schema = "poie.agent-eval/0.1"
+id = "state-query--approval"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic state.query fixture (approval)."
+profile = "analyst"
+
+[script]
+responses = [{ tool = "state.query", args = {} }]
+
+approval = { action = "approve" }
+[expect]
+tools = ["state.query"]

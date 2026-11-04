@@ -1,0 +1,12 @@
+schema = "poie.agent-eval/0.1"
+id = "state-query--expiry"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic state.query fixture (expiry)."
+profile = "analyst"
+
+[script]
+responses = [{ tool = "state.query", args = {} }]
+
+approval = { action = "expire" }
+[expect]
+tools = ["state.query"]

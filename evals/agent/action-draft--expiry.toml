@@ -1,0 +1,12 @@
+schema = "poie.agent-eval/0.1"
+id = "action-draft--expiry"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic action.draft fixture (expiry)."
+profile = "dispatcher"
+
+[script]
+responses = [{ tool = "action.draft", args = {} }]
+
+approval = { action = "expire" }
+[expect]
+tools = ["action.draft"]

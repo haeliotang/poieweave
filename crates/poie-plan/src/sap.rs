@@ -233,7 +233,10 @@ pub fn preview_plan_through_sap(plan: &Plan, assumed: &AssumedContext) -> Result
             ReviewCheck::DedupWindow,
         ] {
             let rejection = result.as_ref().err().and_then(|items| items.iter().find(|item| item.check == check));
-            let status = if check == ReviewCheck::Authorization {
+            let status = if matches!(
+                check,
+                ReviewCheck::CommandOwnership | ReviewCheck::Reservations | ReviewCheck::Authorization
+            ) {
                 "assumed"
             } else if rejection.is_some() {
                 "failed"
@@ -253,7 +256,8 @@ pub fn preview_plan_through_sap(plan: &Plan, assumed: &AssumedContext) -> Result
             if !checks.iter().any(|entry: &CheckPreview| entry.check == check.as_str()) {
                 checks.push(CheckPreview { check: check.as_str().to_string(), status: status.to_string(), detail });
             }
-            if check != ReviewCheck::Authorization {
+            if !matches!(check, ReviewCheck::CommandOwnership | ReviewCheck::Reservations | ReviewCheck::Authorization)
+            {
                 if let Some(item) = rejection {
                     if !rejections.iter().any(|existing| existing == &item.detail) {
                         rejections.push(item.detail.clone());
@@ -359,6 +363,8 @@ mod tests {
         let preview = preview_plan_through_sap(&plan, &assumed).unwrap();
         assert_eq!(preview.checks.len(), 7);
         assert!(preview.checks.iter().any(|check| check.check == "authorization" && check.status == "assumed"));
+        assert!(preview.checks.iter().any(|check| check.check == "command_ownership" && check.status == "assumed"));
+        assert!(preview.checks.iter().any(|check| check.check == "reservations" && check.status == "assumed"));
         assert!(!preview.assumed.is_empty());
         assert!(!preview.rejections.iter().any(|reason| reason.contains("authorization")));
         assert_eq!(preview.authorized_actions, 0);

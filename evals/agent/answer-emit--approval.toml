@@ -1,0 +1,12 @@
+schema = "poie.agent-eval/0.1"
+id = "answer-emit--approval"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic answer.emit fixture (approval)."
+profile = "analyst"
+
+[script]
+responses = [{ tool = "answer.emit", args = {} }]
+
+approval = { action = "approve" }
+[expect]
+tools = ["answer.emit"]

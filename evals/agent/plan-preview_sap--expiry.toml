@@ -1,0 +1,12 @@
+schema = "poie.agent-eval/0.1"
+id = "plan-preview_sap--expiry"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic plan.preview_sap fixture (expiry)."
+profile = "analyst"
+
+[script]
+responses = [{ tool = "plan.preview_sap", args = {} }]
+
+approval = { action = "expire" }
+[expect]
+tools = ["plan.preview_sap"]

@@ -57,7 +57,7 @@ pub fn compatible(ours: SchemaVersion, theirs: SchemaVersion) -> Compatibility;
 
 1. 每个 schema 在表中登记；
 2. 未知 domain 失败；
-3. 同 domain 多个 major 时，必须同时有兼容/迁移说明；
-4. 生成物/SDK 中的 schema 与 Rust 常量一致。
+3. 同 domain 多个 major 时失败（MVP 无多 major；未来需迁移说明）；
+4. 生成物/SDK 与 Rust Catalog 一致：由 `cargo run -p poie-sdkgen -- --check` 在 CI 执行。
 
 检查器已加入根 CI，扫描 product-layer 文档与 `poie-objects`/`poie-sdkgen`/SDK 源码；历史实验 schema 不在本检查范围。本文件是 schema 注册表唯一来源（DIGEST 域为附加表）。

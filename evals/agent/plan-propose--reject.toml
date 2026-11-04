@@ -1,0 +1,12 @@
+schema = "poie.agent-eval/0.1"
+id = "plan-propose--reject"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic plan.propose fixture (reject)."
+profile = "analyst"
+
+[script]
+responses = [{ tool = "plan.propose", args = {} }]
+
+approval = { action = "reject" }
+[expect]
+tools = ["plan.propose"]

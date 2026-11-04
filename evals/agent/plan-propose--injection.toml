@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "plan-propose--injection"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic plan.propose fixture (injection)."
+profile = "analyst"
+
+[script]
+responses = [{ tool = "plan.propose", args = {} }]
+
+[expect]
+tools = ["plan.propose"]
