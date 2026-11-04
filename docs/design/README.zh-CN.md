@@ -122,7 +122,7 @@
 ## 当前状态
 
 - 四份阶段设计 + `DIGEST`/`PLATFORM`/`SCHEMAS`/三份研究备忘：已起草并入库预冻结
-- **Phase A 门禁：PASS**（[`VALIDATION-A.zh-CN.md`](VALIDATION-A.zh-CN.md)，快照 `907b246`；A0/A1 可开工）
-- 完整跨阶段报告：`VALIDATION.zh-CN.md` 仍含 B/C/D 的阶段前事项；这些在各自阶段开工前重跑，不阻断 A
-- 代码实现：A0/A1 进入开发；B/C/D 未开始
-- 文档入库：`design/phase-a-d` 分支 HEAD；A 校验报告随后提交
+- **Phase A 门禁：PASS**（[`VALIDATION-A.zh-CN.md`](VALIDATION-A.zh-CN.md)，快照 `907b246`）
+- **A0 已落地并合并**（PR #137，`main` `49ff974`）：gate/sandbox 鉴权、no-follow/原子写、demo 授权移除、合成预览 UI/测试
+- 下一步：A1（`poie-digest`/`poie-objects`/`poie-sdkgen` + Catalog）
+- B/C/D：设计已入库，阶段门禁未通过，未开始实现
