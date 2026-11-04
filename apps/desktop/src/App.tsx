@@ -25,6 +25,8 @@ import {
   type WhatIfVariant,
   type WhatIfResult,
   type WhatIfCompare,
+  type DeliveryState,
+  type DeliveryInspect,
 } from "./domain";
 import brandMark from "./assets/poieweave-mono.svg";
 import { detectLang, messagesFor, type Lang } from "./i18n";
@@ -1453,6 +1455,44 @@ function SettingsDialog({
   };
 
   const authDisabled = !hosted || busy;
+  const [deliveryPath, setDeliveryPath] = useState("delivery/site.json");
+  const [deliveryExpected, setDeliveryExpected] = useState("");
+  const [deliveryState, setDeliveryState] = useState<DeliveryState | null>(null);
+  const [deliveryMessage, setDeliveryMessage] = useState("");
+  const [deliveryBusy, setDeliveryBusy] = useState(false);
+  const deliveryDisabled = !hosted || !auth.signedIn || deliveryBusy;
+
+  const inspectDelivery = async () => {
+    setDeliveryBusy(true); setDeliveryMessage("");
+    try {
+      const inspected = await invoke<DeliveryInspect>("delivery_manifest_inspect", { path: deliveryPath });
+      setDeliveryExpected(inspected.manifestSha256);
+      setDeliveryMessage(`${inspected.manifest.siteId} · ${inspected.manifest.target} · ${inspected.manifest.channel} · ${inspected.manifestSha256.slice(0, 12)}…`);
+    } catch (caught) { setDeliveryMessage(String(caught)); } finally { setDeliveryBusy(false); }
+  };
+  const importDelivery = async () => {
+    setDeliveryBusy(true); setDeliveryMessage("");
+    try {
+      const next = await invoke<DeliveryState>("delivery_import", { path: deliveryPath, expectedManifestSha256: deliveryExpected });
+      setDeliveryState(next);
+      setDeliveryMessage(t("delivery.imported"));
+    } catch (caught) { setDeliveryMessage(String(caught)); } finally { setDeliveryBusy(false); }
+  };
+  const deliveryAction = async (command: "delivery_state" | "delivery_rollback" | "delivery_clear") => {
+    setDeliveryBusy(true); setDeliveryMessage("");
+    try {
+      setDeliveryState(await invoke<DeliveryState>(command));
+      setDeliveryMessage(t("delivery.updated"));
+    } catch (caught) { setDeliveryMessage(String(caught)); } finally { setDeliveryBusy(false); }
+  };
+  const exportDiagnostics = async () => {
+    setDeliveryBusy(true); setDeliveryMessage("");
+    try {
+      await invoke("delivery_diagnostics_export", { outputDir: "delivery", overwrite: true });
+      setDeliveryMessage(t("delivery.diagnosed"));
+    } catch (caught) { setDeliveryMessage(String(caught)); } finally { setDeliveryBusy(false); }
+  };
+
   const inferenceDisabled = !hosted || !auth.signedIn || busy;
 
   return (
@@ -1560,6 +1600,25 @@ function SettingsDialog({
               </ul>
             </section>
           ) : null}
+
+          <section className="settings-section">
+            <h3>{t("delivery.title")}</h3>
+            {!hosted ? <p className="muted">{t("delivery.hostOnly")}</p> : null}
+            <label>{t("delivery.path")}<input value={deliveryPath} onChange={(event) => setDeliveryPath(event.target.value)} disabled={deliveryDisabled} placeholder="delivery/site.json" /></label>
+            <div className="agent-panel__actions">
+              <button className="secondary" type="button" onClick={() => void inspectDelivery()} disabled={deliveryDisabled}>{t("delivery.inspect")}</button>
+              <button className="secondary" type="button" onClick={() => void importDelivery()} disabled={deliveryDisabled || !deliveryExpected}>{t("delivery.import")}</button>
+              <button className="secondary" type="button" onClick={() => void deliveryAction("delivery_state")} disabled={deliveryDisabled}>{t("delivery.refresh")}</button>
+              <button className="secondary" type="button" onClick={() => void deliveryAction("delivery_rollback")} disabled={deliveryDisabled}>{t("delivery.rollback")}</button>
+              <button className="secondary" type="button" onClick={() => void deliveryAction("delivery_clear")} disabled={deliveryDisabled}>{t("delivery.clear")}</button>
+              <button className="secondary" type="button" onClick={() => void exportDiagnostics()} disabled={deliveryDisabled}>{t("delivery.diagnostics")}</button>
+            </div>
+            {deliveryMessage ? <p className="muted">{deliveryMessage}</p> : null}
+            {deliveryState ? (
+              <div className="kv"><span>{t("delivery.current")}</span><span className="mono">{deliveryState.current ? `${deliveryState.current.siteId} · ${deliveryState.current.channel} · ${deliveryState.current.manifestSha256.slice(0, 12)}…` : t("delivery.none")}</span></div>
+            ) : null}
+            {deliveryState?.recalled ? <p className="form-error">{t("delivery.recalled")}</p> : null}
+          </section>
 
           <section className="settings-section">
             <h3>{t("settings.about")}</h3>
