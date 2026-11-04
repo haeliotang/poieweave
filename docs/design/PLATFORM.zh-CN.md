@@ -29,7 +29,7 @@ schema = "poie.<domain>/<major>.<minor>"
 
 - `AssetStatus`、`LotQuality`、`Verification`、`Patch` 保持 Deserialize-only；`StateId` 当前没有 serde，公开 DTO 用字符串表示，不直接序列化领域类型。
 - A 定义公开 DTO：`ObjectInstance`、`LinkInstance`、`ActionType`、`SapPreview`、`OntologyCatalog`（这些类型本身就是公开 DTO，不再加 `Dto` 后缀）；从 `Model` 构建。
-- C 定义 `PatchDto`、`PerturbationDto`、`SnapshotDto`、`VariantDto`、`VariantResultDto`；`PatchDto -> Patch` 的唯一转换在 `poie-whatif`，拒绝未知/多余字段。
+- C1 定义 `PatchDto`、`SnapshotDto`、`VariantDto`、`VariantResultDto`、`CompareResultDto`；`PatchDto -> Patch` 的唯一转换在 `poie-whatif`，拒绝未知/多余字段。`PerturbationDto` 属 C2。
 - D 定义 `SiteManifestDto`、`DeliveryStateDto`、`DiagnosticsDto`。
 - DTO 字段稳定、排序稳定；`serde(rename_all="camelCase")`；枚举用 `snake_case` 字符串并显式列出。
 - 转换测试：DTO round-trip；领域类型新增字段时测试失败提醒更新 DTO/版本。
@@ -50,7 +50,7 @@ schema = "poie.<domain>/<major>.<minor>"
 | `scope_denied` | A/B/C/D | 窗口/命令 scope 不匹配 |
 | `unsupported_schema` | A/B/C/D | schema major 未知 |
 | `invalid_cursor` / `limit_exceeded` | A/C | 分页参数非法 |
-| `unknown_type` / `unknown_object` | A | 类型/对象不存在 |
+| `unknown_type` / `unknown_object` / `unknown_snapshot` / `unknown_variant` / `unknown_result` | A/C | 类型/对象/快照/变体/结果不存在 |
 | `model_mismatch` | A/C/D | model digest 与当前不一致 |
 | `preview_unavailable` | A | host 未提供 dry-run |
 | `invalid_parameter` / `invalid_patch` | A/B/C | 参数/变体非法 |
@@ -85,7 +85,7 @@ schema = "poie.<domain>/<major>.<minor>"
 | `open_workspace_window` | 否 | main | 导航 | 允许 view 白名单 |
 | `ontology_*` | 否（只读） | main/poie-view-* | 读 | A0 后按窗口 |
 | `agent_*` | 是 | main | 写/网络 | 会话 + scope + policy |
-| `whatif_*` | 是 | main/poie-view-plan | 写（模拟） | 会话 + policy |
+| `whatif_*` | 是 | main/poie-view-plan | 写（C1 结果表） | 会话 + `authorize(window,command,session,policy)`；C1 不写 SAP/live |
 | `delivery_*` | 是 | main | 写 | 会话 + 审批 + policy |
 
 实现要求：
@@ -177,7 +177,7 @@ pub struct ApprovalToken {
 | `poie-objects` | A | poie-ontology, poie-digest, serde |
 | `poie-sdkgen` | A (bin) | poie-objects, serde_json |
 | `poie-governance` | B | poie-objects, poie-state (只读), poie-plan, poie-ontology, poie-digest, serde, serde_json, toml |
-| `poie-whatif` | C | ontology, plan, sim, state, viability, digest |
+| `poie-whatif` | C1 | ontology, plan, objects, digest, serde |
 | `poie-delivery` | D | ontology/state/viability, digest, serde |
 
 规则：
@@ -191,7 +191,7 @@ pub struct ApprovalToken {
 ```text
 A0 auth/scope/digest/DTO -> A1 catalog -> A2 SDK/UI
 B1 policy/tool/run state/audit migration -> B2 approvals/evals/UI
-C1 snapshot/perturbation/outcome -> C2 compare/promote/checkpoint
+C1 snapshot/patch/outcome/compare -> C2 timed/promote/checkpoint
 D1 manifest/model store/bundle -> D2 channel/plan/recall/UI
 ```
 
