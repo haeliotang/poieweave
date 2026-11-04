@@ -109,7 +109,7 @@ outputs[] (resource, quantity, unit),
 occupies[], restores[], duration?, required_verification
 ```
 
-这些字段直接来自 `Process` 的 `inputs/outputs/occupies/restores/duration/verification`，不是通用参数表；不提供“任意参数/任意字段”的动作表单，也不把 `runs` 等规划变量包装成参数。`risk_class`、`approval_class`、`allowed_in_modes`、`executor_kind`、`budget_template` 属于 Phase B 治理层（按 `ActionType.id` 关联），缺失时 **fail-closed**，不进入可提交状态。`sap.*` 是 SAP 契约的静态生命周期集合，不是模型对象，不允许从 Catalog 直接调用。
+`target_types` 的派生规则：`occupies ∪ restores` 非空时为 `["asset"]`（并携带具体 asset IDs），否则为 `["process"]`；`inputs/outputs` 来自模型流，`duration` 来自模型，均不是调用者可改的任意参数。这些字段直接来自 `Process` 的 `inputs/outputs/occupies/restores/duration/verification`，不是通用参数表；不提供“任意参数/任意字段”的动作表单，也不把 `runs` 等规划变量包装成参数。`risk_class`、`approval_class`、`allowed_in_modes`、`executor_kind`、`budget_template` 属于 Phase B 治理层（按 `ActionType.id` 关联），缺失时 **fail-closed**，不进入可提交状态。`sap.*` 是 SAP 契约的静态生命周期集合，不是模型对象，不允许从 Catalog 直接调用。
 
 MVP 不生成新的 SAP 动作实例；仅把计划动作和目录元数据关联。Phase C 负责从 What-if 结果创建 proposed 动作。
 
@@ -200,7 +200,8 @@ pub struct ObjectDetail {
 }
 pub struct OntologyCatalog {
     pub schema: String,          // "poie.ontology-catalog/0.1"
-    pub model_digest: String,
+    pub model_digest: String,    // sha256 per DIGEST
+    pub catalog_sha256: String,  // sha256 of catalog excluding this field
     pub object_types: Vec<ObjectType>,
     pub link_types: Vec<LinkType>,
     pub action_types: Vec<ActionType>,
@@ -214,11 +215,20 @@ pub struct ObjectPage {
     pub next_cursor: Option<String>,
 }
 
+pub struct AssumedContext {
+    pub ownership: Option<String>, pub reservations: Vec<String>,
+    pub authorization: Option<String>, pub now_s: f64,
+}
+pub struct CheckPreview {
+    pub id: String, pub status: String, // observed|assumed|failed|unknown
+    pub detail: String,
+}
 pub struct SapPreview {
     pub checks: Vec<CheckPreview>,       // 七项检查的只读结果
     pub assumed: Vec<String>,            // ownership/reservations/authorization 等假定项
     pub rejection_reasons: Vec<String>,
 }
+pub enum PreviewError { InvalidPlan, UnsupportedContext, NoPreviewAvailable }
 
 pub struct ActionPreview {
     pub action: ActionType,
