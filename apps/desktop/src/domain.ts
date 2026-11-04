@@ -345,3 +345,25 @@ export const fallbackInference: InferenceStatus = {
   hasKey: false,
   updatedAtMs: null,
 };
+
+export interface OntologyProperty {
+  value: unknown;
+  source: string;
+  asOf: string | null;
+  verification: string;
+}
+
+export interface OntologyObject {
+  id: string;
+  typeId: string;
+  version: string;
+  properties: Record<string, OntologyProperty>;
+}
+
+export interface OntologyDetail {
+  schema: string;
+  modelDigest: string;
+  catalogDigest: string;
+  object: OntologyObject;
+  links: { typeId: string; from: string; to: string }[];
+}

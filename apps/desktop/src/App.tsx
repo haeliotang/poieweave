@@ -19,6 +19,7 @@ import {
   type InferenceResult,
   type InferenceStatus,
   type NavKey,
+  type OntologyDetail,
 } from "./domain";
 import brandMark from "./assets/poieweave-mono.svg";
 import { detectLang, messagesFor, type Lang } from "./i18n";
@@ -662,7 +663,37 @@ function Overview({ lang, overview, selection, onSelect }: { lang: Lang; overvie
   );
 }
 
-function Capabilities({ lang, overview, selection, onSelect }: { lang: Lang; overview: DomainOverview; selection: Selection | null; onSelect: (selection: Selection) => void }) {
+function ObjectInspector({ lang, typeId, id, hosted }: { lang: Lang; typeId: string; id: string; hosted: boolean }) {
+  const t = (key: string) => messagesFor(lang)[key] ?? key;
+  const [detail, setDetail] = useState<OntologyDetail | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    setDetail(null);
+    setError(null);
+    if (!hosted) return;
+    invoke<OntologyDetail>("ontology_object", { typeId, id }).then(setDetail).catch((cause: unknown) => setError(String(cause)));
+  }, [hosted, typeId, id]);
+  if (!hosted) return <section className="card"><div className="card__head"><h2>{t("object.title")}</h2></div><p className="muted">{t("object.preview")}</p></section>;
+  if (error) return <section className="card"><div className="card__head"><h2>{t("object.title")}</h2></div><p className="muted">{error}</p></section>;
+  if (!detail) return <section className="card"><div className="card__head"><h2>{t("object.title")}</h2></div><p className="muted">{t("object.loading")}</p></section>;
+  return (
+    <section className="card">
+      <div className="card__head"><h2>{t("object.title")}</h2><span className="digest mono">{detail.object.id}</span></div>
+      <div className="object-props">
+        {Object.entries(detail.object.properties).map(([key, property]) => (
+          <div className="object-prop" key={key}>
+            <span className="object-prop__key">{key}</span>
+            <span className="mono">{String(property.value)}</span>
+            <span className="muted">{property.source}{property.asOf ? ` · ${property.asOf}` : ""}</span>
+          </div>
+        ))}
+      </div>
+      <p className="muted">{t("object.links")}: {detail.links.map((link) => `${link.typeId} → ${link.to}`).join(" · ") || t("object.none")}</p>
+    </section>
+  );
+}
+
+function Capabilities({ lang, overview, selection, onSelect, hosted }: { lang: Lang; overview: DomainOverview; selection: Selection | null; onSelect: (selection: Selection) => void; hosted: boolean }) {
   const t = (key: string) => messagesFor(lang)[key] ?? key;
   const lists: { key: "asset" | "resource" | "process"; title: string; items: EntityView[] }[] = [
     { key: "asset", title: t("capabilities.assets"), items: overview.assets },
@@ -695,6 +726,9 @@ function Capabilities({ lang, overview, selection, onSelect }: { lang: Lang; ove
           </section>
         ))}
       </div>
+      {selection && ["asset", "resource", "process"].includes(selection.kind) ? (
+        <ObjectInspector lang={lang} typeId={selection.kind} id={selection.id} hosted={hosted} />
+      ) : null}
       <CapabilityGraph lang={lang} selection={selection} onSelect={onSelect} />
       <section className="card">
         <div className="card__head"><h2>{t("overview.external")}</h2><span className="digest">{overview.externalDependencies.length}</span></div>
@@ -1492,7 +1526,7 @@ export default function App() {
 
   const view = useMemo(() => {
     if (nav === "overview") return <Overview lang={lang} overview={overview} selection={selection} onSelect={select} />;
-    if (nav === "capabilities") return <Capabilities lang={lang} overview={overview} selection={selection} onSelect={select} />;
+    if (nav === "capabilities") return <Capabilities lang={lang} overview={overview} selection={selection} onSelect={select} hosted={isTauri()} />;
     if (nav === "plan") return <Plan lang={lang} overview={overview} selection={selection} onSelect={select} />;
     if (nav === "execution") return <Execution lang={lang} execution={execution} selection={selection} onSelect={select} onGate={(next) => void updateGate(next)} hosted={isTauri()} />;
     if (nav === "federation") return <Federation lang={lang} federation={federation} selection={selection} onSelect={select} />;
