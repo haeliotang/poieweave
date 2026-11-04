@@ -117,13 +117,13 @@ MVP 不生成新的 SAP 动作实例；仅把计划动作和目录元数据关�
 | 函数 ID | 输入 | 输出 | 副作用 |
 | --- | --- | --- | --- |
 | `catalog.describe` | 无 | Ontology Catalog | 无 |
-| `state.query` | subject/type, asOf | 对象/链接/能力/依赖 | 无 |
+| `state.query` | `{subject,asOf?}` | 对象/链接/能力/依赖（含 capabilities[]） | 无 |
 | `plan.propose` | goal, horizon, deadline | proposed plan | 无（只返回） |
-| `plan.preview_sap` | Plan object（host 持有；不接受 planRef）, assumed context | SAP validation summary（只读 dry-run，假定项显式标注） | 无 |
-| `evidence.get` | evidence id | 证据引用/摘要 | Phase D 启用 |
-| `sim.run` | variant id | simulated result | Phase C 才启用 |
+| `plan.preview_sap` | planFingerprint（host 解析） | SAP validation summary（只读 dry-run，假定项显式标注） | 无 |
+| `action.draft` | planFingerprint, actionId | 动作草稿/预览（需 Phase B 审批后执行） | 无 |
+| `answer.emit` | claims, suggestions | 最终回答协议（Phase B） | 无 |
 
-Phase A 实现前四项。Phase B 的 Tool Catalog 是这些函数的**投影**（同名/同参数），不得另造一套工具语义。
+Phase A 实现前四项；`action.draft`/`answer.emit` 由 Phase B 治理层实现。Phase B 的 Tool Catalog 是这六个函数的**唯一投影**（同名/同参数），不得另造一套工具语义。
 
 ## 7. 架构与模块边界
 
@@ -242,12 +242,13 @@ pub struct ObjectPage {
 // SapPreview/CheckPreview/AssumedContext/PreviewError 的权威定义在 `poie-plan::sap`；
 // 这里只列字段形状，不在 poie-objects 复制实现：
 //
-// SapPreview { checks: Vec<CheckPreview>, assumed: Vec<String>, rejections: Vec<String> }
-// CheckPreview { id, status: observed|assumed|failed|unknown, detail }
-// AssumedContext { ownership, reservations, authorization, now_s }
-// PreviewError { InvalidPlan, UnsupportedContext, NoPreviewAvailable }
-// 映射：InvalidPlan -> invalid_parameter；UnsupportedContext -> preview_unavailable；
-// NoPreviewAvailable -> preview_unavailable；host 统一包成 {code,message,details}。
+// SapPreview { checks, assumed, rejections, authorized_actions: usize, authorization_created: bool }
+// CheckPreview { check, status: observed|assumed|failed|unknown, detail }
+// AssumedContext { now_ms, holds_command_ownership, reservations_held,
+//                  predicates_holding, state_version }
+// PreviewError { EmptyStateVersion, InvalidPlan(String) }
+// 映射：EmptyStateVersion/InvalidPlan -> invalid_parameter；
+// host 统一包成 {code,message,details}。
 
 pub struct PlannedActionView {
     pub action_id: String, pub process: String, pub target: String, pub runs: u32,
@@ -281,10 +282,10 @@ pub fn preview_plan_through_sap(
 ) -> Result<SapPreview, PreviewError>;
 ```
 
-- 只读：不写 `ActionLedger`、不创建/保存 `Authorization`、不产生 transition；
-- `SapPreview { checks: Vec<CheckPreview>, assumed: Vec<String>, rejections: Vec<String> }`；
-- `CheckPreview { id, status: observed|assumed|failed|unknown, detail }`；ownership/reservations/authorization 默认 `assumed`；
-- 测试断言：调用前后 ledger/authorization 计数不变；所有 `assumed` 项在 UI 中单独显示，不能显示为“7/7 通过”。
+- 只读：只使用函数内 throwaway ledger 做 precondition 校验，**不写任何 live/external ledger、不创建/保存 Authorization、不产生 Authorized transition**；
+- `SapPreview { checks, assumed, rejections, authorized_actions, authorization_created }`；返回时 `authorized_actions=0`、`authorization_created=false`；
+- `CheckPreview { check, status, detail }`；ownership/reservations/authorization 默认 `assumed`；
+- 测试断言：`authorized_actions==0`、`authorization_created==false`，且没有任何 authorization/Authorized 记录；所有 `assumed` 项在 UI 中单独显示，不能显示为“7/7 通过”。
 - host 的 `ontology_action_preview` 调用该函数并把结果传给 `poie-objects`/UI，`poie-objects` 不依赖 `poie-plan`。
 
 ### 7.2 桌面 host 命令
@@ -371,7 +372,7 @@ MVP 不发布 npm 包；先把 SDK 作为桌面内共享类型层，后续可独
 - 链接端点类型与数量校验；
 - 每个 process 都有一个 process-id 动作，inputs/outputs/occupies/restores/durationS/requiresCapabilities/verification 与模型逐字段一致；不暴露通用参数；
 - SDK 重生成一致；
-- `preview_plan_through_sap` 前后 ledger/authorization/transition 计数不变，`assumed` 项单独标注；
+- `preview_plan_through_sap` 只写 throwaway local ledger，不创建 Authorization、不产生 Authorized transition；返回 `authorized_actions=0`/`authorization_created=false`，`assumed` 项单独标注；
 - host 的 catalog/domain 使用同一 `SourceModel`（digest 一致），不能出现两个 pump 状态；
 - host 命令未登录/scope 不符时拒绝（execution_gate_set、sandbox_write、inference_configure）；
 - 对象图节点集合来自 Catalog，删除 `GRAPH_NODES` 后仍能渲染。

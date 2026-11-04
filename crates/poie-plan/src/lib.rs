@@ -14,4 +14,7 @@ pub mod sap;
 pub use baselines::{baseline, BaselineKind, BaselineRequest};
 pub use plan::{plan, GoalFailure, Plan, PlanError, PlannedAction, PlanningGoal, PlanningRequest};
 pub use replan::{replan, ReplanError, ReplanRequest, ReplanResult, ReplanTrigger};
-pub use sap::{validate_plan_through_sap, PlanValidationError, SapValidation};
+pub use sap::{
+    preview_plan_through_sap, validate_plan_through_sap, AssumedContext, CheckPreview, PlanValidationError,
+    PreviewError, SapPreview, SapValidation,
+};

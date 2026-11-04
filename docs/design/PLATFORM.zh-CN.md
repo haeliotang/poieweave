@@ -6,7 +6,7 @@
 
 ## 1. Schema 注册表与版本策略
 
-统一注册表 [`SCHEMAS.md`](SCHEMAS.md)（A0 新增 `scripts/check-schema-registry.py` 校验；当前先以文档表为唯一来源），每个对外 JSON/TOML 结构必须有：
+统一注册表 [`SCHEMAS.md`](SCHEMAS.md)（`scripts/check-schema-registry.py` 已加入 CI；文档表+代码常量必须一致），每个对外 JSON/TOML 结构必须有：
 
 ```text
 schema = "poie.<domain>/<major>.<minor>"
@@ -54,12 +54,17 @@ schema = "poie.<domain>/<major>.<minor>"
 | `model_mismatch` | A/C/D | model digest 与当前不一致 |
 | `preview_unavailable` | A | host 未提供 dry-run |
 | `invalid_parameter` / `invalid_patch` | A/B/C | 参数/变体非法 |
-| `approval_required` / `approval_mismatch` / `approval_expired` | B/C/D | 审批缺失/被替换/过期 |
+| `approval_required` / `approval_mismatch` / `approval_expired` / `approval_rejected` | B/C/D | 审批缺失/被替换/过期/拒绝 |
 | `budget_exceeded` | B/C | 步数/工具/时间超限 |
 | `stale_snapshot` | C | snapshot/证据已变 |
 | `not_promotable` | C | 结果不可提升 |
 | `bundle_tampered` / `bundle_incomplete` / `bundle_incompatible` | D | bundle 校验失败 |
 | `policy_blocked` | B/C/D | 站点策略拒绝 |
+| `citation_missing` / `invalid_tool_arguments` | B | 最终断言引用缺失/工具参数非法 |
+| `provider_timeout` / `provider_response_too_large` / `provider_protocol` | B | provider 调用/协议失败 |
+| `run_active` / `run_not_found` / `run_interrupted` | B | Agent 运行状态 |
+| `audit_integrity_failed` | B | 审计链/锚点损坏 |
+| `not_implemented` | B/C | 工具阶段未启用 |
 
 错误不得回显密钥、完整 prompt、绝对路径；`details` 只放稳定 ID/摘要。
 
@@ -85,6 +90,7 @@ schema = "poie.<domain>/<major>.<minor>"
 
 实现要求：
 
+- `auth::Session` 必须带 `sessionId`（128-bit 随机 hex，创建会话时生成）；审批、capability、RunState 全用它；登出/过期即失效。
 - 每个命令显式接收/读取 `tauri::Window` 并调用 `authorize(window, command, session, policy)`；不得依赖“所有窗口共享全部命令”。
 - `capabilities/default.json` 仅为默认；为 settings/agent 窗口增加独立 capability 文件（或命令内 scope 检查），二者至少一种，且测试覆盖。
 - `execution_gate_set` 改为先 `auth::require` 再修改；`sandbox_*` 改为 no-follow + 原子写（Phase D 复用）。
@@ -137,20 +143,28 @@ pub enum ApprovalClass { Auto, OperatorConfirm, TwoPerson, Forbidden }
 pub struct ApprovalToken {
     pub id: String,
     pub session_id: String,
-    pub run_id: Option<String>,
-    pub tool_or_action: String,
+    pub run_id: String,
+    pub call_id: String,
+    pub tool: String,
+    pub tool_version: String,
     pub subject_digest: String, // sha256 per DIGEST.md; tool/action specific
     pub policy_version: String,
+    pub args_json_redacted: String,
+    pub impact_json: String,
+    pub citations_json: String,
+    pub state: String, // pending|approved|rejected|expired|executing|interrupted|consumed|cancelled
+    pub created_at_ms: u64,
+    pub decided_at_ms: Option<u64>,
+    pub started_at_ms: Option<u64>,
     pub expires_at_ms: u64,
-    pub used: bool,
 }
 ```
 
-- `OperatorConfirm`：宿主创建 pending token；UI 展示 subject/影响/引用；操作员批准后置 used；任何字段变化使 digest 不匹配。
+- `OperatorConfirm`：宿主创建 pending token；UI 展示 subject/args/影响/引用；`agent_approve` 原子置 approved，`agent_resume` 原子置 executing 后执行一次并置 consumed；任何字段变化使 digest 不匹配。
 - `TwoPerson`：Phase B/D 不开放（删除预留，避免与单操作员冲突）；需要时另立 ADR + 角色模型。
 - `Forbidden`：直接拒绝并审计。
 - B 的 agent、C 的 promote、D 的 channel/import 使用同一原语；不允许布尔 `approved` 参数。
-- 所有 token 持久化（SQLite）以支持暂停/恢复/审计；过期自动拒绝。
+- 所有 token 持久化（`approval_tokens` 表）以支持暂停/恢复/审计；批准：`pending → approved`；消费：`approved → executing → consumed`（原子条件更新）；过期自动拒绝。
 - token 与 SAP 记录的关联：写入审计时记录 `sap_record_id`；`Authorization.basis` 包含 `approval:<tokenId>`（或结构化后字段），使 SAP 记录可反查 token。
 
 ## 7. 新 crate/依赖与工作区
@@ -162,7 +176,7 @@ pub struct ApprovalToken {
 | `poie-digest` | A | serde, serde_json, sha2 |
 | `poie-objects` | A | poie-ontology, poie-digest, serde |
 | `poie-sdkgen` | A (bin) | poie-objects, serde_json |
-| `poie-governance` | B | poie-objects, poie-state (只读), poie-plan, poie-digest, serde_json |
+| `poie-governance` | B | poie-objects, poie-state (只读), poie-plan, poie-ontology, poie-digest, serde, serde_json, toml |
 | `poie-whatif` | C | ontology, plan, sim, state, viability, digest |
 | `poie-delivery` | D | ontology/state/viability, digest, serde |
 

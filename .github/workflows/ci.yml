@@ -37,6 +37,8 @@ jobs:
         run: cargo test --locked
       - name: Ontology SDK drift
         run: cargo run --locked -q -p poie-sdkgen -- --check
+      - name: Schema registry
+        run: python3 scripts/check-schema-registry.py
       - name: rustdoc (warnings as errors)
         run: RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --offline
       - name: Markdown relative links

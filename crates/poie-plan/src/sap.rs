@@ -13,7 +13,7 @@ use poie_state::action::{
     Action, ActionLedger, ActionState, Authorization, BudgetItem, Precondition, Reversibility, VerificationSpec,
 };
 use poie_state::record::Timestamp;
-use poie_state::review::{review_dispatch, DispatchContext};
+use poie_state::review::{review_dispatch, DispatchContext, ReviewCheck};
 
 use crate::plan::{Plan, PlannedAction};
 
@@ -21,6 +21,37 @@ use crate::plan::{Plan, PlannedAction};
 pub struct SapValidation {
     pub authorized_actions: usize,
     pub review_checks: usize,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct AssumedContext {
+    pub now_ms: i64,
+    pub holds_command_ownership: bool,
+    pub reservations_held: bool,
+    pub predicates_holding: BTreeSet<String>,
+    pub state_version: BTreeMap<String, u64>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct CheckPreview {
+    pub check: String,
+    pub status: String, // observed|assumed|failed|unknown
+    pub detail: String,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct SapPreview {
+    pub checks: Vec<CheckPreview>,
+    pub assumed: Vec<String>,
+    pub rejections: Vec<String>,
+    pub authorized_actions: usize,
+    pub authorization_created: bool,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub enum PreviewError {
+    EmptyStateVersion,
+    InvalidPlan(String),
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -48,7 +79,12 @@ impl fmt::Display for PlanValidationError {
 
 impl std::error::Error for PlanValidationError {}
 
-fn to_action(plan: &Plan, planned: &PlannedAction, state_version: &BTreeMap<String, u64>) -> Action {
+fn to_action(
+    plan: &Plan,
+    planned: &PlannedAction,
+    state_version: &BTreeMap<String, u64>,
+    authorization: Option<Authorization>,
+) -> Action {
     let start_ms = (planned.start_s * 1000.0) as i64;
     let end_ms = (planned.end_s * 1000.0) as i64;
     Action {
@@ -74,12 +110,7 @@ fn to_action(plan: &Plan, planned: &PlannedAction, state_version: &BTreeMap<Stri
             condition: "process reports completed and the effect is observed".to_string(),
             window_ms: 60_000,
         },
-        authorization: Some(Authorization {
-            by: "planning-validation".to_string(),
-            basis: "validation-only entry; dispatch still needs the authorizer".to_string(),
-            scope: "dispatch".to_string(),
-            valid_until: Timestamp(end_ms + 3_600_000),
-        }),
+        authorization,
         redispatch_of: None,
     }
 }
@@ -117,7 +148,17 @@ pub fn validate_plan_through_sap(
     let mut ledger = ActionLedger::new();
     let mut review_checks = 0usize;
     for planned in &plan.actions {
-        let action = to_action(plan, planned, state_version);
+        let action = to_action(
+            plan,
+            planned,
+            state_version,
+            Some(Authorization {
+                by: "planning-validation".to_string(),
+                basis: "validation-only entry; dispatch still needs the authorizer".to_string(),
+                scope: "dispatch".to_string(),
+                valid_until: Timestamp((planned.end_s * 1000.0) as i64 + 3_600_000),
+            }),
+        );
         action.validate().map_err(|error| PlanValidationError::Structural(error.to_string()))?;
         ledger.add(&action).map_err(|error| PlanValidationError::Structural(error.to_string()))?;
         ledger
@@ -144,6 +185,93 @@ pub fn validate_plan_through_sap(
         }
     }
     Ok(SapValidation { authorized_actions: plan.actions.len(), review_checks })
+}
+
+/// Read-only SAP preview. It never creates an Authorization, never advances an
+/// action to Authorized and never dispatches. `assumed` context is explicit.
+pub fn preview_plan_through_sap(plan: &Plan, assumed: &AssumedContext) -> Result<SapPreview, PreviewError> {
+    if assumed.state_version.is_empty() {
+        return Err(PreviewError::EmptyStateVersion);
+    }
+    if plan.actions.is_empty() {
+        return Ok(SapPreview {
+            checks: Vec::new(),
+            assumed: Vec::new(),
+            rejections: Vec::new(),
+            authorized_actions: 0,
+            authorization_created: false,
+        });
+    }
+    let mut ledger = ActionLedger::new();
+    let mut rejections = Vec::new();
+    let mut checks = Vec::new();
+    for planned in &plan.actions {
+        let action = to_action(plan, planned, &assumed.state_version, None);
+        action.validate().map_err(|error| PreviewError::InvalidPlan(error.to_string()))?;
+        ledger.add(&action).map_err(|error| PreviewError::InvalidPlan(error.to_string()))?;
+        ledger
+            .apply(&action.action_id, ActionState::Validated)
+            .map_err(|error| PreviewError::InvalidPlan(error.to_string()))?;
+        let context = DispatchContext {
+            now_ms: assumed.now_ms,
+            current_state_version: assumed.state_version.clone(),
+            holds_command_ownership: assumed.holds_command_ownership,
+            reservations_held: assumed.reservations_held,
+            predicates_holding: assumed.predicates_holding.clone(),
+            authorization_revoked: false,
+            ownership_dispatch_deadline_ms: None,
+            executor_dedup_window_ms: None,
+        };
+        let result = review_dispatch(&action, &ledger, &context);
+        for check in [
+            ReviewCheck::TimeWindow,
+            ReviewCheck::Preconditions,
+            ReviewCheck::CommandOwnership,
+            ReviewCheck::Reservations,
+            ReviewCheck::IdempotencyKey,
+            ReviewCheck::Authorization,
+            ReviewCheck::DedupWindow,
+        ] {
+            let rejection = result.as_ref().err().and_then(|items| items.iter().find(|item| item.check == check));
+            let status = if matches!(
+                check,
+                ReviewCheck::CommandOwnership | ReviewCheck::Reservations | ReviewCheck::Authorization
+            ) {
+                "assumed"
+            } else if rejection.is_some() {
+                "failed"
+            } else {
+                "observed"
+            };
+            let detail = rejection.map(|item| item.detail.clone()).unwrap_or_else(|| {
+                if check == ReviewCheck::Authorization {
+                    "authorization not created in preview".to_string()
+                } else {
+                    "ok".to_string()
+                }
+            });
+            if status == "assumed" && !checks.iter().any(|entry: &CheckPreview| entry.check == "authorization") {
+                // keep one assumed entry per preview; actions share the same assumption
+            }
+            if !checks.iter().any(|entry: &CheckPreview| entry.check == check.as_str()) {
+                checks.push(CheckPreview { check: check.as_str().to_string(), status: status.to_string(), detail });
+            }
+            if !matches!(check, ReviewCheck::CommandOwnership | ReviewCheck::Reservations | ReviewCheck::Authorization)
+            {
+                if let Some(item) = rejection {
+                    if !rejections.iter().any(|existing| existing == &item.detail) {
+                        rejections.push(item.detail.clone());
+                    }
+                }
+            }
+        }
+    }
+    let assumed_checks = checks
+        .iter()
+        .filter(|check| check.status == "assumed")
+        .map(|check| format!("{}: {}", check.check, check.detail))
+        .collect();
+    Ok(SapPreview { checks, assumed: assumed_checks, rejections, authorized_actions: 0, authorization_created: false })
 }
 
 #[cfg(test)]
@@ -220,5 +348,26 @@ mod tests {
         plan.actions[0].process.clear();
         let error = validate_plan_through_sap(&plan, "site-a", &state_version()).unwrap_err();
         assert!(matches!(error, PlanValidationError::Structural(_)), "{error}");
+    }
+
+    #[test]
+    fn preview_is_read_only_and_marks_authorization_assumed() {
+        let plan = service_plan();
+        let assumed = AssumedContext {
+            now_ms: 0,
+            holds_command_ownership: true,
+            reservations_held: true,
+            predicates_holding: plan.actions.iter().flat_map(|action| action.preconditions.clone()).collect(),
+            state_version: state_version(),
+        };
+        let preview = preview_plan_through_sap(&plan, &assumed).unwrap();
+        assert_eq!(preview.checks.len(), 7);
+        assert!(preview.checks.iter().any(|check| check.check == "authorization" && check.status == "assumed"));
+        assert!(preview.checks.iter().any(|check| check.check == "command_ownership" && check.status == "assumed"));
+        assert!(preview.checks.iter().any(|check| check.check == "reservations" && check.status == "assumed"));
+        assert!(!preview.assumed.is_empty());
+        assert!(!preview.rejections.iter().any(|reason| reason.contains("authorization")));
+        assert_eq!(preview.authorized_actions, 0);
+        assert!(!preview.authorization_created);
     }
 }
