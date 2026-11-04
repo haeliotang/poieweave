@@ -6,6 +6,7 @@
 
 | crate | 列出测试数 | 其中随机性质测试 | 主要里程碑 |
 | --- | ---: | --- | --- |
+| `poie-whatif` | 5 | Snapshot/digest/Patch/结构/plan/compare | C1 |
 | `poie-governance` | 8 | 工具目录/画像、审批摘要、审计链、eval schema | B |
 | `poie-sdkgen` | 1 | 生成物与提交 SDK 一致 | A |
 | `poie-digest` | 4 | 规范键序/域分隔/负零/哈希变化 | A |
@@ -21,7 +22,7 @@
 | `poie-expansion` | 24 | 结构 40/时序 40 trials；提案 TOML 变异不 panic（120） | M11 |
 | `poie-federation` | 13 | HLC 80 trials；分区/重连 120 trials | M12 |
 
-**库 crate 测试合计：389 个已列出的测试**；另有其他包 16 个（`poie-h1-baseline` 5、`poie-vec-base01` 2、`poie-basyx-shadow` 9），总计 405。
+**库 crate 测试合计：394 个已列出的测试**；另有其他包 16 个（`poie-h1-baseline` 5、`poie-vec-base01` 2、`poie-basyx-shadow` 9），总计 410。
 
 ## 2. 场景与实验重放
 
