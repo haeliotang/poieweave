@@ -12,16 +12,7 @@
 schema = "poie.<domain>/<major>.<minor>"
 ```
 
-| schema | 所有者 | 兼容规则 |
-| --- | --- | --- |
-| `poie.ontology-catalog/0.1` | A | 新增可选字段 = minor；字段重命名/语义变更 = major |
-| `poie.object-page/0.1` | A | 同上 |
-| `poie.action-preview/0.1` | A | 同上 |
-| `poie.agent-run/0.1` | B | 运行状态事件；major 变更需迁移 |
-| `poie.agent-eval/0.1` | B | fixture |
-| `poie.whatif-snapshot/0.1`、`poie.whatif-variant/0.1`、`poie.whatif-result/0.1` | C | 同上 |
-| `poie.site-bundle/0.1` | D | 未知 major 拒绝；minor 必须可忽略 |
-| `poie.delivery-state/0.1` | D | 同上 |
+完整 schema 表以 [`SCHEMAS.md`](SCHEMAS.md) 为唯一来源；本文件不复制表，避免两处漂移。
 
 规则：
 
@@ -36,7 +27,7 @@ schema = "poie.<domain>/<major>.<minor>"
 
 理由：PO/SAP 领域类型是正式契约，字段名/枚举拼写不能为了 UI 被冻结；DTO 可以 `camelCase`、带 `schemaVersion`，并做显式转换。
 
-- `AssetStatus`、`LotQuality`、`Verification`、`Patch`、`StateId` 保持 Deserialize-only（现状）。
+- `AssetStatus`、`LotQuality`、`Verification`、`Patch` 保持 Deserialize-only；`StateId` 当前没有 serde，公开 DTO 用字符串表示，不直接序列化领域类型。
 - A 定义公开 DTO：`ObjectInstance`、`LinkInstance`、`ActionType`、`SapPreview`、`OntologyCatalog`（这些类型本身就是公开 DTO，不再加 `Dto` 后缀）；从 `Model` 构建。
 - C 定义 `PatchDto`、`PerturbationDto`、`SnapshotDto`、`VariantDto`、`VariantResultDto`；`PatchDto -> Patch` 的唯一转换在 `poie-whatif`，拒绝未知/多余字段。
 - D 定义 `SiteManifestDto`、`DeliveryStateDto`、`DiagnosticsDto`。
@@ -84,12 +75,12 @@ schema = "poie.<domain>/<major>.<minor>"
 | `audit_list` | 是 | main | 读 | 会话 |
 | `inference_status` | 否 | main | 读 | 配置脱敏 |
 | `inference_configure/forget/test/complete` | 是 | main | 写/网络 | 会话 + 站点策略 |
-| `execution_gate_set` | 是 | main/execution | 写 | 会话 + 审计（A0 修复） |
-| `sandbox_read/write/list` | 是 | main | 读写 | 会话 + 路径/大小/窗口 |
+| `execution_gate_set` | 是 | main/poie-view-execution | 写 | 会话 + 审计（A0 修复） |
+| `sandbox_read/write` | 是 | main | 读写 | 会话 + 路径/大小/窗口 |
 | `open_workspace_window` | 否 | main | 导航 | 允许 view 白名单 |
 | `ontology_*` | 否（只读） | main/poie-view-* | 读 | A0 后按窗口 |
 | `agent_*` | 是 | main | 写/网络 | 会话 + scope + policy |
-| `whatif_*` | 是 | main/planning | 写（模拟） | 会话 + policy |
+| `whatif_*` | 是 | main/poie-view-planning | 写（模拟） | 会话 + policy |
 | `delivery_*` | 是 | main | 写 | 会话 + 审批 + policy |
 
 实现要求：

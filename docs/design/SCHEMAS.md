@@ -8,7 +8,9 @@
 | --- | --- | --- | --- |
 | `poie.ontology-catalog/0.1` | A | 0.1 | minor 可加可选字段；major 拒绝 |
 | `poie.object-page/0.1` | A | 0.1 | 同上 |
+| `poie.object-detail/0.1` | A | 0.1 | 同上 |
 | `poie.action-preview/0.1` | A | 0.1 | 同上 |
+| `poie.sap-preview/0.1` | A | 0.1 | 同上 |
 | `poie.agent-run/0.1` | B | 0.1 | 状态机字段只能加可选；major 迁移 |
 | `poie.agent-eval/0.1` | B | 0.1 | fixture schema |
 | `poie.whatif-snapshot/0.1` | C | 0.1 | 同上 |

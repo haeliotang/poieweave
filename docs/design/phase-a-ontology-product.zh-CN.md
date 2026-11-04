@@ -43,7 +43,7 @@ Phase A 把这些能力收束成一个**可读、可预览、可类型化**的�
 4. `execution.rs` 和 `federation_view.rs` 的硬编码授权（`Authorization{by:"maintainer", basis:"issue #105"}`）从产品路径移除。A0 **不生成任何 Authorization**：execution 视图把现有动作标为 `synthetic-preview`，只显示 proposed/validated 与“未授权”状态；测试断言 `authorized`/`dispatched` 数量为 0，UI 不再显示“复核通过”，未登录时同样只读。
 5. 命令错误改用 `{code,message,details}` 包络；命令 scope 矩阵见 PLATFORM §4，不新增裸 `String` 错误。
 
-A0 的验收进入 Phase A PR；没有它，Phase A 不开始。测试需断言：execution snapshot 中 `authorized`/`dispatched` 为 0；`execution.rs`/`federation_view.rs` 不再出现硬编码 `Authorization`；未登录调用 gate/sandbox 被拒；命令 scope 矩阵用例通过。
+A0 的验收进入 Phase A PR；没有它，Phase A 不开始。**preview 语义**：A0 阶段 `dispatch_allowed` 在 `ExecutionSnapshot` 中恒为 `false`（三态 `false`），UI 显示“合成预览/未授权”，不得用 `true` 表示“复核通过”；只有后续显式授权流程才可能改变。测试需断言：execution snapshot 中 `authorized`/`dispatched` 为 0；`execution.rs`/`federation_view.rs` 不再出现硬编码 `Authorization`；未登录调用 gate/sandbox 被拒；命令 scope 矩阵用例通过。
 
 ## 5. 用户与使用场景
 
@@ -122,7 +122,7 @@ MVP 不生成新的 SAP 动作实例；仅把计划动作和目录元数据关�
 | `catalog.describe` | 无 | Ontology Catalog | 无 |
 | `state.query` | subject/type, asOf | 对象/链接/能力/依赖 | 无 |
 | `plan.propose` | goal, horizon, deadline | proposed plan | 无（只返回） |
-| `plan.preview_sap` | Plan object（host 持有）或 planRef, assumed context | SAP validation summary（只读 dry-run，假定项显式标注） | 无 |
+| `plan.preview_sap` | Plan object（host 持有；不接受 planRef）, assumed context | SAP validation summary（只读 dry-run，假定项显式标注） | 无 |
 | `evidence.get` | evidence id | 证据引用/摘要 | Phase D 启用 |
 | `sim.run` | variant id | simulated result | Phase C 才启用 |
 
@@ -195,6 +195,7 @@ pub struct ObjectInstance {
     pub properties: BTreeMap<String,PropertyValue>,
 }
 pub struct ObjectDetail {
+    pub schema: String, // poie.object-detail/0.1
     pub object: ObjectInstance, pub links: Vec<LinkInstance>,
     pub evidence: Vec<EvidenceRef>,
 }
@@ -210,7 +211,6 @@ pub struct FunctionType {
     pub input_schema: serde_json::Value, pub output_schema: serde_json::Value,
     pub effect: String, // read_only|propose|simulate
 }
-pub struct Predicate { pub field: String, pub op: String, pub value: serde_json::Value }
 pub struct OntologyCatalog {
     pub schema: String,          // "poie.ontology-catalog/0.1"
     pub model_digest: String,    // sha256 per DIGEST
@@ -242,11 +242,14 @@ pub struct SapPreview {
     pub rejections: Vec<String>,
 }
 pub enum PreviewError { InvalidPlan, UnsupportedContext, NoPreviewAvailable }
+// 映射：InvalidPlan -> invalid_parameter；UnsupportedContext -> preview_unavailable；
+// NoPreviewAvailable -> preview_unavailable；host 统一包成 {code,message,details}。
 
 pub struct ActionPreview {
+    pub schema: String, // poie.action-preview/0.1
     pub action: ActionType,
     pub plan_ref: Option<String>,
-    pub preconditions: Vec<Predicate>,
+    pub preconditions: Vec<String>, // 来自 plan/model 的前置条件文本；不引入通用谓词语言
     pub sap_preview: Option<SapPreview>, // host 传入的只读 dry-run；假定项显式标注
     pub assumptions: Vec<String>,
     pub reasons: Vec<String>,
