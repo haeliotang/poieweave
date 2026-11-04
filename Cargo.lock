@@ -183,6 +183,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "poie-governance"
+version = "0.1.0"
+dependencies = [
+ "poie-digest",
+ "poie-objects",
+ "serde",
+ "serde_json",
+ "toml",
+]
+
+[[package]]
 name = "poie-h1-baseline"
 version = "0.1.0"
 dependencies = [

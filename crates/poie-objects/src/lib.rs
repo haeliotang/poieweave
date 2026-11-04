@@ -7,7 +7,7 @@ use std::collections::BTreeMap;
 
 use poie_digest::{sha256_of, DigestError};
 use poie_ontology::model::{AssetStatus, LotQuality, Model, Verification};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
 pub const CATALOG_SCHEMA: &str = "poie.ontology-catalog/0.1";
@@ -70,7 +70,7 @@ pub struct LinkInstance {
     pub to: String,
 }
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EvidenceRef {
     pub kind: String,
