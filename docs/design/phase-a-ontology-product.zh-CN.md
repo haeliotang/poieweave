@@ -150,7 +150,7 @@ crates/poie-objects        NEW: Catalog / Object projection / Action catalog
 - `catalog_digest = sha256("poie.catalog/0.1\n" + canonical_json(catalog_without_digest))`。
 - `plan_digest` 保留现有 `Plan::digest()` 字符串作为人类可读标识；需要 SHA-256 时使用 `sha256("poie.plan/0.1\n" + canonical_json({digest, actions...}))`，不要声称两者相同。
 - `simulation_digest` 同样保留 `Simulation::digest()` 字符串，D/C 记录字符串并附哈希。
-- `manifest_sha256 = sha256("poie.manifest/0.1\n" + canonical_json(manifest without integrity))`。
+- D1 `manifest_sha256 = sha256("poie.manifest/0.1\n" + canonical_json(SiteManifest without flat manifestSha256))`，不使用 integrity 对象。
 
 验收：同一模型两次生成 `model_digest`/`catalog_digest` 相同；修改一个字段 digest 必变；未知 schema 或非有限数字拒绝。该规范见 [`DIGEST.md`](DIGEST.md)，由 A/C/D 共享测试向量。
 

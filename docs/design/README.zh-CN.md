@@ -9,7 +9,7 @@
 | A | [Ontology 产品层](phase-a-ontology-product.zh-CN.md) | 类型化对象/链接/动作/函数目录、SDK、对象浏览器 | 现有 PO/SAP | `poie-objects` + host commands + Capabilities 对象详情 |
 | B | [Agent 治理与评测](phase-b-agent-governance.zh-CN.md) | 受控工具、权限/审批、引用、审计、离线 evals | A、现有 auth/inference | `poie-governance` + scripted eval + Agent 面板审批 |
 | C | [What-if 工作区](phase-c-what-if.zh-CN.md) | C1 快照/Patch/结构/计划/比较；C2 timed/promote | A、B、plan | `poie-whatif` + Sim 模式 + 变体比较 |
-| D | [站点交付](phase-d-site-delivery.zh-CN.md) | 通道、站点 bundle、离线导入、诊断、版本/证据绑定 | A–C、发布流水线 | `poie-delivery` + 设置面板 + 导入/导出 |
+| D | [站点交付](phase-d-site-delivery.zh-CN.md) | D1 manifest/离线导入/状态/回滚/诊断；D2 channel/签名/安装器 | A–C | `poie-delivery` + 设置面板 + 导入/导出 |
 
 严格按 **A → B → C → D** 的阶段顺序实现；每阶段内部按 PLATFORM §8 的切片（A0→A1→A2、B1→B2、C1→C2、D1→D2）推进。后一阶段可以复用前一阶段的类型/策略，但不得绕过前一阶段的安全边界；B/C/D 的设计门禁在各自阶段开始前重跑。
 
@@ -64,7 +64,7 @@
 | 原则 | 含义 | 可测门禁 |
 | --- | --- | --- |
 | P1 正式契约唯一真源 | Catalog 是带 digest 的投影，不是第二套本体 | 两次生成 digest 相同；未知 schema 拒绝；UI 不能建类型 |
-| P2 单一写路径 | 物理/运营变更都是动作，SAP 是唯一执行语义；配置/交付状态写入必须审计、受 ApprovalToken/HostPolicy 约束 | 领域对象无 CRUD/执行写接口；模型工具中 dispatch 数量为 0；配置写有审批/审计 |
+| P2 单一写路径 | 物理/运营变更都是动作，SAP 是唯一执行语义；配置写受审批；D1 交付元数据写需登录+审计，D2 远程/策略变更再加 ApprovalToken/HostPolicy | 领域对象无 CRUD/执行写接口；模型工具中 dispatch 数量为 0；配置写有审批/审计 |
 | P3 无环境权限 | 每个工具/动作声明 scope，默认拒绝 | 未知工具/越界参数拒绝并留痕；审批绑定参数摘要 |
 | P4 无证据不结论 | 事实性输出必须可追溯到本轮工具结果 | 无 citation 被拒；未知 citation 触发 `citation_missing` |
 | P5 模拟不触达现场 | SIMULATION 是显式命名空间 | C 不写 live/ledger；promote 只经 `plan_to_proposed` 产生 proposed |
@@ -80,7 +80,7 @@
 | A | 桌面内消费者仅凭 Catalog/SDK 完成枚举与读取；动作预览不 dispatch；Catalog/SDK 漂移使 CI 失败；六个旧视图不回归 |
 | B | 越权工具 100% 被拒并留痕；无引用结论被拒；审批暂停/恢复可测且参数变更失效；离线 eval 在 CI 确定通过；模型工具中 dispatch 数量为 0 |
 | C | 同输入同 digest；stale snapshot 拒绝 promote；live 模型/ledger/federation 零写入；比较结果完整可重放 |
-| D | 版本/证据不匹配拒绝导入；回滚可测；离线导入可启动；诊断不含密钥；通道/解析版本/不更新原因可追溯 |
+| D1 | 版本/证据不匹配拒绝导入；回滚/clear 可测；离线导入可启动；诊断不含密钥；D2 再做通道/签名/安装器 |
 
 ## 实施前必须清理的既有漂移
 
@@ -91,8 +91,8 @@
 - `docs/status/status-snapshot.zh-CN.md` 的日期/提交与“#112 三项推迟”旧描述；
 - `apps/desktop/src/domain.ts` 把 Base-02/timed 标成 planned，但 CI 已在跑；
 - `crates/poie-state/src/lib.rs` 第 31 行说 M12 联邦未实现，但 `poie-federation` 已有实现；
-- core crate 版本 0.1.0、desktop 0.1.1、tag v0.1.1 没有单一版本源；Phase D 必须先定义 release manifest；
-- tag release workflow 不生成 macOS DMG/便携 Windows exe（当前 Release 中的 DMG 是手动补的），Phase D 必须让产物清单与 workflow 一致。
+- core crate 版本 0.1.0、desktop 0.1.1、tag v0.1.1 没有单一版本源；D2 再定义 release manifest；
+- tag release workflow 不生成 macOS DMG/便携 Windows exe（当前 Release 中的 DMG 是手动补的），D2 再让产物清单与 workflow 一致。
 
 处理这些漂移不改变 A–D 的安全边界，但必须在对应阶段 PR 中一并修复，不能把旧数字/旧声明带进新页面。
 
@@ -116,7 +116,7 @@
 | R14 | C Compare/Promotion/Approval schema；`plan_to_proposed`；checkpoint/storage builder |
 | R15 | D manifest digest 来源、`contracts.toml`、manifest 自哈希 |
 | R16 | D 不做模型/二进制导入；bundle 为 JSON 元数据；policy loader、DB 迁移 |
-| R17 | D 增加 inspect/plan/recall/channel 命令；去掉 DMG/portable 误声明 |
+| R17 | D1 增加 inspect/import/state/rollback/clear/diagnostics；D2 再做 channel/recall/发布产物 |
 | R18 | 各阶段实施顺序加入 workspace/Cargo.lock/test-matrix/cargo-deny/ADR/rustdoc/链接检查 |
 
 ## 当前状态
@@ -130,4 +130,4 @@
 - **B0 host runtime/UI 已落地**（PR #150）：六工具调用、RunState/审批 token、只读工具、answer.emit、Agent 面板切到 `agent_run`
 - B0 剩余：approval resume/draft 执行、审计日志文件/链、真实 fixtures、cancel/reject UI
 - **Phase C1 设计门禁 PASS**（`VALIDATION-C`）
-- D：设计已入库，阶段门禁未跑
+- **D1 设计门禁 PASS**（`VALIDATION-D`）
