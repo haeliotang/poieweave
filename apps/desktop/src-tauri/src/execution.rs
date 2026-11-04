@@ -7,7 +7,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use poie_state::action::{
-    Action, ActionLedger, ActionState, Authorization, BudgetItem, Precondition, Reversibility, VerificationSpec,
+    Action, ActionLedger, ActionState, BudgetItem, Precondition, Reversibility, VerificationSpec,
 };
 use poie_state::record::Timestamp;
 use poie_state::review::{review_dispatch, DispatchContext, ReviewCheck};
@@ -93,12 +93,7 @@ fn build_action(source: &crate::domain::ActionView, plan_id: &str) -> Action {
             condition: "pump-p1 available".to_string(),
             window_ms: 600_000,
         },
-        authorization: Some(Authorization {
-            by: "maintainer".to_string(),
-            basis: "issue #105 conservation fix".to_string(),
-            scope: "dispatch".to_string(),
-            valid_until: Timestamp::from_millis(7_200_000),
-        }),
+        authorization: None,
         redispatch_of: None,
     }
 }
@@ -112,10 +107,6 @@ pub fn snapshot(overview: &DomainOverview, gate: GateState) -> Result<ExecutionS
         let action = build_action(source, &overview.plan.plan_id);
         ledger.add(&action).map_err(|error| format!("action ledger add: {error}"))?;
         ledger.apply(&action.action_id, ActionState::Validated).map_err(|error| format!("validate action: {error}"))?;
-        ledger
-            .apply(&action.action_id, ActionState::Authorized)
-            .map_err(|error| format!("authorize action: {error}"))?;
-
         let context = DispatchContext {
             now_ms: 1_000_000,
             current_state_version: BTreeMap::from([("site-a".to_string(), 4)]),
@@ -179,16 +170,16 @@ mod tests {
     use super::*;
 
     #[test]
-    fn plan_actions_become_authorized_sap_actions() {
+    fn plan_actions_are_synthetic_preview_and_never_authorized() {
         let overview = crate::domain::overview().unwrap();
         let snapshot = snapshot(&overview, GateState::default()).unwrap();
         assert!(!snapshot.actions.is_empty());
-        assert_eq!(snapshot.review_status, "ready");
-        assert_eq!(snapshot.rejections, 0);
+        assert_eq!(snapshot.review_status, "blocked");
+        assert_eq!(snapshot.rejections, snapshot.actions.len());
         assert_eq!(snapshot.checks.len(), 7);
-        assert!(snapshot.checks.iter().all(|check| check.passed));
-        assert!(snapshot.actions.iter().all(|action| action.state == "authorized"));
-        assert!(snapshot.dispatch_allowed);
+        assert!(!snapshot.checks.iter().all(|check| check.passed));
+        assert!(snapshot.actions.iter().all(|action| action.state == "validated"));
+        assert!(!snapshot.dispatch_allowed);
         let json = serde_json::to_value(&snapshot).unwrap();
         assert!(json.get("reviewStatus").is_some());
         assert!(json.get("rejections").is_some());
@@ -197,16 +188,17 @@ mod tests {
     }
 
     #[test]
-    fn gate_blocks_dispatch_but_keeps_the_technical_review() {
+    fn gate_blocks_dispatch_and_the_preview_stays_blocked() {
         let overview = crate::domain::overview().unwrap();
         let takeover = snapshot(&overview, GateState { takeover: true, degraded: false }).unwrap();
         assert_eq!(takeover.state, "takeover");
         assert!(!takeover.dispatch_allowed);
-        assert_eq!(takeover.review_status, "ready");
-        assert!(takeover.checks.iter().all(|check| check.passed));
+        assert_eq!(takeover.review_status, "blocked");
+        assert!(!takeover.checks.iter().all(|check| check.passed));
 
         let degraded = snapshot(&overview, GateState { takeover: false, degraded: true }).unwrap();
         assert_eq!(degraded.state, "degraded");
         assert!(!degraded.dispatch_allowed);
+        assert_eq!(degraded.review_status, "blocked");
     }
 }

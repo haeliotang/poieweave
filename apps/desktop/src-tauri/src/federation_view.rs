@@ -8,7 +8,7 @@ use std::collections::BTreeMap;
 
 use poie_federation::federation::{Conflict, Federation, LeaseClaim, ReservationClaim};
 use poie_federation::site::Site;
-use poie_state::action::{Action, Authorization, BudgetItem, Precondition, Reversibility, VerificationSpec};
+use poie_state::action::{Action, BudgetItem, Precondition, Reversibility, VerificationSpec};
 use poie_state::record::{Envelope, Hlc, Namespace, Payload, Record, RecordId, RecordKind, Source, Timestamp};
 use serde::Serialize;
 
@@ -82,12 +82,7 @@ fn action_record(site: &str, seq: u64, hlc: Hlc, action_id: &str, key: &str) -> 
             condition: "pump available".to_string(),
             window_ms: 60_000,
         },
-        authorization: Some(Authorization {
-            by: "maintainer".to_string(),
-            basis: "preview".to_string(),
-            scope: "dispatch".to_string(),
-            valid_until: Timestamp(hlc.physical_ms + 120_000),
-        }),
+        authorization: None,
         redispatch_of: None,
     };
     Record::new(envelope(site, seq, hlc, RecordKind::Action), Payload::Action(Box::new(action)))

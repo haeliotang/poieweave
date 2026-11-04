@@ -2,10 +2,12 @@
 //!
 //! The API key is never written to SQLite. Production uses the platform
 //! credential store:
+//!
 //! - macOS: Keychain through the system `security` command;
 //! - Windows: Credential Manager through `advapi32` (`CredWriteW`/`CredReadW`);
 //! - Linux: Secret Service through the `secret-tool` helper (GNOME Keyring /
 //!   KWallet providers).
+//!
 //! `POIEWEAVE_INFERENCE_API_KEY` is a read-only headless override. Tests inject
 //! an in-memory store, so no developer keychain is touched by `cargo test`.
 

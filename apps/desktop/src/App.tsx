@@ -786,7 +786,7 @@ function Execution({ lang, execution, selection, onSelect, onGate, hosted }: { l
   const stateFor = (): string => {
     if (gate.takeover) return t("execution.recorded");
     if (gate.degraded) return t("execution.fallback");
-    return t("execution.authorized");
+    return t("execution.unverified");
   };
   return (
     <div className="view">
@@ -1051,7 +1051,7 @@ function Inspector({
           <Row label={t("inspector.runs")} value={String(action.runs)} />
           <Row label={t("plan.preconditions")} value={action.preconditions.join(" · ")} />
           <Row label={t("plan.allocations")} value={action.allocations.map(([resource, amount]) => `${resource} ${amount}`).join(" · ")} />
-          <Row label={t("execution.state")} value={execution.gate.takeover ? t("execution.recorded") : execution.gate.degraded ? t("execution.fallback") : (execution.actions.find((entry) => entry.id === action.id)?.state ?? t("execution.authorized"))} />
+          <Row label={t("execution.state")} value={execution.gate.takeover ? t("execution.recorded") : execution.gate.degraded ? t("execution.fallback") : (execution.actions.find((entry) => entry.id === action.id)?.state ?? t("execution.unverified"))} />
           <button className="primary" type="button" onClick={() => onNavigate("execution", { kind: "action", id: action.id })}>
             {t("inspector.openExecution")} <ArrowRightIcon size={14} />
           </button>
