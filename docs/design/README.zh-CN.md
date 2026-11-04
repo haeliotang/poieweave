@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- |
 | A | [Ontology 产品层](phase-a-ontology-product.zh-CN.md) | 类型化对象/链接/动作/函数目录、SDK、对象浏览器 | 现有 PO/SAP | `poie-objects` + host commands + Capabilities 对象详情 |
 | B | [Agent 治理与评测](phase-b-agent-governance.zh-CN.md) | 受控工具、权限/审批、引用、审计、离线 evals | A、现有 auth/inference | `poie-governance` + scripted eval + Agent 面板审批 |
-| C | [What-if 工作区](phase-c-what-if.zh-CN.md) | 快照、扰动、模拟、比较、提升为 proposed plan | A、B、plan/sim | `poie-whatif` + Sim 模式 + 变体比较 |
+| C | [What-if 工作区](phase-c-what-if.zh-CN.md) | C1 快照/Patch/结构/计划/比较；C2 timed/promote | A、B、plan | `poie-whatif` + Sim 模式 + 变体比较 |
 | D | [站点交付](phase-d-site-delivery.zh-CN.md) | 通道、站点 bundle、离线导入、诊断、版本/证据绑定 | A–C、发布流水线 | `poie-delivery` + 设置面板 + 导入/导出 |
 
 严格按 **A → B → C → D** 的阶段顺序实现；每阶段内部按 PLATFORM §8 的切片（A0→A1→A2、B1→B2、C1→C2、D1→D2）推进。后一阶段可以复用前一阶段的类型/策略，但不得绕过前一阶段的安全边界；B/C/D 的设计门禁在各自阶段开始前重跑。

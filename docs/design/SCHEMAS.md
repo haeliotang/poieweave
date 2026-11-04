@@ -18,6 +18,7 @@
 | `poie.whatif-snapshot/0.1` | C | 0.1 | 同上 |
 | `poie.whatif-variant/0.1` | C | 0.1 | 同上 |
 | `poie.whatif-result/0.1` | C | 0.1 | 同上 |
+| `poie.whatif-compare/0.1` | C | 0.1 | 同上 |
 | `poie.site-bundle/0.1` | D | 0.1 | 同上 |
 | `poie.delivery-state/0.1` | D | 0.1 | 同上 |
 | `poie.diagnostics/0.1` | D | 0.1 | 同上 |

@@ -45,7 +45,9 @@ Poieweave 有 `poie-ontology` 图求解、`poie-plan` 计划和 VEC，但桌面�
 
 ```text
 Snapshot {
+  schema: "poie.whatif-snapshot/0.1",
   schemaVersion, id, label,
+  snapshotSha256: string,       // computed, see below
   modelSha256,                  // SourceModel digest
   evidenceSha256: string|null,  // VEC/report digest if supplied; else null
   goal: string, minVerification: string,
@@ -57,13 +59,14 @@ Snapshot {
 
 - `goal` 只接受 `service:<id>` 或 `restore:<asset>`；用现有 graph `Goal` 解析。
 - `evidenceSha256` 由调用者显式提供（当前 VEC report 的 SHA-256）或 null；不现场哈希仓库。
-- `snapshotSha256 = sha256("poie.snapshot/0.1" + canonical_json(snapshot_without_sha))`；id/createdAt/createdBy/seed 不参与 digest（见 DIGEST）。
+- `snapshotSha256 = sha256("poie.snapshot/0.1\n" + canonical_json(snapshot_without_sha))`；排除 `snapshotSha256/id/createdAt/createdBy/seed`，其余字段全部纳入（见 DIGEST）。
 - 命令 `whatif_snapshot_create` 接收上述输入；host 用当前 SourceModel 校验 modelSha256。
 
 ### 5.2 Variant
 
 ```text
 Variant {
+  schema: "poie.whatif-variant/0.1",
   schemaVersion, id, snapshotId, label, description,
   patch: PatchDto,              // 13 字段，一一对应 poie-ontology::Patch
   goal: string|null, minVerification: string|null,
@@ -85,15 +88,20 @@ OutcomeKind {
   caveat: "相对当前静态快照与有界求解器，不是物理可行/不可行证明"
 }
 VariantResult {
+  schema: "poie.whatif-result/0.1",
   schemaVersion, resultId, variantId, snapshotId, runId,
+  mode: "structure|plan",
+  settings: { nowS, startS, horizonS, maxDepth, maxActions, deadlineS? },
   outcome: OutcomeKind,
   planFingerprint?, planSha256?, completionS?,
-  actions[], rootCauses[], externalDependencies[],
+  actions[{ actionId, process, target, startS, endS }],
+  rootCauses[{ kind, subject, detail }],
+  externalDependencies[{ resource, maxSi }],
   resultSha256, warnings[]
 }
 ```
 
-- `resultSha256 = sha256("poie.variant/0.1" + snapshotSha256 + canonical variant + canonical settings)`；同输入同 digest。
+- `resultSha256 = sha256("poie.variant/0.1\n" + canonical_json({snapshotSha256, variant:{patch,goal,minVerification,deadlineS}, mode, settings}))`；排除 variant id/createdAt/createdBy、result id/runId；同输入同 digest。
 - 结果持久化到 SQLite `whatif_results`；`compare` 使用 resultId。
 
 ## 6. 架构
@@ -119,7 +127,11 @@ apps/desktop/src          Sim mode + variant editor + compare; host-only
 3. `whatif_variant_run(variantId, mode=structure|plan)`：
    - load snapshot/model；`Model::patched`;
    - structure: graph solve goal;
-   - plan: `poie-plan::plan` with horizon/now/deadline/maxActions;
+   - plan: `poie-plan::plan`。
+     `PlanningRequest { model, now_s: snapshot.nowS, horizon_s: snapshot.horizonS, goals: [PlanningGoal { goal, deadline_s: variant.deadlineS ?? snapshot.deadlineS, priority }], min_verification: variant.minVerification ?? snapshot.minVerification, max_actions: snapshot.maxActions }`；`startS` 仅记录为调度起点提示，C1 不把 `startS` 传给当前 `PlanningRequest`。
+     `PlanError` 映射：`InvalidRequest`/`NoCandidate` → `infeasible`；`ActionBudget`/`Horizon` → `search_limit`；未知状态/未知根因 → `unknown`；成功 → `planned`。
+     `deadlineS` 只进入 `PlanningGoal.deadline_s`，不是 `PlanningRequest` 字段。
+   - 覆盖优先级：variant 的 goal/minVerification/deadline > snapshot；未设置时用 snapshot。
    - result digest; store DB; no writes to live.
 4. `whatif_compare(snapshotId, baselineResultId?, resultIds[])`：按 outcome/完成时间/resultId 稳定排序，返回全部差异。
 5. C1 无 promote；命令表不包含 promote。
@@ -141,9 +153,26 @@ apps/desktop/src          Sim mode + variant editor + compare; host-only
 | `whatif_variant_run` | variantId, mode (`structure|plan`) | VariantResult |
 | `whatif_compare` | snapshotId, baselineResultId?, resultIds[] | CompareResult |
 | `whatif_result_get` | resultId | VariantResult |
+| `whatif_result_list` | snapshotId, variantId?, limit | VariantResult[] |
 | `whatif_variant_delete` | variantId | ok |
 
-错误码（PLATFORM）：`unknown_snapshot`、`unknown_variant`、`unknown_result`、`invalid_patch`、`unsupported_schema`、`model_mismatch`、`budget_exceeded`、`unauthorized`、`scope_denied`。C1 不需要 `approval_required`。
+CompareResult：
+
+```text
+CompareResult {
+  schema: "poie.whatif-compare/0.1",
+  schemaVersion, snapshotId, baselineResultId?,
+  rows[{ resultId, variantId, mode, outcome, completionS?, planFingerprint?, delta }],
+  sortKey: "outcome|completionS|resultId",
+  complete: true
+}
+```
+
+- `resultIds` 为空：比较该 snapshot 全部结果；跨 snapshot/未知/重复 resultId → `invalid_patch`/`unknown_result`；不同 mode 可并列但 `delta` 只在同 mode 计算。
+- `delta` 为 `{completionDeltaS?, outcomeChanged: bool}`；不比较不同 mode 的数值。
+- `whatif_result_list(snapshotId, variantId?, limit)` 返回持久化结果，重启后可达。
+
+错误码（PLATFORM）：`unknown_snapshot`、`unknown_variant`、`unknown_result`、`invalid_patch`、`unsupported_schema`、`model_mismatch`、`budget_exceeded`、`unauthorized`、`scope_denied`。C1 不需要 `approval_required`；host 命令仍用 `{code,message,details}` 包装（B0 CommandError 可先复用字符串前缀，C1 PR 迁移到 CommandError）。
 
 ## 8. 持久化
 
@@ -152,10 +181,10 @@ SQLite `user_version=3`：
 ```text
 whatif_snapshots(snapshot_id PK, schema_version, session_id, snapshot_json, snapshot_sha256, created_at)
 whatif_variants(variant_id PK, snapshot_id, schema_version, variant_json, created_at)
-whatif_results(result_id PK, variant_id, snapshot_id, schema_version, result_json, result_sha256, created_at)
+whatif_results(result_id PK, variant_id, snapshot_id, schema_version, mode, settings_json, result_json, result_sha256, created_at)
 ```
 
-- 迁移只加表，不改 audit/agent 表；失败回滚。
+- 迁移从 `user_version=2` 到 3：`CASE WHEN user_version<3` 创建上述表并设 3；重复启动幂等；不改 audit/agent 表；失败回滚。
 - `whatif_variant_delete` 级联删除 result（或拒绝若被 compare 引用）；MVP 拒绝删除有结果的 variant。
 
 ## 9. UI
@@ -165,7 +194,7 @@ whatif_results(result_id PK, variant_id, snapshot_id, schema_version, result_jso
   - baseline 摘要；创建 variant；只暴露 patch 白名单字段（asset status/requires/lots/process verification）+ goal/deadline；
   - Run structure/plan；结果卡片显示 outcome/caveat/根因/依赖/plan fingerprint；
   - Compare 表：baseline + variants，按稳定排序，展示全部差异。
-- 浏览器预览（非 Tauri）只显示 host-only 占位，不调用命令；Playwright 只测占位/禁用，不做真实运行。
+- 浏览器预览（非 Tauri）只显示 host-only 占位，不调用命令；Playwright **只测占位/禁用**，不做表单校验（表单只在 host 中可用）。
 - 所有文案进入 i18n；SIMULATION 不能只用颜色。
 
 ## 10. 依赖与过程门禁
@@ -188,7 +217,7 @@ whatif_results(result_id PK, variant_id, snapshot_id, schema_version, result_jso
 
 ### UI
 
-- Playwright：Sim 标记、host-only 占位、variant 表单校验（浏览器不执行 host）。
+- Playwright：Sim 标记、host-only 占位、禁用状态；不测真实运行或表单校验。
 - 截图更新。
 
 ### 验收
@@ -201,7 +230,7 @@ whatif_results(result_id PK, variant_id, snapshot_id, schema_version, result_jso
 
 ## 12. C2（明确延后，需重跑门禁）
 
-- timed/storage/assetDelay：需要 `TimedScenario` 公共构造/模型 digest/startMode 与 `AssetTimeline` shift API；`Snapshot` 绑定 timed scenario。
+- timed/storage/assetDelay：`TimedScenario::from_parts` 已存在；真正缺口是 `AssetTimeline` 公共字段/shift、startMode、storage capacity/initial/maxCharge 与 `assetDelayS` 的“修复延迟但不延迟故障”语义、`TimedRunner` 的 CaseDoc expect/evidence validity。
 - promote：需要 B1 审批 token 通用化、`plan_to_proposed`、Authorization.basis 定义、SAP 授权命令；C2 另行设计。
 - checkpoint/result registry 扩展。
 

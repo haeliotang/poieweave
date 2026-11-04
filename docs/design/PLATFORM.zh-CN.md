@@ -85,7 +85,7 @@ schema = "poie.<domain>/<major>.<minor>"
 | `open_workspace_window` | 否 | main | 导航 | 允许 view 白名单 |
 | `ontology_*` | 否（只读） | main/poie-view-* | 读 | A0 后按窗口 |
 | `agent_*` | 是 | main | 写/网络 | 会话 + scope + policy |
-| `whatif_*` | 是 | main/poie-view-plan | 写（模拟） | 会话 + policy |
+| `whatif_*` | 是 | main/poie-view-plan | 写（C1 结果表） | 会话 + auth；C1 不写 SAP/live |
 | `delivery_*` | 是 | main | 写 | 会话 + 审批 + policy |
 
 实现要求：
@@ -191,7 +191,7 @@ pub struct ApprovalToken {
 ```text
 A0 auth/scope/digest/DTO -> A1 catalog -> A2 SDK/UI
 B1 policy/tool/run state/audit migration -> B2 approvals/evals/UI
-C1 snapshot/perturbation/outcome -> C2 compare/promote/checkpoint
+C1 snapshot/patch/outcome/compare -> C2 timed/promote/checkpoint
 D1 manifest/model store/bundle -> D2 channel/plan/recall/UI
 ```
 
