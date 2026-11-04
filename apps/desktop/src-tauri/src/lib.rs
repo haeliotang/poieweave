@@ -276,7 +276,8 @@ pub fn run() {
             sandbox_write,
             objects::ontology_catalog,
             objects::ontology_objects,
-            objects::ontology_object
+            objects::ontology_object,
+            objects::ontology_action_preview
         ])
         .run(tauri::generate_context!())
         .expect("error while running Poieweave desktop");
