@@ -46,7 +46,9 @@ SiteManifest {
 }
 ```
 
-- `manifestSha256 = sha256("poie.site-manifest/0.1\n" + canonical_json(manifest_without_manifestSha256))`；拒绝未知字段，避免“宽容解析导致 self-hash 不一致”。
+- `manifestSha256 = sha256("poie.manifest/0.1\n" + canonical_json(manifest_without_manifestSha256))`（digest domain 使用 DIGEST 的 `poie.manifest/0.1`；wire schema 仍是 `poie.site-manifest/0.1`）。
+- 必须先按原始字节解析为 JSON 并拒绝未知字段，再做 canonicalization；D1 的 manifest **不接受**未知 minor 字段（PLATFORM §2 的 general tolerance 不适用于自哈希 payload）。
+- 上限：bundle ≤256 KiB、manifest ≤128 KiB、单字符串 ≤1 KiB、数组 ≤64、嵌套 ≤8；超限 `invalid_parameter`。
 - `target` 单值；D1 不支持多 OS artifact。
 - `policy` 仅展示，不写入 HostPolicy、不改变 channel。
 - 文件上限 256 KiB；字符串长度/数组上限固定。
@@ -80,9 +82,10 @@ ManifestSummary {
 }
 ```
 
-- 完整 manifest 存在 `delivery_manifests(manifest_sha256 PK, manifest_json, imported_at)`；state 只存摘要。
-- `current/previous` 是摘要；rollback 把 previous 设为 current，current 清空/设回 previous 的前一份；保留 manifest 行。
-- `recalled=true`：UI/读取显示 recall 且禁止把该 manifest 当 current 使用；仍允许 rollback 到 previous。D1 不提供“解除 recall”。
+- 完整 manifest 存在 `delivery_manifests(manifest_sha256 PK, manifest_json, imported_at)`；state **只存摘要**，不重复存完整 manifest。
+- `current/previous` 都是 `Option<ManifestSummary>`；rollback 执行 **swap**：`(current, previous) = (previous, current)`，因此可连续回滚一次退回再回滚；没有 previous → `rollback_unavailable`。
+- `recalled = current.channel == "recall"`；导入 recall manifest 只设置 current/recalled，不改变 policy/HostPolicy；rollback 恢复 previous 后按 previous.channel 重算 recalled。D1 不提供 un-recall。
+- `DeliveryState.schemaVersion` 必填；`ManifestSummary` 由 §4.1 摘要字段组成本身，不含完整 manifest。
 
 ## 5. 命令
 
@@ -92,12 +95,13 @@ ManifestSummary {
 | `delivery_import` | path, expectedManifestSha256 | DeliveryState | 写；登录；无审批 |
 | `delivery_state` | — | DeliveryState | 只读；登录 |
 | `delivery_rollback` | — | DeliveryState | 写；登录；无审批 |
-| `delivery_diagnostics_export` | outputDir | DiagnosticsSummary | 写；登录 |
+| `delivery_diagnostics_export` | outputDir, overwrite? | DiagnosticsSummary | 写；登录 |
 
-- 命令通过 `auth::require` + 统一 `{code,message,details}` 错误包络；D1 不引入 Window/HostPolicy/审批。
+- 命令通过 `auth::require` + 统一 `{code,message,details}` 错误包络；D1 的 import/rollback 是 **登录会话内的本地元数据写**，不需要 ApprovalToken/HostPolicy/Window（这与 PLATFORM D1 行一致；D2 若改为远程/策略变更再引入审批）。
 - 错误码：`invalid_parameter`、`unsupported_schema`、`stale_manifest`、`manifest_invalid`、`delivery_conflict`、`rollback_unavailable`、`unauthorized`、`scope_denied`、`io_error`。
 - `import` 的 `expectedManifestSha256` 必填；空/不匹配拒绝。
 - `rollback` 无 previous → `rollback_unavailable`。
+- 审计事件：`delivery.inspect`、`delivery.import`、`delivery.rollback`、`delivery.diagnostics`，写入现有 audit（不含 manifest 原文/路径）。
 
 ## 6. 持久化与原子性
 
@@ -112,11 +116,14 @@ delivery_state(id PK CHECK(id=1), state_json, updated_at)
 
 1. `BEGIN IMMEDIATE`；
 2. 重算/校验 manifest；
-3. `INSERT OR IGNORE` manifest（同 sha 已存在则复用；同 site/target 不同 sha 允许，作为历史）；
-4. 读 state；`previous=current`；`current=新摘要`；
-5. 写 state；`COMMIT`。
+3. 读 state；若 `current.manifestSha256 == 新 sha` → 直接返回**未修改**的 state（幂等 no-op）；
+4. `INSERT OR IGNORE` manifest（同 sha 已存在则复用；同 site/target 不同 sha 允许，作为历史）；
+5. `previous=current`；`current=新摘要`；`recalled = 新 channel == "recall"`；
+6. 写 state；`COMMIT`。
 - 失败 `ROLLBACK`；不改变 state。
-- 重复导入同一 sha：幂等，不重复追加历史；返回相同 state。
+- 重复导入同一 sha：若已是 current，**不改变 previous/state**；若只是历史存在，则提升为 current、previous=旧 current。
+- `delivery_conflict`：state 已存在且新 manifest 的 siteId 与 current 不同（D1 单站点；换站点需先 rollback/清空，D2 再设计）。
+- 不同 target 但同 site：允许作为历史/current，UI 显示 target；不自动删除。
 - `manifest_json` 原样保存，用于回滚/诊断；不重新解析后重写。
 - `user_version` 从 3→4；创建表并设 4；幂等；不修改 whatif/agent 表。
 
@@ -127,19 +134,25 @@ delivery_state(id PK CHECK(id=1), state_json, updated_at)
 ```text
 DiagnosticsSummary {
   schema: "poie.delivery-diagnostics/0.1",
-  generatedAt: i64,               // caller-supplied now? 固定由 host 注入
+  truncated: boolean,
+  generatedAt: i64,               // host 注入 now_ms；测试可注入固定时钟
   appVersion, os, arch,
-  delivery: DeliveryState,
-  checks: [{ id, status:"ok|failed|unknown", detail }],
-  errorCodes: string[],           // 固定白名单，不含自由文本
-  logTail: string[]               // 最多 50 行，redacted
+  delivery: {
+    schemaVersion,
+    current: { siteHashPrefix, target, channel, releasedAt, manifestSha256, importedAt } | null,
+    previous: 同上 | null,
+    recalled
+  },
+  checks: [{ id, status:"ok|failed|unknown", detailCode: string }],
+  errorCodes: string[],           // 固定白名单
+  logTail: string[]               // 最多 50 行，先脱敏再截断
 }
 ```
 
-- 不包含 secrets、API key、prompt、模型输出、绝对路径、用户名、UUID、站点 note 原文。
-- `siteId`/`siteName` 只保留长度/哈希前缀，默认不导出原文。
-- 大小上限 128 KiB；超出截断并 `truncated=true`。
-- `generatedAt` 由 host 传入 `now_ms`；同一 state/输入在测试注入时钟下可复现；不承诺跨时刻字节相同。
+- 不包含 secrets、API key、prompt、模型输出、绝对路径、用户名、UUID、站点 note 原文、importedBy。
+- `siteId` 只输出 `sha256(siteId)` 前 12 位；`siteName` 不输出。
+- `checks.detailCode` 只允许固定枚举；`logTail` 先用固定正则脱敏（key/token/绝对路径/用户名/UUID），再按 128 KiB 总上限截断并 `truncated=true`。
+- 写文件前校验 `outputDir` 为 sandbox 下已存在目录、无 symlink 逃逸、目标不存在或 `overwrite=true`。
 - 不发送网络/遥测。
 
 ## 8. UI
@@ -158,8 +171,8 @@ DiagnosticsSummary {
 - 新 crate `poie-delivery`（纯 Rust）：manifest/schema/digest/state/compare，无 Tauri/网络/fs。
 - host `delivery.rs`：文件读取（UTF-8/大小）、SQLite 事务、诊断。
 - 依赖：poie-digest、serde/serde_json；不依赖 poie-exec。
-- 根 members、桌面 path dep、两处 Cargo.lock、test-matrix/status-snapshot、desktop workflow `crates/**` 路径、ADR、cargo-deny。
-- D1 不改 release workflow/安装器；D2 另立设计。
+- 根 members、桌面 path dep、两处 Cargo.lock、test-matrix/status-snapshot、desktop workflow **仅加 `crates/**` 路径过滤**（不发布/不改安装器）、ADR、cargo-deny。
+- D1 不改 release workflow 的发布产物/安装器；D2 另立设计。
 - 实施顺序：D0 manifest schema/digest → crate → DB v4 → host commands → UI → tests/docs。
 
 ## 10. 测试与验收
@@ -174,7 +187,7 @@ DiagnosticsSummary {
 
 ## 11. D2（延后，需重跑门禁）
 
-- release channel/签名/信任阈值、安装器/portable 发布、policy tighten-only、审批 token 通用化、updater/telemetry 明确禁止或设计、多 OS artifact。
+- release channel/签名/信任阈值、安装器/portable 发布、policy tighten-only、审批 token 通用化、updater/telemetry、多 OS artifact、raw exe/tauri targets 修正。
 - D2 必须重新校验 release workflow/tauri targets，不与 D1 混做。
 
 ## 12. 参考

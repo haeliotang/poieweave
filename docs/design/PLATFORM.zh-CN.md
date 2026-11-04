@@ -192,7 +192,7 @@ pub struct ApprovalToken {
 A0 auth/scope/digest/DTO -> A1 catalog -> A2 SDK/UI
 B1 policy/tool/run state/audit migration -> B2 approvals/evals/UI
 C1 snapshot/patch/outcome/compare -> C2 timed/promote/checkpoint
-D1 manifest/model store/bundle -> D2 channel/plan/recall/UI
+D1 manifest/offline import/state/rollback/diagnostics/UI -> D2 channel/signing/installers/approval/policy
 ```
 
 每个阶段完成后，更新 `docs/status/test-matrix.zh-CN.md`、`status-snapshot`、README 和本文件的实现状态；未通过校验不得开始下一阶段。

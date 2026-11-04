@@ -20,8 +20,8 @@
 | `poie.whatif-result/0.1` | C | 0.1 | 同上 |
 | `poie.whatif-compare/0.1` | C | 0.1 | 同上 |
 | `poie.site-manifest/0.1` | D1 | 0.1 | site manifest |
-| `poie.site-bundle/0.1` | D | 0.1 | 同上 |
-| `poie.delivery-state/0.1` | D | 0.1 | 同上 |
+| `poie.site-bundle/0.1` | D1 | 0.1 | 同上 |
+| `poie.delivery-state/0.1` | D1 | 0.1 | 同上 |
 | `poie.delivery-diagnostics/0.1` | D1 | 0.1 | diagnostics export |
 | `poie.diagnostics/0.1` | D | 0.1 | 同上 |
 
