@@ -117,7 +117,7 @@ MVP 不生成新的 SAP 动作实例；仅把计划动作和目录元数据关�
 | 函数 ID | 输入 | 输出 | 副作用 |
 | --- | --- | --- | --- |
 | `catalog.describe` | 无 | Ontology Catalog | 无 |
-| `state.query` | subject/type, asOf | 对象/链接/能力/依赖 | 无 |
+| `state.query` | subject/type, asOf | 对象/链接/能力/依赖（含 capabilities[]） | 无 |
 | `plan.propose` | goal, horizon, deadline | proposed plan | 无（只返回） |
 | `plan.preview_sap` | planFingerprint（host 解析） | SAP validation summary（只读 dry-run，假定项显式标注） | 无 |
 | `action.draft` | planFingerprint, actionId | 动作草稿/预览（需 Phase B 审批后执行） | 无 |
@@ -242,12 +242,13 @@ pub struct ObjectPage {
 // SapPreview/CheckPreview/AssumedContext/PreviewError 的权威定义在 `poie-plan::sap`；
 // 这里只列字段形状，不在 poie-objects 复制实现：
 //
-// SapPreview { checks: Vec<CheckPreview>, assumed: Vec<String>, rejections: Vec<String> }
-// CheckPreview { id, status: observed|assumed|failed|unknown, detail }
-// AssumedContext { ownership, reservations, authorization, now_s }
-// PreviewError { InvalidPlan, UnsupportedContext, NoPreviewAvailable }
-// 映射：InvalidPlan -> invalid_parameter；UnsupportedContext -> preview_unavailable；
-// NoPreviewAvailable -> preview_unavailable；host 统一包成 {code,message,details}。
+// SapPreview { checks, assumed, rejections, authorized_actions: usize, authorization_created: bool }
+// CheckPreview { check, status: observed|assumed|failed|unknown, detail }
+// AssumedContext { now_ms, holds_command_ownership, reservations_held,
+//                  predicates_holding, state_version }
+// PreviewError { EmptyStateVersion, InvalidPlan(String) }
+// 映射：EmptyStateVersion/InvalidPlan -> invalid_parameter；
+// host 统一包成 {code,message,details}。
 
 pub struct PlannedActionView {
     pub action_id: String, pub process: String, pub target: String, pub runs: u32,
@@ -281,10 +282,10 @@ pub fn preview_plan_through_sap(
 ) -> Result<SapPreview, PreviewError>;
 ```
 
-- 只读：不写 `ActionLedger`、不创建/保存 `Authorization`、不产生 transition；
-- `SapPreview { checks: Vec<CheckPreview>, assumed: Vec<String>, rejections: Vec<String> }`；
-- `CheckPreview { id, status: observed|assumed|failed|unknown, detail }`；ownership/reservations/authorization 默认 `assumed`；
-- 测试断言：调用前后 ledger/authorization 计数不变；所有 `assumed` 项在 UI 中单独显示，不能显示为“7/7 通过”。
+- 只读：只使用函数内 throwaway ledger 做 precondition 校验，**不写任何 live/external ledger、不创建/保存 Authorization、不产生 Authorized transition**；
+- `SapPreview { checks, assumed, rejections, authorized_actions, authorization_created }`；返回时 `authorized_actions=0`、`authorization_created=false`；
+- `CheckPreview { check, status, detail }`；ownership/reservations/authorization 默认 `assumed`；
+- 测试断言：`authorized_actions==0`、`authorization_created==false`，且没有任何 authorization/Authorized 记录；所有 `assumed` 项在 UI 中单独显示，不能显示为“7/7 通过”。
 - host 的 `ontology_action_preview` 调用该函数并把结果传给 `poie-objects`/UI，`poie-objects` 不依赖 `poie-plan`。
 
 ### 7.2 桌面 host 命令

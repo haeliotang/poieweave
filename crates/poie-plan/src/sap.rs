@@ -44,6 +44,8 @@ pub struct SapPreview {
     pub checks: Vec<CheckPreview>,
     pub assumed: Vec<String>,
     pub rejections: Vec<String>,
+    pub authorized_actions: usize,
+    pub authorization_created: bool,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -192,7 +194,13 @@ pub fn preview_plan_through_sap(plan: &Plan, assumed: &AssumedContext) -> Result
         return Err(PreviewError::EmptyStateVersion);
     }
     if plan.actions.is_empty() {
-        return Ok(SapPreview { checks: Vec::new(), assumed: Vec::new(), rejections: Vec::new() });
+        return Ok(SapPreview {
+            checks: Vec::new(),
+            assumed: Vec::new(),
+            rejections: Vec::new(),
+            authorized_actions: 0,
+            authorization_created: false,
+        });
     }
     let mut ledger = ActionLedger::new();
     let mut rejections = Vec::new();
@@ -259,7 +267,7 @@ pub fn preview_plan_through_sap(plan: &Plan, assumed: &AssumedContext) -> Result
         .filter(|check| check.status == "assumed")
         .map(|check| format!("{}: {}", check.check, check.detail))
         .collect();
-    Ok(SapPreview { checks, assumed: assumed_checks, rejections })
+    Ok(SapPreview { checks, assumed: assumed_checks, rejections, authorized_actions: 0, authorization_created: false })
 }
 
 #[cfg(test)]
@@ -353,5 +361,7 @@ mod tests {
         assert!(preview.checks.iter().any(|check| check.check == "authorization" && check.status == "assumed"));
         assert!(!preview.assumed.is_empty());
         assert!(!preview.rejections.iter().any(|reason| reason.contains("authorization")));
+        assert_eq!(preview.authorized_actions, 0);
+        assert!(!preview.authorization_created);
     }
 }

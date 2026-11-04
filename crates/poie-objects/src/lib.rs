@@ -397,11 +397,39 @@ fn functions() -> Vec<FunctionType> {
     .map(|(id, description, effect)| FunctionType {
         id: (*id).to_string(),
         description: (*description).to_string(),
-        input_schema: json!({"type": "object"}),
-        output_schema: json!({"type": "object"}),
+        input_schema: function_schema(id, true),
+        output_schema: function_schema(id, false),
         effect: (*effect).to_string(),
     })
     .collect()
+}
+
+fn function_schema(id: &str, input: bool) -> Value {
+    match (id, input) {
+        ("catalog.describe", true) => json!({"type":"object","additionalProperties":false,"properties":{}}),
+        ("catalog.describe", false) => json!({"type":"object","required":["schema","modelDigest","catalogDigest"]}),
+        ("state.query", true) => {
+            json!({"type":"object","additionalProperties":false,"required":["subject"],"properties":{"subject":{"type":"string"},"asOf":{"type":["string","null"]}}})
+        }
+        ("state.query", false) => json!({"type":"object","required":["objects","links","capabilities"]}),
+        ("plan.propose", true) => {
+            json!({"type":"object","additionalProperties":false,"required":["goal","horizonS"],"properties":{"goal":{"type":"string"},"horizonS":{"type":"number"},"deadlineS":{"type":["number","null"]}}})
+        }
+        ("plan.propose", false) => json!({"type":"object","required":["planFingerprint","actions"]}),
+        ("plan.preview_sap", true) => {
+            json!({"type":"object","additionalProperties":false,"required":["planFingerprint"],"properties":{"planFingerprint":{"type":"string"}}})
+        }
+        ("plan.preview_sap", false) => json!({"type":"object","required":["checks","assumed","rejections"]}),
+        ("action.draft", true) => {
+            json!({"type":"object","additionalProperties":false,"required":["planFingerprint","actionId"],"properties":{"planFingerprint":{"type":"string"},"actionId":{"type":"string"}}})
+        }
+        ("action.draft", false) => json!({"type":"object","required":["planFingerprint","action","preview"]}),
+        ("answer.emit", true) => {
+            json!({"type":"object","additionalProperties":false,"required":["claims"],"properties":{"claims":{"type":"array"},"suggestions":{"type":"array"}}})
+        }
+        ("answer.emit", false) => json!({"type":"object","required":["accepted","rejectedClaims"]}),
+        _ => json!({"type":"object"}),
+    }
 }
 
 fn flow_view(model: &Model, flow: &poie_ontology::model::Flow) -> FlowView {

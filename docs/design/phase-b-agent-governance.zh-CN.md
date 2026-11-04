@@ -64,7 +64,7 @@ SQLite agent_runs/approval_tokens + append-only audit log
 | 工具 | 版本 | 参数（Rust struct） | 输出 | citation | 审批 | 每轮上限 | 执行入口 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `catalog.describe` | 1.0.0 | 无 | `OntologyCatalog` | 无 | auto | 1 | A `ontology_catalog` |
-| `state.query` | 1.0.0 | `{subject,asOf?}` | `{objects[],links[],verdict?,dependencies[]}` | object/report | auto | 4 | A objects + `graph` |
+| `state.query` | 1.0.0 | `{subject,asOf?}` | `{objects[],links[],capabilities[],verdict?,dependencies[]}` | object/report | auto | 4 | A objects + `graph` |
 | `plan.propose` | 1.0.0 | `{goal,horizonS,deadlineS?}` | `PlanSummary{planFingerprint,actions[],completionS}` | plan | auto（纯计算） | 2 | `poie-plan::plan` |
 | `plan.preview_sap` | 1.0.0 | `{planFingerprint}` | `SapPreviewDto{checks[],assumed[],rejections[]}` | plan | auto | 2 | 只读 `poie-plan::preview_plan_through_sap`（host 解析 fingerprint） |
 | `action.draft` | 1.0.0 | `{planFingerprint,actionId}` | `ActionDraft{planFingerprint,action,preview}` | plan/action | **operator_confirm** | 2 | 宿主从已算 plan 构造 DTO；审批后才执行 |
@@ -95,14 +95,16 @@ subject_digest, policy_version, args_json_redacted, impact_json,
 citations_json, state TEXT, created_at, decided_at, started_at, expires_at
 ```
 
-`state ∈ pending|approved|rejected|expired|executing|consumed`。
+`state ∈ pending|approved|rejected|expired|executing|interrupted|consumed|cancelled`。
 
 单一原子状态机（并发安全）：
 
-1. `agent_approve`：`UPDATE ... SET state='approved', decided_at=? WHERE id=? AND state='pending' AND expires_at>?`;
-2. `agent_resume`：先 `UPDATE ... SET state='executing', started_at=? WHERE id=? AND state='approved' AND expires_at>? AND session_id=?`；只有影响 1 行才签发 capability 并执行一次；执行完成 `state='consumed'`；失败 `state='approved'`（可重试）或 `expired`；
-3. `agent_reject`：`pending → rejected`；过期由读取/消费时判定并写 `expired`；
-4. 两个 resume 并发时只有一个能 `approved → executing`，另一个得到 `approval_mismatch`。
+1. `agent_approve`：`pending → approved`；`agent_cancel`：`pending|approved → cancelled`；
+2. `agent_resume`：`approved → executing`（原子条件更新）；只有影响 1 行才签发 capability 并执行一次；成功 `consumed`，业务失败 `approved`（可重试），系统崩溃由启动恢复处理；
+3. 启动恢复：`executing` token 若 `started_at` 超过租约（默认 120s）→ `interrupted`；操作员可 `agent_resume`（interrupted→executing，要求同一 callId 的幂等边界）或 `agent_cancel`（→cancelled）；
+4. 空操作幂等：tool call 以 `(runId, callId)` 为幂等键；重试先查已完成结果，不重复副作用；`action.draft` 只读，重复执行只返回同一 DTO；
+5. `agent_reject`：`pending → rejected`；过期由读取/消费时判定并写 `expired`；
+6. 两个 resume 并发时只有一个能 `approved → executing`，另一个得到 `approval_mismatch`。
 
 流程固定为 **审批 → 签发 capability → 执行**：
 
@@ -174,7 +176,7 @@ citations[], error?{code,message}, createdAt, updatedAt
 - `hash = sha256("poie.agent-audit/0.1\n" + canonical_json(record_without_hash))`，含 `prevHash`；
 - genesis：`prevHash = null`，文件首行；每行单写者、追加 + `fsync`，尾部残行在读取时忽略并记录；
 - 每日 `anchors/<date>.json`：`{date, lastHash, prevAnchorHash}`；锚点链只防本地截断/替换的检测，不防整体替换；
-- `db.rs` 用 `PRAGMA user_version` 迁移：`audit` 表加 `event_id/session_id/run_id/turn_id/call_id/tool/tool_version/decision/args_sha256/result_sha256/sap_record_id/prev_hash/hash`；历史行标记 legacy，不伪造链；删除启动 DROP；重建时按这些字段与日志逐字段比对。
+- `db.rs` 用 `PRAGMA user_version` 迁移：`audit` 表加 `event_id/schema/session_id/run_id/turn_id/call_id/tool/tool_version/decision/reason/args_sha256/result_sha256/sap_record_id/prev_hash/hash/legacy`；历史行标记 legacy，不伪造链；删除启动 DROP；重建时按这些字段与日志逐字段比对。
 - 重建：`audit_rebuild`（或测试函数）从日志重放派生 SQLite 索引，结果与索引一致；链断/锚点不匹配 `audit_integrity_failed`。
 
 ## 11. 策略与画像（R2）
@@ -208,7 +210,18 @@ claims = [{ text = "...", citations = ["object:..."] }]
 error = "citation_missing"          # optional
 ```
 
-- B1 至少 **72** 个确定性用例（6 工具 × 正常/坏参数/超预算/未授权 = 24，再 × 引用/审批/注入 = 72），覆盖矩阵与 `scripts/check-agent-evals.py` 计数进 CI。
+- B1 至少 **72** 个确定性用例（6 工具 × 正常/坏参数/超预算/未授权 = 24，再 × 引用/审批/注入 = 72）；覆盖矩阵：
+
+| 工具 | 正常 | 坏参数 | 超预算 | 未授权 |
+| --- | --- | --- | --- | --- |
+| catalog.describe | 3 | 3 | 3 | 3 |
+| state.query | 3 | 3 | 3 | 3 |
+| plan.propose | 3 | 3 | 3 | 3 |
+| plan.preview_sap | 3 | 3 | 3 | 3 |
+| action.draft | 3 | 3 | 3 | 3 |
+| answer.emit | 3 | 3 | 3 | 3 |
+
+`scripts/check-agent-evals.py` 校验 fixture schema、计数、工具覆盖与审批脚本。
 - 脚本化 provider 只测 runtime/policy，不测模型能力；现场真实 provider 才报 pass^k（k=5），不进 CI 门禁。
 - 注入指标拆成“运行时 containment 必须 0 次越权/外联”与“模型是否被说服（仅现场报告）”。
 
@@ -238,12 +251,13 @@ pub struct CommandError { pub code: String, pub message: String, pub details: se
 ### 单元/集成
 
 - 工具参数严格拒绝未知字段；无 dispatch 工具；profile 白名单；
-- 审批：pending→approve/reject/expire/consumed 原子性；参数/session/subject 改变 → mismatch；过期拒绝；
+- 审批：pending→approve/reject/expire/executing/interrupted/cancelled/consumed 原子性；参数/session/subject 改变 → mismatch；过期拒绝；崩溃后 executing→interrupted→重试/取消；
 - preview 不创建 Authorization/不推进 ledger；
 - `answer.emit` 无 citation/未知 citation 拒绝；suggestions 不校验为事实；
 - 审计链 genesis/prevHash/hash/锚点/尾部残行/重建/迁移；
+- capability 签发/过期/撤销/跨会话复用；
 - provider 多 tool_calls/坏 JSON/缺参/超时/超大响应/取消；
-- 确定性 eval 45 例 + 覆盖矩阵；CI 不访问网络。
+- 确定性 eval 72 例 + 覆盖矩阵；CI 不访问网络。
 
 ### 验收
 

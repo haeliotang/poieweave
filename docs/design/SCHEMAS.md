@@ -36,6 +36,7 @@
 | `poie.contracts/0.1` | contract registry |
 | `poie.approval/0.1` | approval digest |
 | `poie.manifest/0.1` | site manifest sha256 |
+| `poie.agent-audit/0.1` | agent audit record hash |
 
 ## 解析与兼容函数
 

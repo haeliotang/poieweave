@@ -54,7 +54,7 @@ schema = "poie.<domain>/<major>.<minor>"
 | `model_mismatch` | A/C/D | model digest 与当前不一致 |
 | `preview_unavailable` | A | host 未提供 dry-run |
 | `invalid_parameter` / `invalid_patch` | A/B/C | 参数/变体非法 |
-| `approval_required` / `approval_mismatch` / `approval_expired` | B/C/D | 审批缺失/被替换/过期 |
+| `approval_required` / `approval_mismatch` / `approval_expired` / `approval_rejected` | B/C/D | 审批缺失/被替换/过期/拒绝 |
 | `budget_exceeded` | B/C | 步数/工具/时间超限 |
 | `stale_snapshot` | C | snapshot/证据已变 |
 | `not_promotable` | C | 结果不可提升 |
@@ -152,7 +152,7 @@ pub struct ApprovalToken {
     pub args_json_redacted: String,
     pub impact_json: String,
     pub citations_json: String,
-    pub state: String, // pending|approved|rejected|expired|executing|consumed
+    pub state: String, // pending|approved|rejected|expired|executing|interrupted|consumed|cancelled
     pub created_at_ms: u64,
     pub decided_at_ms: Option<u64>,
     pub started_at_ms: Option<u64>,
