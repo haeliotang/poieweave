@@ -7,8 +7,8 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use poie_governance::{
-    subject_digest, tool, ApprovalToken, Decision, EvidenceRef, Profile, RunState, RunStatus, ToolCallRecord,
-    POLICY_VERSION,
+    subject_digest, tool, ApprovalToken, AuditRecord, Decision, EvidenceRef, Profile, RunState, RunStatus,
+    ToolCallRecord, AUDIT_SCHEMA, POLICY_VERSION,
 };
 use poie_ontology::graph::{Goal, Query, DEFAULT_MAX_DEPTH};
 use poie_ontology::model::Verification;
@@ -291,6 +291,13 @@ pub async fn run(prompt: String, profile: String, state: State<'_, AppState>) ->
     save_run(&state, &run)?;
     let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
     db.append_audit(now_ms(), &operator.display_name, "agent.run", &format!("{run_id} {:?} {:?}", run.status, error))?;
+    append_agent_audit(
+        &state,
+        &run_id,
+        &run.session_id,
+        if error.is_some() { Decision::Failed } else { Decision::Completed },
+        &format!("{:?}", run.status),
+    )?;
     Ok(AgentResult {
         run_id,
         status: if error.is_some() { "failed".into() } else { "completed".into() },
@@ -300,6 +307,58 @@ pub async fn run(prompt: String, profile: String, state: State<'_, AppState>) ->
         approval_token_id: None,
         error,
     })
+}
+
+fn append_agent_audit(
+    state: &State<'_, AppState>,
+    run_id: &str,
+    session_id: &str,
+    decision: Decision,
+    reason: &str,
+) -> Result<(), String> {
+    use std::io::{BufRead, Write};
+    let path = state.data_dir.join("agent-audit.log");
+    let prev = if path.exists() {
+        std::io::BufReader::new(std::fs::File::open(&path).map_err(|error| format!("audit open: {error}"))?)
+            .lines()
+            .map_while(Result::ok)
+            .filter(|line| !line.trim().is_empty())
+            .last()
+            .and_then(|line| serde_json::from_str::<AuditRecord>(&line).ok())
+            .map(|record| record.hash)
+    } else {
+        None
+    };
+    let record = AuditRecord {
+        schema: AUDIT_SCHEMA.into(),
+        event_id: random_id()?,
+        at_ms: now_ms(),
+        actor: "agent".into(),
+        session_id: session_id.into(),
+        run_id: run_id.into(),
+        turn_id: 0,
+        call_id: None,
+        tool: None,
+        tool_version: None,
+        decision,
+        reason: reason.into(),
+        args_sha256: None,
+        result_sha256: None,
+        sap_record_id: None,
+        prev_hash: prev.clone(),
+        hash: String::new(),
+    }
+    .seal(prev)
+    .map_err(|error| error.to_string())?;
+    let mut file = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(&path)
+        .map_err(|error| format!("audit open: {error}"))?;
+    writeln!(file, "{}", serde_json::to_string(&record).map_err(|error| error.to_string())?)
+        .and_then(|_| file.sync_all())
+        .map_err(|error| format!("audit write: {error}"))?;
+    Ok(())
 }
 
 fn save_run(state: &State<'_, AppState>, run: &RunState) -> Result<(), String> {
@@ -552,6 +611,7 @@ pub fn agent_reject(run_id: String, token_id: String, state: State<'_, AppState>
         run.created_at_ms + 3_600_000,
     )?;
     db.append_audit(now_ms(), &operator.display_name, "agent.rejected", &format!("{run_id} {token_id}"))?;
+    append_agent_audit(&state, &run_id, &run.session_id, Decision::Rejected, &token_id)?;
     Ok(run)
 }
 
@@ -578,6 +638,7 @@ pub fn agent_cancel(run_id: String, state: State<'_, AppState>) -> Result<RunSta
         run.created_at_ms + 3_600_000,
     )?;
     db.append_audit(now_ms(), &operator.display_name, "agent.cancel", &run_id)?;
+    append_agent_audit(&state, &run_id, &run.session_id, Decision::Cancelled, &run_id)?;
     Ok(run)
 }
 
