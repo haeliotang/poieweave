@@ -1,7 +1,7 @@
 # Schema 注册表与兼容矩阵
 
 - 状态：设计冻结候选（Phase A1 前）
-- 实现检查器：`scripts/check-schema-registry.py`（Phase A0 加入 CI）
+- 实现检查器：`scripts/check-schema-registry.py`（A0 新增并加入 CI；当前尚未存在，本表是唯一来源）
 - 所有者：`PLATFORM.zh-CN.md` §1
 
 | schema | 所有者 | 当前版本 | 兼容规则 |

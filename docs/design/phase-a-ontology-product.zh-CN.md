@@ -40,10 +40,10 @@ Phase A 把这些能力收束成一个**可读、可预览、可类型化**的�
 1. `execution_gate_set` 必须先 `auth::require` 再改 `GateState`/`ExecutionSnapshot`，所有变更强制审计；当前“先改再可选审计”的路径（`apps/desktop/src-tauri/src/lib.rs`）删除。
 2. `sandbox_read/write` 增加会话与路径/大小限制；定义**命令 scope 矩阵**：哪些窗口/命令允许读写、哪些只读、哪些要求登录。
 3. 增加宿主命令白名单测试：未登录/无 scope/错误窗口调用 `execution_gate_set`、`sandbox_write`、`inference_configure`、`auth_*` 必须拒绝并留痕。
-4. `execution.rs` 和 `federation_view.rs` 的硬编码授权（`Authorization{by:"maintainer", basis:"issue #105"}`）从产品路径移除。A0 用明确的 **synthetic preview** 替代：仅当操作员登录后，授权来源写 `by=session operator`、`basis="synthetic-preview"`、`scope=["preview"]`、短 `valid_until`；UI 标记“合成预览”，测试断言它不能 dispatch；未登录时 execution 视图只读、不生成授权动作。
+4. `execution.rs` 和 `federation_view.rs` 的硬编码授权（`Authorization{by:"maintainer", basis:"issue #105"}`）从产品路径移除。A0 **不生成任何 Authorization**：execution 视图把现有动作标为 `synthetic-preview`，只显示 proposed/validated 与“未授权”状态；测试断言 `authorized`/`dispatched` 数量为 0，UI 不再显示“复核通过”，未登录时同样只读。
 5. 命令错误改用 `{code,message,details}` 包络；命令 scope 矩阵见 PLATFORM §4，不新增裸 `String` 错误。
 
-A0 的验收进入 Phase A PR；没有它，Phase A 不开始。
+A0 的验收进入 Phase A PR；没有它，Phase A 不开始。测试需断言：execution snapshot 中 `authorized`/`dispatched` 为 0；`execution.rs`/`federation_view.rs` 不再出现硬编码 `Authorization`；未登录调用 gate/sandbox 被拒；命令 scope 矩阵用例通过。
 
 ## 5. 用户与使用场景
 
@@ -320,7 +320,7 @@ MVP 不发布 npm 包；先把 SDK 作为桌面内共享类型层，后续可独
 - 动作行显示类型 ID、验证等级和前置条件；
 - inspector 的 Action 详情增加 Catalog 参数和只读 `SapPreview`；假定项必须单独显示，不能显示为“已通过”；
 - “提交”只进入 SAP proposed/validated 流程；Phase A 不新增派发按钮；
-- 现有 `execution.rs` 中写死的 `Authorization{by:"maintainer", basis:"issue #105"}` 必须从产品路径移除，改为操作员会话 + policy/approval 数据（Phase A 先只显示，不授权）。
+- 现有 `execution.rs`/`federation_view.rs` 中写死的 `Authorization` 必须从产品路径移除；A 只显示 proposed/validated 与 synthetic-preview，不生成授权。
 
 ### 8.3 可访问性与国际化
 

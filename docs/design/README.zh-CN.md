@@ -67,7 +67,7 @@
 | P2 单一写路径 | 物理/运营变更都是动作，SAP 是唯一执行语义；配置/交付状态写入必须审计、受 ApprovalToken/HostPolicy 约束 | 领域对象无 CRUD/执行写接口；模型工具中 dispatch 数量为 0；配置写有审批/审计 |
 | P3 无环境权限 | 每个工具/动作声明 scope，默认拒绝 | 未知工具/越界参数拒绝并留痕；审批绑定参数摘要 |
 | P4 无证据不结论 | 事实性输出必须可追溯到本轮工具结果 | 无 citation 被拒；未知 citation 触发 `citation_missing` |
-| P5 模拟不触达现场 | SIMULATION 是显式命名空间 | variant 前后 live digest 不变；promote 只产生 proposed |
+| P5 模拟不触达现场 | SIMULATION 是显式命名空间 | C 不写 live/ledger；promote 只经 `plan_to_proposed` 产生 proposed |
 | P6 交付即版本+证据 | bundle 绑定 model/contracts/evidence | 任一不匹配拒绝导入；回滚可用 |
 | P7 断连优先 | 远程能力默认关闭 | 核心流程离线可用；遥测/自动更新默认关闭 |
 | P8 可解释不行动 | 显示约束/拒绝原因 | 七项检查逐项原因；“为什么没有更新”可解释 |

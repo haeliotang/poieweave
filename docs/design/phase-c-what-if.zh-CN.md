@@ -57,6 +57,9 @@ ScenarioSnapshot {
     assetStatus, lots, storageLimits { resource, capacitySi, initialSocSi, maxDischargeW },
     assetTimelines, stockTimelines, evidenceSha256, stateId?  // stateId 为 DTO 字符串；无 live projection 时为 null
   },
+  // evidenceSha256 = sha256("poie.evidence/0.1" + canonical_json({
+  //   scenarioId, scenarioDigest, vecReportSha256, contractsSha256 }))
+  // 静态 MVP 固定使用 scenarios/base-01-timed/digests.toml + VEC report 的 sha256；无报告时为 null
   nowS, seed, horizonS, maxDepth, maxActions, evidenceValidityS,
   goal, minVerification, startS, deadlineS?,
   createdAt, createdBy
@@ -188,7 +191,7 @@ PromotionResult {
 C 的 promote 不能调用 `validate_plan_through_sap`（它会创建授权并推进到 `authorized`）。新增/使用只读或提案 API：
 
 - `poie-plan::preview_plan_through_sap`（A 已定义）用于预览；
-- `poie-plan::plan_to_proposed`（C 新增）只创建 `ActionState::Proposed`，不写 `Authorization`、不 dispatch；返回 `ProposedActions`；
+- `poie-plan::plan_to_proposed`（C 新增）只创建 `ActionState::Proposed`，不写 `Authorization`、不 dispatch；返回 `ProposedActions`，其 `basis` 编码 `simulation=<branchId>;model=<modelSha256>`（MVP 用字符串，后续再结构化）。
 - promote 流程：stale 检查 → 重新规划 → `plan_to_proposed` → 展示 SAP preview/审批 → 成功后交给现有 SAP 验证命令；C 不直接 authorize/dispatch。
 
 ### 7.2 timed/storage 变体构造

@@ -109,7 +109,7 @@ MVP 工具：
 ```text
 callId, tool, ok, data, citations[], evidenceRefs[], asOf,
 sourceClass: T0|T1|T2|T3, trustProfile: analyst|dispatcher,
-redactions[], truncated, latencyMs
+untrusted: bool, redactions[], truncated, latencyMs
 ```
 
 `T0` 操作员输入、`T1` 签名仓库内容、`T2` 内部遥测、`T3` 外部/不可信内容。只有 T0/T1 可进入指令位；T2/T3 以带来源头的数据块进入。工具输出一律不进入指令位（不是只加 `untrusted=true` 标签）。
