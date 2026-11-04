@@ -186,3 +186,4 @@ M12 多站点联邦：**进行中（模拟部分完成）**——M12.1–M12.4 �
 - 2026-11-05：Phase A1 核心合并（#139）：`poie-digest`、`poie-objects`、host `ontology_*`、Capabilities 对象详情；Rust 列表测试 395；A1 剩余 SDK 生成与 action preview。
 - 2026-11-05：A1 完成（#141）：`poie-sdkgen` + 提交的 TypeScript SDK + CI 漂移检查；host `ontology_action_preview`；Rust 列表测试 396。
 - 2026-11-05：Phase B 设计门禁 PASS；B0 部分合并（#144）：session id、approval/run 表、user_version 迁移；B0 剩余 `poie-governance`/runner/evals。
+- 2026-11-05：B0 治理核心合并（#146）：`poie-governance` 工具目录/画像、审批摘要、审计链、RunState/评测 schema；Rust 列表测试 401。

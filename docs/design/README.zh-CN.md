@@ -126,5 +126,6 @@
 - **A0 已落地**（PR #137）
 - **A1 已落地**（PR #139 + #141）：Catalog/SDK/action preview；测试矩阵 396
 - **Phase B 设计门禁 PASS**（`VALIDATION-B`，快照 `053f529`）
-- **B0 部分落地**（PR #144）：session id、approval_tokens/agent_runs、user_version 迁移；B0 剩余 governance/runner/evals
+- **B0 部分落地**（PR #144/#146）：session id、approval/run 表、user_version 迁移、`poie-governance` 工具/审批/审计/评测 schema
+- B0 剩余：host runtime/commands、DB 持久化方法、fixtures/runner、UI
 - C/D：设计已入库，阶段门禁未跑
