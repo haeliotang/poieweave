@@ -614,3 +614,7 @@ flowchart LR
 | 0.1.118 | 2026-11-05 | Phase B 门禁 PASS；B0 部分：session id、approval_tokens/agent_runs 表、`PRAGMA user_version` 迁移；B0 剩余 governance/runner/evals |
 | 0.1.119 | 2026-11-05 | B0 治理核心：`poie-governance` 六工具/画像、审批摘要、审计链、RunState/评测 schema；Rust 列表测试 401 |
 | 0.1.120 | 2026-11-05 | B0 host runtime：`agent_run` 六工具/provider 循环、RunState/审批 token、answer.emit；Agent 面板改为 agent_run；B1 待审批恢复/draft 执行 |
+| 0.1.121 | 2026-11-05 | B1 审批执行/拒绝/取消、只读 draft、审计 JSONL 哈希链、审批 UI；测试矩阵 405 |
+| 0.1.122 | 2026-11-05 | Phase C1 门禁 PASS；`poie-whatif` Snapshot/Patch/结构/plan/compare；桌面 Sim 面板；测试矩阵 410 |
+| 0.1.123 | 2026-11-05 | Phase D1 门禁 PASS；`poie-delivery` manifest/state/rollback/diagnostics；SQLite v4；设置页交付 UI；测试矩阵 416 |
+| 0.1.124 | 2026-11-05 | B1 eval 完成：72 deterministic fixtures + contract runner + CI checker；测试矩阵 417；A–D MVP 全链路门禁通过 |
