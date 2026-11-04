@@ -50,7 +50,7 @@ schema = "poie.<domain>/<major>.<minor>"
 | `scope_denied` | A/B/C/D | 窗口/命令 scope 不匹配 |
 | `unsupported_schema` | A/B/C/D | schema major 未知 |
 | `invalid_cursor` / `limit_exceeded` | A/C | 分页参数非法 |
-| `unknown_type` / `unknown_object` | A | 类型/对象不存在 |
+| `unknown_type` / `unknown_object` / `unknown_snapshot` / `unknown_variant` / `unknown_result` | A/C | 类型/对象/快照/变体/结果不存在 |
 | `model_mismatch` | A/C/D | model digest 与当前不一致 |
 | `preview_unavailable` | A | host 未提供 dry-run |
 | `invalid_parameter` / `invalid_patch` | A/B/C | 参数/变体非法 |
@@ -177,7 +177,7 @@ pub struct ApprovalToken {
 | `poie-objects` | A | poie-ontology, poie-digest, serde |
 | `poie-sdkgen` | A (bin) | poie-objects, serde_json |
 | `poie-governance` | B | poie-objects, poie-state (只读), poie-plan, poie-ontology, poie-digest, serde, serde_json, toml |
-| `poie-whatif` | C | ontology, plan, sim, state, viability, digest |
+| `poie-whatif` | C1 | ontology, plan, objects, digest, serde |
 | `poie-delivery` | D | ontology/state/viability, digest, serde |
 
 规则：

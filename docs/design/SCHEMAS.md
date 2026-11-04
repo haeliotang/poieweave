@@ -31,6 +31,7 @@
 | `poie.catalog/0.1` | catalog digest |
 | `poie.plan/0.1` | plan sha256 wrapper |
 | `poie.simulation/0.1` | simulation sha256 wrapper |
+| `poie.snapshot/0.1` | What-if snapshot digest |
 | `poie.variant/0.1` | What-if result |
 | `poie.evidence/0.1` | evidence binding |
 | `poie.contracts/0.1` | contract registry |
