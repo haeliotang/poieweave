@@ -281,7 +281,10 @@ pub fn run() {
             objects::ontology_action_preview,
             agent::agent_run,
             agent::agent_status,
-            agent::agent_approve
+            agent::agent_approve,
+            agent::agent_resume,
+            agent::agent_reject,
+            agent::agent_cancel
         ])
         .run(tauri::generate_context!())
         .expect("error while running Poieweave desktop");

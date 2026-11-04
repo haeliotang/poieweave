@@ -375,5 +375,6 @@ export interface AgentResult {
   text: string;
   citations: { kind: string; id: string; fingerprint?: string | null; sha256?: string | null; asOf?: string | null; source: string }[];
   tools: string[];
+  approvalTokenId?: string | null;
   error?: string | null;
 }

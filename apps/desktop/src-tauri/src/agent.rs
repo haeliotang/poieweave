@@ -30,6 +30,7 @@ pub struct AgentResult {
     pub text: String,
     pub citations: Vec<EvidenceRef>,
     pub tools: Vec<String>,
+    pub approval_token_id: Option<String>,
     pub error: Option<String>,
 }
 
@@ -262,6 +263,7 @@ pub async fn run(prompt: String, profile: String, state: State<'_, AppState>) ->
                     text: final_text,
                     citations,
                     tools: tools_used,
+                    approval_token_id: run.pending_approval.as_ref().map(|pending| pending.token_id.clone()),
                     error: None,
                 });
             }
@@ -295,6 +297,7 @@ pub async fn run(prompt: String, profile: String, state: State<'_, AppState>) ->
         text: final_text,
         citations,
         tools: tools_used,
+        approval_token_id: None,
         error,
     })
 }
@@ -495,14 +498,145 @@ pub fn agent_status(run_id: String, state: State<'_, AppState>) -> Result<RunSta
 #[tauri::command]
 pub fn agent_approve(run_id: String, token_id: String, state: State<'_, AppState>) -> Result<RunState, String> {
     let operator = auth::require(&state.session)?;
+    let token = {
+        let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+        let token = db.approval_token(&token_id)?.ok_or_else(|| format!("approval_required: {token_id}"))?;
+        if token.session_id != operator.session_id || token.run_id != run_id {
+            return Err("approval_mismatch: token does not belong to this session/run".into());
+        }
+        if !db.transition_approval(&token_id, "pending", "approved", now_ms())? {
+            return Err("approval_mismatch: token is not pending".into());
+        }
+        token
+    };
+    execute_approved(&state, &run_id, &token)
+}
+
+#[tauri::command]
+pub fn agent_resume(run_id: String, token_id: String, state: State<'_, AppState>) -> Result<RunState, String> {
+    let operator = auth::require(&state.session)?;
+    let token = {
+        let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+        db.approval_token(&token_id)?.ok_or_else(|| format!("approval_required: {token_id}"))?
+    };
+    if token.session_id != operator.session_id || token.run_id != run_id {
+        return Err("approval_mismatch".into());
+    }
+    execute_approved(&state, &run_id, &token)
+}
+
+#[tauri::command]
+pub fn agent_reject(run_id: String, token_id: String, state: State<'_, AppState>) -> Result<RunState, String> {
+    let operator = auth::require(&state.session)?;
     let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
     let token = db.approval_token(&token_id)?.ok_or_else(|| format!("approval_required: {token_id}"))?;
     if token.session_id != operator.session_id || token.run_id != run_id {
-        return Err("approval_mismatch: token does not belong to this session/run".into());
+        return Err("approval_mismatch".into());
     }
-    if !db.transition_approval(&token_id, "pending", "approved", now_ms())? {
+    if !db.transition_approval(&token_id, "pending", "rejected", now_ms())? {
         return Err("approval_mismatch: token is not pending".into());
     }
-    let json = db.agent_run(&run_id)?.ok_or_else(|| format!("run_not_found: {run_id}"))?;
-    serde_json::from_str(&json).map_err(|error| error.to_string())
+    let mut run = load_run(&db, &run_id)?;
+    run.status = RunStatus::Failed;
+    run.pending_approval = None;
+    run.error = Some("approval_rejected".into());
+    run.updated_at_ms = now_ms();
+    let json = serde_json::to_string(&run).map_err(|error| error.to_string())?;
+    db.save_agent_run(
+        &run.run_id,
+        &run.schema_version,
+        &run.session_id,
+        &json,
+        run.created_at_ms,
+        run.updated_at_ms,
+        run.created_at_ms + 3_600_000,
+    )?;
+    db.append_audit(now_ms(), &operator.display_name, "agent.rejected", &format!("{run_id} {token_id}"))?;
+    Ok(run)
+}
+
+#[tauri::command]
+pub fn agent_cancel(run_id: String, state: State<'_, AppState>) -> Result<RunState, String> {
+    let operator = auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    let mut run = load_run(&db, &run_id)?;
+    if let Some(pending) = &run.pending_approval {
+        let _ = db.transition_approval(&pending.token_id, "pending", "cancelled", now_ms());
+    }
+    run.status = RunStatus::Cancelled;
+    run.pending_approval = None;
+    run.error = Some("cancelled".into());
+    run.updated_at_ms = now_ms();
+    let json = serde_json::to_string(&run).map_err(|error| error.to_string())?;
+    db.save_agent_run(
+        &run.run_id,
+        &run.schema_version,
+        &run.session_id,
+        &json,
+        run.created_at_ms,
+        run.updated_at_ms,
+        run.created_at_ms + 3_600_000,
+    )?;
+    db.append_audit(now_ms(), &operator.display_name, "agent.cancel", &run_id)?;
+    Ok(run)
+}
+
+fn load_run(db: &crate::db::Db, run_id: &str) -> Result<RunState, String> {
+    let json = db.agent_run(run_id)?.ok_or_else(|| format!("run_not_found: {run_id}"))?;
+    serde_json::from_str(&json).map_err(|error| format!("run state corrupt: {error}"))
+}
+
+fn execute_approved(state: &State<'_, AppState>, run_id: &str, token: &ApprovalToken) -> Result<RunState, String> {
+    let operator = auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    if token.session_id != operator.session_id || token.run_id != run_id {
+        return Err("approval_mismatch".into());
+    }
+    if !db.transition_approval(&token.id, "approved", "executing", now_ms())? {
+        return Err("approval_mismatch: token is not approved".into());
+    }
+    let mut run = load_run(&db, run_id)?;
+    let impact: Value = serde_json::from_str(&token.impact_json).unwrap_or_else(|_| json!({"action": "draft"}));
+    let text = format!(
+        "Approved action draft: {} → {} (no dispatch)",
+        impact.get("action").and_then(Value::as_str).unwrap_or("draft"),
+        impact.get("target").and_then(Value::as_str).unwrap_or("target")
+    );
+    let citations: Vec<EvidenceRef> = serde_json::from_str(&token.citations_json).unwrap_or_default();
+    run.turns.push(ToolCallRecord {
+        id: token.call_id.clone(),
+        tool: token.tool.clone(),
+        tool_version: token.tool_version.clone(),
+        args_sha256: poie_digest::sha256_of("poie.agent/0.1", &json!({"args": token.args_json_redacted}))
+            .unwrap_or_default(),
+        args_json_redacted: token.args_json_redacted.clone(),
+        result_sha256: poie_digest::sha256_of("poie.agent/0.1", &json!({"text": text})).unwrap_or_default(),
+        result_summary: text.clone(),
+        citations: citations.clone(),
+        evidence_refs: citations.clone(),
+        truncated: false,
+        decision: Decision::Approved,
+    });
+    run.status = RunStatus::Completed;
+    run.pending_approval = None;
+    run.citations.extend(citations);
+    run.updated_at_ms = now_ms();
+    db.transition_approval(&token.id, "executing", "consumed", now_ms())?;
+    let json = serde_json::to_string(&run).map_err(|error| error.to_string())?;
+    db.save_agent_run(
+        &run.run_id,
+        &run.schema_version,
+        &run.session_id,
+        &json,
+        run.created_at_ms,
+        run.updated_at_ms,
+        run.created_at_ms + 3_600_000,
+    )?;
+    db.append_audit(
+        now_ms(),
+        &operator.display_name,
+        "agent.approved",
+        &format!("{} {} {}", run.run_id, token.tool, token.id),
+    )?;
+    Ok(run)
 }
