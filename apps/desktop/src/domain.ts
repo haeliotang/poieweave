@@ -235,24 +235,26 @@ export const experiments: ExperimentEntry[] = [
 
 
 export const fallbackExecution: ExecutionSnapshot = {
-  state: "ready",
+  state: "synthetic-preview",
   actions: [
     {
       id: "potable-water-1-replace-sleeve-p1",
       process: "replace-sleeve-p1",
       target: "pump-p1",
-      state: "authorized",
+      state: "validated",
       idempotencyKey: "idem:potable-water-1-replace-sleeve-p1",
       verification: "demonstrated",
       validFromMs: 0,
       validUntilMs: 3600000,
     },
   ],
-  checks: CHECK_NAMES.map((check) => ({ check, passed: true, detail: "ok" })),
-  reviewStatus: "ready",
-  rejections: 0,
+  checks: CHECK_NAMES.map((check) => check === "authorization"
+    ? { check, passed: false, detail: "authorization missing (synthetic preview)" }
+    : { check, passed: true, detail: "ok" }),
+  reviewStatus: "blocked",
+  rejections: 1,
   gate: { takeover: false, degraded: false },
-  dispatchAllowed: true,
+  dispatchAllowed: false,
 };
 
 export const fallbackFederation: FederationSnapshot = {

@@ -245,6 +245,6 @@ mod tests {
         assert_eq!(request.0, "https://example.test/v1/chat/completions");
         assert!(request.1.contains("\"model\":\"test-model\""));
         assert!(db.audit(20).unwrap().iter().any(|row| row.event == "inference.success"));
-        assert!(forget(&db, &secrets, &session).unwrap().configured == false);
+        assert!(!forget(&db, &secrets, &session).unwrap().configured);
     }
 }

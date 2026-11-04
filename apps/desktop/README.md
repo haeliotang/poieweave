@@ -202,7 +202,7 @@ every push/PR that touches the desktop app, and on `v*` tags:
 | `windows-latest` | NSIS `.exe` | `poieweave-desktop-windows-x86_64` |
 | `macos-latest` | universal `.app.zip` (x86_64 + arm64) | `poieweave-desktop-macos-universal` |
 
-Both build jobs run the frontend build and the 12 host tests before bundling; separate UI smoke jobs run Playwright on Ubuntu and Windows. The Linux
+Both build jobs run the frontend build and the 13 host tests before bundling; separate UI smoke jobs run Playwright on Ubuntu and Windows. The Linux
 job installs WebKitGTK 4.1, GTK/AppIndicator and patchelf prerequisites; Windows
 uses the runner's WebView2 and Tauri's NSIS bundler. The macOS job installs the
 Intel Rust target and builds a lipo-verified universal binary.

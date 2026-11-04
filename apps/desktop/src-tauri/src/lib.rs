@@ -183,25 +183,24 @@ fn execution_snapshot(state: State<'_, AppState>) -> Result<ExecutionSnapshot, S
 
 #[tauri::command]
 fn execution_gate_set(takeover: bool, degraded: bool, state: State<'_, AppState>) -> Result<ExecutionSnapshot, String> {
+    let operator = auth::require(&state.session)?;
     let gate = GateState { takeover, degraded };
+    let snapshot = crate::execution::snapshot(&state.domain, gate)?;
     {
         let mut current = state.gate.lock().map_err(|_| "gate lock poisoned".to_string())?;
         *current = gate;
     }
-    let snapshot = crate::execution::snapshot(&state.domain, gate)?;
     {
         let mut current = state.execution.lock().map_err(|_| "execution lock poisoned".to_string())?;
         *current = snapshot.clone();
     }
-    if let Ok(operator) = auth::require(&state.session) {
-        let db = lock_db(&state)?;
-        let _ = db.append_audit(
-            auth::now_ms(),
-            &operator.display_name,
-            "execution.gate",
-            &format!("takeover={takeover} degraded={degraded}"),
-        );
-    }
+    let db = lock_db(&state)?;
+    db.append_audit(
+        auth::now_ms(),
+        &operator.display_name,
+        "execution.gate",
+        &format!("takeover={takeover} degraded={degraded}"),
+    )?;
     Ok(snapshot)
 }
 
@@ -212,17 +211,14 @@ fn federation_snapshot(state: State<'_, AppState>) -> FederationSnapshot {
 
 #[tauri::command]
 fn sandbox_read(relative: String, state: State<'_, AppState>) -> Result<String, String> {
+    auth::require(&state.session)?;
     sandbox::read(&state.sandbox_root, &relative)
 }
 
 #[tauri::command]
 fn sandbox_write(relative: String, contents: String, state: State<'_, AppState>) -> Result<String, String> {
+    auth::require(&state.session)?;
     sandbox::write(&state.sandbox_root, &relative, &contents)
-}
-
-#[tauri::command]
-fn sandbox_root(state: State<'_, AppState>) -> String {
-    state.sandbox_root.display().to_string()
 }
 
 pub fn run() {
@@ -270,8 +266,7 @@ pub fn run() {
             execution_gate_set,
             federation_snapshot,
             sandbox_read,
-            sandbox_write,
-            sandbox_root
+            sandbox_write
         ])
         .run(tauri::generate_context!())
         .expect("error while running Poieweave desktop");

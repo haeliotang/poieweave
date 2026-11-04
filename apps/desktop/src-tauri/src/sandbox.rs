@@ -23,8 +23,28 @@ pub fn resolve(root: &Path, relative: &str) -> Result<PathBuf, String> {
     Ok(output)
 }
 
-pub fn read(root: &Path, relative: &str) -> Result<String, String> {
+fn reject_symlinks(root: &Path, relative: &str) -> Result<PathBuf, String> {
     let path = resolve(root, relative)?;
+    let mut current = root.to_path_buf();
+    for component in Path::new(relative).components() {
+        let Component::Normal(part) = component else {
+            return Err(format!("sandbox path must be relative: {relative:?}"));
+        };
+        current.push(part);
+        match std::fs::symlink_metadata(&current) {
+            Ok(metadata) if metadata.file_type().is_symlink() => {
+                return Err(format!("sandbox path must not contain symlinks: {}", current.display()));
+            }
+            Ok(_) => {}
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+            Err(error) => return Err(format!("{}: {error}", current.display())),
+        }
+    }
+    Ok(path)
+}
+
+pub fn read(root: &Path, relative: &str) -> Result<String, String> {
+    let path = reject_symlinks(root, relative)?;
     let metadata = std::fs::metadata(&path).map_err(|error| format!("{}: {error}", path.display()))?;
     if !metadata.is_file() {
         return Err(format!("{} is not a regular file", path.display()));
@@ -39,12 +59,35 @@ pub fn write(root: &Path, relative: &str, contents: &str) -> Result<String, Stri
     if contents.len() as u64 > MAX_FILE_BYTES {
         return Err("contents exceed the sandbox limit".into());
     }
-    let path = resolve(root, relative)?;
+    let path = reject_symlinks(root, relative)?;
     if let Some(parent) = path.parent() {
         std::fs::create_dir_all(parent).map_err(|error| format!("{}: {error}", parent.display()))?;
     }
-    std::fs::write(&path, contents).map_err(|error| format!("{}: {error}", path.display()))?;
-    Ok(path.display().to_string())
+    // Re-check after creating parents: a concurrent actor could have introduced a symlink.
+    let path = reject_symlinks(root, relative)?;
+    let parent = path.parent().ok_or_else(|| "sandbox path has no parent".to_string())?;
+    let temporary = parent.join(format!(
+        ".poieweave-write-{}-{}",
+        std::process::id(),
+        std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_nanos()).unwrap_or(0)
+    ));
+    let result = (|| {
+        let mut file = std::fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(&temporary)
+            .map_err(|error| format!("{}: {error}", temporary.display()))?;
+        use std::io::Write;
+        file.write_all(contents.as_bytes())
+            .and_then(|_| file.sync_all())
+            .map_err(|error| format!("{}: {error}", temporary.display()))?;
+        std::fs::rename(&temporary, &path).map_err(|error| format!("{}: {error}", path.display()))?;
+        Ok(path.display().to_string())
+    })();
+    if result.is_err() {
+        let _ = std::fs::remove_file(&temporary);
+    }
+    result
 }
 
 #[cfg(test)]
@@ -56,6 +99,25 @@ mod tests {
         let root = Path::new("/tmp/poieweave-sandbox");
         assert_eq!(resolve(root, "notes/a.md").unwrap(), root.join("notes/a.md"));
         assert_eq!(resolve(root, "file.txt").unwrap(), root.join("file.txt"));
+    }
+
+    #[test]
+    fn symlinks_are_rejected_for_read_and_write() {
+        let root = std::env::temp_dir().join(format!("poieweave-sandbox-test-{}", std::process::id()));
+        let outside = std::env::temp_dir().join(format!("poieweave-sandbox-outside-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&root);
+        let _ = std::fs::remove_file(&outside);
+        std::fs::create_dir_all(&root).unwrap();
+        std::fs::write(&outside, "secret").unwrap();
+        #[cfg(unix)]
+        std::os::unix::fs::symlink(&outside, root.join("escape")).unwrap();
+        #[cfg(unix)]
+        {
+            assert!(read(&root, "escape").is_err());
+            assert!(write(&root, "escape", "nope").is_err());
+        }
+        let _ = std::fs::remove_dir_all(&root);
+        let _ = std::fs::remove_file(&outside);
     }
 
     #[test]
