@@ -1,8 +1,8 @@
 # Phase A 设计门禁校验（A0 + A1）
 
 - 校验对象：[Phase A](phase-a-ontology-product.zh-CN.md)、[PLATFORM](PLATFORM.zh-CN.md)、[DIGEST](DIGEST.md)、[SCHEMAS](SCHEMAS.md)、[README](README.zh-CN.md)；代码 `crates/poie-{ontology,state,plan}`、`apps/desktop/src-tauri`、`apps/desktop/src`、根 `Cargo.toml`、`scripts/check-*.py`。
-- 快照：分支 `design/phase-a-d`，**实际 HEAD `c4bc294`**。任务给的 `55bd48d` 已落后 2 个提交（`55bd48d → 91beea9 → c4bc294`）；`91beea9` 删除了 synthetic `Authorization`，`c4bc294` 修了命令矩阵/schema/preview DTO。本报告只对 `c4bc294` 负责。
-- 方法：只读对照 PO/SAP 与源码；`python3 scripts/check-docs.py` 通过；未运行完整 `cargo test`；未修改源码、设计文档或 git 状态。工作树中 `docs/design/VALIDATION.zh-CN.md` 有并发未提交修改（非本 agent），本报告不修改它。
+- 快照：分支 `design/phase-a-d`，**实际 HEAD `c4bc294`**。任务给的 `55bd48d` 已落后 2 个提交（`55bd48d → 91beea9 → c4bc294`）；`91beea9` 删除了 synthetic `Authorization`，`c4bc294` 修了命令矩阵/schema/preview DTO。本报告只对 `c4bc294` 负责。已入库/工作树的 `VALIDATION.zh-CN.md` 绑定 `91beea9`，`c4bc294` 已修其部分条目；本报告独立复核，不引用其行号。
+- 方法：只读对照 PO/SAP 与源码；`python3 scripts/check-docs.py` 通过；未运行完整 `cargo test`；未修改既有源码/设计文档，仅新增本文件。工作树中 `docs/design/VALIDATION.zh-CN.md` 有并发未提交修改（非本 agent），本报告不修改它。
 
 ## 0. 结论
 
@@ -34,7 +34,7 @@
 - **`auth_*` 自相矛盾。** A:42 要求“未登录调用……`auth_*` 必须拒绝”，但 PLATFORM:74 把 `auth_status/register/sign_in/sign_out` 全部标为免登录；`auth_register`/`auth_sign_in` 是首启引导入口（[auth.rs](../../apps/desktop/src-tauri/src/auth.rs):81-110），按 A 字面实现会让新机永远无法注册/登录。**最小修复**：A:42 改为“除 `auth_status/register/sign_in` 三个引导命令外，未登录的 `auth_sign_out`/`audit_list` 等拒绝”，测试按命令逐项列，不用 `auth_*` 通配。
 - **`sandbox_root` 漏列。** PLATFORM:79 只有 `sandbox_read/write`，但 host 还有 `sandbox_root`（[lib.rs](../../apps/desktop/src-tauri/src/lib.rs):224）并返回绝对路径。**最小修复**：矩阵补 `sandbox_root`（建议登录=是、main），或删除该命令并改前端。
 - **A0 未覆盖 no-follow/原子写。** PLATFORM:90 要求 `sandbox_*` no-follow + 原子写，A:41 只写会话/路径/大小；现有 [sandbox.rs](../../apps/desktop/src-tauri/src/sandbox.rs):38-47 用 `std::fs::write`，会跟随根内符号链接且非原子。**最小修复**：A0 第 2 条补 no-follow + 临时文件/fsync/rename，并加“符号链接逃逸/部分写”测试。
-- **测试预期未写全。** A:46 只列 `authorized/dispatched=0` 与 `dispatch_allowed=false`；[execution.rs](../../apps/desktop/src-tauri/src/execution.rs):181-197 仍断言 `review_status=="ready"`、0 rejections、全部 checks 通过、全部 authorized。去掉授权后 `review_dispatch` 会报 `missing_authorization`，必须同步为 blocked/1 rejection。**最小修复**：A:46 明确 `review_status=="blocked"`、authorization 检查失败、其余六项按实际状态，并保留“synthetic 不派发”负例。
+- **测试预期未写全。** A:46 只列 `authorized/dispatched=0` 与 `dispatch_allowed=false`；[execution.rs](../../apps/desktop/src-tauri/src/execution.rs):181-197 仍断言 `review_status=="ready"`、0 rejections、全部 checks 通过、全部 authorized。去掉授权后 `review_dispatch` 会对每个动作报 `missing_authorization`，必须同步为 `blocked` 且 rejection 数等于动作数。**最小修复**：A:46 明确 `review_status=="blocked"`、authorization 检查失败、其余六项按实际状态，并保留“synthetic 不派发”负例。
 
 ### B2 `status_evidence` 的 source 极性写反（A1，阻塞）
 

@@ -38,9 +38,9 @@ Phase A 把这些能力收束成一个**可读、可预览、可类型化**的�
 这些不是新功能，但必须在任何对象/动作 UI 之前修掉；否则 Phase A 的只读声明不成立。跨阶段 DTO/错误/scope/审批/模型约束见 [PLATFORM](PLATFORM.zh-CN.md)；当前模型固定为 Base-01 + `pump-p1=degraded` 的 `SourceModel`，host 必须持有 `Arc<Model>` 并计算 digest，不能只持有 `DomainOverview`。
 
 1. `execution_gate_set` 必须先 `auth::require` 再改 `GateState`/`ExecutionSnapshot`，所有变更强制审计；当前“先改再可选审计”的路径（`apps/desktop/src-tauri/src/lib.rs`）删除。
-2. `sandbox_read/write` 增加会话与路径/大小限制；定义**命令 scope 矩阵**：哪些窗口/命令允许读写、哪些只读、哪些要求登录。
+2. `sandbox_read/write` 增加会话、路径/大小限制；A0 将 `sandbox_write` 改为 no-follow + 临时文件/原子 rename；定义**命令 scope 矩阵**：哪些窗口/命令允许读写、哪些只读、哪些要求登录。
 3. 增加宿主命令白名单测试：未登录/无 scope/错误窗口调用 `execution_gate_set`、`sandbox_write`、`inference_configure`、`agent_*` 必须拒绝并留痕；`auth_status/register/sign_in/sign_out` 是**唯一无需先登录的 bootstrap 例外**。
-4. `execution.rs` 和 `federation_view.rs` 的硬编码授权（`Authorization{by:"maintainer", basis:"issue #105"}`）从产品路径移除。A0 **不生成任何 Authorization**：execution 视图把现有动作标为 `synthetic-preview`，只显示 proposed/validated 与“未授权”状态；测试断言 `authorized`/`dispatched` 数量为 0，UI 不再显示“复核通过”，未登录时同样只读。
+4. `execution.rs` 和 `federation_view.rs` 的硬编码授权（`Authorization{by:"maintainer", basis:"issue #105"}`）从产品路径移除；现有 `execution.rs` 测试中断言 `review_status=="ready"`/全部 `authorized` 的部分必须改为 `synthetic-preview`/`authorized=0`。A0 **不生成任何 Authorization**：execution 视图把现有动作标为 `synthetic-preview`，只显示 proposed/validated 与“未授权”状态；测试断言 `authorized`/`dispatched` 数量为 0，UI 不再显示“复核通过”，未登录时同样只读。
 5. 命令错误改用 `{code,message,details}` 包络；命令 scope 矩阵见 PLATFORM §4，不新增裸 `String` 错误。
 
 A0 的验收进入 Phase A PR；没有它，Phase A 不开始。**preview 语义**：A0 阶段 `dispatch_allowed` 在 `ExecutionSnapshot` 中恒为 `false`（三态 `false`），UI 显示“合成预览/未授权”，不得用 `true` 表示“复核通过”；只有后续显式授权流程才可能改变。测试需断言：execution snapshot 中 `authorized`/`dispatched` 为 0；`execution.rs`/`federation_view.rs` 不再出现硬编码 `Authorization`；未登录调用 gate/sandbox 被拒；命令 scope 矩阵用例通过。
@@ -183,19 +183,28 @@ pub struct PropertyValue {
     pub source: String, pub as_of: Option<String>,
     pub verification: String,    // declared|modeled|demonstrated|observed
 }
-pub struct LinkType { pub id: String, pub from: String, pub to: String, pub cardinality: String }
+pub struct LinkType {
+    pub id: String, pub from: String, pub to: String,
+    pub cardinality: String, // "many_to_many"（MVP 所有链接）；未来 1:1 需显式声明
+}
 pub struct LinkInstance { pub type_id: String, pub from: String, pub to: String }
-pub struct EvidenceRef { pub kind: String, pub id: String, pub fingerprint: Option<String>, pub sha256: Option<String> }
+pub struct EvidenceRef {
+    pub kind: String, pub id: String,
+    pub fingerprint: Option<String>, pub sha256: Option<String>,
+    pub as_of: Option<String>, pub source: String,
+}
 pub struct ObjectType {
     pub id: String, pub label: String,
     pub properties: Vec<PropertyDef>, pub links: Vec<LinkType>,
 }
 pub struct ObjectInstance {
-    pub id: String, pub type_id: String, pub version: String,
+    pub id: String, pub type_id: String,
+    pub version: String, // MVP = model_digest（快照版本，不是逐对象修订号）
     pub properties: BTreeMap<String,PropertyValue>,
 }
 pub struct ObjectDetail {
     pub schema: String, // poie.object-detail/0.1
+    pub model_digest: String, pub catalog_digest: String,
     pub object: ObjectInstance, pub links: Vec<LinkInstance>,
     pub evidence: Vec<EvidenceRef>,
 }
@@ -204,7 +213,7 @@ pub struct ActionType {
     pub target_types: Vec<String>, pub inputs: Vec<FlowView>, pub outputs: Vec<FlowView>,
     pub occupies: Vec<String>, pub restores: Vec<String>,
     pub requires_capabilities: Vec<String>,
-    pub duration: Option<String>, pub required_verification: String,
+    pub duration_s: Option<f64>, pub required_verification: String,
 }
 pub struct FlowView { pub resource: String, pub quantity: String, pub unit: String }
 pub struct FunctionType {
@@ -224,25 +233,19 @@ pub struct OntologyCatalog {
 
 pub struct ObjectPage {
     pub schema: String,
+    pub model_digest: String,
     pub catalog_digest: String,
     pub objects: Vec<ObjectInstance>,
     pub next_cursor: Option<String>,
 }
 
-pub struct AssumedContext {
-    pub ownership: Option<String>, pub reservations: Vec<String>,
-    pub authorization: Option<String>, pub now_s: f64,
-}
-pub struct CheckPreview {
-    pub id: String, pub status: String, // observed|assumed|failed|unknown
-    pub detail: String,
-}
-pub struct SapPreview {
-    pub checks: Vec<CheckPreview>,       // 七项检查的只读结果
-    pub assumed: Vec<String>,            // ownership/reservations/authorization 等假定项
-    pub rejections: Vec<String>,
-}
-pub enum PreviewError { InvalidPlan, UnsupportedContext, NoPreviewAvailable }
+// SapPreview/CheckPreview/AssumedContext/PreviewError 的权威定义在 `poie-plan::sap`；
+// 这里只列字段形状，不在 poie-objects 复制实现：
+//
+// SapPreview { checks: Vec<CheckPreview>, assumed: Vec<String>, rejections: Vec<String> }
+// CheckPreview { id, status: observed|assumed|failed|unknown, detail }
+// AssumedContext { ownership, reservations, authorization, now_s }
+// PreviewError { InvalidPlan, UnsupportedContext, NoPreviewAvailable }
 // 映射：InvalidPlan -> invalid_parameter；UnsupportedContext -> preview_unavailable；
 // NoPreviewAvailable -> preview_unavailable；host 统一包成 {code,message,details}。
 
@@ -254,6 +257,7 @@ pub struct PlannedActionView {
 }
 pub struct ActionPreview {
     pub schema: String, // poie.action-preview/0.1
+    pub model_digest: String, pub catalog_digest: String,
     pub plan_fingerprint: String,
     pub action: PlannedActionView,       // 来自 poie-plan::PlannedAction
     pub sap_preview: Option<plan::SapPreview>, // host 传入的只读 dry-run；假定项显式标注
@@ -389,7 +393,7 @@ MVP 不发布 npm 包；先把 SDK 作为桌面内共享类型层，后续可独
 ## 12. 实施顺序
 
 0. A0：gate/sandbox/inference 鉴权与命令 scope 修复；`execution.rs`/`federation_view.rs` synthetic preview 替换；测试；
-1. `poie-digest` + `poie-objects` 数据模型 + Model 投影 + 测试；加入根 `members`/根 `Cargo.lock`/测试矩阵；
+1. `poie-digest` + `poie-objects` 数据模型 + Model 投影 + 测试；加入根 `members`/根与桌面 `Cargo.lock`/测试矩阵；写 ADR（sha2、serde、生成器），新增 `scripts/check-schema-registry.py`，定义 limit 上限（对象 ≤500/page、catalog ≤1 MiB）并扫描 schema；
 2. host `objects.rs` 命令 + JSON/schema 快照 + 错误包络；
 3. `poie-sdkgen` + CI 零 diff + 黄金文件；
 4. Capabilities 对象浏览器与动作预览；
