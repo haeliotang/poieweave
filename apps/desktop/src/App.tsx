@@ -21,6 +21,10 @@ import {
   type NavKey,
   type OntologyDetail,
   type AgentResult,
+  type WhatIfSnapshot,
+  type WhatIfVariant,
+  type WhatIfResult,
+  type WhatIfCompare,
 } from "./domain";
 import brandMark from "./assets/poieweave-mono.svg";
 import { detectLang, messagesFor, type Lang } from "./i18n";
@@ -747,7 +751,7 @@ function Capabilities({ lang, overview, selection, onSelect, hosted }: { lang: L
   );
 }
 
-function Plan({ lang, overview, selection, onSelect }: { lang: Lang; overview: DomainOverview; selection: Selection | null; onSelect: (selection: Selection) => void }) {
+function Plan({ lang, overview, selection, onSelect, hosted }: { lang: Lang; overview: DomainOverview; selection: Selection | null; onSelect: (selection: Selection) => void; hosted: boolean }) {
   const t = (key: string) => messagesFor(lang)[key] ?? key;
   const horizon = Math.max(1, overview.plan.horizonS);
   const selectedAction = overview.plan.actions.find((action) => action.id === selection?.id);
@@ -811,7 +815,104 @@ function Plan({ lang, overview, selection, onSelect }: { lang: Lang; overview: D
           ))}
         </div>
       </section>
+
+      <WhatIfPanel lang={lang} hosted={hosted} />
     </div>
+  );
+}
+
+function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
+  const t = (key: string) => messagesFor(lang)[key] ?? key;
+  const [snapshot, setSnapshot] = useState<WhatIfSnapshot | null>(null);
+  const [variants, setVariants] = useState<WhatIfVariant[]>([]);
+  const [results, setResults] = useState<WhatIfResult[]>([]);
+  const [compare, setCompare] = useState<WhatIfCompare | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  const prepare = async () => {
+    setBusy(true); setError("");
+    try {
+      const modelSha256 = await invoke<string>("whatif_model_digest");
+      const created = await invoke<WhatIfSnapshot>("whatif_snapshot_create", {
+        input: {
+          label: "base-01", modelSha256, evidenceSha256: null, goal: "service:potable-water",
+          minVerification: "demonstrated", horizonS: 24, nowS: 0, startS: 0, deadlineS: null,
+          maxDepth: 12, maxActions: 12, seed: 7,
+        },
+      });
+      setSnapshot(created); setVariants([]); setResults([]); setCompare(null);
+    } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const addVariant = async () => {
+    if (!snapshot) return;
+    setBusy(true); setError("");
+    try {
+      const variant = await invoke<WhatIfVariant>("whatif_variant_create", {
+        input: { snapshotId: snapshot.id, label: `variant-${variants.length + 1}`, description: "", patch: { assetStatus: variants.length === 0 ? { "pump-p1": "failed" } : {} } },
+      });
+      setVariants([...variants, variant]);
+    } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const runVariant = async (variant: WhatIfVariant, mode: "structure" | "plan") => {
+    setBusy(true); setError("");
+    try {
+      const result = await invoke<WhatIfResult>("whatif_variant_run", { variantId: variant.id, mode });
+      setResults((current) => [...current.filter((entry) => entry.variantId !== variant.id || entry.mode !== mode), result]);
+    } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const compareResults = async () => {
+    if (!snapshot) return;
+    setBusy(true); setError("");
+    try {
+      setCompare(await invoke<WhatIfCompare>("whatif_compare", { snapshotId: snapshot.id, baselineResultId: null, resultIds: null }));
+    } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
+  };
+
+  return (
+    <section className="card whatif">
+      <div className="card__head"><h2>{t("whatif.title")}</h2><span className="eyebrow">SIMULATION · C1</span></div>
+      {!hosted ? <p className="empty">{t("whatif.hostOnly")}</p> : (
+        <>
+          <p className="muted">{t("whatif.caveat")}</p>
+          <div className="agent-panel__actions">
+            <button className="primary" type="button" onClick={() => void prepare()} disabled={busy}>{t("whatif.prepare")}</button>
+            <button type="button" onClick={() => void addVariant()} disabled={busy || !snapshot}>{t("whatif.addVariant")}</button>
+            <button type="button" onClick={() => void compareResults()} disabled={busy || results.length === 0}>{t("whatif.compare")}</button>
+          </div>
+          {snapshot ? <p className="muted">{snapshot.label} · {snapshot.goal} · {snapshot.snapshotSha256.slice(0, 12)}…</p> : null}
+          {error ? <p className="form-error">{error}</p> : null}
+          {variants.length > 0 ? (
+            <table className="table">
+              <thead><tr><th>{t("whatif.variant")}</th><th>{t("whatif.mode")}</th><th>{t("whatif.actions")}</th></tr></thead>
+              <tbody>{variants.map((variant) => (
+                <tr key={variant.id}>
+                  <td>{variant.label}</td>
+                  <td>
+                    <button type="button" onClick={() => void runVariant(variant, "structure")} disabled={busy}>structure</button>{" "}
+                    <button type="button" onClick={() => void runVariant(variant, "plan")} disabled={busy}>plan</button>
+                  </td>
+                  <td>
+                    {results.filter((result) => result.variantId === variant.id).map((result) => (
+                      <div key={result.resultId}><span className="mono">{result.mode}</span> · {result.outcome.structure ?? result.outcome.plan} · {result.outcome.caveat}</div>
+                    ))}
+                  </td>
+                </tr>
+              ))}</tbody>
+            </table>
+          ) : null}
+          {compare ? (
+            <div>
+              <h3>{t("whatif.compare")}</h3>
+              <ul>{compare.rows.map((row) => <li key={row.resultId}>{row.variantId} · {row.mode} · {row.outcome.structure ?? row.outcome.plan}</li>)}</ul>
+            </div>
+          ) : null}
+        </>
+      )}
+    </section>
   );
 }
 
@@ -1566,7 +1667,7 @@ export default function App() {
   const view = useMemo(() => {
     if (nav === "overview") return <Overview lang={lang} overview={overview} selection={selection} onSelect={select} />;
     if (nav === "capabilities") return <Capabilities lang={lang} overview={overview} selection={selection} onSelect={select} hosted={isTauri()} />;
-    if (nav === "plan") return <Plan lang={lang} overview={overview} selection={selection} onSelect={select} />;
+    if (nav === "plan") return <Plan lang={lang} overview={overview} selection={selection} onSelect={select} hosted={isTauri()} />;
     if (nav === "execution") return <Execution lang={lang} execution={execution} selection={selection} onSelect={select} onGate={(next) => void updateGate(next)} hosted={isTauri()} />;
     if (nav === "federation") return <Federation lang={lang} federation={federation} selection={selection} onSelect={select} />;
     return <Evidence lang={lang} selection={selection} onSelect={select} />;

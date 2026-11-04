@@ -378,3 +378,46 @@ export interface AgentResult {
   approvalTokenId?: string | null;
   error?: string | null;
 }
+
+export interface WhatIfSnapshot {
+  id: string;
+  label: string;
+  snapshotSha256: string;
+  modelSha256: string;
+  goal: string;
+  horizonS: number;
+  nowS: number;
+  maxActions: number;
+}
+
+export interface WhatIfVariant {
+  id: string;
+  snapshotId: string;
+  label: string;
+  goal?: string | null;
+  deadlineS?: number | null;
+}
+
+export interface WhatIfOutcome {
+  structure?: string | null;
+  plan?: string | null;
+  caveat: string;
+}
+
+export interface WhatIfResult {
+  resultId: string;
+  variantId: string;
+  snapshotId: string;
+  mode: string;
+  outcome: WhatIfOutcome;
+  resultSha256: string;
+  planFingerprint?: string | null;
+  completionS?: number | null;
+  actions: { actionId: string; process: string; target: string; startS: number; endS: number }[];
+  rootCauses: { kind: string; subject: string; detail: string }[];
+}
+
+export interface WhatIfCompare {
+  rows: { resultId: string; variantId: string; mode: string; outcome: WhatIfOutcome; completionS?: number | null }[];
+  warnings: string[];
+}
