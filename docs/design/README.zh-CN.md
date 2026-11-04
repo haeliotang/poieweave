@@ -131,3 +131,4 @@
 - B0 剩余：approval resume/draft 执行、审计日志文件/链、真实 fixtures、cancel/reject UI
 - **Phase C1 设计门禁 PASS**（`VALIDATION-C`）
 - **D1 设计门禁 PASS**（`VALIDATION-D`）
+- **A–D MVP 已实现**：A0/A1、B0/B1、C1、D1；C2/D2 为明确延后的后续切片
