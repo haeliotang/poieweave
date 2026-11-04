@@ -21,6 +21,7 @@ pub const SESSION_TTL_MS: i64 = 8 * 60 * 60 * 1000;
 
 #[derive(Clone, Debug)]
 pub struct Session {
+    pub session_id: String,
     pub display_name: String,
     pub expires_at_ms: i64,
 }
@@ -31,6 +32,7 @@ pub struct AuthStatus {
     pub has_operator: bool,
     pub signed_in: bool,
     pub display_name: Option<String>,
+    pub session_id: Option<String>,
     pub session_expires_at_ms: Option<i64>,
 }
 
@@ -38,6 +40,12 @@ pub type SessionState = Mutex<Option<Session>>;
 
 pub fn now_ms() -> i64 {
     SystemTime::now().duration_since(UNIX_EPOCH).map(|duration| duration.as_millis() as i64).unwrap_or(0)
+}
+
+fn new_session_id() -> Result<String, String> {
+    let mut bytes = [0u8; 16];
+    getrandom::getrandom(&mut bytes).map_err(|error| format!("session id randomness: {error}"))?;
+    Ok(hex::encode(bytes))
 }
 
 fn hash(passphrase: &str, salt: &[u8], iterations: u32) -> [u8; 32] {
@@ -74,6 +82,7 @@ pub fn status(db: &Db, session: &SessionState) -> Result<AuthStatus, String> {
         has_operator,
         signed_in: current.is_some(),
         display_name: current.as_ref().map(|session| session.display_name.clone()),
+        session_id: current.as_ref().map(|session| session.session_id.clone()),
         session_expires_at_ms: current.as_ref().map(|session| session.expires_at_ms),
     })
 }
@@ -100,8 +109,11 @@ pub fn register(db: &Db, session: &SessionState, display_name: &str, passphrase:
         iterations: PBKDF2_ITERATIONS,
         created_at_ms,
     })?;
-    let session_value =
-        Session { display_name: display_name.to_string(), expires_at_ms: created_at_ms + SESSION_TTL_MS };
+    let session_value = Session {
+        session_id: new_session_id()?,
+        display_name: display_name.to_string(),
+        expires_at_ms: created_at_ms + SESSION_TTL_MS,
+    };
     *session.lock().map_err(|_| "session lock poisoned".to_string())? = Some(session_value);
     db.append_audit(created_at_ms, display_name, "auth.register", "local operator created")?;
     status(db, session)
@@ -119,8 +131,11 @@ pub fn sign_in(db: &Db, session: &SessionState, passphrase: &str) -> Result<Auth
         db.append_audit(at, &operator.display_name, "auth.sign_in_failed", "invalid passphrase")?;
         return Err("invalid passphrase".into());
     }
-    *session.lock().map_err(|_| "session lock poisoned".to_string())? =
-        Some(Session { display_name: operator.display_name.clone(), expires_at_ms: at + SESSION_TTL_MS });
+    *session.lock().map_err(|_| "session lock poisoned".to_string())? = Some(Session {
+        session_id: new_session_id()?,
+        display_name: operator.display_name.clone(),
+        expires_at_ms: at + SESSION_TTL_MS,
+    });
     db.append_audit(at, &operator.display_name, "auth.sign_in", "local operator session started")?;
     status(db, session)
 }
