@@ -123,6 +123,7 @@
 
 - 四份阶段设计 + `DIGEST`/`PLATFORM`/`SCHEMAS`/三份研究备忘：已起草并入库预冻结
 - **Phase A 门禁：PASS**（[`VALIDATION-A.zh-CN.md`](VALIDATION-A.zh-CN.md)，快照 `907b246`）
-- **A0 已落地并合并**（PR #137，`main` `49ff974`）：gate/sandbox 鉴权、no-follow/原子写、demo 授权移除、合成预览 UI/测试
-- 下一步：A1（`poie-digest`/`poie-objects`/`poie-sdkgen` + Catalog）
+- **A0 已落地**（PR #137）
+- **A1 核心已落地**（PR #139）：`poie-digest`、`poie-objects`、host `ontology_*`、Capabilities 对象详情；测试矩阵 395
+- A1 剩余：`poie-sdkgen` 生成/漂移门禁、基于 Plan 的 action preview
 - B/C/D：设计已入库，阶段门禁未通过，未开始实现
