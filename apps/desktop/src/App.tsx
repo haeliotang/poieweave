@@ -1026,6 +1026,31 @@ function Inspector({
       setAgentBusy(false);
     }
   };
+  const approveAgent = async (approve: boolean) => {
+    if (!agentResult?.approvalTokenId) return;
+    setAgentBusy(true);
+    setAgentError("");
+    try {
+      const state = await invoke<{ runId: string; status: string; turns: { resultSummary: string; citations: AgentResult["citations"] }[]; citations: AgentResult["citations"]; error?: string | null }>(
+        approve ? "agent_approve" : "agent_reject",
+        { runId: agentResult.runId, tokenId: agentResult.approvalTokenId },
+      );
+      const last = state.turns[state.turns.length - 1];
+      setAgentResult({
+        runId: state.runId,
+        status: state.status,
+        text: last?.resultSummary ?? "",
+        citations: state.citations ?? [],
+        tools: [],
+        approvalTokenId: null,
+        error: state.error ?? null,
+      });
+    } catch (caught) {
+      setAgentError(String(caught));
+    } finally {
+      setAgentBusy(false);
+    }
+  };
   let title = t("inspector.noSelection");
   let kind = "";
   let body: React.ReactNode = <p className="empty">{t("inspector.noSelection")}</p>;
@@ -1178,7 +1203,15 @@ function Inspector({
         {agentResult ? (
           <div className="agent-panel__result">
             <span className="eyebrow">{t("agent.response")} · {agentResult.status}</span>
-            {agentResult.status === "waiting_approval" ? <p className="agent-panel__hint">{t("agent.waitingApproval")}</p> : null}
+            {agentResult.status === "waiting_approval" ? (
+              <>
+                <p className="agent-panel__hint">{t("agent.waitingApproval")}</p>
+                <div className="agent-panel__actions">
+                  <button className="primary" type="button" onClick={() => void approveAgent(true)} disabled={agentBusy}>{t("agent.approve")}</button>
+                  <button className="secondary" type="button" onClick={() => void approveAgent(false)} disabled={agentBusy}>{t("agent.reject")}</button>
+                </div>
+              </>
+            ) : null}
             <p>{agentResult.text || agentResult.error || t("agent.noText")}</p>
             {agentResult.citations.length > 0 ? (
               <p className="muted">{t("agent.citations")}: {agentResult.citations.map((citation) => `${citation.kind}:${citation.id}`).join(" · ")}</p>
