@@ -613,3 +613,4 @@ flowchart LR
 | 0.1.117 | 2026-11-05 | Phase A1 完成：`poie-sdkgen` 生成 TypeScript SDK + CI 漂移检查；host 只读 action preview；Rust 列表测试 396 |
 | 0.1.118 | 2026-11-05 | Phase B 门禁 PASS；B0 部分：session id、approval_tokens/agent_runs 表、`PRAGMA user_version` 迁移；B0 剩余 governance/runner/evals |
 | 0.1.119 | 2026-11-05 | B0 治理核心：`poie-governance` 六工具/画像、审批摘要、审计链、RunState/评测 schema；Rust 列表测试 401 |
+| 0.1.120 | 2026-11-05 | B0 host runtime：`agent_run` 六工具/provider 循环、RunState/审批 token、answer.emit；Agent 面板改为 agent_run；B1 待审批恢复/draft 执行 |
