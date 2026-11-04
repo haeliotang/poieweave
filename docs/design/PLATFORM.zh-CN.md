@@ -54,7 +54,7 @@ schema = "poie.<domain>/<major>.<minor>"
 | `model_mismatch` | A/C/D | model digest 与当前不一致 |
 | `manifest_invalid` / `stale_manifest` / `delivery_conflict` / `rollback_unavailable` / `io_error` | D1 | manifest 非法/已变/冲突/无回滚/IO |
 | `preview_unavailable` | A | host 未提供 dry-run |
-| `invalid_parameter` / `invalid_patch` | A/B/C | 参数/变体非法 |
+| `invalid_parameter` / `invalid_patch` | A/B/C/D1 | 参数/变体非法/大小超限 |
 | `approval_required` / `approval_mismatch` / `approval_expired` / `approval_rejected` | B/C/D | 审批缺失/被替换/过期/拒绝 |
 | `budget_exceeded` | B/C | 步数/工具/时间超限 |
 | `stale_snapshot` | C | snapshot/证据已变 |

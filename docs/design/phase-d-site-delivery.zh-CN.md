@@ -189,7 +189,7 @@ DiagnosticsSummary {
 - recall 显示且不当作 current；D1 不提供 un-recall。
 - `delivery_clear` 清空 current/previous；clear 后 import 可换站点；clear 审计。
 - 诊断无 secret/prompt/绝对路径/UUID；大小上限；固定错误码。
-- UI host-only 占位、导入确认、rollback；无“部署成功”文案。
+- UI host-only 占位、导入确认、rollback/clear；无“部署成功”文案。
 - 验收：离线导入一份 JSON、回滚、导出诊断；不联网、不导入二进制、不改策略。
 
 ## 11. D2（延后，需重跑门禁）
