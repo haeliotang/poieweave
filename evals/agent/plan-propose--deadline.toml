@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "plan-propose--deadline"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic plan.propose scenario deadline."
+profile = "dispatcher"
+
+[script]
+responses = [{ tool = "plan.propose", args = { "goal" = "service:potable-water", "horizonS" = 24.0, "deadlineS" = 12.0 } }]
+
+[expect]
+tools = ["plan.propose"]

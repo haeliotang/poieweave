@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "catalog-describe--as-of"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic catalog.describe scenario as-of."
+profile = "dispatcher"
+
+[script]
+responses = [{ tool = "catalog.describe", args = {  } }]
+
+[expect]
+tools = ["catalog.describe"]

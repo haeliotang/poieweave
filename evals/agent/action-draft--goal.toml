@@ -1,0 +1,12 @@
+schema = "poie.agent-eval/0.1"
+id = "action-draft--goal"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic action.draft scenario goal."
+profile = "dispatcher"
+approval = { action = "approve" }
+
+[script]
+responses = [{ tool = "action.draft", args = { "planFingerprint" = "plan-base01", "actionId" = "act-1" } }]
+
+[expect]
+tools = ["action.draft"]
