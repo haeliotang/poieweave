@@ -101,7 +101,9 @@ VariantResult {
 }
 ```
 
-- `resultSha256 = sha256("poie.variant/0.1\n" + canonical_json({snapshotSha256, variant:{patch,goal,minVerification,deadlineS}, mode, settings, outcome, planSha256?, completionS?, actions, rootCauses, externalDependencies}))`；排除 variant id/createdAt/createdBy、result id/runId；同输入同 digest。
+- 可选字段统一：缺省写 `null`，不得省略，遵守 DIGEST §2.6。
+- `planSha256 = sha256("poie.plan/0.1\n" + canonical_json({fingerprint: Plan::digest(), actions}))`；fingerprint 同时保留在 `planFingerprint`，两者不混用。
+- `resultSha256 = sha256("poie.variant/0.1\n" + canonical_json({snapshotSha256, variant:{patch,goal,minVerification,deadlineS}, mode, settings, outcome, planSha256, completionS, actions, rootCauses, externalDependencies}))`；排除 variant id/createdAt/createdBy、result id/runId；同输入同 digest。
 - 结果持久化到 SQLite `whatif_results`；`compare` 使用 resultId。
 
 ## 6. 架构
@@ -129,12 +131,13 @@ apps/desktop/src          Sim mode + variant editor + compare; host-only
    - structure: graph solve goal;
    - plan: `poie-plan::plan`。
      `PlanningRequest { model, now_s: snapshot.nowS, horizon_s: snapshot.horizonS, goals: [PlanningGoal { goal, deadline_s: variant.deadlineS ?? snapshot.deadlineS, priority }], min_verification: variant.minVerification ?? snapshot.minVerification, max_actions: snapshot.maxActions }`；`startS` 仅记录为调度起点提示，C1 不把 `startS` 传给当前 `PlanningRequest`。
-     `PlanError` 只有 `InvalidRequest/Model/Schedule`：`InvalidRequest` → 命令错误 `invalid_patch`（不是 infeasible）；`Model`/`Schedule` → `unknown`。
+     `PlanError` 只有 `InvalidRequest/Model/Schedule`：`InvalidRequest` → 命令错误 `invalid_parameter`（不是 infeasible；Snapshot 创建时先校验 horizon/max_actions/goals，避免把调用者错误当业务结论）；`Model`/`Schedule` → `unknown`。
      `plan()` 成功时检查 `Plan.goals_unmet` 的 `GoalFailure.reason`：
      - 全部 goals_met 且无 unmet → `planned`；
      - 任一 `"unknown state"` → `unknown`；
      - 任一 `"search limit"` 或 `"action budget exhausted"` → `search_limit`；
-     - `"horizon exceeded"`/`"no plan found"`/`"no restorable blocker"` → `infeasible`；
+     - `"horizon exceeded"`/`"no plan found"`/`"no restorable blocker"`/`"deadline missed"`/`"blocked: ..."` → `infeasible`；
+     - 未识别的 reason 一律 → `unknown`（不得静默 planned）；
      - 多种原因按 unknown > search_limit > infeasible 优先级。
      不能把 `Ok(Plan)` 且 goals_unmet 非空当成 `planned`。
      `deadlineS` 只进入 `PlanningGoal.deadline_s`，不是 `PlanningRequest` 字段。
@@ -175,7 +178,7 @@ CompareResult {
 }
 ```
 
-- `resultIds` 为空：比较该 snapshot 全部结果；跨 snapshot/未知/重复 resultId → `invalid_patch`/`unknown_result`；不同 mode 可并列但 `delta` 只在同 mode 计算。
+- `resultIds` 为空：比较该 snapshot 全部结果；未知 resultId → `unknown_result`；跨 snapshot → `invalid_parameter`；重复 resultId 去重并记录 warning；不同 mode 可并列但 `delta` 只在同 mode 计算。
 - `delta` 为 `{completionDeltaS?, outcomeChanged: bool}`；不比较不同 mode 的数值。
 - `whatif_result_list(snapshotId, variantId?, limit)` 返回持久化结果，重启后可达。
 
