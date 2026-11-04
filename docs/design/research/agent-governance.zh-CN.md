@@ -1,5 +1,7 @@
 # Agent 治理与评测：行业实践、标准与 Phase B 架构提案
 
+> 研究提案：若与 Phase B 冻结设计冲突（例如工具数量/`dispatch.request`/审批词表），以 Phase B 文档为准。
+
 版本：0.1（2026-11-04）· 状态：研究备忘，非契约 · 范围：Phase B（agent 治理与评测）
 适用对象：SAP v0.2-draft、`crates/poie-state`、`crates/poie-exec`、桌面驾驶舱（`apps/desktop`）
 

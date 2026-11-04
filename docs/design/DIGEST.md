@@ -55,7 +55,7 @@ domain/version "\n" canonical_json(payload)
 2. 对象键按 Unicode 码点/字节字典序升序；嵌套对象同样；
 3. 数组保持业务语义顺序；需要集合语义时按稳定 ID 排序；
 4. 不含多余空白；字符串按 JSON 标准转义；
-5. 数字：只允许有限 f64/i64/u64；拒绝 NaN/Infinity；整数不写成浮点；浮点使用 `serde_json` 稳定序列化，调用方不得自行格式化；
+5. 数字：只允许有限 f64/i64/u64；拒绝 NaN/Infinity；整数不写成浮点；浮点使用 `serde_json` 稳定序列化，调用方不得自行格式化；`-0.0` 归一化为 `0.0`；浮点必须保留 IEEE-754 双精度语义，不使用十进制字符串近似；
 6. 禁止 `null` 与缺省值混用：规范结构必须显式列出字段；可选字段缺省为 `null`，不能时而省略时而写 null；
 7. 不包含时间戳、机器路径、随机 ID（除非它就是被测输入的一部分）。
 
@@ -69,7 +69,7 @@ name, resources[], assets[], lots[], processes[], services[]
 
 - 资源：id, unit symbol, unit dim/scale, mass_per_unit_kg, quality
 - 资产：id, kind, status, status_evidence, requires[], requires_any[], provides[],
-  capability_verification, degraded, description
+  capability_verification, degraded（不包含 `description`，它不在验证后的 Asset 结构中）
 - 批次：id, resource, si, quality
 - 工艺：id, inputs[], outputs[], occupies[], requires_capabilities[], restores[],
   duration, verification, asset_mass_change, mass_tolerance, yield
@@ -98,7 +98,8 @@ manifest_sha256 = sha256("poie.manifest/0.1\n" + canonical_json(manifest_without
 3. 键顺序不同的同一对象 digest 相等；
 4. 非有限数字/未知 schema 返回稳定错误；
 5. 固定 fixture 的 digest 写入测试快照，CI 重放；
-6. `poie-digest` 有属性测试：随机 JSON 键序不变性；canonical JSON 可被标准 JSON 解析器解析。
+6. `poie-digest` 有属性测试：随机 JSON 键序不变性；canonical JSON 可被标准 JSON 解析器解析；固定测试向量覆盖 `-0.0`、整数值浮点、字符串数组顺序、嵌套键序。
+7. `poie-digest` 进入根 `members`/`Cargo.lock`/测试矩阵；`check-test-matrix` 通过。
 
 ## 7. 非目标
 

@@ -37,7 +37,7 @@ schema = "poie.<domain>/<major>.<minor>"
 理由：PO/SAP 领域类型是正式契约，字段名/枚举拼写不能为了 UI 被冻结；DTO 可以 `camelCase`、带 `schemaVersion`，并做显式转换。
 
 - `AssetStatus`、`LotQuality`、`Verification`、`Patch`、`StateId` 保持 Deserialize-only（现状）。
-- A 定义 `ObjectInstanceDto`、`LinkInstanceDto`、`ActionTypeDto`、`SapPreviewDto`；从 `Model` 构建。
+- A 定义公开 DTO：`ObjectInstance`、`LinkInstance`、`ActionType`、`SapPreview`、`OntologyCatalog`（这些类型本身就是公开 DTO，不再加 `Dto` 后缀）；从 `Model` 构建。
 - C 定义 `PatchDto`、`PerturbationDto`、`SnapshotDto`、`VariantDto`、`VariantResultDto`；`PatchDto -> Patch` 的唯一转换在 `poie-whatif`，拒绝未知/多余字段。
 - D 定义 `SiteManifestDto`、`DeliveryStateDto`、`DiagnosticsDto`。
 - DTO 字段稳定、排序稳定；`serde(rename_all="camelCase")`；枚举用 `snake_case` 字符串并显式列出。
@@ -74,23 +74,23 @@ schema = "poie.<domain>/<major>.<minor>"
 
 ## 4. 命令 scope 矩阵
 
-窗口标签：`main`、`focus-federation`、`focus-execution`、`focus-evidence`、`settings`、`agent`（后续）。
+窗口标签（与代码一致）：`main`；聚焦窗口由 `open_workspace_window` 创建为 `poie-view-federation`、`poie-view-execution`、`poie-view-evidence`；`settings`/`agent` 目前不是独立窗口，若新增必须在本矩阵登记标签。
 
 | 命令 | 登录 | 允许窗口 | 读写 | 策略 |
 | --- | --- | --- | --- | --- |
 | `host_info` | 否 | 全部 | 读 | 无 |
-| `domain_overview` / `execution_snapshot` / `federation_snapshot` | 否（只读演示） | main/focus-* | 读 | 无 |
+| `domain_overview` / `execution_snapshot` / `federation_snapshot` | 否（只读演示） | main/poie-view-* | 读 | 无 |
 | `auth_status/register/sign_in/sign_out` | 否 | 全部 | 写本地 | 仅 auth 命令 |
-| `audit_list` | 是 | settings/main | 读 | 会话 |
-| `inference_status` | 否 | settings/main | 读 | 配置脱敏 |
-| `inference_configure/forget/test/complete` | 是 | settings/main | 写/网络 | 会话 + 站点策略 |
+| `audit_list` | 是 | main | 读 | 会话 |
+| `inference_status` | 否 | main | 读 | 配置脱敏 |
+| `inference_configure/forget/test/complete` | 是 | main | 写/网络 | 会话 + 站点策略 |
 | `execution_gate_set` | 是 | main/execution | 写 | 会话 + 审计（A0 修复） |
-| `sandbox_read/write/list` | 是 | settings/main | 读写 | 会话 + 路径/大小/窗口 |
+| `sandbox_read/write/list` | 是 | main | 读写 | 会话 + 路径/大小/窗口 |
 | `open_workspace_window` | 否 | main | 导航 | 允许 view 白名单 |
-| `ontology_*` | 否（只读） | main/capabilities/agent | 读 | A0 后按窗口 |
-| `agent_*` | 是 | main/agent | 写/网络 | 会话 + scope + policy |
+| `ontology_*` | 否（只读） | main/poie-view-* | 读 | A0 后按窗口 |
+| `agent_*` | 是 | main | 写/网络 | 会话 + scope + policy |
 | `whatif_*` | 是 | main/planning | 写（模拟） | 会话 + policy |
-| `delivery_*` | 是 | settings/main | 写 | 会话 + 审批 + policy |
+| `delivery_*` | 是 | main | 写 | 会话 + 审批 + policy |
 
 实现要求：
 
@@ -109,8 +109,34 @@ SourceModel = Base-01 model.toml + pump-p1 = degraded patch
 
 - host 在启动时加载并 patch，保存 `Arc<Model>` 与 `model_digest`（`DIGEST.md`），不再只保存 `DomainOverview`。
 - `domain_overview`、`ontology_catalog`、`whatif_snapshot`、`execution` 都从同一个 `SourceModel` 构建；切换模型必须同时更新版本并拒绝旧引用。
-- D 的 site bundle 增加 `ModelStore`：内置 fallback + imported bundle；优先级 `imported > built-in`，启动时校验 digest/契约/证据；MVP 不热切换正在运行的模型，导入后需重启/显式 reload（并记录审计）。
-- 若 D 暂不实现 ModelStore，D 文档必须删除“导入后切换模型”的验收；当前设计选择实现 ModelStore（最小只读）。
+- D **不导入/切换模型文件**：site bundle 只记录 `modelSha256`，应用仍使用构建期/本地 `SourceModel`；导入只更新交付清单/策略/证据引用。若未来要 model bundle，另立设计。
+- 因此 A/C/D 只有一套模型来源，不存在 `ModelStore` 与 `SourceModel` 两个版本。
+
+## 5.1 对象 ID 与 EvidenceRef
+
+统一 canonical object ID：`<type>:<id>`，例如：
+
+```text
+asset:pump-p1
+resource:electric-energy
+lot:lot-sleeve-01
+process:replace-sleeve-p1
+service:potable-water
+```
+
+- type 只允许小写字母；id 只允许 `[a-z0-9._-]`（模型已校验）；
+- 不允许在 ID 中编码路径/查询/空白；
+- 引用在 API 中作为字符串；本地查找时拆分 type/id 并校验；
+- `EvidenceRef { kind, id, fingerprint?, sha256?, asOf?, source }`；`kind` 为 `object|action|plan|experiment|contract|report`；fingerprint 与 sha256 二选一或同时提供，至少一个；`asOf` 为 RFC3339 或 null；
+- B 的 citation、C 的 evidenceRefs、D 的 manifest.evidence 使用同一结构。
+
+## 5.2 Action 的仿真来源（SAP §7.4）
+
+从 What-if/Agent 提案产生的 action 必须能追溯到仿真分支/模型：
+
+- 在 `Authorization.basis` 字符串中编码 `simulation=<branchId>;model=<modelSha256>`，或给 SAP `Action` 增加结构化 `simulationBranch`/`modelSha256` 字段；
+- MVP 采用 **basis 编码**，不改 SAP 结构；若后续需要结构化，走 SAP v0.3 变更 + ADR + SAP-T 用例；
+- 测试：解析 basis 得到 branch/model；缺失时 `not_promotable`。
 
 ## 6. 审批原语（B/C/D 共用）
 
@@ -134,6 +160,7 @@ pub struct ApprovalToken {
 - `Forbidden`：直接拒绝并审计。
 - B 的 agent、C 的 promote、D 的 channel/import 使用同一原语；不允许布尔 `approved` 参数。
 - 所有 token 持久化（SQLite）以支持暂停/恢复/审计；过期自动拒绝。
+- token 与 SAP 记录的关联：写入审计时记录 `sap_record_id`；`Authorization.basis` 包含 `approval:<tokenId>`（或结构化后字段），使 SAP 记录可反查 token。
 
 ## 7. 新 crate/依赖与工作区
 

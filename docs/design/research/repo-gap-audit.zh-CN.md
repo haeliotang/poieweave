@@ -1,5 +1,7 @@
 # Poieweave 仓库差距审计：Phase A–D
 
+> 本审计是 2026-11-04 的仓库快照；后续冻结决定（crate 名、工具数量、审批词表、D 不导入模型）见 Phase A–D/PLATFORM，若冲突以冻结设计为准。
+
 - 审计日期：2026-11-04
 - 审计对象：`/Users/hao/Documents/poieweave`，HEAD `bee82b7`（`main`）
 - 方法：只读检查实际仓库；`cargo test -- --list`（根 workspace 388、桌面宿主 12）、`cargo metadata`、CI/文档/源码交叉核对；未修改应用源码或 git 状态

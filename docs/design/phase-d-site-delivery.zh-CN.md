@@ -84,7 +84,7 @@ integrity = { algorithm = "sha256", manifestSha256 = "..." }
 - `manifestSha256 = sha256("poie.manifest/0.1\n" + canonical_json(manifest without integrity))`，见 [DIGEST](DIGEST.md)。
 - 未知 schema major 拒绝；minor 忽略未知字段。
 - SHA-256 不等于签名；未签名显示“未认证”。
-- artifact/target 来自构建期 `release.json`，不由运行时猜测。
+- artifact/target 来自构建期 `release.json`，不由运行时猜测；`host_info` 增加 `build: { releaseId, commit, target, channel? }`，从编译期 `release.json` 读取，DeliveryState 不能覆盖它。
 - `contracts` 由机器可读 `contracts.toml`（新增）生成，不再解析契约正文。
 
 ### 5.2 Channel / DeliveryState
@@ -118,7 +118,7 @@ DeliveryPlan {
 ```
 
 - 约束：schema/version 兼容、model digest、contracts digest、evidence 完整、回滚目标存在、未召回。
-- `delivery_plan` 必须能解释“为什么没有更新/为什么被挡住”；不能只返回成功/失败。
+- `delivery_plan` 必须能解释“为什么没有可采纳的 manifest/为什么被挡住”；不要用 `update` 暗示会自动升级 app 或模型，字段用 `adoptManifest`。
 - `recall(releaseId)`：加入本地召回列表并写审计；已安装则显示召回+允许回滚；不删除证据/不自动切换。
 - 回滚：切换到 `previous` 清单；不覆盖 SQLite，不替换二进制；数据库迁移失败则拒绝并保留原状态。
 
@@ -165,7 +165,7 @@ apps/desktop/src           Delivery settings/status UI
 | --- | --- | --- |
 | `delivery_status` | 无 | DeliveryState |
 | `delivery_plan` | desiredChannel? | DeliveryPlan |
-| `delivery_bundle_export` | 无 | bundle JSON（写入 sandbox） |
+| `delivery_bundle_export` | 无 | bundle JSON 写入固定 sandbox 目录 `delivery/exports/`，上限 256 KiB；返回路径 |
 | `delivery_bundle_inspect` | bundle JSON path | Manifest + validation |
 | `delivery_bundle_import` | bundle JSON path, approvalTokenId | DeliveryState（只更新清单/策略/证据引用） |
 | `delivery_bundle_rollback` | approvalTokenId | DeliveryState |
@@ -175,6 +175,18 @@ apps/desktop/src           Delivery settings/status UI
 | `delivery_diagnostics_export` | 无 | Diagnostics JSON |
 
 所有写命令要求登录 + `ApprovalToken`（见 PLATFORM §6）+ 审计；路径只接受 sandbox 内相对名，不跟随符号链接。
+
+**安全写 API（host）**：
+
+```rust
+fn write_atomic(path: &Path, bytes: &[u8]) -> Result<(), DeliveryError>;
+fn read_manifest(path: &Path) -> Result<Manifest, DeliveryError>;
+```
+
+- `write_atomic`：在目标同文件系统创建临时文件、`fsync`、`rename`、再 `fsync` 父目录；失败清理临时文件；
+- 拒绝符号链接/硬链接目标；路径组件只允许 Normal，不允许 `..`/绝对路径；
+- 单文件 ≤256 KiB，bundle 总大小 ≤1 MiB；失败不改当前 DeliveryState；
+- 测试：符号链接/tamper/磁盘满/rename 失败/并发写。
 
 ### 6.3 模型/证据/合同绑定
 
@@ -187,7 +199,9 @@ apps/desktop/src           Delivery settings/status UI
 
 - 单一版本源：`apps/desktop/package.json` 的 `version`；`src-tauri/Cargo.toml` 必须一致；`RELEASE.json` 构建期注入 commit/target/channel。
 - `.github/workflows/desktop-build.yml` 产出 Linux `.deb`、Windows NSIS、macOS universal `.app.zip`；**不生成 DMG/便携 exe**。manifest 示例只列实际产物；DMG 若手动发布，不写入自动 manifest。
-- tag release 依赖根 `verify-all`/证据重放；`check-release-manifest.py` 校验版本/产物/digest。
+- tag release 依赖根 `verify-all`/证据重放：`desktop-build.yml` 的 tag job 增加 `workflow_run` 或显式调用/复用根 CI 的 verify job；`release` job `needs: [build, verify]`。`ci.yml` 的 tag 触发或 `workflow_call` 必须写进 workflow，而不是只写口号。
+- PR paths 必须覆盖 `apps/desktop/tests/**` 与 `playwright.config.ts`；目前桌面 workflow 已有部分，需去重并补齐。
+- `check-release-manifest.py` 校验版本/产物/digest。
 - SBOM/attestation 可选（O2），不阻塞。
 
 ### 6.5 Policy 强制
@@ -254,12 +268,13 @@ apps/desktop/src           Delivery settings/status UI
 
 ## 10. 实施顺序
 
+0. `poie-delivery`/`poie-digest` 进根 `members`、根/桌面 `Cargo.lock`、ADR、测试矩阵；
 1. `poie-delivery` manifest/state/plan/digest/validation + tests；
-2. host `delivery.rs` state+migrations+commands+policy loader；
+2. host `delivery.rs` state+migrations+`write_atomic`+commands+policy loader；
 3. UI 交付面板/状态栏；
 4. `contracts.toml` + `release.json` + `check-release-manifest.py`；
-5. 发布流水线 manifest/artifact 对齐；
-6. Playwright/文档/测试矩阵/状态快照。
+5. 发布流水线 manifest/artifact/tag gate 对齐（`host_info.build`）；
+6. Playwright、`cargo fmt/clippy/doc/cargo-deny/check-test-matrix/check-docs`、文档/测试矩阵/状态快照。
 
 ## 11. 开放问题
 

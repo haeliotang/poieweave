@@ -55,7 +55,7 @@ ScenarioSnapshot {
   schemaVersion, id, label, modelId, modelSha256,
   baseState: {
     assetStatus, lots, storageLimits { resource, capacitySi, initialSocSi, maxDischargeW },
-    assetTimelines, stockTimelines, evidenceVersion, stateId?
+    assetTimelines, stockTimelines, evidenceSha256, stateId?  // stateId 为 DTO 字符串；无 live projection 时为 null
   },
   nowS, seed, horizonS, maxDepth, maxActions, evidenceValidityS,
   goal, minVerification, startS, deadlineS?,
@@ -73,8 +73,8 @@ MVP 基态来自 host 启动时的 Base-01 + degraded 快照。**C MVP 明确只
 Variant {
   id, snapshotId, label, description, schemaVersion,
   patch: PatchDto {   // 与 poie-ontology::Patch 一一对应的公开 DTO；不是第二份语义
-    assetStatus, assetRequires, assetRequiresAny,
-    lotQuantity, lotResource, lotQuality,
+    assetStatus, assetRequires, assetRequiresAny, assetDegraded,
+    assetCapabilityVerification, lotQuantity, lotResource, lotQuality,
     processVerification, addAsset, addResource, addLot, addProcess
   },
   perturbation: Perturbation {
@@ -90,9 +90,9 @@ Variant {
 
 限制：最多 N 个变体（MVP 8）；每个 patch/perturbation 字段数量上限；拒绝未知 ID/单位/维度和负值；变量不能引用另一个变体的结果。`PatchDto` 只在 `poie-whatif` 内转换为 `poie-ontology::Patch`，字段由转换测试逐项对齐；领域类型不加 `Serialize`。
 
-`poie-sim` 目前没有 checkpoint/序列化 API；如果 MVP 要“从当前状态快照开始”而不是重跑固定轨迹，必须先增加 `Checkpoint {time_s, assets, stocks, batteries, external_flows, digest}` 与 `Simulation::checkpoint/from_checkpoint`，否则 Phase C 只能做结构/计划变体，timed 变体从固定场景起点重跑并明确标注。
+`poie-sim` 没有 checkpoint API。C MVP 明确使用 **`startMode=scenario-start`**：timed 变体从 `TimedScenario` 的固定起点重跑，结果标注 `startMode`/`nowS`，不声称从 live 当前时刻继续。完整 `Checkpoint`（含 stocks/flows/rules/queue/violations/model sha）列为 C2，只有在需要“从当前时刻”时才实现。
 
-`assetDelayS` 不是 `Patch` 字段：由 `poie-whatif` 构造带时间偏移的 `AssetTimeline`/`TimedScenario` 或调度输入；如果 timed 变体尚未实现，UI 必须将该变体标为 `structure/plan only`，不能显示 `power_limited` 等时间结论。
+`assetDelayS` 的语义：对指定资产，把“可用/修复完成”的时间整体加上 N 秒，映射为 `AssetTimeline` 的状态变更 `at += N`；N 必须 ≥0 且 ≤ horizon，否则 `invalid_patch`；不改变库存时间线，若因此超过 deadline，timed 结果报 `too_late` 而非 `blocked`。如果 timed 变体尚未实现，UI 必须将该变体标为 `structure/plan only`，不能显示 `power_limited` 等时间结论。
 
 ### 5.3 结果
 
@@ -124,6 +124,8 @@ crates/poie-whatif         NEW: snapshot/variant/patch/run/compare/promote
   ├── poie-ontology        Model + Patch + graph solve + schedule
   ├── poie-plan            plan + SAP preview
   ├── poie-sim             optional timed/storage simulation
+  ├── poie-state           Namespace/ActionState/Receipt
+  ├── poie-digest          canonical JSON/SHA-256
   ├── poie-objects         Phase A object/action refs
   └── poie-viability       optional VEC metrics (MVP 不必须)
         │
@@ -140,7 +142,7 @@ apps/desktop/src           What-if workspace UI
 2. `variant_create`：校验 patch，存 DB（或内存 + DB JSON）。
 3. `variant_run`：`Model::patched` → graph solve → plan → SAP preview（可选 timed sim）；不写 live。
 4. `variant_compare`：取 baseline 与多个结果，按统一排序生成差异。
-5. `variant_promote`：重新运行/复用结果，检查 snapshot 仍匹配当前 live 模型与证据版本，创建 proposed actions；返回 SAP 校验；不 dispatch。
+5. `variant_promote`：重新运行/复用结果，检查 snapshot 仍匹配当前 `SourceModel` 的 `modelSha256` 与 `evidenceSha256`，创建 proposed actions；返回 SAP 预览；不 dispatch/authorize。
 6. 所有操作需要登录；promotion 需要操作员确认（复用 Phase B 的审批语义）。
 
 ### 6.2 隔离与一致性
@@ -148,7 +150,7 @@ apps/desktop/src           What-if workspace UI
 - 每个 variant 使用独立 `Model` 副本和独立 ledger/plan；绝不复用 live `ActionLedger`。
 - C 的 variant/run 只在内存中计算，**不写 SAP 记录/ActionLedger**；如果未来需要仿真记录，必须使用 `Namespace::Simulation(branch_id)` 并通过 `ensure_live_dispatch` 闸门。UI 的 `Sim` 标签不是安全边界。
 - 运行使用固定 `now_s`/snapshot 时间，避免 wall clock 改变结果。
-- 如果 host 的 model/evidence digest 在 promote 前改变（例如 Phase D 导入后重启），拒绝 promote（`stale_snapshot`）并提示重建 snapshot；C MVP 没有可变 live state，不做“自动 rebase”。
+- 如果 host 的 `modelSha256`/`evidenceSha256` 在 promote 前改变（例如应用重启/证据更新），拒绝 promote（`stale_snapshot`）并提示重建 snapshot；C MVP 没有可变 live state，不做“自动 rebase”。
 - 模拟结果不进入 `execution_snapshot`/`federation_snapshot`；状态栏显示 `SIMULATION` 标记。
 - `Sim` 模式在 UI 中启用后，所有写操作仍被禁止，直到显式 promote。
 - 同一次比较必须列出 baseline 与全部 variant 的完整差异，不能只显示“最优项”；结构 `Verdict` 与 `TimedVerdict` 分别保存在 `OutcomeKind.structural/timed`，不得合并成 VEC 的 `VerdictKind`。

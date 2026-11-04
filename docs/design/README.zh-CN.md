@@ -11,7 +11,7 @@
 | C | [What-if 工作区](phase-c-what-if.zh-CN.md) | 快照、扰动、模拟、比较、提升为 proposed plan | A、B、plan/sim | `poie-whatif` + Sim 模式 + 变体比较 |
 | D | [站点交付](phase-d-site-delivery.zh-CN.md) | 通道、站点 bundle、离线导入、诊断、版本/证据绑定 | A–C、发布流水线 | `poie-delivery` + 设置面板 + 导入/导出 |
 
-严格按 **A → B → C → D** 实现。后一阶段可以复用前一阶段的类型/策略，但不得绕过前一阶段的安全边界。
+严格按 **A → B → C → D** 的阶段顺序实现；每阶段内部按 PLATFORM §8 的切片（A0→A1→A2、B1→B2、C1→C2、D1→D2）推进。后一阶段可以复用前一阶段的类型/策略，但不得绕过前一阶段的安全边界；B/C/D 的设计门禁在各自阶段开始前重跑。
 
 ## 跨阶段不变式
 
@@ -64,7 +64,7 @@
 | 原则 | 含义 | 可测门禁 |
 | --- | --- | --- |
 | P1 正式契约唯一真源 | Catalog 是带 digest 的投影，不是第二套本体 | 两次生成 digest 相同；未知 schema 拒绝；UI 不能建类型 |
-| P2 单一写路径 | 一切变更都是动作，SAP 是唯一执行语义 | 无 CRUD/写接口；模型工具中 dispatch 数量为 0 |
+| P2 单一写路径 | 物理/运营变更都是动作，SAP 是唯一执行语义；配置/交付状态写入必须审计、受 ApprovalToken/HostPolicy 约束 | 领域对象无 CRUD/执行写接口；模型工具中 dispatch 数量为 0；配置写有审批/审计 |
 | P3 无环境权限 | 每个工具/动作声明 scope，默认拒绝 | 未知工具/越界参数拒绝并留痕；审批绑定参数摘要 |
 | P4 无证据不结论 | 事实性输出必须可追溯到本轮工具结果 | 无 citation 被拒；未知 citation 触发 `citation_missing` |
 | P5 模拟不触达现场 | SIMULATION 是显式命名空间 | variant 前后 live digest 不变；promote 只产生 proposed |
@@ -77,7 +77,7 @@
 
 | 阶段 | 退出条件（全部满足） |
 | --- | --- |
-| A | 外部消费者仅凭 Catalog/SDK 完成枚举与读取；动作预览不 dispatch；Catalog/SDK 漂移使 CI 失败；六个旧视图不回归 |
+| A | 桌面内消费者仅凭 Catalog/SDK 完成枚举与读取；动作预览不 dispatch；Catalog/SDK 漂移使 CI 失败；六个旧视图不回归 |
 | B | 越权工具 100% 被拒并留痕；无引用结论被拒；审批暂停/恢复可测且参数变更失效；离线 eval 在 CI 确定通过；模型工具中 dispatch 数量为 0 |
 | C | 同输入同 digest；stale snapshot 拒绝 promote；live 模型/ledger/federation 零写入；比较结果完整可重放 |
 | D | 版本/证据不匹配拒绝导入；回滚可测；离线导入可启动；诊断不含密钥；通道/解析版本/不更新原因可追溯 |
@@ -100,7 +100,7 @@
 
 | 编号 | 修订 |
 | --- | --- |
-| R1 | 设计文档已提交到 `design/phase-a-d` 分支，冻结快照 `4a90edc` |
+| R1 | 设计文档已提交到 `design/phase-a-d` 分支；以该分支 HEAD 作为校验快照 |
 | R2 | `DIGEST.md` 区分 fingerprint 与 SHA-256，增加 approval/evidence/contracts domain 与指纹规则 |
 | R3 | `PLATFORM.zh-CN.md` 定义 schema 注册、`schemaVersion`、`OutcomeKind` |
 | R4 | 公开 API 使用 DTO，领域类型不加 `Serialize`；`PatchDto` 转换 |
@@ -121,9 +121,9 @@
 
 ## 当前状态
 
-- 四份设计文档：已起草并吸收三份研究备忘
+- 四份阶段设计 + `DIGEST`/`PLATFORM`/`SCHEMAS`/三份研究备忘：已起草并入库预冻结
 - 快速独立校验：`VALIDATION-FAST.zh-CN.md` → **CHANGES_REQUIRED**
 - 完整独立校验：`VALIDATION.zh-CN.md` → **CHANGES_REQUIRED**；R1–R18 已按修订记录更新
 - 最终独立校验：待重跑（不预设 PASS）
 - 代码实现：未开始（遵守“校验通过后才开发”）
-- 文档入库：快照 `4a90edc`；修订后需提交并重跑校验
+- 文档入库：`design/phase-a-d` 分支 HEAD；修订后提交并重跑校验

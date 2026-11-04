@@ -40,7 +40,7 @@ Phase A 把这些能力收束成一个**可读、可预览、可类型化**的�
 1. `execution_gate_set` 必须先 `auth::require` 再改 `GateState`/`ExecutionSnapshot`，所有变更强制审计；当前“先改再可选审计”的路径（`apps/desktop/src-tauri/src/lib.rs`）删除。
 2. `sandbox_read/write` 增加会话与路径/大小限制；定义**命令 scope 矩阵**：哪些窗口/命令允许读写、哪些只读、哪些要求登录。
 3. 增加宿主命令白名单测试：未登录/无 scope/错误窗口调用 `execution_gate_set`、`sandbox_write`、`inference_configure`、`auth_*` 必须拒绝并留痕。
-4. `execution.rs` 的演示授权 `Authorization{by:"maintainer", basis:"issue #105"}` 从产品路径移除；A 只展示，不授权。
+4. `execution.rs` 和 `federation_view.rs` 的硬编码授权（`Authorization{by:"maintainer", basis:"issue #105"}`）从产品路径移除。A0 用明确的 **synthetic preview** 替代：仅当操作员登录后，授权来源写 `by=session operator`、`basis="synthetic-preview"`、`scope=["preview"]`、短 `valid_until`；UI 标记“合成预览”，测试断言它不能 dispatch；未登录时 execution 视图只读、不生成授权动作。
 5. 命令错误改用 `{code,message,details}` 包络；命令 scope 矩阵见 PLATFORM §4，不新增裸 `String` 错误。
 
 A0 的验收进入 Phase A PR；没有它，Phase A 不开始。
@@ -122,7 +122,7 @@ MVP 不生成新的 SAP 动作实例；仅把计划动作和目录元数据关�
 | `catalog.describe` | 无 | Ontology Catalog | 无 |
 | `state.query` | subject/type, asOf | 对象/链接/能力/依赖 | 无 |
 | `plan.propose` | goal, horizon, deadline | proposed plan | 无（只返回） |
-| `plan.preview_sap` | plan digest, assumed context | SAP validation summary（只读 dry-run，假定项显式标注） | 无 |
+| `plan.preview_sap` | Plan object（host 持有）或 planRef, assumed context | SAP validation summary（只读 dry-run，假定项显式标注） | 无 |
 | `evidence.get` | evidence id | 证据引用/摘要 | Phase D 启用 |
 | `sim.run` | variant id | simulated result | Phase C 才启用 |
 
@@ -198,10 +198,23 @@ pub struct ObjectDetail {
     pub object: ObjectInstance, pub links: Vec<LinkInstance>,
     pub evidence: Vec<EvidenceRef>,
 }
+pub struct ActionType {
+    pub id: String, pub label: String, pub description: String,
+    pub target_types: Vec<String>, pub inputs: Vec<FlowView>, pub outputs: Vec<FlowView>,
+    pub occupies: Vec<String>, pub restores: Vec<String>, pub duration: Option<String>,
+    pub required_verification: String,
+}
+pub struct FlowView { pub resource: String, pub quantity: String, pub unit: String }
+pub struct FunctionType {
+    pub id: String, pub description: String,
+    pub input_schema: serde_json::Value, pub output_schema: serde_json::Value,
+    pub effect: String, // read_only|propose|simulate
+}
+pub struct Predicate { pub field: String, pub op: String, pub value: serde_json::Value }
 pub struct OntologyCatalog {
     pub schema: String,          // "poie.ontology-catalog/0.1"
     pub model_digest: String,    // sha256 per DIGEST
-    pub catalog_sha256: String,  // sha256 of catalog excluding this field
+    pub catalog_digest: String,  // sha256 of catalog excluding this field
     pub object_types: Vec<ObjectType>,
     pub link_types: Vec<LinkType>,
     pub action_types: Vec<ActionType>,
@@ -226,7 +239,7 @@ pub struct CheckPreview {
 pub struct SapPreview {
     pub checks: Vec<CheckPreview>,       // 七项检查的只读结果
     pub assumed: Vec<String>,            // ownership/reservations/authorization 等假定项
-    pub rejection_reasons: Vec<String>,
+    pub rejections: Vec<String>,
 }
 pub enum PreviewError { InvalidPlan, UnsupportedContext, NoPreviewAvailable }
 
@@ -274,7 +287,7 @@ pub fn preview_plan_through_sap(
 - 只读；不写 SQLite，不改变 `GateState`/`ExecutionSnapshot`；
 - 返回 `modelDigest` 和 `catalogDigest`，前端切换场景时校验一致性；
 - 查询必须可重复，不能依赖 HashMap 迭代顺序；
-- 错误区分 `unknown_type`、`unknown_object`、`unsupported_schema`、`invalid_parameter`。
+- 错误使用 [PLATFORM](PLATFORM.zh-CN.md) §3 的 `{code,message,details}` 包络；本命令至少覆盖 `unknown_type`、`unknown_object`、`unsupported_schema`、`invalid_parameter`、`invalid_cursor`、`limit_exceeded`、`model_mismatch`、`preview_unavailable`、`scope_denied`。
 
 ### 7.3 TypeScript SDK
 
@@ -298,7 +311,9 @@ MVP 不发布 npm 包；先把 SDK 作为桌面内共享类型层，后续可独
   - 链接分组（requires / provides / inputs / outputs / services）；
   - “在图中定位”与“查看动作”入口。
 - 增加类型筛选（asset/resource/lot/process/service/capability），但保持现有布局和配色，不引入第七个 rail 图标。
-- 对象图仍用现有 `CapabilityGraph`，节点来自 Catalog，而不是手写 `GRAPH_NODES`。
+- 对象图节点/边来自 Catalog：节点集合 = 当前服务可达的 asset/resource/process/service/capability 子集；边来自 `LinkInstance`。
+- 布局连续：右列 service，中列 process，左列 asset/resource，按 stable id 排序并分层排布；不持久化手写坐标。删除 `GRAPH_NODES` 常量；测试断言节点/边集合等于 Catalog 子集，布局可重复。
+- Playwright 只能跑浏览器预览；对象详情/动作预览通过 **mock Catalog fixture** 渲染，host 端用 Rust 集成测试覆盖真实命令；二者都纳入验收。
 
 ### 8.2 Planning / Execution 动作预览
 
@@ -362,12 +377,13 @@ MVP 不发布 npm 包；先把 SDK 作为桌面内共享类型层，后续可独
 
 ## 12. 实施顺序
 
-1. `poie-objects` 数据模型 + Model 投影 + 测试；
-2. host 命令 + JSON/schema 快照；
-3. TypeScript SDK 生成器 + CI checker；
+0. A0：gate/sandbox/inference 鉴权与命令 scope 修复；`execution.rs`/`federation_view.rs` synthetic preview 替换；测试；
+1. `poie-digest` + `poie-objects` 数据模型 + Model 投影 + 测试；加入根 `members`/根 `Cargo.lock`/测试矩阵；
+2. host `objects.rs` 命令 + JSON/schema 快照 + 错误包络；
+3. `poie-sdkgen` + CI 零 diff + 黄金文件；
 4. Capabilities 对象浏览器与动作预览；
-5. Playwright/截图更新；
-6. 文档、测试矩阵、状态快照更新。
+5. Playwright（Catalog mock/host E2E 策略）与截图；
+6. `cargo fmt/clippy/doc/cargo-deny/check-test-matrix/check-docs`，文档/状态快照更新。
 
 ## 13. 风险与开放问题
 

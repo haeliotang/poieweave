@@ -96,7 +96,7 @@ MVP 工具：
 | `evidence.get` | `read` | `read_only` | `auto` | 读取证据引用与摘要（Phase D 扩展正文） |
 | `plan.propose` | `propose` | `plan` | `operator_confirm` | 生成 proposed plan；不写 SAP transition |
 | `action.draft` | `propose` | `plan` | `operator_confirm` | 生成动作草稿/参数预览；不派发 |
-| `sim.run` | `simulate` | `simulate` | `auto` | Phase C 启用；只在 `namespace=sim/*` 运行 |
+| `sim.run` | `simulate` | `simulate` | `auto` | **B1 不启用**；Phase C 启用，调用返回 `not_implemented`，不得伪造工具结果 |
 
 工具集是**封闭的、版本化的静态声明**；未声明的工具无法加载。模型 v1 只有上述六个工具；**没有** `dispatch.request`/`dispatch.now`/`shell.*`/`http.*`/`browser.*`/`secrets.*`。B2 的“待审批派发请求”不进入模型工具目录，若需要则另立 host 命令并绑定审批，不能由模型触发。
 
@@ -121,7 +121,7 @@ redactions[], truncated, latencyMs
 - 模型最终回答若包含事实性断言，必须至少引用一个本轮工具结果中的 citation；
 - 引用 ID 必须精确存在于本轮工具结果；未知引用导致结果拒绝（`citation_missing`）；
 - 引用不证明模型正确，只证明“该断言可追溯到对象”；
-- 工具输出标记 `untrusted: true`，系统提示明确禁止把内容当指令；
+- T2/T3 工具输出一律视为不可信数据，以带来源头的 JSON 数据块进入；不进入指令位；
 - 工具输出截断时保留摘要和截断标记，不静默丢字段。
 
 ### 5.4 策略与审批
@@ -213,12 +213,22 @@ created -> running -> waiting_approval -> running -> completed
 
 | 命令 | 输入 | 输出 |
 | --- | --- | --- |
-| `agent_run` | prompt, policyProfile | runId, state |
+| `agent_run` | prompt, policyProfile (`analyst|dispatcher`) | runId, state |
 | `agent_status` | runId | RunState + pending approval |
 | `agent_approve` | runId, approvalTokenId | RunState |
 | `agent_reject` | runId, reason | RunState |
 | `agent_cancel` | runId | RunState |
 | `agent_resume` | runId, approvalTokenId | RunState（仅 approved 后） |
+
+```text
+RunState {
+  schemaVersion, runId, profile: analyst|dispatcher, status,
+  turns[{ index, user?, assistant?, toolCalls[{ id, tool, argsSha256, resultSha256, citations[] }] }],
+  pendingApproval?{ tokenId, tool, subjectSha256, expiresAt },
+  budget{ stepsUsed, toolCallsUsed, promptCharsUsed },
+  citations[], error?{ code, message }, createdAt, updatedAt
+}
+```
 
 `RunState` 序列化到 `agent_runs.state_json`；Tauri 事件 `agent://state` 推送；审批 token 见 [PLATFORM](PLATFORM.zh-CN.md) §6。
 
@@ -266,7 +276,7 @@ approval = "none"
 - prompt-injection resistance（恶意工具输出不得引发额外工具调用；报告实测成功率，不写“已解决”）；
 - budget compliance（步数/工具数/字符数）。
 
-MVP 至少 60 个用例，覆盖六个模型工具、Base-01/02、注入 canary、审批/越权/预算/引用缺失；静态 fixture 先于运行提交。
+B1 至少 45 个确定性用例，覆盖五个可用工具（`sim.run` 标 `not_implemented` 并有拒绝用例）、Base-01/02、注入 canary、越权/预算/引用缺失；`sim.run` 的完整评测在 C 阶段加入，总数达到 60+。静态 fixture 先于运行提交。
 
 ### 6.3 现场评测
 
@@ -294,7 +304,7 @@ Agent 面板（现有 inspector）扩展：
 | 数据外泄 | 无网络工具；provider 请求仅含白名单工具结果和用户输入；日志脱敏；密钥不进模型 |
 | 越权读取 | scope 校验 + Phase D markings；对象查询按站点/角色过滤 |
 | 越权写入 | 无 dispatch；propose 需人工确认；最终仍走 SAP |
-| 工具参数注入 | JSON Schema + 固定白名单 + 长度/数量上限；禁止路径/SQL |
+| 工具参数注入 | Rust 强类型 + `serde(deny_unknown_fields)` + 固定白名单 + 长度/枚举/数量上限；禁止路径/SQL |
 | 模型幻觉引用 | 引用必须来自本轮 tool results；未知引用拒绝 |
 | 审批重放 | 审批绑定 run/call/参数摘要/过期时间；一次一用 |
 | 预算耗尽/无限循环 | 最大步数/工具调用/字符/超时；超限记为失败而非成功 |
@@ -304,8 +314,8 @@ Agent 面板（现有 inspector）扩展：
 
 - **认证**：所有 Agent 运行要求 `auth::require`；未登录不可创建运行。实施前必须先修两个现有缺口：`execution_gate_set` 当前未登录也能改 gate（`apps/desktop/src-tauri/src/lib.rs`），必须硬性要求会话；Tauri 自定义命令目前被所有窗口共享，必须按命令/窗口检查 scope，不能让 Agent 窗口调用 `inference_configure`、`sandbox_write`、`auth_*`。
 - **推理**：复用现有 `inference` 配置/凭据/native HTTP；请求增加 `tools` 和 `tool_choice`，解析 `tool_calls`；新增 `agent_run` 命令。现有 `inference_complete` 只保留为 Settings 连接测试/兼容路径，Agent 面板不得使用它；若保留用户可见入口，必须标记 legacy 或走同一策略。
-- **SAP**：`plan.propose`/`action.draft` 只生成 proposed plan/草稿，不写 transition、不调用 Gate，模型 v1 没有 dispatch 工具。审批通过后由既有 SAP 验证/授权命令接管；七项复核不新增第八项，Agent 来源写入 `Authorization.basis`（如 `agent-plan:<sha256>`），策略版本写入 `policy_version`。
-- **审计**：不新增 SAP `RecordKind`（避免为 Agent 治理改 SAP 契约）。Agent/tool/approval 事件写入**只追加本地审计日志**（哈希链 + 每日锚定摘要），SQLite `audit` 表作为可重建索引；当事件关联到真实动作时写 `sap_record_id`。现有 `audit(id,at_ms,actor,event,detail)` 迁移为带 `turn_id`、`args_sha256`、`result_sha256`、`sap_record_id`、`prev_hash`、`hash` 的结构，必须 `PRAGMA user_version` 迁移，不能 startup `DROP TABLE`。SQLite 不是防篡改来源；提示词默认只存摘要，正文按保留策略可选存储并脱敏。
+- **SAP**：`plan.propose`/`action.draft` 只生成 proposed plan/草稿，不写 transition、不调用 Gate，模型 v1 没有 dispatch 工具。审批通过后由既有 SAP 验证/授权命令接管；七项复核不新增第八项。Agent 来源与审批关联写入 `Authorization.basis`（如 `agent-plan:<sha256>;approval:<tokenId>`），策略版本写入 `policy_version`；审计日志记录 `sap_record_id`，从 SAP 记录可反查审批 token。
+- **审计**：不新增 SAP `RecordKind`（避免为 Agent 治理改 SAP 契约）。Agent/tool/approval 事件写入**只追加本地审计日志**（`app_data/audit/agent.log`，每行 canonical JSON，含 `prev_hash`/`hash`；每日生成 `anchor.json` 记录当日最后 hash 与日期，锚定到本地文件即可，不伪造远程时间戳）；SQLite `audit` 表作为可重建索引；当事件关联到真实动作时写 `sap_record_id`。现有 `audit(id,at_ms,actor,event,detail)` 迁移为带 `turn_id`、`args_sha256`、`result_sha256`、`sap_record_id`、`prev_hash`、`hash` 的结构，必须 `PRAGMA user_version` 迁移，不能 startup `DROP TABLE`。SQLite 不是防篡改来源；提示词默认只存摘要，正文按保留策略可选存储并脱敏。测试：断链可检测、按行重建、anchor 篡改可发现。
 - **Ontology**：工具 schema/对象查询使用 Phase A `poie-objects`，不复制一套字段。工具与 Phase A 函数目录的映射：`catalog.describe`/`state.query` 映射 A 的 `catalog.describe`/`state.query`；`plan.propose` 同名；`action.draft` = `plan.propose` + `plan.preview_sap` 的组合层；`sim.run` 映射 A 的 `sim.run`；`evidence.get` 映射 A 的 `evidence.get`。不得另造同名异义工具。
 
 ## 10. 测试与验收
@@ -332,17 +342,18 @@ Agent 面板（现有 inspector）扩展：
 
 ## 11. 实施顺序
 
+0. `poie-governance`/`poie-digest` 进根 `members`、根/桌面 `Cargo.lock`、ADR、测试矩阵；
 1. `poie-governance` 类型/策略/工具目录 + 纯单元测试；
 2. `ScriptedProvider` + eval harness + fixtures；
-3. host 工具执行器（objects/query/plan preview）+ `agent_run` 命令；
+3. host 工具执行器（objects/query/plan preview）+ `agent_run/status/approve/reject/cancel/resume`；
 4. UI Agent 面板扩展 + 审批；
 5. 真实 provider tool-call 适配（需手动/provider 测试，不进 CI）；
-6. 审计/设置/文档/Playwright。
+6. 审计迁移/设置/文档/Playwright；`cargo fmt/clippy/doc/cargo-deny/check-test-matrix/check-docs`。
 
 ## 12. 开放问题
 
 - 最终回答强制引用是否会让纯解释性问题过于机械；MVP 对事实性断言强制，对“建议”标记为非事实。
-- 审批暂停的恢复是否跨进程重启；MVP 运行存内存，重启即取消，审计保留。
+- 审批暂停的恢复是否跨进程重启：`RunState` 持久化；宿主重启后把未完成 run 标为 `interrupted`，**模型调用不自动恢复**，操作员可取消/重试；审计保留。
 - 工具目录是否允许站点扩展；Phase D 再定义站点策略，MVP 固定。
 - 现场模型 eval 的样本与标注由谁维护；Phase B 只提供框架和最小样本。
 
