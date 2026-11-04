@@ -54,7 +54,6 @@ echo "== experiment replay coverage =="
 python3 scripts/check-experiment-replays.py
 echo "== test matrix counts =="
 python3 scripts/check-test-matrix.py
-python3 scripts/check-agent-evals.py
 echo "== Python model and bridge tests =="
 python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
 echo "== rustdoc (warnings as errors) =="

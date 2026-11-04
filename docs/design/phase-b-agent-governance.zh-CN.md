@@ -210,9 +210,8 @@ claims = [{ text = "...", citations = ["object:..."] }]
 error = "citation_missing"          # optional
 ```
 
-- B1 恰好 72 个确定性用例：六个工具各 12 个；只有 `action.draft` 的用例包含 `approval/reject/expiry`（其余工具为 auto，不伪造审批）。
-- 每个工具覆盖：normal、bad-args、budget、unauthorized、injection、citation、tool-error、duplicate、truncated、no-citation、bad-schema、unsupported；`action.draft` 额外有 approve/reject/expire。
-- `scripts/check-agent-evals.py` 校验 fixture schema、计数、六工具覆盖、每工具必填 args、审批只允许 `action.draft`、approve/reject/expire 覆盖，并在 `evals/agent` 缺失时失败；CI 与 `verify-all.sh` 都调用。
+- **设计门禁只冻结 fixture schema 与覆盖目标；不提交占位 fixture，也不声称“CI eval 已绿”。** 真实 72 个 fixture、runner 和 `scripts/check-agent-evals.py` 是 B0 实现交付物；在 runner 实现前，只校验 schema/字段定义。
+- 目标覆盖：六个工具 × 12 个场景；仅 `action.draft` 含 approve/reject/expire；其余工具不伪造审批。B0 实现后用 runner 断言工具序列、args、错误码、citations、budget、审批结果，而不是靠静态文件数量。
 - 脚本化 provider 只测 runtime/policy，不测模型能力；现场真实 provider 才报 pass^k（k=5），不进 CI 门禁。
 - 注入指标拆成“运行时 containment 必须 0 次越权/外联”与“模型是否被说服（仅现场报告）”。
 
@@ -248,7 +247,7 @@ pub struct CommandError { pub code: String, pub message: String, pub details: se
 - 审计链 genesis/prevHash/hash/锚点/尾部残行/重建/迁移；
 - capability 签发/过期/撤销/跨会话复用；
 - provider 多 tool_calls/坏 JSON/缺参/超时/超大响应/取消；
-- 确定性 eval 72 例 + 覆盖矩阵；CI 不访问网络。
+- 确定性 eval runner（B0 实现）覆盖 72 例与矩阵；CI 不访问网络；在 runner 落地前不宣称该门禁通过。
 
 ### 验收
 
