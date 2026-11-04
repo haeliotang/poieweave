@@ -183,3 +183,4 @@ M12 多站点联邦：**进行中（模拟部分完成）**——M12.1–M12.4 �
 - 2026-11-01：issue #106–#111 修复已集成（PR 待开）：H4 结论由「不确定」改为「净增益为负」（VEC 修订后重跑，原结论保留在 H4 REPORT §7 与 PREREG 变更记录）；vec-base01 原 4 个 `infeasible_in_model` 改为 counterexample。测试：库 crate 291→368，总计 306→384。
 - 2026-11-03：准备 v0.1.1：桌面版本 0.1.1；tag 自动发布 Linux/Windows/macOS universal 产物；#112 P18–P20 全部完成并关闭。
 - 2026-11-05：Phase A 门禁 PASS（`VALIDATION-A`，907b246）；A0 合并（#137）：宿主鉴权、sandbox no-follow/原子写、移除 demo 授权、UI 合成预览；宿主测试 13。
+- 2026-11-05：Phase A1 核心合并（#139）：`poie-digest`、`poie-objects`、host `ontology_*`、Capabilities 对象详情；Rust 列表测试 395；A1 剩余 SDK 生成与 action preview。
