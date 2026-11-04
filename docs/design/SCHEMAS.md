@@ -13,12 +13,29 @@
 | `poie.sap-preview/0.1` | A | 0.1 | 同上 |
 | `poie.agent-run/0.1` | B | 0.1 | 状态机字段只能加可选；major 迁移 |
 | `poie.agent-eval/0.1` | B | 0.1 | fixture schema |
+| `poie.agent-audit/0.1` | B | 0.1 | JSONL audit record |
+| `poie.agent-approval/0.1` | B | 0.1 | persisted approval token |
 | `poie.whatif-snapshot/0.1` | C | 0.1 | 同上 |
 | `poie.whatif-variant/0.1` | C | 0.1 | 同上 |
 | `poie.whatif-result/0.1` | C | 0.1 | 同上 |
 | `poie.site-bundle/0.1` | D | 0.1 | 同上 |
 | `poie.delivery-state/0.1` | D | 0.1 | 同上 |
 | `poie.diagnostics/0.1` | D | 0.1 | 同上 |
+
+
+## Digest domains（不是 wire schema）
+
+| domain | 用途 |
+| --- | --- |
+| `poie.model/0.1` | model digest |
+| `poie.catalog/0.1` | catalog digest |
+| `poie.plan/0.1` | plan sha256 wrapper |
+| `poie.simulation/0.1` | simulation sha256 wrapper |
+| `poie.variant/0.1` | What-if result |
+| `poie.evidence/0.1` | evidence binding |
+| `poie.contracts/0.1` | contract registry |
+| `poie.approval/0.1` | approval digest |
+| `poie.manifest/0.1` | site manifest sha256 |
 
 ## 解析与兼容函数
 

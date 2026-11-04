@@ -1,366 +1,259 @@
 # Phase B 设计：Agent 治理与评测
 
-- 状态：设计草案（待独立校验后进入开发）
-- 日期：2026-11-04
-- 范围：Phase B / 受控工具、权限、证据引用、审批、审计、离线评测
-- 上游：Phase A Ontology 产品层、SAP、现有桌面认证/推理
-- 下游：Phase C（模拟工具）、Phase D（站点策略）
+- 状态：设计草案（Phase B 门禁重跑后方可开发）
+- 日期：2026-11-05
+- 范围：受控工具、审批状态机、引用协议、审计链、离线评测、桌面 Agent 面板
+- 上游：Phase A0/A1（已合并）、SAP、现有认证/推理/HTTP
+- 下游：Phase C（sim.run）、Phase D（站点策略/evidence）
 
 ## 1. 背景与问题
 
-当前桌面 Agent 面板只把用户输入发给 OpenAI-compatible 模型，然后把文本响应显示出来：
-
-- 模型不能读取对象/能力图，也不能提出结构化计划；
-- 没有工具级权限、引用约束和审批分类；
-- 无法阻止模型把不可信内容当作指令；
-- 没有可重复的 Agent 评测，只有“看起来回答得不错”；
-- 没有把 Agent 提案纳入 SAP 和审计闭环。
-
-Phase B 要回答的不是“如何让 Agent 更聪明”，而是：**Agent 能做什么、不能做什么、凭什么、谁批准、如何证明它没有越界。**
+现有 Agent 面板只是把 prompt 发给 OpenAI-compatible 模型并显示文本：没有工具、引用、审批、审计链或可重复评测。Phase B 要把它变成**受治理的、可暂停/恢复的、可重建审计的**工具调用代理；核心不是让模型更自由，而是限制它能做什么、凭什么、谁批准。
 
 ## 2. 目标
 
-1. 建立稳定的 **Tool Catalog**：名称、描述、输入 JSON Schema、输出类型、权限 scope、审批类别、调用上限。
-2. 实现 **Agent Runtime**：多步工具调用、最终回答、引用校验、审批暂停/恢复、超时/步数/工具预算。
-3. 所有工具只能通过 Ontology/SAP/Simulation 的只读或“生成提案”接口工作；不存在 Agent 直达 dispatch 的路径。
-4. 实现 **Evidence/Citation**：工具结果携带对象/动作/证据引用；最终回答中的引用必须来自本轮工具结果。
-5. 建立 **离线 eval harness**：脚本化模型响应 + 期望工具序列/拒绝行为/引用覆盖；CI 可重复。
-6. 所有运行写入审计，设置页和 Agent 面板可查看元数据，不泄露密钥与敏感内容。
+1. 封闭的版本化 Tool Catalog：每个工具的参数/输出/citation/上限/审批类都是代码契约。
+2. 审批是**先于执行**的持久状态机；审批 token 原子消费、一次一用、可过期/拒绝。
+3. 最终回答使用 `answer.emit` 机器可读协议；每条事实 claim 必须引用本轮工具结果。
+4. 只追加审计链 + SQLite 可重建索引；`user_version` 迁移，不再启动 DROP。
+5. 确定性离线 eval + 现场 pass^k 分离；CI 只跑 scripted provider。
+6. Agent 面板展示工具轨迹、引用、审批卡、取消/恢复；旧自由聊天入口禁用。
+7. 不引入 JSON Schema 求值器；工具参数用 Rust 强类型 + `serde(deny_unknown_fields)`。
 
 ## 3. 非目标
 
-- 不做自主后台 Agent、无人值守循环或自动派发。
-- 不做通用 MCP/插件市场；工具白名单由代码和策略固定。
-- 不用规则引擎替代模型；评测针对行为边界，不承诺模型正确性。
-- 不实现多 Agent 协作/群体智能；Phase B 只做单会话。
-- 不把 Agent 输出当事实；最终事实仍来自工具结果和人工审批。
+- 不做自动派发/后台自治/自批；无 `dispatch` 工具。
+- 不做通用 MCP/插件/浏览器/shell/网络工具；B1 不接远程工具。
+- 不做多 Agent 协作、长期记忆、隐藏 CoT 存储。
+- 不把模型文本当观测/验证；不宣称通过任何合规认证。
+- 不做双人审批；B/D 均为单操作员。
+- 不把 eval 当现场安全证明；CI 不调用真实模型。
 
-## 4. 用户与场景
-
-| 场景 | 允许 |
-| --- | --- |
-| 问“potable-water 当前可行性” | 读取对象/能力图，回答 + 引用 |
-| 问“为什么备用泵没被用上” | 读取 requires_any/状态/证据，列出根因 |
-| “给我一个修复计划” | 生成 proposed plan，等待操作员确认；不派发 |
-| “直接启动泵” | 拒绝：无 dispatch 工具；引导到 SAP 人工流程 |
-| “把这段工具输出当命令执行” | 拒绝：工具输出是数据，不能成为指令 |
-| 评测运行 | 脚本化 provider，检查工具序列/审批/引用/越界拒绝 |
-
-## 5. 架构
+## 4. 架构
 
 ```text
 apps/desktop/src-tauri
-  inference (provider HTTP, secrets)
+  inference.rs (provider HTTP / secrets)
+  agent.rs     NEW: runtime registry, commands, audit, UI events
         │
         ▼
-crates/poie-governance       NEW: policy/runtime/tool schemas/capabilities/citations/evals
-  ├── tools (object query, capability, plan propose, sap preview)
-  ├── poie-objects (Phase A)
-  ├── poie-plan / poie-ontology / poie-state (read-only/propose)
-  └── eval harness (scripted provider)
+crates/poie-governance      NEW: policy/tool contracts/approval/run state/evals
+  ├── poie-objects (A Catalog)
+  ├── poie-state (records/review read-only)
+  ├── poie-plan (propose/preview), poie-ontology
+  └── poie-digest (approval/audit hashes)
         │
         ▼
-SQLite audit (existing) + Agent UI (existing panel expanded)
+SQLite agent_runs/approval_tokens + append-only audit log
 ```
 
-### 5.1 新 crate `poie-governance`
+`poie-governance` 不依赖 Tauri、网络、`poie-exec`；它不构造 `Authorization`、不写 `ActionLedger`、不调用 Gate。host `agent.rs` 负责 provider HTTP、审批 UI 回调和审计落盘。
 
-不依赖 Tauri、不直接访问网络；通过 `Provider` trait 与 `ToolExecutor` trait 解耦：
+## 5. 前置 B0（实现第一步）
+
+| 前置 | 决策 |
+| --- | --- |
+| Session ID | `auth::Session` 增加 `session_id: String`（128-bit 随机，hex）；创建会话时生成；登出即失效 |
+| 审批表 | 新增 `approval_tokens`（见 §7）；所有审批必须持久化，不能只在内存 |
+| 审计 | 新增 `poie.agent-audit/0.1` 记录与 `agent-audit.log`；`db.rs` 改 `PRAGMA user_version` 迁移，删除启动 DROP |
+| gate 鉴权 | A0 已修 `execution_gate_set`；B 不再重复实现，只读取状态 |
+| 错误包络 | `agent_*` 命令返回 `{code,message,details}`；先新增 `CommandError`，其余命令逐步迁移 |
+
+## 6. 工具目录（B1 六个，封闭）
+
+| 工具 | 参数（Rust struct） | 输出 | citation | 审批 | 执行入口 | B1 |
+| --- | --- | --- | --- | --- | --- | --- |
+| `catalog.describe` | 无 | `OntologyCatalog` | 无 | auto | A `ontology_catalog` | 是 |
+| `state.query` | `{subject, asOf?}` | `{objects[],links[],verdict?,dependencies[]}` | object/evidence | auto | A objects + `poie-ontology::graph` | 是 |
+| `plan.propose` | `{goal,horizonS,deadlineS?}` | `PlanSummary{planFingerprint,actions[],completionS}` | plan | auto（纯计算） | `poie-plan::plan` | 是 |
+| `plan.preview_sap` | `{planFingerprint}` | `SapPreviewDto{checks[],assumed[],rejections[]}` | plan | auto | 新的只读 `poie-plan::preview_plan_through_sap` | 是 |
+| `action.draft` | `{planFingerprint,actionId}` | `ActionDraft{planFingerprint,action,preview}` | plan/action | **operator_confirm** | 宿主从已算 plan 构造 DTO | 是 |
+| `answer.emit` | `{claims[],suggestions[]}` | `{accepted, rejectedClaims[]}` | claim 内嵌 | auto（终态） | runtime 校验 | 是 |
+
+- 没有 `dispatch.*`/`shell.*`/`http.*`/`browser.*`/`secrets.*`；`sim.run`/`evidence.get` 留给 C/D，B1 不向模型暴露。
+- 工具名/版本/参数/输出/citation/approval 在 `poie-governance::tools` 中静态声明；模型提示里的 JSON Schema 只是描述，运行时用对应 Rust struct + `deny_unknown_fields` 校验。
+- **`plan.propose` 是纯计算 auto**；`action.draft` 在审批前不执行。审批展示的 subject 是 `planFingerprint + actionId + argsSha256`，因此操作员批的是已存在的计划中的具体动作，而不是“未来计划”。
+
+### 6.1 只读 SAP preview（B2）
+
+`poie-plan` 新增：
 
 ```rust
-pub trait ModelProvider {
-    fn complete(&self, request: &ModelRequest) -> Result<ModelResponse, ProviderError>;
-}
-
-pub trait ToolExecutor {
-    fn execute(&self, call: &ToolCall, context: &ToolContext) -> Result<ToolResult, ToolError>;
-}
-
-pub struct AgentRuntime<P: ModelProvider, T: ToolExecutor> {
-    policy: AgentPolicy,
-    provider: P,
-    tools: T,
-}
+pub fn preview_plan_through_sap(plan: &Plan, assumed: &AssumedContext) -> Result<SapPreview, PreviewError>;
 ```
 
-生产 `Provider` 由桌面 host 用现有 `http.rs` + 凭据库实现；测试用 `ScriptedProvider`，不访问网络。
+- 不创建/保存 `Authorization`，不写 `ActionLedger`，不产生 transition；
+- ownership/reservations/authorization 默认 `assumed`，UI 单独显示；
+- `ActionDraft` 只能使用该 preview，禁止调用 `validate_plan_through_sap`；
+- 结构测试：`poie-governance` 无 `poie-exec` 依赖；源码中不出现 `Authorization {`；preview 前后 ledger/authorization 计数不变。
 
-### 5.2 工具目录
+## 7. 审批状态机（B3/B5）
 
-MVP 工具：
-
-| 工具 | 权限 scope | 效果类（effect） | 审批类（approval） | 说明 |
-| --- | --- | --- | --- | --- |
-| `catalog.describe` | `read` | `read_only` | `auto` | 返回 Phase A Catalog 的类型/链接/函数摘要 |
-| `state.query` | `read` | `read_only` | `auto` | 查询对象、能力图、外部依赖；有界、只读，不允许任意 SQL |
-| `evidence.get` | `read` | `read_only` | `auto` | 读取证据引用与摘要（Phase D 扩展正文） |
-| `plan.propose` | `propose` | `plan` | `operator_confirm` | 生成 proposed plan；不写 SAP transition |
-| `action.draft` | `propose` | `plan` | `operator_confirm` | 生成动作草稿/参数预览；不派发 |
-| `sim.run` | `simulate` | `simulate` | `auto` | **B1 不启用**；Phase C 启用，调用返回 `not_implemented`，不得伪造工具结果 |
-
-工具集是**封闭的、版本化的静态声明**；未声明的工具无法加载。模型 v1 只有上述六个工具；**没有** `dispatch.request`/`dispatch.now`/`shell.*`/`http.*`/`browser.*`/`secrets.*`。B2 的“待审批派发请求”不进入模型工具目录，若需要则另立 host 命令并绑定审批，不能由模型触发。
-
-**不做通用 JSON Schema 2020-12 求值器**：工具输入用 Rust 强类型 struct + `serde(deny_unknown_fields)` 校验，JSON Schema 只作为 SDK/模型提示的描述性输出；这样不引入 `jsonschema` 新运行时依赖，也避免手写 2020-12 的不完整实现。若未来需要动态 schema，再走 ADR。
-
-### 5.3 引用与证据
-
-`ToolResult` 结构：
+`approval_tokens` 表：
 
 ```text
-callId, tool, ok, data, citations[], evidenceRefs[], asOf,
-sourceClass: T0|T1|T2|T3, trustProfile: analyst|dispatcher,
-untrusted: bool, redactions[], truncated, latencyMs
+id TEXT PRIMARY KEY, session_id, run_id, call_id, tool, tool_version,
+subject_digest, policy_version, args_json_redacted, impact_json,
+citations_json, state TEXT, created_at, decided_at, expires_at
 ```
 
-`T0` 操作员输入、`T1` 签名仓库内容、`T2` 内部遥测、`T3` 外部/不可信内容。只有 T0/T1 可进入指令位；T2/T3 以带来源头的数据块进入。工具输出一律不进入指令位（不是只加 `untrusted=true` 标签）。
+`state ∈ pending|approved|rejected|expired|consumed`；原子消费：
 
-`Citation { kind: object|action|plan|evidence|contract, id, label?, digest? }`
+```sql
+UPDATE approval_tokens SET state='consumed', decided_at=? 
+WHERE id=? AND state='approved' AND expires_at>?
+```
 
-规则：
+流程固定为 **审批 → 签发 capability → 执行**：
 
-- 模型最终回答若包含事实性断言，必须至少引用一个本轮工具结果中的 citation；
-- 引用 ID 必须精确存在于本轮工具结果；未知引用导致结果拒绝（`citation_missing`）；
-- 引用不证明模型正确，只证明“该断言可追溯到对象”；
-- T2/T3 工具输出一律视为不可信数据，以带来源头的 JSON 数据块进入；不进入指令位；
-- 工具输出截断时保留摘要和截断标记，不静默丢字段。
+1. runtime 需执行 `operator_confirm` 工具时，先构造完整 args/impact/citations 与 `subject_digest`，写 `pending` token，暂停；
+2. UI 展示 subject/args/impact/citations/过期；
+3. `agent_approve` 原子置 `approved`；`agent_reject` 置 `rejected`；
+4. `agent_resume` 校验 token subject/args/session/expiry 后签发 capability，执行一次，置 `consumed`；
+5. 任何字段变化返回 `approval_mismatch`；过期返回 `approval_expired`；`action.draft` 审批后才产生 draft。
 
-### 5.4 策略与审批
+`plan.propose` auto；`action.draft` 审批；`answer.emit` auto。
 
-`AgentPolicy`：
+## 8. Provider 循环与运行状态（B4/R3）
+
+- `Provider` trait 同步；host 在 `spawn_blocking` 中运行；**DB 锁只在读写状态/审计时持有**，不在网络调用期间持有。用 `RuntimeRegistry`（`Mutex<HashMap<runId, RunHandle>>`）管理活跃 run，审批/取消通过 registry + 状态表协调。
+- 请求：`tools`、`tool_choice=auto`、`timeout_ms=30s`、`max_response_chars=256 KiB`、`max_context_chars=32 KiB`；每次请求前检查取消标志；取消后不得落“成功”审计。
+- 解析：支持多个 `tool_calls`（B1 顺序执行）、坏 JSON/缺参 → `invalid_tool_arguments`；`finish_reason` 缺失/非预期 → `provider_protocol`；超时/超大响应 → `provider_timeout`/`provider_response_too_large`。
+- 同一 session 同时最多一个 active run；`agent_run` 第二个请求返回 `run_active`。
+- 预算：`max_steps=8`、`max_tool_calls=16`、`max_prompt_chars=4000`（与现有 inference 一致）、`max_tool_result_chars=20000`。
+
+`RunState`（持久化到 `agent_runs.state_json`，schema `poie.agent-run/0.1`）：
 
 ```text
-allowed_scopes = [read, propose]
-max_steps = 8
-max_tool_calls = 16
-max_prompt_chars = 4000
-max_tool_result_chars = 20000
-require_citation = true
-approval = {
-  read_only: auto,
-  plan: operator_confirm,
-  simulate: auto,
-  dispatch: forbidden,   // 直接派发永远禁止；B2 的 pending request 也不由模型触发
-}
+schemaVersion, runId, sessionId, profile, status,
+turns[{ index, user?, assistant?, toolCalls[{
+  id, tool, toolVersion, argsSha256, argsJsonRedacted,
+  resultSha256, resultSummary, citations[], decision, startedAt, finishedAt
+}]}],
+pendingApproval?{ tokenId, tool, subjectDigest, argsJsonRedacted, impact, citations[], expiresAt },
+budget{stepsUsed,toolCallsUsed,promptCharsUsed},
+citations[], error?{code,message}, createdAt, updatedAt
 ```
 
-审批类别：
+- 恢复：重启后未完成 run 标 `interrupted`，模型调用不自动恢复；已批准但未消费的 token 保留，可查询/取消。
+- `agent://state` 事件发送完整 `RunState`（有界，≤64 KiB）；UI 也可轮询 `agent_status`。
+- `agent_cancel` 在 provider 调用期间设置取消标志；调用返回后丢弃结果并写 `cancelled`。
 
-| 类别 | 行为 |
-| --- | --- |
-| `auto` | 只读/模拟直接执行，写审计 |
-| `operator_confirm` | 暂停运行，UI 显示参数/影响/引用，操作员确认后继续 |
-| `forbidden` | 运行时拒绝，记录 `policy.blocked` |
+## 9. 引用与最终回答（B6/R4）
 
-审批绑定运行 ID、工具调用 ID、参数摘要、操作员会话和过期时间；一次批准不允许复用到不同参数。
+统一使用 `EvidenceRef`（PLATFORM §5.1）：`{kind,id,fingerprint?,sha256?,asOf?,source}`，至少一个 digest/fingerprint。`Citation` 直接复用该结构，不再定义第二套字段。
 
-### 5.5 能力凭证与审批摘要
+`answer.emit` 协议：
 
-每次工具调用前，宿主签发一次性 **capability**：
+```json
+{"claims":[{"text":"...","citations":[{"kind":"object","id":"service:potable-water","source":"model"}]}],
+ "suggestions":[{"text":"...","basis":["..."]}]}
+```
+
+- 每条 claim 至少一个 citation；citation 必须精确存在于本轮工具结果的 citations/evidenceRefs；
+- 未知/缺失 → `citation_missing`，`answer.emit` 被拒绝；模型可重试或输出 suggestion；
+- `suggestions` 明确标为未验证建议，不参与事实校验；
+- 最终 UI 只渲染 claim/suggestion 文本，citation 可点击定位；不把模型文本写入 SAP verification。
+
+## 10. 审计（B7）
+
+记录 schema `poie.agent-audit/0.1`（JSONL）：
+
+```json
+{"eventId":"...","atMs":0,"actor":"operator|agent","sessionId":"...","runId":"...",
+ "callId":null,"tool":null,"decision":"allowed|denied|approval_required|approved|rejected|completed|failed",
+ "reason":"...","argsSha256":null,"resultSha256":null,"sapRecordId":null,
+ "prevHash":"...","hash":"..."}
+```
+
+- `hash = sha256("poie.agent-audit/0.1\n" + canonical_json(record_without_hash))`，含 `prevHash`；
+- genesis：`prevHash = null`，文件首行；每行单写者、追加 + `fsync`，尾部残行在读取时忽略并记录；
+- 每日 `anchors/<date>.json`：`{date, lastHash, prevAnchorHash}`；锚点链只防本地截断/替换的检测，不防整体替换；
+- `db.rs` 用 `PRAGMA user_version` 迁移：`audit` 表加 `turn_id/args_sha256/result_sha256/sap_record_id/prev_hash/hash`；历史行标记 legacy，不伪造链；删除启动 DROP。
+- 重建：`audit_rebuild`（或测试函数）从日志重放派生 SQLite 索引，结果与索引一致；链断/锚点不匹配 `audit_integrity_failed`。
+
+## 11. 策略与画像（R2）
 
 ```text
-{ id (opaque random 128-bit), sessionId, tool, toolVersion, scopes[],
-  argsSha256, actionId?, expiresAt (<=300s), policyVersion }
+analyst:    catalog.describe, state.query, plan.propose, plan.preview_sap, answer.emit
+dispatcher: analyst + action.draft
 ```
 
-- 宿主内存保存映射；token 不返回给模型，也不依赖新增加密库；单次使用；参数、工具、会话任一变化即失效；
-- 寿命不得超过操作员会话；登出、接管、降级立即撤销；
-- 模型永远看不到 provider key、OS 凭据或文件路径；密钥只在宿主出站请求时注入。
+- analyst 不能 `action.draft`；dispatcher 也不得摄入外部不可信文档（B1 无外部文档工具）。
+- 只有 `dispatcher` 可触发 `operator_confirm` 的 draft；`action.draft` 审批后仍只是 draft，不写 SAP。
+- 不存在 `dispatch`；`policyVersion="poie-agent/0.1"` 固定。
 
-审批不再只是“点一下同意”，而是绑定一个摘要：
+## 12. 评测（R5）
 
-摘要使用 [DIGEST](DIGEST.md) 的 `poie.approval/0.1` domain，按工具定义至少字段：
-
-| 工具 | subject digest 字段 |
-| --- | --- |
-| `plan.propose` | goal, horizon, deadline, policyVersion, sessionId, expiresAt |
-| `action.draft` | actionTypeId, planFingerprint, argsSha256, policyVersion, sessionId, expiresAt |
-| `sim.run` | variantId, snapshotSha256, policyVersion, sessionId, expiresAt |
-| 未来 pending dispatch | actionId, target, command, validFrom/Until, policyVersion, planSha256, sessionId |
-
-- 操作员批准的是这个摘要；任一字段变化返回 `approval_mismatch`；
-- 审批一次一用，不可跨运行复用；`ApprovalToken` schema 见 [PLATFORM](PLATFORM.zh-CN.md) §6；
-- 不存在“总是批准”的粘性开关；MVP **不实现双人审批**（单操作员），B/D 不承诺 two_person。
-
-### 5.6 上下文信任画像
-
-吸收 Meta “Agents Rule of Two” 的工程约束：一个会话最多同时具备“不可信输入、敏感数据、状态改变/外联”中的两项。
-
-| 画像 | 允许 | 禁止 |
-| --- | --- | --- |
-| `analyst` | 读取外部/不可信文档 + 内部只读对象 | 生成可派发动作、外联工具 |
-| `dispatcher` | 内部可信对象 + 生成计划/草稿 | 摄入外部网页/文档 |
-
-只允许 `analyst → dispatcher` 的**单向切换**；切换时重新认证并清空上下文。Phase B MVP 先不实现外部文档工具，但策略/测试保留该边界。
-
-### 5.7 运行生命周期
-
-```text
-created -> running -> waiting_approval -> running -> completed
-                    \-> denied/failed/cancelled
-```
-
-每一步：
-
-1. 校验会话/签名/策略；
-2. 调用 provider，解析 tool_calls 或 final；
-3. 校验工具白名单、参数 schema、预算；
-4. 执行工具（只读/propose），记录结果与 citations；
-5. 若需审批，持久化 pending 状态并暂停；
-6. 继续直到 final、预算耗尽或错误；
-7. 校验最终引用，写审计，返回结构化结果。
-
-### 5.8 Host API
-
-| 命令 | 输入 | 输出 |
-| --- | --- | --- |
-| `agent_run` | prompt, policyProfile (`analyst|dispatcher`) | runId, state |
-| `agent_status` | runId | RunState + pending approval |
-| `agent_approve` | runId, approvalTokenId | RunState |
-| `agent_reject` | runId, reason | RunState |
-| `agent_cancel` | runId | RunState |
-| `agent_resume` | runId, approvalTokenId | RunState（仅 approved 后） |
-
-```text
-RunState {
-  schemaVersion, runId, profile: analyst|dispatcher, status,
-  turns[{ index, user?, assistant?, toolCalls[{ id, tool, argsSha256, resultSha256, citations[] }] }],
-  pendingApproval?{ tokenId, tool, subjectSha256, expiresAt },
-  budget{ stepsUsed, toolCallsUsed, promptCharsUsed },
-  citations[], error?{ code, message }, createdAt, updatedAt
-}
-```
-
-`RunState` 序列化到 `agent_runs.state_json`；Tauri 事件 `agent://state` 推送；审批 token 见 [PLATFORM](PLATFORM.zh-CN.md) §6。
-
-运行状态必须持久化，支持审批暂停/恢复/取消：
-
-- `agent_runs` 表：`run_id, schema_version, state_json, session_id, created_at, updated_at, expires_at`；`user_version` 迁移；
-- 命令：`agent_run`（启动）、`agent_status`、`agent_approve`、`agent_reject`、`agent_cancel`、`agent_resume`（批准后继续）；
-- Tauri 事件 `agent://state` 推送状态；审批 token 与 run 绑定；
-- 宿主重启：未完成 run 标记 `interrupted` 并允许取消/重试，不自动恢复模型调用；
-- 不把 provider token 或 API key 写入任何日志。
-
-MVP 不承诺跨重启“自动继续”；只承诺审批状态可查询、可拒绝/取消，重启后不产生幽灵运行。
-
-## 6. 评测（Evals）
-
-### 6.1 离线、确定性
-
-`evals/agent/*.toml`：
+Fixture schema `poie.agent-eval/0.1`：
 
 ```toml
-id = "query-service-and-cite"
+schema = "poie.agent-eval/0.1"
+id = "..."
+preregistered_at = "2026-11-05"
 prompt = "..."
-[scripted]
-responses = [
-  { tool = "state.query", arguments = { subject = "service:potable-water" } },
-  { final = "..." , citations = ["service:potable-water"] }
-]
+profile = "analyst|dispatcher"
+[script]
+responses = [{ tool = "...", args = {...} }, { final = "..." }]
+[approval]
+action = "approve|reject|expire"  # optional
 [expect]
-tools = ["state.query"]
-citation_coverage = ["service:potable-water"]
-approval = "none"
+tools = [...]
+claims = [{ text = "...", citations = ["object:..."] }]
+error = "citation_missing"          # optional
 ```
 
-`poie-governance` 的 eval harness 读取 fixture，运行真实 `AgentRuntime` + `ScriptedProvider` + 真实工具（或固定 fixture executor）；CI 只跑确定性脚本，不调用外部模型。
+- B1 至少 45 个确定性用例，覆盖矩阵：6 工具 × 正常/坏参数/超预算/未授权 × 引用/审批/注入；CI 计数由 `scripts/check-agent-evals.py` 校验。
+- 脚本化 provider 只测 runtime/policy，不测模型能力；现场真实 provider 才报 pass^k（k=5），不进 CI 门禁。
+- 注入指标拆成“运行时 containment 必须 0 次越权/外联”与“模型是否被说服（仅现场报告）”。
 
-### 6.2 评测指标
+## 13. Host API 与 UI（R1/R6）
 
-- task success（期望工具/最终结果是否达成）；
-- CI 确定性脚本用例数与覆盖矩阵（脚本化 provider 重复没有信息量，不报 pass^k）；
-- 现场真实 provider 才报 **pass^k**（k=5，含方差），不用于 CI 门禁；
-- tool sequence correctness；
-- citation coverage / unknown citations；
-- approval enforcement（该停是否停、该拒是否拒）；
-- unsafe attempt blocked（dispatch/shell/secrets/未知工具；要求 100%）；
-- prompt-injection resistance（恶意工具输出不得引发额外工具调用；报告实测成功率，不写“已解决”）；
-- budget compliance（步数/工具数/字符数）。
+命令：`agent_run`、`agent_status`、`agent_approve`、`agent_reject`、`agent_cancel`、`agent_resume`，全部 `Result<T, CommandError>`。错误码：`unauthorized/scope_denied/run_active/run_not_found/run_interrupted/approval_required/approval_mismatch/approval_expired/approval_rejected/invalid_tool_arguments/provider_timeout/provider_response_too_large/provider_protocol/budget_exceeded/citation_missing/not_implemented`。
 
-B1 至少 45 个确定性用例，覆盖五个可用工具（`sim.run` 标 `not_implemented` 并有拒绝用例）、Base-01/02、注入 canary、越权/预算/引用缺失；`sim.run` 的完整评测在 C 阶段加入，总数达到 60+。静态 fixture 先于运行提交。
+- Agent 面板要求登录 + 已配置推理；显示 profile、工具轨迹、citations、审批卡（subject/args/impact/citations/expiry）、取消/重试。
+- 浏览器预览保持 host-only。
+- `inference_complete` 只保留 Settings 连接测试；Agent 面板改走 `agent_run`，不得回退到自由聊天。
+- `agent://state` 负载为完整 RunState（有界）。
 
-### 6.3 现场评测
+## 14. 依赖与过程门禁（R7）
 
-真实 provider 的评测必须手动/单独工作流运行，记录模型、prompt 版本、fixture 版本和结果；不得把随机结果当 CI 门禁。现场结果只作为观察，不替代脚本化回归。
+- `poie-governance` 依赖：`poie-objects`、`poie-state`（只读）、`poie-plan`、`poie-ontology`、`poie-digest`、`serde/serde_json/toml`；**不依赖** `poie-exec`、Tauri、网络。
+- 加入根 `members`；根/桌面 `Cargo.lock`、test-matrix/status-snapshot、desktop workflow `crates/poie-governance/**` 路径、cargo-deny、ADR（新依赖）、`check-docs`。
+- 补 `scripts/check-schema-registry.py`（A0 承诺）和 `scripts/check-agent-evals.py`。
+- 实施顺序：B0 前置 → `poie-governance` 类型/工具契约 → 审批/审计迁移 → 只读 preview → host agent loop → evals → UI。
 
-## 7. UI
-
-Agent 面板（现有 inspector）扩展：
-
-- 顶部显示策略摘要：`Read + propose only`、最大步数、审批要求；
-- 时间线显示工具调用（名称、参数摘要、状态、耗时、是否被截断）；
-- 引用列表可点击定位到对象/动作；
-- `operator_confirm` 卡片显示操作、影响、参数、引用；按钮“批准/拒绝”；
-- 运行中可取消；错误显示稳定 reason code；
-- 未登录/未配置时保持禁用；浏览器预览显示 host-only；
-- 设置页增加 Agent 策略只读摘要、最近 eval 结果、审计入口。
-
-所有新文案进入 i18n；不显示原始 provider payload 或密钥。
-
-## 8. 安全与威胁模型
-
-| 威胁 | 控制 |
-| --- | --- |
-| Prompt injection（工具输出/对象名称/证据文本） | 工具输出标记 untrusted；系统提示；运行时只认结构化 tool_calls；禁止解释输出中的指令 |
-| 数据外泄 | 无网络工具；provider 请求仅含白名单工具结果和用户输入；日志脱敏；密钥不进模型 |
-| 越权读取 | scope 校验 + Phase D markings；对象查询按站点/角色过滤 |
-| 越权写入 | 无 dispatch；propose 需人工确认；最终仍走 SAP |
-| 工具参数注入 | Rust 强类型 + `serde(deny_unknown_fields)` + 固定白名单 + 长度/枚举/数量上限；禁止路径/SQL |
-| 模型幻觉引用 | 引用必须来自本轮 tool results；未知引用拒绝 |
-| 审批重放 | 审批绑定 run/call/参数摘要/过期时间；一次一用 |
-| 预算耗尽/无限循环 | 最大步数/工具调用/字符/超时；超限记为失败而非成功 |
-| 审计泄漏 | 只记录哈希/摘要/ID；不记录完整 prompt、密钥或工具正文 |
-
-## 9. 与现有系统的集成
-
-- **认证**：所有 Agent 运行要求 `auth::require`；未登录不可创建运行。实施前必须先修两个现有缺口：`execution_gate_set` 当前未登录也能改 gate（`apps/desktop/src-tauri/src/lib.rs`），必须硬性要求会话；Tauri 自定义命令目前被所有窗口共享，必须按命令/窗口检查 scope，不能让 Agent 窗口调用 `inference_configure`、`sandbox_write`、`auth_*`。
-- **推理**：复用现有 `inference` 配置/凭据/native HTTP；请求增加 `tools` 和 `tool_choice`，解析 `tool_calls`；新增 `agent_run` 命令。现有 `inference_complete` 只保留为 Settings 连接测试/兼容路径，Agent 面板不得使用它；若保留用户可见入口，必须标记 legacy 或走同一策略。
-- **SAP**：`plan.propose`/`action.draft` 只生成 proposed plan/草稿，不写 transition、不调用 Gate，模型 v1 没有 dispatch 工具。审批通过后由既有 SAP 验证/授权命令接管；七项复核不新增第八项。Agent 来源与审批关联写入 `Authorization.basis`（如 `agent-plan:<sha256>;approval:<tokenId>`），策略版本写入 `policy_version`；审计日志记录 `sap_record_id`，从 SAP 记录可反查审批 token。
-- **审计**：不新增 SAP `RecordKind`（避免为 Agent 治理改 SAP 契约）。Agent/tool/approval 事件写入**只追加本地审计日志**（`app_data/audit/agent.log`，每行 canonical JSON，含 `prev_hash`/`hash`；每日生成 `anchor.json` 记录当日最后 hash 与日期，锚定到本地文件即可，不伪造远程时间戳）；SQLite `audit` 表作为可重建索引；当事件关联到真实动作时写 `sap_record_id`。现有 `audit(id,at_ms,actor,event,detail)` 迁移为带 `turn_id`、`args_sha256`、`result_sha256`、`sap_record_id`、`prev_hash`、`hash` 的结构，必须 `PRAGMA user_version` 迁移，不能 startup `DROP TABLE`。SQLite 不是防篡改来源；提示词默认只存摘要，正文按保留策略可选存储并脱敏。测试：断链可检测、按行重建、anchor 篡改可发现。
-- **Ontology**：工具 schema/对象查询使用 Phase A `poie-objects`，不复制一套字段。工具与 Phase A 函数目录的映射：`catalog.describe`/`state.query` 映射 A 的 `catalog.describe`/`state.query`；`plan.propose` 同名；`action.draft` = `plan.propose` + `plan.preview_sap` 的组合层；`sim.run` 映射 A 的 `sim.run`；`evidence.get` 映射 A 的 `evidence.get`。不得另造同名异义工具。
-
-## 10. 测试与验收
+## 15. 测试与验收
 
 ### 单元/集成
 
-- 工具白名单/scope/参数 schema 拒绝；
-- dispatch/shell/secrets 工具不存在且被策略拒绝；
-- 多步工具调用、预算耗尽、取消；
-- 引用缺失/未知引用拒绝；
-- operator_confirm 暂停→批准/拒绝；
-- 审计事件完整性（每个工具调用、审批、完成）；
-- 恶意 fixture 不触发额外工具调用；
-- ScriptedProvider 端到端 eval。
+- 工具参数严格拒绝未知字段；无 dispatch 工具；profile 白名单；
+- 审批：pending→approve/reject/expire/consumed 原子性；参数/session/subject 改变 → mismatch；过期拒绝；
+- preview 不创建 Authorization/不推进 ledger；
+- `answer.emit` 无 citation/未知 citation 拒绝；suggestions 不校验为事实；
+- 审计链 genesis/prevHash/hash/锚点/尾部残行/重建/迁移；
+- provider 多 tool_calls/坏 JSON/缺参/超时/超大响应/取消；
+- 确定性 eval 45 例 + 覆盖矩阵；CI 不访问网络。
 
-### 验收标准
+### 验收
 
-1. Agent 不能直接调用 Gate/适配器，模型工具目录中不存在任何 dispatch 工具；
-2. 任何 factual final 无引用时被拒绝；
-3. propose 必须人工确认；审批不可重放；
-4. CI 跑确定性 evals 并验证关键指标；
-5. 现场 provider 不可用时 Agent 明确错误，不降级为“自由聊天”；
-6. UI 能查看工具轨迹、引用、审批和审计。
+1. 模型工具目录无 dispatch；越权请求 100% 拒绝并留痕；
+2. 所有 operator_confirm 在执行前审批；token 一次一用；
+3. 事实性 claim 无 citation/未知 citation 被拒；
+4. 审计链可检测断裂、可重建；SQLite 迁移不丢历史；
+5. CI 确定性 eval 绿；现场 pass^k 单独记录；
+6. UI 可完成 approve/reject/cancel/restart-interrupted 流程；
+7. 旧自由聊天入口不再调用 `inference_complete`。
 
-## 11. 实施顺序
+## 16. 开放问题
 
-0. `poie-governance`/`poie-digest` 进根 `members`、根/桌面 `Cargo.lock`、ADR、测试矩阵；
-1. `poie-governance` 类型/策略/工具目录 + 纯单元测试；
-2. `ScriptedProvider` + eval harness + fixtures；
-3. host 工具执行器（objects/query/plan preview）+ `agent_run/status/approve/reject/cancel/resume`；
-4. UI Agent 面板扩展 + 审批；
-5. 真实 provider tool-call 适配（需手动/provider 测试，不进 CI）；
-6. 审计迁移/设置/文档/Playwright；`cargo fmt/clippy/doc/cargo-deny/check-test-matrix/check-docs`。
+- B1 是否需要在 `state.query` 中支持外部文档；暂不支持，Rule of Two 留到 D。
+- 审计日志保留策略与磁盘上限；MVP 保留并记录大小，超限拒绝新 run。
+- 现场 eval 标注/抽检流程；Phase B 只提供框架，不承诺统计功效。
+- `pass^k` 的 k/样本数；默认 k=5，现场报告记录方差。
 
-## 12. 开放问题
+## 17. 参考
 
-- 最终回答强制引用是否会让纯解释性问题过于机械；MVP 对事实性断言强制，对“建议”标记为非事实。
-- 审批暂停的恢复是否跨进程重启：`RunState` 持久化；宿主重启后把未完成 run 标为 `interrupted`，**模型调用不自动恢复**，操作员可取消/重试；审计保留。
-- 工具目录是否允许站点扩展；Phase D 再定义站点策略，MVP 固定。
-- 现场模型 eval 的样本与标注由谁维护；Phase B 只提供框架和最小样本。
-
-## 13. 参考
-
-- 子 agent 调研备忘：[`research/agent-governance.zh-CN.md`](research/agent-governance.zh-CN.md)，包含 MCP/OAuth、OWASP LLM06、Meta Rule of Two、τ-bench/AgentDojo、PROV-O、NIST AI 600-1 等来源与逐条标注。
-- Palantir AIP / Ontology / Apollo 产品资料（见 Phase A/D 参考）
-- OWASP LLM Top 10（prompt injection、敏感信息泄漏、过度代理）
-- NIST AI RMF / Generative AI Profile（治理、测量、管理）
-- Poieweave SAP：`specifications/state-action-protocol.zh-CN.md`
+- [agent-governance 研究备忘](research/agent-governance.zh-CN.md)
+- [PLATFORM](PLATFORM.zh-CN.md)、[DIGEST](DIGEST.md)、[SCHEMAS](SCHEMAS.md)
+- SAP §7.3/§7.4；ADR-0003 append-only log

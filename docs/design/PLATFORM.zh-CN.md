@@ -85,6 +85,7 @@ schema = "poie.<domain>/<major>.<minor>"
 
 实现要求：
 
+- `auth::Session` 必须带 `sessionId`（128-bit 随机 hex，创建会话时生成）；审批、capability、RunState 全用它；登出/过期即失效。
 - 每个命令显式接收/读取 `tauri::Window` 并调用 `authorize(window, command, session, policy)`；不得依赖“所有窗口共享全部命令”。
 - `capabilities/default.json` 仅为默认；为 settings/agent 窗口增加独立 capability 文件（或命令内 scope 检查），二者至少一种，且测试覆盖。
 - `execution_gate_set` 改为先 `auth::require` 再修改；`sandbox_*` 改为 no-follow + 原子写（Phase D 复用）。
@@ -137,20 +138,27 @@ pub enum ApprovalClass { Auto, OperatorConfirm, TwoPerson, Forbidden }
 pub struct ApprovalToken {
     pub id: String,
     pub session_id: String,
-    pub run_id: Option<String>,
-    pub tool_or_action: String,
+    pub run_id: String,
+    pub call_id: String,
+    pub tool: String,
+    pub tool_version: String,
     pub subject_digest: String, // sha256 per DIGEST.md; tool/action specific
     pub policy_version: String,
+    pub args_json_redacted: String,
+    pub impact_json: String,
+    pub citations_json: String,
+    pub state: String, // pending|approved|rejected|expired|consumed
+    pub created_at_ms: u64,
+    pub decided_at_ms: Option<u64>,
     pub expires_at_ms: u64,
-    pub used: bool,
 }
 ```
 
-- `OperatorConfirm`：宿主创建 pending token；UI 展示 subject/影响/引用；操作员批准后置 used；任何字段变化使 digest 不匹配。
+- `OperatorConfirm`：宿主创建 pending token；UI 展示 subject/args/影响/引用；`agent_approve` 原子置 approved，`agent_resume` 消费后置 consumed；任何字段变化使 digest 不匹配。
 - `TwoPerson`：Phase B/D 不开放（删除预留，避免与单操作员冲突）；需要时另立 ADR + 角色模型。
 - `Forbidden`：直接拒绝并审计。
 - B 的 agent、C 的 promote、D 的 channel/import 使用同一原语；不允许布尔 `approved` 参数。
-- 所有 token 持久化（SQLite）以支持暂停/恢复/审计；过期自动拒绝。
+- 所有 token 持久化（`approval_tokens` 表）以支持暂停/恢复/审计；`UPDATE ... WHERE state='pending' AND expires_at>?` 原子消费；过期自动拒绝。
 - token 与 SAP 记录的关联：写入审计时记录 `sap_record_id`；`Authorization.basis` 包含 `approval:<tokenId>`（或结构化后字段），使 SAP 记录可反查 token。
 
 ## 7. 新 crate/依赖与工作区
@@ -162,7 +170,7 @@ pub struct ApprovalToken {
 | `poie-digest` | A | serde, serde_json, sha2 |
 | `poie-objects` | A | poie-ontology, poie-digest, serde |
 | `poie-sdkgen` | A (bin) | poie-objects, serde_json |
-| `poie-governance` | B | poie-objects, poie-state (只读), poie-plan, poie-digest, serde_json |
+| `poie-governance` | B | poie-objects, poie-state (只读), poie-plan, poie-ontology, poie-digest, serde, serde_json, toml |
 | `poie-whatif` | C | ontology, plan, sim, state, viability, digest |
 | `poie-delivery` | D | ontology/state/viability, digest, serde |
 
