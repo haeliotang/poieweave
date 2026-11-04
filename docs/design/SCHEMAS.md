@@ -23,7 +23,6 @@
 | `poie.site-bundle/0.1` | D1 | 0.1 | 同上 |
 | `poie.delivery-state/0.1` | D1 | 0.1 | 同上 |
 | `poie.delivery-diagnostics/0.1` | D1 | 0.1 | diagnostics export |
-| `poie.diagnostics/0.1` | D | 0.1 | 同上 |
 
 
 ## Digest domains（不是 wire schema）

@@ -42,16 +42,17 @@ schema = "poie.<domain>/<major>.<minor>"
 {"code":"unknown_object","message":"...","details":{"typeId":"asset","id":"..."}}
 ```
 
-`Result<T, CommandError>`，不再返回裸 `String`。稳定错误码：
+`Result<T, CommandError>`，不再返回裸 `String`。稳定错误码（D1 命令实现时统一映射；迁移前字符串前缀仅作兼容）：
 
 | code | 阶段 | 含义 |
 | --- | --- | --- |
 | `unauthorized` | A/B/C/D | 未登录/会话过期 |
-| `scope_denied` | A/B/C/D | 窗口/命令 scope 不匹配 |
+| `scope_denied` | A/B/C/D | 窗口/命令 scope 不匹配（D1 delivery 不产生） |
 | `unsupported_schema` | A/B/C/D | schema major 未知 |
 | `invalid_cursor` / `limit_exceeded` | A/C | 分页参数非法 |
 | `unknown_type` / `unknown_object` / `unknown_snapshot` / `unknown_variant` / `unknown_result` | A/C | 类型/对象/快照/变体/结果不存在 |
 | `model_mismatch` | A/C/D | model digest 与当前不一致 |
+| `manifest_invalid` / `stale_manifest` / `delivery_conflict` / `rollback_unavailable` / `io_error` | D1 | manifest 非法/已变/冲突/无回滚/IO |
 | `preview_unavailable` | A | host 未提供 dry-run |
 | `invalid_parameter` / `invalid_patch` | A/B/C | 参数/变体非法 |
 | `approval_required` / `approval_mismatch` / `approval_expired` / `approval_rejected` | B/C/D | 审批缺失/被替换/过期/拒绝 |
@@ -86,7 +87,7 @@ schema = "poie.<domain>/<major>.<minor>"
 | `ontology_*` | 否（只读） | main/poie-view-* | 读 | A0 后按窗口 |
 | `agent_*` | 是 | main | 写/网络 | 会话 + scope + policy |
 | `whatif_*` | 是 | main/poie-view-plan | 写（C1 结果表） | 会话 + `authorize(window,command,session,policy)`；C1 不写 SAP/live |
-| `delivery_*` | 是 | main/settings | D1 元数据写 | 会话 + 审计；D1 无审批/Window；D2 再加审批/policy |
+| `delivery_*` | 是 | main | D1 元数据写 | 会话 + 审计；D1 无 Window/审批/policy；D2 再加 |
 
 实现要求：
 

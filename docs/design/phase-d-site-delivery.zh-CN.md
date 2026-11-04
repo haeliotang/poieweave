@@ -98,13 +98,13 @@ ManifestSummary {
 | `delivery_state` | — | DeliveryState | 只读；登录 |
 | `delivery_rollback` | — | DeliveryState | 写；登录；无审批 |
 | `delivery_clear` | — | DeliveryState | 写；登录；无审批 |
-| `delivery_diagnostics_export` | outputDir, overwrite? | DiagnosticsSummary | 写；登录 |
+| `delivery_diagnostics_export` | outputDir, overwrite? | DiagnosticsSummary | 写；登录；无审批 |
 
 - 命令通过 `auth::require` + 统一 `{code,message,details}` 错误包络；D1 的 import/rollback 是 **登录会话内的本地元数据写**，不需要 ApprovalToken/HostPolicy/Window（这与 PLATFORM D1 行一致；D2 若改为远程/策略变更再引入审批）。
 - 错误码：`invalid_parameter`、`unsupported_schema`、`stale_manifest`、`manifest_invalid`、`delivery_conflict`、`rollback_unavailable`、`unauthorized`、`scope_denied`、`io_error`。
 - `import` 的 `expectedManifestSha256` 必填；空/不匹配拒绝。
 - `rollback` 无 previous → `rollback_unavailable`。
-- 审计事件：`delivery.inspect`、`delivery.import`、`delivery.rollback`、`delivery.diagnostics`，写入现有 audit（不含 manifest 原文/路径）。
+- 审计事件：`delivery.inspect`、`delivery.import`、`delivery.rollback`、`delivery.clear`、`delivery.diagnostics`，写入现有 audit（不含 manifest 原文/路径）。
 
 ## 6. 持久化与原子性
 
@@ -155,7 +155,8 @@ DiagnosticsSummary {
 - 不包含 secrets、API key、prompt、模型输出、绝对路径、用户名、UUID、站点 note 原文、importedBy。
 - `siteId` 只输出 `sha256(siteId)` 前 12 位；`siteName` 不输出。
 - `checks.detailCode` 只允许固定枚举；`logTail` 先用固定正则脱敏（key/token/绝对路径/用户名/UUID），再按 128 KiB 总上限截断并 `truncated=true`。
-- `path`/`outputDir` 都是 **sandbox 相对路径**（拒绝绝对路径、`..`、symlink、非 UTF-8）；复用 A0 `sandbox::resolve` 的 no-follow 规则；文件 ≤256 KiB。
+- `errorCodes` 只允许：`invalid_parameter`、`unsupported_schema`、`stale_manifest`、`manifest_invalid`、`delivery_conflict`、`rollback_unavailable`、`io_error`、`unauthorized`；路径违规统一 `io_error`。
+- `path`/`outputDir` 都是 **sandbox 相对路径**（`sandbox::resolve` 拒绝绝对路径/`..`；`sandbox::reject_symlinks`/read/write 拒绝 symlink；非 UTF-8 拒绝）；文件 ≤256 KiB；违规 → `io_error`。
 - `detailCode` 枚举：`manifest_ok`、`digest_mismatch`、`state_absent`、`state_recalled`、`manifest_missing`、`io_denied`。
 - 目标 `delivery-diagnostics.json` 已存在且 `overwrite=false` → `delivery_conflict`；`overwrite=true` 才覆盖。
 - 不发送网络/遥测。
@@ -186,6 +187,7 @@ DiagnosticsSummary {
 - inspect→import sha 变化 → `stale_manifest`；导入不改变 HostPolicy/live。
 - 导入事务失败回滚；重复导入幂等；rollback 交换 current/previous；无 previous 拒绝。
 - recall 显示且不当作 current；D1 不提供 un-recall。
+- `delivery_clear` 清空 current/previous；clear 后 import 可换站点；clear 审计。
 - 诊断无 secret/prompt/绝对路径/UUID；大小上限；固定错误码。
 - UI host-only 占位、导入确认、rollback；无“部署成功”文案。
 - 验收：离线导入一份 JSON、回滚、导出诊断；不联网、不导入二进制、不改策略。

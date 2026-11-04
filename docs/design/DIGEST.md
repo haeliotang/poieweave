@@ -23,7 +23,7 @@ domain/version "\n" canonical_json(payload)
 | `poie.simulation/0.1` | 仿真摘要 + 关键状态 | 需要 SHA-256 时使用；不替代现有 `Simulation::digest()` |
 | `poie.snapshot/0.1` | Snapshot without snapshotSha/id/createdAt/createdBy/seed | C1 Snapshot |
 | `poie.variant/0.1` | snapshotSha256 + canonical patch/goal/verification/deadline + mode + settings + outcome/actions/rootCauses/deps + planSha256/completionS | C1 What-if 结果 |
-| `poie.manifest/0.1` | manifest（不含 integrity 字段） | site bundle |
+| `poie.manifest/0.1` | D1 SiteManifest without flat manifestSha256 | D1 site bundle |
 
 输出统一为小写 64 位十六进制，不带 `sha256:` 前缀；对外字段命名为 `*Digest`，类型为字符串。
 
@@ -88,10 +88,12 @@ name, resources[], assets[], lots[], processes[], services[]
 ## 5. Manifest
 
 ```text
-manifest_sha256 = sha256("poie.manifest/0.1\n" + canonical_json(manifest_without_integrity))
+D1: manifest_sha256 = sha256("poie.manifest/0.1\n" + canonical_json(manifest_without_flat_manifestSha256))
 ```
 
-`integrity.manifest_sha256` 是唯一排除字段；其他字段（包括 artifacts/evidence/contracts）全部纳入。文件内容哈希独立计算，不从 manifest 哈希推导。
+D1 `SiteManifest` 只排除扁平 `manifestSha256`；没有 `integrity` 对象；其他字段全部纳入。A/B 历史 `manifest_without_integrity` 不适用于 D1。
+
+固定测试向量：`{"schema":"poie.site-manifest/0.1","siteId":"base-01","target":"linux-x86_64","channel":"stable"}` 的 canonical JSON 加域前缀哈希为 `0a15ba7d0a9d8ead9473a9176c86e6416b4f86594a551f4d81792ee7b148964d`。
 
 ## 6. 测试向量与验收
 

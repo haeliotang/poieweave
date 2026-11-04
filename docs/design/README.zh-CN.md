@@ -91,8 +91,8 @@
 - `docs/status/status-snapshot.zh-CN.md` 的日期/提交与“#112 三项推迟”旧描述；
 - `apps/desktop/src/domain.ts` 把 Base-02/timed 标成 planned，但 CI 已在跑；
 - `crates/poie-state/src/lib.rs` 第 31 行说 M12 联邦未实现，但 `poie-federation` 已有实现；
-- core crate 版本 0.1.0、desktop 0.1.1、tag v0.1.1 没有单一版本源；Phase D 必须先定义 release manifest；
-- tag release workflow 不生成 macOS DMG/便携 Windows exe（当前 Release 中的 DMG 是手动补的），Phase D 必须让产物清单与 workflow 一致。
+- core crate 版本 0.1.0、desktop 0.1.1、tag v0.1.1 没有单一版本源；D2 再定义 release manifest；
+- tag release workflow 不生成 macOS DMG/便携 Windows exe（当前 Release 中的 DMG 是手动补的），D2 再让产物清单与 workflow 一致。
 
 处理这些漂移不改变 A–D 的安全边界，但必须在对应阶段 PR 中一并修复，不能把旧数字/旧声明带进新页面。
 
