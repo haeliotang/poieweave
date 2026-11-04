@@ -1,92 +1,83 @@
 # Phase A 设计门禁校验（A0 + A1）
 
 - 校验对象：[Phase A](phase-a-ontology-product.zh-CN.md)、[PLATFORM](PLATFORM.zh-CN.md)、[DIGEST](DIGEST.md)、[SCHEMAS](SCHEMAS.md)、[README](README.zh-CN.md)；代码 `crates/poie-{ontology,state,plan}`、`apps/desktop/src-tauri`、`apps/desktop/src`、根 `Cargo.toml`、`scripts/check-*.py`。
-- 快照：分支 `design/phase-a-d`，**实际 HEAD `c4bc294`**。任务给的 `55bd48d` 已落后 2 个提交（`55bd48d → 91beea9 → c4bc294`）；`91beea9` 删除了 synthetic `Authorization`，`c4bc294` 修了命令矩阵/schema/preview DTO。本报告只对 `c4bc294` 负责。已入库/工作树的 `VALIDATION.zh-CN.md` 绑定 `91beea9`，`c4bc294` 已修其部分条目；本报告独立复核，不引用其行号。
-- 方法：只读对照 PO/SAP 与源码；`python3 scripts/check-docs.py` 通过；未运行完整 `cargo test`；未修改既有源码/设计文档，仅新增本文件。工作树中 `docs/design/VALIDATION.zh-CN.md` 有并发未提交修改（非本 agent），本报告不修改它。
+- 快照：分支 `design/phase-a-d`，**实际 HEAD `0527c7f`**。任务给的 `55bd48d` 已落后 4 个提交（`55bd48d → 91beea9 → c4bc294 → e16433d → 0527c7f`）；`91beea9` 删 synthetic `Authorization`，`c4bc294` 修命令矩阵/schema，`e16433d` 修 `auth_*`/`status_evidence`/Plan-based 预览，`0527c7f` 修 EvidenceRef/digest/字段派生/过程门禁。本报告只对 `0527c7f` 负责。
+- 方法：只读对照 PO/SAP 与源码；`python3 scripts/check-docs.py` 通过；未运行完整 `cargo test`；未修改既有源码/设计文档，仅更新本文件。`VALIDATION.zh-CN.md` 绑定更早的 `c4bc294`，本报告独立复核，不引用其行号。
 
 ## 0. 结论
 
-**CHANGES_REQUIRED。** A0 的“假授权”已经实质关闭，Catalog/Digest 方向正确，没有架构级否决项；但仍有 **6 组 A 级契约问题**会导致错误代码或不可测验收。完成 §3 的 1–6 后可重跑；当前不能开工。
+**PASS（A0 + A1 可开工）。** A0 的宿主鉴权/scope、demo 授权清理、synthetic preview 语义已闭合；A1 的 Catalog/DTO/digest/EvidenceRef 字段与派生规则已闭合；R1–R4 没有剩余 REQUIRED-BEFORE-A。下列 §3 均为 OPTIONAL/A2 细化，不阻断 A0/A1 实施。
+
+## 0.1 六项指定检查
+
+| # | 指定检查 | 判定 | 证据 |
+| --- | --- | --- | --- |
+| 1 | R1 文档已提交并冻结、修订引用一致 | **PASS** | 设计文档在 `0527c7f` 入库；README 以分支 HEAD 为快照（README:103）；本报告绑定该 commit |
+| 2 | R2 `catalog_digest`、统一 `rejections`、`plan.preview_sap` 输入、完整 DTO | **PASS** | A:217/227（digest）、A:243（rejections）、A:125（Plan-only）、A:188-262（DTO） |
+| 3 | R3 A0 第 0 步、gate/sandbox/inference 鉴权/scope、demo 授权替换/测试、workspace 门禁 | **PASS** | A:391（第 0 步）、A:40-46（鉴权与 demo）、A:392/397（members/lock/matrix/cargo-deny/ADR） |
+| 4 | R4 DIGEST canonical（无 `Asset.description`）、`-0.0`/浮点、固定向量、`poie-digest` 进 workspace | **PASS** | DIGEST:58、71-72、96-102；A:392 |
+| 5 | A API 可实现：ActionType 字段、只读 preview、错误包络、对象 ID/EvidenceRef、SourceModel、Catalog 图、Playwright 策略 | **PASS** | A:202-262、267-303、317-319；PLATFORM:46-90、121；`model.rs:270-272` |
+| 6 | 无剩余 BLOCKER 到 A0/A1 | **PASS** | §3；O1–O8 均为 OPTIONAL/A2 |
+
+## 0.2 关键判断
+
+- **R2 的“完整 DTO”已达标。** `EvidenceRef` 六字段、`ObjectPage/ObjectDetail/ActionPreview` 的 model/catalog digest、`ObjectInstance.version`、`LinkType.cardinality`、`ActionType.duration_s` 都已给出；`ObjectDetail.evidence` 的填充规则是行为细化（O2），不是字段缺口。
+- **R3 的 A0 已可执行。** bootstrap 例外、窗口标签、`sandbox_root`、no-follow/原子写、旧测试断言更新都已写入；`sandbox_list` 已删除。唯一未写进测试清单的是 no-follow 负例（O3），属测试计划补充。
+- **A2 的预览/UI 仍有 OPTIONAL。** `ActionPreview` 的 host/`poie-objects` 代码块归属（O1）、七项状态表（O4）、`planId` 映射（O5）、capability 列（O7）都可在 A2 前收尾，不影响 A0/A1 开工。
 
 ## 1. 五个最强点
 
-1. **A0 不再伪造授权。** A:43-46 明确不生成任何 `Authorization`，execution 只显示 proposed/validated 与 synthetic-preview，测试断言 `authorized`/`dispatched` 为 0、`dispatch_allowed=false`；`execution.rs` 与 `federation_view.rs` 的硬编码授权都纳入清理（[execution.rs](../../apps/desktop/src-tauri/src/execution.rs):96-101、[federation_view.rs](../../apps/desktop/src-tauri/src/federation_view.rs):85-90）。
-2. **单一执行语义守得住。** `preview_plan_through_sap` 只读、不写 ledger/Authorization/transition（A:263-276）；C 的 `plan_to_proposed` 只产生 proposed；B 无 dispatch 工具。Catalog 不成为第二套执行路径。
-3. **Digest 规范可复现。** fingerprint 与 SHA-256 分离、domain 分隔、`-0.0` 归一、manifest 排除 `integrity`、固定测试向量（DIGEST:20-40、58、89、96-102）；`model_digest`/`catalog_digest` 已在 Catalog 中（A:214-222）。
-4. **Catalog/SDK 路径单一。** `catalog_digest`、`SapPreview.rejections`、`plan.preview_sap` 不接受 `planRef`、`ActionPreview/ObjectDetail` 有 `schema`、`PreviewError` 有映射（A:125、188-256、280-293）；`poie-sdkgen --check` 零 diff + 黄金文件（A:292-303）。
-5. **UI 方向正确。** 图节点/边来自 Catalog、删除 `GRAPH_NODES`、确定性列布局、Playwright mock Catalog 与 Rust host 测试分工（A:317-319）；属性 `source/asOf/verification` 与 PO §3.1 的声明/观测分离目标一致（A:76、166）。
+1. **A0 不再伪造授权。** A:43-46 明确不生成任何 `Authorization`，execution 只显示 proposed/validated 与 synthetic-preview，测试断言 `authorized`/`dispatched=0`、`dispatch_allowed=false`；`execution.rs`/`federation_view.rs` 的硬编码授权纳入清理并写明更新旧断言（[execution.rs](../../apps/desktop/src-tauri/src/execution.rs):96-101、181-197；[federation_view.rs](../../apps/desktop/src-tauri/src/federation_view.rs):85-90）。
+2. **A0 命令矩阵可执行。** `auth_status/register/sign_in/sign_out` 明确为 bootstrap 例外（A:42、PLATFORM:74）；`execution_gate_set` 窗口为 `main/poie-view-execution`、`whatif_*` 为 `main/poie-view-plan`（PLATFORM:78、83）；`sandbox_root` 由 `host_info` 只读返回、无 `sandbox_list`（PLATFORM:79）；A0 第 2 条补 no-follow + 临时文件/原子 rename（A:41）。
+3. **属性证据语义已修正。** A:76 现在写 `status_evidence=Some → source=evidence`、`None → source=declared`（模型作者的合成观测），与 [model.rs](../../crates/poie-ontology/src/model.rs):270-272 和 PO §3.1 一致；`asOf` 未知为 null。
+4. **Catalog/DTO/digest 完整。** `catalog_digest`、`model_digest` 传播到 `ObjectPage`/`ObjectDetail`/`ActionPreview`（A:217、227、198、256）；`EvidenceRef` 补齐 `asOf/source`（A:188）并与 PLATFORM:121 对齐；`ObjectInstance.version=model_digest`、`LinkType.cardinality` 固定值、`ActionType.duration_s` 直接来自模型（A:194、186、207）；`ActionType.label/description` 已删除，不再伪造模型字段（A:203）。
+5. **预览与 SDK 路径单一。** `plan.preview_sap` 只接受 host 持有的 Plan（A:125）；`ontology_action_preview` 改为 Plan/actionId + `PlannedActionView`（A:249-262、293），删除 `params?`；`SapPreview/CheckPreview/AssumedContext/PreviewError` 权威定义归 `poie-plan::sap`（A:267）；`PreviewError` 有错误码映射（A:245-247）；`poie-sdkgen --check` 零 diff + 黄金文件（A:297-303）。
 
 ## 2. R1–R4 闭合表
 
-| 项 | 判定 | 证据 | 残余 |
+| 项 | 判定 | 证据 | 说明 |
 | --- | --- | --- | --- |
-| R1 文档已提交/冻结 | **closed\*** | 全部设计文档在 `c4bc294` 入库；README 以“分支 HEAD”为快照（README:103） | 任务基线 `55bd48d` 已过期；工作树中 `VALIDATION.zh-CN.md` 仍有并发修改，冻结前需提交并以新 commit 重跑 |
-| R2 catalog_digest / rejections / preview 输入 / DTO | **partial** | `catalog_digest` 统一（A:217、226）；`rejections` 统一（A:242）；`planRef` 已删除（A:125）；`Predicate` 已删除、`preconditions` 改 `Vec<String>`（A:252） | `EvidenceRef` 字段两套；`ObjectPage/ObjectDetail/ActionPreview` 缺 `modelDigest`；`ActionType.label/description`、`ObjectInstance.version` 等无模型来源 |
-| R3 A0 第 0 步 / gate / sandbox / demo 授权 / workspace 门禁 | **partial** | A0 是实施第 0 步（A:383）；`execution_gate_set` 先鉴权（A:40）；demo 授权已删除并有测试断言（A:43-46）；根 `members`/`Cargo.lock`/测试矩阵/cargo-deny 已写（A:384、389） | `auth_*` 白名单自相矛盾；`sandbox_root` 漏列；A0 未包含 no-follow/原子写；ADR 未进步骤 |
-| R4 DIGEST canonical / 浮点 / 固定向量 / poie-digest | **closed\*** | 删除 `Asset.description`（DIGEST:71-72）；`-0.0`、有限值、IEEE-754、固定向量（DIGEST:58、96-102）；`poie-digest` 进 members/测试矩阵（DIGEST:102、A:384） | 实际根 `Cargo.toml` 尚无该 crate（A1 才创建）；A1 首个 PR 必须补 `members`/lock，并写 `sha2`/属性测试依赖的 ADR |
+| R1 文档已提交/冻结 | **closed** | 设计文档在 `0527c7f` 入库；README 以“分支 HEAD”为快照（README:103） | 任务基线 `55bd48d` 已过期；本报告以 `0527c7f` 为唯一快照，后续若再提交需重跑 |
+| R2 catalog_digest / rejections / preview 输入 / DTO | **closed** | `catalog_digest` 统一（A:217、227）；`rejections` 统一（A:243）；`planRef`/`params?` 删除（A:125、293）；`ActionPreview/ObjectDetail/ObjectPage` 带 model/catalog digest；`EvidenceRef` 六字段；`ActionType` 仅模型字段（A:188-262） | `ObjectDetail.evidence` 的具体填充规则见 O2，属 A1 实现细化，不改变 DTO 契约 |
+| R3 A0 第 0 步 / gate / sandbox / demo 授权 / workspace 门禁 | **closed** | A0 是第 0 步（A:391）；`execution_gate_set` 先鉴权（A:40）；`auth_*` bootstrap 例外（A:42）；demo 授权删除并写测试（A:43-46）；no-follow/原子写（A:41）；根/桌面 `Cargo.lock`、测试矩阵、cargo-deny、ADR、schema checker、limit 上限均在 A:392/397 | 无 |
+| R4 DIGEST canonical / 浮点 / 固定向量 / poie-digest | **closed** | 删除 `Asset.description`（DIGEST:71-72）；`-0.0`/有限值/IEEE-754（DIGEST:58）；固定向量（DIGEST:96-102）；`poie-digest` 进 members/测试矩阵（DIGEST:102、A:392） | 实际根 `Cargo.toml` 尚无该 crate（A1 才创建），首个 PR 必须一并加 `members`/lock |
 
-> R5–R18 属 B/C/D 门禁；本报告只在它们与 A 契约相交处引用，不作为 A0/A1 阻断依据。
+> R5–R18 属 B/C/D 门禁；不阻断 A0/A1，本报告不据此判定。
 
-## 3. 剩余阻塞（按优先级）
+## 3. 剩余阻塞
 
-### B1 A0 的命令矩阵仍不可直接实现（A0，阻塞）
+**无 BLOCKER。** A0/A1 的契约、错误、scope、digest、DTO 和测试路径均已闭合；未发现需要推翻架构或会直接产生错误代码的缺口。
 
-- **`auth_*` 自相矛盾。** A:42 要求“未登录调用……`auth_*` 必须拒绝”，但 PLATFORM:74 把 `auth_status/register/sign_in/sign_out` 全部标为免登录；`auth_register`/`auth_sign_in` 是首启引导入口（[auth.rs](../../apps/desktop/src-tauri/src/auth.rs):81-110），按 A 字面实现会让新机永远无法注册/登录。**最小修复**：A:42 改为“除 `auth_status/register/sign_in` 三个引导命令外，未登录的 `auth_sign_out`/`audit_list` 等拒绝”，测试按命令逐项列，不用 `auth_*` 通配。
-- **`sandbox_root` 漏列。** PLATFORM:79 只有 `sandbox_read/write`，但 host 还有 `sandbox_root`（[lib.rs](../../apps/desktop/src-tauri/src/lib.rs):224）并返回绝对路径。**最小修复**：矩阵补 `sandbox_root`（建议登录=是、main），或删除该命令并改前端。
-- **A0 未覆盖 no-follow/原子写。** PLATFORM:90 要求 `sandbox_*` no-follow + 原子写，A:41 只写会话/路径/大小；现有 [sandbox.rs](../../apps/desktop/src-tauri/src/sandbox.rs):38-47 用 `std::fs::write`，会跟随根内符号链接且非原子。**最小修复**：A0 第 2 条补 no-follow + 临时文件/fsync/rename，并加“符号链接逃逸/部分写”测试。
-- **测试预期未写全。** A:46 只列 `authorized/dispatched=0` 与 `dispatch_allowed=false`；[execution.rs](../../apps/desktop/src-tauri/src/execution.rs):181-197 仍断言 `review_status=="ready"`、0 rejections、全部 checks 通过、全部 authorized。去掉授权后 `review_dispatch` 会对每个动作报 `missing_authorization`，必须同步为 `blocked` 且 rejection 数等于动作数。**最小修复**：A:46 明确 `review_status=="blocked"`、authorization 检查失败、其余六项按实际状态，并保留“synthetic 不派发”负例。
+## 4. OPTIONAL（不阻断 A0/A1；进入 A2 或首个 PR 时收尾）
 
-### B2 `status_evidence` 的 source 极性写反（A1，阻塞）
-
-A:76 写“`Asset.status` 有 `status_evidence` 时 `source=declared`……没有时为合成观测”，与代码/PO §3.1 相反：[model.rs](../../crates/poie-ontology/src/model.rs):270-272 明确 `None` 才是 declared/synthetic observation，`Some` 是证据支撑。按原文会把“有证据”标成最弱等级、把“无证据”标成观测，直接违反 A 的属性证据目标。**最小修复**：改为“有 `status_evidence` → `source=observed`（或新增 `evidence`），`asOf` 取证据时间（未知为 null）；无 `status_evidence` → `source=declared`、`asOf=null`、UI 显示声明/合成”，并为两分支各写 fixture。
-
-### B3 EvidenceRef 与响应 digest 传播不完整（A1/A2，阻塞）
-
-- **`EvidenceRef` 两套字段。** A:188 只有 `kind/id/fingerprint/sha256`；PLATFORM:121 还有 `asOf/source` 且要求 fingerprint 与 sha256“至少一个”。SDK 从 A 生成会缺字段，B 的 citation、C 的 evidenceRefs、D 的 manifest 无法互解析。**最小修复**：A 补齐 `asOf/source` 与“至少一个”约束，并加 DTO round-trip。
-- **`ObjectDetail.evidence` 无填充规则。** 模型唯一证据是 `Asset.status_evidence: Option<String>`（model.rs:272），没有证据账本；若按 PLATFORM 的“至少一个 digest”，无法构造合法 `EvidenceRef`。**最小修复**：MVP 返回空 evidence + 把 `statusEvidence` 作为 declared 属性字符串；或定义 `{kind:"report", id:status_evidence, fingerprint:status_evidence, source:"model", asOf:null}` 并测试。
-- **digest 未随所有 `ontology_*` 返回。** A:291 要求返回 `modelDigest` 与 `catalogDigest`，但 `ObjectPage` 只有 `catalog_digest`（A:224-229），`ObjectDetail`/`ActionPreview` 两者都没有。**最小修复**：给三者统一加 `modelDigest`/`catalogDigest`（或一个 `CatalogStamp`），并覆盖 `model_mismatch` 测试。
-
-### B4 预览 API 的输入/归属仍未闭合（A2，阻塞）
-
-- **`actionTypeId` 无法喂给 `preview_plan_through_sap(&Plan)`。** A:285 的 `ontology_action_preview(actionTypeId, params?, assumedContext?)` 与 A:266 的 `preview_plan_through_sap(&Plan, &AssumedContext)` 不匹配；`ActionType` 不含 target/runs/validity，host 也没有从 actionTypeId 构造 Plan 的规则；`ActionPreview.plan_ref`（A:251）也要随二选一保留或删除。**最小修复（二选一）**：新增 `preview_action_through_sap(actionTypeId, target, runs, validity, assumed)`，host 构造单个 `Action` 只跑七项检查；或改成 `ontology_plan_preview(planRef|goal, assumed)`，ActionPreview 只作行视图。
-- **`params?` 与“无任意参数”冲突。** A:285 仍带 `params?`，A:112 明确不提供任意参数/字段、不包装 `runs`。**最小修复**：删除 `params?`；若确实需要计划变量，只允许显式 `target/runs/validity` 并逐项校验。
-- **`SapPreview` 的 crate 归属未定。** A:239-243 把它列在 `poie-objects` API 中，A:266 的 `preview_plan_through_sap` 未写 crate 归属（本节上文是 `poie-plan::validate_plan_through_sap`）；若放在 `poie-plan`，PLATFORM:163 的 `poie-objects` 依赖没有 plan，A:276 又要求 `poie-objects` 不依赖 plan，两边成立时只能复制两份 DTO。**最小修复**：把 `SapPreview/CheckPreview/AssumedContext` 定义在 `poie-plan`（它拥有七项检查和 Plan 输入），host 组合 `ActionPreview`；或在 PLATFORM §7 显式增加 `poie-plan -> poie-objects` 并说明分层。
-- **七项检查的状态映射不完整。** A:274 只把 ownership/reservations/authorization 标为 assumed；`AssumedContext`（A:231-234）没有 predicates/state_version/executor_dedup_window，preconditions 与 dedup 只能 unknown。**最小修复**：给出七项逐项表（observed/assumed/unknown），并测试 UI 不出现“7/7 通过”。
-
-### B5 A1 的“模型派生字段”仍缺来源（A1，阻塞）
-
-- `ActionType.label/description`（A:203）在已验证 `Process` 中不存在（[model.rs](../../crates/poie-ontology/src/model.rs):304-316 没有 description）；`ObjectInstance.version`（A:194）、`LinkType.cardinality`（A:186）、`ActionType.duration` 的格式（A:205）也没有派生规则。
-- **最小修复**：给出确定性派生表：`version=model_digest`（或对象内容哈希）、`label=id` 或 `humanize(id)`、`description` 从 `Model.doc` 显式读取并说明非第二套、或置空，`cardinality` 按链接类型固定，`duration` 统一为 `"{:.3} s"`；加“每个 ActionType 字段逐项来自已验证 Model”的黄金 fixture。否则 Catalog 会变成第二套字段表。
-
-### B6 过程门禁未落到 A1 首个 PR（process，阻塞）
-
-- PLATFORM:172 要求新增依赖写 ADR（含 `sha2`），A:383-389 没有 ADR 步骤。**最小修复**：A1 第 1/6 步加 ADR（`poie-digest` 的 `sha2`、canonicalizer、属性测试依赖）。
-- SCHEMAS:4/PLATFORM:9 说 `scripts/check-schema-registry.py` 在 A0 加入，但 A0 的 5 条与第 0 步（A:40-44、383）都没列。**最小修复**：A0 加脚本 + 失败用例，或把承诺改到 A1 并更新 SCHEMAS。
-- A:342 说“limit 上限”，但没有默认值/最大值；`limit_exceeded` 无法触发。**最小修复**：定义 `default=50, max=200` 与 cursor 编码，并加边界测试。
-- PLATFORM:171 要求更新桌面自己的 `Cargo.lock`，A:384 只写根 lock。**最小修复**：host 第 2 步补 `apps/desktop/src-tauri/Cargo.lock`。
-
-## 4. 非阻塞（OPTIONAL，可进 A2 或后续）
-
-- 图节点集合含 `capability`，但布局只有 service/process/asset/resource 三列（A:317-318）；补 capability 列或从节点集删除，并定义“当前服务可达”的函数。
-- Playwright 的“mock Catalog fixture”只有名字（A:319），未给文件/生成方式；建议复用 `catalog.golden.json`，避免手写 fixture 漂移。
-- `ObjectPage.next_cursor` 的编码、`FunctionType.input_schema/output_schema` 的具体 schema、`catalog_digest` 是否包含 `model_digest` 的措辞，可在 A1/A2 一并定稿。
-- `federation_view.rs` 的 demo transition 仍写 `Authorized→Dispatched`；去掉授权后建议标为 synthetic 或改为 proposed-only 记录，避免 UI 误读（A0 清理 PR 可一并做）。
-- P:181 的 “model store” 遗留词、`sap.rs:87` 的 “six dispatch checks”、`poie-state/src/lib.rs:31` 的 M12 旧注释，可随 A 的清理 PR 修。
+- **O1 预览 DTO 的代码块归属可更清楚。** A:160-262 的 §7.1 标题是 `poie-objects`，但 `PlannedActionView`/`ActionPreview` 使用 `plan::SapPreview`，且 A:259 引用 `poie-plan`。A:267 已写明 `SapPreview` 等归 `poie-plan`、`poie-objects` 不依赖 plan；建议再加一句“`ActionPreview/PlannedActionView` 是 host `objects.rs` DTO，不属于 `poie-objects`”，避免实现者误加 `poie-objects -> poie-plan`。这是 A2 代码归属注释，不是 A1 数据契约。
+- **O2 `ObjectDetail.evidence` 的填充规则。** A:76 已把 `status_evidence` 标为 `source=evidence`，但 `ObjectDetail.evidence` 是引用列表；MVP 可返回空列表并把 `statusEvidence` 放在属性值里，或定义 `{kind:"report", id:status_evidence, fingerprint:status_evidence, source:"model", asOf:null}`。两种都实现 A1；建议在首个 PR 的二选一中加一条测试。
+- **O3 A0 测试清单可补 no-follow 用例。** A:41 已要求 no-follow/原子 rename，A:46 的断言列表只写 gate/sandbox 未登录与 scope；建议 A0 PR 加“根内符号链接指向根外”和“写入中途失败不留下半文件”两个负例。
+- **O4 七项检查状态表。** A:282 只把 ownership/reservations/authorization 默认 `assumed`；`AssumedContext`（A:232-235）没有 predicates/state_version/executor_dedup_window，preconditions 与 dedup 只能 `unknown`。A2 实现前给七项逐项状态表（observed/assumed/unknown）并测“不显示 7/7 通过”即可。
+- **O5 `planId` 的 host 映射。** A:293 接受“plan object（host 持有）或 planId”；host 只持有当前 Plan。建议明确 `planId == held.plan_id`，不匹配返回 `unknown_object`（与 `plan.preview_sap` 的 Plan-only 规则一致）。
+- **O6 A1 呈现层细化。** `ObjectType.label`/`PropertyDef.label` 的人类化、`FunctionType.input_schema/output_schema` 的四个固定 schema、`PropertyValue` 的 quantity/unit 编码可在 `poie-objects` 内用确定性规则定义；不影响 Catalog 的字段/ digest。
+- **O7 A2 UI。** 图节点含 `capability`，布局只有 service/process/asset/resource 三列（A:317-318）；补 capability 列或从节点集删除，并定义“当前服务可达”的函数。Playwright 的 mock Catalog fixture（A:319）建议复用 `catalog.golden.json`，避免手写漂移。
+- **O8 文档/注释清理。** `check-schema-registry.py` 在 SCHEMAS:4 写“A0”、在 A:392 写“A1 第 1 步”，建议统一为 A1 首 PR；P:181 的 “model store”、`sap.rs:87` 的 “six dispatch checks”、`poie-state/src/lib.rs:31` 的 M12 旧注释可随 A 清理 PR 修。
 
 ## 5. Phase A 就绪清单
 
-- [x] A0 已列为实施第 0 步；gate 先鉴权；demo 授权移除；`dispatch_allowed=false` 与 `authorized/dispatched=0` 写入验收（A:40-46、383）。
-- [x] `catalog_digest`、`SapPreview.rejections`、`plan.preview_sap` 无 `planRef`、`ActionPreview/ObjectDetail.schema`、`PreviewError` 映射（A:125、188-256）。
-- [x] DIGEST 删除 `Asset.description`、`-0.0`/浮点规则、固定向量、`poie-digest` 进 workspace 计划（DIGEST:58、71-72、96-102；A:384）。
-- [x] `SourceModel = Base-01 + pump-p1 degraded`，host 持 `Arc<Model>` 的方向明确（PLATFORM:98-104；A:38）。
-- [ ] **B1** `auth_*` 例外、`sandbox_root`、A0 no-follow/原子写、execution 测试预期已改。
-- [ ] **B2** `status_evidence` 的 source/asOf 极性已修正，并有双分支 fixture。
-- [ ] **B3** `EvidenceRef` 补齐 `asOf/source`；`ObjectDetail.evidence` 填充规则；所有 `ontology_*` 带 `modelDigest`/`catalogDigest`。
-- [ ] **B4** Action 预览/Plan 预览二选一；删除 `params?`；`SapPreview` crate 归属；七项状态表。
-- [ ] **B5** ActionType/ObjectInstance 的每个字段有确定性模型来源，黄金 fixture 覆盖。
-- [ ] **B6** ADR、`check-schema-registry.py`、limit 上限、桌面 `Cargo.lock` 写入 A1 首 PR。
-- [ ] 以上修改提交为单一 commit，以该 commit 重跑本报告；当前 `c4bc294` 不能作为开工基线。
+- [x] **A0 授权语义**：不生成 `Authorization`；execution/federation 的 demo 授权移除；`dispatch_allowed=false`、`authorized/dispatched=0` 写入验收（A:43-46、391）。
+- [x] **A0 命令 scope**：`auth_*` bootstrap 例外；`poie-view-execution`/`poie-view-plan` 标签；`sandbox_root` 由 `host_info` 返回、无 `sandbox_list`；`sandbox_*` no-follow + 原子写（A:40-42；PLATFORM:74-90）。
+- [x] **单一模型**：`SourceModel = Base-01 + pump-p1 degraded`，host 持 `Arc<Model>`（PLATFORM:95-104；A:38）。
+- [x] **Catalog/DTO**：`catalog_digest`、`model_digest`、`EvidenceRef`、`ObjectInstance.version`、`LinkType.cardinality`、`ActionType.duration_s`、`ObjectPage/ObjectDetail/ActionPreview` digest 已定（A:188-262）。
+- [x] **预览只读**：`plan.preview_sap` 只收 host Plan；`ontology_action_preview` 基于 `PlannedActionView`；`SapPreview` 归 `poie-plan`；无 `params?`（A:125、249-293）。
+- [x] **Digest**：`Asset.description` 删除、`-0.0`/浮点/固定向量、`poie-digest` 进 members/测试矩阵（DIGEST:58、71-72、96-102；A:392）。
+- [x] **过程门禁**：ADR（sha2/serde/生成器）、`check-schema-registry.py`、limit 上限（500/page、1 MiB）、根与桌面 `Cargo.lock`、cargo-deny/check-test-matrix/check-docs（A:392、397）。
+- [x] **UI/A2 方向**：Catalog 驱动图、删除 `GRAPH_NODES`、Playwright mock/host 分工（A:317-319）；capability 列/fixture 见 O7，属 A2 细化。
+- [x] **快照**：以 `0527c7f` 为唯一基线；本报告提交后不再改设计文档，若改则重跑。
 
-**结论：当前为“否”，但没有架构级阻塞。** 先关闭 B1（A0 可直接产生错误鉴权/路径逃逸）与 B2/B3（A1 的数据语义），再关闭 B4–B6。B/C/D 的门禁项不在本报告阻断范围。
+## 6. 校验方法、限制与证据
 
-VERDICT: CHANGES_REQUIRED
+- 方法：只读对照 PO/SAP/VEC、`crates/poie-*`、`apps/desktop/src-tauri`、`apps/desktop/src`、根 workspace、`scripts/`；`python3 scripts/check-docs.py` exit 0；未运行完整 `cargo test`，因此本报告是设计门禁结论，不是实现验收。
+- 代码对照：`execution.rs:96-101`（硬编码授权）、`execution.rs:181-197`（旧断言）、`federation_view.rs:85-90`（第二处授权）、`sandbox.rs:38-47`（`std::fs::write`）、`lib.rs:224`（`sandbox_root`）、`auth.rs:81-110`（register/sign_in 引导）、`model.rs:270-272`（`status_evidence` 语义）、`model.rs:304-315`（`Process` 无 description）、`plan.rs:31-43`（`PlannedAction`）。
+- 设计证据：[A](phase-a-ontology-product.zh-CN.md)、[PLATFORM](PLATFORM.zh-CN.md)、[DIGEST](DIGEST.md)、[SCHEMAS](SCHEMAS.md)、[README](README.zh-CN.md)；代码链接见 §1/§2。
+- 快照限制：校验期间分支从 `55bd48d` 前进到 `0527c7f`；`VALIDATION.zh-CN.md` 仍绑定 `c4bc294`，其结论已部分过期。若 `0527c7f` 之后再提交，必须以新 HEAD 重跑本报告。
+
+**结论：A0/A1 可以开始实现。** 先按 A:391 的 step 0 做 A0（gate/sandbox 鉴权、synthetic preview、测试），再做 `poie-digest`/`poie-objects`/`poie-sdkgen`；§4 的 OPTIONAL 项在对应 PR 收尾即可。
+
+VERDICT: PASS
