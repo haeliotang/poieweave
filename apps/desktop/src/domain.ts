@@ -421,3 +421,36 @@ export interface WhatIfCompare {
   rows: { resultId: string; variantId: string; mode: string; outcome: WhatIfOutcome; completionS?: number | null }[];
   warnings: string[];
 }
+
+export interface DeliveryManifestSummary {
+  siteId: string;
+  siteName: string;
+  target: string;
+  channel: string;
+  releasedAt: string;
+  manifestSha256: string;
+  importedAt: number;
+  importedBy: string;
+  source: string;
+}
+
+export interface DeliveryState {
+  schema: string;
+  schemaVersion: string;
+  current?: DeliveryManifestSummary | null;
+  previous?: DeliveryManifestSummary | null;
+  recalled: boolean;
+  updatedAt: number;
+}
+
+export interface DeliveryInspect {
+  manifest: {
+    siteId: string;
+    siteName: string;
+    target: string;
+    channel: string;
+    releasedAt: string;
+    manifestSha256: string;
+  };
+  manifestSha256: string;
+}
