@@ -14,9 +14,9 @@ Poieweave 需要把“站点交付”变成可验证、可回滚的元数据操�
 
 1. `SiteManifest` JSON 可检验、可哈希、可拒绝未知字段。
 2. 原子导入：先写事务，再切 state；失败不留下半状态。
-3. `DeliveryState` 保存当前/上一份完整 manifest 与摘要；rollback 只换 state。
+3. `DeliveryState` 只保存当前/上一份摘要；完整 manifest 存在 `delivery_manifests`，rollback 只换 state。
 4. `delivery_diagnostics_export` 生成固定、可复现、脱敏的 JSON 文件。
-5. 本地、离线、无网络；显式错误码；审计。
+5. 本地、离线、无网络；显式错误码；审计事件 `delivery.*`。
 6. D1 不做 channel 选择/签名/安装器/策略更新；D2 另立设计并重跑 D 门禁。
 
 ## 3. 非目标
@@ -71,19 +71,21 @@ SiteBundle {
 ```text
 DeliveryState {
   schema: "poie.delivery-state/0.1",
+  schemaVersion: "0.1",
   current: ManifestSummary|null,
   previous: ManifestSummary|null,
   recalled: bool,
   updatedAt: i64
 }
 ManifestSummary {
-  siteId, siteName, target, channel, releasedAt,
-  manifestSha256, importedAt, importedBy, source:"offline"
+  siteId: string, siteName: string, target: string, channel: string, releasedAt: string,
+  manifestSha256: string, importedAt: i64, importedBy: string, source: "offline"
 }
 ```
 
 - 完整 manifest 存在 `delivery_manifests(manifest_sha256 PK, manifest_json, imported_at)`；state **只存摘要**，不重复存完整 manifest。
 - `current/previous` 都是 `Option<ManifestSummary>`；rollback 执行 **swap**：`(current, previous) = (previous, current)`，因此可连续回滚一次退回再回滚；没有 previous → `rollback_unavailable`。
+- `delivery_clear`（登录、写）把 current/previous 都置 null；用于 `delivery_conflict` 后换站点。D1 无 un-recall，clear 后重新 import。
 - `recalled = current.channel == "recall"`；导入 recall manifest 只设置 current/recalled，不改变 policy/HostPolicy；rollback 恢复 previous 后按 previous.channel 重算 recalled。D1 不提供 un-recall。
 - `DeliveryState.schemaVersion` 必填；`ManifestSummary` 由 §4.1 摘要字段组成本身，不含完整 manifest。
 
@@ -95,6 +97,7 @@ ManifestSummary {
 | `delivery_import` | path, expectedManifestSha256 | DeliveryState | 写；登录；无审批 |
 | `delivery_state` | — | DeliveryState | 只读；登录 |
 | `delivery_rollback` | — | DeliveryState | 写；登录；无审批 |
+| `delivery_clear` | — | DeliveryState | 写；登录；无审批 |
 | `delivery_diagnostics_export` | outputDir, overwrite? | DiagnosticsSummary | 写；登录 |
 
 - 命令通过 `auth::require` + 统一 `{code,message,details}` 错误包络；D1 的 import/rollback 是 **登录会话内的本地元数据写**，不需要 ApprovalToken/HostPolicy/Window（这与 PLATFORM D1 行一致；D2 若改为远程/策略变更再引入审批）。
@@ -122,7 +125,7 @@ delivery_state(id PK CHECK(id=1), state_json, updated_at)
 6. 写 state；`COMMIT`。
 - 失败 `ROLLBACK`；不改变 state。
 - 重复导入同一 sha：若已是 current，**不改变 previous/state**；若只是历史存在，则提升为 current、previous=旧 current。
-- `delivery_conflict`：state 已存在且新 manifest 的 siteId 与 current 不同（D1 单站点；换站点需先 rollback/清空，D2 再设计）。
+- `delivery_conflict`：state 已存在且新 manifest 的 siteId 与 current 不同（D1 单站点；先 `delivery_clear` 再 import，D2 再设计多站点）。
 - 不同 target 但同 site：允许作为历史/current，UI 显示 target；不自动删除。
 - `manifest_json` 原样保存，用于回滚/诊断；不重新解析后重写。
 - `user_version` 从 3→4；创建表并设 4；幂等；不修改 whatif/agent 表。
@@ -152,16 +155,18 @@ DiagnosticsSummary {
 - 不包含 secrets、API key、prompt、模型输出、绝对路径、用户名、UUID、站点 note 原文、importedBy。
 - `siteId` 只输出 `sha256(siteId)` 前 12 位；`siteName` 不输出。
 - `checks.detailCode` 只允许固定枚举；`logTail` 先用固定正则脱敏（key/token/绝对路径/用户名/UUID），再按 128 KiB 总上限截断并 `truncated=true`。
-- 写文件前校验 `outputDir` 为 sandbox 下已存在目录、无 symlink 逃逸、目标不存在或 `overwrite=true`。
+- `path`/`outputDir` 都是 **sandbox 相对路径**（拒绝绝对路径、`..`、symlink、非 UTF-8）；复用 A0 `sandbox::resolve` 的 no-follow 规则；文件 ≤256 KiB。
+- `detailCode` 枚举：`manifest_ok`、`digest_mismatch`、`state_absent`、`state_recalled`、`manifest_missing`、`io_denied`。
+- 目标 `delivery-diagnostics.json` 已存在且 `overwrite=false` → `delivery_conflict`；`overwrite=true` 才覆盖。
 - 不发送网络/遥测。
 
 ## 8. UI
 
 - Settings “站点交付”区：
-  - 选择本地 JSON（文件选择器）；显示 inspect 的 site/target/channel/sha；
+  - 输入 sandbox 相对 JSON 路径（不使用系统文件选择器，避免 capability/绝对路径）；显示 inspect 的 site/target/channel/sha；
   - Import 需再次确认 sha；成功后显示 current/previous；
   - Rollback 按钮；
-  - Export diagnostics 到用户选择目录。
+  - 输入 sandbox 相对 outputDir 导出诊断。
 - 所有状态只来自 host；浏览器预览显示 host-only 占位。
 - Recall 状态用文字 + 颜色，不能只靠颜色。
 - 不显示“部署成功/在线”文案；只显示“元数据已导入”。

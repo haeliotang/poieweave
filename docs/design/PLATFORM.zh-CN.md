@@ -86,15 +86,15 @@ schema = "poie.<domain>/<major>.<minor>"
 | `ontology_*` | 否（只读） | main/poie-view-* | 读 | A0 后按窗口 |
 | `agent_*` | 是 | main | 写/网络 | 会话 + scope + policy |
 | `whatif_*` | 是 | main/poie-view-plan | 写（C1 结果表） | 会话 + `authorize(window,command,session,policy)`；C1 不写 SAP/live |
-| `delivery_*` | 是 | main | 写 | 会话 + 审批 + policy |
+| `delivery_*` | 是 | main/settings | D1 元数据写 | 会话 + 审计；D1 无审批/Window；D2 再加审批/policy |
 
 实现要求：
 
 - `auth::Session` 必须带 `sessionId`（128-bit 随机 hex，创建会话时生成）；审批、capability、RunState 全用它；登出/过期即失效。
-- 每个命令显式接收/读取 `tauri::Window` 并调用 `authorize(window, command, session, policy)`；不得依赖“所有窗口共享全部命令”。
+- 每个命令显式接收/读取 `tauri::Window` 并调用 `authorize(window, command, session, policy)`；不得依赖“所有窗口共享全部命令”。**D1 `delivery_*` 例外**：仅本地 sandbox 元数据，使用 `auth::require` + 审计，不引入 Window/审批/policy；D2 若改远程/策略再适用本行。
 - `capabilities/default.json` 仅为默认；为 settings/agent 窗口增加独立 capability 文件（或命令内 scope 检查），二者至少一种，且测试覆盖。
 - `execution_gate_set` 改为先 `auth::require` 再修改；`sandbox_*` 改为 no-follow + 原子写（Phase D 复用）。
-- 站点策略 `HostPolicy`：默认 `{ agentScopes:["read","propose"], remoteInference:false, autoUpdate:false, channel:"stable" }`；D 的 SQLite 覆盖；所有命令经同一 `policy.check`。
+- 站点策略 `HostPolicy`：默认 `{ agentScopes:["read","propose"], remoteInference:false, autoUpdate:false, channel:"stable" }`；D1 只读取 HostPolicy 展示；D1 不改 policy，D2 才允许 SQLite 覆盖/`policy.check`。
 
 ## 5. 当前模型与 digest
 
@@ -163,7 +163,7 @@ pub struct ApprovalToken {
 - `OperatorConfirm`：宿主创建 pending token；UI 展示 subject/args/影响/引用；`agent_approve` 原子置 approved，`agent_resume` 原子置 executing 后执行一次并置 consumed；任何字段变化使 digest 不匹配。
 - `TwoPerson`：Phase B/D 不开放（删除预留，避免与单操作员冲突）；需要时另立 ADR + 角色模型。
 - `Forbidden`：直接拒绝并审计。
-- B 的 agent、C 的 promote、D 的 channel/import 使用同一原语；不允许布尔 `approved` 参数。
+- B 的 agent、C2 的 promote、D2 的 channel/import 使用同一原语；D1 元数据 import 不使用审批。不允许布尔 `approved` 参数。
 - 所有 token 持久化（`approval_tokens` 表）以支持暂停/恢复/审计；批准：`pending → approved`；消费：`approved → executing → consumed`（原子条件更新）；过期自动拒绝。
 - token 与 SAP 记录的关联：写入审计时记录 `sap_record_id`；`Authorization.basis` 包含 `approval:<tokenId>`（或结构化后字段），使 SAP 记录可反查 token。
 
@@ -178,7 +178,7 @@ pub struct ApprovalToken {
 | `poie-sdkgen` | A (bin) | poie-objects, serde_json |
 | `poie-governance` | B | poie-objects, poie-state (只读), poie-plan, poie-ontology, poie-digest, serde, serde_json, toml |
 | `poie-whatif` | C1 | ontology, plan, objects, digest, serde |
-| `poie-delivery` | D | ontology/state/viability, digest, serde |
+| `poie-delivery` | D1 | digest, serde, serde_json |
 
 规则：
 
