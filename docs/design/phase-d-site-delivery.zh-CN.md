@@ -1,290 +1,182 @@
-# Phase D 设计：站点交付与运行闭环
+# Phase D 设计：站点交付（D1 元数据交付）
 
-- 状态：设计草案（待独立校验后进入开发）
-- 日期：2026-11-04
-- 范围：Phase D / 交付清单、通道、证据/版本绑定、离线导入、诊断、回滚
-- 上游：Phase A–C、现有发布流水线与证据链
-- 下游：真实站点安装/运维（外部条件）
+- 状态：设计草案（Phase D 门禁重跑后方可开发）
+- 日期：2026-11-05
+- 范围：D1 仅 JSON 交付元数据：manifest 检验、原子导入、状态、回滚、诊断导出；D2 才做 release channel/签名/安装器
+- 上游：A/B/C1；D1 不依赖审批链
+- 下游：无二进制/模型导入
 
-## 1. 背景与问题
+## 1. 背景
 
-Poieweave 已经能构建 Linux/Windows/macOS universal 产物，并在 tag 上自动发布 Release。但“能安装”不等于“能在站点交付和运维”：
-
-- 没有 release channel 和可解释的升级边界；
-- 没有把应用版本、模型 digest、合同版本、证据摘要、策略绑在一起的交付清单；
-- 断网环境没有可校验的交付元数据；
-- 没有本地诊断包/版本核对；
-- 没有回滚/召回流程；
-- 站点策略（Agent scope、远程推理、自动更新）没有统一入口。
-
-Phase D 不做 OTA 平台，也不做安装器/模型热切换；它先做**可验证的交付清单**和**离线核对/回滚闭环**。
+Poieweave 需要把“站点交付”变成可验证、可回滚的元数据操作，而不是把安装器、更新器或二进制塞进应用。D1 只处理站点 manifest/state/diagnostics 的 JSON 导入、状态与回滚；不导入 app/model 二进制，不做联网更新/遥测，不修改 HostPolicy。
 
 ## 2. 目标
 
-1. 定义 **Delivery Manifest**：app 版本/commit/target、channel、模型与合同 digest、证据摘要、策略、构建产物摘要。
-2. 定义 **Site Bundle**：manifest + 可选诊断/证据摘要，可在断网环境导入/导出；**不包含应用二进制或模型文件**。
-3. 实现 **Release Channel**：stable/canary/site 的本地订阅状态；显示在设置/状态栏；channel 是订阅，不是“目标版本”。
-4. 实现 **Delivery Plan**：根据 channel、版本兼容、model/contracts/evidence digest、召回状态，解释可更新/不可更新原因。
-5. 实现 **导入/回滚/召回**：导入只更新交付状态/策略/证据引用；回滚切换保留的上一清单；召回阻止继续使用。
-6. 实现 **Diagnostics**：host/版本/channel、model/execution/federation fingerprint、审计摘要、最近错误（来自 audit）；不含密钥/prompt/文件内容。
-7. 统一 `HostPolicy`：Agent scope、远程推理、自动更新默认关闭；D 的 SQLite 覆盖由同一策略加载器强制。
+1. `SiteManifest` JSON 可检验、可哈希、可拒绝未知字段。
+2. 原子导入：先写事务，再切 state；失败不留下半状态。
+3. `DeliveryState` 保存当前/上一份完整 manifest 与摘要；rollback 只换 state。
+4. `delivery_diagnostics_export` 生成固定、可复现、脱敏的 JSON 文件。
+5. 本地、离线、无网络；显式错误码；审计。
+6. D1 不做 channel 选择/签名/安装器/策略更新；D2 另立设计并重跑 D 门禁。
 
 ## 3. 非目标
 
-- 不做自动安装/自动更新器；不替换 Tauri 包；不修改运行中的二进制。
-- 不导入/切换模型文件；模型仍由构建期/本地 `ModelStore` 提供（Phase D 只记录 digest）。若未来要 model bundle，另立设计。
-- 不做跨平台签名/公证的替代；SHA-256 只做完整性，未签名明确标记“未认证”。
-- 不做中心化遥测/日志上传；默认零遥测。
-- 不做 Kubernetes/Helm/多租户；单站点桌面交付。
-- 不把 bundle 当 live 数据库备份/恢复工具；不承诺断网自动获取新版本。
-- 不做 SBOM/attestation 的强制门禁（列为可选 O2）。
+- 不导入/执行 app、model、脚本、二进制、HTML、zip；只接受 UTF-8 JSON。
+- 不做联网下载、updater、telemetry、自动更新、安装器、DMG/MSI/portable exe。
+- 不做 release channel 自动选择、签名验证、阈值信任、策略更新。
+- 不做审批 token/run/call（D2 若需要再设计）。
+- 不声称“部署成功”；只声称“元数据已导入/回滚”。
 
-## 4. 用户与场景
+## 4. 数据模型
 
-| 场景 | 操作 |
-| --- | --- |
-| 现场基线 | 导出 manifest + diagnostics，记录版本/证据 digest |
-| 隔离站点核对 | 携带 bundle 导入，校验版本/证据/策略，不替换 app |
-| 回滚 | 保留上一交付清单，导入/切换并核对 |
-| 召回 | 标记某个 release 不可用，阻止继续安装/切换 |
-| 审计 | 查看 manifest/diagnostics，确认运行版本与证据 |
-| 支持 | 导出脱敏 diagnostics 交给维护者 |
-
-## 5. 数据模型
-
-### 5.1 Delivery Manifest / Site Bundle
-
-```toml/json
-schema = "poie.site-bundle/0.1"
-bundleId = "..."
-createdAt = "..."
-releaseId = "v0.1.1+<commit>"
-app = { product = "Poieweave", version = "0.1.1", commit = "...", target = "universal-apple-darwin" }
-channel = "stable" # stable | canary | site
-site = { id = "...", name = "..." }
-coreCrates = [ { name = "poie-ontology", version = "0.1.0" } ]
-model = { id = "base-01", sha256 = "..." }
-contracts = [
-  { id = "physical-ontology", version = "0.3-draft", revision = "2026-11-03", sha256 = "..." },
-  { id = "state-action-protocol", version = "0.2-draft", revision = "...", sha256 = "..." },
-  { id = "viability-expansion", version = "0.2-draft", revision = "...", sha256 = "..." }
-]
-evidence = [ { id = "vec-base01", kind = "report", fingerprint = "...", sha256 = "..." } ]
-policy = { agentScopes = ["read","propose"], remoteInference = false, autoUpdate = false }
-rollbackTo = "v0.1.0+<commit>"  // 可选
-artifacts = [ { name = "Poieweave_0.1.1_universal.app.zip", os = "macos", target = "universal", sha256 = "...", bytes = 1234 } ]
-diagnostics = { schema = "poie.diagnostics/0.1", inline = false }
-integrity = { algorithm = "sha256", manifestSha256 = "..." }
-```
-
-规则：
-
-- manifest 只包含元数据；`artifacts` 是对已发布产物的引用，不随 bundle 复制二进制。
-- 不包含 `files[]`/模型文件；没有路径遍历面。
-- `manifestSha256 = sha256("poie.manifest/0.1\n" + canonical_json(manifest without integrity))`，见 [DIGEST](DIGEST.md)。
-- 未知 schema major 拒绝；minor 忽略未知字段。
-- SHA-256 不等于签名；未签名显示“未认证”。
-- artifact/target 来自构建期 `release.json`，不由运行时猜测；`host_info` 增加 `build: { releaseId, commit, target, channel? }`，从编译期 `release.json` 读取，DeliveryState 不能覆盖它。
-- `contracts` 由机器可读 `contracts.toml`（新增）生成，不再解析契约正文。
-
-### 5.2 Channel / DeliveryState
-
-通道是**订阅**，不是固定目标版本：
+### 4.1 SiteManifest
 
 ```text
-DeliveryChannel = stable | canary | site
+SiteManifest {
+  schema: "poie.site-manifest/0.1",
+  schemaVersion, siteId, siteName,
+  target: string,                 // 单目标标识；D1 不做多 OS artifact
+  channel: "stable"|"canary"|"recall",
+  releasedAt: string,             // ISO-8601 UTC
+  modelSha256: string|null,       // 仅引用，不导入
+  evidenceSha256: string|null,
+  policy: { profile: string },    // D1 只读 metadata，不应用
+  notes: string,
+  manifestSha256: string          // computed
+}
+```
+
+- `manifestSha256 = sha256("poie.site-manifest/0.1\n" + canonical_json(manifest_without_manifestSha256))`；拒绝未知字段，避免“宽容解析导致 self-hash 不一致”。
+- `target` 单值；D1 不支持多 OS artifact。
+- `policy` 仅展示，不写入 HostPolicy、不改变 channel。
+- 文件上限 256 KiB；字符串长度/数组上限固定。
+
+### 4.2 Bundle envelope
+
+```text
+SiteBundle {
+  schema: "poie.site-bundle/0.1",
+  manifest: SiteManifest
+}
+```
+
+- 只接受 bundle envelope；`manifest` 为唯一 payload。
+- 导入前重新计算 `manifestSha256`，与请求 `expectedManifestSha256` 比较；不一致 → `stale_manifest`（inspect→import TOCTOU 防护）。
+- 不接受额外字段/尾随内容/非 UTF-8/超限。
+
+### 4.3 DeliveryState
+
+```text
 DeliveryState {
-  schemaVersion, channel, siteId?,
-  installed: ManifestSummary?, previous: ManifestSummary?,
-  lastImportedAt, lastDiagnosticsAt,
-  policy: HostPolicy,
-  recalledReleaseIds: string[]
+  schema: "poie.delivery-state/0.1",
+  current: ManifestSummary|null,
+  previous: ManifestSummary|null,
+  recalled: bool,
+  updatedAt: i64
+}
+ManifestSummary {
+  siteId, siteName, target, channel, releasedAt,
+  manifestSha256, importedAt, importedBy, source:"offline"
 }
 ```
 
-优先级：**manifest 的 channel/site 字段只描述该清单来源；本地 `DeliveryState.channel` 决定订阅**；冲突时以本地订阅为准，UI 显示差异并要求显式切换。`site` 通道表示站点固定，不随 stable/canary 自动变化。
+- 完整 manifest 存在 `delivery_manifests(manifest_sha256 PK, manifest_json, imported_at)`；state 只存摘要。
+- `current/previous` 是摘要；rollback 把 previous 设为 current，current 清空/设回 previous 的前一份；保留 manifest 行。
+- `recalled=true`：UI/读取显示 recall 且禁止把该 manifest 当 current 使用；仍允许 rollback 到 previous。D1 不提供“解除 recall”。
 
-默认：channel=`stable`；remoteInference=false；autoUpdate=false；agentScopes=[read,propose]。
+## 5. 命令
 
-### 5.3 DeliveryPlan / Recall
+| 命令 | 输入 | 输出 | 权限 |
+| --- | --- | --- | --- |
+| `delivery_manifest_inspect` | path | SiteManifest + computed sha | 只读；登录 |
+| `delivery_import` | path, expectedManifestSha256 | DeliveryState | 写；登录；无审批 |
+| `delivery_state` | — | DeliveryState | 只读；登录 |
+| `delivery_rollback` | — | DeliveryState | 写；登录；无审批 |
+| `delivery_diagnostics_export` | outputDir | DiagnosticsSummary | 写；登录 |
+
+- 命令通过 `auth::require` + 统一 `{code,message,details}` 错误包络；D1 不引入 Window/HostPolicy/审批。
+- 错误码：`invalid_parameter`、`unsupported_schema`、`stale_manifest`、`manifest_invalid`、`delivery_conflict`、`rollback_unavailable`、`unauthorized`、`scope_denied`、`io_error`。
+- `import` 的 `expectedManifestSha256` 必填；空/不匹配拒绝。
+- `rollback` 无 previous → `rollback_unavailable`。
+
+## 6. 持久化与原子性
+
+SQLite `user_version=4`：
 
 ```text
-DeliveryPlan {
-  desiredChannel, installedManifest?, candidateManifest?,
-  constraints[{ id, ok, detail }],
-  blockedReasons[],
-  actions[{ kind, label, requiresApproval }]
+delivery_manifests(manifest_sha256 PK, schema_version, manifest_json, imported_at)
+delivery_state(id PK CHECK(id=1), state_json, updated_at)
+```
+
+导入事务：
+
+1. `BEGIN IMMEDIATE`；
+2. 重算/校验 manifest；
+3. `INSERT OR IGNORE` manifest（同 sha 已存在则复用；同 site/target 不同 sha 允许，作为历史）；
+4. 读 state；`previous=current`；`current=新摘要`；
+5. 写 state；`COMMIT`。
+- 失败 `ROLLBACK`；不改变 state。
+- 重复导入同一 sha：幂等，不重复追加历史；返回相同 state。
+- `manifest_json` 原样保存，用于回滚/诊断；不重新解析后重写。
+- `user_version` 从 3→4；创建表并设 4；幂等；不修改 whatif/agent 表。
+
+## 7. 诊断
+
+`delivery_diagnostics_export(outputDir)` 写 `delivery-diagnostics.json`（固定名，覆盖需确认）：
+
+```text
+DiagnosticsSummary {
+  schema: "poie.delivery-diagnostics/0.1",
+  generatedAt: i64,               // caller-supplied now? 固定由 host 注入
+  appVersion, os, arch,
+  delivery: DeliveryState,
+  checks: [{ id, status:"ok|failed|unknown", detail }],
+  errorCodes: string[],           // 固定白名单，不含自由文本
+  logTail: string[]               // 最多 50 行，redacted
 }
 ```
 
-- 约束：schema/version 兼容、model digest、contracts digest、evidence 完整、回滚目标存在、未召回。
-- `delivery_plan` 必须能解释“为什么没有可采纳的 manifest/为什么被挡住”；不要用 `update` 暗示会自动升级 app 或模型，字段用 `adoptManifest`。
-- `recall(releaseId)`：加入本地召回列表并写审计；已安装则显示召回+允许回滚；不删除证据/不自动切换。
-- 回滚：切换到 `previous` 清单；不覆盖 SQLite，不替换二进制；数据库迁移失败则拒绝并保留原状态。
+- 不包含 secrets、API key、prompt、模型输出、绝对路径、用户名、UUID、站点 note 原文。
+- `siteId`/`siteName` 只保留长度/哈希前缀，默认不导出原文。
+- 大小上限 128 KiB；超出截断并 `truncated=true`。
+- `generatedAt` 由 host 传入 `now_ms`；同一 state/输入在测试注入时钟下可复现；不承诺跨时刻字节相同。
+- 不发送网络/遥测。
 
-### 5.4 Diagnostics
+## 8. UI
 
-```text
-Diagnostics {
-  schemaVersion, generatedAt, app, channel, siteId?,
-  host { version, os, dataDir basename, sandbox basename },
-  modelSha256, executionFingerprint, federationFingerprint,
-  auditSummary { count, lastEventAt, eventCounts },
-  recentErrors[] { at, code, event }, // 仅来自 audit，不新建错误表
-  capabilities { remoteInferenceConfigured, agentEnabled },
-  redactions[]
-}
-```
+- Settings “站点交付”区：
+  - 选择本地 JSON（文件选择器）；显示 inspect 的 site/target/channel/sha；
+  - Import 需再次确认 sha；成功后显示 current/previous；
+  - Rollback 按钮；
+  - Export diagnostics 到用户选择目录。
+- 所有状态只来自 host；浏览器预览显示 host-only 占位。
+- Recall 状态用文字 + 颜色，不能只靠颜色。
+- 不显示“部署成功/在线”文案；只显示“元数据已导入”。
 
-禁止：API key、Authorization、完整 prompt、SQLite 内容、文件内容、口令、绝对路径细节。`redactions` 由固定规则扫描：删除包含 `key/token/secret/password/authorization` 的字段或替换为 `<redacted>`，并有负例测试。
+## 9. 依赖与过程门禁
 
-## 6. 架构
+- 新 crate `poie-delivery`（纯 Rust）：manifest/schema/digest/state/compare，无 Tauri/网络/fs。
+- host `delivery.rs`：文件读取（UTF-8/大小）、SQLite 事务、诊断。
+- 依赖：poie-digest、serde/serde_json；不依赖 poie-exec。
+- 根 members、桌面 path dep、两处 Cargo.lock、test-matrix/status-snapshot、desktop workflow `crates/**` 路径、ADR、cargo-deny。
+- D1 不改 release workflow/安装器；D2 另立设计。
+- 实施顺序：D0 manifest schema/digest → crate → DB v4 → host commands → UI → tests/docs。
 
-```text
-crates/poie-delivery       NEW: manifest/DeliveryState/DeliveryPlan/Diagnostics; pure Rust
-  ├── poie-digest          canonical JSON/SHA-256
-  ├── poie-ontology        model digest
-  └── poie-viability       evidence metadata (optional)
-        │
-        ▼
-apps/desktop/src-tauri     delivery.rs: state/commands/policy/audit
-apps/desktop/src           Delivery settings/status UI
-.github/workflows         release.json + manifest + artifact upload
-```
+## 10. 测试与验收
 
-### 6.1 `poie-delivery`
+- manifest 自哈希稳定；未知字段/超大/非 UTF-8/尾随内容拒绝。
+- inspect→import sha 变化 → `stale_manifest`；导入不改变 HostPolicy/live。
+- 导入事务失败回滚；重复导入幂等；rollback 交换 current/previous；无 previous 拒绝。
+- recall 显示且不当作 current；D1 不提供 un-recall。
+- 诊断无 secret/prompt/绝对路径/UUID；大小上限；固定错误码。
+- UI host-only 占位、导入确认、rollback；无“部署成功”文案。
+- 验收：离线导入一份 JSON、回滚、导出诊断；不联网、不导入二进制、不改策略。
 
-- `Manifest`, `ManifestSummary`, `DeliveryState`, `DeliveryPlan`, `Diagnostics` DTO；
-- `Manifest::verify()`：schema/version/digest/contracts/evidence/artifact refs；
-- `manifest_sha256` canonical 计算；
-- 不读文件树、不写数据库、不网络。
+## 11. D2（延后，需重跑门禁）
 
-### 6.2 Host 命令
-
-| 命令 | 输入 | 输出 |
-| --- | --- | --- |
-| `delivery_status` | 无 | DeliveryState |
-| `delivery_plan` | desiredChannel? | DeliveryPlan |
-| `delivery_bundle_export` | 无 | bundle JSON 写入固定 sandbox 目录 `delivery/exports/`，上限 256 KiB；返回路径 |
-| `delivery_bundle_inspect` | bundle JSON path | Manifest + validation |
-| `delivery_bundle_import` | bundle JSON path, approvalTokenId | DeliveryState（只更新清单/策略/证据引用） |
-| `delivery_bundle_rollback` | approvalTokenId | DeliveryState |
-| `delivery_recall` | releaseId, approvalTokenId | DeliveryState |
-| `delivery_channel_set` | channel, approvalTokenId | DeliveryState |
-| `delivery_policy_set` | HostPolicy, approvalTokenId | DeliveryState |
-| `delivery_diagnostics_export` | 无 | Diagnostics JSON |
-
-所有写命令要求登录 + `ApprovalToken`（见 PLATFORM §6）+ 审计；路径只接受 sandbox 内相对名，不跟随符号链接。
-
-**安全写 API（host）**：
-
-```rust
-fn write_atomic(path: &Path, bytes: &[u8]) -> Result<(), DeliveryError>;
-fn read_manifest(path: &Path) -> Result<Manifest, DeliveryError>;
-```
-
-- `write_atomic`：在目标同文件系统创建临时文件、`fsync`、`rename`、再 `fsync` 父目录；失败清理临时文件；
-- 拒绝符号链接/硬链接目标；路径组件只允许 Normal，不允许 `..`/绝对路径；
-- 单文件 ≤256 KiB，bundle 总大小 ≤1 MiB；失败不改当前 DeliveryState；
-- 测试：符号链接/tamper/磁盘满/rename 失败/并发写。
-
-### 6.3 模型/证据/合同绑定
-
-- host 保存 `SourceModel`（Base-01 + degraded）与 `modelSha256`；D 只记录/校验，不导入模型。
-- `contracts.toml` 机器可读注册表：id/version/revision/sha256；构建时生成，D 校验。
-- 证据摘要来自现有实验产物（`docs/status/test-matrix`/报告），不重新哈希整个仓库；只记录声明 + 文件 sha256。
-- 导入时若 model/contracts/evidence 与当前不匹配，拒绝并给出差异；不尝试热切换。
-
-### 6.4 发布流水线与版本源
-
-- 单一版本源：`apps/desktop/package.json` 的 `version`；`src-tauri/Cargo.toml` 必须一致；`RELEASE.json` 构建期注入 commit/target/channel。
-- `.github/workflows/desktop-build.yml` 产出 Linux `.deb`、Windows NSIS、macOS universal `.app.zip`；**不生成 DMG/便携 exe**。manifest 示例只列实际产物；DMG 若手动发布，不写入自动 manifest。
-- tag release 依赖根 `verify-all`/证据重放：`desktop-build.yml` 的 tag job 增加 `workflow_run` 或显式调用/复用根 CI 的 verify job；`release` job `needs: [build, verify]`。`ci.yml` 的 tag 触发或 `workflow_call` 必须写进 workflow，而不是只写口号。
-- PR paths 必须覆盖 `apps/desktop/tests/**` 与 `playwright.config.ts`；目前桌面 workflow 已有部分，需去重并补齐。
-- `check-release-manifest.py` 校验版本/产物/digest。
-- SBOM/attestation 可选（O2），不阻塞。
-
-### 6.5 Policy 强制
-
-- `HostPolicy` 由 PLATFORM 定义；D 的 SQLite 覆盖默认值。
-- `inference_*`、`agent_*`、`execution_gate_set`、`sandbox_*` 必须读取同一 policy；`remoteInference=false` 时 `inference_configure/test/complete` 拒绝。
-- `execution_gate_set`/`sandbox_*` 的 auth 缺口按 Phase A A0 修复；D 不重复实现。
-
-## 7. UI
-
-### 7.1 设置 → 交付
-
-- 当前 channel/version/commit/target、manifest sha256；
-- 当前 model/contracts/evidence digest；
-- 按钮：导出 bundle、导入（先 inspect）、回滚、召回、导出诊断；
-- 导入前展示：schema/版本/digest 差异、未认证标记、约束失败；
-- 显示 `DeliveryPlan` 的“为什么没有更新/为什么被挡住”；
-- 浏览器预览禁用 host-only 操作。
-
-### 7.2 状态栏 / 关于
-
-- 状态栏显示 channel + manifest 简写；
-- 关于页显示完整 manifest 摘要与“未认证”标记；
-- 无隐式遥测。
-
-## 8. 安全与失败模式
-
-| 风险 | 控制 |
-| --- | --- |
-| 路径穿越/符号链接 | 不接受文件树；bundle 是 JSON；路径只允许 sandbox 内相对文件 |
-| bundle 篡改 | manifestSha256 + 字段校验；失败不改状态 |
-| 过期/不兼容 | schema/version/model/contracts/evidence 检查 |
-| 未签名误信 | 明确完整性≠签名；UI 标记未认证 |
-| 密钥泄漏 | diagnostics 固定白名单 + redaction 扫描 + 负例 |
-| 自动更新风险 | 默认关闭；MVP 无自动安装 |
-| 回滚丢失状态 | 保留 previous 清单；DB 迁移先备份；失败拒绝 |
-| 策略绕过 | 单一 HostPolicy loader；所有命令检查 |
-| 召回失效 | 本地召回列表 + 审计；阻止使用 |
-
-## 9. 测试与验收
-
-### 单元/集成
-
-- manifest canonical hash 稳定；篡改任一字段失败；
-- unknown schema/版本/合同/证据/model 不匹配拒绝；
-- inspect/import/rollback/recall/channel/policy 状态机；
-- 导入失败不改 DeliveryState；
-- diagnostics 不含禁字段，redaction 负例；
-- `HostPolicy` 强制：remoteInference=false 拒绝推理，agent scope 不匹配拒绝；
-- DB `user_version` 迁移/备份/回滚失败。
-
-### UI
-
-- Playwright：交付面板、plan 原因、导入错误、浏览器预览禁用；
-- 截图更新。
-
-### 验收标准
-
-1. 断网可导入/检查一个 manifest，并更新 channel/policy/证据引用；不替换 app/模型；
-2. 任一篡改/不匹配导致导入失败且状态不变；
-3. 回滚/召回可测且审计；
-4. 诊断包脱敏、无密钥/prompt；
-5. 默认关闭远程推理/自动更新/遥测；策略由单一 loader 强制。
-
-## 10. 实施顺序
-
-0. `poie-delivery`/`poie-digest` 进根 `members`、根/桌面 `Cargo.lock`、ADR、测试矩阵；
-1. `poie-delivery` manifest/state/plan/digest/validation + tests；
-2. host `delivery.rs` state+migrations+`write_atomic`+commands+policy loader；
-3. UI 交付面板/状态栏；
-4. `contracts.toml` + `release.json` + `check-release-manifest.py`；
-5. 发布流水线 manifest/artifact/tag gate 对齐（`host_info.build`）；
-6. Playwright、`cargo fmt/clippy/doc/cargo-deny/check-test-matrix/check-docs`、文档/测试矩阵/状态快照。
-
-## 11. 开放问题
-
-- 是否将 `recall` 同步到远端（MVP 本地列表，不联网）。
-- 是否把 SBOM/attestation 纳入门禁（O2，先不加）。
-- 是否允许导入策略覆盖 Agent scope（MVP 允许，需审批/审计）。
-- 站点多角色/双人审批：MVP 单操作员，不做。
+- release channel/签名/信任阈值、安装器/portable 发布、policy tighten-only、审批 token 通用化、updater/telemetry 明确禁止或设计、多 OS artifact。
+- D2 必须重新校验 release workflow/tauri targets，不与 D1 混做。
 
 ## 12. 参考
 
-- Palantir Apollo release channels/plans/recall：<https://www.palantir.com/docs/apollo/core/introduction/>
-- [DIGEST](DIGEST.md)、[PLATFORM](PLATFORM.zh-CN.md)
-- `docs/status/test-matrix.zh-CN.md`、`docs/status/status-snapshot.zh-CN.md`
+- [PLATFORM](PLATFORM.zh-CN.md)、[DIGEST](DIGEST.md)、[SCHEMAS](SCHEMAS.md)
