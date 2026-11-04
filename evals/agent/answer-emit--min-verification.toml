@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "answer-emit--min-verification"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic answer.emit scenario min-verification."
+profile = "dispatcher"
+
+[script]
+responses = [{ tool = "answer.emit", args = { "claims" = [{ "text" = "sample claim", "citations" = [{ "kind" = "object", "id" = "service:potable-water", "source" = "model" }] }] } }]
+
+[expect]
+tools = ["answer.emit"]

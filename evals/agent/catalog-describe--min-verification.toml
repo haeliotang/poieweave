@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "catalog-describe--min-verification"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic catalog.describe scenario min-verification."
+profile = "dispatcher"
+
+[script]
+responses = [{ tool = "catalog.describe", args = {  } }]
+
+[expect]
+tools = ["catalog.describe"]

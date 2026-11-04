@@ -416,6 +416,7 @@ pub struct EvalExpect {
 pub struct EvalFixture {
     pub schema: String,
     pub id: String,
+    #[serde(rename = "preregistered_at", alias = "preregisteredAt")]
     pub preregistered_at: String,
     pub prompt: String,
     pub profile: Profile,
@@ -663,5 +664,31 @@ mod eval_tests {
         let report = run_fixture(&f);
         assert_eq!(report.error, None);
         assert_eq!(report.tools, vec!["state.query".to_string()]);
+    }
+}
+
+#[cfg(test)]
+mod fixture_tests {
+    use super::*;
+
+    #[test]
+    fn all_committed_agent_fixtures_pass_contract() {
+        let dir = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../evals/agent");
+        let mut count = 0;
+        for entry in std::fs::read_dir(&dir).expect("evals/agent") {
+            let path = entry.expect("entry").path();
+            if path.extension().and_then(|value| value.to_str()) != Some("toml") {
+                continue;
+            }
+            let text = std::fs::read_to_string(&path).expect("fixture");
+            let fixture = parse_eval(&text).unwrap_or_else(|error| panic!("{}: {error}", path.display()));
+            let report = run_fixture(&fixture);
+            assert_eq!(report.error, fixture.expect.error, "{}", path.display());
+            if fixture.expect.error.is_none() {
+                assert_eq!(report.tools, fixture.expect.tools, "{}", path.display());
+            }
+            count += 1;
+        }
+        assert_eq!(count, 72);
     }
 }

@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "answer-emit--multi-claim"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic answer.emit scenario multi-claim."
+profile = "dispatcher"
+
+[script]
+responses = [{ tool = "answer.emit", args = { "claims" = [{ "text" = "sample claim", "citations" = [{ "kind" = "object", "id" = "service:potable-water", "source" = "model" }] }, { "text" = "second", "citations" = [{ "kind" = "object", "id" = "asset:pump-p1", "source" = "model" }] }] } }]
+
+[expect]
+tools = ["answer.emit"]

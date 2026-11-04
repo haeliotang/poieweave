@@ -1,0 +1,11 @@
+schema = "poie.agent-eval/0.1"
+id = "answer-emit--citation"
+preregistered_at = "2026-11-05"
+prompt = "Deterministic answer.emit scenario citation."
+profile = "dispatcher"
+
+[script]
+responses = [{ tool = "answer.emit", args = { "claims" = [{ "text" = "citation sample", "citations" = [{ "kind" = "object", "id" = "lot:sleeve-p1", "source" = "model" }] }] } }]
+
+[expect]
+tools = ["answer.emit"]
