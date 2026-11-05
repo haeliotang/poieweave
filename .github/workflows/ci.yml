@@ -47,6 +47,9 @@ jobs:
         run: python3 scripts/check-docs.py
       - name: Test matrix counts
         run: python3 scripts/check-test-matrix.py
+      - name: Release verifier tests
+        working-directory: scripts
+        run: python3 -m unittest -q test_verify_release.py
       - name: Experiment replay coverage
         run: python3 scripts/check-experiment-replays.py
       - name: Python model and bridge tests (M7)

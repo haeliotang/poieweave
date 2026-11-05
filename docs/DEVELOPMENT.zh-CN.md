@@ -623,3 +623,4 @@ flowchart LR
 | 0.1.127 | 2026-11-06 | C2a 实现：timed scenario from_source/evaluate、独立 timed DTO/digest、host import/snapshot/variant/run/compare + v5 表、Timed UI；版本 0.2.0 |
 | 0.1.128 | 2026-11-06 | C2b 实现：SAP plan_to_actions_at/preview_actions、promotion DTO/digest、v6 propose/approve/commit、Proposed UI、C1 horizon 修复；版本 0.3.0 |
 | 0.1.129 | 2026-11-06 | C2b 收尾：proposal 状态以 DB 列为准、加载活跃 proposal、commit 快捷键；真实 UI commit 验收通过；版本 0.3.1 |
+| 0.1.130 | 2026-11-06 | D2 P0 起步：release verification receipt/CI、D2 发布/签名/updater 设计；下一步签名恢复与 bundle v0.2 |
