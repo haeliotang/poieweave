@@ -1,6 +1,6 @@
 # Phase D2 设计：发布、签名、通道与交付包
 
-- 状态：设计草案（待 D2 门禁）
+- 状态：设计草案（D2 P0 release verification 已实现；D2 门禁待跑）
 - 日期：2026-11-06
 - 范围：D2 发布工程、签名状态、updater 边界、平台 QA、bundle 审计头/墓碑/锚
 - 上游：D1 manifest/import/state/rollback、Famili 发布经验、Axio mandate/三路审计、Phaino bundle

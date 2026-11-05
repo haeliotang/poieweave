@@ -106,6 +106,13 @@ System Events 仍返回 `-10004`，但已改用 CoreGraphics 事件 + 截图驱�
 
 ![C2b promotion](assets/acceptance-c2b.png)
 
+## 4.3 D2 release receipt（2026-11-06）
+
+- `v0.3.4` Release 资产：deb、universal app zip、NSIS exe、versioned x86_64 exe、SHA256SUMS、release-verification.json
+- 下载全部资产后本地复验：`ok=true`、`failures=[]`、4 个资产、版本化名称一致
+- 修复了两处真实发布缺陷：SHA256SUMS 内部目录路径、Windows 资产未版本化
+- 签名状态仍为 **未签名/未公证**；D2 不得声称已签名
+
 ## 5. 结论
 
 **真实环境验收大部分通过**：构建/启动/真实 DB/宿主文件/认证/provider 配置/Agent tool loop/What-if structure 已由实际 UI 运行和 16 个宿主测试验证。  
