@@ -1,15 +1,15 @@
-# Phase C2b 设计门禁（独立复验）
+# Phase C2b 设计门禁（最终独立复验）
 
-- 校验对象：[phase-c2b-promote](phase-c2b-promote.zh-CN.md)，以及 `poie-plan::sap`、`poie-state::review`、B1 `approval_tokens`、host `whatif.rs`/`db.rs`、[PLATFORM](PLATFORM.zh-CN.md)/[DIGEST](DIGEST.md)/[SCHEMAS](SCHEMAS.md)。
-- 快照：branch `design/c2b`，HEAD **`9d86071`**；写本文件前 `git status --porcelain` 为空；只读源码/设计，只写本文件；未运行 Tauri/Playwright，未做真实 app/UI 验收。
-- 方法：逐条复核 6771fa5 的 4 个阻断与 9d86071 的修订，对照设计 §5–§13、`sap.rs`/`review.rs`/`governance lib.rs`/`whatif.rs`/`db.rs`/PLATFORM；运行 docs、schema 与四个 lib 测试。
+- 校验对象：[phase-c2b-promote](phase-c2b-promote.zh-CN.md)，以及 `poie-plan::sap`/`plan`、`poie-state::review`/`action`、B1 `approval_tokens`、host `whatif.rs`/`db.rs`、[PLATFORM](PLATFORM.zh-CN.md)/[DIGEST](DIGEST.md)/[SCHEMAS](SCHEMAS.md)。
+- 快照：branch `design/c2b`，HEAD **`edcf5d6`**；写本文件前 `git status --porcelain` 为空；只读源码/设计，只写本文件；未运行 Tauri/Playwright，未做真实 app/UI 验收。
+- 方法：逐条复核 9d86071 的 2 个阻断与 edcf5d6 的修订，对照设计 §5–§13、`sap.rs`/`review.rs`/`governance lib.rs`/`whatif.rs`/`db.rs`/DIGEST/SCHEMAS/PLATFORM；运行 docs、schema 与四个 lib 测试。
+- 结论：**PASS（0 个 C2b 阻断）**。
 
-## 四项复核
+## 三项复核
 
-1. **preview 未来 TimeWindow：已闭合。** §6.1:126 明确 `missing_authorization` 与 `time_window=not_yet_valid` 是预期项，仅 `time_window=expired` 为真实拒绝；§6.1:127 要求多动作测试。`review.rs:83–95` 已提供稳定 `reason` 区分，`preview_actions` 可据此过滤；正常多动作计划不再必然落入 `sap_rejected`。
-2. **actionSha256/action_json：阻断 1，未闭合。** §5.2:96 与 §10:225 仍要求 `actionSha256`/`action_sha256`，但全文无 domain/payload/排除字段；DIGEST:36 只登记 `poie.proposed-action/0.1` 名称；§5.1:77 的 `actionsSha256` 是 draft 数组 digest，不能替代单动作；§10:225 的 `action_json` 仍无“存 draft 还是 ProposedAction”的定义；§5.1:79 的 `proposalSha256` 仍排除 `times` 又包含 `nowMs`。本轮 HEAD 未新增所称公式。
-3. **authorize/command/policy：阻断 2，部分闭合。** `command` 已改为实际命令 `whatif_promote_propose`（§7:159、§7:171），但 §6.2:140 仍用 `POLICY_VERSION` 计算 `subject_digest`，而 §6.2:145 存 `policy_version="poie-promote/0.1"`；`governance lib.rs:17` 的 `POLICY_VERSION` 是 `poie-agent/0.1`，按 §6.2 创建/审批重算会与 §7:171“显式用 poie-promote”冲突，导致审批绑定不一致。另 §7:171 的 no-live 白名单写 `whatif_timed_*`，不匹配新命令 `whatif_promote_*`，按字面测试会漏掉或拒绝 C2b 写命令。
-4. **propose 事务/唯一/过期：已闭合。** §6.2:135 单事务写 proposal+token+audit；§6.2:136 加 pending/approved 的 partial unique；§9:206 在读/approve/commit 同步过期；§9:208 补崩溃、并发、过期测试。非阻断残留：propose 未列入过期同步点，超时 pending 行需先经读/approve/commit 才变 expired，否则可能被唯一索引判 `duplicate_proposal`。
+1. **actionSha256/action_json：已闭合。** §5.2:103 明确 `actionSha256 = sha256("poie.proposed-action/0.1\n" + canonical ProposedActionDraft)`，`action_json` 存 draft、`action_sha256` 同式、读取时重算；§5.1:77 的 `actionsSha256` 是 draft 数组 `poie.proposed-action-draft/0.1`，§10:225–226 的列与 §10:238 的校验一致；两个域均已登记（DIGEST:31/36）。
+2. **proposal digest 覆盖集：已闭合。** §5.1:79 明确排除 `requestedAt/decidedAt/committedAt`，保留 `nowMs`、actions/actionsSha、scope、stateVersion、SAP preview；状态/审批时间变化不改 digest，token `args` 绑 `proposalSha256`，无 `times`/`nowMs` 冲突。
+3. **subject_digest/policy/白名单/过期同步：已闭合。** §6.2:141 与 §6.2:146 显式使用 `poie-promote/0.1`（`subject_digest` 接受 policy 字符串，`governance lib.rs:364`；`POLICY_VERSION` 仍为 `poie-agent/0.1`，但 C2b 不再引用）；§7:172 的 no-live 允许列表含 `whatif_promote_*`/`promotion_*`；§9:207 把 propose 纳入过期同步。
 
 ## 已执行检查
 
@@ -23,6 +23,12 @@ cargo test -p poie-governance --lib               9 passed, 0 failed
 git status --porcelain（写本文件前）              clean
 ```
 
+## 非阻断备注
+
+- `actionSha256` 用 `poie.proposed-action/0.1` 覆盖 draft，而 `actionsSha256` 用 draft 域；两域均已登记、公式可复算，属命名不对称，不构成歧义。
+- §5.1:79 的排除项写 `id`（结构字段为 `proposalId`）；按 `proposalId` 处理即可，建议实现时统一命名。
+- `no_live_write` 白名单按命令/表前缀列；`append_audit` 是 §12 必需的审计写，测试应将其作为允许的审计 sink（非 live 写），不阻断。
+
 边界：只读源码/设计；除本文件外未改任何文件；未跑 Tauri/Playwright/真实 app，UI、迁移与 no-live 验收仍属设计审查而非运行证据。
 
-VERDICT: CHANGES_REQUIRED
+VERDICT: PASS
