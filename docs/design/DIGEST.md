@@ -27,6 +27,13 @@ domain/version "\n" canonical_json(payload)
 | `poie.timed-scenario/0.2` | raw scenario TOML bytes（见 §2.1） | C2a scenario file digest |
 | `poie.snapshot/0.1` | Snapshot without snapshotSha/id/createdAt/createdBy/seed | C1 Snapshot |
 | `poie.variant/0.1` | snapshotSha256 + canonical patch/goal/verification/deadline + mode + settings + outcome/actions/rootCauses/deps + planSha256/completionS | C1 What-if 结果 |
+| `poie.promotion-commit/0.1` | C2b |
+| `poie.proposed-action-draft/0.1` | C2b |
+| `poie.promotion-inputs/0.1` | C2b |
+| `poie.promotion-plan/0.1` | C2b |
+| `poie.whatif-variant/0.1` | C2b |
+| `poie.promotion/0.1` | C2b |
+| `poie.proposed-action/0.1` | C2b |
 | `poie.manifest/0.1` | D1 SiteManifest without flat manifestSha256 | D1 site bundle |
 
 输出统一为小写 64 位十六进制，不带 `sha256:` 前缀；对外字段命名为 `*Digest`，类型为字符串。
