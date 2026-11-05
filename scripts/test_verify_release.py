@@ -36,6 +36,19 @@ class VerifyReleaseTests(unittest.TestCase):
                 code = verify_release.main(["--artifacts", str(root), "--expected-version", "0.3.1"])
             self.assertEqual(code, 1)
 
+    def test_receipt_normalizes_nested_sums_paths(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            (root / "Poieweave_0.3.1_universal.app.zip").write_bytes(b"app")
+            digest = hashlib.sha256(b"app").hexdigest()
+            (root / "SHA256SUMS").write_text(
+                f"{digest}  poieweave-desktop-macos/release/Poieweave_0.3.1_universal.app.zip\n",
+                encoding="utf-8",
+            )
+            with redirect_stdout(io.StringIO()):
+                code = verify_release.main(["--artifacts", str(root), "--expected-version", "0.3.1"])
+            self.assertEqual(code, 0)
+
     def test_receipt_fails_on_unlisted_artifact(self):
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)

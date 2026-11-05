@@ -201,12 +201,16 @@ jobs:
             gh release create "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" \
               --title "Poieweave ${GITHUB_REF_NAME}" --generate-notes
           fi
+          VERSION="${GITHUB_REF_NAME#v}"
+          if [ -f release-assets/poieweave-desktop-windows-x86_64/release/Poieweave.exe ]; then
+            mv release-assets/poieweave-desktop-windows-x86_64/release/Poieweave.exe \
+              "release-assets/Poieweave_${VERSION}_x86_64.exe"
+          fi
           find release-assets -type f \( -name '*.deb' -o -name '*.exe' -o -name '*.zip' \) -print0 \
             | xargs -0 gh release upload "${GITHUB_REF_NAME}" --repo "${GITHUB_REPOSITORY}" --clobber
           cd release-assets
           find . -type f \( -name '*.deb' -o -name '*.exe' -o -name '*.zip' \) -print0 \
-            | xargs -0 sha256sum | sed 's#  \./#  #' > SHA256SUMS
+            | xargs -0 sha256sum | sed 's#  .*/#  #' > SHA256SUMS
           gh release upload "${GITHUB_REF_NAME}" SHA256SUMS --repo "${GITHUB_REPOSITORY}" --clobber
-          VERSION="${GITHUB_REF_NAME#v}"
           python3 ../scripts/verify_release.py             --artifacts . --expected-version "${VERSION}" --tag "${GITHUB_REF_NAME}"             --output release-verification.json
           gh release upload "${GITHUB_REF_NAME}" release-verification.json --repo "${GITHUB_REPOSITORY}" --clobber

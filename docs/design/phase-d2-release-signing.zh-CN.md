@@ -25,7 +25,9 @@ D1 只做本地 JSON 元数据交付；D2 要让发布本身可验证、可回�
   - macOS `Poieweave_<version>_universal.app.zip`
   - Windows `Poieweave_<version>_x64-setup.exe`
   - Linux `Poieweave_<version>_amd64.deb`
-- `SHA256SUMS` 覆盖全部资产（不含自身）；`release-verification.json` 记录校验结果。
+- `SHA256SUMS` 覆盖全部资产（不含自身），条目使用**扁平资产名**（不是 CI 内部目录路径）；`release-verification.json` 记录校验结果。
+- Windows 资产统一重命名为 `Poieweave_<version>_x86_64.exe`；release job 在上传前完成重命名。
+- `scripts/verify_release.py` 兼容 basename 归一化；v0.3.1 现有资产的 receipt 已验证 `ok=true`（仅旧 `Poieweave.exe` 名称 warning）。
 
 ### 2.2 发布 receipt
 
