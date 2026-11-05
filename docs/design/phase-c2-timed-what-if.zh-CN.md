@@ -1,6 +1,6 @@
 # Phase C2a 设计：时间版/容量 What-if（独立 C2a 模型）
 
-- 状态：设计草案（待 C2a 门禁）
+- 状态：**C2a 门禁 PASS**（2026-11-06；见 VALIDATION-C2A）
 - 日期：2026-11-05
 - 范围：timed/storage 变体与运行；**独立 C2a DTO/DB/命令，不扩展 C1 类型**
 - 明确延后 C2b：promote、assetDelay、checkpoint、patch-on-timed
@@ -33,7 +33,7 @@ C1 只做静态 structure/plan。C2a 增加时间版推演：储能放电限制�
 - 保留现有 `TimedScenario.storage_discharge_w`；**不新增 StorageLimit**。C2a 不使用 capacity/initial SoC 作为新权威；只使用现有 StockTimeline 的 `initial_si/changes` 与 scenario 的 discharge 上限。
 - 新增 `TimedScenario::from_source(text: &str, model: Model) -> Result<TimedScenario, TimedError>`：解析 TOML 但不读 `model` 路径；host 负责从 sandbox 读取 model。现有 `load(path)` 仅用于仓库/测试，C2a host 不使用。
 - 新增 `TimedRunner::evaluate(&TimedCase) -> Result<TimedOutcome, TimedError>`，不要求 `ExpectDoc`；`run(&CaseDoc)` 保留用于 fixtures。
-- `TimedCase { goal, start_s, deadline_s, horizon_s, now_s, min_verification }`；runner 校验 `start_s ∈ [now_s,horizon_s]`、deadline 在 (start,horizon]；completion > horizon → `too_late`。
+- `TimedCase { goal, start_s, deadline_s, horizon_s, min_verification }`；C2a 固定 now=0，runner 校验 `start_s ∈ [0,horizon_s]`、deadline 在 (start,horizon]；completion > horizon → `too_late`。
 - 现有 `TimedOutcome` 字段/warnings/verdict 语义不变。
 
 ### 4.2 Host sandbox 读取
@@ -69,15 +69,15 @@ TimedSnapshot {
   schema:"poie.timed-snapshot/0.1", schemaVersion:"0.1",
   id,label,modelSha256,scenarioPath,scenarioSha256,
   goal,minVerification,startS,
-  horizonS,nowS,deadlineS?,seed,
+  horizonS,nowS,deadlineS?,
   createdAt,createdBy,snapshotSha256
 }
 ```
 
-- `TimedSnapshotInput {label, scenarioPath, scenarioSha256, goal,minVerification, startS, horizonS, nowS, deadlineS?, seed}`；`horizonS > nowS`、`startS ∈ [nowS,horizonS]`、`deadlineS ∈ (startS,horizonS]`；缺省 startS=nowS。
-- `snapshotSha256 = sha256("poie.timed-snapshot/0.1\n" + canonical_json(without id/createdAt/createdBy/seed/snapshotSha256))`；**scenarioPath 不进入 digest**（仅定位），纳入 scenarioSha/modelSha。
+- `TimedSnapshotInput {label, scenarioPath, scenarioSha256, goal,minVerification, startS, horizonS, deadlineS?}`；C2a 固定 `nowS=0`（timed scenario 从 0 开始），`horizonS > 0`、`startS ∈ [0,horizonS]`、`deadlineS ∈ (startS,horizonS]`；缺省 startS=0。
+- `snapshotSha256 = sha256("poie.timed-snapshot/0.1\n" + canonical_json(without id/createdAt/createdBy/snapshotSha256))`；**scenarioPath 不进入 digest**（仅定位），纳入 scenarioSha/modelSha。
 - goal 只接受 `service:<id>`/`restore:<asset>`；minVerification 解析为现有枚举。
-- 固定向量：`{"schema":"poie.timed-snapshot/0.1","schemaVersion":"0.1","label":"base-01-timed","modelSha256":"m","scenarioSha256":"5cbfc5a5711b316318fd244c89149b9ef58b6f5d8c417c4747638dc7c1c205f3","goal":"restore:pump-p1","minVerification":"demonstrated","startS":0.0,"horizonS":86400.0,"nowS":0.0,"deadlineS":null,"seed":7}` → `34dd4a21a49004d208e630fab6ed174b49cf3f1ee33fef8e99e182983c8201ef`。
+- 固定向量：`{"schema":"poie.timed-snapshot/0.1","schemaVersion":"0.1","label":"base-01-timed","modelSha256":"m","scenarioSha256":"5cbfc5a5711b316318fd244c89149b9ef58b6f5d8c417c4747638dc7c1c205f3","goal":"restore:pump-p1","minVerification":"demonstrated","startS":0.0,"horizonS":86400.0,"nowS":0.0,"deadlineS":null}` → `b4a1459860896c689d26c4ffd752cfb2d071891d63f4f3df07860a31505e9835`。
 - scenarioPath/scenarioSha/modelSha 必须与 run 重读一致。
 
 ### 5.2 Timed Variant
@@ -93,8 +93,8 @@ TimedVariant {
 - 无 patch/goal/minVerification 字段；goal/minVerification 来自 snapshot。
 - `startMode` 在 **variant** 上（snapshot 只有默认 startS）；`beginning` 时 start=0 且 startS 必须为 null/0；`at` 时 startS 必填且 ∈ [0,horizonS]；3 个变体可分别使用 beginning/at/不同 startS，仍同 snapshot 比较。
 - storageDischargeW 只允许 **降低** 现有 `storage_discharge_w[resource]`；未知资源/负值/NaN/超上限拒绝。
-- deadlineS 若设置必须 > startS 且 ≤ horizonS；不设置则用 snapshot.deadlineS。
-- startS 覆盖 snapshot 默认 startS；`startMode` 由 variant 决定；deadlineS 若设置必须 > start 且 ≤ horizonS，未设置用 snapshot.deadlineS。
+- deadline 一律相对 **resolved start** 校验（beginning=0，at=startS）。
+- startS 覆盖 snapshot 默认 startS；`startMode` 由 variant 决定；deadlineS 若设置必须 > **resolved start** 且 ≤ horizonS，未设置用 snapshot.deadlineS。
 
 ### 5.3 Timed Result
 
@@ -124,7 +124,7 @@ TimedCompareResult {
 ```
 
 - 只接受同 snapshot 的 `TimedResult`；跨 snapshot → `invalid_parameter`；重复去重并 warning；不混 C1 静态结果。
-- `delta.completionDeltaS = row.completionS - baseline.completionS`（行减基线）；baseline 必须在 rows 中，否则 `baselineResultId=null`、delta=null 并 warning；排序固定顺序 `feasible, blocked, unknown, search_limit, too_late, insufficient_resource, capacity_conflict, power_limited` → completionS null 最后 → resultId。
+- `delta.completionDeltaS`：row 和 baseline 的 completionS 都非 null 时 = row - baseline（行减基线）；任一为 null 时 = null（不做减法）；baseline 必须在 rows 中，否则 `baselineResultId=null`、delta=null 并 warning；排序固定顺序 `feasible, blocked, unknown, search_limit, too_late, insufficient_resource, capacity_conflict, power_limited` → completionS null 最后 → resultId。
 
 ## 6. 命令
 
@@ -132,7 +132,7 @@ TimedCompareResult {
 | --- | --- | --- |
 | `whatif_timed_scenario_import` | sandbox 相对 path | `{scenarioSha256,modelSha256,description}` |
 | `whatif_timed_scenario_list` | — | `{scenarioSha256,scenarioPath,modelSha256,description,importedAt}[]` |
-| `whatif_timed_snapshot_create` | TimedSnapshotInput（含 startS/horizonS/nowS） | TimedSnapshot |
+| `whatif_timed_snapshot_create` | TimedSnapshotInput（startS/horizonS；nowS 固定 0） | TimedSnapshot |
 | `whatif_timed_variant_create` | snapshotId,label,description,startMode,startS?,deadlineS?,storageDischargeW | TimedVariant |
 | `whatif_timed_run` | variantId | TimedResult |
 | `whatif_timed_result_get` | resultId | TimedResult |
