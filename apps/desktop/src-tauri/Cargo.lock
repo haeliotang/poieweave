@@ -2415,13 +2415,14 @@ dependencies = [
  "poie-objects",
  "poie-ontology",
  "poie-plan",
+ "poie-state",
  "serde",
  "serde_json",
 ]
 
 [[package]]
 name = "poieweave-desktop"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "getrandom 0.2.17",
  "hex",

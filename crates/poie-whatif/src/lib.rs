@@ -12,6 +12,7 @@ use poie_plan::plan::{plan, Plan, PlanError, PlanningGoal, PlanningRequest};
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
+pub mod promotion;
 pub mod timed;
 pub use timed::*;
 
