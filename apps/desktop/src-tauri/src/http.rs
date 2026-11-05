@@ -32,11 +32,10 @@ impl NativeHttpTransport {
     fn agent(&self) -> ureq::Agent {
         // ureq defaults to the WebPki root set, which is disabled in this
         // feature set. Use the platform verifier (system trust store) instead.
-        let tls = ureq::tls::TlsConfig::builder()
-            .root_certs(ureq::tls::RootCerts::PlatformVerifier)
-            .build();
+        let tls = ureq::tls::TlsConfig::builder().root_certs(ureq::tls::RootCerts::PlatformVerifier).build();
         ureq::Agent::config_builder()
             .timeout_global(Some(Duration::from_secs(30)))
+            .http_status_as_error(false)
             .tls_config(tls)
             .build()
             .into()

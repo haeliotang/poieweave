@@ -79,6 +79,17 @@ fn sha_json(value: &Value) -> String {
     poie_digest::sha256_of("poie.agent/0.1", value).unwrap_or_else(|_| "sha-error".to_string())
 }
 
+// Some OpenAI-compatible providers (including DeepSeek) only accept
+// `^[a-zA-Z0-9_-]+$` for function names. Keep dotted names in the product
+// contract and map them to wire-safe names at the provider boundary.
+fn wire_name(name: &str) -> String {
+    name.replace('.', "_")
+}
+
+fn internal_name(wire: &str) -> Option<&'static str> {
+    poie_governance::TOOLS.iter().map(|spec| spec.name).find(|name| wire_name(name) == wire)
+}
+
 fn tools_json() -> Value {
     let schemas = [
         (
@@ -186,7 +197,10 @@ pub async fn run(prompt: String, profile: String, state: State<'_, AppState>) ->
         });
         let response = state.http.post_json(&url, &key, &body.to_string())?;
         if !(200..300).contains(&response.status) {
-            error = Some(protocol_error("provider_protocol", format!("HTTP {}", response.status)));
+            error = Some(protocol_error(
+                "provider_protocol",
+                format!("HTTP {}: {}", response.status, response.body.chars().take(500).collect::<String>()),
+            ));
             break;
         }
         if response.body.len() > 262_144 {
@@ -209,7 +223,10 @@ pub async fn run(prompt: String, profile: String, state: State<'_, AppState>) ->
         }
         let mut assistant_tool_calls = Vec::new();
         for call in &message.tool_calls {
-            let name = call.function.name.clone();
+            let wire = call.function.name.clone();
+            let name = internal_name(&wire)
+                .ok_or_else(|| protocol_error("invalid_tool_arguments", format!("unknown tool {wire}")))?
+                .to_string();
             let spec =
                 tool(&name).ok_or_else(|| protocol_error("invalid_tool_arguments", format!("unknown tool {name}")))?;
             if !profile.allows(&name) {
@@ -228,7 +245,7 @@ pub async fn run(prompt: String, profile: String, state: State<'_, AppState>) ->
                 error = Some(protocol_error("budget_exceeded", format!("{name} called too often")));
                 break;
             }
-            assistant_tool_calls.push(json!({"id": call.id, "type":"function", "function": {"name": name, "arguments": call.function.arguments}}));
+            assistant_tool_calls.push(json!({"id": call.id, "type":"function", "function": {"name": wire_name(&name), "arguments": call.function.arguments}}));
             let (outcome, call_citations) =
                 execute_tool(&name, &arguments, &state, &mut plan_opt, &run_id, &operator.session_id, &mut run)?;
             citations.extend(call_citations.iter().cloned());
@@ -700,4 +717,19 @@ fn execute_approved(state: &State<'_, AppState>, run_id: &str, token: &ApprovalT
         &format!("{} {} {}", run.run_id, token.tool, token.id),
     )?;
     Ok(run)
+}
+
+#[cfg(test)]
+mod wire_tests {
+    use super::*;
+
+    #[test]
+    fn provider_wire_names_are_deepseek_safe_and_reversible() {
+        for spec in poie_governance::TOOLS {
+            let wire = wire_name(spec.name);
+            assert!(wire.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-'));
+            assert_eq!(internal_name(&wire), Some(spec.name));
+        }
+        assert_eq!(internal_name("unknown_tool"), None);
+    }
 }
