@@ -21,6 +21,11 @@ domain/version "\n" canonical_json(payload)
 | `poie.catalog/0.1` | Catalog（不含 digest 字段） | Catalog digest |
 | `poie.plan/0.1` | 计划摘要 + actions | 需要 SHA-256 时使用；不替代现有 `Plan::digest()` 字符串 |
 | `poie.simulation/0.1` | 仿真摘要 + 关键状态 | 需要 SHA-256 时使用；不替代现有 `Simulation::digest()` |
+| `poie.timed-scenario/0.1` | TimedScenario model/timelines/storage/validity | C2a scenario |
+| `poie.timed-snapshot/0.1` | C2a |
+| `poie.timed-result/0.1` | C2a |
+| `poie.timed-compare/0.1` | C2a |
+| `poie.timed-scenario/0.2` | C2a |
 | `poie.snapshot/0.1` | Snapshot without snapshotSha/id/createdAt/createdBy/seed | C1 Snapshot |
 | `poie.variant/0.1` | snapshotSha256 + canonical patch/goal/verification/deadline + mode + settings + outcome/actions/rootCauses/deps + planSha256/completionS | C1 What-if 结果 |
 | `poie.manifest/0.1` | D1 SiteManifest without flat manifestSha256 | D1 site bundle |
@@ -50,6 +55,17 @@ domain/version "\n" canonical_json(payload)
 | `poie.agent-audit/0.1` | audit record without hash | B audit chain |
 
 审批 digest 的字段顺序由各工具显式定义；不得把未提供字段拼成空字符串而不声明（用 `null` 并纳入规范）。
+
+## 2.1 Raw-file digest profile（仅 C2a scenario）
+
+C2a timed scenario 是 TOML 文件，**不转 JSON**；仅该 domain 使用：
+
+```text
+scenario_sha256 = sha256("poie.timed-scenario/0.2\n" + raw_file_bytes)
+```
+
+- 读取前 UTF-8/≤256 KiB；固定向量见 Phase C2a §4.3。
+- 其他所有 payload 仍必须 canonical JSON；不得把本 profile 推广到其他 schema。
 
 ## 2. Canonical JSON
 
