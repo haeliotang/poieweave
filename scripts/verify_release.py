@@ -39,7 +39,10 @@ def parse_sums(text: str) -> dict[str, str]:
         parts = line.split()
         if len(parts) != 2 or len(parts[0]) != 64:
             raise ValueError(f"malformed SHA256SUMS line: {line!r}")
-        entries[parts[1].lstrip("./")] = parts[0].lower()
+        name = Path(parts[1].lstrip("./")).name
+        if name in entries and entries[name] != parts[0].lower():
+            raise ValueError(f"duplicate basename in SHA256SUMS: {name}")
+        entries[name] = parts[0].lower()
     return entries
 
 
@@ -111,9 +114,6 @@ def main(argv: list[str] | None = None) -> int:
                 warnings.append(f"artifact name does not contain {args.expected_version}: {name}")
             if any(token in name.lower() for token in ("secret", "private", "key", ".env")):
                 failures.append(f"artifact name looks sensitive: {name}")
-        for name in files:
-            if args.expected_version not in name:
-                warnings.append(f"artifact name does not contain {args.expected_version}: {name}")
 
     signature = macos_signature(args.macos_app) if args.macos_app else {"present": False, "status": "not_checked"}
     receipt = {
