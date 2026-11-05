@@ -14,13 +14,16 @@
 - 创建 operator `ADA ACCEPTANCE` 并登录（真实 PBKDF2/SQLite 会话）
 - 配置本机 OpenAI-compatible mock provider（`http://127.0.0.1:8765/v1`），保存配置并写入审计
 - Agent 面板发起问题：真实 host `agent_run` 完成，工具轨迹 `catalog.describe → answer.emit`，响应含 citation；RunState 写入 `agent_runs`
-- Plan → What-if：创建快照、添加变体、运行 `structure`，结果显示 `candidate` + “relative to this static snapshot / not a physical feasibility proof” caveat
-- 真实 app DB 验证：`whatif_snapshots=1、whatif_variants=1、whatif_results=1`，audit 出现 `whatif.snapshot/variant/run`
+- Plan → What-if：创建快照、添加变体，运行 `structure` 与 `plan`；结果显示 caveat；比较结果列表可用
+- 站点交付 D1 UI：真实 `检验` → `导入`（元数据已导入，未部署）→ `回滚`（无 previous 正确报 `rollback_unavailable`）→ `清空`（当前=无）
+- 真实 app DB 验证：`whatif_snapshots/variants/results` 与 `delivery_state/manifests`、audit 均落盘
 
 证据：
 
 - [acceptance-agent.png](assets/acceptance-agent.png)
 - [acceptance-whatif.png](assets/acceptance-whatif.png)
+- [acceptance-whatif-plan.png](assets/acceptance-whatif-plan.png)
+- [acceptance-delivery.png](assets/acceptance-delivery.png)
 
 注意：provider 是**本机 mock**，只验证工具循环、引用与宿主持久化，不验证模型能力。
 
@@ -64,7 +67,9 @@ System Events 仍返回 `-10004`，但已改用 CoreGraphics 事件 + 截图驱�
 
 - 未做真实物理设备/多节点/签名公证。
 - Playwright 只覆盖浏览器预览，不覆盖 Tauri webview。
-- 真实 UI 验收发现并修复 What-if/Delivery 文案缺失（`whatif.*`/`delivery.*` i18n keys）；修复后重建 app 复核。
+- 真实 UI 验收发现并修复 What-if/Delivery 文案缺失（`whatif.*`/`delivery.*` i18n keys）。
+- 真实 DeepSeek 测试连接闪退：ureq 的 WebPki 根证书配置 panic；改为平台验证器（#167）。
+- 真实 DeepSeek Agent 400：工具名 `catalog.describe` 不符合 `^[a-zA-Z0-9_-]+$`；已加 provider wire-name 映射（#168）。
 
 ## 4. 人工验收步骤（macOS）
 
@@ -79,4 +84,6 @@ System Events 仍返回 `-10004`，但已改用 CoreGraphics 事件 + 截图驱�
 ## 5. 结论
 
 **真实环境验收大部分通过**：构建/启动/真实 DB/宿主文件/认证/provider 配置/Agent tool loop/What-if structure 已由实际 UI 运行和 16 个宿主测试验证。  
-**尚未验收**：Agent 审批执行、What-if plan/compare、D1 交付 UI；真实外部 provider 能力未验证（仅 mock）。
+**已验收**：What-if plan/compare、D1 交付 UI inspect/import/rollback/clear。
+
+**尚未验收**：Agent 审批执行（UI 自动点击不稳定）；真实 provider 的完整 Agent 会话在本次验收中曾返回 400，已定位为 DeepSeek 不接受带点工具名（`catalog.describe`），已改为 wire-safe 下划线名并合并修复；仍需一次 UI 复测。
