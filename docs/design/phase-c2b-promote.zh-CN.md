@@ -76,7 +76,7 @@ PromotionProposal {
 
 - **actions 在 propose 时构建并持久化**，不在 commit 时重建；`actionsSha256 = sha256("poie.proposed-action-draft/0.1\n" + canonical ProposedActionDraft[])`。
 - `planSha256 = sha256("poie.promotion-plan/0.1\n" + canonical {planId,startS,horizonS,actions[{actionId,process,target,startS,endS,preconditions,allocations,verification}],goalsMet,goalsUnmet})`（独立 domain，避免与 C1 `poie.plan/0.1` payload 混用），覆盖 preconditions/allocations；`Plan::digest` 只作交叉校验，不能单独作为审批对象。
-- `proposalSha256 = sha256("poie.promotion/0.1\n" + canonical proposal without id/approvalTokenId/status/times/proposalSha256)`；包含 actions/actionsSha、scope、stateVersion、nowMs、SAP preview。状态变化不改 proposal digest。
+- `proposalSha256 = sha256("poie.promotion/0.1\n" + canonical proposal without id/approvalTokenId/status/requestedAt/decidedAt/committedAt/proposalSha256)`；包含 actions/actionsSha、scope、stateVersion、**nowMs**、SAP preview。状态变化不改 proposal digest。
 - `scope` 必须等于 `promote:<snapshotId>:<resultId>`；approval token 的 `subject_digest` 用 B1 `poie-governance::subject_digest("whatif.promote", args, sessionId, policy, expires)` 计算，`args` 含 scope/resultId/proposalSha256；审批时比对。
 - `variantJsonSha256 = sha256("poie.whatif-variant/0.1\n" + canonical variant JSON)`
 - `inputsSha256 = sha256("poie.promotion-inputs/0.1\n" + canonical {snapshotSha256,variantJsonSha256,resultSha256})`；commit 必须重读这三行并比对。
@@ -100,6 +100,7 @@ ProposedAction {
 ```
 
 - 先由 `plan_to_actions_at(plan, origin_now_s, proposal_now_ms, state_version) -> Result<Vec<Action>, SapError>` 生成；**不带 Authorization**。
+- `actionSha256 = sha256("poie.proposed-action/0.1\n" + canonical ProposedActionDraft)`；`promotion_proposed_actions.action_json` 存 **draft**，`action_sha256` 是同一公式；读取时重算。
 - C1 plan 的 `start_s` 基于 `snapshot.now_s`（通常 0）。重定公式：
   - `valid_from = proposal_now_ms + (start_s - origin_now_s) * 1000`
   - `valid_until = proposal_now_ms + (end_s - origin_now_s) * 1000 + 60_000`
@@ -137,7 +138,7 @@ ProposedAction {
 - 复用 `approval_tokens` 表；token 在 propose 时创建：
   - `tool = "whatif.promote"`；`tool_version="1.0.0"`
   - `run_id = proposalId`；`call_id = ""`
-  - `subject_digest = subject_digest("whatif.promote", args, sessionId, POLICY_VERSION, expires)`
+  - `subject_digest = subject_digest("whatif.promote", args, sessionId, "poie-promote/0.1", expires)`（显式 policy；不用 `POLICY_VERSION=poie-agent/0.1`）
   - `args_json_redacted` 存 `{scope, resultId, proposalSha256}`
   - `expires_at_ms = now + 30min`（可配置，上限 24h）
   - `impact_json` = `{actions:N, targets:[...], budgets:[...]}`
@@ -168,7 +169,7 @@ ProposedAction {
 
 C2b 不新增 `dispatch`/`authorize` 命令。
 
-所有命令使用统一 `CommandError { code, message, details? }` envelope（C2b 新命令；现有 C1/C2a 命令不改签名）。scope 校验由 host `authorize(window="poie-view-plan", command="whatif_promote_propose", session, policy)` 执行（PLATFORM window=main/poie-view-plan，command 是实际命令名）；approve/commit 同理分别传命令名。token 的 `tool="whatif.promote"`、`policy_version="poie-promote/0.1"`，`subject_digest` 显式使用该 policy version，不用 `poie-agent/0.1`。`no_live_write` 断言：proposed action `authorization==None`、不调用 `execution::snapshot`、不写 registry/SAP/federation；命令注册表/写表白名单允许列表只含 `whatif_timed_*`/`promotion_*`，测试断言不在白名单的写函数未被调用。
+所有命令使用统一 `CommandError { code, message, details? }` envelope（C2b 新命令；现有 C1/C2a 命令不改签名）。scope 校验由 host `authorize(window="poie-view-plan", command="whatif_promote_propose", session, policy)` 执行（PLATFORM window=main/poie-view-plan，command 是实际命令名）；approve/commit 同理分别传命令名。token 的 `tool="whatif.promote"`、`policy_version="poie-promote/0.1"`，`subject_digest` 显式使用该 policy version，不用 `poie-agent/0.1`。`no_live_write` 断言：proposed action `authorization==None`、不调用 `execution::snapshot`、不写 registry/SAP/federation；命令注册表/写表白名单允许列表只含 `whatif_timed_*`/`whatif_promote_*`/`promotion_*`，测试断言不在白名单的写函数未被调用。
 
 ## 8. Stale 检查
 
@@ -203,7 +204,7 @@ pending/approved --cancel--> cancelled
 
 - token 与 proposal 的 approve/reject/cancel 必须在**同一 DB 事务**中更新；token 条件更新失败则回滚 proposal。
 - commit 成功事务：写 `promotion_proposed_actions`、写 `promotion_commits`、token `approved→executing→consumed`、proposal=committed、**append_audit**，全在同一事务。
-- 重启：pending/approved 保留；**不自动 approve/commit**；读/approve/commit 时在同一事务内把过期 proposal 与 token 标 expired（无后台定时器）。已 committed 的重复 commit 返回存储的 commit，不重复写。
+- 重启：pending/approved 保留；**不自动 approve/commit**；propose/read/approve/commit 时在同一事务内把过期 proposal 与 token 标 expired（无后台定时器）。已 committed 的重复 commit 返回存储的 commit，不重复写。
 - 进程在 commit 中断：事务回滚到 approved；不得出现“token consumed 但无 actions/commit”或反之。
 - 测试：propose 插入 proposal 后强制 token 插入失败 → 无 proposal；并发 duplicate propose → 一个成功、一个 `duplicate_proposal`；过期后 approve/commit → `approval_expired` 且 proposal 同步 expired。
 - consumed token 不允许被另一个 proposal 复用；`approval_mismatch`。
