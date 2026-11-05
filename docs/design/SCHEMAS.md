@@ -19,7 +19,6 @@
 | `poie.whatif-variant/0.1` | C | 0.1 | 同上 |
 | `poie.whatif-result/0.1` | C | 0.1 | 同上 |
 | `poie.whatif-compare/0.1` | C | 0.1 | 同上 |
-| `poie.timed-scenario/0.1` | C2a | 0.1 | timed scenario digest |
 | `poie.timed-scenario/0.2` | C2a | 0.2 | C2a |
 | `poie.timed-snapshot/0.1` | C2a | 0.1 | C2a |
 | `poie.timed-variant/0.1` | C2a | 0.1 | C2a |
@@ -46,6 +45,11 @@
 | `poie.approval/0.1` | approval digest |
 | `poie.manifest/0.1` | site manifest sha256 |
 | `poie.agent-audit/0.1` | agent audit record hash |
+| `poie.timed-scenario/0.2` | C2a |
+| `poie.timed-compare/0.1` | C2a |
+| `poie.timed-result/0.1` | C2a |
+| `poie.timed-variant/0.1` | C2a |
+| `poie.timed-snapshot/0.1` | C2a |
 
 ## 解析与兼容函数
 
