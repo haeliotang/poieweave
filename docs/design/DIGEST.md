@@ -27,6 +27,7 @@ domain/version "\n" canonical_json(payload)
 | `poie.timed-scenario/0.2` | raw scenario TOML bytes（见 §2.1） | C2a scenario file digest |
 | `poie.snapshot/0.1` | Snapshot without snapshotSha/id/createdAt/createdBy/seed | C1 Snapshot |
 | `poie.variant/0.1` | snapshotSha256 + canonical patch/goal/verification/deadline + mode + settings + outcome/actions/rootCauses/deps + planSha256/completionS | C1 What-if 结果 |
+| `poie.promotion-commit/0.1` | C2b |
 | `poie.promotion/0.1` | C2b |
 | `poie.proposed-action/0.1` | C2b |
 | `poie.manifest/0.1` | D1 SiteManifest without flat manifestSha256 | D1 site bundle |

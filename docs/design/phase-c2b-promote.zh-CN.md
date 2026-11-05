@@ -47,7 +47,8 @@ C1 result(mode=plan)
   → approve / reject
   → commit
       stale checks again
-      build proposed actions
+      use actions built at propose (no silent rebuild)
+      check action validity window
       consume token
       persist proposed actions
   → (future) authorize/dispatch is NOT C2b
@@ -62,34 +63,39 @@ PromotionProposal {
   schema:"poie.promotion/0.1", schemaVersion:"0.1",
   proposalId,resultId,snapshotId,variantId,
   planFingerprint,planSha256,modelSha256,stateVersion:{site:version},
+  stateVersionSource:"host_assumption",
   scope:"promote:<snapshotId>:<resultId>",
   status:"pending"|"approved"|"rejected"|"committed"|"expired"|"cancelled",
   approvalTokenId,requestedAt,requestedBy,decidedAt?,committedAt?,
-  actionsSha256,sapPreview:{checks,rejections,assumed},
+  nowMs, actions:[ProposedActionDraft], actionsSha256,
+  sapPreview:{checks,rejections,assumed},
   proposalSha256
 }
 ```
 
-- `planSha256 = sha256("poie.plan/0.1\n" + canonical plan payload)`；`actionsSha256` 绑定动作数组。
-- `proposalSha256` 绑定除 id/时间/状态外的全部字段；状态变化不改 proposal digest。
-- `scope` 必须等于 `promote:<snapshotId>:<resultId>`；token 的 `subject_digest` 等于 `proposalSha256`。
-- `stateVersion` 由 host 明确提供（C2b MVP：`{"site-a":4}` 的显式绑定）；不得静默省略。
+- **actions 在 propose 时构建并持久化**，不在 commit 时重建；`actionsSha256 = sha256("poie.proposed-action/0.1\n" + canonical actions[])`。
+- `planSha256 = sha256("poie.plan/0.1\n" + canonical plan payload)`，只作为交叉校验；`Plan::digest` 不含 preconditions/allocations，不能单独作为审批对象。
+- `proposalSha256 = sha256("poie.promotion/0.1\n" + canonical proposal without id/status/times/proposalSha256)`；包含 actions/actionsSha、scope、stateVersion、nowMs、SAP preview。状态变化不改 proposal digest。
+- `scope` 必须等于 `promote:<snapshotId>:<resultId>`；approval token 的 `subject_digest` 用 B1 `poie-governance::subject_digest("whatif.promote", args, sessionId, policy, expires)` 计算，`args` 含 scope/resultId/proposalSha256；审批时比对。
+- `stateVersion` 来源明确为 **host_assumption**：C2b MVP 用 `{"site-a":4}`；不是 live 真值，必须在 UI/proposal 中标注。propose 与 commit 都要求该假设未变；测试用 `4→5` 证明 stale 生效。
 
 ### 5.2 ProposedAction
 
 ```text
 ProposedAction {
-  schema:"poie.proposed-action/0.1",
+  schema:"poie.proposed-action/0.1", schemaVersion:"0.1",
   proposalId, actionId, idempotencyKey, target, command, planRef,
   policyVersion, precondition, validFrom, validUntil, budget, reservations,
   reversibility, verificationSpec,
   state:"proposed",
   authorization:null,
-  promotionEvidence:{approvalTokenId, proposalSha256, basis:"approval:<tokenId>"}
+  promotionEvidence:{approvalTokenId, proposalSha256, basis:"approval:<tokenId>;simulation=whatif:<snapshotSha256>;model=<modelSha256>"}
 }
 ```
 
-- 由 `poie-plan` 的公开 `plan_to_actions(plan, state_version)` 生成；**不带 Authorization**。
+- 由新增 `poie-plan` 公开 `plan_to_actions_at(plan, now_ms, state_version) -> Result<Vec<Action>, SapError>` 生成；**不带 Authorization**。
+- 时间窗以 `now_ms` 为基准重定：`valid_from = now + start_s*1000`，`valid_until = now + end_s*1000 + 60_000`；propose 时即检查 `valid_until > now`。
+- commit 时若 `now >= valid_until` → `approval_expired`，不得提交已过期动作。
 - 只写 `promotion_proposed_actions` 表；不写 live ActionLedger/SAP。
 - 未来 dispatch 阶段才创建 `Authorization`，basis 引用 promotion token。
 
@@ -97,27 +103,32 @@ ProposedAction {
 
 ### 6.1 `poie-plan::sap`
 
-当前 `to_action` 私有，`validate_plan_through_sap` 会自建 planning-validation Authorization。C2b 需要：
+当前 `to_action` 私有；`validate_plan_through_sap` 会自建 planning-validation Authorization，C2b 不使用。
 
-- `pub fn plan_to_actions(plan: &Plan, state_version: &BTreeMap<String,u64>) -> Vec<Action>`：无 Authorization。
-- `pub fn validate_proposed_plan(plan: &Plan, state_version: &BTreeMap<String,u64>) -> Result<ProposedValidation, PlanValidationError>`：
-  - 只做结构校验 + `ActionLedger` add/apply Validated；
-  - 不进入 Authorized，不调用 review_dispatch（review 需要 authorization）；
-  - 返回 checks/rejections/actions。
-- 现有 `validate_plan_through_sap` 保留给测试/旧路径，C2b 不使用。
-- `preview_plan_through_sap` 保留只读预览；C2b 的 `sapPreview` 用 `validate_proposed_plan` 的结果，不创建 Authorization。
+- 新增 `pub fn plan_to_actions_at(plan: &Plan, now_ms: i64, state_version: &BTreeMap<String,u64>) -> Result<Vec<Action>, SapError>`：
+  - 空 state_version → `SapError::EmptyStateVersion`；
+  - 不创建 Authorization；
+  - 复用现有 `to_action` 的字段映射，但时间窗按 `now_ms` 重定。
+- `preview_plan_through_sap(plan, AssumedContext)` 已提供 checks/assumed/rejections，且不创建 Authorization；**C2b 的 sapPreview 直接用它**，不新增 `validate_proposed_plan`。
+- `review_dispatch` 在 Validated 状态会报 `missing_authorization`；C2b 不把该 checks 当“SAP 失败”，只把非 Authorization 的拒绝视为 `sap_rejected`。
+- 现有 `validate_plan_through_sap` 仅保留测试/旧路径。
 
 ### 6.2 ApprovalToken
 
-- 复用 `approval_tokens` 表；新增 C2b token 约定：
-  - `tool = "whatif.promote"`
-  - `run_id = proposalId`
-  - `call_id = ""`
-  - `subject_digest = proposalSha256`
-  - `args_json_redacted` 存 scope/resultId/snapshotId
+- 复用 `approval_tokens` 表；token 在 propose 时创建：
+  - `tool = "whatif.promote"`；`tool_version="1.0.0"`
+  - `run_id = proposalId`；`call_id = ""`
+  - `subject_digest = subject_digest("whatif.promote", args, sessionId, POLICY_VERSION, expires)`
+  - `args_json_redacted` 存 `{scope, resultId, proposalSha256}`
   - `expires_at_ms = now + 30min`（可配置，上限 24h）
-- 不新增长期 grant 表；C2b 的“能力范围”就是一次性 token 的 `scope` + `subject_digest`。
-- traceweave 式长期 grant/revoke 留到 D2 审批扩展；C2b 不声称已实现。
+  - `state=pending`
+- approve：校验 token 属于当前 session、`tool`、`run_id`、`args.scope`、`proposalSha256`，原子 pending→approved；proposal 同步 approved。
+- reject：pending→rejected；proposal rejected。
+- cancel：pending/approved→cancelled；proposal cancelled。
+- commit：要求 proposal approved、token approved、未过期；校验 token scope/session；事务内 token approved→executing→consumed + 写 actions + proposal committed。
+- 重复 propose：同一 result 若已有 pending/approved proposal → `duplicate_proposal`（拒绝，不新建）；committed/rejected/expired 后可重新 propose。
+- 不实现 `interrupted` 状态；commit 失败回滚，proposal 仍 approved、token 仍 approved。
+- C2b 的“能力范围”是一次性 token 的 scope；长期 grant/revoke/inventory 属 D2 审批扩展（scope exception，owner: D2 design）。
 
 ## 7. 命令
 
@@ -131,7 +142,7 @@ ProposedAction {
 | `whatif_promote_commit` | proposalId | PromotionCommit（proposed actions） |
 | `whatif_promote_cancel` | proposalId | PromotionProposal（cancelled） |
 
-错误码：`unknown_result`、`unknown_proposal`、`invalid_status`、`stale_snapshot`、`stale_result`、`plan_mismatch`、`sap_rejected`、`approval_required`、`approval_expired`、`scope_mismatch`、`budget_exceeded`、`unauthorized`。
+错误码：`unknown_result`、`unknown_proposal`、`not_promotable`、`duplicate_proposal`、`invalid_status`、`stale_snapshot`、`stale_result`、`plan_mismatch`、`sap_rejected`、`approval_required`、`approval_mismatch`、`approval_expired`、`scope_denied`、`budget_exceeded`、`unauthorized`。
 
 C2b 不新增 `dispatch`/`authorize` 命令。
 
@@ -139,7 +150,7 @@ C2b 不新增 `dispatch`/`authorize` 命令。
 
 propose 和 commit 都必须检查：
 
-1. result 存在且 `mode=plan`；
+1. result 存在、`mode=plan`、`outcome.plan=="planned"`、actions 非空；否则 `not_promotable`；
 2. snapshot 存在；`model_sha256 == state.model digest`；
 3. snapshot/variant/result 的 digest 与当前行一致；
 4. 用 snapshot+variant **重新运行** `run_plan`，`plan_fingerprint` 与 result 记录一致；
@@ -165,6 +176,12 @@ pending/approved --cancel--> cancelled
 ## 10. 持久化（v6）
 
 ```text
+PromotionCommit {
+  schema:"poie.promotion-commit/0.1", schemaVersion:"0.1",
+  proposalId, planSha256, actionsSha256, committedAt, committedBy,
+  tokenId, commitSha256
+}
+
 promotion_proposals(
   proposal_id PK, result_id, snapshot_id, variant_id, schema_version,
   proposal_json, proposal_sha256, status, approval_token_id, created_at, updated_at
@@ -175,7 +192,7 @@ promotion_proposed_actions(
 )
 ```
 
-- `PRAGMA user_version=6`；只加表，不改 C1/C2a 表。
+- `PRAGMA user_version=6`；只加表，不改 C1/C2a 表；现有 `db.rs` 的 v5 迁移需先升到 6，并补 v5→v6 fixture。
 - 迁移 5→6 幂等；失败回滚。
 - proposal/action JSON 写入前重算 digest；读取时校验。
 
@@ -194,17 +211,18 @@ promotion_proposed_actions(
 
 - 不调用 SAP/dispatch/live/federation；测试断言无 live 写入路径。
 - 审计事件：`promotion.proposed`、`promotion.approved`、`promotion.rejected`、`promotion.committed`、`promotion.expired`、`promotion.cancelled`。
-- 审计 detail 含 proposalId、resultId、scope、tokenId、planSha 前 12 位。
-- 不记录密钥/完整敏感 payload。
+- 审计 detail 含 proposalId、resultId、scope、tokenId、planSha 前 12 位；不记录密钥/完整敏感 payload。
+- 当前 `append_audit` 不写 `prev_hash/hash`；C2b 不声称审计链完整，链迁移/外部锚由 B2/D2 单独门禁。C2b 只保证事件与业务写入同一 DB 连接顺序。
 
 ## 13. 测试与验收
 
-- propose：plan result → pending token；timed result 拒绝；stale model/snapshot/result 拒绝。
+- propose：plan result → pending token；timed result / 非 planned / 空 actions 拒绝；stale model/snapshot/result 拒绝。
+- actions 在 propose 固化；approve 后改 result/snapshot 不影响已存 actions；commit 不重建。
 - plan mismatch（改 result JSON/重新运行指纹不同）拒绝。
 - SAP structural failure → `sap_rejected`，不建 token。
 - approve/reject/cancel/expire；重复操作幂等/拒绝一致。
 - commit：approved+unexpired → proposed actions；token consumed；无 dispatch/live 写。
-- commit 时 stale/token expired → 拒绝，无部分写。
+- commit 时 stale/token expired/action 时间窗过期 → 拒绝，无部分写；stateVersion 4→5 拒绝。
 - 重启：pending/approved 保留、不自动 commit；过期→expired。
 - 审计链完整；UI 显示 scope/checks；timed 无 promote 按钮。
 - 验收：真实 app 对 C1 plan result 完成 propose→approve→commit，DB 出现 proposed actions，live/SAP 无写入。
@@ -219,7 +237,21 @@ promotion_proposed_actions(
 - [ ] UI/审计/错误码
 - [ ] timed 结果不可 promote 的边界
 
-## 15. 参考
+## 15. Traceweave 输入的 scope 例外
+
+C2b 实现 C2b-1/2/3 的**一次性 promotion token**版本（scope、operator/session、revoke/expiry/重启）。  
+以下明确延后，owner 与阶段如下：
+
+| 输入 | 处理 | Owner |
+| --- | --- | --- |
+| C2b-2 签名指纹 | host 无签名身份表面，暂用 operator/session；签名绑定随 D2 签名身份实现 | D2 |
+| C2b-7 capability inventory/最小权限 | C2b 只列 promote 能力；完整 inventory 随 D2 审批扩展 | D2 |
+| 长期 grant/revoke | C2b 不实现；一次性 token 可 cancel/expire | D2 |
+| C2b-8 授权 UI | C2b 只做 proposal 弹窗；长期授权 UI 随 D2 | D2 |
+
+这不是静默丢弃：C2b 门禁要求上述例外在 D2 设计中有对应项。
+
+## 16. 参考
 
 - [Phase C1](phase-c-what-if.zh-CN.md)、[C2a](phase-c2-timed-what-if.zh-CN.md)、[PLATFORM](PLATFORM.zh-CN.md)
 - [traceweave 借鉴清单](traceweave-adoption-inputs.zh-CN.md)
