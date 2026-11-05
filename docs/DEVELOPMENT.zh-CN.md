@@ -618,3 +618,4 @@ flowchart LR
 | 0.1.122 | 2026-11-05 | Phase C1 门禁 PASS；`poie-whatif` Snapshot/Patch/结构/plan/compare；桌面 Sim 面板；测试矩阵 410 |
 | 0.1.123 | 2026-11-05 | Phase D1 门禁 PASS；`poie-delivery` manifest/state/rollback/diagnostics；SQLite v4；设置页交付 UI；测试矩阵 416 |
 | 0.1.124 | 2026-11-05 | B1 eval 完成：72 deterministic fixtures + contract runner + CI checker；测试矩阵 417；A–D MVP 全链路门禁通过 |
+| 0.1.125 | 2026-11-05 | 真实环境验收准备：构建并启动 macOS app；宿主真实文件/SQLite/model 验收测试（v4 迁移、C1 运行、D1 导入/回滚/诊断）；宿主测试 16 |

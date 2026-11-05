@@ -127,3 +127,49 @@ pub fn delivery_diagnostics_export(
     db.append_audit(now_ms(), &operator.display_name, "delivery.diagnostics", &path)?;
     Ok(summary)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn real_file_import_rollback_and_diagnostics() {
+        let root = std::env::temp_dir().join(format!("poie-delivery-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(&root).unwrap();
+        let mut manifest = poie_delivery::SiteManifest {
+            schema: poie_delivery::MANIFEST_SCHEMA.into(),
+            schema_version: "0.1".into(),
+            site_id: "base-01".into(),
+            site_name: "Base 01".into(),
+            target: "linux-x86_64".into(),
+            channel: "stable".into(),
+            released_at: "2026-11-05T00:00:00Z".into(),
+            model_sha256: None,
+            evidence_sha256: None,
+            policy: poie_delivery::ManifestPolicy { profile: "default".into() },
+            notes: String::new(),
+            manifest_sha256: String::new(),
+        };
+        manifest.manifest_sha256 = poie_delivery::manifest_digest(&manifest).unwrap();
+        let bundle = serde_json::to_string(&poie_delivery::SiteBundle {
+            schema: poie_delivery::BUNDLE_SCHEMA.into(),
+            manifest: manifest.clone(),
+        })
+        .unwrap();
+        sandbox::write(&root, "delivery/site.json", &bundle).unwrap();
+        let text = sandbox::read(&root, "delivery/site.json").unwrap();
+        let (parsed, sha) = parse_bundle(&text).unwrap();
+        let db = crate::db::Db::open_in_memory().unwrap();
+        let state = crate::delivery::import(&DeliveryState::empty(1), &parsed, &sha, 2, "acceptance").unwrap();
+        db.save_delivery_import(&poie_delivery::manifest_json(&parsed).unwrap(), &sha, &state_json(&state).unwrap(), 2)
+            .unwrap();
+        assert_eq!(load_state(&db).unwrap().current.unwrap().site_id, "base-01");
+        let rolled = rollback(&load_state(&db).unwrap(), 3);
+        assert!(rolled.is_err());
+        let diag = diagnostics(&state, 4, "0.1.1", "macos", "aarch64", &[]);
+        assert_eq!(diag.schema, poie_delivery::DIAGNOSTICS_SCHEMA);
+        assert!(!diag.truncated);
+        let _ = std::fs::remove_dir_all(&root);
+    }
+}
