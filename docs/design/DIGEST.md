@@ -21,6 +21,7 @@ domain/version "\n" canonical_json(payload)
 | `poie.catalog/0.1` | Catalog（不含 digest 字段） | Catalog digest |
 | `poie.plan/0.1` | 计划摘要 + actions | 需要 SHA-256 时使用；不替代现有 `Plan::digest()` 字符串 |
 | `poie.simulation/0.1` | 仿真摘要 + 关键状态 | 需要 SHA-256 时使用；不替代现有 `Simulation::digest()` |
+| `poie.timed-scenario/0.1` | TimedScenario model/timelines/storage/validity | C2a scenario |
 | `poie.snapshot/0.1` | Snapshot without snapshotSha/id/createdAt/createdBy/seed | C1 Snapshot |
 | `poie.variant/0.1` | snapshotSha256 + canonical patch/goal/verification/deadline + mode + settings + outcome/actions/rootCauses/deps + planSha256/completionS | C1 What-if 结果 |
 | `poie.manifest/0.1` | D1 SiteManifest without flat manifestSha256 | D1 site bundle |
