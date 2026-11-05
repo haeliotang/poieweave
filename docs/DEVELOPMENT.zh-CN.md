@@ -620,3 +620,4 @@ flowchart LR
 | 0.1.124 | 2026-11-05 | B1 eval 完成：72 deterministic fixtures + contract runner + CI checker；测试矩阵 417；A–D MVP 全链路门禁通过 |
 | 0.1.125 | 2026-11-05 | 真实环境验收准备：构建并启动 macOS app；宿主真实文件/SQLite/model 验收测试（v4 迁移、C1 运行、D1 导入/回滚/诊断）；宿主测试 16 |
 | 0.1.126 | 2026-11-05 | 发布硬化：What-if 重启后加载持久化 snapshot/variant/result；审批 token 生命周期集成测试；Agent 画像选择与 UI 断言；版本 0.1.2 |
+| 0.1.127 | 2026-11-06 | C2a 实现：timed scenario from_source/evaluate、独立 timed DTO/digest、host import/snapshot/variant/run/compare + v5 表、Timed UI；版本 0.2.0 |

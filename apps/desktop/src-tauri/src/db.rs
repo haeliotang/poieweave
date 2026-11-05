@@ -37,6 +37,8 @@ pub struct InferenceConfigRow {
     pub updated_at_ms: i64,
 }
 
+pub type TimedScenarioRow = (String, String, String, String, i64);
+
 pub struct Db {
     connection: Connection,
 }
@@ -132,13 +134,30 @@ impl Db {
                      schema_version TEXT NOT NULL, mode TEXT NOT NULL, settings_json TEXT NOT NULL,
                      result_json TEXT NOT NULL, result_sha256 TEXT NOT NULL, created_at INTEGER NOT NULL
                  );
+                 CREATE TABLE IF NOT EXISTS whatif_timed_scenarios (
+                     scenario_sha256 TEXT PRIMARY KEY, scenario_path TEXT NOT NULL, schema_version TEXT NOT NULL,
+                     model_sha256 TEXT NOT NULL, description TEXT NOT NULL, imported_at INTEGER NOT NULL
+                 );
+                 CREATE TABLE IF NOT EXISTS whatif_timed_snapshots (
+                     snapshot_id TEXT PRIMARY KEY, schema_version TEXT NOT NULL, snapshot_json TEXT NOT NULL,
+                     snapshot_sha256 TEXT NOT NULL, created_at INTEGER NOT NULL
+                 );
+                 CREATE TABLE IF NOT EXISTS whatif_timed_variants (
+                     variant_id TEXT PRIMARY KEY, snapshot_id TEXT NOT NULL, schema_version TEXT NOT NULL,
+                     variant_json TEXT NOT NULL, created_at INTEGER NOT NULL
+                 );
+                 CREATE TABLE IF NOT EXISTS whatif_timed_results (
+                     result_id TEXT PRIMARY KEY, variant_id TEXT NOT NULL, snapshot_id TEXT NOT NULL,
+                     schema_version TEXT NOT NULL, mode TEXT NOT NULL, settings_json TEXT NOT NULL,
+                     result_json TEXT NOT NULL, result_sha256 TEXT NOT NULL, created_at INTEGER NOT NULL
+                 );
                  CREATE TABLE IF NOT EXISTS delivery_manifests (
                      manifest_sha256 TEXT PRIMARY KEY, manifest_json TEXT NOT NULL, imported_at INTEGER NOT NULL
                  );
                  CREATE TABLE IF NOT EXISTS delivery_state (
                      id INTEGER PRIMARY KEY CHECK (id = 1), state_json TEXT NOT NULL, updated_at INTEGER NOT NULL
                  );
-                 PRAGMA user_version = 4;",
+                 PRAGMA user_version = 5;",
             )
             .map_err(|error| format!("migrate: {error}"))?;
         // Existing databases created before B0 have an audit table without the
@@ -266,6 +285,129 @@ impl Db {
     }
 
     #[allow(dead_code)]
+    pub fn save_timed_scenario(
+        &self,
+        scenario_sha256: &str,
+        scenario_path: &str,
+        schema_version: &str,
+        model_sha256: &str,
+        description: &str,
+        imported_at: i64,
+    ) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT OR IGNORE INTO whatif_timed_scenarios (scenario_sha256,scenario_path,schema_version,model_sha256,description,imported_at) VALUES (?1,?2,?3,?4,?5,?6)",
+                params![scenario_sha256, scenario_path, schema_version, model_sha256, description, imported_at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn timed_scenario(&self, sha: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row(
+                "SELECT scenario_path FROM whatif_timed_scenarios WHERE scenario_sha256=?1",
+                [sha],
+                |row| row.get(0),
+            )
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+
+    pub fn timed_scenarios(&self, limit: u32) -> Result<Vec<TimedScenarioRow>, String> {
+        let mut statement = self
+            .connection
+            .prepare("SELECT scenario_sha256,scenario_path,model_sha256,description,imported_at FROM whatif_timed_scenarios ORDER BY imported_at DESC LIMIT ?1")
+            .map_err(|error| error.to_string())?;
+        let rows = statement
+            .query_map([limit], |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?, row.get(4)?)))
+            .map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
+
+    pub fn save_timed_snapshot(&self, id: &str, schema_version: &str, json: &str, sha: &str, created_at: i64) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO whatif_timed_snapshots (snapshot_id,schema_version,snapshot_json,snapshot_sha256,created_at) VALUES (?1,?2,?3,?4,?5)",
+                params![id, schema_version, json, sha, created_at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn timed_snapshot(&self, id: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT snapshot_json FROM whatif_timed_snapshots WHERE snapshot_id=?1", [id], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+
+    pub fn save_timed_variant(&self, id: &str, snapshot_id: &str, schema_version: &str, json: &str, created_at: i64) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO whatif_timed_variants (variant_id,snapshot_id,schema_version,variant_json,created_at) VALUES (?1,?2,?3,?4,?5)",
+                params![id, snapshot_id, schema_version, json, created_at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn whatif_timed_variants(&self, snapshot_id: &str) -> Result<Vec<String>, String> {
+        let mut statement = self
+            .connection
+            .prepare("SELECT variant_json FROM whatif_timed_variants WHERE snapshot_id=?1 ORDER BY created_at ASC")
+            .map_err(|error| error.to_string())?;
+        let rows = statement.query_map([snapshot_id], |row| row.get(0)).map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
+
+    pub fn timed_variant(&self, id: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT variant_json FROM whatif_timed_variants WHERE variant_id=?1", [id], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub fn save_timed_result(
+        &self,
+        id: &str,
+        variant_id: &str,
+        snapshot_id: &str,
+        schema_version: &str,
+        mode: &str,
+        settings_json: &str,
+        json: &str,
+        sha: &str,
+        created_at: i64,
+    ) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO whatif_timed_results (result_id,variant_id,snapshot_id,schema_version,mode,settings_json,result_json,result_sha256,created_at) VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9)",
+                params![id, variant_id, snapshot_id, schema_version, mode, settings_json, json, sha, created_at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn timed_result(&self, id: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT result_json FROM whatif_timed_results WHERE result_id=?1", [id], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+
+    pub fn timed_results(&self, snapshot_id: &str, variant_id: Option<&str>, limit: u32) -> Result<Vec<String>, String> {
+        let mut statement = self
+            .connection
+            .prepare("SELECT result_json FROM whatif_timed_results WHERE snapshot_id=?1 AND (?2 IS NULL OR variant_id=?2) ORDER BY created_at DESC LIMIT ?3")
+            .map_err(|error| error.to_string())?;
+        let rows = statement
+            .query_map(params![snapshot_id, variant_id, limit], |row| row.get(0))
+            .map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
+
     pub fn save_approval_token(&self, token: &ApprovalToken) -> Result<(), String> {
         self.connection
             .execute(
@@ -543,7 +685,7 @@ mod tests {
         {
             let db = Db::open(&path).unwrap();
             let version: i64 = db.connection.query_row("PRAGMA user_version", [], |row| row.get(0)).unwrap();
-            assert_eq!(version, 4);
+            assert_eq!(version, 5);
             let tables: Vec<String> = db
                 .connection
                 .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
@@ -560,6 +702,10 @@ mod tests {
                 "whatif_results",
                 "whatif_snapshots",
                 "whatif_variants",
+                "whatif_timed_results",
+                "whatif_timed_snapshots",
+                "whatif_timed_variants",
+                "whatif_timed_scenarios",
             ] {
                 assert!(tables.iter().any(|name| name == table), "missing {table}");
             }

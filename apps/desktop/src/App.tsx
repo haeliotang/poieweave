@@ -27,6 +27,11 @@ import {
   type WhatIfCompare,
   type DeliveryState,
   type DeliveryInspect,
+  type TimedScenarioInfo,
+  type TimedSnapshot,
+  type TimedVariant,
+  type TimedResult,
+  type TimedCompare,
 } from "./domain";
 import brandMark from "./assets/poieweave-mono.svg";
 import { detectLang, messagesFor, type Lang } from "./i18n";
@@ -819,6 +824,7 @@ function Plan({ lang, overview, selection, onSelect, hosted }: { lang: Lang; ove
       </section>
 
       <WhatIfPanel lang={lang} hosted={hosted} />
+      <TimedWhatIfPanel lang={lang} hosted={hosted} />
     </div>
   );
 }
@@ -930,6 +936,122 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
             <div>
               <h3>{t("whatif.compare")}</h3>
               <ul>{compare.rows.map((row) => <li key={row.resultId}>{row.variantId} · {row.mode} · {row.outcome.structure ?? row.outcome.plan}</li>)}</ul>
+            </div>
+          ) : null}
+        </>
+      )}
+    </section>
+  );
+}
+
+
+function TimedWhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
+  const t = (key: string) => messagesFor(lang)[key] ?? key;
+  const [scenarioPath, setScenarioPath] = useState("base-01-timed/scenario.toml");
+  const [scenario, setScenario] = useState<TimedScenarioInfo | null>(null);
+  const [snapshot, setSnapshot] = useState<TimedSnapshot | null>(null);
+  const [variants, setVariants] = useState<TimedVariant[]>([]);
+  const [results, setResults] = useState<TimedResult[]>([]);
+  const [compare, setCompare] = useState<TimedCompare | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  const importScenario = async () => {
+    setBusy(true); setError("");
+    try {
+      const info = await invoke<TimedScenarioInfo>("whatif_timed_scenario_import", { path: scenarioPath });
+      setScenario(info);
+      setSnapshot(null); setVariants([]); setResults([]); setCompare(null);
+    } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const createSnapshot = async () => {
+    if (!scenario) return;
+    setBusy(true); setError("");
+    try {
+      const modelSha256 = await invoke<string>("whatif_model_digest");
+      const created = await invoke<TimedSnapshot>("whatif_timed_snapshot_create", {
+        input: {
+          label: "base-01-timed", modelSha256, scenarioPath: scenario.scenarioPath,
+          scenarioSha256: scenario.scenarioSha256, goal: "restore:pump-p1",
+          minVerification: "demonstrated", startS: 0, horizonS: 86400, deadlineS: null,
+        },
+      });
+      setSnapshot(created); setVariants([]); setResults([]); setCompare(null);
+    } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const addVariant = async (mode: "beginning" | "at") => {
+    if (!snapshot) return;
+    setBusy(true); setError("");
+    try {
+      const variant = await invoke<TimedVariant>("whatif_timed_variant_create", {
+        input: {
+          snapshotId: snapshot.id, label: mode === "at" ? "late start" : "storage limit",
+          description: "", startMode: mode, startS: mode === "at" ? 3600 : null, deadlineS: null,
+          storageDischargeW: mode === "beginning" ? { "electric-energy": 3000 } : {},
+        },
+      });
+      setVariants((current) => [...current, variant]);
+    } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const runVariant = async (variant: TimedVariant) => {
+    setBusy(true); setError("");
+    try {
+      const result = await invoke<TimedResult>("whatif_timed_run", { variantId: variant.id });
+      setResults((current) => [...current.filter((entry) => entry.variantId !== variant.id), result]);
+    } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const compareResults = async () => {
+    if (!snapshot) return;
+    setBusy(true); setError("");
+    try {
+      setCompare(await invoke<TimedCompare>("whatif_timed_compare", {
+        snapshotId: snapshot.id, baselineResultId: null, resultIds: null,
+      }));
+    } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
+  };
+
+  return (
+    <section className="card whatif">
+      <div className="card__head"><h2>{t("timed.title")}</h2><span className="eyebrow">SIMULATION · C2a</span></div>
+      {!hosted ? <p className="empty">{t("timed.hostOnly")}</p> : (
+        <>
+          <p className="muted">{t("timed.caveat")}</p>
+          <div className="agent-panel__actions">
+            <input aria-label={t("timed.scenarioPath")} value={scenarioPath} onChange={(event) => setScenarioPath(event.target.value)} />
+            <button className="primary" type="button" onClick={() => void importScenario()} disabled={busy}>{t("timed.import")}</button>
+            <button type="button" onClick={() => void createSnapshot()} disabled={busy || !scenario}>{t("timed.snapshot")}</button>
+            <button type="button" onClick={() => void addVariant("beginning")} disabled={busy || !snapshot}>{t("timed.variantStorage")}</button>
+            <button type="button" onClick={() => void addVariant("at")} disabled={busy || !snapshot}>{t("timed.variantStart")}</button>
+            <button type="button" onClick={() => void compareResults()} disabled={busy || results.length === 0}>{t("timed.compare")}</button>
+          </div>
+          {scenario ? <p className="muted">{scenario.scenarioSha256.slice(0, 12)}… · {scenario.description}</p> : null}
+          {snapshot ? <p className="muted">{snapshot.label} · {snapshot.goal} · {snapshot.snapshotSha256.slice(0, 12)}…</p> : null}
+          {error ? <p className="form-error">{error}</p> : null}
+          {variants.length > 0 ? (
+            <table className="table">
+              <thead><tr><th>{t("whatif.variant")}</th><th>{t("whatif.mode")}</th><th>{t("whatif.actions")}</th></tr></thead>
+              <tbody>{variants.map((variant) => (
+                <tr key={variant.id}>
+                  <td>{variant.label}</td>
+                  <td><button type="button" onClick={() => void runVariant(variant)} disabled={busy}>timed</button></td>
+                  <td>
+                    {results.filter((result) => result.variantId === variant.id).map((result) => (
+                      <div key={result.resultId}><span className="mono">{result.outcome.timed}</span>{result.completionS != null ? ` · ${result.completionS.toFixed(0)}s` : ""}{result.warnings.length > 0 ? ` · ${result.warnings.length} warnings` : ""}</div>
+                    ))}
+                  </td>
+                </tr>
+              ))}</tbody>
+            </table>
+          ) : null}
+          {compare ? (
+            <div>
+              <h3>{t("timed.compare")}</h3>
+              <ul>{compare.rows.map((row) => <li key={row.resultId}>{row.variantId} · {row.outcome.timed}{row.completionS != null ? ` · ${row.completionS.toFixed(0)}s` : ""}{row.delta.completionDeltaS != null ? ` · Δ${row.delta.completionDeltaS.toFixed(0)}s` : ""}</li>)}</ul>
+              {compare.warnings.length > 0 ? <p className="muted">{compare.warnings.join(" · ")}</p> : null}
             </div>
           ) : null}
         </>

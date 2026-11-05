@@ -1,6 +1,6 @@
 # Phase C2a 设计：时间版/容量 What-if（独立 C2a 模型）
 
-- 状态：**C2a 门禁 PASS**（2026-11-06；见 VALIDATION-C2A）
+- 状态：**C2a 门禁 PASS + 已实现 0.2.0**（2026-11-06）
 - 日期：2026-11-05
 - 范围：timed/storage 变体与运行；**独立 C2a DTO/DB/命令，不扩展 C1 类型**
 - 明确延后 C2b：promote、assetDelay、checkpoint、patch-on-timed

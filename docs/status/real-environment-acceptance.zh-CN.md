@@ -41,7 +41,7 @@
 | 宿主真实文件/SQLite/model 测试 | 16 通过 | v4 迁移 + `agent_runs`、D1 导入/回滚/诊断、C1 snapshot/variant/run/persist |
 | 真实 UI：认证/provider/Agent/What-if | 通过 | 见 §2.1 与截图 |
 | 完整门禁 | 通过 | `scripts/verify-all.sh` → `ALL GATES PASSED` |
-| Rust 列表测试 | 417 | 库 401 + 其他 16 |
+| Rust 列表测试 | 421 | 库 405 + 其他 16 |
 | UI smoke | 7 | Playwright（vite preview，非 Tauri host） |
 
 ## 3. 未完成/受阻
@@ -84,6 +84,16 @@ System Events 仍返回 `-10004`，但已改用 CoreGraphics 事件 + 截图驱�
 5. Plan 视图 → What-if：创建快照、添加变体、运行 structure/plan、比较；确认显示 caveat 且无 live/SAP 写入。
 6. Settings → 站点交付：对 sandbox 下 `delivery/site.json` inspect → import（确认 sha）→ refresh/rollback/clear → export diagnostics；确认无“部署成功”文案、诊断无密钥。
 7. 检查 `agent-audit.log` 的 prevHash/hash 链与 diagnostics 文件。
+
+## 4.1 C2a Timed What-if（2026-11-06）
+
+- 从 app sandbox 导入 `base-01-timed/scenario.toml`：digest `5cbfc5a5…05f3`
+- 创建 timed snapshot、2 个变体（储能限制 3000 W / 晚启 3600s）
+- 运行结果：`feasible 10800s`、`feasible 14400s`（1 warning）
+- compare 显示两个 timed 结果
+- v5 表 `whatif_timed_*` 与 audit `whatif.timed.*` 落盘
+
+![C2a timed acceptance](assets/acceptance-c2a.png)
 
 ## 5. 结论
 

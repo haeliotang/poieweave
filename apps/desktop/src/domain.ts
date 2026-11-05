@@ -422,6 +422,58 @@ export interface WhatIfCompare {
   warnings: string[];
 }
 
+
+export interface TimedScenarioInfo {
+  scenarioSha256: string;
+  scenarioPath: string;
+  modelSha256: string;
+  description: string;
+}
+
+export interface TimedSnapshot {
+  id: string;
+  label: string;
+  snapshotSha256: string;
+  modelSha256: string;
+  scenarioPath: string;
+  scenarioSha256: string;
+  goal: string;
+  horizonS: number;
+  startS: number;
+  deadlineS?: number | null;
+}
+
+export interface TimedVariant {
+  id: string;
+  snapshotId: string;
+  label: string;
+  startMode: "beginning" | "at";
+  startS?: number | null;
+  deadlineS?: number | null;
+  storageDischargeW: Record<string, number>;
+}
+
+export interface TimedOutcome {
+  timed: string;
+  caveat: string;
+}
+
+export interface TimedResult {
+  resultId: string;
+  variantId: string;
+  snapshotId: string;
+  mode: string;
+  outcome: TimedOutcome;
+  completionS?: number | null;
+  warnings: string[];
+  resultSha256: string;
+}
+
+export interface TimedCompare {
+  rows: { resultId: string; variantId: string; outcome: TimedOutcome; completionS?: number | null; delta: { completionDeltaS?: number | null } }[];
+  warnings: string[];
+}
+
 export interface DeliveryManifestSummary {
   siteId: string;
   siteName: string;
