@@ -90,7 +90,9 @@ def main(argv: list[str] | None = None) -> int:
         failures.append(f"artifacts directory missing: {artifacts}")
         entries: dict[str, str] = {}
     else:
-        files = sorted(p.name for p in artifacts.iterdir() if p.is_file() and p.name != "SHA256SUMS")
+        files = sorted(
+            p.name for p in artifacts.rglob("*") if p.is_file() and p.name != "SHA256SUMS"
+        )
         try:
             entries = parse_sums(sums_path.read_text(encoding="utf-8"))
         except (OSError, UnicodeDecodeError, ValueError) as error:
