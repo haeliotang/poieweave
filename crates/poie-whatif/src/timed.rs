@@ -108,7 +108,7 @@ impl TimedSnapshot {
 pub fn timed_snapshot_digest(snapshot: &TimedSnapshot) -> Result<String, String> {
     let mut value = serde_json::to_value(snapshot).map_err(|error| error.to_string())?;
     if let Some(object) = value.as_object_mut() {
-        for key in ["snapshotSha256", "id", "createdAt", "createdBy"] {
+        for key in ["snapshotSha256", "scenarioPath", "id", "createdAt", "createdBy"] {
             object.remove(key);
         }
     }
@@ -393,7 +393,7 @@ mod tests {
         TimedSnapshot::create(
             TimedSnapshotInput {
                 label: "base-01-timed".into(),
-                model_sha256: "m".repeat(64),
+                model_sha256: "a".repeat(64),
                 scenario_path: "base-01-timed/scenario.toml".into(),
                 scenario_sha256: "5cbfc5a5711b316318fd244c89149b9ef58b6f5d8c417c4747638dc7c1c205f3".into(),
                 goal: "restore:pump-p1".into(),
@@ -412,8 +412,9 @@ mod tests {
     #[test]
     fn timed_snapshot_digest_matches_design_vector() {
         let snapshot = snapshot();
+
         assert_eq!(snapshot.now_s, 0.0);
-        assert_eq!(snapshot.snapshot_sha256, "b4a1459860896c689d26c4ffd752cfb2d071891d63f4f3df07860a31505e9835");
+        assert_eq!(snapshot.snapshot_sha256, "e694e44a32754e876008a99fef02a59904d126f3488a4156519445b27218ef65");
     }
 
     #[test]
@@ -441,7 +442,7 @@ mod tests {
             "run-1".into(),
             0.0,
             None,
-            "blocked",
+            "power_limited",
             None,
             vec![],
             1,
