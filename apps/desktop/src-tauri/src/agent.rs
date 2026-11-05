@@ -128,7 +128,7 @@ fn tools_json() -> Value {
             .iter()
             .map(|(name, description, parameters)| {
                 json!({
-                    "type":"function", "function": {"name": name, "description": description, "parameters": parameters}
+                    "type":"function", "function": {"name": wire_name(name), "description": description, "parameters": parameters}
                 })
             })
             .collect(),
@@ -221,7 +221,12 @@ pub async fn run(prompt: String, profile: String, state: State<'_, AppState>) ->
             error = Some(protocol_error("citation_missing", "answer.emit was not called"));
             break;
         }
-        let mut assistant_tool_calls = Vec::new();
+        let assistant_tool_calls: Vec<Value> = message
+            .tool_calls
+            .iter()
+            .map(|call| json!({"id": call.id, "type":"function", "function": {"name": call.function.name, "arguments": call.function.arguments}}))
+            .collect();
+        messages.push(json!({"role":"assistant","content": message.content, "tool_calls": assistant_tool_calls}));
         for call in &message.tool_calls {
             let wire = call.function.name.clone();
             let name = internal_name(&wire)
@@ -245,7 +250,6 @@ pub async fn run(prompt: String, profile: String, state: State<'_, AppState>) ->
                 error = Some(protocol_error("budget_exceeded", format!("{name} called too often")));
                 break;
             }
-            assistant_tool_calls.push(json!({"id": call.id, "type":"function", "function": {"name": wire_name(&name), "arguments": call.function.arguments}}));
             let (outcome, call_citations) =
                 execute_tool(&name, &arguments, &state, &mut plan_opt, &run_id, &operator.session_id, &mut run)?;
             citations.extend(call_citations.iter().cloned());
@@ -289,7 +293,6 @@ pub async fn run(prompt: String, profile: String, state: State<'_, AppState>) ->
         if error.is_some() {
             break;
         }
-        messages.push(json!({"role":"assistant","content": message.content, "tool_calls": assistant_tool_calls}));
         if final_text.is_empty() && message.content.is_some() && message.tool_calls.is_empty() {
             final_text = message.content.clone().unwrap_or_default();
         }
@@ -731,5 +734,14 @@ mod wire_tests {
             assert_eq!(internal_name(&wire), Some(spec.name));
         }
         assert_eq!(internal_name("unknown_tool"), None);
+        let names: Vec<String> = tools_json()
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|tool| tool["function"]["name"].as_str().unwrap().to_string())
+            .collect();
+        assert!(names.contains(&"catalog_describe".to_string()));
+        assert!(names.iter().all(|name| !name.contains('.')));
+        assert_eq!(names.len(), 6);
     }
 }
