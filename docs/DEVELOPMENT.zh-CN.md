@@ -624,3 +624,4 @@ flowchart LR
 | 0.1.128 | 2026-11-06 | C2b 实现：SAP plan_to_actions_at/preview_actions、promotion DTO/digest、v6 propose/approve/commit、Proposed UI、C1 horizon 修复；版本 0.3.0 |
 | 0.1.129 | 2026-11-06 | C2b 收尾：proposal 状态以 DB 列为准、加载活跃 proposal、commit 快捷键；真实 UI commit 验收通过；版本 0.3.1 |
 | 0.1.130 | 2026-11-06 | D2 P0 起步：release verification receipt/CI、D2 发布/签名/updater 设计；下一步签名恢复与 bundle v0.2 |
+| 0.1.131 | 2026-11-06 | D2 P0：签名保管恢复卡脚本与测试；发布验证 CI 已接入；下一步恢复演练与 bundle v0.2 |
