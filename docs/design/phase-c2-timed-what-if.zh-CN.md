@@ -1,6 +1,6 @@
 # Phase C2a 设计：时间版/容量 What-if（独立 C2a 模型）
 
-- 状态：**C2a 门禁 PASS**（2026-11-06；见 VALIDATION-C2A）
+- 状态：**C2a 门禁 PASS + 已实现 0.2.0**（2026-11-06）
 - 日期：2026-11-05
 - 范围：timed/storage 变体与运行；**独立 C2a DTO/DB/命令，不扩展 C1 类型**
 - 明确延后 C2b：promote、assetDelay、checkpoint、patch-on-timed
@@ -77,7 +77,7 @@ TimedSnapshot {
 - `TimedSnapshotInput {label, scenarioPath, scenarioSha256, goal,minVerification, startS, horizonS, deadlineS?}`；C2a 固定 `nowS=0`（timed scenario 从 0 开始），`horizonS > 0`、`startS ∈ [0,horizonS]`、`deadlineS ∈ (startS,horizonS]`；缺省 startS=0。
 - `snapshotSha256 = sha256("poie.timed-snapshot/0.1\n" + canonical_json(without id/createdAt/createdBy/snapshotSha256))`；**scenarioPath 不进入 digest**（仅定位），纳入 scenarioSha/modelSha。
 - goal 只接受 `service:<id>`/`restore:<asset>`；minVerification 解析为现有枚举。
-- 固定向量：`{"schema":"poie.timed-snapshot/0.1","schemaVersion":"0.1","label":"base-01-timed","modelSha256":"m","scenarioSha256":"5cbfc5a5711b316318fd244c89149b9ef58b6f5d8c417c4747638dc7c1c205f3","goal":"restore:pump-p1","minVerification":"demonstrated","startS":0.0,"horizonS":86400.0,"nowS":0.0,"deadlineS":null}` → `b4a1459860896c689d26c4ffd752cfb2d071891d63f4f3df07860a31505e9835`。
+- 固定向量：`{"schema":"poie.timed-snapshot/0.1","schemaVersion":"0.1","label":"base-01-timed","modelSha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","scenarioSha256":"5cbfc5a5711b316318fd244c89149b9ef58b6f5d8c417c4747638dc7c1c205f3","goal":"restore:pump-p1","minVerification":"demonstrated","startS":0.0,"horizonS":86400.0,"nowS":0.0,"deadlineS":null}` → `e694e44a32754e876008a99fef02a59904d126f3488a4156519445b27218ef65`。
 - scenarioPath/scenarioSha/modelSha 必须与 run 重读一致。
 
 ### 5.2 Timed Variant
@@ -110,7 +110,7 @@ TimedResult {
 ```
 
 - `resultSha256 = sha256("poie.timed-result/0.1\n" + canonical_json({snapshotSha256,scenarioSha256,modelSha256,variant:{startMode,startS,deadlineS,storageDischargeW},settings,outcome,completionS,warnings}))`；排除 id/createdAt；可选字段 null 不省略。
-- 固定向量：`{"snapshotSha256":"s","scenarioSha256":"c","modelSha256":"m","variant":{"startMode":"beginning","startS":0.0,"deadlineS":null,"storageDischargeW":{"bat-1":3000.0}},"settings":{"startMode":"beginning","startS":0.0,"horizonS":86400.0,"deadlineS":null},"outcome":{"timed":"power_limited","caveat":"relative to this timed scenario and bounded model; not a physical feasibility proof"},"completionS":null,"warnings":[]}` → `e7e6e69a44e8b31bd01af60f754b85173aa2fe64b9b27c148c7cd010ce29d423`。
+- 固定向量：`{"snapshotSha256":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","scenarioSha256":"5cbfc5a5711b316318fd244c89149b9ef58b6f5d8c417c4747638dc7c1c205f3","modelSha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","variant":{"startMode":"beginning","startS":0.0,"deadlineS":null,"storageDischargeW":{"electric-energy":3000.0}},"settings":{"startMode":"beginning","startS":0.0,"horizonS":86400.0,"deadlineS":null},"outcome":{"timed":"power_limited","caveat":"relative to this timed scenario and bounded model; not a physical feasibility proof"},"completionS":null,"warnings":[]}` → `d3b7e89472ddae6e48398faf19a7aa8ba0c66db6b822636d39a139ce50cb90eb`。
 - caveat 固定：`"relative to this timed scenario and bounded model; not a physical feasibility proof"`。
 
 ### 5.4 Timed Compare

@@ -43,6 +43,40 @@ fn reject_symlinks(root: &Path, relative: &str) -> Result<PathBuf, String> {
     Ok(path)
 }
 
+/// Resolve `relative` beneath `base_relative` but allow `..` only when the
+/// canonical result stays inside `root`. Symlinks are rejected.
+pub fn resolve_inside(root: &Path, base_relative: &str, relative: &str) -> Result<PathBuf, String> {
+    let base = resolve(root, base_relative)?;
+    let candidate = base.join(relative);
+    let root_canon = std::fs::canonicalize(root).map_err(|error| format!("{}: {error}", root.display()))?;
+    let candidate_canon =
+        std::fs::canonicalize(&candidate).map_err(|error| format!("{}: {error}", candidate.display()))?;
+    if !candidate_canon.starts_with(&root_canon) {
+        return Err(format!("sandbox path escapes the root: {relative:?}"));
+    }
+    let mut current = root_canon.clone();
+    for component in candidate_canon.strip_prefix(&root_canon).map_err(|_| "outside root".to_string())?.components() {
+        current.push(component);
+        if let Ok(metadata) = std::fs::symlink_metadata(&current) {
+            if metadata.file_type().is_symlink() {
+                return Err(format!("sandbox path must not contain symlinks: {}", current.display()));
+            }
+        }
+    }
+    Ok(candidate_canon)
+}
+
+/// Read a file resolved relative to another sandbox path while keeping it
+/// inside the root. Used for a timed scenario's `model = "../base-01/model.toml"`.
+pub fn read_inside(root: &Path, base_relative: &str, relative: &str) -> Result<String, String> {
+    let path = resolve_inside(root, base_relative, relative)?;
+    let metadata = std::fs::metadata(&path).map_err(|error| format!("{}: {error}", path.display()))?;
+    if !metadata.is_file() || metadata.len() > MAX_FILE_BYTES {
+        return Err(format!("{} is not a bounded regular file", path.display()));
+    }
+    std::fs::read_to_string(&path).map_err(|error| format!("{}: {error}", path.display()))
+}
+
 pub fn read(root: &Path, relative: &str) -> Result<String, String> {
     let path = reject_symlinks(root, relative)?;
     let metadata = std::fs::metadata(&path).map_err(|error| format!("{}: {error}", path.display()))?;
@@ -126,5 +160,18 @@ mod tests {
         for bad in ["", " ", "../secret", "notes/../../secret", "/etc/passwd", "./notes", "notes/../x"] {
             assert!(resolve(root, bad).is_err(), "{bad:?} should be rejected");
         }
+    }
+
+    #[test]
+    fn read_inside_allows_sibling_but_not_escape() {
+        let root = std::env::temp_dir().join(format!("poieweave-sandbox-inside-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(root.join("scenario")).unwrap();
+        std::fs::create_dir_all(root.join("model")).unwrap();
+        std::fs::write(root.join("model/model.toml"), "x").unwrap();
+        std::fs::write(root.join("scenario/scenario.toml"), "y").unwrap();
+        assert_eq!(read_inside(&root, "scenario", "../model/model.toml").unwrap(), "x");
+        assert!(read_inside(&root, "scenario", "../../etc/passwd").is_err());
+        let _ = std::fs::remove_dir_all(&root);
     }
 }

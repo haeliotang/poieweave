@@ -246,7 +246,18 @@ impl TimedScenario {
         let model_path = path.parent().unwrap_or(Path::new(".")).join(&doc.model);
         let model =
             Model::load(&model_path).map_err(|error| TimedError(format!("{}: {error}", model_path.display())))?;
+        Self::from_doc(doc, model)
+    }
 
+    pub fn from_source(text: &str, model: Model) -> Result<TimedScenario, TimedError> {
+        let doc: ScenarioDoc = toml::from_str(text).map_err(|error| TimedError(format!("scenario: {error}")))?;
+        if doc.schema != TIMED_SCENARIO_SCHEMA {
+            return error(format!("unsupported timed scenario schema {:?}", doc.schema));
+        }
+        Self::from_doc(doc, model)
+    }
+
+    fn from_doc(doc: ScenarioDoc, model: Model) -> Result<TimedScenario, TimedError> {
         let evidence_validity_s = parse_duration(&doc.evidence_validity)?;
         if evidence_validity_s < 0.0 {
             return error("evidence_validity must not be negative");
@@ -388,6 +399,17 @@ impl TimedCases {
 // Evaluation
 // ---------------------------------------------------------------------------
 
+/// Programmatic timed case used by What-if. Durations are seconds; the
+/// pre-registered `CaseDoc`/`ExpectDoc` path stays for fixtures.
+#[derive(Clone, Debug)]
+pub struct TimedCase {
+    pub goal: Goal,
+    pub start_s: f64,
+    pub deadline_s: Option<f64>,
+    pub horizon_s: f64,
+    pub min_verification: Verification,
+}
+
 pub struct TimedRunner {
     scenario: TimedScenario,
 }
@@ -399,6 +421,47 @@ impl TimedRunner {
 
     pub fn scenario(&self) -> &TimedScenario {
         &self.scenario
+    }
+
+    pub fn evaluate(&self, case: &TimedCase) -> Result<TimedOutcome, TimedError> {
+        if !case.start_s.is_finite()
+            || !case.horizon_s.is_finite()
+            || case.start_s < 0.0
+            || case.horizon_s <= case.start_s
+        {
+            return error("timed case start/horizon are invalid");
+        }
+        if let Some(deadline) = case.deadline_s {
+            if !deadline.is_finite() || deadline <= case.start_s || deadline > case.horizon_s {
+                return error("timed case deadline must be inside (start, horizon]");
+            }
+        }
+        let goal = match &case.goal {
+            Goal::Service(service) => GoalDoc::Service(service.clone()),
+            Goal::Restore(asset) => GoalDoc::Restore(asset.clone()),
+            Goal::Obtain { .. } => return error("timed What-if supports service/restore goals only"),
+        };
+        let doc = CaseDoc {
+            id: "whatif".into(),
+            title: String::new(),
+            description: String::new(),
+            goal,
+            min_verification: case.min_verification,
+            start: format!("{:.6} s", case.start_s),
+            deadline: case.deadline_s.map(|value| format!("{value:.6} s")),
+            expect: ExpectDoc { verdict: TimedVerdict::Feasible, completion_le: None },
+        };
+        let outcome = self.run(&doc)?;
+        if outcome.verdict != TimedVerdict::TooLate
+            && outcome.completion_s.is_some_and(|completion| completion > case.horizon_s + 1e-6)
+        {
+            return Ok(TimedOutcome {
+                verdict: TimedVerdict::TooLate,
+                detail: format!("completion exceeds horizon {:.0}s", case.horizon_s),
+                ..outcome
+            });
+        }
+        Ok(outcome)
     }
 
     pub fn run(&self, case: &CaseDoc) -> Result<TimedOutcome, TimedError> {
@@ -869,5 +932,40 @@ verdict = "feasible"
         let outcome = runner.run(case).unwrap();
         assert_eq!(outcome.verdict, TimedVerdict::Feasible);
         assert!((outcome.completion_s.unwrap() - 3.0 * 3600.0).abs() < 1.0);
+    }
+
+    #[test]
+    fn from_source_matches_path_loading_and_evaluates_without_expect() {
+        let (_, scenario_path) = TimedCases::load(&repo_path("../../scenarios/base-01-timed/cases.toml")).unwrap();
+        let text = std::fs::read_to_string(&scenario_path).unwrap();
+        let model = Model::load(&repo_path("../../scenarios/base-01/model.toml")).unwrap();
+        let scenario = TimedScenario::from_source(&text, model).unwrap();
+        assert!(scenario.description.contains("Timed Base-01"));
+        let runner = TimedRunner::new(scenario);
+        let case = TimedCase {
+            goal: Goal::Restore("pump-p1".into()),
+            start_s: 0.0,
+            deadline_s: None,
+            horizon_s: 86_400.0,
+            min_verification: Verification::Demonstrated,
+        };
+        let outcome = runner.evaluate(&case).unwrap();
+        assert_eq!(outcome.verdict, TimedVerdict::Feasible);
+    }
+
+    #[test]
+    fn evaluate_rejects_out_of_range_start_and_deadline() {
+        let (cases, scenario_path) = TimedCases::load(&repo_path("../../scenarios/base-01-timed/cases.toml")).unwrap();
+        let scenario = TimedScenario::load(&scenario_path).unwrap();
+        let runner = TimedRunner::new(scenario);
+        let case = TimedCase {
+            goal: Goal::Restore("pump-p1".into()),
+            start_s: 10.0,
+            deadline_s: Some(20.0),
+            horizon_s: 10.0,
+            min_verification: Verification::Demonstrated,
+        };
+        assert!(runner.evaluate(&case).is_err());
+        assert!(!cases.cases.is_empty());
     }
 }
