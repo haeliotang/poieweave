@@ -989,7 +989,7 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
                   <td>
                     {results.filter((result) => result.variantId === variant.id).map((result) => (
                       <div key={result.resultId}>
-                        <span className="mono">{result.mode}</span> · {result.outcome.structure ?? result.outcome.plan} · {result.outcome.caveat}
+                        <span className="mono">{result.mode}</span> · {result.outcome.structure ?? result.outcome.plan}{result.abstained ? ` · ${t("whatif.abstained")}: ${result.abstainReason ?? "unknown"}` : ""} · {result.outcome.caveat}
                         {result.mode === "plan" && result.outcome.plan === "planned" ? (
                           <button type="button" onClick={() => void promoteResult(result)} disabled={busy}>{t("promotion.promote")}</button>
                         ) : null}

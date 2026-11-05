@@ -630,3 +630,4 @@ flowchart LR
 | 0.1.134 | 2026-11-06 | D2 P0：release verifier 递归扫描 CI artifact 目录，修复 v0.3.2 发布 receipt 失败；v0.3.3 重发 |
 | 0.1.135 | 2026-11-06 | D2 P0：release verifier 忽略未打包的 raw `Poieweave` 二进制；v0.3.4 重发 |
 | 0.1.136 | 2026-11-06 | D2 P0：v0.3.4 Release 成功，release-verification.json `ok=true`；receipt 已复验 |
+| 0.1.137 | 2026-11-06 | C2b v0.2：C1 plan/structure 结果增加 residuals/abstained/abstainReason 并纳入 digest、UI；版本 0.3.5 |

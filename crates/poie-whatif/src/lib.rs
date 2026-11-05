@@ -314,6 +314,12 @@ pub struct VariantResult {
     pub external_dependencies: Vec<DependencyView>,
     pub result_sha256: String,
     pub warnings: Vec<String>,
+    #[serde(default)]
+    pub residuals: Option<Value>,
+    #[serde(default)]
+    pub abstained: bool,
+    #[serde(default)]
+    pub abstain_reason: Option<String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -396,7 +402,15 @@ pub fn run_structure(model: &Model, snapshot: &Snapshot, variant: &Variant) -> R
             end_s: 0.0,
         })
         .collect();
-    finish_result(snapshot, variant, "structure", structure, None, None, causes, dependencies, actions)
+    let mut result =
+        finish_result(snapshot, variant, "structure", structure, None, None, causes, dependencies, actions)?;
+    result.residuals = Some(json!({
+        "rootCauses": result.root_causes.len(),
+        "actions": result.actions.len(),
+        "externalDependencies": result.external_dependencies.len(),
+    }));
+    result.result_sha256 = result_digest(snapshot, variant, &result)?;
+    Ok(result)
 }
 
 pub fn run_plan(model: &Model, snapshot: &Snapshot, variant: &Variant) -> Result<VariantResult, String> {
@@ -475,6 +489,14 @@ pub fn run_plan(model: &Model, snapshot: &Snapshot, variant: &Variant) -> Result
     if !warnings.is_empty() {
         result.warnings.extend(warnings);
     }
+    result.completion_s = Some(plan_result.completion_s);
+    result.residuals = Some(json!({
+        "unmetGoals": plan_result.goals_unmet.iter().map(|failure| json!({"goal": failure.goal, "reason": failure.reason})).collect::<Vec<_>>(),
+        "completionS": result.completion_s,
+        "deadlineS": result.settings.deadline_s,
+        "actionCount": result.actions.len(),
+    }));
+    result.result_sha256 = result_digest(snapshot, variant, &result)?;
     Ok(result)
 }
 
@@ -536,6 +558,13 @@ fn finish_result(
         external_dependencies,
         result_sha256: String::new(),
         warnings: Vec::new(),
+        residuals: None,
+        abstained: matches!(outcome, "unknown" | "search_limit"),
+        abstain_reason: match outcome {
+            "unknown" => Some("unknown_state".into()),
+            "search_limit" => Some("search_limit".into()),
+            _ => None,
+        },
     };
     result.result_sha256 = result_digest(snapshot, variant, &result)?;
     Ok(result)
@@ -548,6 +577,7 @@ pub fn result_digest(snapshot: &Snapshot, variant: &Variant, result: &VariantRes
         "mode": result.mode, "settings": result.settings, "outcome": result.outcome,
         "planSha256": result.plan_sha256, "completionS": result.completion_s,
         "actions": result.actions, "rootCauses": result.root_causes, "externalDependencies": result.external_dependencies,
+        "residuals": result.residuals, "abstained": result.abstained, "abstainReason": result.abstain_reason,
     });
     sha256_of("poie.variant/0.1", &payload).map_err(|error| error.to_string())
 }
@@ -731,5 +761,18 @@ mod tests {
         let mut other = result.clone();
         other.snapshot_id = "other".into();
         assert!(compare("snap-1", &[result, other], None, &[]).is_err());
+    }
+
+    #[test]
+    fn plan_result_carries_residuals_and_abstention_fields() {
+        let model = model();
+        let mut snapshot = snapshot(&model);
+        snapshot.horizon_s = 86_400.0;
+        snapshot.snapshot_sha256 = snapshot_digest(&snapshot).unwrap();
+        let variant = variant(&snapshot, PatchDto::default());
+        let result = run_plan(&model, &snapshot, &variant).unwrap();
+        assert!(result.residuals.is_some());
+        assert_eq!(result.abstained, false);
+        assert!(result.residuals.unwrap()["completionS"].is_number());
     }
 }
