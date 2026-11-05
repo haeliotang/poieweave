@@ -535,4 +535,37 @@ mod tests {
         db.append_audit(11, "operator", "auth.sign_in", "ok").unwrap();
         assert_eq!(db.audit(10).unwrap().len(), 1);
     }
+
+    #[test]
+    fn real_file_migration_reaches_v4_with_product_tables() {
+        let path = std::env::temp_dir().join(format!("poieweave-acceptance-{}.sqlite3", std::process::id()));
+        let _ = std::fs::remove_file(&path);
+        {
+            let db = Db::open(&path).unwrap();
+            let version: i64 = db.connection.query_row("PRAGMA user_version", [], |row| row.get(0)).unwrap();
+            assert_eq!(version, 4);
+            let tables: Vec<String> = db
+                .connection
+                .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
+                .unwrap()
+                .query_map([], |row| row.get(0))
+                .unwrap()
+                .collect::<Result<_, _>>()
+                .unwrap();
+            for table in [
+                "agent_runs",
+                "approval_tokens",
+                "delivery_manifests",
+                "delivery_state",
+                "whatif_results",
+                "whatif_snapshots",
+                "whatif_variants",
+            ] {
+                assert!(tables.iter().any(|name| name == table), "missing {table}");
+            }
+            db.save_agent_run("run-1", "poie.agent-run/0.1", "session-1", "{}", 1, 1, 10).unwrap();
+            assert_eq!(db.agent_run("run-1").unwrap().as_deref(), Some("{}"));
+        }
+        let _ = std::fs::remove_file(&path);
+    }
 }

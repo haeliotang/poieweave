@@ -197,3 +197,88 @@ pub fn whatif_compare(
         .collect::<Result<_, _>>()?;
     compare(&snapshot_id, &results, baseline_result_id.as_deref(), result_ids.unwrap_or_default().as_slice())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn real_model_snapshot_variant_run_and_persist() {
+        let path = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../scenarios/base-01/model.toml");
+        let model = poie_ontology::model::Model::load(&path).unwrap();
+        let digest = poie_objects::model_digest(&model).unwrap();
+        let snapshot = Snapshot::create(
+            poie_whatif::SnapshotInput {
+                label: "base".into(),
+                model_sha256: digest,
+                evidence_sha256: None,
+                goal: "service:potable-water".into(),
+                min_verification: "demonstrated".into(),
+                horizon_s: 24.0,
+                now_s: 0.0,
+                start_s: 0.0,
+                deadline_s: None,
+                max_depth: 12,
+                max_actions: 12,
+                seed: 7,
+            },
+            "snap-accept".into(),
+            1,
+            "acceptance".into(),
+        )
+        .unwrap();
+        let variant = Variant {
+            schema: VARIANT_SCHEMA.into(),
+            schema_version: "0.1".into(),
+            id: "var-accept".into(),
+            snapshot_id: snapshot.id.clone(),
+            label: "pump failed".into(),
+            description: String::new(),
+            patch: PatchDto {
+                asset_status: [("pump-p1".to_string(), "failed".to_string())].into_iter().collect(),
+                ..Default::default()
+            },
+            goal: None,
+            min_verification: None,
+            deadline_s: None,
+            created_at: 1,
+            created_by: "acceptance".into(),
+        };
+        let result = run_structure(&model, &snapshot, &variant).unwrap();
+        let db = crate::db::Db::open_in_memory().unwrap();
+        db.save_whatif_snapshot(
+            &snapshot.id,
+            &snapshot.schema_version,
+            "session",
+            &serde_json::to_string(&snapshot).unwrap(),
+            &snapshot.snapshot_sha256,
+            1,
+        )
+        .unwrap();
+        db.save_whatif_variant(
+            &variant.id,
+            &variant.snapshot_id,
+            &variant.schema_version,
+            &serde_json::to_string(&variant).unwrap(),
+            1,
+        )
+        .unwrap();
+        let settings = serde_json::to_string(&result.settings).unwrap();
+        db.save_whatif_result(
+            &result.result_id,
+            &result.variant_id,
+            &result.snapshot_id,
+            &result.schema_version,
+            &result.mode,
+            &settings,
+            &serde_json::to_string(&result).unwrap(),
+            &result.result_sha256,
+            1,
+        )
+        .unwrap();
+        let loaded: VariantResult =
+            serde_json::from_str(&db.whatif_result(&result.result_id).unwrap().unwrap()).unwrap();
+        assert_eq!(loaded.result_sha256, result.result_sha256);
+        assert!(loaded.outcome.structure.is_some());
+    }
+}

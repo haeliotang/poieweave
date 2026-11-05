@@ -189,3 +189,4 @@ M12 多站点联邦：**进行中（模拟部分完成）**——M12.1–M12.4 �
 - 2026-11-05：B0 治理核心合并（#146）：`poie-governance` 工具目录/画像、审批摘要、审计链、RunState/评测 schema；Rust 列表测试 401。
 - 2026-11-05：B0 host runtime 合并（#150）：agent_run/provider 六工具、RunState/approval token、answer.emit、Agent 面板切换；B1 待审批恢复/执行/audit 文件/真实 fixtures。
 - 2026-11-05：B1 审批执行/审计链合并（#152/#153）；C1 `poie-whatif` + UI（#155/#156/#157）；D1 `poie-delivery` + UI（#159/#160）；B1 72 fixtures（#161）；A–D MVP 门禁/测试通过（417）。
+- 2026-11-05：真实环境验收：本地构建/启动 macOS app，验证 `user_version=4` 与产品表；新增真实文件/SQLite/model 宿主验收测试（v4 迁移、C1、D1），宿主测试 16。
