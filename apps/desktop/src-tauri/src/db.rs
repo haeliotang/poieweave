@@ -472,12 +472,13 @@ impl Db {
             .map_err(|error| error.to_string())
     }
 
-    pub fn promotion_proposals(&self, limit: u32) -> Result<Vec<String>, String> {
+    pub fn promotion_proposals(&self, limit: u32) -> Result<Vec<(String, String)>, String> {
         let mut statement = self
             .connection
-            .prepare("SELECT proposal_json FROM promotion_proposals ORDER BY created_at DESC LIMIT ?1")
+            .prepare("SELECT status, proposal_json FROM promotion_proposals ORDER BY created_at DESC LIMIT ?1")
             .map_err(|error| error.to_string())?;
-        let rows = statement.query_map([limit], |row| row.get(0)).map_err(|error| error.to_string())?;
+        let rows =
+            statement.query_map([limit], |row| Ok((row.get(0)?, row.get(1)?))).map_err(|error| error.to_string())?;
         rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
     }
 

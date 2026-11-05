@@ -100,7 +100,9 @@ System Events 仍返回 `-10004`，但已改用 CoreGraphics 事件 + 截图驱�
 - 用 C1 baseline plan（`planned`）发起 promote：生成 `promotion_proposals` + `approval_tokens` pending
 - UI 展示 scope、动作数、Proposed 区域
 - Approve 后 DB：proposal/token `approved`
-- 备注：UI Commit 点击坐标受自动化窗口干扰，commit 端到端 UI 尚未取证；host API 与表已实现
+- Commit 后 DB：proposal `committed`、token `consumed`、1 个 proposed action、1 个 commit
+- UI 显示 `PROPOSED 计划 · COMMITTED` 与 commit sha 前 12 位
+- proposed action `authorization=null`，无 dispatch/live 写入
 
 ![C2b promotion](assets/acceptance-c2b.png)
 

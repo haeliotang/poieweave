@@ -622,3 +622,4 @@ flowchart LR
 | 0.1.126 | 2026-11-05 | 发布硬化：What-if 重启后加载持久化 snapshot/variant/result；审批 token 生命周期集成测试；Agent 画像选择与 UI 断言；版本 0.1.2 |
 | 0.1.127 | 2026-11-06 | C2a 实现：timed scenario from_source/evaluate、独立 timed DTO/digest、host import/snapshot/variant/run/compare + v5 表、Timed UI；版本 0.2.0 |
 | 0.1.128 | 2026-11-06 | C2b 实现：SAP plan_to_actions_at/preview_actions、promotion DTO/digest、v6 propose/approve/commit、Proposed UI、C1 horizon 修复；版本 0.3.0 |
+| 0.1.129 | 2026-11-06 | C2b 收尾：proposal 状态以 DB 列为准、加载活跃 proposal、commit 快捷键；真实 UI commit 验收通过；版本 0.3.1 |

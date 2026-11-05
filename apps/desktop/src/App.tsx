@@ -863,6 +863,17 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
     return () => { cancelled = true; };
   }, [hosted]);
 
+  useEffect(() => {
+    if (!hosted) return;
+    let cancelled = false;
+    (async () => {
+      const proposals = await invoke<PromotionProposal[]>("whatif_promote_list", { limit: 20 });
+      const active = proposals.find((proposal) => proposal.status === "pending" || proposal.status === "approved");
+      if (active && !cancelled) setPromotion(active);
+    })().catch(() => { /* no active proposal is fine */ });
+    return () => { cancelled = true; };
+  }, [hosted]);
+
   const prepare = async () => {
     setBusy(true); setError("");
     try {
@@ -940,6 +951,17 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
     } catch (caught) { setPromotionError(String(caught)); } finally { setBusy(false); }
   };
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === "Enter" && promotion?.status === "approved") {
+        event.preventDefault();
+        void commitPromotion();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  });
+
   return (
     <section className="card whatif">
       <div className="card__head"><h2>{t("whatif.title")}</h2><span className="eyebrow">SIMULATION · C1</span></div>
@@ -991,7 +1013,7 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
                   </>
                 ) : null}
                 {promotion.status === "approved" ? (
-                  <button className="primary" type="button" onClick={() => void commitPromotion()} disabled={busy}>{t("promotion.commit")}</button>
+                  <button className="primary" type="button" onMouseDown={() => void commitPromotion()} onClick={() => void commitPromotion()}>{t("promotion.commit")}</button>
                 ) : null}
               </div>
               {promotionCommit ? <p className="muted">{t("promotion.committed")} · {promotionCommit.commitSha256.slice(0, 12)}…</p> : null}
