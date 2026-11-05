@@ -15,6 +15,21 @@ pub const PROPOSED_ACTION_SCHEMA: &str = "poie.proposed-action/0.1";
 pub const PROMOTION_COMMIT_SCHEMA: &str = "poie.promotion-commit/0.1";
 pub const PROMOTE_POLICY_VERSION: &str = "poie-promote/0.1";
 
+/// Axio-style mandate envelope: who authorized what scope, until when, and
+/// whether it can be revoked. C2b stores it as evidence; the approval token
+/// remains the executable grant.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PromotionMandate {
+    pub mandate_ref: String,
+    pub granted_by: String,
+    pub granted_to: String,
+    pub scope: String,
+    pub issued_at: i64,
+    pub expires_at: i64,
+    pub revocable: bool,
+}
+
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PromotionProposal {
@@ -34,6 +49,8 @@ pub struct PromotionProposal {
     pub state_version: BTreeMap<String, u64>,
     pub state_version_source: String,
     pub scope: String,
+    #[serde(default)]
+    pub mandate: Option<PromotionMandate>,
     pub status: String,
     pub approval_token_id: String,
     pub requested_at: i64,
@@ -61,6 +78,7 @@ impl PromotionProposal {
         state_version: BTreeMap<String, u64>,
         actions: Vec<Action>,
         sap_preview: SapPreview,
+        mandate: Option<PromotionMandate>,
         proposal_id: String,
         token_id: String,
         now_ms: i64,
@@ -87,6 +105,7 @@ impl PromotionProposal {
             state_version,
             state_version_source: "host_assumption".into(),
             scope,
+            mandate,
             status: "pending".into(),
             approval_token_id: token_id,
             requested_at: now_ms,
@@ -321,6 +340,7 @@ mod tests {
             [("site-a".into(), 4)].into_iter().collect(),
             vec![action],
             preview,
+            None,
             "prom-1".into(),
             "tok-1".into(),
             1_000,
@@ -332,6 +352,17 @@ mod tests {
         proposal.proposal_id = "prom-2".into();
         proposal.decided_at = Some(2_000);
         assert_eq!(before, promotion_proposal_digest(&proposal).unwrap());
+        let without_mandate = proposal.proposal_sha256.clone();
+        proposal.mandate = Some(PromotionMandate {
+            mandate_ref: "operator:test".into(),
+            granted_by: "test".into(),
+            granted_to: "test".into(),
+            scope: proposal.scope.clone(),
+            issued_at: 1,
+            expires_at: 2,
+            revocable: true,
+        });
+        assert_ne!(without_mandate, promotion_proposal_digest(&proposal).unwrap());
         assert_eq!(promotion_plan_sha256(&plan()).unwrap().len(), 64);
         assert_eq!(proposed_action_sha256(&proposal.actions[0]).unwrap().len(), 64);
     }

@@ -626,3 +626,4 @@ flowchart LR
 | 0.1.130 | 2026-11-06 | D2 P0 起步：release verification receipt/CI、D2 发布/签名/updater 设计；下一步签名恢复与 bundle v0.2 |
 | 0.1.131 | 2026-11-06 | D2 P0：签名保管恢复卡脚本与测试；发布验证 CI 已接入；下一步恢复演练与 bundle v0.2 |
 | 0.1.132 | 2026-11-06 | D2 P0：修正 SHA256SUMS 目录路径/Windows 资产名，release verifier basename 兼容；v0.3.1 receipt 验证通过 |
+| 0.1.133 | 2026-11-06 | C2b v0.2：promotion mandate 信封（grantedBy/scope/expiry/revocable），approve/commit 校验；D2 设计补授权边界 |

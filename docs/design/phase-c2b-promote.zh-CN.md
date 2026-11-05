@@ -66,6 +66,7 @@ PromotionProposal {
   planFingerprint,planSha256,modelSha256,stateVersion:{site:version},
   stateVersionSource:"host_assumption",
   scope:"promote:<snapshotId>:<resultId>",
+  mandate:{mandateRef,grantedBy,grantedTo,scope,issuedAt,expiresAt,revocable}?,
   status:"pending"|"approved"|"rejected"|"committed"|"expired"|"cancelled",
   approvalTokenId,requestedAt,requestedBy,decidedAt?,committedAt?,
   nowMs, actions:[ProposedActionDraft], actionsSha256,
@@ -80,6 +81,7 @@ PromotionProposal {
 - `scope` 必须等于 `promote:<snapshotId>:<resultId>`；approval token 的 `subject_digest` 用 B1 `poie-governance::subject_digest("whatif.promote", args, sessionId, policy, expires)` 计算，`args` 含 scope/resultId/proposalSha256；审批时比对。
 - `variantJsonSha256 = sha256("poie.whatif-variant/0.1\n" + canonical variant JSON)`
 - `inputsSha256 = sha256("poie.promotion-inputs/0.1\n" + canonical {snapshotSha256,variantJsonSha256,resultSha256})`；commit 必须重读这三行并比对。
+- `mandate` 为可选 Axio 风格授权信封：记录授权者/受托者/范围/期限/可撤销；approve/commit 校验 scope 与期限。旧 proposal 缺省 `null`。
 - `stateVersion` 来源明确为 **host_assumption**：C2b MVP 用 `{"site-a":4}`；不是 live 真值，必须在 UI/proposal 中标注。propose 与 commit 都要求该假设未变；测试用 `4→5` 证明 stale 生效。
 
 ### 5.2 ProposedAction
@@ -139,16 +141,16 @@ ProposedAction {
   - `tool = "whatif.promote"`；`tool_version="1.0.0"`
   - `run_id = proposalId`；`call_id = ""`
   - `subject_digest = subject_digest("whatif.promote", args, sessionId, "poie-promote/0.1", expires)`（显式 policy；不用 `POLICY_VERSION=poie-agent/0.1`）
-  - `args_json_redacted` 存 `{scope, resultId, proposalSha256}`
+  - `args_json_redacted` 存 `{scope, resultId, proposalSha256, mandateRef}`
   - `expires_at_ms = now + 30min`（可配置，上限 24h）
   - `impact_json` = `{actions:N, targets:[...], budgets:[...]}`
   - `citations_json` = `[{kind:"plan",id:planFingerprint},{kind:"snapshot",id:snapshotId}]`
   - `policy_version = "poie-promote/0.1"`
   - `state=pending`
-- approve：校验 token 属于当前 session、`tool`、`run_id`、`args.scope`、`proposalSha256`，原子 pending→approved；proposal 同步 approved。
+- approve：校验 token 属于当前 session、`tool`、`run_id`、`args.scope`、`proposalSha256`，并校验 proposal.mandate scope/expiry；原子 pending→approved；proposal 同步 approved。
 - reject：pending→rejected；proposal rejected。
 - cancel：pending/approved→cancelled；proposal cancelled。
-- commit：要求 proposal approved、token approved、未过期；校验 token scope/session；事务内 token approved→executing→consumed + 写 actions + proposal committed。
+- commit：要求 proposal approved、token approved、未过期；校验 token scope/session 与 mandate scope/expiry；事务内 token approved→executing→consumed + 写 actions + proposal committed。
 - 重复 propose：同一 result 若已有 pending/approved proposal → `duplicate_proposal`（拒绝，不新建）；committed/rejected/expired 后可重新 propose。
 - 不实现 `interrupted` 状态；commit 失败回滚，proposal 仍 approved、token 仍 approved。
 - C2b 的“能力范围”是一次性 token 的 scope；长期 grant/revoke/inventory 属 D2 审批扩展（scope exception，owner: D2 design）。
