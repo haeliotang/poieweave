@@ -368,6 +368,7 @@ dependencies = [
  "poie-objects",
  "poie-ontology",
  "poie-plan",
+ "poie-state",
  "serde",
  "serde_json",
 ]

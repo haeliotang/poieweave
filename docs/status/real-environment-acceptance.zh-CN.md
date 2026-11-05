@@ -41,7 +41,7 @@
 | 宿主真实文件/SQLite/model 测试 | 16 通过 | v4 迁移 + `agent_runs`、D1 导入/回滚/诊断、C1 snapshot/variant/run/persist |
 | 真实 UI：认证/provider/Agent/What-if | 通过 | 见 §2.1 与截图 |
 | 完整门禁 | 通过 | `scripts/verify-all.sh` → `ALL GATES PASSED` |
-| Rust 列表测试 | 421 | 库 405 + 其他 16 |
+| Rust 列表测试 | 423 | 库 407 + 其他 16 |
 | UI smoke | 7 | Playwright（vite preview，非 Tauri host） |
 
 ## 3. 未完成/受阻
@@ -94,6 +94,15 @@ System Events 仍返回 `-10004`，但已改用 CoreGraphics 事件 + 截图驱�
 - v5 表 `whatif_timed_*` 与 audit `whatif.timed.*` 落盘
 
 ![C2a timed acceptance](assets/acceptance-c2a.png)
+
+## 4.2 C2b proposed promotion（2026-11-06）
+
+- 用 C1 baseline plan（`planned`）发起 promote：生成 `promotion_proposals` + `approval_tokens` pending
+- UI 展示 scope、动作数、Proposed 区域
+- Approve 后 DB：proposal/token `approved`
+- 备注：UI Commit 点击坐标受自动化窗口干扰，commit 端到端 UI 尚未取证；host API 与表已实现
+
+![C2b promotion](assets/acceptance-c2b.png)
 
 ## 5. 结论
 

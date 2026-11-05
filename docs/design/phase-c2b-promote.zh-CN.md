@@ -1,6 +1,6 @@
 # Phase C2b 设计：What-if 计划提升为 Proposed Plan
 
-- 状态：**C2b 门禁 PASS**（2026-11-06；见 VALIDATION-C2B）
+- 状态：**C2b 门禁 PASS + 已实现 0.3.0**（2026-11-06）
 - 日期：2026-11-06
 - 范围：把 C1 的 **plan 结果**提升为 proposed actions；审批 + 重新校验 + 持久化
 - 明确不做：dispatch、live 写、SAP 执行、federation、timed promote、长期 capability grant

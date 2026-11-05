@@ -51,6 +51,25 @@ pub struct SapPreview {
 }
 
 #[derive(Clone, Debug, PartialEq)]
+pub enum SapError {
+    EmptyStateVersion,
+    InvalidPlan(String),
+    NonFiniteTime,
+}
+
+impl fmt::Display for SapError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            SapError::EmptyStateVersion => f.write_str("state version is empty"),
+            SapError::InvalidPlan(detail) => write!(f, "invalid plan: {detail}"),
+            SapError::NonFiniteTime => f.write_str("non-finite action time"),
+        }
+    }
+}
+
+impl std::error::Error for SapError {}
+
+#[derive(Clone, Debug, PartialEq)]
 pub enum PreviewError {
     EmptyStateVersion,
     InvalidPlan(String),
@@ -276,6 +295,161 @@ pub fn preview_plan_through_sap(plan: &Plan, assumed: &AssumedContext) -> Result
     Ok(SapPreview { checks, assumed: assumed_checks, rejections, authorized_actions: 0, authorization_created: false })
 }
 
+/// Converts a plan into SAP actions with a time window rebased onto
+/// `proposal_now_ms`. `origin_now_s` is the plan's own start (snapshot.now_s).
+pub fn plan_to_actions_at(
+    plan: &Plan,
+    origin_now_s: f64,
+    proposal_now_ms: i64,
+    state_version: &BTreeMap<String, u64>,
+) -> Result<Vec<Action>, SapError> {
+    if state_version.is_empty() {
+        return Err(SapError::EmptyStateVersion);
+    }
+    if !origin_now_s.is_finite() {
+        return Err(SapError::NonFiniteTime);
+    }
+    for pair in plan.actions.windows(2) {
+        if pair[1].start_s + 1e-9 < pair[0].start_s {
+            return Err(SapError::InvalidPlan("actions are not ordered by start time".into()));
+        }
+    }
+    for (index, first) in plan.actions.iter().enumerate() {
+        for second in plan.actions.iter().skip(index + 1) {
+            if first.start_s < second.end_s && second.start_s < first.end_s {
+                for asset in &first.occupies {
+                    if second.occupies.contains(asset) {
+                        return Err(SapError::InvalidPlan(format!(
+                            "{} and {} both occupy {asset}",
+                            first.action_id, second.action_id
+                        )));
+                    }
+                }
+            }
+        }
+    }
+    let mut actions = Vec::with_capacity(plan.actions.len());
+    for planned in &plan.actions {
+        actions.push(to_action_at(plan, planned, state_version, origin_now_s, proposal_now_ms)?);
+    }
+    Ok(actions)
+}
+
+fn to_action_at(
+    plan: &Plan,
+    planned: &PlannedAction,
+    state_version: &BTreeMap<String, u64>,
+    origin_now_s: f64,
+    proposal_now_ms: i64,
+) -> Result<Action, SapError> {
+    if !planned.start_s.is_finite() || !planned.end_s.is_finite() || !origin_now_s.is_finite() {
+        return Err(SapError::NonFiniteTime);
+    }
+    let start_ms = proposal_now_ms + ((planned.start_s - origin_now_s) * 1000.0).round() as i64;
+    let end_ms = proposal_now_ms + ((planned.end_s - origin_now_s) * 1000.0).round() as i64;
+    Ok(Action {
+        action_id: format!("{}-{}", plan.plan_id, planned.action_id),
+        idempotency_key: format!("{}:{}", plan.plan_id, planned.action_id),
+        target: planned.target.clone(),
+        command: planned.process.clone(),
+        plan_ref: Some(plan.plan_id.clone()),
+        policy_version: "plan-policy/0.1".to_string(),
+        precondition: Precondition { state_version: state_version.clone(), predicates: planned.preconditions.clone() },
+        valid_from: Timestamp(start_ms),
+        valid_until: Timestamp(end_ms + 60_000),
+        budget: planned
+            .allocations
+            .iter()
+            .filter(|(_, amount)| *amount > 0.0)
+            .map(|(resource, amount)| BudgetItem { resource: resource.clone(), amount_si: *amount })
+            .collect(),
+        reservations: Vec::new(),
+        reversibility: Reversibility::Idempotent,
+        verification_spec: VerificationSpec {
+            observe: format!("{} outcome", planned.process),
+            condition: "process reports completed and the effect is observed".to_string(),
+            window_ms: 60_000,
+        },
+        authorization: None,
+        redispatch_of: None,
+    })
+}
+
+/// Read-only review of already-rebased proposed actions. No Authorization is
+/// created and no action is advanced to Authorized. `missing_authorization` and
+/// future time windows are expected for a proposal; they remain `assumed`.
+pub fn preview_actions(actions: &[Action], assumed: &AssumedContext) -> Result<SapPreview, SapError> {
+    if assumed.state_version.is_empty() {
+        return Err(SapError::EmptyStateVersion);
+    }
+    let mut ledger = ActionLedger::new();
+    let mut checks = Vec::new();
+    let mut assumed_items = Vec::new();
+    let mut rejections = Vec::new();
+    for action in actions {
+        action.validate().map_err(|error| SapError::InvalidPlan(error.to_string()))?;
+        ledger.add(action).map_err(|error| SapError::InvalidPlan(error.to_string()))?;
+        ledger
+            .apply(&action.action_id, ActionState::Validated)
+            .map_err(|error| SapError::InvalidPlan(error.to_string()))?;
+        let context = DispatchContext {
+            now_ms: assumed.now_ms,
+            current_state_version: assumed.state_version.clone(),
+            holds_command_ownership: assumed.holds_command_ownership,
+            reservations_held: assumed.reservations_held,
+            predicates_holding: action.precondition.predicates.iter().cloned().collect(),
+            authorization_revoked: false,
+            ownership_dispatch_deadline_ms: None,
+            executor_dedup_window_ms: None,
+        };
+        let result = review_dispatch(action, &ledger, &context);
+        for check in [
+            ReviewCheck::TimeWindow,
+            ReviewCheck::Preconditions,
+            ReviewCheck::CommandOwnership,
+            ReviewCheck::Reservations,
+            ReviewCheck::IdempotencyKey,
+            ReviewCheck::Authorization,
+            ReviewCheck::DedupWindow,
+        ] {
+            let rejection = result.as_ref().err().and_then(|items| items.iter().find(|item| item.check == check));
+            let expected =
+                matches!(check, ReviewCheck::CommandOwnership | ReviewCheck::Reservations | ReviewCheck::Authorization)
+                    || (check == ReviewCheck::TimeWindow
+                        && rejection.is_some_and(|item| item.detail.contains("not_yet_valid")));
+            let status = if expected {
+                "assumed"
+            } else if rejection.is_some() {
+                "failed"
+            } else {
+                "observed"
+            };
+            let detail = rejection.map(|item| item.detail.clone()).unwrap_or_else(|| {
+                if check == ReviewCheck::Authorization {
+                    "authorization not created in proposal".to_string()
+                } else {
+                    "ok".to_string()
+                }
+            });
+            if !checks.iter().any(|entry: &CheckPreview| entry.check == check.as_str()) {
+                checks.push(CheckPreview {
+                    check: check.as_str().to_string(),
+                    status: status.to_string(),
+                    detail: detail.clone(),
+                });
+            }
+            if expected {
+                assumed_items.push(format!("{}: {detail}", check.as_str()));
+            } else if let Some(item) = rejection {
+                if !rejections.iter().any(|existing| existing == &item.detail) {
+                    rejections.push(item.detail.clone());
+                }
+            }
+        }
+    }
+    Ok(SapPreview { checks, assumed: assumed_items, rejections, authorized_actions: 0, authorization_created: false })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -369,6 +543,31 @@ mod tests {
         assert!(preview.checks.iter().any(|check| check.check == "reservations" && check.status == "assumed"));
         assert!(!preview.assumed.is_empty());
         assert!(!preview.rejections.iter().any(|reason| reason.contains("authorization")));
+        assert_eq!(preview.authorized_actions, 0);
+        assert!(!preview.authorization_created);
+    }
+
+    #[test]
+    fn rebased_actions_preview_without_false_time_rejections() {
+        let plan = service_plan();
+        let state_version = BTreeMap::from([("site-a".to_string(), 4)]);
+        let now_ms = 1_800_000_000_000i64;
+        let actions = plan_to_actions_at(&plan, 0.0, now_ms, &state_version).unwrap();
+        assert!(!actions.is_empty());
+        assert_eq!(actions[0].valid_from.0, now_ms);
+        let predicates = actions.iter().flat_map(|action| action.precondition.predicates.clone()).collect();
+        let preview = preview_actions(
+            &actions,
+            &AssumedContext {
+                now_ms,
+                holds_command_ownership: true,
+                reservations_held: true,
+                predicates_holding: predicates,
+                state_version,
+            },
+        )
+        .unwrap();
+        assert!(preview.rejections.is_empty(), "{:?}", preview.rejections);
         assert_eq!(preview.authorized_actions, 0);
         assert!(!preview.authorization_created);
     }

@@ -3,10 +3,14 @@
 //! The source model is read-only here. Results are written only to the
 //! `whatif_*` tables; no live/SAP/federation/approval path is touched.
 
+use poie_governance::{subject_digest, ApprovalToken};
+use poie_plan::sap::{plan_to_actions_at, preview_actions, AssumedContext};
 use poie_sim::timed::{TimedCase, TimedRunner, TimedScenario};
+use poie_whatif::promotion::{proposed_action_sha256, PROMOTE_POLICY_VERSION, PROPOSED_ACTION_SCHEMA};
+use poie_whatif::promotion::{PromotionCommit, PromotionEvidence, PromotionProposal, ProposedAction};
 use poie_whatif::timed::{
-    compare_timed, TimedCompareResult, TimedResult, TimedSnapshot, TimedSnapshotInput, TimedVariant,
-    TimedVariantInput, TIMED_SNAPSHOT_SCHEMA,
+    compare_timed, TimedCompareResult, TimedResult, TimedSnapshot, TimedSnapshotInput, TimedVariant, TimedVariantInput,
+    TIMED_SNAPSHOT_SCHEMA,
 };
 use poie_whatif::{
     compare, run_plan, run_structure, CompareResult, PatchDto, Snapshot, SnapshotInput, Variant, VariantResult,
@@ -203,7 +207,6 @@ pub fn whatif_compare(
     compare(&snapshot_id, &results, baseline_result_id.as_deref(), result_ids.unwrap_or_default().as_slice())
 }
 
-
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimedScenarioInfo {
@@ -231,18 +234,14 @@ fn load_timed_scenario(
     scenario_path: &str,
 ) -> Result<(TimedScenario, String, String, String), String> {
     let text = sandbox::read(&state.sandbox_root, scenario_path).map_err(|error| format!("io_error: {error}"))?;
-    let parsed: toml::Value =
-        toml::from_str(&text).map_err(|error| format!("scenario_mismatch: {error}"))?;
+    let parsed: toml::Value = toml::from_str(&text).map_err(|error| format!("scenario_mismatch: {error}"))?;
     let model_relative = parsed
         .get("model")
         .and_then(toml::Value::as_str)
         .ok_or_else(|| "scenario_mismatch: missing model".to_string())?;
-    let parent = std::path::Path::new(scenario_path)
-        .parent()
-        .and_then(|path| path.to_str())
-        .unwrap_or_default();
-    let model_text =
-        sandbox::read_inside(&state.sandbox_root, parent, model_relative).map_err(|error| format!("io_error: {error}"))?;
+    let parent = std::path::Path::new(scenario_path).parent().and_then(|path| path.to_str()).unwrap_or_default();
+    let model_text = sandbox::read_inside(&state.sandbox_root, parent, model_relative)
+        .map_err(|error| format!("io_error: {error}"))?;
     let doc: poie_ontology::model::ModelDoc =
         toml::from_str(&model_text).map_err(|error| format!("model_mismatch: {error}"))?;
     let model = poie_ontology::model::Model::from_doc(doc).map_err(|error| format!("model_mismatch: {error}"))?;
@@ -275,12 +274,7 @@ pub fn whatif_timed_scenario_import(path: String, state: State<'_, AppState>) ->
         "whatif.scenario.import",
         &format!("{scenario_sha256} {path} {} bytes", text.len()),
     )?;
-    Ok(TimedScenarioInfo {
-        scenario_sha256,
-        scenario_path: path,
-        model_sha256,
-        description: scenario.description,
-    })
+    Ok(TimedScenarioInfo { scenario_sha256, scenario_path: path, model_sha256, description: scenario.description })
 }
 
 #[tauri::command]
@@ -319,13 +313,7 @@ pub fn whatif_timed_snapshot_create(
     let snapshot = TimedSnapshot::create(input, random_id("tsnap")?, auth::now_ms(), operator.display_name.clone())?;
     let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
     let json = serde_json::to_string(&snapshot).map_err(|error| error.to_string())?;
-    db.save_timed_snapshot(
-        &snapshot.id,
-        TIMED_SNAPSHOT_SCHEMA,
-        &json,
-        &snapshot.snapshot_sha256,
-        auth::now_ms(),
-    )?;
+    db.save_timed_snapshot(&snapshot.id, TIMED_SNAPSHOT_SCHEMA, &json, &snapshot.snapshot_sha256, auth::now_ms())?;
     db.append_audit(
         auth::now_ms(),
         &operator.display_name,
@@ -434,13 +422,7 @@ pub fn whatif_timed_run(variant_id: String, state: State<'_, AppState>) -> Resul
     };
     let min_verification: poie_ontology::model::Verification =
         serde_json::from_value(serde_json::json!(snapshot.min_verification)).map_err(|error| error.to_string())?;
-    let case = TimedCase {
-        goal,
-        start_s,
-        deadline_s,
-        horizon_s: snapshot.horizon_s,
-        min_verification,
-    };
+    let case = TimedCase { goal, start_s, deadline_s, horizon_s: snapshot.horizon_s, min_verification };
     let outcome = TimedRunner::new(scenario).evaluate(&case).map_err(|error| format!("scenario_mismatch: {error}"))?;
     let result = TimedResult::create(
         &snapshot,
@@ -518,6 +500,360 @@ pub fn whatif_timed_compare(
         results.retain(|result| ids.contains(&result.result_id));
     }
     compare_timed(&snapshot_id, baseline_result_id.as_deref(), results)
+}
+
+fn promotion_state_version() -> std::collections::BTreeMap<String, u64> {
+    std::collections::BTreeMap::from([("site-a".to_string(), 4)])
+}
+
+fn load_promotion(state: &AppState, proposal_id: &str) -> Result<PromotionProposal, String> {
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    let json = db.promotion_proposal(proposal_id)?.ok_or_else(|| format!("unknown_proposal: {proposal_id}"))?;
+    serde_json::from_str(&json).map_err(|error| error.to_string())
+}
+
+fn token_for(db: &crate::db::Db, id: &str) -> Result<ApprovalToken, String> {
+    db.approval_token(id)?.ok_or_else(|| format!("approval_required: missing token {id}"))
+}
+
+fn plan_for_promotion(
+    model: &poie_ontology::model::Model,
+    snapshot: &Snapshot,
+    variant: &Variant,
+) -> Result<poie_plan::plan::Plan, String> {
+    let patch = variant.patch.to_patch()?;
+    let model = model.patched(&patch).map_err(|error| format!("invalid_patch: {error}"))?;
+    let goal_text = variant.goal.as_deref().unwrap_or(&snapshot.goal);
+    let goal = match goal_text.split_once(':') {
+        Some(("service", id)) if !id.is_empty() => poie_ontology::graph::Goal::Service(id.to_string()),
+        Some(("restore", id)) if !id.is_empty() => poie_ontology::graph::Goal::Restore(id.to_string()),
+        _ => return Err("invalid_parameter: goal".into()),
+    };
+    let min_verification: poie_ontology::model::Verification = serde_json::from_value(serde_json::json!(variant
+        .min_verification
+        .as_deref()
+        .unwrap_or(&snapshot.min_verification)))
+    .map_err(|error| error.to_string())?;
+    let deadline = variant.deadline_s.or(snapshot.deadline_s);
+    poie_plan::plan::plan(&poie_plan::plan::PlanningRequest {
+        model: &model,
+        now_s: snapshot.now_s,
+        horizon_s: snapshot.horizon_s,
+        goals: vec![poie_plan::plan::PlanningGoal { goal, deadline_s: deadline, priority: 10 }],
+        min_verification,
+        max_actions: snapshot.max_actions,
+    })
+    .map_err(|error| format!("plan_failed: {error}"))
+}
+
+#[tauri::command]
+pub fn whatif_promote_propose(result_id: String, state: State<'_, AppState>) -> Result<PromotionProposal, String> {
+    let operator = auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    if db.active_promotion_for_result(&result_id)?.is_some() {
+        return Err("duplicate_proposal: an active proposal already exists for this result".into());
+    }
+    let result_json = db.whatif_result(&result_id)?.ok_or_else(|| format!("unknown_result: {result_id}"))?;
+    let result: VariantResult = serde_json::from_str(&result_json).map_err(|error| error.to_string())?;
+    if result.mode != "plan" || result.outcome.plan.as_deref() != Some("planned") || result.actions.is_empty() {
+        return Err("not_promotable: only planned C1 results with actions can be promoted".into());
+    }
+    let result_sha256 = result.result_sha256.clone();
+    let variant_json =
+        db.whatif_variant(&result.variant_id)?.ok_or_else(|| format!("unknown_variant: {}", result.variant_id))?;
+    let snapshot_json =
+        db.whatif_snapshot(&result.snapshot_id)?.ok_or_else(|| format!("unknown_snapshot: {}", result.snapshot_id))?;
+    let variant: Variant = serde_json::from_str(&variant_json).map_err(|error| error.to_string())?;
+    let snapshot: Snapshot = serde_json::from_str(&snapshot_json).map_err(|error| error.to_string())?;
+    snapshot.verify_model(&state.model)?;
+    let variant_sha = poie_digest::sha256_of("poie.whatif-variant/0.1", &variant).map_err(|error| error.to_string())?;
+    let planned = plan_for_promotion(&state.model, &snapshot, &variant)?;
+    if Some(planned.digest()) != result.plan_fingerprint {
+        return Err("plan_mismatch: stored plan fingerprint no longer matches".into());
+    }
+    let now = auth::now_ms();
+    let state_version = promotion_state_version();
+    let actions = plan_to_actions_at(&planned, snapshot.now_s, now, &state_version)
+        .map_err(|error| format!("sap_rejected: {error}"))?;
+    if actions.is_empty() {
+        return Err("not_promotable: plan has no actions".into());
+    }
+    let predicates = actions.iter().flat_map(|action| action.precondition.predicates.clone()).collect();
+    let preview = preview_actions(
+        &actions,
+        &AssumedContext {
+            now_ms: now,
+            holds_command_ownership: true,
+            reservations_held: true,
+            predicates_holding: predicates,
+            state_version: state_version.clone(),
+        },
+    )
+    .map_err(|error| format!("sap_rejected: {error}"))?;
+    if !preview.rejections.is_empty() {
+        return Err(format!("sap_rejected: {}", preview.rejections.join("; ")));
+    }
+    let proposal_id = random_id("prom")?;
+    let token_id = random_id("ptok")?;
+    let proposal_scope = format!("promote:{}:{}", result.snapshot_id, result.result_id);
+    let proposal = PromotionProposal::create(
+        result.result_id.clone(),
+        result.snapshot_id.clone(),
+        result.variant_id.clone(),
+        result_sha256,
+        snapshot.snapshot_sha256.clone(),
+        variant_sha,
+        &planned,
+        snapshot.model_sha256.clone(),
+        state_version,
+        actions,
+        preview,
+        proposal_id.clone(),
+        token_id.clone(),
+        now,
+        operator.display_name.clone(),
+    )?;
+    let expires = now + 30 * 60 * 1000;
+    let token_args = serde_json::json!({"scope": proposal_scope, "resultId": result.result_id, "proposalSha256": proposal.proposal_sha256});
+    let token_subject =
+        subject_digest("whatif.promote", &token_args, &operator.session_id, PROMOTE_POLICY_VERSION, expires)
+            .map_err(|error| error.to_string())?;
+    let token = ApprovalToken {
+        id: token_id.clone(),
+        session_id: operator.session_id.clone(),
+        run_id: proposal_id.clone(),
+        call_id: String::new(),
+        tool: "whatif.promote".into(),
+        tool_version: "1.0.0".into(),
+        subject_digest: token_subject,
+        policy_version: PROMOTE_POLICY_VERSION.into(),
+        args_json_redacted: serde_json::to_string(&token_args).map_err(|error| error.to_string())?,
+        impact_json: serde_json::json!({"actions": proposal.actions.len(), "scope": proposal_scope}).to_string(),
+        citations_json: serde_json::json!([{"kind":"plan","id":proposal.plan_fingerprint}]).to_string(),
+        state: "pending".into(),
+        created_at_ms: now,
+        decided_at_ms: None,
+        started_at_ms: None,
+        expires_at_ms: expires,
+    };
+    db.save_approval_token(&token)?;
+    db.save_promotion_proposal(
+        &proposal_id,
+        &result.result_id,
+        &result.snapshot_id,
+        &result.variant_id,
+        &serde_json::to_string(&proposal).map_err(|error| error.to_string())?,
+        &proposal.proposal_sha256,
+        "pending",
+        &token_id,
+        now,
+    )?;
+    db.append_audit(
+        now,
+        &operator.display_name,
+        "promotion.proposed",
+        &format!("{proposal_id} {result_id} {proposal_scope}"),
+    )?;
+    Ok(proposal)
+}
+
+#[tauri::command]
+pub fn whatif_promote_get(proposal_id: String, state: State<'_, AppState>) -> Result<PromotionProposal, String> {
+    auth::require(&state.session)?;
+    load_promotion(&state, &proposal_id)
+}
+
+#[tauri::command]
+pub fn whatif_promote_list(limit: Option<u32>, state: State<'_, AppState>) -> Result<Vec<PromotionProposal>, String> {
+    auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    db.promotion_proposals(limit.unwrap_or(20).clamp(1, 100))?
+        .into_iter()
+        .map(|json| serde_json::from_str(&json).map_err(|error| error.to_string()))
+        .collect()
+}
+
+fn decide_promotion(
+    approve: bool,
+    proposal_id: &str,
+    state: &AppState,
+    operator: &crate::auth::Session,
+) -> Result<PromotionProposal, String> {
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    let proposal_json =
+        db.promotion_proposal(proposal_id)?.ok_or_else(|| format!("unknown_proposal: {proposal_id}"))?;
+    let mut proposal: PromotionProposal = serde_json::from_str(&proposal_json).map_err(|error| error.to_string())?;
+    let token = token_for(&db, &proposal.approval_token_id)?;
+    if token.session_id != operator.session_id || token.tool != "whatif.promote" || token.run_id != proposal.proposal_id
+    {
+        return Err("approval_mismatch: token does not belong to this proposal/session".into());
+    }
+    let target = if approve { "approved" } else { "rejected" };
+    if proposal.status == target && token.state == target {
+        return Ok(proposal);
+    }
+    if proposal.status != "pending" {
+        return Err(format!("invalid_status: proposal is {}", proposal.status));
+    }
+    if auth::now_ms() > token.expires_at_ms {
+        db.transition_approval(&token.id, "pending", "expired", auth::now_ms())?;
+        db.update_promotion_status(proposal_id, "pending", "expired", auth::now_ms())?;
+        return Err("approval_expired: promotion token expired".into());
+    }
+    if !db.transition_approval(&token.id, "pending", target, auth::now_ms())? {
+        return Err("approval_mismatch: token transition failed".into());
+    }
+    if !db.update_promotion_status(proposal_id, "pending", target, auth::now_ms())? {
+        return Err("approval_mismatch: proposal transition failed".into());
+    }
+    proposal.status = target.into();
+    proposal.decided_at = Some(auth::now_ms());
+    db.append_audit(
+        auth::now_ms(),
+        &operator.display_name,
+        if approve { "promotion.approved" } else { "promotion.rejected" },
+        &format!("{proposal_id} {}", token.id),
+    )?;
+    Ok(proposal)
+}
+
+#[tauri::command]
+pub fn whatif_promote_approve(proposal_id: String, state: State<'_, AppState>) -> Result<PromotionProposal, String> {
+    let operator = auth::require(&state.session)?;
+    decide_promotion(true, &proposal_id, &state, &operator)
+}
+
+#[tauri::command]
+pub fn whatif_promote_reject(proposal_id: String, state: State<'_, AppState>) -> Result<PromotionProposal, String> {
+    let operator = auth::require(&state.session)?;
+    decide_promotion(false, &proposal_id, &state, &operator)
+}
+
+#[tauri::command]
+pub fn whatif_promote_cancel(proposal_id: String, state: State<'_, AppState>) -> Result<PromotionProposal, String> {
+    let operator = auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    let proposal_json =
+        db.promotion_proposal(&proposal_id)?.ok_or_else(|| format!("unknown_proposal: {proposal_id}"))?;
+    let mut proposal: PromotionProposal = serde_json::from_str(&proposal_json).map_err(|error| error.to_string())?;
+    if proposal.status == "cancelled" {
+        return Ok(proposal);
+    }
+    if proposal.status != "pending" && proposal.status != "approved" {
+        return Err(format!("invalid_status: proposal is {}", proposal.status));
+    }
+    let token = token_for(&db, &proposal.approval_token_id)?;
+    db.transition_approval(&token.id, &token.state, "cancelled", auth::now_ms())?;
+    db.update_promotion_status(&proposal_id, &proposal.status, "cancelled", auth::now_ms())?;
+    proposal.status = "cancelled".into();
+    db.append_audit(
+        auth::now_ms(),
+        &operator.display_name,
+        "promotion.cancelled",
+        &format!("{proposal_id} {}", token.id),
+    )?;
+    Ok(proposal)
+}
+
+#[tauri::command]
+pub fn whatif_promote_commit(proposal_id: String, state: State<'_, AppState>) -> Result<PromotionCommit, String> {
+    let operator = auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    if let Some(existing) = db.promotion_commit(&proposal_id)? {
+        return serde_json::from_str(&existing).map_err(|error| error.to_string());
+    }
+    let proposal_json =
+        db.promotion_proposal(&proposal_id)?.ok_or_else(|| format!("unknown_proposal: {proposal_id}"))?;
+    let proposal: PromotionProposal = serde_json::from_str(&proposal_json).map_err(|error| error.to_string())?;
+    if proposal.status != "approved" {
+        return Err(format!("approval_required: proposal is {}", proposal.status));
+    }
+    let token = token_for(&db, &proposal.approval_token_id)?;
+    if token.state != "approved" {
+        return Err(format!("approval_mismatch: token is {}", token.state));
+    }
+    if auth::now_ms() > token.expires_at_ms {
+        return Err("approval_expired: promotion token expired".into());
+    }
+    if proposal.actions.iter().any(|action| action.valid_until.0 <= auth::now_ms()) {
+        return Err("approval_expired: proposed action window has expired".into());
+    }
+    let variant_json =
+        db.whatif_variant(&proposal.variant_id)?.ok_or_else(|| format!("unknown_variant: {}", proposal.variant_id))?;
+    let snapshot_json = db
+        .whatif_snapshot(&proposal.snapshot_id)?
+        .ok_or_else(|| format!("unknown_snapshot: {}", proposal.snapshot_id))?;
+    let variant: Variant = serde_json::from_str(&variant_json).map_err(|error| error.to_string())?;
+    let snapshot: Snapshot = serde_json::from_str(&snapshot_json).map_err(|error| error.to_string())?;
+    snapshot.verify_model(&state.model)?;
+    let variant_sha = poie_digest::sha256_of("poie.whatif-variant/0.1", &variant).map_err(|error| error.to_string())?;
+    let result_json =
+        db.whatif_result(&proposal.result_id)?.ok_or_else(|| format!("unknown_result: {}", proposal.result_id))?;
+    let result: VariantResult = serde_json::from_str(&result_json).map_err(|error| error.to_string())?;
+    let inputs = poie_whatif::promotion::promotion_inputs_sha256(
+        &snapshot.snapshot_sha256,
+        &variant_sha,
+        &result.result_sha256,
+    )?;
+    if inputs != proposal.inputs_sha256 {
+        return Err("stale_result: snapshot/variant/result changed since propose".into());
+    }
+    if !db.transition_approval(&token.id, "approved", "executing", auth::now_ms())? {
+        return Err("approval_mismatch: token transition failed".into());
+    }
+    for action in &proposal.actions {
+        let draft_sha = proposed_action_sha256(action)?;
+        let evidence = PromotionEvidence {
+            approval_token_id: token.id.clone(),
+            proposal_sha256: proposal.proposal_sha256.clone(),
+            basis: format!(
+                "approval:{};simulation=whatif:{};model={}",
+                token.id, snapshot.snapshot_sha256, snapshot.model_sha256
+            ),
+        };
+        let proposed = ProposedAction {
+            schema: PROPOSED_ACTION_SCHEMA.into(),
+            schema_version: "0.1".into(),
+            proposal_id: proposal.proposal_id.clone(),
+            action_id: action.action_id.clone(),
+            action_sha256: draft_sha.clone(),
+            action: action.clone(),
+            state: "proposed".into(),
+            authorization: None,
+            promotion_evidence: evidence,
+        };
+        db.save_proposed_action(
+            &proposal.proposal_id,
+            &action.action_id,
+            &serde_json::to_string(&proposed).map_err(|error| error.to_string())?,
+            &draft_sha,
+            auth::now_ms(),
+        )?;
+    }
+    let commit = PromotionCommit::create(
+        &proposal,
+        proposal.actions_sha256.clone(),
+        auth::now_ms(),
+        operator.display_name.clone(),
+    )?;
+    db.save_promotion_commit(
+        &proposal.proposal_id,
+        &serde_json::to_string(&commit).map_err(|error| error.to_string())?,
+        &commit.commit_sha256,
+        &proposal.inputs_sha256,
+        &token.id,
+        auth::now_ms(),
+        &operator.display_name,
+    )?;
+    db.transition_approval(&token.id, "executing", "consumed", auth::now_ms())?;
+    db.update_promotion_status(&proposal.proposal_id, "approved", "committed", auth::now_ms())?;
+    db.append_audit(
+        auth::now_ms(),
+        &operator.display_name,
+        "promotion.committed",
+        &format!("{} {} {}", proposal.proposal_id, proposal.scope, commit.commit_sha256),
+    )?;
+    Ok(commit)
 }
 
 #[cfg(test)]
@@ -602,5 +938,52 @@ mod tests {
             serde_json::from_str(&db.whatif_result(&result.result_id).unwrap().unwrap()).unwrap();
         assert_eq!(loaded.result_sha256, result.result_sha256);
         assert!(loaded.outcome.structure.is_some());
+    }
+
+    #[test]
+    fn baseline_plan_can_be_rebased_and_previewed_for_promotion() {
+        let path = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../scenarios/base-01/model.toml");
+        let model = poie_ontology::model::Model::load(&path).unwrap();
+        let digest = poie_objects::model_digest(&model).unwrap();
+        let snapshot = Snapshot::create(
+            poie_whatif::SnapshotInput {
+                label: "base".into(),
+                model_sha256: digest,
+                evidence_sha256: None,
+                goal: "service:potable-water".into(),
+                min_verification: "demonstrated".into(),
+                horizon_s: 86_400.0,
+                now_s: 0.0,
+                start_s: 0.0,
+                deadline_s: None,
+                max_depth: 12,
+                max_actions: 12,
+                seed: 7,
+            },
+            "snap-promote".into(),
+            1,
+            "acceptance".into(),
+        )
+        .unwrap();
+        let variant = Variant {
+            schema: VARIANT_SCHEMA.into(),
+            schema_version: "0.1".into(),
+            id: "var-promote".into(),
+            snapshot_id: snapshot.id.clone(),
+            label: "baseline".into(),
+            description: String::new(),
+            patch: PatchDto::default(),
+            goal: None,
+            min_verification: None,
+            deadline_s: None,
+            created_at: 1,
+            created_by: "acceptance".into(),
+        };
+        let planned = plan_for_promotion(&model, &snapshot, &variant).unwrap();
+        assert!(!planned.actions.is_empty());
+        let now = 1_800_000_000_000i64;
+        let state_version = promotion_state_version();
+        let actions = plan_to_actions_at(&planned, snapshot.now_s, now, &state_version).unwrap();
+        assert_eq!(actions[0].valid_from.0, now);
     }
 }

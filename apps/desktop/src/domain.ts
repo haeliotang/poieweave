@@ -474,6 +474,27 @@ export interface TimedCompare {
   warnings: string[];
 }
 
+
+export interface PromotionProposal {
+  proposalId: string;
+  resultId: string;
+  snapshotId: string;
+  variantId: string;
+  scope: string;
+  status: string;
+  approvalTokenId: string;
+  actions: unknown[];
+  sapPreview: { checks: { check: string; status: string; detail: string }[]; assumed: string[]; rejections: string[] };
+  proposalSha256: string;
+}
+
+export interface PromotionCommit {
+  proposalId: string;
+  commitSha256: string;
+  actionsSha256: string;
+  committedAt: number;
+}
+
 export interface DeliveryManifestSummary {
   siteId: string;
   siteName: string;

@@ -32,6 +32,8 @@ import {
   type TimedVariant,
   type TimedResult,
   type TimedCompare,
+  type PromotionProposal,
+  type PromotionCommit,
 } from "./domain";
 import brandMark from "./assets/poieweave-mono.svg";
 import { detectLang, messagesFor, type Lang } from "./i18n";
@@ -837,6 +839,9 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
   const [compare, setCompare] = useState<WhatIfCompare | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [promotion, setPromotion] = useState<PromotionProposal | null>(null);
+  const [promotionCommit, setPromotionCommit] = useState<PromotionCommit | null>(null);
+  const [promotionError, setPromotionError] = useState("");
 
   useEffect(() => {
     if (!hosted) return;
@@ -865,7 +870,7 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
       const created = await invoke<WhatIfSnapshot>("whatif_snapshot_create", {
         input: {
           label: "base-01", modelSha256, evidenceSha256: null, goal: "service:potable-water",
-          minVerification: "demonstrated", horizonS: 24, nowS: 0, startS: 0, deadlineS: null,
+          minVerification: "demonstrated", horizonS: 86400, nowS: 0, startS: 0, deadlineS: null,
           maxDepth: 12, maxActions: 12, seed: 7,
         },
       });
@@ -881,6 +886,17 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
         input: { snapshotId: snapshot.id, label: `variant-${variants.length + 1}`, description: "", patch: { assetStatus: variants.length === 0 ? { "pump-p1": "failed" } : {} } },
       });
       setVariants([...variants, variant]);
+    } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const addBaselineVariant = async () => {
+    if (!snapshot) return;
+    setBusy(true); setError("");
+    try {
+      const variant = await invoke<WhatIfVariant>("whatif_variant_create", {
+        input: { snapshotId: snapshot.id, label: "baseline", description: "no patch", patch: {} },
+      });
+      setVariants((current) => [...current, variant]);
     } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
   };
 
@@ -900,6 +916,30 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
     } catch (caught) { setError(String(caught)); } finally { setBusy(false); }
   };
 
+  const promoteResult = async (result: WhatIfResult) => {
+    setBusy(true); setPromotionError(""); setPromotionCommit(null);
+    try {
+      setPromotion(await invoke<PromotionProposal>("whatif_promote_propose", { resultId: result.resultId }));
+    } catch (caught) { setPromotionError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const decidePromotion = async (approve: boolean) => {
+    if (!promotion) return;
+    setBusy(true); setPromotionError("");
+    try {
+      setPromotion(await invoke<PromotionProposal>(approve ? "whatif_promote_approve" : "whatif_promote_reject", { proposalId: promotion.proposalId }));
+    } catch (caught) { setPromotionError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const commitPromotion = async () => {
+    if (!promotion) return;
+    setBusy(true); setPromotionError("");
+    try {
+      setPromotionCommit(await invoke<PromotionCommit>("whatif_promote_commit", { proposalId: promotion.proposalId }));
+      setPromotion({ ...promotion, status: "committed" });
+    } catch (caught) { setPromotionError(String(caught)); } finally { setBusy(false); }
+  };
+
   return (
     <section className="card whatif">
       <div className="card__head"><h2>{t("whatif.title")}</h2><span className="eyebrow">SIMULATION · C1</span></div>
@@ -909,6 +949,7 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
           <div className="agent-panel__actions">
             <button className="primary" type="button" onClick={() => void prepare()} disabled={busy}>{t("whatif.prepare")}</button>
             <button type="button" onClick={() => void addVariant()} disabled={busy || !snapshot}>{t("whatif.addVariant")}</button>
+            <button type="button" onClick={() => void addBaselineVariant()} disabled={busy || !snapshot}>{t("whatif.addBaselineVariant")}</button>
             <button type="button" onClick={() => void compareResults()} disabled={busy || results.length === 0}>{t("whatif.compare")}</button>
           </div>
           {snapshot ? <p className="muted">{snapshot.label} · {snapshot.goal} · {snapshot.snapshotSha256.slice(0, 12)}…</p> : null}
@@ -925,12 +966,37 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
                   </td>
                   <td>
                     {results.filter((result) => result.variantId === variant.id).map((result) => (
-                      <div key={result.resultId}><span className="mono">{result.mode}</span> · {result.outcome.structure ?? result.outcome.plan} · {result.outcome.caveat}</div>
+                      <div key={result.resultId}>
+                        <span className="mono">{result.mode}</span> · {result.outcome.structure ?? result.outcome.plan} · {result.outcome.caveat}
+                        {result.mode === "plan" && result.outcome.plan === "planned" ? (
+                          <button type="button" onClick={() => void promoteResult(result)} disabled={busy}>{t("promotion.promote")}</button>
+                        ) : null}
+                      </div>
                     ))}
                   </td>
                 </tr>
               ))}</tbody>
             </table>
+          ) : null}
+          {promotion ? (
+            <div className="agent-panel__result">
+              <span className="eyebrow">{t("promotion.title")} · {promotion.status}</span>
+              <p className="muted">{promotion.scope} · {t("promotion.actions")}: {promotion.actions.length}</p>
+              {promotion.sapPreview.rejections.length > 0 ? <p className="form-error">{promotion.sapPreview.rejections.join(" · ")}</p> : null}
+              <div className="agent-panel__actions">
+                {promotion.status === "pending" ? (
+                  <>
+                    <button className="primary" type="button" onClick={() => void decidePromotion(true)} disabled={busy}>{t("promotion.approve")}</button>
+                    <button className="secondary" type="button" onClick={() => void decidePromotion(false)} disabled={busy}>{t("promotion.reject")}</button>
+                  </>
+                ) : null}
+                {promotion.status === "approved" ? (
+                  <button className="primary" type="button" onClick={() => void commitPromotion()} disabled={busy}>{t("promotion.commit")}</button>
+                ) : null}
+              </div>
+              {promotionCommit ? <p className="muted">{t("promotion.committed")} · {promotionCommit.commitSha256.slice(0, 12)}…</p> : null}
+              {promotionError ? <p className="form-error">{promotionError}</p> : null}
+            </div>
           ) : null}
           {compare ? (
             <div>

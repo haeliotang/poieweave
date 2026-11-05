@@ -151,13 +151,31 @@ impl Db {
                      schema_version TEXT NOT NULL, mode TEXT NOT NULL, settings_json TEXT NOT NULL,
                      result_json TEXT NOT NULL, result_sha256 TEXT NOT NULL, created_at INTEGER NOT NULL
                  );
+                 CREATE TABLE IF NOT EXISTS promotion_proposals (
+                     proposal_id TEXT PRIMARY KEY, result_id TEXT NOT NULL, snapshot_id TEXT NOT NULL,
+                     variant_id TEXT NOT NULL, schema_version TEXT NOT NULL, proposal_json TEXT NOT NULL,
+                     proposal_sha256 TEXT NOT NULL, status TEXT NOT NULL, approval_token_id TEXT NOT NULL,
+                     created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL
+                 );
+                 CREATE UNIQUE INDEX IF NOT EXISTS promotion_active_result
+                     ON promotion_proposals(result_id) WHERE status IN ('pending','approved');
+                 CREATE TABLE IF NOT EXISTS promotion_proposed_actions (
+                     proposal_id TEXT NOT NULL, action_id TEXT NOT NULL, action_json TEXT NOT NULL,
+                     action_sha256 TEXT NOT NULL, created_at INTEGER NOT NULL,
+                     PRIMARY KEY(proposal_id, action_id)
+                 );
+                 CREATE TABLE IF NOT EXISTS promotion_commits (
+                     proposal_id TEXT PRIMARY KEY, schema_version TEXT NOT NULL, commit_json TEXT NOT NULL,
+                     commit_sha256 TEXT NOT NULL, inputs_sha256 TEXT NOT NULL, token_id TEXT NOT NULL,
+                     committed_at INTEGER NOT NULL, committed_by TEXT NOT NULL
+                 );
                  CREATE TABLE IF NOT EXISTS delivery_manifests (
                      manifest_sha256 TEXT PRIMARY KEY, manifest_json TEXT NOT NULL, imported_at INTEGER NOT NULL
                  );
                  CREATE TABLE IF NOT EXISTS delivery_state (
                      id INTEGER PRIMARY KEY CHECK (id = 1), state_json TEXT NOT NULL, updated_at INTEGER NOT NULL
                  );
-                 PRAGMA user_version = 5;",
+                 PRAGMA user_version = 6;",
             )
             .map_err(|error| format!("migrate: {error}"))?;
         // Existing databases created before B0 have an audit table without the
@@ -305,11 +323,9 @@ impl Db {
 
     pub fn timed_scenario(&self, sha: &str) -> Result<Option<String>, String> {
         self.connection
-            .query_row(
-                "SELECT scenario_path FROM whatif_timed_scenarios WHERE scenario_sha256=?1",
-                [sha],
-                |row| row.get(0),
-            )
+            .query_row("SELECT scenario_path FROM whatif_timed_scenarios WHERE scenario_sha256=?1", [sha], |row| {
+                row.get(0)
+            })
             .optional()
             .map_err(|error| error.to_string())
     }
@@ -325,7 +341,14 @@ impl Db {
         rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
     }
 
-    pub fn save_timed_snapshot(&self, id: &str, schema_version: &str, json: &str, sha: &str, created_at: i64) -> Result<(), String> {
+    pub fn save_timed_snapshot(
+        &self,
+        id: &str,
+        schema_version: &str,
+        json: &str,
+        sha: &str,
+        created_at: i64,
+    ) -> Result<(), String> {
         self.connection
             .execute(
                 "INSERT INTO whatif_timed_snapshots (snapshot_id,schema_version,snapshot_json,snapshot_sha256,created_at) VALUES (?1,?2,?3,?4,?5)",
@@ -342,7 +365,14 @@ impl Db {
             .map_err(|error| error.to_string())
     }
 
-    pub fn save_timed_variant(&self, id: &str, snapshot_id: &str, schema_version: &str, json: &str, created_at: i64) -> Result<(), String> {
+    pub fn save_timed_variant(
+        &self,
+        id: &str,
+        snapshot_id: &str,
+        schema_version: &str,
+        json: &str,
+        created_at: i64,
+    ) -> Result<(), String> {
         self.connection
             .execute(
                 "INSERT INTO whatif_timed_variants (variant_id,snapshot_id,schema_version,variant_json,created_at) VALUES (?1,?2,?3,?4,?5)",
@@ -397,7 +427,12 @@ impl Db {
             .map_err(|error| error.to_string())
     }
 
-    pub fn timed_results(&self, snapshot_id: &str, variant_id: Option<&str>, limit: u32) -> Result<Vec<String>, String> {
+    pub fn timed_results(
+        &self,
+        snapshot_id: &str,
+        variant_id: Option<&str>,
+        limit: u32,
+    ) -> Result<Vec<String>, String> {
         let mut statement = self
             .connection
             .prepare("SELECT result_json FROM whatif_timed_results WHERE snapshot_id=?1 AND (?2 IS NULL OR variant_id=?2) ORDER BY created_at DESC LIMIT ?3")
@@ -406,6 +441,134 @@ impl Db {
             .query_map(params![snapshot_id, variant_id, limit], |row| row.get(0))
             .map_err(|error| error.to_string())?;
         rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub fn save_promotion_proposal(
+        &self,
+        proposal_id: &str,
+        result_id: &str,
+        snapshot_id: &str,
+        variant_id: &str,
+        json: &str,
+        sha: &str,
+        status: &str,
+        token_id: &str,
+        at: i64,
+    ) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO promotion_proposals (proposal_id,result_id,snapshot_id,variant_id,schema_version,proposal_json,proposal_sha256,status,approval_token_id,created_at,updated_at) VALUES (?1,?2,?3,?4,'0.1',?5,?6,?7,?8,?9,?9)",
+                params![proposal_id, result_id, snapshot_id, variant_id, json, sha, status, token_id, at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn promotion_proposal(&self, id: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT proposal_json FROM promotion_proposals WHERE proposal_id=?1", [id], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+
+    pub fn promotion_proposals(&self, limit: u32) -> Result<Vec<String>, String> {
+        let mut statement = self
+            .connection
+            .prepare("SELECT proposal_json FROM promotion_proposals ORDER BY created_at DESC LIMIT ?1")
+            .map_err(|error| error.to_string())?;
+        let rows = statement.query_map([limit], |row| row.get(0)).map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
+
+    #[allow(dead_code)]
+    pub fn promotion_status(&self, id: &str) -> Result<Option<(String, String, i64)>, String> {
+        self.connection
+            .query_row(
+                "SELECT status, approval_token_id, updated_at FROM promotion_proposals WHERE proposal_id=?1",
+                [id],
+                |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
+            )
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+
+    pub fn update_promotion_status(&self, id: &str, from: &str, to: &str, at: i64) -> Result<bool, String> {
+        let changed = self
+            .connection
+            .execute(
+                "UPDATE promotion_proposals SET status=?3, updated_at=?4 WHERE proposal_id=?1 AND status=?2",
+                params![id, from, to, at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(changed == 1)
+    }
+
+    pub fn save_proposed_action(
+        &self,
+        proposal_id: &str,
+        action_id: &str,
+        json: &str,
+        sha: &str,
+        at: i64,
+    ) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO promotion_proposed_actions (proposal_id,action_id,action_json,action_sha256,created_at) VALUES (?1,?2,?3,?4,?5)",
+                params![proposal_id, action_id, json, sha, at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    #[allow(dead_code)]
+    pub fn proposed_actions(&self, proposal_id: &str) -> Result<Vec<String>, String> {
+        let mut statement = self
+            .connection
+            .prepare("SELECT action_json FROM promotion_proposed_actions WHERE proposal_id=?1 ORDER BY action_id")
+            .map_err(|error| error.to_string())?;
+        let rows = statement.query_map([proposal_id], |row| row.get(0)).map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub fn save_promotion_commit(
+        &self,
+        proposal_id: &str,
+        json: &str,
+        sha: &str,
+        inputs_sha: &str,
+        token_id: &str,
+        at: i64,
+        by: &str,
+    ) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO promotion_commits (proposal_id,schema_version,commit_json,commit_sha256,inputs_sha256,token_id,committed_at,committed_by) VALUES (?1,'0.1',?2,?3,?4,?5,?6,?7)",
+                params![proposal_id, json, sha, inputs_sha, token_id, at, by],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn promotion_commit(&self, proposal_id: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT commit_json FROM promotion_commits WHERE proposal_id=?1", [proposal_id], |row| {
+                row.get(0)
+            })
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+
+    pub fn active_promotion_for_result(&self, result_id: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row(
+                "SELECT proposal_id FROM promotion_proposals WHERE result_id=?1 AND status IN ('pending','approved') LIMIT 1",
+                [result_id],
+                |row| row.get(0),
+            )
+            .optional()
+            .map_err(|error| error.to_string())
     }
 
     pub fn save_approval_token(&self, token: &ApprovalToken) -> Result<(), String> {
@@ -685,7 +848,7 @@ mod tests {
         {
             let db = Db::open(&path).unwrap();
             let version: i64 = db.connection.query_row("PRAGMA user_version", [], |row| row.get(0)).unwrap();
-            assert_eq!(version, 5);
+            assert_eq!(version, 6);
             let tables: Vec<String> = db
                 .connection
                 .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
@@ -706,6 +869,9 @@ mod tests {
                 "whatif_timed_snapshots",
                 "whatif_timed_variants",
                 "whatif_timed_scenarios",
+                "promotion_proposals",
+                "promotion_proposed_actions",
+                "promotion_commits",
             ] {
                 assert!(tables.iter().any(|name| name == table), "missing {table}");
             }
@@ -744,5 +910,19 @@ mod tests {
         assert!(db.transition_approval("tok-1", "approved", "executing", 4).unwrap());
         assert!(db.transition_approval("tok-1", "executing", "consumed", 5).unwrap());
         assert_eq!(db.approval_token("tok-1").unwrap().unwrap().state, "consumed");
+    }
+
+    #[test]
+    fn promotion_rows_round_trip() {
+        let db = Db::open_in_memory().unwrap();
+        db.save_promotion_proposal("p", "r", "s", "v", "{}", "sha", "pending", "t", 1).unwrap();
+        assert_eq!(db.promotion_proposal("p").unwrap().as_deref(), Some("{}"));
+        assert!(db.active_promotion_for_result("r").unwrap().is_some());
+        assert!(db.update_promotion_status("p", "pending", "approved", 2).unwrap());
+        assert_eq!(db.promotion_status("p").unwrap().unwrap().0, "approved");
+        db.save_proposed_action("p", "a", "{}", "sha", 3).unwrap();
+        assert_eq!(db.proposed_actions("p").unwrap().len(), 1);
+        db.save_promotion_commit("p", "{}", "sha", "in", "t", 4, "u").unwrap();
+        assert_eq!(db.promotion_commit("p").unwrap().as_deref(), Some("{}"));
     }
 }
