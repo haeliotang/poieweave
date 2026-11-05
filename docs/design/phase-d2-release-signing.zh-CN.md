@@ -47,6 +47,7 @@ D1 只做本地 JSON 元数据交付；D2 要让发布本身可验证、可回�
 - 未签名/未公证的产物必须在 Release notes 与 UI 中标注，不得写“已签名/已公证”。
 - Apple/Windows 代码签名证书与 Tauri updater key **不是同一套**。
 - 私钥/口令不进仓库、日志、截图、聊天；丢失恢复流程见 §3。
+- `scripts/signing_custody_card.py` 生成不含机密的恢复卡；卡存在不等于可恢复，只有演练通过才算。
 
 ## 3. 签名材料保管与恢复
 
