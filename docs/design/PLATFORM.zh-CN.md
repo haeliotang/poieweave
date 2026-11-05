@@ -53,6 +53,7 @@ schema = "poie.<domain>/<major>.<minor>"
 | `unknown_type` / `unknown_object` / `unknown_snapshot` / `unknown_variant` / `unknown_result` | A/C | 类型/对象/快照/变体/结果不存在 |
 | `model_mismatch` | A/C/D | model digest 与当前不一致 |
 | `manifest_invalid` / `stale_manifest` / `delivery_conflict` / `rollback_unavailable` / `io_error` | D1 | manifest 非法/已变/冲突/无回滚/IO |
+| `scenario_mismatch` / `stale_scenario` / `power_limit_exceeded` | C2a | 场景/model 不匹配、场景变更、储能放电超限 |
 | `preview_unavailable` | A | host 未提供 dry-run |
 | `invalid_parameter` / `invalid_patch` | A/B/C/D1 | 参数/变体非法/大小超限 |
 | `approval_required` / `approval_mismatch` / `approval_expired` / `approval_rejected` | B/C/D | 审批缺失/被替换/过期/拒绝 |
@@ -86,7 +87,7 @@ schema = "poie.<domain>/<major>.<minor>"
 | `open_workspace_window` | 否 | main | 导航 | 允许 view 白名单 |
 | `ontology_*` | 否（只读） | main/poie-view-* | 读 | A0 后按窗口 |
 | `agent_*` | 是 | main | 写/网络 | 会话 + scope + policy |
-| `whatif_*` | 是 | main/poie-view-plan | 写（C1 结果表） | 会话 + `authorize(window,command,session,policy)`；C1 不写 SAP/live |
+| `whatif_*` | 是 | main/poie-view-plan | 写（C1/C2a 结果表） | 会话 + `authorize(window,command,session,policy)`；C1/C2a 不写 SAP/live |
 | `delivery_*` | 是 | main | D1 元数据写 | 会话 + 审计；D1 无 Window/审批/policy；D2 再加 |
 
 实现要求：

@@ -1,47 +1,38 @@
-# Phase C2a 设计门禁（独立校验）
+# Phase C2a 设计门禁（独立复验）
 
 - 校验对象：[phase-c2-timed-what-if](phase-c2-timed-what-if.zh-CN.md)（下称 C2a）、C1、`PLATFORM`/`DIGEST`/`SCHEMAS`；代码 `poie-ontology::time`、`poie-sim::timed`、`poie-whatif`、desktop host/DB/UI。
-- 快照：branch `design/phase-c2a`，HEAD **`4feaba8`**；写本文件前工作树 clean。只读校验，未改源码/设计/git，只写本文件。
-- 方法：逐条核对 C2a §4–§11；对照 `time.rs`/`timed.rs`/`whatif` lib 与 host、`db.rs`、`App.tsx`/`domain.ts`、`scenarios/`；运行 schema/docs 检查。
-- 结论：**CHANGES_REQUIRED（5 个 C2a 阻断）**。C2b 延后声明诚实，未见 promote/checkpoint 泄漏；但 C2a 的 storage 模型、场景持久化、`assetDelayS` 语义、结果类型/compare 与 digest 契约均未闭合。
+- 快照：branch `design/phase-c2a`，HEAD **`e9271f3`**；写本文件前工作树 clean。只读校验，未改源码/设计/git，只写本文件。
+- 方法：逐条核对 C2a §4–§11；对照 `time.rs`/`timed.rs`/`whatif` lib 与 host、`sandbox.rs`、`db.rs`、`scenarios/`；运行 docs/schema 检查与 whatif/timed lib 测试。
+- 结论：**CHANGES_REQUIRED（5 个 C2a 阻断）**。上轮 B1 的 `StorageLimit` 双权威与 B3 的 `assetDelay` 已在设计层消除；B2/B4/B5 仍有关键缺口，尚不能开工。
+
+## 已核对（非阻断）
+
+- **B1 Storage**：设计不再引入 `StorageLimit`；真实 `scenario.toml` 的 `[[storage]]` 只投影为 `storage_discharge_w`（timed.rs:225–235），`power_limited` 由该值触发。容量/初始量的权威表述仍有问题，见 R1。
+- **B3 assetDelay**：C2a 无 shift API、无 assetDelay 字段/验收；checkpoint/promote 也在 C2b，范围声明诚实。
+- **B2 场景来源**：`scenarios/base-01-timed/scenario.toml` 存在，schema 常量为 `poie.timed-scenario/0.2`；C2a 明确不序列化 `TimedScenario`，run 重载路径，方向正确。
+- **DB/范围**：`PRAGMA user_version=5`、4→5 条件 ALTER、静态行回填、无 promote 均写入；`whatif_results` 的 `mode/settings_json` 确实已存在（db.rs:130–134）。
+- 检查：`check-docs.py` OK；`check-schema-registry.py` OK（34 schemas）；`cargo test -p poie-whatif --lib` 5/5；`cargo test -p poie-sim --lib timed` 6/6。
 
 ## 阻断（C2a BLOCKER）
 
-1. **B1（BLOCKER）Storage 模型与真实 `TimedScenario` 冲突，且双权威/丢字段。** C2a:43–47 要求 `storage: BTreeMap<String, StorageLimit>{resource, capacity_si, initial_soc_si, max_discharge_w}`；实际 `timed.rs:225–235` 只有 `pub storage_discharge_w: BTreeMap<String,f64>`，`StorageDoc` 的 `id/asset/capacity/initial/max_charge_power`（timed.rs:115–123,307–337）解析校验后被丢弃，仓库中不存在 `StorageLimit`。C2a 未说明 `initial_soc_si` 与 `StockTimeline.initial_si` 谁是权威（timed.rs:62–70 明确“energy availability remains the stock timeline”），未要求两者相等，也未说明 `capacity_si` 在 runner 中的用途；当前 `power_limited` 只按步骤平均功率判断（timed.rs:521–528）。按现文实现会出现两套 SOC，digest 不含 id/asset/max_charge，且 variant 只能改 discharge。修法：以 `storage_discharge_w` 为唯一功率源；在 loader 加不变量（storage.initial==stock.initial、initial≤capacity）；`StorageLimit` 保留 id/asset/max_charge 并进 digest；或明确把 capacity/SOC 移出 C2a。
+1. **BLOCKER D1 — scenario/result digest 仍不闭合。** C2a:48 定义 `sha256("poie.timed-scenario/0.2\n" + raw_file_bytes)`，但 DIGEST:10–13 统一规定输入为 `domain + "\n" + canonical_json(payload)`；DIGEST:25–27 的 0.2 行没有 payload、排除项或固定向量，SCHEMAS:22–28 还把 digest domain 登记成 wire schema。C2a:104 的 result payload 又漏掉 variant 的 `patch/goal/minVerification/deadlineS`（C1 whatif:543 明确纳入），不同变体输入可产生同一 `resultSha`。修法：在 DIGEST 增补 raw-file digest profile（固定算法/命名/向量）或改回 canonical DTO；result payload 补 variant 输入；登记 0.2 固定 fixture。
 
-2. **B2（BLOCKER）场景来源/持久化/重启重建不可实现。** C2a:74 说 host 从“C2a 场景文件（Base-02 的 case 文件）”加载，但 `scenarios/base-02/` 只有 `model.toml` 与结构 `cases.toml`（schema `poie.scenario-cases/0.3`），无 `scenario.toml`；唯一 timed 场景是 `scenarios/base-01-timed/`。C2a:114 的 `SnapshotInput` 只有 `scenarioSha256`，没有路径/JSON；§6 没有 `whatif_scenario_import/list`；§7 的 `whatif_scenarios` 没有写入命令，sha 无法定位文件。C2a:128 存 `scenario_json`，但 `TimedScenario`/`AssetTimeline`/`StockTimeline`（timed.rs:225–235,72–78,180–185）都没有 `Serialize`，C2a 也未按 PLATFORM:24–36 定义 scenario DTO；重启后如何重挂 `Model`（scenario.model 只是相对路径）未定义。若接受用户路径，还存在任意读/路径穿越面。修法：增加 host allowlist 的 `whatif_scenario_import/list`（仅 `scenarios/`、限大小、重算 digest）；定义 `poie.timed-scenario/0.1` canonical DTO（modelSha + timelines + storage + description + validity）并以其作为 `scenario_json` 与 digest 输入；运行使用已校验的 live model 或存 model digest；修正 Base-02 引用或新增 `scenarios/base-02-timed/`。
+2. **BLOCKER D2 — 扩展 C1 类型会破坏 C1 0.1 持久化与 digest，且 static 0.2 无结果路径。** C2a:102 直接扩展 `OutcomeKind`；`outcome` 进入 `poie.variant/0.1` payload（whatif:262–266,540–548），新增 `timed:null` 会改变所有 C1 结果 Sha。Snapshot/Variant 新增 required `kind/startMode/storageDischargeW` 后，旧 JSON 行经 `whatif.rs:65–70,178–181` 反序列化会失败；设计只回填 DB 列，未回填 `snapshot_json/variant_json`/未定义 serde default。C2a:60 允许 `kind:"static"`，但 C2a:92 只有 `mode:"timed"` 的 Result 0.2，static 0.2 无对应结果路径。修法：为 C2a 定义独立 0.2 outcome/result DTO，或明确 0.1 serializer 排除 `timed`；给旧行默认值/迁移；补 static 0.2 路径或禁止。
 
-3. **B3（BLOCKER）`assetDelayS` 既误判恢复，又对 timed 结论无效。** C2a:36–37 用 `status != Failed && status != Unknown` 判定“恢复”，但 Available→Degraded 的磨损变化也会被移动；谓词没有看前一状态/转移方向。更关键：`TimedRunner` 只在 `start_s` 调 `patched_model_at`（timed.rs:405–406,656–675），asset timeline 的后续 change 只用于 prediction warning（timed.rs:573–599），`schedule_route` 使用静态 model；因此把恢复从 10h 推到 20h，在 start=0 时对 verdict/completion 完全无影响。shipped `base-01-timed` 的 timeline 只有 `status="failed"`（scenario.toml:25,38,51），没有任何 restoration change，`assetDelayS` 在该场景是纯 no-op。C2a:153/158 只测“failure 窗口不变/可比较”，没有测延迟修复改变结论。修法：按每步 start 求 asset status（真正时间语义），或明确 `assetDelayS` 只影响 `start_s` 前状态并给出跨 start 的验收用例；按前一状态定义 restoration；无 restoration 时拒绝/告警。
+3. **BLOCKER D3 — `timedRange` 未定义且现有 API 不可计算。** C2a:47/111 要求 import 返回 `timedRange`，C2a:85 用 `[0, timedRange]` 校验 `startS`；但 `TimedScenario` 无 range 字段（timed.rs:225–235），`AssetTimeline`/`StockTimeline` 的 changes 私有（time.rs:72–77,181–185），公开 API 只有 `status_at/available_at`。无法确定是最大变更时刻、`evidence_validity` 还是 `horizonS`，也无法在 host 实现。修法：定义 `timedRange` 语义并加只读 accessor（或删除并改用 snapshot.horizonS），给固定场景向量。
 
-4. **B4（BLOCKER）结果/compare 复用 C1 类型不成立。** C2a:101 的 outcome 是 `{timed, caveat}`，C1 `OutcomeKind` 只有 `structure/plan/caveat`（whatif lib:262–266）；host `whatif_result_get/list` 与 `whatif_compare` 都按 C1 `VariantResult` 反序列化（host whatif.rs:162–183,185–200），而 C1 类型要求 `actions/rootCauses/externalDependencies`（whatif lib:295–312），C2a:97–104 没有这些字段，会直接反序列化失败；即使补齐，`timed` 也会被 serde 忽略（`VariantResult` 无 `deny_unknown_fields`），UI 显示空 outcome（domain.ts:401–405）。C2a:108 “compare 复用 C1 CompareResult”同样不成立：C1 `compare` 只接受 `&[VariantResult]`、按 `outcome.plan` 排序（whatif lib:551–590），timed 没有 plan，也没有 mode 过滤。修法：定义 Result 0.2 tagged union（structure/plan/timed）及 host/UI 按 schema 分派；定义 CompareResult 0.2（timed 排序键、同 mode 过滤、跨 mode delta=null）；持久化 `violation/detail`（见 O2）。
+4. **BLOCKER D4 — 场景/模型路径未真正限制在 sandbox，run 也未重验 model digest。** C2a:47 只校验 import 的 `path`；`TimedScenario::load` 用 `path.parent().join(doc.model)`（timed.rs:238–248），`model` 可为 `../../…` 或绝对路径；import/run 若直接调 `load` 会绕过 sandbox 的 no-follow/大小限制（sandbox.rs:17–42）。C2a:48 的 run 只校验 scenario digest，未要求再次校验 `scenario.model` 与 `snapshot.modelSha256`，模型文件变更可静默改变结论。另 goal 5 说“不复制 Model”，但 `load` 需要模型文件；真实 repo 场景/模型如何进入 app sandbox 未说明。修法：host 用 sandbox resolver 读 scenario/model，拒绝 model 绝对/`..`/symlink，run 重验 model digest；明确真实 fixture 的 sandbox 落点。
 
-5. **B5（BLOCKER）digest 契约不闭合，无法唯一复现。** C2a:107 只列“绑定 snapshotSha/scenarioSha/variant/...”，没有给 domain；C1 result 固定用 `poie.variant/0.1`（whatif lib:540–549），C2a 新增 warnings/storage/assetDelay/startMode 后必须升 `poie.variant/0.2`，但 `DIGEST.md` 本次只加 `poie.timed-scenario/0.1`（DIGEST:24），没有 snapshot/result 0.2。C2a:76 把 kind/scenarioSha 纳入 snapshot digest，却仍用 C1 `poie.snapshot/0.1`（whatif lib:114–121）；`tickDigest`（C2a:102）未定义，DIGEST §1.1 要求 fingerprint 与 SHA-256 分名；caveat/detail/violation 是否入 digest 未定。C2a:67/84/102 用 `?` 表示可选，未重申 DIGEST §2.6 的“缺省写 null、不得省略”（C1:104 曾明确）。scenario canonical JSON（C2a:56）只列语义项，没有字段名/顺序/固定向量。修法：在 DIGEST/SCHEMAS 登记 `poie.snapshot/0.2`、`poie.variant/0.2`（或 `poie.whatif-result/0.2`），固定 payload/排除项/空值规则，定义 `tickFingerprint` 或 `tickSha256`，给 scenario/result 固定测试向量。
+5. **BLOCKER D5 — timed `PatchDto` 的 assetStatus 会被 timeline 覆盖，compare 过滤语义与 C1 冲突。** C2a:86 说 PatchDto 先应用；但 runner 的 `patched_model_at` 对每个资产用 timeline status 覆盖 `patch.asset_status`（timed.rs:656–674），对有 timeline 的资产（如 pump-p1）`assetStatus` 变体静默 no-op；`evaluate` 也不接收 patch。C2a:103 要求 compare 先按 `result.mode` 过滤，但 C1:181 明确“不同 mode 可并列”，且 `whatif_compare` 没有 mode 参数（whatif.rs:185–198），无法决定过滤哪个 mode。修法：定义 patch 与 timeline 的优先级（建议 patch 后应用或拒绝 timed 资产的 assetStatus patch），加 no-op 回归；定义 compare 是 family filter 还是新增 mode 参数/CompareResult 0.2。
 
 ## 动工前（REQUIRED-BEFORE）
 
-- **R1（REQUIRED-BEFORE）`TimedCase`/settings 不对齐，`evaluate` 与 `run` 可能分叉。** C2a:51 的 `TimedCase` 没有 `max_depth/max_actions/horizon_s`；当前 `run` 固定 `DEFAULT_MAX_DEPTH`（timed.rs:413），无 horizon/action cap，而 Snapshot 0.2 与 Result settings（C2a:67,100）包含这些值，resultSha 会绑定未生效设置；`nowS` 同样未用。T0/T1 用 `deadline="prediction"`（cases.toml:15,26），由私有 `prediction_deadline`（timed.rs:636–654）解析，`evaluate(&TimedCase{deadline_s:Option<f64>})` 无法表达。C2a:101 的 verdict 顺序也与 runner 实际优先级（capacity 459 → insufficient 498 → power 530 → too_late 546）不同。修法：把 depth/actions/horizon 加入 `TimedCase` 并真正传给 `Query`/做 horizon 检查，或从 timed snapshot/result 删除；明确 `run` 先解析 prediction 再调 evaluate；写明 verdict 优先级并测试。
-- **R2（REQUIRED-BEFORE）`shift_restorations` 签名/边界/validity 交互未定。** C2a:34 返回 `Result<(), TimeError>`，同段又说“不修改原 timeline（返回新对象或 shifted_restorations）”，二者矛盾；`TimeError` 没有 delta>24h/horizon 越界变体（time.rs:220–226）。`horizon_s` 是截断、丢弃还是保留越界 change 未定义；delta=0、负值、`at_s+delta` 超 horizon、证据有效期（`evidence_validity_s`）在恢复推迟后使 status 变 `Unknown` 而非 `Failed` 的交互均未说明（time.rs:124–148）。修法：二选一签名 `shifted_restorations(...) -> Result<AssetTimeline, TimeError>`（推荐）或明确 mutate；新增 ShiftOutOfRange；定义 horizon/validity 规则并加单测。
-- **R3（REQUIRED-BEFORE）DB v5、错误包络、UI/隔离细节。** C2a:125–134：`whatif_scenarios` 缺 `schema_version`/`created_by`（PLATFORM:20 要求持久化结构带 schemaVersion）；`whatif_snapshots` 新增 `kind/scenario_sha256` 的 static 回填未写；`whatif_results` “增加 mode/settings_json 已存在”自相矛盾（db.rs:130–134 已存在）；当前迁移是无条件 batch + `user_version=4`（db.rs:60–141），4→5 需 `has_column` 门控 ALTER、备份/回滚（PLATFORM:22），并更新 `db.rs:545/560` 的 v4 断言/表清单。C2a:119 的 `scenario_mismatch`/`power_limit_exceeded` 不在 PLATFORM:49–59；后者与 verdict `power_limited` 重名，建议映射 `invalid_parameter`/`model_mismatch`；缺 `scope_denied`/`unknown_result`；命令仍 `Result<T,String>` 与 PLATFORM:42–45 的 CommandError 未声明。UI：无 `whatif_scenario_list` 无法“场景选择”；新文案未提 i18n；C2a:157 的“创建/运行/compare”在浏览器无法执行，应像 C1:196/207 一样只让 Playwright 测 host-only 占位。
-- **R4（REQUIRED-BEFORE）Snapshot 0.2 字段/kind/模式校验。** C2a:60–76 静默删掉 C1 的 `evidenceSha256`（C1:52；whatif lib:44），需明确保留或删除理由与迁移；`kind=static` 的 0.2 与 0.1 并存时何时用哪个、`timed` variant 能否跑 static snapshot、`structure/plan` 能否跑 timed snapshot、`startMode=beginning` 时 `startS` 是否必须为 0、`startS<0`/`nowS>horizonS` 校验均未写。C2a:119 的 `scenario_mismatch` 应覆盖 `scenario.modelSha == snapshot.modelSha == live model digest`；现文只校验 scenario digest，未校验模型相等。
-- **R5（REQUIRED-BEFORE）SCHEMAS 把 digest domain 当 wire schema 登记且版本错位。** SCHEMAS:22 登记 `poie.timed-scenario/0.1` 为 C2a schema，但实际 wire 常量是 `poie.timed-scenario/0.2`（timed.rs:28），0.1 只是 DIGEST domain（DIGEST:24）；`check-schema-registry.py` 不扫 `poie-sim` 所以 CI 不报错，但注册表与代码已漂移。`poie.whatif-snapshot/0.2` 等 0.2 已登记，digest domain 0.2 未登记。修法：SCHEMAS 只登记 wire schema 0.2（或明确 0.1 是 canonical scenario JSON 的 schema），DIGEST 登记 0.2 domains，并让 checker 覆盖 `poie-sim`/`poie-whatif`。
+- **R1（REQUIRED-BEFORE）storage 权威表述。** C2a:17/38/139 说容量/初始 SoC 以 `StockTimeline` 为准，但 `StockTimeline` 只有 `initial_si` 与 changes（time.rs:181–185），没有 capacity；`StorageDoc.capacity/initial`（timed.rs:115–123）仍被解析、校验后丢弃。若 C2a 不需要 capacity，明确“capacity 不参与 C2a”；否则补 `StockTimeline` capacity 并定义不变量/不重复来源。
+- **R2（REQUIRED-BEFORE）错误/命令契约。** `scenario_mismatch`/`stale_scenario` 未登记 PLATFORM:49–68，C2a:118 也缺 `scope_denied`；`whatif_scenario_list` 输出未定义；`whatif_scenarios` 以 digest 为 PK，同一内容不同 path 的导入/覆盖语义未定。补契约与测试。
+- **R3（REQUIRED-BEFORE）测试缺口。** `base-01-timed/cases.toml` 没有 `power_limited`/`capacity_conflict` 预注册用例；新增 fixture 会改 `digests.toml`。补 scenario/result 固定 digest 向量、4→5 旧 JSON 迁移测试、patch-vs-timeline no-op 测试、跨 mode compare 测试。
 
-## 可选（OPTIONAL）
+## 边界
 
-- **O1（OPTIONAL）C2b 延后声明诚实。** C2a:24–27/75/160–164 明确无 promote/plan_to_proposed/Authorization/checkpoint，命令表 §6 与 DB §7 也没有；`startMode` 只有 beginning/at。仅 C2a:6 把 B1 审批列为上游但 C2a 不用，建议删掉以免误读。
-- **O2（OPTIONAL）结果可解释性/文案。** C2a:101–104 只存 outcome/completion/warnings，丢掉 `TimedViolation{at_s,constraint,detail}`（timed.rs:187–206）；UI 的 power_limited/capacity_conflict“单独文案”没有时间/约束可显示。C2a:140 的 caveat 是英文，C1:88 是中文；若 caveat 入 outcome/digest，本地化会改 sha，建议固定常量或声明非规范字段。
-
-## 测试/验收缺口（并入上述修法）
-
-C2a:152–158 缺：scenario DTO 固定向量、warnings 顺序、v4→v5 迁移、timed/static 与 mode 交叉拒绝、`assetDelay` 影响结论的用例、restoration shift 跨 start/超过 horizon/evidence validity、verdict 优先级。`base-01-timed/cases.toml` 的预注册 verdict 只有 feasible/too_late/insufficient_resource/blocked/unknown，没有 power_limited/capacity_conflict；新增 fixture 还会动 `scenarios/base-01-timed/digests.toml` 重放，需写明。
-
-## 已执行检查与边界
-
-```text
-python3 scripts/check-schema-registry.py   OK (31 schemas)
-python3 scripts/check-docs.py              OK
-git status --porcelain（写本文件前）       clean
-```
-
-边界：只读设计/源码校验；未运行 cargo/Tauri/Playwright，未验证实际 UI。C2b 诚实性通过。
+只读设计/源码校验；除本文件外未改任何文件。未运行 Tauri/Playwright，未验证实际 UI 或真实 app sandbox 路径。C2b 延后声明通过。
 
 VERDICT: CHANGES_REQUIRED
