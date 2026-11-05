@@ -940,7 +940,7 @@ verdict = "feasible"
         let text = std::fs::read_to_string(&scenario_path).unwrap();
         let model = Model::load(&repo_path("../../scenarios/base-01/model.toml")).unwrap();
         let scenario = TimedScenario::from_source(&text, model).unwrap();
-        assert_eq!(scenario.description.contains("Timed Base-01"), true);
+        assert!(scenario.description.contains("Timed Base-01"));
         let runner = TimedRunner::new(scenario);
         let case = TimedCase {
             goal: Goal::Restore("pump-p1".into()),
