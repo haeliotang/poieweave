@@ -7,6 +7,7 @@
 
 use std::time::Duration;
 
+#[derive(Debug)]
 pub struct HttpResponse {
     pub status: u16,
     pub body: String,
@@ -18,14 +19,33 @@ pub trait HttpTransport: Send + Sync {
 
 pub struct NativeHttpTransport;
 
+static INSTALL_PROVIDER: std::sync::Once = std::sync::Once::new();
+
+fn ensure_crypto_provider() {
+    INSTALL_PROVIDER.call_once(|| {
+        // A process-level provider is required by ureq's rustls-no-provider build.
+        let _ = rustls::crypto::ring::default_provider().install_default();
+    });
+}
+
 impl NativeHttpTransport {
     fn agent(&self) -> ureq::Agent {
-        ureq::Agent::config_builder().timeout_global(Some(Duration::from_secs(30))).build().into()
+        // ureq defaults to the WebPki root set, which is disabled in this
+        // feature set. Use the platform verifier (system trust store) instead.
+        let tls = ureq::tls::TlsConfig::builder()
+            .root_certs(ureq::tls::RootCerts::PlatformVerifier)
+            .build();
+        ureq::Agent::config_builder()
+            .timeout_global(Some(Duration::from_secs(30)))
+            .tls_config(tls)
+            .build()
+            .into()
     }
 }
 
 impl HttpTransport for NativeHttpTransport {
     fn post_json(&self, url: &str, api_key: &str, body: &str) -> Result<HttpResponse, String> {
+        ensure_crypto_provider();
         let mut response = self
             .agent()
             .post(url)
@@ -97,5 +117,21 @@ mod tests {
         server.join().unwrap();
         assert_eq!(response.status, 200);
         assert!(response.body.contains("pong"));
+    }
+}
+
+#[cfg(test)]
+mod tls_smoke {
+    use super::*;
+
+    #[test]
+    #[ignore]
+    fn https_endpoint_does_not_panic() {
+        let result = NativeHttpTransport.post_json(
+            "https://api.deepseek.com/v1/chat/completions",
+            "invalid-key",
+            r#"{"model":"deepseek-flash","messages":[{"role":"user","content":"ping"}]}"#,
+        );
+        println!("result: {result:?}");
     }
 }
