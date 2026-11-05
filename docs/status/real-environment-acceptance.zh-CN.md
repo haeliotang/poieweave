@@ -10,7 +10,7 @@
 | 项 | 结果 | 证据 |
 | --- | --- | --- |
 | macOS app 构建 | 通过 | `pnpm tauri build --bundles app`，产物 `apps/desktop/src-tauri/target/release/bundle/macos/Poieweave.app`（7.13 MiB） |
-| 启动 | 通过 | 实际启动 app，截图 `/tmp/poieweave-launch.png`（3024×1964） |
+| 启动 | 通过 | 实际启动 app，截图 [assets/poieweave-launch.png](assets/poieweave-launch.png)（3024×1964） |
 | 真实 app data | 通过 | `~/Library/Application Support/com.poieweave.desktop/poieweave.sqlite3` |
 | DB 迁移 | 通过 | `PRAGMA user_version = 4`；表：`agent_runs`、`approval_tokens`、`whatif_*`、`delivery_*`、`audit`、`operators` 等 |
 | 宿主真实文件/SQLite/model 测试 | 16 通过 | v4 迁移 + `agent_runs`、D1 导入/回滚/诊断、C1 snapshot/variant/run/persist |
