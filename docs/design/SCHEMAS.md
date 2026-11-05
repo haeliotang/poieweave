@@ -24,6 +24,8 @@
 | `poie.timed-variant/0.1` | C2a | 0.1 | C2a |
 | `poie.timed-result/0.1` | C2a | 0.1 | C2a |
 | `poie.timed-compare/0.1` | C2a | 0.1 | C2a |
+| `poie.promotion/0.1` | C2b | 0.1 | C2b |
+| `poie.proposed-action/0.1` | C2b | 0.1 | C2b |
 | `poie.site-manifest/0.1` | D1 | 0.1 | site manifest（自哈希，拒绝未知字段） |
 | `poie.site-bundle/0.1` | D1 | 0.1 | 同上 |
 | `poie.delivery-state/0.1` | D1 | 0.1 | 同上 |
