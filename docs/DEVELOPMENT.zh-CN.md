@@ -628,3 +628,4 @@ flowchart LR
 | 0.1.132 | 2026-11-06 | D2 P0：修正 SHA256SUMS 目录路径/Windows 资产名，release verifier basename 兼容；v0.3.1 receipt 验证通过 |
 | 0.1.133 | 2026-11-06 | C2b v0.2：promotion mandate 信封（grantedBy/scope/expiry/revocable），approve/commit 校验；D2 设计补授权边界 |
 | 0.1.134 | 2026-11-06 | D2 P0：release verifier 递归扫描 CI artifact 目录，修复 v0.3.2 发布 receipt 失败；v0.3.3 重发 |
+| 0.1.135 | 2026-11-06 | D2 P0：release verifier 忽略未打包的 raw `Poieweave` 二进制；v0.3.4 重发 |

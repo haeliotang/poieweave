@@ -91,7 +91,9 @@ def main(argv: list[str] | None = None) -> int:
         entries: dict[str, str] = {}
     else:
         files = sorted(
-            p.name for p in artifacts.rglob("*") if p.is_file() and p.name != "SHA256SUMS"
+            p.name
+            for p in artifacts.rglob("*")
+            if p.is_file() and p.name != "SHA256SUMS" and p.name.lower().endswith((".deb", ".exe", ".zip"))
         )
         try:
             entries = parse_sums(sums_path.read_text(encoding="utf-8"))
