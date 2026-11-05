@@ -17,6 +17,8 @@
 
 ## 2. 测试与证据
 
+真实环境验收：macOS app 已构建/启动，真实 app-data DB 为 `user_version=4`，宿主文件/模型验收测试 16 通过；UI 自动化受 macOS 辅助功能权限阻塞，真实 provider 未配置。详见 [real-environment-acceptance](real-environment-acceptance.zh-CN.md)。
+
 | 项 | 当前值 |
 | --- | --- |
 | Rust 列表测试 | **417**（库 crate 401 + 其他包 16） |
