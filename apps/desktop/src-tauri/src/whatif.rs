@@ -509,7 +509,11 @@ fn promotion_state_version() -> std::collections::BTreeMap<String, u64> {
 fn load_promotion(state: &AppState, proposal_id: &str) -> Result<PromotionProposal, String> {
     let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
     let json = db.promotion_proposal(proposal_id)?.ok_or_else(|| format!("unknown_proposal: {proposal_id}"))?;
-    serde_json::from_str(&json).map_err(|error| error.to_string())
+    let mut proposal: PromotionProposal = serde_json::from_str(&json).map_err(|error| error.to_string())?;
+    if let Some((status, _, _)) = db.promotion_status(proposal_id)? {
+        proposal.status = status;
+    }
+    Ok(proposal)
 }
 
 fn token_for(db: &crate::db::Db, id: &str) -> Result<ApprovalToken, String> {
@@ -669,7 +673,11 @@ pub fn whatif_promote_list(limit: Option<u32>, state: State<'_, AppState>) -> Re
     let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
     db.promotion_proposals(limit.unwrap_or(20).clamp(1, 100))?
         .into_iter()
-        .map(|json| serde_json::from_str(&json).map_err(|error| error.to_string()))
+        .map(|(status, json)| {
+            let mut proposal: PromotionProposal = serde_json::from_str(&json).map_err(|error| error.to_string())?;
+            proposal.status = status;
+            Ok(proposal)
+        })
         .collect()
 }
 
@@ -764,7 +772,10 @@ pub fn whatif_promote_commit(proposal_id: String, state: State<'_, AppState>) ->
     }
     let proposal_json =
         db.promotion_proposal(&proposal_id)?.ok_or_else(|| format!("unknown_proposal: {proposal_id}"))?;
-    let proposal: PromotionProposal = serde_json::from_str(&proposal_json).map_err(|error| error.to_string())?;
+    let mut proposal: PromotionProposal = serde_json::from_str(&proposal_json).map_err(|error| error.to_string())?;
+    if let Some((status, _, _)) = db.promotion_status(&proposal_id)? {
+        proposal.status = status;
+    }
     if proposal.status != "approved" {
         return Err(format!("approval_required: proposal is {}", proposal.status));
     }
