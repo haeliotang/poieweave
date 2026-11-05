@@ -63,6 +63,17 @@ class VerifyReleaseTests(unittest.TestCase):
                 code = verify_release.main(["--artifacts", str(root), "--expected-version", "0.3.1"])
             self.assertEqual(code, 0)
 
+    def test_receipt_ignores_raw_binaries(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            (root / "Poieweave_0.3.1_amd64.deb").write_bytes(b"deb")
+            (root / "Poieweave").write_bytes(b"raw")
+            digest = hashlib.sha256(b"deb").hexdigest()
+            (root / "SHA256SUMS").write_text(f"{digest}  Poieweave_0.3.1_amd64.deb\n", encoding="utf-8")
+            with redirect_stdout(io.StringIO()):
+                code = verify_release.main(["--artifacts", str(root), "--expected-version", "0.3.1"])
+            self.assertEqual(code, 0)
+
     def test_receipt_fails_on_unlisted_artifact(self):
         with tempfile.TemporaryDirectory() as raw:
             root = Path(raw)
