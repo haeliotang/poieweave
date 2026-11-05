@@ -1,33 +1,27 @@
 # Phase C2a 设计门禁（独立复验）
 
 - 校验对象：[phase-c2-timed-what-if](phase-c2-timed-what-if.zh-CN.md)（C2a）、[DIGEST](DIGEST.md)/[SCHEMAS](SCHEMAS.md)/[PLATFORM](PLATFORM.zh-CN.md)、C1；代码 `poie-sim::timed`、`poie-ontology::time`、host `sandbox.rs`/`db.rs`/`domain.rs`。
-- 快照：branch `design/phase-c2a`，HEAD **`981e588`**；写本文件前工作树 clean。只读校验，未改源码/设计/git，只写本文件。
-- 方法：逐条重核上轮 D1–D5；实际重算 scenario 固定向量；对照 `sandbox::resolve`、`Model::load`、host SourceModel、DB v4；运行 docs/schema 检查与 whatif/timed lib 测试。
-- 结论：**CHANGES_REQUIRED（4 个 C2a 阻断 + 3 个动工前）**。D1/D2/D5 主体已闭合；D3/D4 仍有残留，并发现 startMode 与持久化契约两处新阻断。
+- 快照：branch `design/phase-c2a`，HEAD **`ad722e9`**；写本文件前工作树 clean。只读校验，未改源码/设计/git，只写本文件。
+- 方法：逐条复核上轮 P1–P4；重算 scenario 向量并构造 result 向量；对照 `sandbox::resolve`、`Model::load`、`Model::from_doc`、host SourceModel、DB v4；运行 docs/schema 检查与 whatif/timed lib 测试。
+- 结论：**CHANGES_REQUIRED（4 个 C2a 阻断）**。四项修复都有进展，但 P1/P2/P3/P4 均有残留，尚不能判 PASS。
 
 ## 已核对（非阻断）
 
-- **D1 固定向量正确**：`sha256("poie.timed-scenario/0.2\n" + raw bytes)` 对 `scenarios/base-01-timed/scenario.toml`（2925 bytes，UTF-8）实测为 `5cbfc5a5711b316318fd244c89149b9ef58b6f5d8c417c4747638dc7c1c205f3`，与 C2a:54 完全一致；DIGEST §2.1 已增补 raw-file profile；resultSha（C2a:105）已纳入 variant 的 startS/deadlineS/storageDischargeW。域登记见 R2。
-- **D2 独立性成立**：C2a 不再扩展 C1 Snapshot/Variant/OutcomeKind；`git diff e9271f3..981e588` 仅改 docs；无 PatchDto/assetDelay/checkpoint；`whatif_timed_*` 为独立表，4→5 建表不改 C1 JSON/表。
-- **D5 成立**：TimedCompareResult 独立；C2a:118 跨 snapshot 拒绝、不混 C1 静态结果；timed PatchDto/assetStatus 明确延后 C2b（C2a:26,180）。
-- **D4 部分成立**：host 流程改用 `from_source` + `sandbox::resolve`，不再走 `TimedScenario::load` 的 path join；`from_source`/`evaluate` 属 C2a §4 前置，HEAD 未实现，符合设计。但见 P1。
+- **scenario 固定向量正确**：`sha256("poie.timed-scenario/0.2\n" + raw bytes)` 对 `scenarios/base-01-timed/scenario.toml`（2925 bytes，UTF-8）实测为 `5cbfc5a5711b316318fd244c89149b9ef58b6f5d8c417c4747638dc7c1c205f3`，与 C2a:57 一致；DIGEST §2.1 已增补 raw-file profile。
+- **模型路径方向正确**：`from_source(text, model)` + `sandbox::read` + `ModelDoc`/`Model::from_doc` 不再走 `TimedScenario::load` 的路径拼接；`resolve_inside` 允许归一化后的 `../base-01/model.toml`，并绑定 `state.model` digest。base-01 的 pump 本身已是 degraded，host 的同一 patch 不改变 digest，导入基准成立。
+- **startMode 归属已修**：`startMode` 在 TimedVariant，snapshot 只有默认 `startS`；同 snapshot compare 与“3 个 startMode/startS 变体”验收不再互相矛盾。
+- **schemaVersion 基本补齐**：TimedVariant/TimedResult 有字段，`whatif_timed_scenarios`/`variants`/`results` 有列；delta/baseline 的基本规则已写入。
 - 检查：`check-docs.py` OK；`check-schema-registry.py` OK（35 schemas）；`cargo test -p poie-whatif --lib` 5/5；`cargo test -p poie-sim --lib timed` 6/6。
 
 ## 阻断（C2a BLOCKER）
 
-1. **P1 — base-01-timed 按 §4.2 无法导入，固定向量与验收互相矛盾。** `scenarios/base-01-timed/scenario.toml:7` 的 `model = "../base-01/model.toml"`；C2a:44 要求 model 是 **scenario 所在目录下**的相对路径并拒绝 `..`，而 `sandbox::resolve`（sandbox.rs:17–21）对任何 `ParentDir` 直接报错。C2a:54 的固定向量正是该文件原文，C2a:173 又要求 UI 导入 base-01-timed。结果只能是：导入被拒（验收/测试失败），或 host 复制/改写 scenario 的 model 字段（设计未定义，且改写后 raw bytes 不再等于固定向量）。另 C2a:45 允许用 `Model::load`，它按路径重新 `std::fs::read_to_string`（model.rs:397–401），绕过 `sandbox::read` 的 no-follow/1 MiB；应改为只对 `sandbox::read` 得到的文本调用 `Model::from_doc`。修法：定义 sandbox 布局（model 位于 scenario 目录内并更新 fixture/向量）、或允许“规范化后仍在 root 内”的解析（不能用当前 `sandbox::resolve`）、或改为绑定 host SourceModel；二选一并写清向量。
-2. **P2 — startMode 是 snapshot 级，验收却要求“startMode 变体”可比较。** C2a:67/90 规定 `startMode` 由 snapshot 决定，variant 只覆盖 startS/deadlineS/storageDischargeW；C2a:118 又只接受同 snapshot 的 TimedResult，跨 snapshot 直接 `invalid_parameter`；但 C2a:174 验收要求“3 个 timed 变体（储能限制/截止提前/startMode）可比较”。startMode 变体在模型上不存在；若用不同 snapshot 表示 startMode，compare 会拒绝。另有冲突：C2a:73 规定 `beginning` 时 startS=0，C2a:90 却允许 variant startS 覆盖 snapshot，beginning+startS 的优先级未定义。修法：把 startMode 下放到 variant 并定义校验，或从 3 变体验收/同 snapshot compare 中移除；明确 beginning 与 variant startS 的组合规则。
-3. **P3 — §5.1 的 SnapshotInput/horizonS 仍未定义，D3 只是从 timedRange 改名。** C2a:126 使用 `TimedSnapshotInput`，全文无字段/默认值/校验定义；C2a:68/73/89 的 `horizonS`/`nowS` 只作为上界出现，没有来源（调用者输入还是场景推导）、取值范围、与 scenario 时间线/`nowS` 的关系，也没有 snapshot 固定向量。host 无法确定 `startS ∈ [0,horizonS]` 与 `deadlineS ≤ horizonS` 的校验基准，也无法测试 snapshot 创建。另 C2a:73 写 `snapshotSha`，字段实际为 `snapshotSha256`（C2a:69）。修法：定义 TimedSnapshotInput 全部字段与校验，明确 horizon/now 的来源与推导（若推导需给只读 accessor 和固定向量），统一字段名。
-4. **P4 — 持久化 DTO 违反 schemaVersion 规则，compare/命令契约仍不完整。** PLATFORM:20 要求每个持久化结构带 `schemaVersion`；C2a 只有 TimedSnapshot 有（C2a:65），TimedVariant（C2a:80–85）与 TimedResult（C2a:95–102）均无，`whatif_timed_variants`/`whatif_timed_results`（C2a:144–145）也没有 `schema_version` 列（C1 表有）。此外 TimedCompareResult 的 `delta` 未定义类型/含义（C2a:113），`baselineResultId?` 缺省时如何算 delta 未定义（C2a:112,118）；`whatif_timed_scenario_list` 输出形状未定义（C2a:125）。这些使 API/数据模型不满足门禁的“完整、可测试”。修法：补 schemaVersion 字段/列，定义 delta 与 baseline 语义，定义 scenario list 输出。
-
-## 动工前（REQUIRED-BEFORE）
-
-- **R1 模型身份/SourceModel。** PLATFORM:103–112 规定桌面唯一 SourceModel（Base-01 + pump-p1 degraded），A/C/D 只有一套模型来源；C2a:44–46/75 却从 sandbox 读取任意 model.toml 并只与 snapshot 自身的 modelSha 比对，从不要求等于 `state.model`（host 用 `include_str!` 的 Base-01 + patch，domain.rs:12,93–102）。需明确 C2a 模型就是 SourceModel，或更新 PLATFORM 并把 sandbox 模型纳入可信 digest/白名单；否则可在不改变 host 当前模型的情况下用另一份模型得出结论。
-- **R2 digest domain 与 schema 注册表。** C2a:73/105 使用 `poie.timed-snapshot/0.1` 与 `poie.timed-result/0.1` 作为 digest domain，但 DIGEST §1/§1.2 及 SCHEMAS 的 “Digest domains” 表均未登记；SCHEMAS:23–24 仍把 `poie.variant/0.2`/`poie.snapshot/0.2` 登记为 C2a，和“不扩展 C1 类型”直接矛盾。`check-schema-registry.py` 只查 wire schema，不会发现这两类漂移。需增补/删除并重跑检查。
-- **R3 digest 可复现性与向量。** TimedSnapshot digest 纳入 `scenarioPath`（C2a:66,73）；同一内容放在不同 sandbox 路径会得到不同 snapshotSha，进而不同 resultSha，与 DIGEST §2.7“不包含机器路径”冲突。需把 path 移出 digest（仅作为定位/展示）或明确其属于被测输入；并补 snapshot/result 固定向量、4→5 旧库迁移测试、base-01-timed 导入测试（当前只有 scenario 向量）。
+1. **B1 — `..` 规则自相矛盾，base-01-timed 导入仍未真正闭合。** C2a:46 明确允许 `../base-01/model.toml`，但 C2a:163 仍写“拒绝绝对路径/`..`/symlink/超限”；同一设计两套相反规则，按 §8 实现仍会拒绝该 fixture。C2a:45 还把 `path` 说成“sandbox 相对目录（含 scenario.toml）”，而 `sandbox::read` 只能读普通文件；未定义 `path` 是目录还是 `base-01-timed/scenario.toml`，也未写归一化后如何把 root 相对路径交给 `sandbox::read`。需统一为“拒绝归一化后逃逸 root 的 `..`”，并补 fixture 落盘/导入测试。
+2. **B2 — variant startS/deadline 与 horizon/now 语义仍不完整。** C2a:95 的 `deadlineS > startS` 未说明 `beginning` 时用 0 还是 variant/snapshot 的 `startS`；C2a:93（beginning=0、at=startS??snapshot）与 C2a:96（startS 覆盖 snapshot）仍有优先级歧义。variant `startS` 没有 `[0,horizonS]` 上界，也没有负值/NaN 规则。C2a:36 的 `TimedCase` 不含 `horizonS`/`nowS`，所以 horizon 只用于 snapshot 校验，无法约束 run/completion；`nowS` 在 run/result 中没有用途；snapshot `deadlineS` 也没有校验（C2a:76）。
+3. **B3 — 固定向量不可独立复现，且 `snapshotSha` 命名未修。** C2a:79 的 `scenarioSha=5cbf…` 是省略号，缺 label/minVerification/nowS/deadlineS，按 C2a:77 无法唯一构造 payload，固定向量不能作为测试输入。C2a:112 的 result 向量只有在补上未写的 `startS=0, horizonS=86400, deadlineS=null, completionS=null, warnings=[]` 时才匹配 `e7e6…`（我已实测）；文本没有给出这些值，向量不可验证。另 C2a:77 仍排除 `snapshotSha`，实际字段是 `snapshotSha256`（C2a:72），自哈希字段排除规则错误。
+4. **B4 — compare/list/DB/schema 契约仍有缺口。** C2a:126 只定义 delta 形状，未定义正负号（row-baseline？）、timed verdict 的“固定顺序”枚举，以及 baseline 不在 rows 时是否 warning/错误。C2a:133 的 `whatif_timed_scenario_list` 输出仍只是 “imported scenarios”，无 DTO/字段；TimedCompareResult（C2a:118）无 `schemaVersion`；`whatif_timed_snapshots`（C2a:151）仍无 `schema_version` 列。SCHEMAS:23–24 仍把 `poie.variant/0.2`/`poie.snapshot/0.2` 登记为 C2a，与“独立 timed 类型、不扩展 C1”直接矛盾；SCHEMAS:36–50 的 digest domain 表未登记 timed 域。`check-schema-registry.py` 只查未注册，不会发现这些漂移。
 
 ## 边界
 
-只读设计/源码校验；除本文件外未改任何文件。未运行 Tauri/Playwright，未验证真实 app sandbox 或 UI。C2b 延后声明通过。
+只读设计/源码校验；除本文件外未改任何文件。未运行 Tauri/Playwright，未验证真实 app sandbox/UI；`cargo test` 仅覆盖现有 lib。C2b 延后声明通过。
 
 VERDICT: CHANGES_REQUIRED

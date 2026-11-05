@@ -20,8 +20,6 @@
 | `poie.whatif-result/0.1` | C | 0.1 | 同上 |
 | `poie.whatif-compare/0.1` | C | 0.1 | 同上 |
 | `poie.timed-scenario/0.1` | C2a | 0.1 | timed scenario digest |
-| `poie.variant/0.2` | C2a | 0.2 | C2a |
-| `poie.snapshot/0.2` | C2a | 0.2 | C2a |
 | `poie.timed-scenario/0.2` | C2a | 0.2 | C2a |
 | `poie.timed-snapshot/0.1` | C2a | 0.1 | C2a |
 | `poie.timed-variant/0.1` | C2a | 0.1 | C2a |
