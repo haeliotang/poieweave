@@ -75,7 +75,7 @@ TimedSnapshot {
 ```
 
 - `TimedSnapshotInput {label, scenarioPath, scenarioSha256, goal,minVerification, startS, horizonS, deadlineS?}`；C2a 固定 `nowS=0`（timed scenario 从 0 开始），`horizonS > 0`、`startS ∈ [0,horizonS]`、`deadlineS ∈ (startS,horizonS]`；缺省 startS=0。
-- `snapshotSha256 = sha256("poie.timed-snapshot/0.1\n" + canonical_json(without id/createdAt/createdBy/seed/snapshotSha256))`；**scenarioPath 不进入 digest**（仅定位），纳入 scenarioSha/modelSha。
+- `snapshotSha256 = sha256("poie.timed-snapshot/0.1\n" + canonical_json(without id/createdAt/createdBy/snapshotSha256))`；**scenarioPath 不进入 digest**（仅定位），纳入 scenarioSha/modelSha。
 - goal 只接受 `service:<id>`/`restore:<asset>`；minVerification 解析为现有枚举。
 - 固定向量：`{"schema":"poie.timed-snapshot/0.1","schemaVersion":"0.1","label":"base-01-timed","modelSha256":"m","scenarioSha256":"5cbfc5a5711b316318fd244c89149b9ef58b6f5d8c417c4747638dc7c1c205f3","goal":"restore:pump-p1","minVerification":"demonstrated","startS":0.0,"horizonS":86400.0,"nowS":0.0,"deadlineS":null}` → `b4a1459860896c689d26c4ffd752cfb2d071891d63f4f3df07860a31505e9835`。
 - scenarioPath/scenarioSha/modelSha 必须与 run 重读一致。
@@ -132,7 +132,7 @@ TimedCompareResult {
 | --- | --- | --- |
 | `whatif_timed_scenario_import` | sandbox 相对 path | `{scenarioSha256,modelSha256,description}` |
 | `whatif_timed_scenario_list` | — | `{scenarioSha256,scenarioPath,modelSha256,description,importedAt}[]` |
-| `whatif_timed_snapshot_create` | TimedSnapshotInput（含 startS/horizonS/nowS） | TimedSnapshot |
+| `whatif_timed_snapshot_create` | TimedSnapshotInput（startS/horizonS；nowS 固定 0） | TimedSnapshot |
 | `whatif_timed_variant_create` | snapshotId,label,description,startMode,startS?,deadlineS?,storageDischargeW | TimedVariant |
 | `whatif_timed_run` | variantId | TimedResult |
 | `whatif_timed_result_get` | resultId | TimedResult |

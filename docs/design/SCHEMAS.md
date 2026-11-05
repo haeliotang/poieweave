@@ -48,7 +48,6 @@
 | `poie.timed-scenario/0.2` | C2a |
 | `poie.timed-compare/0.1` | C2a |
 | `poie.timed-result/0.1` | C2a |
-| `poie.timed-variant/0.1` | C2a |
 | `poie.timed-snapshot/0.1` | C2a |
 
 ## 解析与兼容函数
