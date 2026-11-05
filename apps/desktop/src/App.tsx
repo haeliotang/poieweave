@@ -1116,13 +1116,14 @@ function Inspector({
   const [agentBusy, setAgentBusy] = useState(false);
   const [agentResult, setAgentResult] = useState<AgentResult | null>(null);
   const [agentError, setAgentError] = useState("");
+  const [agentProfile, setAgentProfile] = useState<"analyst" | "dispatcher">("analyst");
   const canCallAgent = hosted && auth.signedIn && inference.configured;
   const runAgent = async () => {
     if (!prompt.trim() || !canCallAgent) return;
     setAgentBusy(true);
     setAgentError("");
     try {
-      setAgentResult(await invoke<AgentResult>("agent_run", { prompt, profile: "analyst" }));
+      setAgentResult(await invoke<AgentResult>("agent_run", { prompt, profile: agentProfile }));
     } catch (caught) {
       setAgentError(String(caught));
     } finally {
@@ -1130,7 +1131,10 @@ function Inspector({
     }
   };
   const approveAgent = async (approve: boolean) => {
-    if (!agentResult?.approvalTokenId) return;
+    if (!agentResult?.approvalTokenId) {
+      setAgentError(t("agent.missingApprovalToken"));
+      return;
+    }
     setAgentBusy(true);
     setAgentError("");
     try {
@@ -1298,6 +1302,15 @@ function Inspector({
           rows={2}
         />
         <div className="agent-panel__actions">
+          <select
+            aria-label={t("agent.profile")}
+            value={agentProfile}
+            onChange={(event) => setAgentProfile(event.target.value === "dispatcher" ? "dispatcher" : "analyst")}
+            disabled={!canCallAgent || agentBusy}
+          >
+            <option value="analyst">{t("agent.profile.analyst")}</option>
+            <option value="dispatcher">{t("agent.profile.dispatcher")}</option>
+          </select>
           <button className="primary agent-panel__send" type="button" onClick={runAgent} disabled={!canCallAgent || agentBusy || !prompt.trim()}>
             {agentBusy ? t("agent.running") : t("agent.send")}
           </button>
