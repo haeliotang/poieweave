@@ -832,6 +832,26 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (!hosted) return;
+    let cancelled = false;
+    (async () => {
+      const snapshots = await invoke<WhatIfSnapshot[]>("whatif_snapshot_list", { limit: 20 });
+      const latest = snapshots[0];
+      if (!latest) return;
+      const [loadedVariants, loadedResults] = await Promise.all([
+        invoke<WhatIfVariant[]>("whatif_variant_list", { snapshotId: latest.id }),
+        invoke<WhatIfResult[]>("whatif_result_list", { snapshotId: latest.id, variantId: null, limit: 50 }),
+      ]);
+      if (!cancelled) {
+        setSnapshot(latest);
+        setVariants(loadedVariants);
+        setResults(loadedResults);
+      }
+    })().catch((caught: unknown) => { if (!cancelled) setError(String(caught)); });
+    return () => { cancelled = true; };
+  }, [hosted]);
+
   const prepare = async () => {
     setBusy(true); setError("");
     try {

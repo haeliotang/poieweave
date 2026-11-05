@@ -91,6 +91,7 @@ test.describe("Poieweave cockpit", () => {
     await expect(agent).toBeVisible();
     await expect(agent.getByText("Browser preview cannot call host inference.")).toBeVisible();
     await expect(agent.getByRole("textbox")).toBeDisabled();
+    await expect(agent.getByLabel("Tool profile")).toBeDisabled();
   });
 
   test("focused window mode hides the full cockpit chrome", async ({ page }) => {

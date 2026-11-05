@@ -568,4 +568,35 @@ mod tests {
         }
         let _ = std::fs::remove_file(&path);
     }
+
+    #[test]
+    fn approval_token_lifecycle_is_atomic() {
+        use poie_governance::ApprovalToken;
+        let db = Db::open_in_memory().unwrap();
+        let token = ApprovalToken {
+            id: "tok-1".into(),
+            session_id: "s".into(),
+            run_id: "r".into(),
+            call_id: "c".into(),
+            tool: "action.draft".into(),
+            tool_version: "1.0.0".into(),
+            subject_digest: "d".into(),
+            policy_version: "poie-agent/0.1".into(),
+            args_json_redacted: "{}".into(),
+            impact_json: "{}".into(),
+            citations_json: "[]".into(),
+            state: "pending".into(),
+            created_at_ms: 1,
+            decided_at_ms: None,
+            started_at_ms: None,
+            expires_at_ms: 1_000,
+        };
+        db.save_approval_token(&token).unwrap();
+        assert_eq!(db.approval_token("tok-1").unwrap().unwrap().state, "pending");
+        assert!(db.transition_approval("tok-1", "pending", "approved", 2).unwrap());
+        assert!(!db.transition_approval("tok-1", "pending", "approved", 3).unwrap());
+        assert!(db.transition_approval("tok-1", "approved", "executing", 4).unwrap());
+        assert!(db.transition_approval("tok-1", "executing", "consumed", 5).unwrap());
+        assert_eq!(db.approval_token("tok-1").unwrap().unwrap().state, "consumed");
+    }
 }
