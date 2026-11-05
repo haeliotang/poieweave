@@ -14,6 +14,7 @@
 - 创建 operator `ADA ACCEPTANCE` 并登录（真实 PBKDF2/SQLite 会话）
 - 配置本机 OpenAI-compatible mock provider（`http://127.0.0.1:8765/v1`），保存配置并写入审计
 - Agent 面板发起问题：真实 host `agent_run` 完成，工具轨迹 `catalog.describe → answer.emit`，响应含 citation；RunState 写入 `agent_runs`
+- **审批 UI 通过**：`approval_tokens` pending→consumed，audit `agent.approved`，run completed；见 §2.1
 - **真实 DeepSeek provider 完整会话通过**：修复 TLS 根证书、DeepSeek 工具名（下划线 wire name）、assistant tool_calls 消息顺序后，真实 `deepseek-flash` 返回 Completed；audit `agent.run ... Completed`
 - Plan → What-if：创建快照、添加变体，运行 `structure` 与 `plan`；结果显示 caveat；比较结果列表可用
 - 站点交付 D1 UI：真实 `检验` → `导入`（元数据已导入，未部署）→ `回滚`（无 previous 正确报 `rollback_unavailable`）→ `清空`（当前=无）
@@ -91,4 +92,4 @@ System Events 仍返回 `-10004`，但已改用 CoreGraphics 事件 + 截图驱�
 
 **已验收**：真实 DeepSeek Agent 完整只读会话（工具轨迹 + citation + Completed）。
 
-**尚未验收**：Agent 审批执行（UI 自动点击/焦点切换不稳定）；审批 host/crate 逻辑已有测试，但未取得 UI Approve 截图。
+**已验收**：Agent 审批 UI（真实操作员点击 Approve）。run `bbe58a10…` 从 `waiting_approval` → `completed`，`approval_tokens` 由 `pending` → `consumed`，audit 记录 `agent.approved`；UI 显示 “Approved action draft: restore:pump-p1-1-replace-sleeve-p1 → site (no dispatch)”。
