@@ -123,7 +123,8 @@ ProposedAction {
 - 新增 `pub fn preview_actions(actions: &[Action], assumed: &AssumedContext) -> Result<SapPreview, SapError>`：
   - 对已重定 actions 做 ActionLedger add→Validated；
   - 用 `AssumedContext {now_ms: proposal_now_ms, state_version, holds_command_ownership:true, reservations_held:true, predicates_holding: actions 的 preconditions 并集}`；这些是显式假设，UI 必须显示 `assumed`；
-  - 收集 checks/rejections；`missing_authorization` 是预期项，其余拒绝 → `sap_rejected`；
+  - 收集 checks/rejections；`missing_authorization` 与 `time_window=not_yet_valid` 是预期项（计划动作在未来），只有 `time_window=expired` 才是真实拒绝；其余拒绝 → `sap_rejected`；
+  - 至少一个多动作计划的 propose 测试，证明第二个动作不会被 not_yet_valid 误判；
   - 不创建 Authorization，不进入 Authorized。
 - C2b 不使用 `preview_plan_through_sap`（其时间基是 plan 绝对时间，无法直接用于重定 actions），也不新增 `validate_proposed_plan`。
 - 现有 `validate_plan_through_sap` 仅保留测试/旧路径。
@@ -131,6 +132,8 @@ ProposedAction {
 
 ### 6.2 ApprovalToken
 
+- propose 必须在**单一 DB 事务**内完成：写 proposal、写 approval token、写 `promotion.proposed` audit；任一步失败全部回滚，禁止 dangling pending proposal。
+- 表加部分唯一索引：`CREATE UNIQUE INDEX ... ON promotion_proposals(result_id) WHERE status IN ('pending','approved')`；`duplicate_proposal` 由约束冲突返回，不依赖 check-then-insert。
 - 复用 `approval_tokens` 表；token 在 propose 时创建：
   - `tool = "whatif.promote"`；`tool_version="1.0.0"`
   - `run_id = proposalId`；`call_id = ""`
@@ -165,7 +168,7 @@ ProposedAction {
 
 C2b 不新增 `dispatch`/`authorize` 命令。
 
-所有命令使用统一 `CommandError { code, message, details? }` envelope（C2b 新命令；现有 C1/C2a 命令不改签名）。scope 校验由 host `authorize(window="poie-view-plan", command="whatif.promote", session, policy)` 执行（PLATFORM 的 window 是 main/poie-view-plan，`whatif.promote` 是 command/scope）。`no_live_write` 断言：proposed action `authorization==None`、不调用 `execution::snapshot`、不写 registry/SAP/federation；用测试钩子计数。
+所有命令使用统一 `CommandError { code, message, details? }` envelope（C2b 新命令；现有 C1/C2a 命令不改签名）。scope 校验由 host `authorize(window="poie-view-plan", command="whatif_promote_propose", session, policy)` 执行（PLATFORM window=main/poie-view-plan，command 是实际命令名）；approve/commit 同理分别传命令名。token 的 `tool="whatif.promote"`、`policy_version="poie-promote/0.1"`，`subject_digest` 显式使用该 policy version，不用 `poie-agent/0.1`。`no_live_write` 断言：proposed action `authorization==None`、不调用 `execution::snapshot`、不写 registry/SAP/federation；命令注册表/写表白名单允许列表只含 `whatif_timed_*`/`promotion_*`，测试断言不在白名单的写函数未被调用。
 
 ## 8. Stale 检查
 
@@ -200,8 +203,9 @@ pending/approved --cancel--> cancelled
 
 - token 与 proposal 的 approve/reject/cancel 必须在**同一 DB 事务**中更新；token 条件更新失败则回滚 proposal。
 - commit 成功事务：写 `promotion_proposed_actions`、写 `promotion_commits`、token `approved→executing→consumed`、proposal=committed、**append_audit**，全在同一事务。
-- 重启：pending/approved 保留；**不自动 approve/commit**；过期 token 标 expired。已 committed 的重复 commit 返回存储的 commit，不重复写。
+- 重启：pending/approved 保留；**不自动 approve/commit**；读/approve/commit 时在同一事务内把过期 proposal 与 token 标 expired（无后台定时器）。已 committed 的重复 commit 返回存储的 commit，不重复写。
 - 进程在 commit 中断：事务回滚到 approved；不得出现“token consumed 但无 actions/commit”或反之。
+- 测试：propose 插入 proposal 后强制 token 插入失败 → 无 proposal；并发 duplicate propose → 一个成功、一个 `duplicate_proposal`；过期后 approve/commit → `approval_expired` 且 proposal 同步 expired。
 - consumed token 不允许被另一个 proposal 复用；`approval_mismatch`。
 
 ## 10. 持久化（v6）
