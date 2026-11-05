@@ -772,7 +772,7 @@ mod tests {
         let variant = variant(&snapshot, PatchDto::default());
         let result = run_plan(&model, &snapshot, &variant).unwrap();
         assert!(result.residuals.is_some());
-        assert_eq!(result.abstained, false);
+        assert!(!result.abstained);
         assert!(result.residuals.unwrap()["completionS"].is_number());
     }
 }
