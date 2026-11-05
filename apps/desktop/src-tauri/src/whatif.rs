@@ -6,7 +6,9 @@
 use poie_governance::{subject_digest, ApprovalToken};
 use poie_plan::sap::{plan_to_actions_at, preview_actions, AssumedContext};
 use poie_sim::timed::{TimedCase, TimedRunner, TimedScenario};
-use poie_whatif::promotion::{proposed_action_sha256, PROMOTE_POLICY_VERSION, PROPOSED_ACTION_SCHEMA};
+use poie_whatif::promotion::{
+    proposed_action_sha256, PromotionMandate, PROMOTE_POLICY_VERSION, PROPOSED_ACTION_SCHEMA,
+};
 use poie_whatif::promotion::{PromotionCommit, PromotionEvidence, PromotionProposal, ProposedAction};
 use poie_whatif::timed::{
     compare_timed, TimedCompareResult, TimedResult, TimedSnapshot, TimedSnapshotInput, TimedVariant, TimedVariantInput,
@@ -600,6 +602,16 @@ pub fn whatif_promote_propose(result_id: String, state: State<'_, AppState>) -> 
     let proposal_id = random_id("prom")?;
     let token_id = random_id("ptok")?;
     let proposal_scope = format!("promote:{}:{}", result.snapshot_id, result.result_id);
+    let expires = now + 30 * 60 * 1000;
+    let mandate = PromotionMandate {
+        mandate_ref: format!("operator:{}:{}", operator.session_id, proposal_id),
+        granted_by: operator.display_name.clone(),
+        granted_to: operator.display_name.clone(),
+        scope: proposal_scope.clone(),
+        issued_at: now,
+        expires_at: expires,
+        revocable: true,
+    };
     let proposal = PromotionProposal::create(
         result.result_id.clone(),
         result.snapshot_id.clone(),
@@ -612,13 +624,13 @@ pub fn whatif_promote_propose(result_id: String, state: State<'_, AppState>) -> 
         state_version,
         actions,
         preview,
+        Some(mandate),
         proposal_id.clone(),
         token_id.clone(),
         now,
         operator.display_name.clone(),
     )?;
-    let expires = now + 30 * 60 * 1000;
-    let token_args = serde_json::json!({"scope": proposal_scope, "resultId": result.result_id, "proposalSha256": proposal.proposal_sha256});
+    let token_args = serde_json::json!({"scope": proposal_scope, "resultId": result.result_id, "proposalSha256": proposal.proposal_sha256, "mandateRef": proposal.mandate.as_ref().map(|m| m.mandate_ref.clone())});
     let token_subject =
         subject_digest("whatif.promote", &token_args, &operator.session_id, PROMOTE_POLICY_VERSION, expires)
             .map_err(|error| error.to_string())?;
@@ -681,6 +693,17 @@ pub fn whatif_promote_list(limit: Option<u32>, state: State<'_, AppState>) -> Re
         .collect()
 }
 
+fn mandate_allows(proposal: &PromotionProposal, now: i64) -> Result<(), String> {
+    let Some(mandate) = &proposal.mandate else { return Ok(()); };
+    if mandate.scope != proposal.scope {
+        return Err("scope_denied: mandate scope does not match proposal".into());
+    }
+    if now > mandate.expires_at {
+        return Err("approval_expired: mandate expired".into());
+    }
+    Ok(())
+}
+
 fn decide_promotion(
     approve: bool,
     proposal_id: &str,
@@ -691,6 +714,7 @@ fn decide_promotion(
     let proposal_json =
         db.promotion_proposal(proposal_id)?.ok_or_else(|| format!("unknown_proposal: {proposal_id}"))?;
     let mut proposal: PromotionProposal = serde_json::from_str(&proposal_json).map_err(|error| error.to_string())?;
+    mandate_allows(&proposal, auth::now_ms())?;
     let token = token_for(&db, &proposal.approval_token_id)?;
     if token.session_id != operator.session_id || token.tool != "whatif.promote" || token.run_id != proposal.proposal_id
     {
@@ -779,6 +803,7 @@ pub fn whatif_promote_commit(proposal_id: String, state: State<'_, AppState>) ->
     if proposal.status != "approved" {
         return Err(format!("approval_required: proposal is {}", proposal.status));
     }
+    mandate_allows(&proposal, auth::now_ms())?;
     let token = token_for(&db, &proposal.approval_token_id)?;
     if token.state != "approved" {
         return Err(format!("approval_mismatch: token is {}", token.state));
