@@ -74,11 +74,12 @@ PromotionProposal {
 }
 ```
 
-- **actions 在 propose 时构建并持久化**，不在 commit 时重建；`actionsSha256 = sha256("poie.proposed-action/0.1\n" + canonical actions[])`。
-- `planSha256 = sha256("poie.plan/0.1\n" + canonical {planId,startS,horizonS,actions[{actionId,process,target,startS,endS,preconditions,allocations,verifies}],goalsMet,goalsUnmet})`，覆盖 preconditions/allocations；`Plan::digest` 只作交叉校验，不能单独作为审批对象。
+- **actions 在 propose 时构建并持久化**，不在 commit 时重建；`actionsSha256 = sha256("poie.proposed-action-draft/0.1\n" + canonical ProposedActionDraft[])`。
+- `planSha256 = sha256("poie.promotion-plan/0.1\n" + canonical {planId,startS,horizonS,actions[{actionId,process,target,startS,endS,preconditions,allocations,verification}],goalsMet,goalsUnmet})`（独立 domain，避免与 C1 `poie.plan/0.1` payload 混用），覆盖 preconditions/allocations；`Plan::digest` 只作交叉校验，不能单独作为审批对象。
 - `proposalSha256 = sha256("poie.promotion/0.1\n" + canonical proposal without id/approvalTokenId/status/times/proposalSha256)`；包含 actions/actionsSha、scope、stateVersion、nowMs、SAP preview。状态变化不改 proposal digest。
 - `scope` 必须等于 `promote:<snapshotId>:<resultId>`；approval token 的 `subject_digest` 用 B1 `poie-governance::subject_digest("whatif.promote", args, sessionId, policy, expires)` 计算，`args` 含 scope/resultId/proposalSha256；审批时比对。
-- `inputsSha256 = sha256("poie.promotion-inputs/0.1" + canonical {snapshotSha256,variantJsonSha256,resultSha256})`；commit 必须重读这三行并比对。
+- `variantJsonSha256 = sha256("poie.whatif-variant/0.1\n" + canonical variant JSON)`
+- `inputsSha256 = sha256("poie.promotion-inputs/0.1\n" + canonical {snapshotSha256,variantJsonSha256,resultSha256})`；commit 必须重读这三行并比对。
 - `stateVersion` 来源明确为 **host_assumption**：C2b MVP 用 `{"site-a":4}`；不是 live 真值，必须在 UI/proposal 中标注。propose 与 commit 都要求该假设未变；测试用 `4→5` 证明 stale 生效。
 
 ### 5.2 ProposedAction
@@ -114,14 +115,14 @@ ProposedAction {
 
 当前 `to_action` 私有；`validate_plan_through_sap` 会自建 planning-validation Authorization，C2b 不使用。
 
-- 新增 `pub fn plan_to_actions_at(plan: &Plan, now_ms: i64, state_version: &BTreeMap<String,u64>) -> Result<Vec<Action>, SapError>`：
+- 新增 `pub fn plan_to_actions_at(plan: &Plan, origin_now_s: f64, proposal_now_ms: i64, state_version: &BTreeMap<String,u64>) -> Result<Vec<Action>, SapError>`；`origin_now_s = snapshot.nowS`（C1 计划起点），不得由 callers 另传：
   - 空 state_version → `SapError::EmptyStateVersion`；
   - 不创建 Authorization；
   - 复用现有 `to_action` 的字段映射，但时间窗按 `now_ms` 重定。
 - 新增 `SapError { EmptyStateVersion, InvalidPlan(String), NonFiniteTime }`。
 - 新增 `pub fn preview_actions(actions: &[Action], assumed: &AssumedContext) -> Result<SapPreview, SapError>`：
   - 对已重定 actions 做 ActionLedger add→Validated；
-  - 用 `AssumedContext {now_ms: proposal_now_ms, state_version, holds_command_ownership:false, reservations_held:false, predicates_holding:{}}`；
+  - 用 `AssumedContext {now_ms: proposal_now_ms, state_version, holds_command_ownership:true, reservations_held:true, predicates_holding: actions 的 preconditions 并集}`；这些是显式假设，UI 必须显示 `assumed`；
   - 收集 checks/rejections；`missing_authorization` 是预期项，其余拒绝 → `sap_rejected`；
   - 不创建 Authorization，不进入 Authorized。
 - C2b 不使用 `preview_plan_through_sap`（其时间基是 plan 绝对时间，无法直接用于重定 actions），也不新增 `validate_proposed_plan`。
@@ -164,7 +165,7 @@ ProposedAction {
 
 C2b 不新增 `dispatch`/`authorize` 命令。
 
-所有命令使用统一 `CommandError { code, message, details? }` envelope；scope 校验由 host `authorize(window="whatif.promote", command, session, policy)` 执行；`no_live_write` 由测试断言（无 SAP/ledger/federation 写函数调用）。
+所有命令使用统一 `CommandError { code, message, details? }` envelope（C2b 新命令；现有 C1/C2a 命令不改签名）。scope 校验由 host `authorize(window="poie-view-plan", command="whatif.promote", session, policy)` 执行（PLATFORM 的 window 是 main/poie-view-plan，`whatif.promote` 是 command/scope）。`no_live_write` 断言：proposed action `authorization==None`、不调用 `execution::snapshot`、不写 registry/SAP/federation；用测试钩子计数。
 
 ## 8. Stale 检查
 
@@ -220,9 +221,13 @@ promotion_proposed_actions(
   proposal_id, action_id, action_json, action_sha256, created_at,
   PRIMARY KEY(proposal_id, action_id)
 )
+promotion_commits(
+  proposal_id PK, schema_version, commit_json, commit_sha256,
+  inputs_sha256, token_id, committed_at, committed_by
+)
 ```
 
-- `commitSha256 = sha256("poie.promotion-commit/0.1" + canonical commit without commitSha)`；`planSha256` 同上。
+- `commitSha256 = sha256("poie.promotion-commit/0.1\n" + canonical commit without commitSha)`；`planSha256` 同上。
 - `PRAGMA user_version=6`；只加表，不改 C1/C2a 表；现有 `db.rs` 的 v5 迁移需先升到 6，并补 v5→v6 fixture（含已有 C1/C2a 行）。
 - 迁移 5→6 幂等；失败回滚。
 - proposal/action JSON 写入前重算 digest；读取时校验。

@@ -30,6 +30,8 @@ domain/version "\n" canonical_json(payload)
 | `poie.promotion-commit/0.1` | C2b |
 | `poie.proposed-action-draft/0.1` | C2b |
 | `poie.promotion-inputs/0.1` | C2b |
+| `poie.promotion-plan/0.1` | C2b |
+| `poie.whatif-variant/0.1` | C2b |
 | `poie.promotion/0.1` | C2b |
 | `poie.proposed-action/0.1` | C2b |
 | `poie.manifest/0.1` | D1 SiteManifest without flat manifestSha256 | D1 site bundle |
