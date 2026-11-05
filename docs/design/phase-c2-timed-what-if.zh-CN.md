@@ -93,7 +93,7 @@ TimedVariant {
 - `startMode` 在 **variant** 上（snapshot 只有默认 startS）；beginning 时 start=0，at 时 start=startS ?? snapshot.startS；3 个变体可分别使用 beginning/at/不同 startS，仍同 snapshot 比较。
 - storageDischargeW 只允许 **降低** 现有 `storage_discharge_w[resource]`；未知资源/负值/NaN/超上限拒绝。
 - deadlineS 若设置必须 > startS 且 ≤ horizonS；不设置则用 snapshot.deadlineS。
-- startS 覆盖 snapshot；`startMode` 由 snapshot 决定。
+- startS 覆盖 snapshot 默认 startS；`startMode` 由 variant 决定。
 
 ### 5.3 Timed Result
 
