@@ -31,7 +31,7 @@ C1 只做静态 structure/plan。C2a 增加时间版推演：储能放电限制�
 ### 4.1 `poie-sim::timed`
 
 - 保留现有 `TimedScenario.storage_discharge_w`；**不新增 StorageLimit**。C2a 不使用 capacity/initial SoC 作为新权威；只使用现有 StockTimeline 的 `initial_si/changes` 与 scenario 的 discharge 上限。
-- 新增 `TimedScenario::from_source(text: &str, model: Model) -> Result<TimedScenario, TimedError>`：解析 TOML 但不读 `model` 路径；host 负责从 sandbox 读取 model。现有 `load(path)` 保留给仓库/测试。
+- 新增 `TimedScenario::from_source(text: &str, model: Model) -> Result<TimedScenario, TimedError>`：解析 TOML 但不读 `model` 路径；host 负责从 sandbox 读取 model。现有 `load(path)` 仅用于仓库/测试，C2a host 不使用。
 - 新增 `TimedRunner::evaluate(&TimedCase) -> Result<TimedOutcome, TimedError>`，不要求 `ExpectDoc`；`run(&CaseDoc)` 保留用于 fixtures。
 - `TimedCase { goal: Goal, start_s, deadline_s: Option<f64>, min_verification: Verification }`；deadline 为显式秒；不包含 maxDepth/maxActions。
 - 现有 `TimedOutcome` 字段/warnings/verdict 语义不变。
@@ -40,10 +40,13 @@ C1 只做静态 structure/plan。C2a 增加时间版推演：储能放电限制�
 
 `whatif_timed_scenario_import(path)` 与 run：
 
+sandbox 布局固定为：`base-01-timed/scenario.toml` + `base-01/model.toml`（与 repo `scenarios/` 同构）。
+
 1. `path` 为 sandbox 相对目录（含 `scenario.toml`）；用 `sandbox::read` 读取 scenario 文本（no-follow/1 MiB）。
-2. 从 scenario TOML 的 `model` 字段取相对路径；host 用 `sandbox::resolve` 解析到 **scenario 所在目录下的相对路径**，拒绝绝对路径/`..`/symlink/超限。
-3. `sandbox::read` 读取 model.toml，`Model::load` 或 `Model::from_doc` 构建模型；**不调用** `TimedScenario::load` 的路径拼接。
+2. 从 scenario TOML 的 `model` 字段取相对路径；允许 `../base-01/model.toml`，但必须由新增 `sandbox::resolve_inside(root, base_dir, relative)` 归一化后仍在 **sandbox root 内**，拒绝绝对路径/逃逸/symlink/超限；不能直接 `Path::join`。
+3. `sandbox::read` 读取 model.toml；用 `toml::from_str::<ModelDoc>` + `Model::from_doc` 构建模型，**不调用** `Model::load`/`TimedScenario::load` 的路径读取。
 4. `TimedScenario::from_source(scenario_text, model)`；返回 scenario/model digest。
+5. 导入时要求 scenario model digest == host `state.model` digest（PLATFORM §5 单一 SourceModel）；不同 → `model_mismatch`。
 
 这样 model 路径不能逃逸 sandbox；run 重读两个文件并重新计算 digest，不一致 → `stale_scenario`/`model_mismatch`。
 
@@ -64,27 +67,30 @@ C1 只做静态 structure/plan。C2a 增加时间版推演：储能放电限制�
 TimedSnapshot {
   schema:"poie.timed-snapshot/0.1", schemaVersion:"0.1",
   id,label,modelSha256,scenarioPath,scenarioSha256,
-  goal,minVerification,startMode:"beginning"|"at",startS,
+  goal,minVerification,startS,
   horizonS,nowS,deadlineS?,seed,
   createdAt,createdBy,snapshotSha256
 }
 ```
 
-- `timedSnapshotSha256 = sha256("poie.timed-snapshot/0.1\n" + canonical_json(without id/createdAt/createdBy/seed/snapshotSha))`；`startMode=at` 时 startS ∈ [0,horizonS]；beginning 时 startS=0。
+- `TimedSnapshotInput {label, scenarioPath, scenarioSha256, goal,minVerification, startS, horizonS, nowS, deadlineS?, seed}`；`horizonS > nowS`、`startS ∈ [0,horizonS]`；缺省 startS=0。
+- `snapshotSha256 = sha256("poie.timed-snapshot/0.1\n" + canonical_json(without id/createdAt/createdBy/seed/snapshotSha))`；**scenarioPath 不进入 digest**（仅定位），纳入 scenarioSha/modelSha。
 - goal 只接受 `service:<id>`/`restore:<asset>`；minVerification 解析为现有枚举。
-- scenarioPath 为 sandbox 相对目录；scenarioSha/modelSha 必须与重读一致。
+- 固定向量（scenarioSha=`5cbf…`，modelSha=`m`，goal=`restore:pump-p1`，startS=0，horizon=24h）：`34dd4a21a49004d208e630fab6ed174b49cf3f1ee33fef8e99e182983c8201ef`。
+- scenarioPath/scenarioSha/modelSha 必须与 run 重读一致。
 
 ### 5.2 Timed Variant
 
 ```text
 TimedVariant {
-  schema:"poie.timed-variant/0.1", id,snapshotId,label,description,
-  startS?, deadlineS?,
+  schema:"poie.timed-variant/0.1", schemaVersion:"0.1", id,snapshotId,label,description,
+  startMode:"beginning"|"at", startS?, deadlineS?,
   storageDischargeW:{resource: watts}
 }
 ```
 
 - 无 patch/goal/minVerification 字段；goal/minVerification 来自 snapshot。
+- `startMode` 在 **variant** 上（snapshot 只有默认 startS）；beginning 时 start=0，at 时 start=startS ?? snapshot.startS；3 个变体可分别使用 beginning/at/不同 startS，仍同 snapshot 比较。
 - storageDischargeW 只允许 **降低** 现有 `storage_discharge_w[resource]`；未知资源/负值/NaN/超上限拒绝。
 - deadlineS 若设置必须 > startS 且 ≤ horizonS；不设置则用 snapshot.deadlineS。
 - startS 覆盖 snapshot；`startMode` 由 snapshot 决定。
@@ -93,7 +99,7 @@ TimedVariant {
 
 ```text
 TimedResult {
-  schema:"poie.timed-result/0.1", resultId,variantId,snapshotId,runId,
+  schema:"poie.timed-result/0.1", schemaVersion:"0.1", resultId,variantId,snapshotId,runId,
   mode:"timed",
   settings:{startMode,startS,horizonS,deadlineS?},
   outcome:{timed:"feasible|blocked|unknown|search_limit|too_late|insufficient_resource|capacity_conflict|power_limited",caveat},
@@ -102,7 +108,8 @@ TimedResult {
 }
 ```
 
-- `resultSha256 = sha256("poie.timed-result/0.1\n" + canonical_json({snapshotSha256,scenarioSha256,modelSha256,variant:{startS,deadlineS,storageDischargeW},settings,outcome,completionS,warnings}))`；排除 id/createdAt；可选字段 null 不省略。
+- `resultSha256 = sha256("poie.timed-result/0.1\n" + canonical_json({snapshotSha256,scenarioSha256,modelSha256,variant:{startMode,startS,deadlineS,storageDischargeW},settings,outcome,completionS,warnings}))`；排除 id/createdAt；可选字段 null 不省略。
+- 固定向量（snapshotSha=`s`、scenarioSha=`c`、modelSha=`m`、startMode=beginning、storage=`{bat-1:3000}`、outcome=power_limited）：`e7e6e69a44e8b31bd01af60f754b85173aa2fe64b9b27c148c7cd010ce29d423`。
 - caveat 固定：`"relative to this timed scenario and bounded model; not a physical feasibility proof"`。
 
 ### 5.4 Timed Compare
@@ -116,6 +123,7 @@ TimedCompareResult {
 ```
 
 - 只接受同 snapshot 的 `TimedResult`；跨 snapshot → `invalid_parameter`；重复去重并 warning；不混 C1 静态结果。
+- `delta = {completionDeltaS?: number|null}`：baseline 必须出现在 rows 中，否则 `baselineResultId=null` 且 delta=null；排序按 timed verdict 固定顺序 → completionS null 最后 → resultId。
 
 ## 6. 命令
 
@@ -123,8 +131,8 @@ TimedCompareResult {
 | --- | --- | --- |
 | `whatif_timed_scenario_import` | sandbox 相对 path | `{scenarioSha256,modelSha256,description}` |
 | `whatif_timed_scenario_list` | — | imported scenarios |
-| `whatif_timed_snapshot_create` | TimedSnapshotInput | TimedSnapshot |
-| `whatif_timed_variant_create` | snapshotId,label,description,startS?,deadlineS?,storageDischargeW | TimedVariant |
+| `whatif_timed_snapshot_create` | TimedSnapshotInput（含 startS/horizonS/nowS） | TimedSnapshot |
+| `whatif_timed_variant_create` | snapshotId,label,description,startMode,startS?,deadlineS?,storageDischargeW | TimedVariant |
 | `whatif_timed_run` | variantId | TimedResult |
 | `whatif_timed_result_get` | resultId | TimedResult |
 | `whatif_timed_result_list` | snapshotId,variantId?,limit | TimedResult[] |
@@ -141,8 +149,8 @@ C2a 使用登录会话；无审批/promote。
 ```text
 whatif_timed_scenarios(scenario_sha256 PK, scenario_path, model_sha256, schema_version, description, imported_at)
 whatif_timed_snapshots(snapshot_id PK, snapshot_json, snapshot_sha256, created_at)
-whatif_timed_variants(variant_id PK, snapshot_id, variant_json, created_at)
-whatif_timed_results(result_id PK, variant_id, snapshot_id, mode, settings_json, result_json, result_sha256, created_at)
+whatif_timed_variants(variant_id PK, snapshot_id, schema_version, variant_json, created_at)
+whatif_timed_results(result_id PK, variant_id, snapshot_id, schema_version, mode, settings_json, result_json, result_sha256, created_at)
 ```
 
 - `PRAGMA user_version=5`；4→5 建表，幂等；不改 C1 `whatif_*` 表/JSON。
@@ -171,7 +179,7 @@ whatif_timed_results(result_id PK, variant_id, snapshot_id, mode, settings_json,
 - 路径逃逸/符号链接/超限拒绝；run 重读后 digest 变化 → stale。
 - 无 SAP/ledger/federation 写入。
 - UI：导入 base-01-timed、3 个 timed 变体运行/比较；host-only 占位。
-- 验收：3 个 timed 变体（储能限制/截止提前/startMode）可比较，caveat 显示，无 C1 结果 digest 变化。
+- 验收：同 snapshot 的 3 个 timed 变体（不同 startMode/startS、储能限制、截止提前）可比较，caveat 显示，无 C1 结果 digest 变化。
 
 ## 11. C2b（延后，需重跑门禁）
 
