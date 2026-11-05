@@ -10,7 +10,7 @@ use poie_governance::{
     subject_digest, tool, ApprovalToken, AuditRecord, Decision, EvidenceRef, Profile, RunState, RunStatus,
     ToolCallRecord, AUDIT_SCHEMA, POLICY_VERSION,
 };
-use poie_ontology::graph::{Goal, Query, DEFAULT_MAX_DEPTH};
+use poie_ontology::graph::Goal;
 use poie_ontology::model::Verification;
 use poie_plan::plan::{plan, PlanningGoal, PlanningRequest};
 use poie_plan::sap::{preview_plan_through_sap, AssumedContext};
@@ -457,17 +457,16 @@ fn execute_tool(
                 .and_then(Value::as_f64)
                 .ok_or_else(|| "invalid_tool_arguments: horizonS".to_string())?;
             let deadline = arguments.get("deadlineS").and_then(Value::as_f64);
-            let query = Query {
-                goal: Goal::Service(goal.to_string()),
-                min_verification: Verification::Demonstrated,
-                max_depth: DEFAULT_MAX_DEPTH,
+            let goal = match goal.split_once(':') {
+                Some(("service", id)) if !id.is_empty() => Goal::Service(id.to_string()),
+                Some(("restore", id)) if !id.is_empty() => Goal::Restore(id.to_string()),
+                _ => return Err("invalid_tool_arguments: goal must be service:<id> or restore:<asset>".into()),
             };
-            let _ = poie_ontology::graph::solve(&state.model, &query);
             let planned = plan(&PlanningRequest {
                 model: &state.model,
                 now_s: 0.0,
                 horizon_s: horizon,
-                goals: vec![PlanningGoal { goal: Goal::Service(goal.to_string()), deadline_s: deadline, priority: 10 }],
+                goals: vec![PlanningGoal { goal, deadline_s: deadline, priority: 10 }],
                 min_verification: Verification::Demonstrated,
                 max_actions: 12,
             })
@@ -539,7 +538,7 @@ fn execute_tool(
             };
             let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
             db.save_approval_token(&token)?;
-            let pending = json!({"tokenId": token_id, "tool": name, "subjectDigest": digest.clone(), "argsJsonRedacted": arguments.to_string(), "impact": token.impact_json, "citations": [], "expiresAt": expires});
+            let pending = json!({"tokenId": token_id, "tool": name, "subjectDigest": digest.clone(), "argsJsonRedacted": arguments.to_string(), "impact": token.impact_json, "citations": [], "expiresAtMs": expires});
             Ok((json!({"pendingApproval": pending}), vec![]))
         }
         "answer.emit" => {
