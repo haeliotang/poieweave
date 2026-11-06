@@ -5,9 +5,11 @@
 
 use std::path::Path;
 
+use poie_digest::sha256_of;
 use poie_governance::ApprovalToken;
 use rusqlite::{params, Connection, OptionalExtension};
 use serde::Serialize;
+use serde_json::json;
 
 #[derive(Clone, Debug)]
 pub struct OperatorRecord {
@@ -246,13 +248,191 @@ impl Db {
     }
 
     pub fn append_audit(&self, at_ms: i64, actor: &str, event: &str, detail: &str) -> Result<(), String> {
+        self.ensure_audit_chain()?;
+        let prev: Option<String> = self
+            .connection
+            .query_row("SELECT hash FROM audit ORDER BY id DESC LIMIT 1", [], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())?
+            .flatten();
         self.connection
             .execute(
-                "INSERT INTO audit (at_ms, actor, event, detail) VALUES (?1, ?2, ?3, ?4)",
-                params![at_ms, actor, event, detail],
+                "INSERT INTO audit (at_ms, actor, event, detail, prev_hash, legacy) VALUES (?1, ?2, ?3, ?4, ?5, 0)",
+                params![at_ms, actor, event, detail, prev],
             )
             .map_err(|error| format!("append audit: {error}"))?;
+        let id = self.connection.last_insert_rowid();
+        let hash = self.audit_hash(id, at_ms, actor, event, detail, None, None, None, None, None, prev.as_deref())?;
+        self.connection
+            .execute("UPDATE audit SET hash=?1 WHERE id=?2", params![hash, id])
+            .map_err(|error| format!("audit hash: {error}"))?;
         Ok(())
+    }
+
+    /// Fills hashes for historical rows, without rewriting rows that already
+    /// carry a hash. A later `verify_audit_chain` detects tampering.
+    pub fn ensure_audit_chain(&self) -> Result<(), String> {
+        let mut statement = self
+            .connection
+            .prepare(
+                "SELECT id,at_ms,actor,event,detail,session_id,turn_id,args_sha256,result_sha256,sap_record_id,prev_hash,hash FROM audit ORDER BY id ASC",
+            )
+            .map_err(|error| error.to_string())?;
+        let rows = statement
+            .query_map([], |row| {
+                Ok((
+                    row.get::<_, i64>(0)?,
+                    row.get::<_, i64>(1)?,
+                    row.get::<_, String>(2)?,
+                    row.get::<_, String>(3)?,
+                    row.get::<_, String>(4)?,
+                    row.get::<_, Option<String>>(5)?,
+                    row.get::<_, Option<i64>>(6)?,
+                    row.get::<_, Option<String>>(7)?,
+                    row.get::<_, Option<String>>(8)?,
+                    row.get::<_, Option<String>>(9)?,
+                    row.get::<_, Option<String>>(10)?,
+                    row.get::<_, Option<String>>(11)?,
+                ))
+            })
+            .map_err(|error| error.to_string())?
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|error| error.to_string())?;
+        drop(statement);
+        let mut prev: Option<String> = None;
+        for (id, at_ms, actor, event, detail, session, turn, args, result, sap, stored_prev, stored_hash) in rows {
+            let hash = match stored_hash {
+                Some(hash) if stored_prev == prev => hash,
+                _ => {
+                    let hash = self.audit_hash(
+                        id,
+                        at_ms,
+                        &actor,
+                        &event,
+                        &detail,
+                        session.as_deref(),
+                        turn,
+                        args.as_deref(),
+                        result.as_deref(),
+                        sap.as_deref(),
+                        prev.as_deref(),
+                    )?;
+                    self.connection
+                        .execute(
+                            "UPDATE audit SET prev_hash=?1, hash=?2, legacy=0 WHERE id=?3",
+                            params![prev, hash, id],
+                        )
+                        .map_err(|error| format!("audit backfill: {error}"))?;
+                    hash
+                }
+            };
+            prev = Some(hash);
+        }
+        Ok(())
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    fn audit_hash(
+        &self,
+        id: i64,
+        at_ms: i64,
+        actor: &str,
+        event: &str,
+        detail: &str,
+        session_id: Option<&str>,
+        turn_id: Option<i64>,
+        args_sha256: Option<&str>,
+        result_sha256: Option<&str>,
+        sap_record_id: Option<&str>,
+        prev_hash: Option<&str>,
+    ) -> Result<String, String> {
+        sha256_of(
+            "poie.agent-audit/0.1",
+            &json!({
+                "id": id,
+                "atMs": at_ms,
+                "actor": actor,
+                "event": event,
+                "detail": detail,
+                "sessionId": session_id,
+                "turnId": turn_id,
+                "argsSha256": args_sha256,
+                "resultSha256": result_sha256,
+                "sapRecordId": sap_record_id,
+                "prevHash": prev_hash,
+            }),
+        )
+        .map_err(|error| error.to_string())
+    }
+
+    pub fn audit_chain(&self) -> Result<(u64, Option<String>), String> {
+        self.ensure_audit_chain()?;
+        let count: u64 = self
+            .connection
+            .query_row("SELECT COUNT(*) FROM audit", [], |row| row.get(0))
+            .map_err(|error| error.to_string())?;
+        let head: Option<String> = self
+            .connection
+            .query_row("SELECT hash FROM audit ORDER BY id DESC LIMIT 1", [], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())?
+            .flatten();
+        Ok((count, head))
+    }
+
+    pub fn verify_audit_head(&self, count: u64, head: &str) -> Result<bool, String> {
+        let (actual_count, actual_head) = self.audit_chain()?;
+        Ok(actual_count == count && actual_head.as_deref() == Some(head))
+    }
+
+    pub fn verify_audit_chain(&self) -> Result<Option<i64>, String> {
+        let mut statement = self
+            .connection
+            .prepare(
+                "SELECT id,at_ms,actor,event,detail,session_id,turn_id,args_sha256,result_sha256,sap_record_id,prev_hash,hash FROM audit ORDER BY id ASC",
+            )
+            .map_err(|error| error.to_string())?;
+        let rows = statement
+            .query_map([], |row| {
+                Ok((
+                    row.get::<_, i64>(0)?,
+                    row.get::<_, i64>(1)?,
+                    row.get::<_, String>(2)?,
+                    row.get::<_, String>(3)?,
+                    row.get::<_, String>(4)?,
+                    row.get::<_, Option<String>>(5)?,
+                    row.get::<_, Option<i64>>(6)?,
+                    row.get::<_, Option<String>>(7)?,
+                    row.get::<_, Option<String>>(8)?,
+                    row.get::<_, Option<String>>(9)?,
+                    row.get::<_, Option<String>>(10)?,
+                    row.get::<_, Option<String>>(11)?,
+                ))
+            })
+            .map_err(|error| error.to_string())?
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|error| error.to_string())?;
+        let mut prev: Option<String> = None;
+        for (id, at_ms, actor, event, detail, session, turn, args, result, sap, stored_prev, stored_hash) in rows {
+            let expected = self.audit_hash(
+                id,
+                at_ms,
+                &actor,
+                &event,
+                &detail,
+                session.as_deref(),
+                turn,
+                args.as_deref(),
+                result.as_deref(),
+                sap.as_deref(),
+                prev.as_deref(),
+            )?;
+            if stored_prev != prev || stored_hash.as_deref() != Some(expected.as_str()) {
+                return Ok(Some(id));
+            }
+            prev = stored_hash;
+        }
+        Ok(None)
     }
 
     pub fn audit(&self, limit: usize) -> Result<Vec<AuditRow>, String> {
@@ -956,5 +1136,18 @@ mod tests {
         let db = Db::open_in_memory().unwrap();
         db.save_delivery_bundle_meta("sha", "{\"auditCount\":1}", 1).unwrap();
         assert_eq!(db.delivery_bundle_meta("sha").unwrap().as_deref(), Some("{\"auditCount\":1}"));
+    }
+
+    #[test]
+    fn audit_chain_detects_tampering() {
+        let db = Db::open_in_memory().unwrap();
+        db.append_audit(1, "Ada", "one", "first").unwrap();
+        db.append_audit(2, "Ada", "two", "second").unwrap();
+        let (count, head) = db.audit_chain().unwrap();
+        assert_eq!(count, 2);
+        assert!(db.verify_audit_head(count, head.as_deref().unwrap()).unwrap());
+        assert_eq!(db.verify_audit_chain().unwrap(), None);
+        db.connection.execute("UPDATE audit SET detail='tampered' WHERE id=1", []).unwrap();
+        assert_eq!(db.verify_audit_chain().unwrap(), Some(1));
     }
 }

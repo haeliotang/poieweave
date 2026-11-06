@@ -53,6 +53,7 @@ schema = "poie.<domain>/<major>.<minor>"
 | `unknown_type` / `unknown_object` / `unknown_snapshot` / `unknown_variant` / `unknown_result` | A/C | 类型/对象/快照/变体/结果不存在 |
 | `model_mismatch` | A/C/D | model digest 与当前不一致 |
 | `manifest_invalid` / `stale_manifest` / `delivery_conflict` / `rollback_unavailable` / `io_error` | D1 | manifest 非法/已变/冲突/无回滚/IO |
+| `audit_mismatch` | D2 | bundle auditHead/auditCount 与本地 audit chain 不一致 |
 | `scenario_mismatch` / `stale_scenario` / `power_limit_exceeded` | C2a | 场景/model 不匹配、场景变更、储能放电超限 |
 | `preview_unavailable` | A | host 未提供 dry-run |
 | `invalid_parameter` / `invalid_patch` | A/B/C/D1 | 参数/变体非法/大小超限 |
