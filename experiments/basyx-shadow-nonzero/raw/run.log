@@ -1,33 +1,33 @@
-[13:31:21] build runner
-[13:31:21] docker run poie-basyx-nonzero-34590 on 127.0.0.1:49536
-41009f85c77271ec8ce71410c6d4060efbae03bc2535e37b31c260c8d20cc029
-[13:31:26] ready (http://127.0.0.1:49536/shells → 200)
-[13:31:26] POST /submodels pump-p1 (failed, 2026-11-06T13:31:26Z) → 201
-[13:31:26] POST /submodels bat-1 (available, 2026-11-06T13:31:26Z) → 201
-[13:31:26] POST /submodels filter-1 (available, 2026-11-06T13:31:26Z) → 201
-[13:31:26] POST /submodels bus-1 (available, 2026-11-06T13:31:26Z) → 201
-[13:31:26] POST /submodels robot-m1 (available, 2026-11-06T13:31:26Z) → 201
-[13:31:26] POST /submodels charger-1 (available, 2026-11-06T13:31:26Z) → 201
-[13:31:26] POST /shells → 201
-[13:31:26] runner ← failed 2026-11-06T13:31:26Z
-[13:31:27] POST /submodels pump-p1 (failed, 2026-11-06T13:29:27Z) → 201
-[13:31:27] POST /submodels bat-1 (available, 2026-11-06T13:29:27Z) → 201
-[13:31:27] POST /submodels filter-1 (available, 2026-11-06T13:29:27Z) → 201
-[13:31:28] POST /submodels bus-1 (available, 2026-11-06T13:29:27Z) → 201
-[13:31:28] POST /submodels robot-m1 (available, 2026-11-06T13:29:27Z) → 201
-[13:31:28] POST /submodels charger-1 (available, 2026-11-06T13:29:27Z) → 201
-[13:31:28] runner ← stale 2026-11-06T13:29:27Z
-[13:31:28] POST /submodels pump-p1 (degraded, 2026-11-06T13:31:28Z) → 201
-[13:31:28] POST /submodels bat-1 (available, 2026-11-06T13:31:28Z) → 201
-[13:31:28] POST /submodels filter-1 (available, 2026-11-06T13:31:28Z) → 201
-[13:31:28] POST /submodels bus-1 (available, 2026-11-06T13:31:28Z) → 201
-[13:31:28] POST /submodels robot-m1 (available, 2026-11-06T13:31:28Z) → 201
-[13:31:28] POST /submodels charger-1 (available, 2026-11-06T13:31:28Z) → 201
-[13:31:28] runner ← drifted 2026-11-06T13:31:28Z
-[13:31:29] runner ← finish
+[13:36:01] build runner
+[13:36:01] docker run poie-basyx-nonzero-39238 on 127.0.0.1:49814
+25d864f810aa6abc3a2b5690b6d02869d5e3ddb1fd0e62870a5f02e5ac22f1d3
+[13:36:07] ready (http://127.0.0.1:49814/shells → 200)
+[13:36:08] POST /submodels pump-p1 (failed, 2026-11-06T13:36:07Z) → 201
+[13:36:08] POST /submodels bat-1 (available, 2026-11-06T13:36:07Z) → 201
+[13:36:08] POST /submodels filter-1 (available, 2026-11-06T13:36:07Z) → 201
+[13:36:08] POST /submodels bus-1 (available, 2026-11-06T13:36:07Z) → 201
+[13:36:08] POST /submodels robot-m1 (available, 2026-11-06T13:36:07Z) → 201
+[13:36:08] POST /submodels charger-1 (available, 2026-11-06T13:36:07Z) → 201
+[13:36:08] POST /shells → 201
+[13:36:08] runner ← failed 2026-11-06T13:36:07Z
+[13:36:08] POST /submodels pump-p1 (failed, 2026-11-06T13:34:08Z) → 201
+[13:36:08] POST /submodels bat-1 (available, 2026-11-06T13:34:08Z) → 201
+[13:36:09] POST /submodels filter-1 (available, 2026-11-06T13:34:08Z) → 201
+[13:36:09] POST /submodels bus-1 (available, 2026-11-06T13:34:08Z) → 201
+[13:36:09] POST /submodels robot-m1 (available, 2026-11-06T13:34:08Z) → 201
+[13:36:09] POST /submodels charger-1 (available, 2026-11-06T13:34:08Z) → 201
+[13:36:09] runner ← stale 2026-11-06T13:34:08Z
+[13:36:09] POST /submodels pump-p1 (degraded, 2026-11-06T13:36:09Z) → 201
+[13:36:09] POST /submodels bat-1 (available, 2026-11-06T13:36:09Z) → 201
+[13:36:09] POST /submodels filter-1 (available, 2026-11-06T13:36:09Z) → 201
+[13:36:09] POST /submodels bus-1 (available, 2026-11-06T13:36:09Z) → 201
+[13:36:09] POST /submodels robot-m1 (available, 2026-11-06T13:36:09Z) → 201
+[13:36:09] POST /submodels charger-1 (available, 2026-11-06T13:36:09Z) → 201
+[13:36:09] runner ← drifted 2026-11-06T13:36:09Z
+[13:36:10] runner ← finish
 N1	PASS	投影 pump-p1 = Failed；计划动作 1 个；dispatched = false；unmet=[]
 N2	FAIL	pump-p1 = Some(Unknown)；expired_evidence = 6；healthy = true
 N3	FAIL	投影 pump-p1 = Degraded；计划动作 1 个；dispatched = false
 failures=2
-[13:31:29] runner exit status 1 (0 = all checks PASS)
-[13:31:29] report: /Users/hao/Documents/poieweave/experiments/basyx-shadow-nonzero/REPORT.md
+[13:36:10] runner exit status 1 (0 = all checks PASS)
+[13:36:10] report: /Users/hao/Documents/poieweave/experiments/basyx-shadow-nonzero/REPORT.md
