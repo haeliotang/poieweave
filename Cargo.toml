@@ -22,6 +22,7 @@ members = [
     "experiments/h1-temporal/runner",
     "experiments/h2-joint-planning/runner",
     "experiments/h2b-joint-planning/runner",
+    "experiments/h2c-joint-planning/runner",
     "experiments/h3-bounded-execution/runner",
     "experiments/h4-expansion/runner",
     "experiments/federation-partition/runner",
