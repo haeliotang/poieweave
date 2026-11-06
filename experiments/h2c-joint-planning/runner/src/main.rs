@@ -287,12 +287,17 @@ fn run_scenario(base: &Model, scenario: &Scenario, method: MethodName) -> Scenar
         decisions += 1;
         max_lookahead_s = max_lookahead_s.max(observation_cutoff(scenario, now_s) - now_s);
     }
-    // Execute everything that finishes by the deadline (before any invalidation).
-    let executed_by = deadline_s.min(cutoff);
+    // Execute everything that finishes by the latest goal deadline. The
+    // service check remains at 4 h; the lathe may legitimately finish at 5 h.
+    let executed_by = (SERVICE_DEADLINE_H.max(LATHE_DEADLINE_H) * 3600.0).min(cutoff);
+    let mut restored_by_service = restored.clone();
     for action in &outcome.plan.actions {
         if action.end_s <= executed_by + 1e-9 {
             for asset in &action.restores {
                 restored.insert(asset.clone());
+                if action.end_s <= SERVICE_DEADLINE_H * 3600.0 + 1e-9 {
+                    restored_by_service.insert(asset.clone());
+                }
             }
             for (resource, amount) in &action.allocations {
                 let _ = (resource, amount);
@@ -300,7 +305,7 @@ fn run_scenario(base: &Model, scenario: &Scenario, method: MethodName) -> Scenar
         }
     }
     energy_used += energy_used_kwh(&outcome.plan.actions, executed_by);
-    let service_met = service_available(base, scenario, &restored, deadline_s);
+    let service_met = service_available(base, scenario, &restored_by_service, deadline_s);
     let lathe_ok = restored.contains("lathe-1");
     let success = service_met && lathe_ok && outcome.sap_valid;
     let completion = if success { outcome.plan.completion_s.min(deadline_s) / 3600.0 } else { HORIZON_H };

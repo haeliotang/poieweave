@@ -59,6 +59,18 @@ jobs:
           diff experiments/h2b-joint-planning/dev-report.md /tmp/h2b-replay/dev-report.md
           diff experiments/h2b-joint-planning/raw/dev-diagnose.txt /tmp/h2b-replay.out
           test -f experiments/h2b-joint-planning/raw/dev-base01-invalid.txt
+      - name: H2c development diagnostic replay
+        run: |
+          cargo run --locked -q -p poie-h2c-joint-planning -- --dev --diagnose --write /tmp/h2c-replay > /tmp/h2c-replay.out
+          diff experiments/h2c-joint-planning/raw/dev-raw.txt /tmp/h2c-replay/raw/dev-raw.txt
+          diff experiments/h2c-joint-planning/dev-report.md /tmp/h2c-replay/dev-report.md
+          diff experiments/h2c-joint-planning/raw/dev-diagnose.txt /tmp/h2c-replay.out
+      - name: H2c holdout replay
+        run: |
+          cargo run --locked -q -p poie-h2c-joint-planning -- --holdout --write /tmp/h2c-holdout
+          diff experiments/h2c-joint-planning/raw/holdout-raw.txt /tmp/h2c-holdout/raw/holdout-raw.txt
+          diff experiments/h2c-joint-planning/holdout-report.md /tmp/h2c-holdout/holdout-report.md
+          test -f experiments/h2c-joint-planning/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v

@@ -2,7 +2,7 @@
 
 - 实验 ID：`h2c-joint-planning`
 - 日期：2026-11-06
-- 状态：**已登记，尚未运行**（本文件先于任何 `--dev`/`--holdout` 运行提交）
+- 状态：**已完成**；开发诊断见 [DIAGNOSIS.md](DIAGNOSIS.md)，最终报告见 [REPORT.md](REPORT.md)
 - 依据：H2b 开发诊断 [DIAGNOSIS](../h2b-joint-planning/DIAGNOSIS.md)；H2 负结果
 
 ## 1. 问题
