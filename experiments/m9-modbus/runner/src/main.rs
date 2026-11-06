@@ -238,6 +238,16 @@ impl ModbusAdapter {
         pdu.extend_from_slice(&code.to_be_bytes());
         self.request(&pdu).map(|_| ())
     }
+    fn write_sequence(&self, seq: u16) -> Result<(), ExecError> {
+        let mut pdu = vec![0x10];
+        pdu.extend_from_slice(&0u16.to_be_bytes());
+        pdu.extend_from_slice(&4u16.to_be_bytes());
+        pdu.push(8);
+        for value in [1u16, seq, 1, 5_000] {
+            pdu.extend_from_slice(&value.to_be_bytes());
+        }
+        self.request(&pdu).map(|_| ())
+    }
     fn execution_count(&self) -> u32 {
         self.read_registers(11, 1).map(|r| u32::from(r[0])).unwrap_or(0)
     }
@@ -350,11 +360,19 @@ fn main() {
         valid_until_ms: 10_000,
         lease_epoch: Some(1),
     });
-    let after = adapter.execution_count();
+    let after_duplicate = adapter.execution_count();
+    let stale = adapter.write_sequence(adapter.seq);
+    let after_stale = adapter.execution_count();
     checks.push((
         "M2",
-        matches!(duplicate, Err(ExecError::Duplicate(_))) && before == after,
-        format!("duplicate={}; executions {before}->{after}", duplicate.is_err()),
+        matches!(duplicate, Err(ExecError::Duplicate(_)))
+            && before == after_duplicate
+            && stale.is_ok()
+            && after_stale == before,
+        format!(
+            "duplicate={duplicate:?}; exec {}->{}; stale_seq_write={stale:?}; exec_after_stale={after_stale}",
+            before, after_duplicate
+        ),
     ));
 
     // M3: exception mapping 0x06 and 0x04.
@@ -370,10 +388,18 @@ fn main() {
     let a4 = action("a4", "key-4");
     gate4.register_authorized(&a4).unwrap();
     let failure = gate4.dispatch(&a4, &mut adapter4, 100);
+    let busy_reason = match &busy {
+        Ok(DispatchOutcome::Rejected { reason }) => reason.clone(),
+        _ => String::new(),
+    };
+    let failure_reason = match &failure {
+        Ok(DispatchOutcome::Rejected { reason }) => reason.clone(),
+        _ => String::new(),
+    };
     checks.push((
         "M3",
-        matches!(busy, Ok(DispatchOutcome::Rejected { .. })) && matches!(failure, Ok(DispatchOutcome::Rejected { .. })),
-        format!("busy={:?}; failure={:?}", busy.map(|o| o.dispatched()), failure.map(|o| o.dispatched())),
+        busy_reason.contains("busy") && failure_reason.contains("failure"),
+        format!("busy_reason={busy_reason:?}; failure_reason={failure_reason:?}"),
     ));
 
     // M4: unreachable TCP -> Fallback.

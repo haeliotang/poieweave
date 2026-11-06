@@ -26,6 +26,7 @@ struct Bench {
     fault: Fault,
     last_heartbeat_ms: i64,
     watchdog_tripped: bool,
+    flow_locked: bool,
     physical_executions: usize,
 }
 impl Bench {
@@ -98,6 +99,12 @@ impl WritableAdapter for BenchAdapter {
         if self.unreachable {
             return Err(ExecError::Disconnected("simulated PLC unreachable".into()));
         }
+        if self.bench.borrow().watchdog_tripped {
+            return Err(ExecError::Rejected("watchdog tripped; no dispatch".into()));
+        }
+        if self.bench.borrow().flow_locked {
+            return Err(ExecError::Rejected("flow interlock; outcome_unknown".into()));
+        }
         if let Some(original) = self.keys.get(&command.idempotency_key) {
             return Err(ExecError::Duplicate(original.clone()));
         }
@@ -161,6 +168,7 @@ fn setup() -> (ExecutionGate, BenchAdapter, Rc<RefCell<Bench>>) {
         fault: Fault::None,
         last_heartbeat_ms: 0,
         watchdog_tripped: false,
+        flow_locked: false,
         physical_executions: 0,
     }));
     bench.borrow_mut().heartbeat(0);
@@ -179,14 +187,23 @@ fn main() {
         let a = action("a6", "key-6");
         gate.register_authorized(&a).unwrap();
         let dispatched = matches!(gate.dispatch(&a, &mut adapter, 100).unwrap(), DispatchOutcome::Dispatched { .. });
+        bench.borrow_mut().heartbeat(1_100);
         let mut s1: Vec<Box<dyn VerificationSignal>> =
             vec![Box::new(FlowSensor { bench: Rc::clone(&bench), now_ms: 1_100 })];
         let v1 = verify_action("a6", "bench-v2-plc", &mut s1).unwrap();
+        bench.borrow_mut().heartbeat(5_100);
         let mut s5: Vec<Box<dyn VerificationSignal>> =
             vec![Box::new(FlowSensor { bench: Rc::clone(&bench), now_ms: 5_100 })];
         let v5 = verify_action("a6", "bench-v2-plc", &mut s5).unwrap();
         let unknown = gate.record_outcome("a6", ActionState::OutcomeUnknown).is_ok();
-        let locked = true; // runner policy after outcome_unknown
+        bench.borrow_mut().flow_locked = unknown;
+        let before_second = bench.borrow().physical_executions;
+        bench.borrow_mut().heartbeat(5_200);
+        let a6b = action("a6b", "key-6b");
+        gate.register_authorized(&a6b).unwrap();
+        let second = gate.dispatch(&a6b, &mut adapter, 5_200);
+        let locked = matches!(second, Ok(DispatchOutcome::Rejected { .. }))
+            && bench.borrow().physical_executions == before_second;
         checks.push((
             "B6",
             dispatched && !v1.confirmed && !v5.confirmed && unknown && locked,
@@ -231,13 +248,21 @@ fn main() {
         let tripped = bench.borrow().watchdog_tripped;
         let closed = !bench.borrow().valve_open && bench.borrow_mut().flow_at(2_600) == 0.0;
         // Reconnect: must not dispatch before clear.
-        let blocked = tripped; // runner policy
+        let blocked_action = action("a5b", "key-5b");
+        gate.register_authorized(&blocked_action).unwrap();
+        let blocked =
+            matches!(gate.dispatch(&blocked_action, &mut adapter, 2_650), Ok(DispatchOutcome::Rejected { .. }));
         let cleared = bench.borrow_mut().safe_clear(2_700);
-        let rearmed = cleared && !bench.borrow().watchdog_tripped && bench.borrow_mut().flow_at(2_700) == 0.0;
+        let rearm_action = action("a5c", "key-5c");
+        gate.register_authorized(&rearm_action).unwrap();
+        let rearmed = cleared
+            && !bench.borrow().watchdog_tripped
+            && bench.borrow_mut().flow_at(2_700) == 0.0
+            && matches!(gate.dispatch(&rearm_action, &mut adapter, 2_700), Ok(DispatchOutcome::Dispatched { .. }));
         checks.push((
             "B5R",
             tripped && closed && blocked && rearmed,
-            format!("tripped={tripped}; valve_closed={closed}; blocked_before_clear={blocked}; cleared={cleared}"),
+            format!("tripped={tripped}; valve_closed={closed}; blocked_before_clear={blocked}; cleared={cleared}; rearmed={rearmed}"),
         ));
     }
 
