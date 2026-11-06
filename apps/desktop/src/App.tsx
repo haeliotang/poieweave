@@ -34,6 +34,7 @@ import {
   type TimedCompare,
   type PromotionProposal,
   type PromotionCommit,
+  type TrustedReplayNode,
 } from "./domain";
 import brandMark from "./assets/poieweave-mono.svg";
 import { detectLang, messagesFor, type Lang } from "./i18n";
@@ -1638,11 +1639,51 @@ function SettingsDialog({
   const [testResult, setTestResult] = useState<InferenceResult | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [trustedNodes, setTrustedNodes] = useState<TrustedReplayNode[]>([]);
+  const [trustKey, setTrustKey] = useState("");
+  const [trustName, setTrustName] = useState("");
 
   useEffect(() => {
     if (inference.endpoint) setEndpoint(inference.endpoint);
     if (inference.model) setModel(inference.model);
   }, [inference.endpoint, inference.model]);
+
+  const refreshTrust = async () => {
+    if (!auth.signedIn) return;
+    try {
+      setTrustedNodes(await invoke<TrustedReplayNode[]>("replay_trust_list"));
+    } catch { /* trust commands require a session; ignore */ }
+  };
+
+  useEffect(() => {
+    void refreshTrust();
+  }, [auth.signedIn]);
+
+  const addTrust = async () => {
+    const status = await run(() => invoke<null>("replay_trust_add", { publicKey: trustKey.trim(), name: trustName.trim() }));
+    if (status !== undefined) {
+      setTrustKey("");
+      setTrustName("");
+      await refreshTrust();
+      onAuditRefresh();
+    }
+  };
+
+  const trustSelf = async () => {
+    const status = await run(() => invoke<string>("replay_trust_self"));
+    if (status) {
+      await refreshTrust();
+      onAuditRefresh();
+    }
+  };
+
+  const removeTrust = async (publicKey: string) => {
+    const status = await run(() => invoke<null>("replay_trust_remove", { publicKey }));
+    if (status !== undefined) {
+      await refreshTrust();
+      onAuditRefresh();
+    }
+  };
 
   const run = async <T,>(action: () => Promise<T>): Promise<T | undefined> => {
     setBusy(true);
@@ -1837,6 +1878,37 @@ function SettingsDialog({
               </>
             ) : null}
             {error ? <p className="form-error">{error}</p> : null}
+          </section>
+
+          <section className="settings-section">
+            <h3>{t("settings.replayTrust")}</h3>
+            {!hosted ? <p className="muted">{t("settings.replayTrust.hostOnly")}</p> : null}
+            {hosted && !auth.signedIn ? <p className="muted">{t("settings.auth.needsSignIn")}</p> : null}
+            {hosted && auth.signedIn ? (
+              <>
+                <p className="muted">{t("settings.replayTrust.hint")}</p>
+                <div className="field-grid">
+                  <label>{t("settings.replayTrust.name")}<input value={trustName} onChange={(event) => setTrustName(event.target.value)} /></label>
+                  <label>{t("settings.replayTrust.key")}<input value={trustKey} onChange={(event) => setTrustKey(event.target.value)} placeholder="64 hex" /></label>
+                </div>
+                <div className="form-actions">
+                  <button className="secondary" type="button" onClick={addTrust} disabled={busy || trustKey.trim().length !== 64 || !trustName.trim()}>{t("settings.replayTrust.add")}</button>
+                  <button className="secondary" type="button" onClick={trustSelf} disabled={busy}>{t("settings.replayTrust.self")}</button>
+                </div>
+                {trustedNodes.length > 0 ? (
+                  <table className="table">
+                    <thead><tr><th>{t("settings.replayTrust.name")}</th><th>{t("settings.replayTrust.key")}</th><th /></tr></thead>
+                    <tbody>{trustedNodes.map((node) => (
+                      <tr key={node.publicKey}>
+                        <td>{node.name}</td>
+                        <td className="mono">{node.publicKey.slice(0, 16)}…</td>
+                        <td><button type="button" onClick={() => void removeTrust(node.publicKey)} disabled={busy}>{t("settings.replayTrust.remove")}</button></td>
+                      </tr>
+                    ))}</tbody>
+                  </table>
+                ) : <p className="muted">{t("settings.replayTrust.empty")}</p>}
+              </>
+            ) : null}
           </section>
 
           <section className="settings-section">
