@@ -183,6 +183,18 @@ ProposedAction {
 - What-if 面板提供 four-eyes 开关；开启后自批拒绝。真实双人验收记录仍待补。
 - 该策略是可测试的门控，不是完整双人审批实现。
 
+## 6.6 三路审计一致性
+
+`whatif_promote_audit(proposalId)` 只读检查：
+
+- proposal digest 重算 == `proposalSha256`
+- actions digest 重算 == `actionsSha256`
+- commit digest 重算 == `commitSha256`
+- commit 的 proposal/plan/actions/inputs/token 字段与 proposal 一致
+- audit 中存在 `promotion.committed` 行且包含 proposalId + commitSha
+
+不修复、不写库；缺失 commit/audit → `ok=false`。
+
 ## 7. 命令
 
 | 命令 | 输入 | 输出 |
@@ -193,6 +205,7 @@ ProposedAction {
 | `whatif_promote_recuse` | proposalId, reason | — |
 | `whatif_promote_appeal` | proposalId, reason | — |
 | `whatif_promote_appeals` | proposalId | PromotionAppeal[] |
+| `whatif_promote_audit` | proposalId | PromotionAuditReport |
 | `whatif_promote_list` | limit | PromotionProposal[] |
 | `whatif_promote_approve` | proposalId | PromotionProposal（approved） |
 | `whatif_promote_reject` | proposalId, reason | PromotionProposal（rejected） |

@@ -361,6 +361,7 @@ pub fn run() {
             whatif::whatif_promote_replay,
             whatif::whatif_promote_packet,
             whatif::whatif_promote_compare_packet,
+            whatif::whatif_promote_audit,
             whatif::replay_trust_list,
             whatif::replay_trust_add,
             whatif::replay_trust_self,

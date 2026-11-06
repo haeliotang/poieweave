@@ -909,6 +909,19 @@ impl Db {
     }
 
     #[allow(clippy::too_many_arguments)]
+    pub fn promotion_commit_audit(&self, proposal_id: &str, commit_sha: &str) -> Result<bool, String> {
+        let count: i64 = self
+            .connection
+            .query_row(
+                "SELECT COUNT(*) FROM audit WHERE event='promotion.committed' AND detail LIKE ?1 AND detail LIKE ?2",
+                params![format!("{proposal_id} %"), format!("%{commit_sha}%")],
+                |row| row.get(0),
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(count > 0)
+    }
+
+    #[allow(clippy::too_many_arguments)]
     pub fn save_promotion_commit(
         &self,
         proposal_id: &str,
@@ -1457,5 +1470,14 @@ mod tests {
         assert_eq!(db.replay_trust().unwrap().len(), 1);
         db.remove_replay_trust(&"a".repeat(64)).unwrap();
         assert!(!db.replay_trusted(&"a".repeat(64)).unwrap());
+    }
+
+    #[test]
+    fn promotion_commit_audit_lookup_requires_matching_detail() {
+        let db = Db::open_in_memory().unwrap();
+        db.append_audit(1, "Ada", "promotion.committed", "prom-1 scope sha-1").unwrap();
+        assert!(db.promotion_commit_audit("prom-1", "sha-1").unwrap());
+        assert!(!db.promotion_commit_audit("prom-1", "sha-2").unwrap());
+        assert!(!db.promotion_commit_audit("prom-2", "sha-1").unwrap());
     }
 }
