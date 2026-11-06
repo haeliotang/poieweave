@@ -22,6 +22,10 @@ pub struct ReplayPacket {
     pub plan_sha256: String,
     pub actions_sha256: String,
     pub created_at: i64,
+    #[serde(default)]
+    pub signer_public_key: Option<String>,
+    #[serde(default)]
+    pub signature: Option<String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -34,6 +38,14 @@ pub struct ReplayReport {
 
 fn is_sha(value: &str) -> bool {
     value.len() == 64 && value.chars().all(|character| character.is_ascii_hexdigit())
+}
+
+/// Bytes covered by an optional signature. Signature fields are omitted so a
+/// remote node can verify without trusting the packet's own metadata.
+pub fn signing_payload(packet: &ReplayPacket) -> Result<Vec<u8>, String> {
+    let mut unsigned = packet.clone();
+    unsigned.signature = None;
+    serde_json::to_vec(&unsigned).map_err(|error| error.to_string())
 }
 
 pub fn validate(packet: &ReplayPacket) -> Result<(), String> {
@@ -99,6 +111,8 @@ mod tests {
             plan_sha256: "e".repeat(64),
             actions_sha256: "f".repeat(64),
             created_at: 1,
+            signer_public_key: None,
+            signature: None,
         }
     }
 

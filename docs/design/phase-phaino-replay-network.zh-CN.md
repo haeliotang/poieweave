@@ -20,6 +20,7 @@ poie.replay-packet/0.1
 - 只包含 digest 与身份，不包含模型、状态、证据内容。
 - 所有 digest 必须是 64 hex。
 - `producer` 只用于标识，不参与比较。
+- 可选 `signerPublicKey` + `signature`：Ed25519 over canonical packet（不含 signature 字段）。签名覆盖全部 digest 字段。
 
 ## 3. 比较
 
@@ -41,13 +42,13 @@ poie.replay-report/0.1
 
 ## 4. 命令
 
-- `whatif_promote_packet(proposalId)`：导出本地 packet。
-- `whatif_promote_compare_packet(proposalId, packetJson)`：与远端 packet 比较，不写库。
+- `whatif_promote_packet(proposalId)`：导出并签名本地 packet；node key 存 SecretStore。
+- `whatif_promote_compare_packet(proposalId, packetJson)`：先验签，再比较；无签名/验签失败 → `replay_untrusted`。
 
 ## 5. 边界
 
 - **没有网络传输**：packet JSON 需人工/外部通道交换。
-- 没有签名/身份认证；producer 字段不可信。
+- 有 Ed25519 packet 签名，但**没有公钥固定/身份目录**：首次导入是 TOFU，`signerPublicKey` 可被替换。
 - 没有跨节点状态同步、冲突合并或在线发现。
 - 相同 digest 只证明这些 digest 字段相同，不证明两边运行时完全相同。
 

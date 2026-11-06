@@ -6,11 +6,13 @@
 use poie_governance::{subject_digest, ApprovalToken};
 use poie_plan::sap::{plan_to_actions_at, preview_actions, AssumedContext};
 use poie_sim::timed::{TimedCase, TimedRunner, TimedScenario};
-use poie_whatif::replay::{compare as compare_replay, parse as parse_replay, ReplayPacket, ReplayReport};
 use poie_whatif::promotion::{
     proposed_action_sha256, PromotionMandate, PROMOTE_POLICY_VERSION, PROPOSED_ACTION_SCHEMA,
 };
 use poie_whatif::promotion::{PromotionCommit, PromotionEvidence, PromotionProposal, ProposedAction};
+use poie_whatif::replay::{
+    compare as compare_replay, parse as parse_replay, signing_payload, ReplayPacket, ReplayReport,
+};
 use poie_whatif::timed::{
     compare_timed, TimedCompareResult, TimedResult, TimedSnapshot, TimedSnapshotInput, TimedVariant, TimedVariantInput,
     TIMED_SNAPSHOT_SCHEMA,
@@ -19,6 +21,8 @@ use poie_whatif::{
     compare, run_plan, run_structure, CompareResult, PatchDto, Snapshot, SnapshotInput, Variant, VariantResult,
     VARIANT_SCHEMA,
 };
+use ring::rand::SystemRandom;
+use ring::signature::{Ed25519KeyPair, KeyPair, UnparsedPublicKey, ED25519};
 use serde::{Deserialize, Serialize};
 use tauri::State;
 
@@ -801,6 +805,41 @@ pub fn whatif_promote_set_policy(enabled: bool, state: State<'_, AppState>) -> R
     Ok(enabled)
 }
 
+const REPLAY_KEY_SERVICE: &str = "com.poieweave.replay-node";
+const REPLAY_KEY_ACCOUNT: &str = "ed25519-key";
+
+fn replay_key(secrets: &dyn crate::secrets::SecretStore) -> Result<Ed25519KeyPair, String> {
+    let pkcs8 = if let Some(stored) = secrets.get(REPLAY_KEY_SERVICE, REPLAY_KEY_ACCOUNT)? {
+        hex::decode(stored).map_err(|error| format!("replay key decode: {error}"))?
+    } else {
+        let generated = Ed25519KeyPair::generate_pkcs8(&SystemRandom::new())
+            .map_err(|_| "replay key generation failed".to_string())?;
+        secrets.set(REPLAY_KEY_SERVICE, REPLAY_KEY_ACCOUNT, &hex::encode(generated.as_ref()))?;
+        generated.as_ref().to_vec()
+    };
+    Ed25519KeyPair::from_pkcs8(&pkcs8).map_err(|error| format!("replay key: {error}"))
+}
+
+fn sign_packet(mut packet: ReplayPacket, secrets: &dyn crate::secrets::SecretStore) -> Result<ReplayPacket, String> {
+    let key = replay_key(secrets)?;
+    packet.signer_public_key = Some(hex::encode(key.public_key().as_ref()));
+    let payload = signing_payload(&packet)?;
+    packet.signature = Some(hex::encode(key.sign(&payload).as_ref()));
+    Ok(packet)
+}
+
+fn verify_packet(packet: &ReplayPacket) -> Result<(), String> {
+    let public_key =
+        packet.signer_public_key.as_deref().ok_or_else(|| "replay_untrusted: missing signerPublicKey".to_string())?;
+    let signature = packet.signature.as_deref().ok_or_else(|| "replay_untrusted: missing signature".to_string())?;
+    let public_key = hex::decode(public_key).map_err(|error| format!("replay_untrusted: public key: {error}"))?;
+    let signature = hex::decode(signature).map_err(|error| format!("replay_untrusted: signature: {error}"))?;
+    let payload = signing_payload(packet)?;
+    UnparsedPublicKey::new(&ED25519, public_key)
+        .verify(&payload, &signature)
+        .map_err(|_| "replay_untrusted: signature does not verify".to_string())
+}
+
 fn replay_packet(proposal: &PromotionProposal) -> ReplayPacket {
     ReplayPacket {
         schema: poie_whatif::replay::REPLAY_SCHEMA.into(),
@@ -813,6 +852,8 @@ fn replay_packet(proposal: &PromotionProposal) -> ReplayPacket {
         plan_sha256: proposal.plan_sha256.clone(),
         actions_sha256: proposal.actions_sha256.clone(),
         created_at: proposal.requested_at,
+        signer_public_key: None,
+        signature: None,
     }
 }
 
@@ -820,7 +861,7 @@ fn replay_packet(proposal: &PromotionProposal) -> ReplayPacket {
 pub fn whatif_promote_packet(proposal_id: String, state: State<'_, AppState>) -> Result<ReplayPacket, String> {
     auth::require(&state.session)?;
     let proposal = load_promotion(&state, &proposal_id)?;
-    Ok(replay_packet(&proposal))
+    sign_packet(replay_packet(&proposal), &*state.secrets)
 }
 
 #[tauri::command]
@@ -832,6 +873,7 @@ pub fn whatif_promote_compare_packet(
     auth::require(&state.session)?;
     let proposal = load_promotion(&state, &proposal_id)?;
     let remote = parse_replay(&packet_json)?;
+    verify_packet(&remote)?;
     compare_replay(&replay_packet(&proposal), &remote)
 }
 
@@ -1266,5 +1308,46 @@ mod tests {
         assert!(second_approver_allowed(true, "Ada", "Bob"));
         assert!(!second_approver_allowed(true, "Ada", "Ada"));
         assert!(!second_approver_allowed(false, "Ada", "Bob"));
+    }
+
+    #[test]
+    fn replay_packet_signature_rejects_tampering() {
+        use crate::secrets::SecretStore;
+        use std::collections::BTreeMap;
+        use std::sync::Mutex;
+        struct Memory(Mutex<BTreeMap<String, String>>);
+        impl SecretStore for Memory {
+            fn set(&self, service: &str, account: &str, value: &str) -> Result<(), String> {
+                self.0.lock().unwrap().insert(format!("{service}:{account}"), value.into());
+                Ok(())
+            }
+            fn get(&self, service: &str, account: &str) -> Result<Option<String>, String> {
+                Ok(self.0.lock().unwrap().get(&format!("{service}:{account}")).cloned())
+            }
+            fn delete(&self, service: &str, account: &str) -> Result<(), String> {
+                self.0.lock().unwrap().remove(&format!("{service}:{account}"));
+                Ok(())
+            }
+        }
+        let secrets = Memory(Mutex::new(BTreeMap::new()));
+        let packet = ReplayPacket {
+            schema: poie_whatif::replay::REPLAY_SCHEMA.into(),
+            producer: "node-a".into(),
+            proposal_id: "prom-1".into(),
+            result_sha256: "a".repeat(64),
+            snapshot_sha256: "b".repeat(64),
+            variant_sha256: "c".repeat(64),
+            inputs_sha256: "d".repeat(64),
+            plan_sha256: "e".repeat(64),
+            actions_sha256: "f".repeat(64),
+            created_at: 1,
+            signer_public_key: None,
+            signature: None,
+        };
+        let signed = sign_packet(packet, &secrets).unwrap();
+        assert!(verify_packet(&signed).is_ok());
+        let mut tampered = signed.clone();
+        tampered.plan_sha256 = "0".repeat(64);
+        assert!(verify_packet(&tampered).is_err());
     }
 }
