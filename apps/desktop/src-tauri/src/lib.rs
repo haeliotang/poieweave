@@ -359,6 +359,8 @@ pub fn run() {
             whatif::whatif_promote_policy,
             whatif::whatif_promote_set_policy,
             whatif::whatif_promote_replay,
+            whatif::whatif_promote_packet,
+            whatif::whatif_promote_compare_packet,
             whatif::whatif_promote_recuse,
             whatif::whatif_promote_appeal,
             whatif::whatif_promote_appeals,
