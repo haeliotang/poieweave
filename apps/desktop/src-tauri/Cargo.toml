@@ -1,6 +1,6 @@
 [package]
 name = "poieweave-desktop"
-version = "0.4.17"
+version = "0.4.18"
 description = "Poieweave desktop host: filesystem sandbox, SQLite state, Tauri 2 packaging."
 edition = "2021"
 rust-version = "1.77"
@@ -32,6 +32,7 @@ poie-delivery = { path = "../../../crates/poie-delivery" }
 poie-digest = { path = "../../../crates/poie-digest" }
 poie-plan = { path = "../../../crates/poie-plan" }
 poie-state = { path = "../../../crates/poie-state" }
+poie-exec = { path = "../../../crates/poie-exec" }
 poie-federation = { path = "../../../crates/poie-federation" }
 toml = "0.8"
 pbkdf2 = "0.12"

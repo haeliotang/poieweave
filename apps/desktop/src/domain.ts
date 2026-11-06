@@ -538,3 +538,13 @@ export interface DeliveryInspect {
 export type TrustedReplayNode = { publicKey: string; name: string; addedAt: number; addedBy: string };
 
 export type ReplayReport = { ok: boolean; mismatches: string[] };
+
+export type BenchCheck = { id: string; passed: boolean; detail: string };
+export type BenchReport = {
+  scenario: string;
+  passed: boolean;
+  checks: BenchCheck[];
+  physicalExecutions: number;
+  unknown: boolean;
+  fallback: boolean;
+};

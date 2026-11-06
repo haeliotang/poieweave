@@ -2344,6 +2344,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "poie-exec"
+version = "0.1.0"
+dependencies = [
+ "poie-ontology",
+ "poie-state",
+]
+
+[[package]]
 name = "poie-federation"
 version = "0.1.0"
 dependencies = [
@@ -2429,6 +2437,7 @@ dependencies = [
  "pbkdf2",
  "poie-delivery",
  "poie-digest",
+ "poie-exec",
  "poie-federation",
  "poie-governance",
  "poie-objects",
