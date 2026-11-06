@@ -103,7 +103,7 @@ fn handle(mut stream: TcpStream, state: Arc<Mutex<PlcState>>) {
         }
         let tid = [header[0], header[1]];
         let length = u16::from_be_bytes([header[4], header[5]]) as usize;
-        if length < 2 || length > 260 {
+        if !(2..=260).contains(&length) {
             return;
         }
         let mut pdu = vec![0u8; length - 1];
