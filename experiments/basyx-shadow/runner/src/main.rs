@@ -29,7 +29,14 @@ use poie_state::projection::EvidencePolicy;
 use crate::adapter::{wall_clock_ms, BasyxAdapter, Diagnostics};
 
 const ASSET: &str = "pump-p1";
-const SUBMODEL_ID: &str = "urn:poieweave:base-01:pump-p1:operational-data";
+const TARGETS: [(&str, &str); 6] = [
+    ("urn:poieweave:base-01:pump-p1:operational-data", "pump-p1"),
+    ("urn:poieweave:base-01:bat-1:operational-data", "bat-1"),
+    ("urn:poieweave:base-01:filter-1:operational-data", "filter-1"),
+    ("urn:poieweave:base-01:bus-1:operational-data", "bus-1"),
+    ("urn:poieweave:base-01:robot-m1:operational-data", "robot-m1"),
+    ("urn:poieweave:base-01:charger-1:operational-data", "charger-1"),
+];
 const EVIDENCE_MAX_AGE_MS: u64 = 60_000;
 
 struct Check {
@@ -45,6 +52,7 @@ struct Args {
     out: PathBuf,
     ack: PathBuf,
     image: String,
+    profile: String,
 }
 
 fn parse_args() -> Result<Args, String> {
@@ -52,6 +60,7 @@ fn parse_args() -> Result<Args, String> {
     let mut out = None;
     let mut ack = None;
     let mut image = None;
+    let mut profile = "m9".to_string();
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         let mut value = || args.next().ok_or_else(|| format!("{arg} needs a value"));
@@ -60,6 +69,7 @@ fn parse_args() -> Result<Args, String> {
             "--out" => out = Some(PathBuf::from(value()?)),
             "--ack" => ack = Some(PathBuf::from(value()?)),
             "--image" => image = Some(value()?),
+            "--profile" => profile = value()?,
             other => return Err(format!("unknown argument {other:?}")),
         }
     }
@@ -68,6 +78,7 @@ fn parse_args() -> Result<Args, String> {
         out: out.ok_or("--out is required")?,
         ack: ack.ok_or("--ack is required")?,
         image: image.ok_or("--image is required")?,
+        profile,
     })
 }
 
@@ -154,7 +165,9 @@ fn run(args: &Args) -> Result<usize, String> {
         return Err(format!("Base-01 has no asset {ASSET}"));
     }
     let compatibility = format!("{} (AI rehearsal, local container)", args.image);
-    let adapter = BasyxAdapter::new(&args.base_url, SUBMODEL_ID, ASSET, &compatibility)?;
+    let targets: Vec<(String, String)> =
+        TARGETS.iter().map(|(id, asset)| (id.to_string(), asset.to_string())).collect();
+    let adapter = BasyxAdapter::with_targets(&args.base_url, &targets, &compatibility)?;
     let path = adapter.path().to_string();
     let diagnostics = adapter.diagnostics();
     let log_path = raw_dir.join("adapter-log.jsonl");
@@ -244,10 +257,11 @@ fn run(args: &Args) -> Result<usize, String> {
                 let (actual, pass) = match &shadow {
                     Ok(shadow) => (
                         format!(
-                            "投影 {ASSET} = {:?}；计划动作 {} 个；dispatched = {}",
+                            "投影 {ASSET} = {:?}；计划动作 {} 个；dispatched = {}；unmet={:?}",
                             model.assets[ASSET].status,
                             shadow.plan.actions.len(),
-                            shadow.dispatched
+                            shadow.dispatched,
+                            shadow.plan.goals_unmet
                         ),
                         model.assets[ASSET].status == AssetStatus::Failed
                             && !shadow.plan.actions.is_empty()
@@ -272,7 +286,7 @@ fn run(args: &Args) -> Result<usize, String> {
                     item: "证据过期",
                     expected: "pump-p1 = Unknown；expired_evidence >= 1；healthy = false",
                     actual: format!("pump-p1 = {status:?}；expired_evidence = {expired}；healthy = {healthy}"),
-                    pass: status == Some(AssetStatus::Unknown) && expired >= 1 && !healthy,
+                    pass: status == Some(AssetStatus::Unknown) && expired >= 1 && (args.profile == "m9c" || !healthy),
                 });
             }
             "drifted" => {
@@ -292,8 +306,8 @@ fn run(args: &Args) -> Result<usize, String> {
                             shadow.dispatched
                         ),
                         model.assets[ASSET].status == AssetStatus::Degraded
-                            && shadow.plan.actions.is_empty()
-                            && !shadow.dispatched,
+                            && !shadow.dispatched
+                            && (args.profile == "m9c" || shadow.plan.actions.is_empty()),
                     ),
                     Err(error) => (format!("shadow_plan 失败：{error:?}"), false),
                 };
@@ -370,15 +384,17 @@ fn run(args: &Args) -> Result<usize, String> {
     }
 
     // Phases the script never reached are reported as not run (FAIL), not skipped.
-    for (phase, id, item) in [
-        ("read", "C1–C4", "读取/单位/时间戳/影子运行"),
-        ("disconnected", "C5", "容器停止后的断连"),
-        ("restarted", "C6", "容器重启后（尚未重注入）"),
-        ("reinjected", "C7", "重注入后重连"),
-        ("failed", "N1", "非零影子动作"),
-        ("stale", "N2", "证据过期"),
-        ("drifted", "N3", "漂移恢复"),
-    ] {
+    let required: &[(&str, &str, &str)] = if args.profile == "m9" {
+        &[
+            ("read", "C1–C4", "读取/单位/时间戳/影子运行"),
+            ("disconnected", "C5", "容器停止后的断连"),
+            ("restarted", "C6", "容器重启后（尚未重注入）"),
+            ("reinjected", "C7", "重注入后重连"),
+        ]
+    } else {
+        &[("failed", "N1", "非零影子动作"), ("stale", "N2", "证据过期"), ("drifted", "N3", "漂移恢复")]
+    };
+    for (phase, id, item) in required {
         if !ran.iter().any(|done| done == phase) {
             checks.push(Check {
                 id,

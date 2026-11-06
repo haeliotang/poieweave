@@ -1,0 +1,20 @@
+{
+  "modelType": "Submodel",
+  "id": "urn:poieweave:base-01:bus-1:operational-data",
+  "idShort": "OperationalData",
+  "kind": "Instance",
+  "submodelElements": [
+    {
+      "modelType": "Property",
+      "idShort": "OperatingState",
+      "valueType": "xs:string",
+      "value": "available"
+    },
+    {
+      "modelType": "Property",
+      "idShort": "ObservedAt",
+      "valueType": "xs:dateTime",
+      "value": "__OBSERVED_AT__"
+    }
+  ]
+}

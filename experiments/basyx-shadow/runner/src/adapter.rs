@@ -28,6 +28,7 @@ pub struct BasyxAdapter {
     endpoint: Endpoint,
     path: String,
     asset: String,
+    targets: Vec<(String, String)>,
     timeouts: Timeouts,
     clock: fn() -> i64,
     diagnostics: Rc<RefCell<Diagnostics>>,
@@ -41,17 +42,33 @@ pub fn wall_clock_ms() -> i64 {
 }
 
 impl BasyxAdapter {
+    #[allow(dead_code)]
     pub fn new(base_url: &str, submodel_id: &str, asset: &str, compatibility: &str) -> Result<BasyxAdapter, String> {
+        Self::with_targets(base_url, &[(submodel_id.to_string(), asset.to_string())], compatibility)
+    }
+
+    pub fn with_targets(
+        base_url: &str,
+        targets: &[(String, String)],
+        compatibility: &str,
+    ) -> Result<BasyxAdapter, String> {
+        if targets.is_empty() {
+            return Err("adapter needs at least one target".into());
+        }
         let endpoint = Endpoint::parse(base_url)?;
+        let mut units = Vec::new();
+        for (_, asset) in targets {
+            units.push(UnitDecl { field: format!("{asset}.status"), unit: "1".into() });
+            if asset == "pump-p1" {
+                units.push(UnitDecl { field: format!("{asset}.flow"), unit: "m3/s".into() });
+            }
+        }
         let declaration = AdapterDeclaration {
             adapter_id: "basyx-aas-readonly".to_string(),
             version: env!("CARGO_PKG_VERSION").to_string(),
             kind: AdapterKind::ReadOnly,
             source: format!("basyx-aas-environment http://{}:{}", endpoint.host, endpoint.port),
-            units: vec![
-                UnitDecl { field: "asset.status".to_string(), unit: "1".to_string() },
-                UnitDecl { field: format!("{asset}.flow"), unit: "m3/s".to_string() },
-            ],
+            units,
             timestamp_semantics: TimestampSemantics::EventTime,
             disconnect_behavior: DisconnectBehavior::MarkUnknown,
             compatibility: Some(compatibility.to_string()),
@@ -59,8 +76,9 @@ impl BasyxAdapter {
         Ok(BasyxAdapter {
             declaration,
             endpoint,
-            path: format!("/submodels/{}", base64url(submodel_id)),
-            asset: asset.to_string(),
+            path: format!("/submodels/{}", base64url(&targets[0].0)),
+            asset: targets[0].1.clone(),
+            targets: targets.to_vec(),
             timeouts: Timeouts::default(),
             clock: wall_clock_ms,
             diagnostics: Rc::new(RefCell::new(Diagnostics::default())),
@@ -76,39 +94,43 @@ impl BasyxAdapter {
     }
 
     fn fetch(&self, ingest_ms: i64) -> Result<Vec<Observation>, AdapterError> {
-        let response = get(&self.endpoint, &self.path, &self.timeouts).map_err(|error| match error {
-            // Refused, reset, closed without answer, timed out: the source is
-            // not reachable. Never treated as data.
-            HttpError::Connect(detail) | HttpError::Transport(detail) => AdapterError::Disconnected(detail),
-            HttpError::Malformed(detail) => AdapterError::Protocol(detail),
-        })?;
-        let body = String::from_utf8_lossy(&response.body).to_string();
-        {
-            let mut diagnostics = self.diagnostics.borrow_mut();
-            diagnostics.last_http_status = Some(response.status);
-            diagnostics.last_body = Some(body.clone());
+        let mut observations = Vec::new();
+        let mut pump_reading = None;
+        for (submodel_id, asset) in &self.targets {
+            let path = format!("/submodels/{}", base64url(submodel_id));
+            let response = get(&self.endpoint, &path, &self.timeouts).map_err(|error| match error {
+                HttpError::Connect(detail) | HttpError::Transport(detail) => AdapterError::Disconnected(detail),
+                HttpError::Malformed(detail) => AdapterError::Protocol(detail),
+            })?;
+            let body = String::from_utf8_lossy(&response.body).to_string();
+            {
+                let mut diagnostics = self.diagnostics.borrow_mut();
+                diagnostics.last_http_status = Some(response.status);
+                diagnostics.last_body = Some(body.clone());
+            }
+            if response.status != 200 {
+                return Err(AdapterError::Protocol(format!("HTTP {} for GET {path}", response.status)));
+            }
+            let json: Value = serde_json::from_str(&body)
+                .map_err(|error| AdapterError::Protocol(format!("invalid JSON: {error}")))?;
+            let reading = read_submodel(&json).map_err(AdapterError::Protocol)?;
+            let (observed_at_ms, quality) = match reading.observed_at {
+                Ok(at) => (at, ObservationQuality::Good),
+                Err(_) => (ingest_ms, ObservationQuality::Uncertain),
+            };
+            observations.push(Observation {
+                asset: asset.clone(),
+                status: reading.status,
+                observed_at_ms,
+                ingested_at_ms: ingest_ms,
+                quality,
+            });
+            if asset == "pump-p1" {
+                pump_reading = Some(reading);
+            }
         }
-        if response.status != 200 {
-            return Err(AdapterError::Protocol(format!("HTTP {} for GET {}", response.status, self.path)));
-        }
-        let json: Value =
-            serde_json::from_str(&body).map_err(|error| AdapterError::Protocol(format!("invalid JSON: {error}")))?;
-        let reading = read_submodel(&json).map_err(AdapterError::Protocol)?;
-        let (observed_at_ms, quality) = match reading.observed_at {
-            Ok(at) => (at, ObservationQuality::Good),
-            // No usable event time: keep the status but do not present it as
-            // precise evidence.
-            Err(_) => (ingest_ms, ObservationQuality::Uncertain),
-        };
-        let observation = Observation {
-            asset: self.asset.clone(),
-            status: reading.status,
-            observed_at_ms,
-            ingested_at_ms: ingest_ms,
-            quality,
-        };
-        self.diagnostics.borrow_mut().last_reading = Some(reading);
-        Ok(vec![observation])
+        self.diagnostics.borrow_mut().last_reading = pump_reading;
+        Ok(observations)
     }
 }
 

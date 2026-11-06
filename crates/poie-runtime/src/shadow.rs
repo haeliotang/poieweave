@@ -153,4 +153,12 @@ mod tests {
         assert!(ensure_no_dispatch(false).is_ok());
         assert!(ensure_no_dispatch(true).is_err());
     }
+
+    #[test]
+    fn failed_asset_produces_a_nonzero_shadow_plan() {
+        let mut model = base01();
+        model.assets.get_mut("pump-p1").unwrap().status = poie_ontology::model::AssetStatus::Failed;
+        let report = shadow_plan(&model, 0.0, 86_400.0, goals(), Verification::Demonstrated, &[]).unwrap();
+        assert!(!report.plan.actions.is_empty(), "failed pump should be repairable");
+    }
 }
