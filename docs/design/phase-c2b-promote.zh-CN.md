@@ -71,6 +71,7 @@ PromotionProposal {
   approvalTokenId,requestedAt,requestedBy,decidedAt?,committedAt?,
   nowMs, actions:[ProposedActionDraft], actionsSha256,
   sapPreview:{checks,rejections,assumed},
+  assessment:{residuals,abstained,abstainReason}?,
   proposalSha256
 }
 ```
@@ -82,6 +83,7 @@ PromotionProposal {
 - `variantJsonSha256 = sha256("poie.whatif-variant/0.1\n" + canonical variant JSON)`
 - `inputsSha256 = sha256("poie.promotion-inputs/0.1\n" + canonical {snapshotSha256,variantJsonSha256,resultSha256})`；commit 必须重读这三行并比对。
 - `mandate` 为可选 Axio 风格授权信封：记录授权者/受托者/范围/期限/可撤销；approve/commit 校验 scope 与期限。旧 proposal 缺省 `null`。
+- `assessment` 从 C1 result 复制 residuals/abstained/abstainReason，供 UI/审计判断证据是否不足；promotion 本身仍只接受 `planned` 结果。
 - `stateVersion` 来源明确为 **host_assumption**：C2b MVP 用 `{"site-a":4}`；不是 live 真值，必须在 UI/proposal 中标注。propose 与 commit 都要求该假设未变；测试用 `4→5` 证明 stale 生效。
 
 ### 5.2 ProposedAction

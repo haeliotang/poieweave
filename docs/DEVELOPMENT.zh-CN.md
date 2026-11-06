@@ -631,3 +631,4 @@ flowchart LR
 | 0.1.135 | 2026-11-06 | D2 P0：release verifier 忽略未打包的 raw `Poieweave` 二进制；v0.3.4 重发 |
 | 0.1.136 | 2026-11-06 | D2 P0：v0.3.4 Release 成功，release-verification.json `ok=true`；receipt 已复验 |
 | 0.1.137 | 2026-11-06 | C2b v0.2：C1 plan/structure 结果增加 residuals/abstained/abstainReason 并纳入 digest、UI；版本 0.3.5 |
+| 0.1.138 | 2026-11-06 | C2b v0.2：C2a timed 结果增加 residuals/abstention，promotion assessment 绑定 C1 residuals；版本 0.3.6 |

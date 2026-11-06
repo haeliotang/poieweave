@@ -32,6 +32,17 @@ pub struct PromotionMandate {
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+pub struct PromotionAssessment {
+    #[serde(default)]
+    pub residuals: Option<Value>,
+    #[serde(default)]
+    pub abstained: bool,
+    #[serde(default)]
+    pub abstain_reason: Option<String>,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PromotionProposal {
     pub schema: String,
     pub schema_version: String,
@@ -61,6 +72,8 @@ pub struct PromotionProposal {
     pub actions: Vec<Action>,
     pub actions_sha256: String,
     pub sap_preview: SapPreview,
+    #[serde(default)]
+    pub assessment: Option<PromotionAssessment>,
     pub proposal_sha256: String,
 }
 
@@ -78,6 +91,7 @@ impl PromotionProposal {
         state_version: BTreeMap<String, u64>,
         actions: Vec<Action>,
         sap_preview: SapPreview,
+        assessment: Option<PromotionAssessment>,
         mandate: Option<PromotionMandate>,
         proposal_id: String,
         token_id: String,
@@ -116,6 +130,7 @@ impl PromotionProposal {
             actions,
             actions_sha256,
             sap_preview,
+            assessment,
             proposal_sha256: String::new(),
         };
         proposal.proposal_sha256 = promotion_proposal_digest(&proposal)?;
@@ -340,6 +355,7 @@ mod tests {
             [("site-a".into(), 4)].into_iter().collect(),
             vec![action],
             preview,
+            None,
             None,
             "prom-1".into(),
             "tok-1".into(),

@@ -469,6 +469,9 @@ export interface TimedResult {
   outcome: TimedOutcome;
   completionS?: number | null;
   warnings: string[];
+  residuals?: unknown;
+  abstained?: boolean;
+  abstainReason?: string | null;
   resultSha256: string;
 }
 
@@ -488,6 +491,7 @@ export interface PromotionProposal {
   approvalTokenId: string;
   actions: unknown[];
   sapPreview: { checks: { check: string; status: string; detail: string }[]; assumed: string[]; rejections: string[] };
+  assessment?: { residuals?: unknown; abstained: boolean; abstainReason?: string | null } | null;
   proposalSha256: string;
 }
 
