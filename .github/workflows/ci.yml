@@ -71,6 +71,11 @@ jobs:
           diff experiments/h2c-joint-planning/raw/holdout-raw.txt /tmp/h2c-holdout/raw/holdout-raw.txt
           diff experiments/h2c-joint-planning/holdout-report.md /tmp/h2c-holdout/holdout-report.md
           test -f experiments/h2c-joint-planning/REPORT.md
+      - name: M9 simulated bench loop
+        run: |
+          cargo run --locked -q -p poie-m9-bench-loop > /tmp/m9-bench.out
+          diff experiments/m9-bench-loop/expected.txt /tmp/m9-bench.out
+          test -f experiments/m9-bench-loop/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v

@@ -1,0 +1,7 @@
+id	check	result	detail
+B1	gate 派发	PASS	Dispatched
+B2	独立验证	PASS	flow-meter confirmed
+B3	重复 key	PASS	Duplicate，物理执行不增加
+B4	过期命令	PASS	Rejected，物理执行不增加
+B5	断连 fallback + fail-closed	PASS	Fallback + valve closed
+physical_executions=1 (after first 1, after expired 1)
