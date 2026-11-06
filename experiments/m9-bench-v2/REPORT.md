@@ -10,7 +10,7 @@
 id	result	detail
 B6	PASS	dispatched=true; verify1=false; verify5=false; outcome_unknown=true; flow_locked=true
 B7	PASS	early=false; settled=true; state=Some(Acknowledged)
-B5R	PASS	tripped=true; valve_closed=true; blocked_before_clear=true; cleared=true
+B5R	PASS	tripped=true; valve_closed=true; blocked_before_clear=true; cleared=true; rearmed=true
 failures=0
 ```
 
@@ -18,9 +18,9 @@ failures=0
 
 ## 解释
 
-- **B6**：适配器 ACK，但模拟卡阀使流量始终为 0；1 s/5 s 独立验证均为 false；gate 从 Acknowledged 合法转入 `OutcomeUnknown`，流路锁死。
+- **B6**：适配器 ACK，但模拟卡阀使流量始终为 0；1 s/5 s 独立验证均为 false；gate 从 Acknowledged 合法转入 `OutcomeUnknown`，流路锁死；第二次派发实际被 adapter 以 flow interlock 拒绝，物理执行数不增加。
 - **B7**：3 s 建立窗口内（1 s）验证 false；4 s 验证 true；动作保持 Acknowledged，不误判 failed。
-- **B5R**：宿主心跳停止 2 s 后，PLC 本地看门狗切阀、流量归零、Fault 置位；重连前禁止派发；`safe_clear` 只在阀关闭/流量 0 时清除。
+- **B5R**：宿主心跳停止 2 s 后，PLC 本地看门狗切阀、流量归零、Fault 置位；重连前实际尝试派发被 adapter 拒绝；`safe_clear` 只在阀关闭/流量 0 时清除；清除后新动作恢复派发。
 
 ## 局限
 

@@ -9,8 +9,8 @@
 ```text
 id	result	detail
 M1	PASS	outcome Dispatched=true; flow_x10=80
-M2	PASS	duplicate=true; executions 1->1
-M3	PASS	busy=Ok(false); failure=Ok(false)
+M2	PASS	duplicate=Err(Duplicate("a1")); exec 1->1; stale_seq_write=Ok(()); exec_after_stale=1
+M3	PASS	busy_reason="slave device busy (0x06)"; failure_reason="slave device failure (0x04)"
 M4	PASS	fallback=Ok(false)
 M5	PASS	fault=1; valve=0; flow=0; cleared=true; fault_after=0
 failures=0
@@ -22,7 +22,8 @@ failures=0
 
 - FC16 原子写 `[epoch, seq, target, ttl]`；FC03 读回 `flow_x10=80`
 - 适配器重复 idempotency key → `Duplicate`；PLC 物理执行 1→1
-- `0x06 busy`、`0x04 failure` 映射为 `ExecError::Rejected`，gate 不成功派发
+- 直接写相同 `cmd_seq` → PLC 忽略，执行数仍 1
+- `0x06 busy`、`0x04 failure` 映射为 `Rejected`，reason 分别包含 busy/failure
 - TCP 不可达 → `Disconnected` → gate `Fallback`
 - 心跳停止 2 s → PLC 看门狗 fault=1、valve=0、flow=0；clear 后 fault=0
 
