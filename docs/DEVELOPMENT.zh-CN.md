@@ -643,3 +643,4 @@ flowchart LR
 | 0.1.147 | 2026-11-06 | 第 4 步：four-eyes 策略门控（自批拒绝）；多 operator 身份仍为前置缺口；版本 0.4.5 |
 | 0.1.148 | 2026-11-06 | D2 P0：platform QA receipt 校验器 + 模板/CI，明确无人工 QA 证据；版本 0.4.6 |
 | 0.1.149 | 2026-11-06 | 第 4 步：多 operator 身份（operators 迁移、auth_add_operator、four-eyes 第二人批准）；版本 0.4.7 |
+| 0.1.150 | 2026-11-06 | 第 4 步：legacy 单 operator 表迁移测试；版本 0.4.8 |
