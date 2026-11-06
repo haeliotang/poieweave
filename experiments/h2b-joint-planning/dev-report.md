@@ -1,6 +1,6 @@
 # H2b 开发集结果（自动生成）
 
-本文件由 `poie-h2-joint-planning --dev --write <dir>` 生成；留出集未运行。预登记见 [PREREG.md](PREREG.md)。
+本文件由 `poie-h2b-joint-planning --dev --write <dir>` 生成；留出集未运行。预登记见 [PREREG.md](PREREG.md)。
 
 | 方法 | 成功 | 场景数 | 成功率 | 平均完成 (h) | 平均动作数 | SAP 通过 | 最低期末储能 (kWh) | 决策数 | 非预知 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
