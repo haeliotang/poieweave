@@ -65,6 +65,15 @@ pub fn delivery_import(
         return Err("stale_manifest: expected manifest sha does not match".into());
     }
     let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    if let Some(head) = &parsed.extensions.audit_head {
+        let count = parsed
+            .extensions
+            .audit_count
+            .ok_or_else(|| "manifest_invalid: auditCount required with auditHead".to_string())?;
+        if !db.verify_audit_head(count, head)? {
+            return Err("audit_mismatch: bundle audit head/count does not match local chain".into());
+        }
+    }
     let current = load_state(&db)?;
     let next = import(&current, &manifest, &sha, now_ms(), &operator.display_name)?;
     let manifest_json = poie_delivery::manifest_json(&manifest)?;

@@ -88,6 +88,13 @@ fn auth_sign_out(state: State<'_, AppState>) -> Result<AuthStatus, String> {
 }
 
 #[tauri::command]
+fn audit_verify(state: State<'_, AppState>) -> Result<Option<i64>, String> {
+    auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    db.verify_audit_chain()
+}
+
+#[tauri::command]
 fn audit_list(limit: Option<usize>, state: State<'_, AppState>) -> Result<Vec<AuditRow>, String> {
     auth::require(&state.session)?;
     let db = lock_db(&state)?;
@@ -264,6 +271,7 @@ pub fn run() {
             auth_sign_in,
             auth_sign_out,
             audit_list,
+            audit_verify,
             inference_status,
             inference_configure,
             inference_forget,
