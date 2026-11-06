@@ -2,7 +2,7 @@
 
 - 实验 ID：`h2b-joint-planning`
 - 日期：2026-11-06
-- 状态：**已登记，尚未运行**（本文件先于任何 `--dev`/`--holdout` 运行提交）
+- 状态：**开发诊断失败（场景不可行）；留出集未运行**；见 [DIAGNOSIS.md](DIAGNOSIS.md)
 - 关联：H2 负结果 [`h2-joint-planning`](../h2-joint-planning/REPORT.md)、ADR-0006
 
 ## 1. 问题
@@ -26,7 +26,7 @@ H2b 不重跑旧 holdout，也不修改旧报告；它检验一个更窄、可�
 
 ## 3. 场景与扰动
 
-- 基础模型：`scenarios/base-01/model.toml`（不新增 Base 模型）
+- 基础模型：`scenarios/base-03/model.toml`（Base-01 派生；机器人充电器改由独立 `generator-1` 供电，避免母线故障形成“修母线需要机器人、机器人需要母线”的不可恢复环）
 - 扰动：
   - `pump-p1` 在 `pump_failure_h` 失效
   - `bus-1` 在 `bus_failure_h` 失效
@@ -93,7 +93,21 @@ runner 的 `--diagnose` 额外输出每场景每方法的最终计划签名（`a
 - 是否存在双动作计划
 - 失败是否来自场景不可行（两项修复合计 >4 h）而非策略差异
 
-## 9. 局限
+## 9. 开发诊断修订（2026-11-06）
+
+首次开发诊断在 Base-01 上发现：`bus-1` 失效后，`robot-m1 → charger-1 → bus-1` 形成修复环，所有双目标场景都不可行，A 与基线均为 0/16。该轮**只用于发现模型缺陷**，未运行留出集。
+
+修订仅涉及场景模型，不改 H2b 假设、方法、指标或判定阈值：
+
+- 新增 `scenarios/base-03/model.toml`：`charger-1.requires = ["generator-1"]`，`generator-1` 可用且不依赖母线。
+- 母线失效仍使 `pump-p1` 不可用；机器人可先修母线、再修泵。
+- 修订后重新运行开发集；留出集仍封存。
+
+## 10. 开发诊断结果（2026-11-06）
+
+Base-03 开发集仍为 0/16：母线 1 h + 泵 3 h 串行 4 h，而场景 `bus_failure_h ≥ 0.5 h`，全部超过 4 h 截止。H2b 当前版本不能检验假设；留出集封存。详见 [DIAGNOSIS.md](DIAGNOSIS.md)。
+
+## 11. 局限
 
 - 合成模型、未校准时间/成本
 - 规划器为确定性贪心

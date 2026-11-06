@@ -653,3 +653,4 @@ flowchart LR
 | 0.1.157 | 2026-11-06 | 第 4 步：Settings replay 信任目录 UI；版本 0.4.15 |
 | 0.1.158 | 2026-11-06 | 第 4 步：What-if replay packet 导出/远端比较 UI；版本 0.4.16 |
 | 0.1.159 | 2026-11-06 | C2b：promotion 三路审计一致性检查（proposal/actions/commit/audit）；版本 0.4.17 |
+| 0.1.160 | 2026-11-06 | H2b 预登记 + 开发诊断：Base-01 母线修复环、4h 截止不可行；留出集封存；提出 H2c |
