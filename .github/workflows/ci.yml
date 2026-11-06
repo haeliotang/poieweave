@@ -49,7 +49,7 @@ jobs:
         run: python3 scripts/check-test-matrix.py
       - name: Release verifier tests
         working-directory: scripts
-        run: python3 -m unittest -q test_verify_release.py test_signing_custody_card.py
+        run: python3 -m unittest -q test_verify_release.py test_signing_custody_card.py test_platform_qa_check.py
       - name: Experiment replay coverage
         run: python3 scripts/check-experiment-replays.py
       - name: Python model and bridge tests (M7)
