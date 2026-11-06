@@ -640,3 +640,4 @@ flowchart LR
 | 0.1.144 | 2026-11-06 | D2 P1：case packet schema/校验 + golden fixtures；版本 0.4.2 |
 | 0.1.145 | 2026-11-06 | 第 4 步：promotion replay 比较（plan/actions/inputs）；版本 0.4.3 |
 | 0.1.146 | 2026-11-06 | 第 4 步：promotion recusal/appeal 记录与 approve/commit 拒绝路径；版本 0.4.4 |
+| 0.1.147 | 2026-11-06 | 第 4 步：four-eyes 策略门控（自批拒绝）；多 operator 身份仍为前置缺口；版本 0.4.5 |

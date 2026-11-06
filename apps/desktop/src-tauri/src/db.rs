@@ -189,6 +189,11 @@ impl Db {
                      manifest_sha256 TEXT NOT NULL, recorded_at INTEGER NOT NULL,
                      PRIMARY KEY(kind, id)
                  );
+                 CREATE TABLE IF NOT EXISTS promotion_policy (
+                     id INTEGER PRIMARY KEY CHECK (id = 1),
+                     four_eyes INTEGER NOT NULL DEFAULT 0,
+                     updated_at INTEGER NOT NULL
+                 );
                  CREATE TABLE IF NOT EXISTS promotion_conflicts (
                      proposal_id TEXT NOT NULL, operator TEXT NOT NULL, reason TEXT NOT NULL,
                      created_at INTEGER NOT NULL, PRIMARY KEY(proposal_id, operator)
@@ -205,7 +210,7 @@ impl Db {
                      hmac TEXT NOT NULL,
                      anchored_at INTEGER NOT NULL
                  );
-                 PRAGMA user_version = 10;",
+                 PRAGMA user_version = 11;",
             )
             .map_err(|error| format!("migrate: {error}"))?;
         // Existing databases created before B0 have an audit table without the
@@ -269,6 +274,26 @@ impl Db {
                 ],
             )
             .map_err(|error| format!("create operator: {error}"))?;
+        Ok(())
+    }
+
+    pub fn promotion_four_eyes(&self) -> Result<bool, String> {
+        let value: Option<i64> = self
+            .connection
+            .query_row("SELECT four_eyes FROM promotion_policy WHERE id=1", [], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())?;
+        Ok(value.unwrap_or(0) != 0)
+    }
+
+    pub fn set_promotion_four_eyes(&self, enabled: bool, at: i64) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO promotion_policy (id, four_eyes, updated_at) VALUES (1,?1,?2)
+                 ON CONFLICT(id) DO UPDATE SET four_eyes=?1, updated_at=?2",
+                params![if enabled { 1 } else { 0 }, at],
+            )
+            .map_err(|error| error.to_string())?;
         Ok(())
     }
 
@@ -1182,7 +1207,7 @@ mod tests {
         {
             let db = Db::open(&path).unwrap();
             let version: i64 = db.connection.query_row("PRAGMA user_version", [], |row| row.get(0)).unwrap();
-            assert_eq!(version, 10);
+            assert_eq!(version, 11);
             let tables: Vec<String> = db
                 .connection
                 .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
@@ -1198,6 +1223,7 @@ mod tests {
                 "delivery_bundle_meta",
                 "audit_anchors",
                 "promotion_conflicts",
+                "promotion_policy",
                 "promotion_appeals",
                 "delivery_tombstones",
                 "delivery_state",
@@ -1309,5 +1335,15 @@ mod tests {
         assert_eq!(appeals.len(), 1);
         assert_eq!(appeals[0].2, "review");
         assert_eq!(appeals[0].3, "open");
+    }
+
+    #[test]
+    fn four_eyes_policy_round_trip() {
+        let db = Db::open_in_memory().unwrap();
+        assert!(!db.promotion_four_eyes().unwrap());
+        db.set_promotion_four_eyes(true, 1).unwrap();
+        assert!(db.promotion_four_eyes().unwrap());
+        db.set_promotion_four_eyes(false, 2).unwrap();
+        assert!(!db.promotion_four_eyes().unwrap());
     }
 }
