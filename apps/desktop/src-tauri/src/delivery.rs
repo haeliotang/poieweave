@@ -1,9 +1,10 @@
 //! D1 offline metadata delivery: sandbox JSON only, SQLite state, no network.
 use poie_delivery::{
-    clear, diagnostics, import, parse_bundle, parse_state, rollback, state_json, DeliveryState, DiagnosticsSummary,
-    SiteManifest,
+    clear, diagnostics, import, parse_bundle, parse_bundle_full, parse_state, rollback, state_json, DeliveryState,
+    DiagnosticsSummary, SiteManifest,
 };
 use serde::Serialize;
+use serde_json::Value;
 use tauri::State;
 
 use crate::auth;
@@ -58,7 +59,8 @@ pub fn delivery_import(
 ) -> Result<DeliveryState, String> {
     let operator = auth::require(&state.session)?;
     let text = sandbox::read(&state.sandbox_root, &path).map_err(|error| format!("io_error: {error}"))?;
-    let (manifest, sha) = parse_bundle(&text)?;
+    let parsed = parse_bundle_full(&text)?;
+    let (manifest, sha) = (parsed.manifest, parsed.manifest_sha256);
     if expected_manifest_sha256.trim().is_empty() || expected_manifest_sha256 != sha {
         return Err("stale_manifest: expected manifest sha does not match".into());
     }
@@ -67,6 +69,14 @@ pub fn delivery_import(
     let next = import(&current, &manifest, &sha, now_ms(), &operator.display_name)?;
     let manifest_json = poie_delivery::manifest_json(&manifest)?;
     db.save_delivery_import(&manifest_json, &sha, &state_json(&next)?, now_ms())?;
+    let extensions_json = serde_json::json!({
+        "auditHead": parsed.extensions.audit_head,
+        "auditCount": parsed.extensions.audit_count,
+        "deletions": parsed.extensions.deletions,
+        "casePacket": parsed.extensions.case_packet,
+    })
+    .to_string();
+    db.save_delivery_bundle_meta(&sha, &extensions_json, now_ms())?;
     db.append_audit(
         now_ms(),
         &operator.display_name,
@@ -74,6 +84,15 @@ pub fn delivery_import(
         &format!("{} {} {}", next.current.as_ref().map(|c| c.site_id.as_str()).unwrap_or(""), manifest.target, sha),
     )?;
     Ok(next)
+}
+
+#[tauri::command]
+pub fn delivery_bundle_meta(manifest_sha256: String, state: State<'_, AppState>) -> Result<Value, String> {
+    auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    let json =
+        db.delivery_bundle_meta(&manifest_sha256)?.ok_or_else(|| format!("unknown_manifest: {manifest_sha256}"))?;
+    serde_json::from_str(&json).map_err(|error| error.to_string())
 }
 
 #[tauri::command]
@@ -155,6 +174,10 @@ mod tests {
         let bundle = serde_json::to_string(&poie_delivery::SiteBundle {
             schema: poie_delivery::BUNDLE_SCHEMA.into(),
             manifest: manifest.clone(),
+            audit_head: None,
+            audit_count: None,
+            deletions: Vec::new(),
+            case_packet: None,
         })
         .unwrap();
         sandbox::write(&root, "delivery/site.json", &bundle).unwrap();

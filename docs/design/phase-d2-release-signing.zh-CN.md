@@ -1,6 +1,6 @@
 # Phase D2 设计：发布、签名、通道与交付包
 
-- 状态：设计草案（D2 P0 release verification 已实现；D2 门禁待跑）
+- 状态：设计草案（D2 P0 release verification 已实现；D2 P1 bundle v0.2 结构已实现，审计链验证待接）
 - 日期：2026-11-06
 - 范围：D2 发布工程、签名状态、updater 边界、平台 QA、bundle 审计头/墓碑/锚
 - 上游：D1 manifest/import/state/rollback、Famili 发布经验、Axio mandate/三路审计、Phaino bundle
@@ -111,7 +111,7 @@ SiteBundle {
 }
 ```
 
-- 导入时重算 audit chain head/auditCount；不一致 → `audit_mismatch`。
+- 结构支持已实现：v0.2 bundle 可携带 auditHead/auditCount/deletions/casePacket；导入持久化到 `delivery_bundle_meta`（v7）。真正重算 audit chain 的运行时验证仍未实现，当前只校验格式/唯一性，不能声称“链完整”。
 - 删除墓碑优先于导入内容：旧 bundle 不得复活已删数据。
 - `auditHead` 在 bundle 内，能改行的人也能改头；外部锚才提高保障。
 - `casePacket` 可选，未知字段拒绝；D2 不实现多节点同步。

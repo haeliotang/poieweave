@@ -175,7 +175,10 @@ impl Db {
                  CREATE TABLE IF NOT EXISTS delivery_state (
                      id INTEGER PRIMARY KEY CHECK (id = 1), state_json TEXT NOT NULL, updated_at INTEGER NOT NULL
                  );
-                 PRAGMA user_version = 6;",
+                 CREATE TABLE IF NOT EXISTS delivery_bundle_meta (
+                     manifest_sha256 TEXT PRIMARY KEY, extensions_json TEXT NOT NULL, imported_at INTEGER NOT NULL
+                 );
+                 PRAGMA user_version = 7;",
             )
             .map_err(|error| format!("migrate: {error}"))?;
         // Existing databases created before B0 have an audit table without the
@@ -620,6 +623,26 @@ impl Db {
             .map_err(|error| error.to_string())
     }
 
+    pub fn save_delivery_bundle_meta(&self, sha: &str, extensions_json: &str, at: i64) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO delivery_bundle_meta (manifest_sha256,extensions_json,imported_at) VALUES (?1,?2,?3)
+                 ON CONFLICT(manifest_sha256) DO UPDATE SET extensions_json=?2, imported_at=?3",
+                params![sha, extensions_json, at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn delivery_bundle_meta(&self, sha: &str) -> Result<Option<String>, String> {
+        self.connection
+            .query_row("SELECT extensions_json FROM delivery_bundle_meta WHERE manifest_sha256=?1", [sha], |row| {
+                row.get(0)
+            })
+            .optional()
+            .map_err(|error| error.to_string())
+    }
+
     pub fn delivery_state(&self) -> Result<Option<String>, String> {
         self.connection
             .query_row("SELECT state_json FROM delivery_state WHERE id=1", [], |row| row.get(0))
@@ -849,7 +872,7 @@ mod tests {
         {
             let db = Db::open(&path).unwrap();
             let version: i64 = db.connection.query_row("PRAGMA user_version", [], |row| row.get(0)).unwrap();
-            assert_eq!(version, 6);
+            assert_eq!(version, 7);
             let tables: Vec<String> = db
                 .connection
                 .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
@@ -862,6 +885,7 @@ mod tests {
                 "agent_runs",
                 "approval_tokens",
                 "delivery_manifests",
+                "delivery_bundle_meta",
                 "delivery_state",
                 "whatif_results",
                 "whatif_snapshots",
@@ -925,5 +949,12 @@ mod tests {
         assert_eq!(db.proposed_actions("p").unwrap().len(), 1);
         db.save_promotion_commit("p", "{}", "sha", "in", "t", 4, "u").unwrap();
         assert_eq!(db.promotion_commit("p").unwrap().as_deref(), Some("{}"));
+    }
+
+    #[test]
+    fn delivery_bundle_meta_round_trip() {
+        let db = Db::open_in_memory().unwrap();
+        db.save_delivery_bundle_meta("sha", "{\"auditCount\":1}", 1).unwrap();
+        assert_eq!(db.delivery_bundle_meta("sha").unwrap().as_deref(), Some("{\"auditCount\":1}"));
     }
 }
