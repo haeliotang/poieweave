@@ -415,6 +415,9 @@ export interface WhatIfResult {
   completionS?: number | null;
   actions: { actionId: string; process: string; target: string; startS: number; endS: number }[];
   rootCauses: { kind: string; subject: string; detail: string }[];
+  residuals?: unknown;
+  abstained?: boolean;
+  abstainReason?: string | null;
 }
 
 export interface WhatIfCompare {

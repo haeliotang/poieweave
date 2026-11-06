@@ -175,6 +175,7 @@ const zh: Messages = {
   "promotion.committed": "已提交",
   "whatif.title": "What-if 推演",
   "whatif.hostOnly": "What-if 仅在桌面 host 可用；浏览器预览不执行命令。",
+  "whatif.abstained": "证据不足/弃权",
   "whatif.caveat": "结果相对当前静态快照与有界求解器，不是物理可行/不可行证明；不写 SAP/live。",
   "whatif.prepare": "创建快照",
   "whatif.addVariant": "添加变体",
