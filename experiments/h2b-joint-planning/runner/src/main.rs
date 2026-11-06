@@ -1,0 +1,497 @@
+//! H2b runner: bus/pump deadline contention, four methods and ablations.
+//! The holdout is generated but must not be run before PREREG's final phase.
+
+use std::collections::BTreeMap;
+use std::path::PathBuf;
+use std::process::ExitCode;
+
+use poie_ontology::graph::Goal;
+use poie_ontology::model::{AssetStatus, Model, Patch, Verification};
+use poie_plan::baselines::{baseline, BaselineKind, BaselineRequest};
+use poie_plan::plan::{plan, Plan, PlanningGoal, PlanningRequest};
+use poie_plan::sap::validate_plan_through_sap;
+
+const SEED: u64 = 0x706f_6965_6832_6200; // H2b fixed seed
+const HORIZON_H: f64 = 8.0;
+const SERVICE_DEADLINE_H: f64 = 4.0;
+const BUS_DEADLINE_H: f64 = 4.0;
+const MAX_REPLANS: usize = 3;
+
+#[derive(Clone, Debug)]
+struct SplitMix64 {
+    state: u64,
+}
+
+impl SplitMix64 {
+    fn new(seed: u64) -> SplitMix64 {
+        SplitMix64 { state: seed }
+    }
+
+    fn next_u64(&mut self) -> u64 {
+        self.state = self.state.wrapping_add(0x9E37_79B9_7F4A_7C15);
+        let mut z = self.state;
+        z = (z ^ (z >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+        z = (z ^ (z >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+        z ^ (z >> 31)
+    }
+
+    fn index(&mut self, bound: usize) -> usize {
+        (self.next_u64() % bound as u64) as usize
+    }
+}
+
+#[derive(Clone, Debug)]
+struct Scenario {
+    id: String,
+    pump_failure_h: f64,
+    bus_failure_h: f64,
+    energy_kwh: f64,
+    holdout: bool,
+}
+
+fn scenarios() -> Vec<Scenario> {
+    // Pre-registered grid: bus failure inside the 4 h service deadline, so
+    // repair order matters when the single robot must also replace the pump.
+    let pump_times = [0.0, 1.0, 2.0];
+    let bus_times = [0.5, 1.0, 1.5, 2.0, 2.5];
+    let energy = [0.5, 1.0, 2.0];
+    let mut rng = SplitMix64::new(SEED);
+    let mut scenarios = Vec::new();
+    for index in 0..24 {
+        let holdout = index >= 16;
+        scenarios.push(Scenario {
+            id: format!("h2b-{index:02}"),
+            pump_failure_h: pump_times[rng.index(pump_times.len())],
+            bus_failure_h: bus_times[rng.index(bus_times.len())],
+            energy_kwh: energy[rng.index(energy.len())],
+            holdout,
+        });
+    }
+    scenarios
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum MethodName {
+    Joint,
+    TaskPriority,
+    SafetyStock,
+    ShortTerm,
+    AblateNoReplanning,
+    AblateShortHorizon,
+    AblateNoDeadline,
+    AblateCapabilityBlind,
+}
+
+impl MethodName {
+    fn as_str(self) -> &'static str {
+        match self {
+            MethodName::Joint => "A_joint",
+            MethodName::TaskPriority => "B1_task_priority",
+            MethodName::SafetyStock => "B2_safety_stock",
+            MethodName::ShortTerm => "B3_short_term",
+            MethodName::AblateNoReplanning => "abl_no_replanning",
+            MethodName::AblateShortHorizon => "abl_short_horizon",
+            MethodName::AblateNoDeadline => "abl_no_deadline",
+            MethodName::AblateCapabilityBlind => "abl_capability_blind",
+        }
+    }
+}
+
+const METHODS: [MethodName; 8] = [
+    MethodName::Joint,
+    MethodName::TaskPriority,
+    MethodName::SafetyStock,
+    MethodName::ShortTerm,
+    MethodName::AblateNoReplanning,
+    MethodName::AblateShortHorizon,
+    MethodName::AblateNoDeadline,
+    MethodName::AblateCapabilityBlind,
+];
+
+struct PlanningOutcome {
+    plan: Plan,
+    sap_valid: bool,
+}
+
+fn goals(deadline: Option<f64>) -> Vec<PlanningGoal> {
+    vec![
+        PlanningGoal {
+            goal: Goal::Service("potable-water".into()),
+            deadline_s: deadline.map(|hours| hours * 3600.0),
+            priority: 10,
+        },
+        PlanningGoal { goal: Goal::Restore("bus-1".into()), deadline_s: Some(BUS_DEADLINE_H * 3600.0), priority: 5 },
+    ]
+}
+
+fn patched_model(
+    base: &Model,
+    scenario: &Scenario,
+    now_s: f64,
+    restored: &std::collections::BTreeSet<String>,
+) -> Model {
+    let mut patch = Patch::default();
+    if now_s >= scenario.pump_failure_h * 3600.0 && !restored.contains("pump-p1") {
+        patch.asset_status.insert("pump-p1".into(), AssetStatus::Failed);
+    }
+    if now_s >= scenario.bus_failure_h * 3600.0 && !restored.contains("bus-1") {
+        patch.asset_status.insert("bus-1".into(), AssetStatus::Failed);
+    }
+    // Energy available at the start (synthetic external input for the scenario).
+    for lot in base.lots.iter().filter(|lot| lot.resource == "electric-energy") {
+        patch.lot_quantity.insert(lot.id.clone(), format!("{} kWh", scenario.energy_kwh));
+    }
+    base.patched(&patch).expect("scenario patch is valid")
+}
+
+fn plan_until(method: MethodName, model: &Model, now_s: f64, deadline: Option<f64>) -> PlanningOutcome {
+    let now_s = now_s.max(0.0);
+    let planned = match method {
+        MethodName::Joint | MethodName::AblateNoReplanning | MethodName::AblateNoDeadline => {
+            let horizon = now_s + if method == MethodName::AblateShortHorizon { 3600.0 } else { HORIZON_H * 3600.0 };
+            let deadline = if method == MethodName::AblateNoDeadline { None } else { deadline };
+            plan(&PlanningRequest {
+                model,
+                now_s,
+                horizon_s: horizon,
+                goals: goals(deadline),
+                min_verification: Verification::Demonstrated,
+                max_actions: 20,
+            })
+            .expect("planner is total for valid requests")
+        }
+        MethodName::AblateShortHorizon => plan(&PlanningRequest {
+            model,
+            now_s,
+            horizon_s: now_s + 3600.0,
+            goals: goals(deadline),
+            min_verification: Verification::Demonstrated,
+            max_actions: 20,
+        })
+        .expect("planner is total for valid requests"),
+        MethodName::TaskPriority | MethodName::AblateCapabilityBlind => {
+            baseline(BaselineKind::TaskPriority, &baseline_request(model, now_s))
+                .expect("baseline is total for valid requests")
+        }
+        MethodName::SafetyStock => baseline(BaselineKind::SafetyStockRule, &baseline_request(model, now_s))
+            .expect("baseline is total for valid requests"),
+        MethodName::ShortTerm => baseline(BaselineKind::ShortTermOptimization, &baseline_request(model, now_s))
+            .expect("baseline is total for valid requests"),
+    };
+    let state_version = BTreeMap::from([("site-a".to_string(), 42)]);
+    let sap_valid = validate_plan_through_sap(&planned, "site-a", &state_version).is_ok();
+    PlanningOutcome { plan: planned, sap_valid }
+}
+
+fn baseline_request<'a>(model: &'a Model, now_s: f64) -> BaselineRequest<'a> {
+    let mut safety_stock = BTreeMap::new();
+    safety_stock.insert("sleeve-p1".to_string(), 0.0);
+    safety_stock.insert("bronze-bar".to_string(), 0.0);
+    BaselineRequest {
+        model,
+        now_s,
+        horizon_s: now_s + HORIZON_H * 3600.0,
+        goals: goals(Some(SERVICE_DEADLINE_H)),
+        min_verification: Verification::Demonstrated,
+        max_actions: 20,
+        safety_stock,
+    }
+}
+
+struct ScenarioResult {
+    scenario: String,
+    method: &'static str,
+    success: bool,
+    completion_h: f64,
+    actions: usize,
+    unmet: String,
+    sap_valid: bool,
+    /// Stored energy left after every executed action (terminal state, VEC
+    /// §2.1, added 2026-11-01). Negative values expose an overdraw.
+    terminal_energy_kwh: f64,
+    /// Planning decisions taken (initial plan + replans); every one used the
+    /// state patched only with events at or before its own time (VEC §2.1).
+    decisions: usize,
+    /// Latest observation time used by any decision minus that decision's
+    /// time; must be <= 0 (non-anticipation check).
+    max_lookahead_s: f64,
+    plan_signature: String,
+}
+
+fn energy_used_kwh(actions: &[poie_plan::plan::PlannedAction], until_s: f64) -> f64 {
+    actions
+        .iter()
+        .filter(|action| action.end_s <= until_s + 1e-9)
+        .flat_map(|action| action.allocations.iter())
+        .filter(|(resource, _)| resource == "electric-energy")
+        .map(|(_, amount)| *amount / 3.6e6)
+        .sum()
+}
+
+fn service_available(
+    base: &Model,
+    scenario: &Scenario,
+    restored: &std::collections::BTreeSet<String>,
+    at_s: f64,
+) -> bool {
+    let model = patched_model(base, scenario, at_s, restored);
+    let Some(service) = model.services.get("potable-water") else { return false };
+    service.requires.iter().all(|asset| {
+        matches!(
+            model.assets.get(asset).map(|definition| definition.status),
+            Some(AssetStatus::Available | AssetStatus::Degraded)
+        )
+    })
+}
+
+fn run_scenario(base: &Model, scenario: &Scenario, method: MethodName) -> ScenarioResult {
+    let deadline_s = SERVICE_DEADLINE_H * 3600.0;
+    let mut restored = std::collections::BTreeSet::new();
+    let mut now_s = 0.0_f64;
+    let mut outcome =
+        plan_until(method, &patched_model(base, scenario, now_s, &restored), now_s, Some(SERVICE_DEADLINE_H));
+    // Each decision is planned on `patched_model(.., now_s, ..)`, which only
+    // applies events with time <= now_s: the observation cut-off equals the
+    // decision time. Recorded so that the check is in the report, not implied.
+    let mut decisions = 1usize;
+    let mut max_lookahead_s = observation_cutoff(scenario, now_s) - now_s;
+    let mut energy_used = 0.0;
+    let events: Vec<f64> = vec![scenario.pump_failure_h * 3600.0, scenario.bus_failure_h * 3600.0];
+    let mut replans = 0usize;
+    let mut cutoff = f64::INFINITY;
+    for event in events.into_iter().filter(|event| *event > 0.0 && *event <= deadline_s) {
+        if method == MethodName::AblateNoReplanning {
+            cutoff = cutoff.min(event);
+            break;
+        }
+        if replans >= MAX_REPLANS {
+            break;
+        }
+        if event <= now_s {
+            continue;
+        }
+        // Execute the part of the plan that finishes before the observation.
+        for action in &outcome.plan.actions {
+            if action.end_s <= event + 1e-9 {
+                for asset in &action.restores {
+                    restored.insert(asset.clone());
+                }
+            }
+        }
+        energy_used += energy_used_kwh(&outcome.plan.actions, event);
+        now_s = event;
+        outcome = plan_until(method, &patched_model(base, scenario, now_s, &restored), now_s, Some(SERVICE_DEADLINE_H));
+        replans += 1;
+        decisions += 1;
+        max_lookahead_s = max_lookahead_s.max(observation_cutoff(scenario, now_s) - now_s);
+    }
+    // Execute everything that finishes by the deadline (before any invalidation).
+    let executed_by = deadline_s.min(cutoff);
+    for action in &outcome.plan.actions {
+        if action.end_s <= executed_by + 1e-9 {
+            for asset in &action.restores {
+                restored.insert(asset.clone());
+            }
+            for (resource, amount) in &action.allocations {
+                let _ = (resource, amount);
+            }
+        }
+    }
+    energy_used += energy_used_kwh(&outcome.plan.actions, executed_by);
+    let service_met = service_available(base, scenario, &restored, deadline_s);
+    let bus_ok = restored.contains("bus-1");
+    let success = service_met && bus_ok && outcome.sap_valid;
+    let completion = if success { outcome.plan.completion_s.min(deadline_s) / 3600.0 } else { HORIZON_H };
+    let plan_signature = outcome
+        .plan
+        .actions
+        .iter()
+        .map(|action| format!("{}@{:.1}-{:.1}", action.action_id, action.start_s, action.end_s))
+        .collect::<Vec<_>>()
+        .join(",");
+    ScenarioResult {
+        scenario: scenario.id.clone(),
+        method: method.as_str(),
+        success,
+        completion_h: completion,
+        actions: outcome.plan.actions.len(),
+        unmet: outcome
+            .plan
+            .goals_unmet
+            .iter()
+            .map(|failure| format!("{}:{}", failure.goal, failure.reason))
+            .collect::<Vec<_>>()
+            .join(";"),
+        sap_valid: outcome.sap_valid,
+        terminal_energy_kwh: scenario.energy_kwh - energy_used,
+        decisions,
+        max_lookahead_s,
+        plan_signature,
+    }
+}
+
+/// Latest event time that `patched_model(.., now_s, ..)` applies.
+fn observation_cutoff(scenario: &Scenario, now_s: f64) -> f64 {
+    [scenario.pump_failure_h, scenario.bus_failure_h]
+        .iter()
+        .map(|hours| hours * 3600.0)
+        .filter(|time| *time <= now_s)
+        .fold(0.0, f64::max)
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum RunMode {
+    Dev,
+    Holdout,
+}
+
+fn main() -> ExitCode {
+    let mut write_dir: Option<PathBuf> = None;
+    let mut diagnose = false;
+    let mut mode = RunMode::Dev;
+    let mut args = std::env::args().skip(1);
+    while let Some(arg) = args.next() {
+        match arg.as_str() {
+            "--dev" | "--ablate" => {}
+            "--holdout" => mode = RunMode::Holdout,
+            "--diagnose" => diagnose = true,
+            "--write" => {
+                let Some(path) = args.next() else {
+                    eprintln!("--write needs a directory");
+                    return ExitCode::from(2);
+                };
+                write_dir = Some(PathBuf::from(path));
+            }
+            other => {
+                eprintln!("unknown argument {other:?}");
+                return ExitCode::from(2);
+            }
+        }
+    }
+    let base = {
+        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../scenarios/base-01/model.toml");
+        Model::load(&path).expect("Base-01 model loads")
+    };
+    let all = scenarios();
+    let selected: Vec<&Scenario> = all.iter().filter(|scenario| (mode == RunMode::Dev) != scenario.holdout).collect();
+    let mut results = Vec::new();
+    for scenario in &selected {
+        let methods: Vec<MethodName> = if mode == RunMode::Holdout {
+            // Ablations stay on the development set (PREREG §6).
+            vec![MethodName::Joint, MethodName::TaskPriority, MethodName::SafetyStock, MethodName::ShortTerm]
+        } else {
+            METHODS.to_vec()
+        };
+        for method in methods {
+            results.push(run_scenario(&base, scenario, method));
+        }
+    }
+    let mut lines = String::new();
+    lines.push_str(
+        "scenario\tmethod\tsuccess\tcompletion_h\tactions\tunmet\tsap_valid\tterminal_energy_kwh\tdecisions\tmax_lookahead_s\n",
+    );
+    for result in &results {
+        lines.push_str(&format!(
+            "{}\t{}\t{}\t{:.3}\t{}\t{}\t{}\t{:.3}\t{}\t{:.0}\n",
+            result.scenario,
+            result.method,
+            result.success,
+            result.completion_h,
+            result.actions,
+            result.unmet,
+            result.sap_valid,
+            result.terminal_energy_kwh,
+            result.decisions,
+            result.max_lookahead_s
+        ));
+    }
+    println!("{lines}");
+    if diagnose {
+        println!("scenario\tmethod\tplan_signature");
+        for result in &results {
+            println!("{}\t{}\t{}", result.scenario, result.method, result.plan_signature);
+        }
+    }
+    if let Some(dir) = write_dir {
+        if let Err(error) = std::fs::create_dir_all(&dir) {
+            eprintln!("cannot create {}: {error}", dir.display());
+            return ExitCode::FAILURE;
+        }
+        let (raw_name, report_name, title) = match mode {
+            RunMode::Dev => ("dev-raw.txt", "dev-report.md", "H2b 开发集结果（自动生成）"),
+            RunMode::Holdout => ("holdout-raw.txt", "holdout-report.md", "H2b 留出集结果（自动生成）"),
+        };
+        if let Err(error) = std::fs::create_dir_all(dir.join("raw"))
+            .and_then(|_| std::fs::write(dir.join("raw").join(raw_name), &lines))
+        {
+            eprintln!("cannot write raw results: {error}");
+            return ExitCode::FAILURE;
+        }
+        let report = summarize(&results, title, mode);
+        if let Err(error) = std::fs::write(dir.join(report_name), report) {
+            eprintln!("cannot write report: {error}");
+            return ExitCode::FAILURE;
+        }
+    }
+    ExitCode::SUCCESS
+}
+
+fn summarize(results: &[ScenarioResult], title: &str, mode: RunMode) -> String {
+    let mut out = String::new();
+    out.push_str(&format!("# {title}\n\n"));
+    match mode {
+        RunMode::Dev => out.push_str(
+            "本文件由 `poie-h2-joint-planning --dev --write <dir>` 生成；留出集未运行。预登记见 [PREREG.md](PREREG.md)。\n\n",
+        ),
+        RunMode::Holdout => out.push_str(
+            "本文件由 `poie-h2-joint-planning --holdout --write <dir>` 生成，是留出集的**首次**运行；开发集结果见 [DEV-NOTES.md](DEV-NOTES.md)。预登记见 [PREREG.md](PREREG.md)。\n\n",
+        ),
+    }
+    out.push_str("| 方法 | 成功 | 场景数 | 成功率 | 平均完成 (h) | 平均动作数 | SAP 通过 | 最低期末储能 (kWh) | 决策数 | 非预知 |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n");
+    for method in METHODS {
+        let subset: Vec<&ScenarioResult> = results.iter().filter(|result| result.method == method.as_str()).collect();
+        if subset.is_empty() {
+            continue;
+        }
+        let success = subset.iter().filter(|result| result.success).count();
+        let completion = subset.iter().map(|result| result.completion_h).sum::<f64>() / subset.len() as f64;
+        let actions = subset.iter().map(|result| result.actions as f64).sum::<f64>() / subset.len() as f64;
+        let sap = subset.iter().filter(|result| result.sap_valid).count();
+        let terminal = subset.iter().map(|result| result.terminal_energy_kwh).fold(f64::INFINITY, f64::min);
+        let decisions: usize = subset.iter().map(|result| result.decisions).sum();
+        let causal = subset.iter().all(|result| result.max_lookahead_s <= 0.0);
+        out.push_str(&format!(
+            "| {} | {} | {} | {:.3} | {:.3} | {:.1} | {}/{} | {:.3} | {} | {} |\n",
+            method.as_str(),
+            success,
+            subset.len(),
+            success as f64 / subset.len() as f64,
+            completion,
+            actions,
+            sap,
+            subset.len(),
+            terminal,
+            decisions,
+            if causal { "通过" } else { "违反" }
+        ));
+    }
+    out.push_str("\n## 每场景结果\n\n");
+    out.push_str("| 场景 | 方法 | 成功 | 完成 (h) | 动作 | 未达成 |\n| --- | --- | --- | --- | --- | --- |\n");
+    for result in results {
+        out.push_str(&format!(
+            "| {} | {} | {} | {:.2} | {} | {} |\n",
+            result.scenario, result.method, result.success, result.completion_h, result.actions, result.unmet
+        ));
+    }
+    out.push_str("\n## 读法与局限\n\n");
+    match mode {
+        RunMode::Dev => out.push_str("- 子集为 **开发集（16 场景）**；留出集（8 场景）未运行、未查看。\n"),
+        RunMode::Holdout => {
+            out.push_str("- 子集为 **留出集（8 场景）**，本次为首次运行；消融只在开发集运行（PREREG §6）。\n")
+        }
+    }
+    out.push_str("- 成功 = 供水目标在 4 h 预测失效前完成、车床目标达成且无未达成目标；所有方法使用相同扰动轨迹、预算与 SAP 校验路径。\n");
+    out.push_str("- 规划器是确定性贪心（ADR-0006）；合成场景、未校准；样本小，只作方向性比较。\n");
+    out.push_str("- 2026-11-01 起（VEC §2.1 修订，issue #110）同时报告终端状态与非预知检查：期末储能 = 场景初始储能 − 已执行动作的用电；每次决策只使用不晚于决策时刻的事件（`max_lookahead_s` ≤ 0）；同一方法的同一实例（相同参数）在全部场景上运行。PREREG 没有终端约束，期末储能只作报告，不参与成功判定。\n");
+    out
+}

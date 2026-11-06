@@ -229,6 +229,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "poie-h2b-joint-planning"
+version = "0.1.0"
+dependencies = [
+ "poie-ontology",
+ "poie-plan",
+]
+
+[[package]]
 name = "poie-h3-bounded-execution"
 version = "0.1.0"
 dependencies = [
