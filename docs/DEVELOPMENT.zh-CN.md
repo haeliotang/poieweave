@@ -661,3 +661,5 @@ flowchart LR
 | 0.1.165 | 2026-11-06 | M9 台架 v2：B6 ACK 无效→outcome_unknown/流路锁死，B7 3s 建立窗口，B5R PLC 看门狗/重连清除；3/3 PASS |
 | 0.1.166 | 2026-11-06 | M9 Modbus TCP 虚拟从站：FC16 寄存器契约/序号幂等/异常映射/看门狗；5/5 PASS |
 | 0.1.167 | 2026-11-06 | 桌面驾驶舱 M9 台架演练：B3/B4/B5/B6 命令、证据链展示、人工确认清除；版本 0.4.18 |
+| 0.1.168 | 2026-11-06 | 桌面 bench 写入 app audit + execution gate；B6/B5 unknown/fallback 同步 degraded；版本 0.4.19 |
+| 0.1.169 | 2026-11-06 | 桌面 bench/audit 复核：bench.run 审计、gate 同步、UI 测试覆盖台架卡；版本 0.4.19 |

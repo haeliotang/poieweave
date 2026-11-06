@@ -94,6 +94,15 @@ test.describe("Poieweave cockpit", () => {
     await expect(agent.getByLabel("Tool profile")).toBeDisabled();
   });
 
+  test("shows the M9 bench card with host-only controls disabled", async ({ page }) => {
+    await loadEnglish(page);
+    await page.getByRole("button", { name: "Execution", exact: true }).click();
+    await expect(page.getByText("M9 bench drills")).toBeVisible();
+    await expect(page.getByRole("button", { name: "B6", exact: true })).toBeDisabled();
+    await expect(page.getByLabel("I confirmed the bench is safe (simulated)")).toBeDisabled();
+    await expect(page.getByRole("button", { name: "Clear unknown/fallback" })).toBeDisabled();
+  });
+
   test("focused window mode hides the full cockpit chrome", async ({ page }) => {
     await page.addInitScript(() => {
       localStorage.setItem("poie-lang", "en");

@@ -1207,7 +1207,11 @@ function Execution({ lang, execution, selection, onSelect, onGate, hosted }: { l
   const [benchConfirmed, setBenchConfirmed] = useState(false);
   const runBench = async (scenario: string) => {
     setBenchBusy(true); setBenchError("");
-    try { setBenchReport(await invoke<BenchReport>("bench_run", { scenario })); }
+    try {
+      const report = await invoke<BenchReport>("bench_run", { scenario });
+      setBenchReport(report);
+      if (report.unknown || report.fallback) onGate({ takeover: false, degraded: true });
+    }
     catch (caught) { setBenchError(String(caught)); }
     finally { setBenchBusy(false); }
   };
@@ -1217,6 +1221,7 @@ function Execution({ lang, execution, selection, onSelect, onGate, hosted }: { l
       await invoke<boolean>("bench_reset", { operatorConfirmed: benchConfirmed });
       setBenchConfirmed(false);
       if (benchReport) setBenchReport({ ...benchReport, unknown: false, fallback: false });
+      onGate({ takeover: false, degraded: false });
     } catch (caught) { setBenchError(String(caught)); }
     finally { setBenchBusy(false); }
   };
@@ -1273,7 +1278,7 @@ function Execution({ lang, execution, selection, onSelect, onGate, hosted }: { l
             <p className="muted">{t("execution.benchPhysical")}: {benchReport.physicalExecutions} · unknown={String(benchReport.unknown)} · fallback={String(benchReport.fallback)}</p>
           </div>
         ) : null}
-        <label className="checkbox-row"><input type="checkbox" checked={benchConfirmed} onChange={(event) => setBenchConfirmed(event.target.checked)} /> {t("execution.confirmSafe")}</label>
+        <label className="checkbox-row"><input type="checkbox" checked={benchConfirmed} onChange={(event) => setBenchConfirmed(event.target.checked)} disabled={!hosted} /> {t("execution.confirmSafe")}</label>
         <button type="button" onClick={() => void resetBench()} disabled={!hosted || benchBusy || !benchConfirmed}>{t("execution.clearUnknown")}</button>
         {benchError ? <p className="form-error">{benchError}</p> : null}
       </section>
