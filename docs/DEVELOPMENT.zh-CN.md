@@ -648,3 +648,4 @@ flowchart LR
 | 0.1.152 | 2026-11-06 | 第 4 步：What-if four-eyes 开关；版本 0.4.10 |
 | 0.1.153 | 2026-11-06 | 第 4 步：four-eyes second-approver 谓词测试；UI 双人验收受 Accessibility 限制；版本 0.4.11 |
 | 0.1.154 | 2026-11-06 | 第 4 步：Phaino replay packet/比较协议（无网络传输）；版本 0.4.12 |
+| 0.1.155 | 2026-11-06 | 第 4 步：Ed25519 replay packet 签名/验签（TOFU，无公钥固定）；版本 0.4.13 |

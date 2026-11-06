@@ -1,6 +1,6 @@
 [package]
 name = "poieweave-desktop"
-version = "0.4.12"
+version = "0.4.13"
 description = "Poieweave desktop host: filesystem sandbox, SQLite state, Tauri 2 packaging."
 edition = "2021"
 rust-version = "1.77"
@@ -36,6 +36,7 @@ poie-federation = { path = "../../../crates/poie-federation" }
 toml = "0.8"
 pbkdf2 = "0.12"
 sha2 = "0.10"
+ring = "0.17"
 getrandom = "0.2"
 hex = "0.4"
 ureq = { version = "3", default-features = false, features = ["rustls-no-provider", "_ring", "platform-verifier"] }
