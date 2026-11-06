@@ -233,6 +233,78 @@ fn run(args: &Args) -> Result<usize, String> {
                     pass,
                 });
             }
+            "failed" => {
+                let model = runtime.projected_model(outcome.now_ms).map_err(|error| error.to_string())?;
+                let goals = vec![PlanningGoal {
+                    goal: Goal::Service("potable-water".into()),
+                    deadline_s: Some(4.0 * 3600.0),
+                    priority: 10,
+                }];
+                let shadow = shadow_plan(&model, 0.0, 86_400.0, goals, Verification::Demonstrated, &[]);
+                let (actual, pass) = match &shadow {
+                    Ok(shadow) => (
+                        format!(
+                            "投影 {ASSET} = {:?}；计划动作 {} 个；dispatched = {}",
+                            model.assets[ASSET].status,
+                            shadow.plan.actions.len(),
+                            shadow.dispatched
+                        ),
+                        model.assets[ASSET].status == AssetStatus::Failed
+                            && !shadow.plan.actions.is_empty()
+                            && !shadow.dispatched,
+                    ),
+                    Err(error) => (format!("shadow_plan 失败：{error:?}"), false),
+                };
+                checks.push(Check {
+                    id: "N1",
+                    item: "非零影子动作",
+                    expected: "投影 pump-p1 = Failed；计划动作 > 0；dispatched = false",
+                    actual,
+                    pass,
+                });
+            }
+            "stale" => {
+                let status = projected(&outcome);
+                let expired = outcome.report.expired_evidence;
+                let healthy = outcome.report.health.healthy;
+                checks.push(Check {
+                    id: "N2",
+                    item: "证据过期",
+                    expected: "pump-p1 = Unknown；expired_evidence >= 1；healthy = false",
+                    actual: format!("pump-p1 = {status:?}；expired_evidence = {expired}；healthy = {healthy}"),
+                    pass: status == Some(AssetStatus::Unknown) && expired >= 1 && !healthy,
+                });
+            }
+            "drifted" => {
+                let model = runtime.projected_model(outcome.now_ms).map_err(|error| error.to_string())?;
+                let goals = vec![PlanningGoal {
+                    goal: Goal::Service("potable-water".into()),
+                    deadline_s: Some(4.0 * 3600.0),
+                    priority: 10,
+                }];
+                let shadow = shadow_plan(&model, 0.0, 86_400.0, goals, Verification::Demonstrated, &[]);
+                let (actual, pass) = match &shadow {
+                    Ok(shadow) => (
+                        format!(
+                            "投影 {ASSET} = {:?}；计划动作 {} 个；dispatched = {}",
+                            model.assets[ASSET].status,
+                            shadow.plan.actions.len(),
+                            shadow.dispatched
+                        ),
+                        model.assets[ASSET].status == AssetStatus::Degraded
+                            && shadow.plan.actions.is_empty()
+                            && !shadow.dispatched,
+                    ),
+                    Err(error) => (format!("shadow_plan 失败：{error:?}"), false),
+                };
+                checks.push(Check {
+                    id: "N3",
+                    item: "漂移恢复",
+                    expected: "投影 pump-p1 = Degraded；计划动作 0；dispatched = false",
+                    actual,
+                    pass,
+                });
+            }
             "disconnected" => {
                 let d = &outcome.diagnostics;
                 let disconnected = matches!(d.last_error, Some(AdapterError::Disconnected(_)));
@@ -303,6 +375,9 @@ fn run(args: &Args) -> Result<usize, String> {
         ("disconnected", "C5", "容器停止后的断连"),
         ("restarted", "C6", "容器重启后（尚未重注入）"),
         ("reinjected", "C7", "重注入后重连"),
+        ("failed", "N1", "非零影子动作"),
+        ("stale", "N2", "证据过期"),
+        ("drifted", "N3", "漂移恢复"),
     ] {
         if !ran.iter().any(|done| done == phase) {
             checks.push(Check {
