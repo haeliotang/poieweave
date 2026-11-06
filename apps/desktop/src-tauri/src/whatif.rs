@@ -6,6 +6,7 @@
 use poie_governance::{subject_digest, ApprovalToken};
 use poie_plan::sap::{plan_to_actions_at, preview_actions, AssumedContext};
 use poie_sim::timed::{TimedCase, TimedRunner, TimedScenario};
+use poie_whatif::replay::{compare as compare_replay, parse as parse_replay, ReplayPacket, ReplayReport};
 use poie_whatif::promotion::{
     proposed_action_sha256, PromotionMandate, PROMOTE_POLICY_VERSION, PROPOSED_ACTION_SCHEMA,
 };
@@ -798,6 +799,40 @@ pub fn whatif_promote_set_policy(enabled: bool, state: State<'_, AppState>) -> R
     db.set_promotion_four_eyes(enabled, auth::now_ms())?;
     db.append_audit(auth::now_ms(), &operator.display_name, "promotion.policy", &format!("fourEyes={enabled}"))?;
     Ok(enabled)
+}
+
+fn replay_packet(proposal: &PromotionProposal) -> ReplayPacket {
+    ReplayPacket {
+        schema: poie_whatif::replay::REPLAY_SCHEMA.into(),
+        producer: format!("poieweave/{}", env!("CARGO_PKG_VERSION")),
+        proposal_id: proposal.proposal_id.clone(),
+        result_sha256: proposal.result_sha256.clone(),
+        snapshot_sha256: proposal.snapshot_sha256.clone(),
+        variant_sha256: proposal.variant_json_sha256.clone(),
+        inputs_sha256: proposal.inputs_sha256.clone(),
+        plan_sha256: proposal.plan_sha256.clone(),
+        actions_sha256: proposal.actions_sha256.clone(),
+        created_at: proposal.requested_at,
+    }
+}
+
+#[tauri::command]
+pub fn whatif_promote_packet(proposal_id: String, state: State<'_, AppState>) -> Result<ReplayPacket, String> {
+    auth::require(&state.session)?;
+    let proposal = load_promotion(&state, &proposal_id)?;
+    Ok(replay_packet(&proposal))
+}
+
+#[tauri::command]
+pub fn whatif_promote_compare_packet(
+    proposal_id: String,
+    packet_json: String,
+    state: State<'_, AppState>,
+) -> Result<ReplayReport, String> {
+    auth::require(&state.session)?;
+    let proposal = load_promotion(&state, &proposal_id)?;
+    let remote = parse_replay(&packet_json)?;
+    compare_replay(&replay_packet(&proposal), &remote)
 }
 
 #[tauri::command]

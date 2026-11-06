@@ -647,3 +647,4 @@ flowchart LR
 | 0.1.151 | 2026-11-06 | 第 4 步：Settings 添加 operator 入口 + 可选操作员名称登录；版本 0.4.9 |
 | 0.1.152 | 2026-11-06 | 第 4 步：What-if four-eyes 开关；版本 0.4.10 |
 | 0.1.153 | 2026-11-06 | 第 4 步：four-eyes second-approver 谓词测试；UI 双人验收受 Accessibility 限制；版本 0.4.11 |
+| 0.1.154 | 2026-11-06 | 第 4 步：Phaino replay packet/比较协议（无网络传输）；版本 0.4.12 |

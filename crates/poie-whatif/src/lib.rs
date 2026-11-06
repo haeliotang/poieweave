@@ -13,6 +13,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
 pub mod promotion;
+pub mod replay;
 pub mod timed;
 pub use timed::*;
 
