@@ -39,6 +39,8 @@ pub struct InferenceConfigRow {
     pub updated_at_ms: i64,
 }
 
+pub type AppealRow = (i64, String, String, String, i64);
+
 pub type TombstoneRow = (String, String, String, i64, String);
 
 pub type TimedScenarioRow = (String, String, String, String, i64);
@@ -187,6 +189,15 @@ impl Db {
                      manifest_sha256 TEXT NOT NULL, recorded_at INTEGER NOT NULL,
                      PRIMARY KEY(kind, id)
                  );
+                 CREATE TABLE IF NOT EXISTS promotion_conflicts (
+                     proposal_id TEXT NOT NULL, operator TEXT NOT NULL, reason TEXT NOT NULL,
+                     created_at INTEGER NOT NULL, PRIMARY KEY(proposal_id, operator)
+                 );
+                 CREATE TABLE IF NOT EXISTS promotion_appeals (
+                     id INTEGER PRIMARY KEY AUTOINCREMENT, proposal_id TEXT NOT NULL,
+                     operator TEXT NOT NULL, reason TEXT NOT NULL, status TEXT NOT NULL,
+                     created_at INTEGER NOT NULL
+                 );
                  CREATE TABLE IF NOT EXISTS audit_anchors (
                      id INTEGER PRIMARY KEY AUTOINCREMENT,
                      audit_count INTEGER NOT NULL,
@@ -194,7 +205,7 @@ impl Db {
                      hmac TEXT NOT NULL,
                      anchored_at INTEGER NOT NULL
                  );
-                 PRAGMA user_version = 9;",
+                 PRAGMA user_version = 10;",
             )
             .map_err(|error| format!("migrate: {error}"))?;
         // Existing databases created before B0 have an audit table without the
@@ -259,6 +270,61 @@ impl Db {
             )
             .map_err(|error| format!("create operator: {error}"))?;
         Ok(())
+    }
+
+    pub fn save_promotion_conflict(
+        &self,
+        proposal_id: &str,
+        operator: &str,
+        reason: &str,
+        at: i64,
+    ) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT OR IGNORE INTO promotion_conflicts (proposal_id,operator,reason,created_at) VALUES (?1,?2,?3,?4)",
+                params![proposal_id, operator, reason, at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn promotion_conflict(&self, proposal_id: &str, operator: &str) -> Result<bool, String> {
+        let count: i64 = self
+            .connection
+            .query_row(
+                "SELECT COUNT(*) FROM promotion_conflicts WHERE proposal_id=?1 AND operator=?2",
+                params![proposal_id, operator],
+                |row| row.get(0),
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(count > 0)
+    }
+
+    pub fn save_promotion_appeal(
+        &self,
+        proposal_id: &str,
+        operator: &str,
+        reason: &str,
+        at: i64,
+    ) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO promotion_appeals (proposal_id,operator,reason,status,created_at) VALUES (?1,?2,?3,'open',?4)",
+                params![proposal_id, operator, reason, at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn promotion_appeals(&self, proposal_id: &str) -> Result<Vec<AppealRow>, String> {
+        let mut statement = self
+            .connection
+            .prepare("SELECT id,operator,reason,status,created_at FROM promotion_appeals WHERE proposal_id=?1 ORDER BY id ASC")
+            .map_err(|error| error.to_string())?;
+        let rows = statement
+            .query_map([proposal_id], |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?, row.get(4)?)))
+            .map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
     }
 
     pub fn save_audit_anchor(&self, count: u64, head: &str, hmac: &str, at: i64) -> Result<(), String> {
@@ -1116,7 +1182,7 @@ mod tests {
         {
             let db = Db::open(&path).unwrap();
             let version: i64 = db.connection.query_row("PRAGMA user_version", [], |row| row.get(0)).unwrap();
-            assert_eq!(version, 9);
+            assert_eq!(version, 10);
             let tables: Vec<String> = db
                 .connection
                 .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
@@ -1131,6 +1197,8 @@ mod tests {
                 "delivery_manifests",
                 "delivery_bundle_meta",
                 "audit_anchors",
+                "promotion_conflicts",
+                "promotion_appeals",
                 "delivery_tombstones",
                 "delivery_state",
                 "whatif_results",
@@ -1228,5 +1296,18 @@ mod tests {
         assert_eq!(rows[0].1, "m1");
         assert_eq!(rows[0].2, "withdrawn");
         assert_eq!(rows[0].4, "sha1");
+    }
+
+    #[test]
+    fn recusal_and_appeal_records_round_trip() {
+        let db = Db::open_in_memory().unwrap();
+        db.save_promotion_conflict("p", "Ada", "conflict", 1).unwrap();
+        assert!(db.promotion_conflict("p", "Ada").unwrap());
+        assert!(!db.promotion_conflict("p", "Bob").unwrap());
+        db.save_promotion_appeal("p", "Bob", "review", 2).unwrap();
+        let appeals = db.promotion_appeals("p").unwrap();
+        assert_eq!(appeals.len(), 1);
+        assert_eq!(appeals[0].2, "review");
+        assert_eq!(appeals[0].3, "open");
     }
 }

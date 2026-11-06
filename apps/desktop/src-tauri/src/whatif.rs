@@ -739,6 +739,51 @@ pub fn whatif_promote_replay(proposal_id: String, state: State<'_, AppState>) ->
     })
 }
 
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PromotionAppeal {
+    pub id: i64,
+    pub operator: String,
+    pub reason: String,
+    pub status: String,
+    pub created_at: i64,
+}
+
+#[tauri::command]
+pub fn whatif_promote_recuse(proposal_id: String, reason: String, state: State<'_, AppState>) -> Result<(), String> {
+    let operator = auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    if db.promotion_proposal(&proposal_id)?.is_none() {
+        return Err(format!("unknown_proposal: {proposal_id}"));
+    }
+    db.save_promotion_conflict(&proposal_id, &operator.display_name, &reason, auth::now_ms())?;
+    db.append_audit(auth::now_ms(), &operator.display_name, "promotion.recused", &format!("{proposal_id} {reason}"))?;
+    Ok(())
+}
+
+#[tauri::command]
+pub fn whatif_promote_appeal(proposal_id: String, reason: String, state: State<'_, AppState>) -> Result<(), String> {
+    let operator = auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    if db.promotion_proposal(&proposal_id)?.is_none() {
+        return Err(format!("unknown_proposal: {proposal_id}"));
+    }
+    db.save_promotion_appeal(&proposal_id, &operator.display_name, &reason, auth::now_ms())?;
+    db.append_audit(auth::now_ms(), &operator.display_name, "promotion.appealed", &format!("{proposal_id} {reason}"))?;
+    Ok(())
+}
+
+#[tauri::command]
+pub fn whatif_promote_appeals(proposal_id: String, state: State<'_, AppState>) -> Result<Vec<PromotionAppeal>, String> {
+    auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    Ok(db
+        .promotion_appeals(&proposal_id)?
+        .into_iter()
+        .map(|(id, operator, reason, status, created_at)| PromotionAppeal { id, operator, reason, status, created_at })
+        .collect())
+}
+
 #[tauri::command]
 pub fn whatif_promote_get(proposal_id: String, state: State<'_, AppState>) -> Result<PromotionProposal, String> {
     auth::require(&state.session)?;
@@ -782,6 +827,9 @@ fn decide_promotion(
     let proposal_json =
         db.promotion_proposal(proposal_id)?.ok_or_else(|| format!("unknown_proposal: {proposal_id}"))?;
     let mut proposal: PromotionProposal = serde_json::from_str(&proposal_json).map_err(|error| error.to_string())?;
+    if db.promotion_conflict(proposal_id, &operator.display_name)? {
+        return Err("recused: operator declared a conflict for this proposal".into());
+    }
     mandate_allows(&proposal, auth::now_ms())?;
     let token = token_for(&db, &proposal.approval_token_id)?;
     if token.session_id != operator.session_id || token.tool != "whatif.promote" || token.run_id != proposal.proposal_id
@@ -867,6 +915,9 @@ pub fn whatif_promote_commit(proposal_id: String, state: State<'_, AppState>) ->
     let mut proposal: PromotionProposal = serde_json::from_str(&proposal_json).map_err(|error| error.to_string())?;
     if let Some((status, _, _)) = db.promotion_status(&proposal_id)? {
         proposal.status = status;
+    }
+    if db.promotion_conflict(&proposal.proposal_id, &operator.display_name)? {
+        return Err("recused: operator declared a conflict for this proposal".into());
     }
     if proposal.status != "approved" {
         return Err(format!("approval_required: proposal is {}", proposal.status));

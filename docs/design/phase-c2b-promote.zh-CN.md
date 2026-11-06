@@ -168,6 +168,12 @@ ProposedAction {
 - 不写库、不改变 proposal/commit 状态；
 - 用于 Phaino 式 replay 比较，而不是重执行/重提交。
 
+## 6.4 Recusal / Appeal
+
+- `whatif_promote_recuse(proposalId, reason)`：当前 operator 对 proposal 声明回避，写 `promotion_conflicts`；approve/commit 遇到自己的冲突记录 → `recused`。
+- `whatif_promote_appeal(proposalId, reason)`：写 `promotion_appeals`（status=open）；`whatif_promote_appeals` 查询。
+- 这是**单操作员可用的最小冲突/申诉记录**，不是完整多主体角色模型；second-approver/角色分离仍为未来门禁。
+
 ## 7. 命令
 
 | 命令 | 输入 | 输出 |
@@ -175,6 +181,9 @@ ProposedAction {
 | `whatif_promote_propose` | resultId | PromotionProposal（pending + token） |
 | `whatif_promote_get` | proposalId | PromotionProposal |
 | `whatif_promote_replay` | proposalId | PromotionReplayReport |
+| `whatif_promote_recuse` | proposalId, reason | — |
+| `whatif_promote_appeal` | proposalId, reason | — |
+| `whatif_promote_appeals` | proposalId | PromotionAppeal[] |
 | `whatif_promote_list` | limit | PromotionProposal[] |
 | `whatif_promote_approve` | proposalId | PromotionProposal（approved） |
 | `whatif_promote_reject` | proposalId, reason | PromotionProposal（rejected） |
