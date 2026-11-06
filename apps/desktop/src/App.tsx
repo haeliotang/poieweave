@@ -35,6 +35,7 @@ import {
   type PromotionProposal,
   type PromotionCommit,
   type TrustedReplayNode,
+  type BenchReport,
   type ReplayReport,
 } from "./domain";
 import brandMark from "./assets/poieweave-mono.svg";
@@ -1200,6 +1201,25 @@ function TimedWhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
 function Execution({ lang, execution, selection, onSelect, onGate, hosted }: { lang: Lang; execution: ExecutionSnapshot; selection: Selection | null; onSelect: (selection: Selection) => void; onGate: (gate: ExecutionSnapshot["gate"]) => void; hosted: boolean }) {
   const t = (key: string) => messagesFor(lang)[key] ?? key;
   const gate = execution.gate;
+  const [benchReport, setBenchReport] = useState<BenchReport | null>(null);
+  const [benchError, setBenchError] = useState("");
+  const [benchBusy, setBenchBusy] = useState(false);
+  const [benchConfirmed, setBenchConfirmed] = useState(false);
+  const runBench = async (scenario: string) => {
+    setBenchBusy(true); setBenchError("");
+    try { setBenchReport(await invoke<BenchReport>("bench_run", { scenario })); }
+    catch (caught) { setBenchError(String(caught)); }
+    finally { setBenchBusy(false); }
+  };
+  const resetBench = async () => {
+    setBenchBusy(true); setBenchError("");
+    try {
+      await invoke<boolean>("bench_reset", { operatorConfirmed: benchConfirmed });
+      setBenchConfirmed(false);
+      if (benchReport) setBenchReport({ ...benchReport, unknown: false, fallback: false });
+    } catch (caught) { setBenchError(String(caught)); }
+    finally { setBenchBusy(false); }
+  };
   const stateFor = (): string => {
     if (gate.takeover) return t("execution.recorded");
     if (gate.degraded) return t("execution.fallback");
@@ -1230,6 +1250,32 @@ function Execution({ lang, execution, selection, onSelect, onGate, hosted }: { l
           </button>
           <span className="gate-note">{t("execution.notConnected")}</span>
         </div>
+      </section>
+      <section className="card">
+        <div className="card__head">
+          <div><h2>{t("execution.bench")}</h2><p>{t("execution.benchHint")}</p></div>
+          <span className={`pill pill--${benchReport?.passed ? "ok" : "warn"}`}>{benchReport ? (benchReport.passed ? t("execution.benchPass") : t("execution.benchFail")) : t("execution.benchIdle")}</span>
+        </div>
+        <div className="agent-panel__actions">
+          {["B3", "B4", "B5", "B6"].map((scenario) => (
+            <button key={scenario} type="button" onClick={() => void runBench(scenario)} disabled={!hosted || benchBusy}>{scenario}</button>
+          ))}
+        </div>
+        {benchReport ? (
+          <div>
+            {benchReport.checks.map((check) => (
+              <div key={check.id} className={`check-item${check.passed ? "" : " check-item--bad"}`}>
+                <span className={`dot dot--${check.passed ? "ok" : "bad"}`} />
+                <span className="mono">{check.id}</span>
+                <span className="muted">{check.detail}</span>
+              </div>
+            ))}
+            <p className="muted">{t("execution.benchPhysical")}: {benchReport.physicalExecutions} · unknown={String(benchReport.unknown)} · fallback={String(benchReport.fallback)}</p>
+          </div>
+        ) : null}
+        <label className="checkbox-row"><input type="checkbox" checked={benchConfirmed} onChange={(event) => setBenchConfirmed(event.target.checked)} /> {t("execution.confirmSafe")}</label>
+        <button type="button" onClick={() => void resetBench()} disabled={!hosted || benchBusy || !benchConfirmed}>{t("execution.clearUnknown")}</button>
+        {benchError ? <p className="form-error">{benchError}</p> : null}
       </section>
       <section className="card">
         <div className="card__head">

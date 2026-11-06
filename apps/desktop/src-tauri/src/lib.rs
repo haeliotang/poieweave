@@ -8,6 +8,7 @@
 mod agent;
 mod anchor;
 mod auth;
+mod bench;
 mod db;
 mod delivery;
 mod domain;
@@ -48,6 +49,7 @@ struct AppState {
     session: Arc<SessionState>,
     secrets: Arc<dyn secrets::SecretStore>,
     http: Arc<dyn http::HttpTransport>,
+    bench: Mutex<bench::BenchUiState>,
 }
 
 #[derive(Serialize)]
@@ -108,6 +110,28 @@ struct AnchorReceipt {
     count: u64,
     head: String,
     hmac: String,
+}
+
+#[tauri::command]
+fn bench_run(scenario: String, state: State<'_, AppState>) -> Result<bench::BenchReport, String> {
+    auth::require(&state.session)?;
+    let mut bench = state.bench.lock().map_err(|_| "bench lock poisoned".to_string())?;
+    bench::run(&mut bench, &scenario)
+}
+
+#[tauri::command]
+fn bench_reset(operator_confirmed: bool, state: State<'_, AppState>) -> Result<bool, String> {
+    let operator = auth::require(&state.session)?;
+    let mut bench = state.bench.lock().map_err(|_| "bench lock poisoned".to_string())?;
+    let (unknown, fallback) = bench::reset(&mut bench, operator_confirmed)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    db.append_audit(
+        auth::now_ms(),
+        &operator.display_name,
+        "bench.reset",
+        &format!("operator_confirmed={operator_confirmed}; unknown={unknown}; fallback={fallback}"),
+    )?;
+    Ok(!unknown && !fallback)
 }
 
 #[tauri::command]
@@ -300,6 +324,7 @@ pub fn run() {
                 session: Arc::new(SessionState::new(None)),
                 secrets: Arc::new(SystemSecretStore),
                 http: Arc::new(NativeHttpTransport),
+                bench: Mutex::new(bench::BenchUiState::default()),
             });
             Ok(())
         })
@@ -311,6 +336,8 @@ pub fn run() {
             auth_sign_out,
             audit_list,
             audit_verify,
+            bench_run,
+            bench_reset,
             audit_anchor,
             audit_anchor_verify,
             inference_status,
