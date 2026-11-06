@@ -118,7 +118,7 @@ SiteBundle {
 - 仍未实现：墓碑对 live 对象库的实际删除/拒绝复活（当前 Poieweave 没有对象库写路径）、跨节点链合并。
 - 删除墓碑优先于导入内容：旧 bundle 不得复活已删数据。
 - `auditHead` 在 bundle 内，能改行的人也能改头；外部锚才提高保障。
-- `casePacket` 可选，未知字段拒绝；D2 不实现多节点同步。
+- `casePacket` 可选，必须是 `poie.case-packet/0.1`：caseId/scope 非空，provenance/evidenceRefs 数组，≤64 KiB；golden fixtures 见 `fixtures/delivery/`。
 
 ## 7. 审计锚
 

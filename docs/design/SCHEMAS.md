@@ -32,6 +32,7 @@
 | `poie.proposed-action/0.1` | C2b | 0.1 | C2b |
 | `poie.release-verification/0.1` | D2 | 0.1/0.2 | D2 |
 | `poie.site-bundle/0.2` | D2 | 0.1/0.2 | D2 |
+| `poie.case-packet/0.1` | D2 | 0.1 | D2 case packet |
 | `poie.site-manifest/0.1` | D1 | 0.1 | site manifest（自哈希，拒绝未知字段） |
 | `poie.site-bundle/0.1` | D1 | 0.1 | 同上 |
 | `poie.delivery-state/0.1` | D1 | 0.1 | 同上 |

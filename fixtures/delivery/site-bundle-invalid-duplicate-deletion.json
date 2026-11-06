@@ -1,0 +1,50 @@
+{
+  "schema": "poie.site-bundle/0.2",
+  "manifest": {
+    "schema": "poie.site-manifest/0.1",
+    "schemaVersion": "0.1",
+    "siteId": "base-01",
+    "siteName": "Base 01",
+    "target": "macos-aarch64",
+    "channel": "stable",
+    "releasedAt": "2026-11-06T00:00:00Z",
+    "modelSha256": null,
+    "evidenceSha256": null,
+    "policy": {
+      "profile": "default"
+    },
+    "notes": "fixture",
+    "manifestSha256": "8aba6d139bdaef568e7e12bee2bd4e9f02bbde8cd7de9aebb175d49b6373f708"
+  },
+  "auditHead": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "auditCount": 2,
+  "deletions": [
+    {
+      "kind": "memory",
+      "id": "m-1",
+      "reason": "withdrawn",
+      "at": 1
+    },
+    {
+      "kind": "memory",
+      "id": "m-1",
+      "reason": "withdrawn",
+      "at": 1
+    }
+  ],
+  "casePacket": {
+    "schema": "poie.case-packet/0.1",
+    "caseId": "case-1",
+    "scope": "site:base-01",
+    "provenance": [
+      {
+        "kind": "source",
+        "id": "src-1",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    ],
+    "evidenceRefs": [
+      "evidence-1"
+    ]
+  }
+}

@@ -11,6 +11,7 @@ use serde_json::{json, Value};
 pub const MANIFEST_SCHEMA: &str = "poie.site-manifest/0.1";
 pub const BUNDLE_SCHEMA: &str = "poie.site-bundle/0.1";
 pub const BUNDLE_SCHEMA_V2: &str = "poie.site-bundle/0.2";
+pub const CASE_PACKET_SCHEMA: &str = "poie.case-packet/0.1";
 pub const STATE_SCHEMA: &str = "poie.delivery-state/0.1";
 pub const DIAGNOSTICS_SCHEMA: &str = "poie.delivery-diagnostics/0.1";
 pub const MAX_BUNDLE_BYTES: usize = 256 * 1024;
@@ -181,6 +182,30 @@ fn check_manifest(manifest: &SiteManifest) -> Result<(), String> {
     Ok(())
 }
 
+fn check_case_packet(packet: &Value) -> Result<(), String> {
+    let object = packet.as_object().ok_or_else(|| "manifest_invalid: casePacket must be an object".to_string())?;
+    if object.get("schema").and_then(Value::as_str) != Some(CASE_PACKET_SCHEMA) {
+        return Err(format!("unsupported_schema: casePacket must be {CASE_PACKET_SCHEMA}"));
+    }
+    for key in ["caseId", "scope"] {
+        let value =
+            object.get(key).and_then(Value::as_str).ok_or_else(|| format!("manifest_invalid: casePacket.{key}"))?;
+        if value.trim().is_empty() || value.len() > MAX_STRING_BYTES {
+            return Err(format!("manifest_invalid: casePacket.{key} invalid"));
+        }
+    }
+    for key in ["provenance", "evidenceRefs"] {
+        let array = object
+            .get(key)
+            .and_then(Value::as_array)
+            .ok_or_else(|| format!("manifest_invalid: casePacket.{key} must be an array"))?;
+        if array.len() > 64 {
+            return Err(format!("invalid_parameter: casePacket.{key} too long"));
+        }
+    }
+    Ok(())
+}
+
 pub fn parse_bundle(text: &str) -> Result<(SiteManifest, String), String> {
     let parsed = parse_bundle_full(text)?;
     Ok((parsed.manifest, parsed.manifest_sha256))
@@ -232,6 +257,7 @@ pub fn parse_bundle_full(text: &str) -> Result<ParsedBundle, String> {
         }
     }
     if let Some(packet) = &bundle.case_packet {
+        check_case_packet(packet)?;
         let size = serde_json::to_string(packet).map_err(|error| error.to_string())?.len();
         if size > 64 * 1024 {
             return Err("invalid_parameter: case packet too large".into());
@@ -493,7 +519,13 @@ mod tests {
                 reason: "withdrawn".into(),
                 at: 1,
             }],
-            case_packet: Some(json!({"scope": "site:base-01"})),
+            case_packet: Some(json!({
+                "schema": CASE_PACKET_SCHEMA,
+                "caseId": "case-1",
+                "scope": "site:base-01",
+                "provenance": [],
+                "evidenceRefs": []
+            })),
         })
         .unwrap();
         let parsed = parse_bundle_full(&bundle).unwrap();
