@@ -39,6 +39,8 @@ pub struct InferenceConfigRow {
     pub updated_at_ms: i64,
 }
 
+pub type TombstoneRow = (String, String, String, i64, String);
+
 pub type TimedScenarioRow = (String, String, String, String, i64);
 
 pub struct Db {
@@ -180,6 +182,11 @@ impl Db {
                  CREATE TABLE IF NOT EXISTS delivery_bundle_meta (
                      manifest_sha256 TEXT PRIMARY KEY, extensions_json TEXT NOT NULL, imported_at INTEGER NOT NULL
                  );
+                 CREATE TABLE IF NOT EXISTS delivery_tombstones (
+                     kind TEXT NOT NULL, id TEXT NOT NULL, reason TEXT NOT NULL, at INTEGER NOT NULL,
+                     manifest_sha256 TEXT NOT NULL, recorded_at INTEGER NOT NULL,
+                     PRIMARY KEY(kind, id)
+                 );
                  CREATE TABLE IF NOT EXISTS audit_anchors (
                      id INTEGER PRIMARY KEY AUTOINCREMENT,
                      audit_count INTEGER NOT NULL,
@@ -187,7 +194,7 @@ impl Db {
                      hmac TEXT NOT NULL,
                      anchored_at INTEGER NOT NULL
                  );
-                 PRAGMA user_version = 8;",
+                 PRAGMA user_version = 9;",
             )
             .map_err(|error| format!("migrate: {error}"))?;
         // Existing databases created before B0 have an audit table without the
@@ -849,6 +856,37 @@ impl Db {
             .map_err(|error| error.to_string())
     }
 
+    pub fn save_delivery_tombstone(
+        &self,
+        kind: &str,
+        id: &str,
+        reason: &str,
+        at: i64,
+        manifest_sha256: &str,
+        recorded_at: i64,
+    ) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT OR IGNORE INTO delivery_tombstones (kind,id,reason,at,manifest_sha256,recorded_at) VALUES (?1,?2,?3,?4,?5,?6)",
+                params![kind, id, reason, at, manifest_sha256, recorded_at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn delivery_tombstones(&self, limit: u32) -> Result<Vec<TombstoneRow>, String> {
+        let mut statement = self
+            .connection
+            .prepare(
+                "SELECT kind,id,reason,at,manifest_sha256 FROM delivery_tombstones ORDER BY recorded_at DESC LIMIT ?1",
+            )
+            .map_err(|error| error.to_string())?;
+        let rows = statement
+            .query_map([limit], |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?, row.get(4)?)))
+            .map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
+
     pub fn delivery_state(&self) -> Result<Option<String>, String> {
         self.connection
             .query_row("SELECT state_json FROM delivery_state WHERE id=1", [], |row| row.get(0))
@@ -1078,7 +1116,7 @@ mod tests {
         {
             let db = Db::open(&path).unwrap();
             let version: i64 = db.connection.query_row("PRAGMA user_version", [], |row| row.get(0)).unwrap();
-            assert_eq!(version, 8);
+            assert_eq!(version, 9);
             let tables: Vec<String> = db
                 .connection
                 .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
@@ -1093,6 +1131,7 @@ mod tests {
                 "delivery_manifests",
                 "delivery_bundle_meta",
                 "audit_anchors",
+                "delivery_tombstones",
                 "delivery_state",
                 "whatif_results",
                 "whatif_snapshots",
@@ -1176,5 +1215,18 @@ mod tests {
         assert_eq!(db.verify_audit_chain().unwrap(), None);
         db.connection.execute("UPDATE audit SET detail='tampered' WHERE id=1", []).unwrap();
         assert_eq!(db.verify_audit_chain().unwrap(), Some(1));
+    }
+
+    #[test]
+    fn tombstone_ledger_does_not_resurrect() {
+        let db = Db::open_in_memory().unwrap();
+        db.save_delivery_tombstone("memory", "m1", "withdrawn", 1, "sha1", 2).unwrap();
+        db.save_delivery_tombstone("memory", "m1", "second import", 1, "sha2", 3).unwrap();
+        let rows = db.delivery_tombstones(10).unwrap();
+        assert_eq!(rows.len(), 1);
+        assert_eq!(rows[0].0, "memory");
+        assert_eq!(rows[0].1, "m1");
+        assert_eq!(rows[0].2, "withdrawn");
+        assert_eq!(rows[0].4, "sha1");
     }
 }
