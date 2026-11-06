@@ -145,6 +145,15 @@ SiteBundle {
 
 CI smoke 不能替代人工 QA。
 
+`scripts/platform_qa_check.py` 校验人工 QA receipt：
+
+- required checks 按平台齐全
+- `pass/fail/skip` 合法
+- signingStatus 只能是 `signed/notarized/ad-hoc/unsigned/unknown`
+- 缺项/失败/未知签名状态 → `ok=false`
+
+模板：`docs/status/platform-qa-template.json`。当前仓库没有已完成的人工 QA receipt，因此不能声称平台 QA 已通过。
+
 ## 9. 发布前门禁
 
 - [ ] `cargo test` / `pnpm test:ui` / Playwright

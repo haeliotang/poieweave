@@ -1,0 +1,53 @@
+{
+  "schema": "poie.platform-qa/0.1",
+  "version": "0.4.6",
+  "platform": "macos-aarch64",
+  "signingStatus": "unsigned",
+  "checks": [
+    {
+      "id": "install",
+      "status": "skip",
+      "evidence": ""
+    },
+    {
+      "id": "launch",
+      "status": "skip",
+      "evidence": ""
+    },
+    {
+      "id": "gatekeeper_notice",
+      "status": "skip",
+      "evidence": ""
+    },
+    {
+      "id": "dock_icon",
+      "status": "skip",
+      "evidence": ""
+    },
+    {
+      "id": "data_migration",
+      "status": "skip",
+      "evidence": ""
+    },
+    {
+      "id": "version_consistency",
+      "status": "pass",
+      "evidence": ""
+    },
+    {
+      "id": "sha256sums",
+      "status": "pass",
+      "evidence": ""
+    },
+    {
+      "id": "release_notes_signing_status",
+      "status": "pass",
+      "evidence": ""
+    },
+    {
+      "id": "no_telemetry",
+      "status": "pass",
+      "evidence": ""
+    }
+  ]
+}
