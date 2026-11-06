@@ -639,3 +639,4 @@ flowchart LR
 | 0.1.143 | 2026-11-06 | D2 P1：delivery_tombstones 本地 ledger（导入 apply、重复不覆盖、查询命令）；版本 0.4.1 |
 | 0.1.144 | 2026-11-06 | D2 P1：case packet schema/校验 + golden fixtures；版本 0.4.2 |
 | 0.1.145 | 2026-11-06 | 第 4 步：promotion replay 比较（plan/actions/inputs）；版本 0.4.3 |
+| 0.1.146 | 2026-11-06 | 第 4 步：promotion recusal/appeal 记录与 approve/commit 拒绝路径；版本 0.4.4 |
