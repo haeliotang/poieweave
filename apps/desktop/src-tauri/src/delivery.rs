@@ -78,14 +78,18 @@ pub fn delivery_import(
     let next = import(&current, &manifest, &sha, now_ms(), &operator.display_name)?;
     let manifest_json = poie_delivery::manifest_json(&manifest)?;
     db.save_delivery_import(&manifest_json, &sha, &state_json(&next)?, now_ms())?;
+    let deletions = parsed.extensions.deletions.clone();
     let extensions_json = serde_json::json!({
         "auditHead": parsed.extensions.audit_head,
         "auditCount": parsed.extensions.audit_count,
-        "deletions": parsed.extensions.deletions,
+        "deletions": deletions,
         "casePacket": parsed.extensions.case_packet,
     })
     .to_string();
     db.save_delivery_bundle_meta(&sha, &extensions_json, now_ms())?;
+    for marker in &deletions {
+        db.save_delivery_tombstone(&marker.kind, &marker.id, &marker.reason, marker.at, &sha, now_ms())?;
+    }
     db.append_audit(
         now_ms(),
         &operator.display_name,
@@ -93,6 +97,27 @@ pub fn delivery_import(
         &format!("{} {} {}", next.current.as_ref().map(|c| c.site_id.as_str()).unwrap_or(""), manifest.target, sha),
     )?;
     Ok(next)
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TombstoneView {
+    pub kind: String,
+    pub id: String,
+    pub reason: String,
+    pub at: i64,
+    pub manifest_sha256: String,
+}
+
+#[tauri::command]
+pub fn delivery_tombstones(limit: Option<u32>, state: State<'_, AppState>) -> Result<Vec<TombstoneView>, String> {
+    auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    Ok(db
+        .delivery_tombstones(limit.unwrap_or(100).clamp(1, 500))?
+        .into_iter()
+        .map(|(kind, id, reason, at, manifest_sha256)| TombstoneView { kind, id, reason, at, manifest_sha256 })
+        .collect())
 }
 
 #[tauri::command]

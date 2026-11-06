@@ -114,7 +114,8 @@ SiteBundle {
 - 结构支持已实现：v0.2 bundle 可携带 auditHead/auditCount/deletions/casePacket；导入持久化到 `delivery_bundle_meta`（v7）。
 - 本地 audit chain 已实现：`append_audit` 写 `prev_hash/hash`；`audit_chain`/`verify_audit_head`/`verify_audit_chain` 可用；导入 bundle 时 `auditHead/auditCount` 不匹配 → `audit_mismatch`。
 - 本地锚已实现：随机 32 字节 HMAC key 存平台 SecretStore（macOS Keychain），对 `count|head` 做 HMAC-SHA256；`audit_anchor`/`audit_anchor_verify` 命令可用。它是**设备本地锚**，不是第三方时间戳。
-- 仍未实现：墓碑对 live 数据的实际应用、跨节点链合并。
+- 墓碑已落本地 ledger：导入 bundle 的 `deletions` 写入 `delivery_tombstones`（PK kind,id，重复导入不覆盖首个墓碑）；`delivery_tombstones` 命令可查。
+- 仍未实现：墓碑对 live 对象库的实际删除/拒绝复活（当前 Poieweave 没有对象库写路径）、跨节点链合并。
 - 删除墓碑优先于导入内容：旧 bundle 不得复活已删数据。
 - `auditHead` 在 bundle 内，能改行的人也能改头；外部锚才提高保障。
 - `casePacket` 可选，未知字段拒绝；D2 不实现多节点同步。

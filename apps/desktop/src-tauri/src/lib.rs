@@ -350,6 +350,7 @@ pub fn run() {
             delivery::delivery_import,
             delivery::delivery_state,
             delivery::delivery_bundle_meta,
+            delivery::delivery_tombstones,
             delivery::delivery_rollback,
             delivery::delivery_clear,
             delivery::delivery_diagnostics_export
