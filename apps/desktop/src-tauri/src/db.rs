@@ -210,7 +210,7 @@ impl Db {
                      hmac TEXT NOT NULL,
                      anchored_at INTEGER NOT NULL
                  );
-                 PRAGMA user_version = 11;",
+                 PRAGMA user_version = 12;",
             )
             .map_err(|error| format!("migrate: {error}"))?;
         // Existing databases created before B0 have an audit table without the
@@ -225,6 +225,29 @@ impl Db {
             self.connection
                 .execute_batch("ALTER TABLE audit ADD COLUMN legacy INTEGER NOT NULL DEFAULT 0")
                 .map_err(|error| format!("migrate audit legacy: {error}"))?;
+        }
+        let operator_sql: Option<String> = self
+            .connection
+            .query_row("SELECT sql FROM sqlite_master WHERE type='table' AND name='operators'", [], |row| row.get(0))
+            .optional()
+            .map_err(|error| error.to_string())?;
+        if operator_sql.is_some_and(|sql| sql.contains("CHECK (id = 1)")) {
+            self.connection
+                .execute_batch(
+                    "ALTER TABLE operators RENAME TO operators_legacy;
+                     CREATE TABLE operators (
+                         id INTEGER PRIMARY KEY AUTOINCREMENT,
+                         display_name TEXT NOT NULL UNIQUE,
+                         salt_hex TEXT NOT NULL,
+                         verifier_hex TEXT NOT NULL,
+                         iterations INTEGER NOT NULL,
+                         created_at_ms INTEGER NOT NULL
+                     );
+                     INSERT INTO operators (display_name,salt_hex,verifier_hex,iterations,created_at_ms)
+                         SELECT display_name,salt_hex,verifier_hex,iterations,created_at_ms FROM operators_legacy;
+                     DROP TABLE operators_legacy;",
+                )
+                .map_err(|error| format!("migrate operators: {error}"))?;
         }
         Ok(())
     }
@@ -241,30 +264,35 @@ impl Db {
     }
 
     pub fn operator(&self) -> Result<Option<OperatorRecord>, String> {
+        Ok(self.operators()?.into_iter().next())
+    }
+
+    pub fn operators(&self) -> Result<Vec<OperatorRecord>, String> {
         let mut statement = self
             .connection
             .prepare(
-                "SELECT display_name, salt_hex, verifier_hex, iterations, created_at_ms FROM operators WHERE id = 1",
+                "SELECT display_name, salt_hex, verifier_hex, iterations, created_at_ms FROM operators ORDER BY id ASC",
             )
             .map_err(|error| error.to_string())?;
-        let mut rows = statement.query([]).map_err(|error| error.to_string())?;
-        let Some(row) = rows.next().map_err(|error| error.to_string())? else {
-            return Ok(None);
-        };
-        Ok(Some(OperatorRecord {
-            display_name: row.get(0).map_err(|error| error.to_string())?,
-            salt_hex: row.get(1).map_err(|error| error.to_string())?,
-            verifier_hex: row.get(2).map_err(|error| error.to_string())?,
-            iterations: row.get(3).map_err(|error| error.to_string())?,
-            created_at_ms: row.get(4).map_err(|error| error.to_string())?,
-        }))
+        let rows = statement
+            .query_map([], |row| {
+                Ok(OperatorRecord {
+                    display_name: row.get(0)?,
+                    salt_hex: row.get(1)?,
+                    verifier_hex: row.get(2)?,
+                    iterations: row.get(3)?,
+                    created_at_ms: row.get(4)?,
+                })
+            })
+            .map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
     }
 
     pub fn create_operator(&self, operator: &OperatorRecord) -> Result<(), String> {
         self.connection
             .execute(
-                "INSERT INTO operators (id, display_name, salt_hex, verifier_hex, iterations, created_at_ms)
-                 VALUES (1, ?1, ?2, ?3, ?4, ?5)",
+                "INSERT INTO operators (display_name, salt_hex, verifier_hex, iterations, created_at_ms)
+                 VALUES (?1, ?2, ?3, ?4, ?5)",
                 params![
                     operator.display_name,
                     operator.salt_hex,
@@ -1207,7 +1235,7 @@ mod tests {
         {
             let db = Db::open(&path).unwrap();
             let version: i64 = db.connection.query_row("PRAGMA user_version", [], |row| row.get(0)).unwrap();
-            assert_eq!(version, 11);
+            assert_eq!(version, 12);
             let tables: Vec<String> = db
                 .connection
                 .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")

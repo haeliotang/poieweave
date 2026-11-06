@@ -851,7 +851,10 @@ fn decide_promotion(
     }
     mandate_allows(&proposal, auth::now_ms())?;
     let token = token_for(&db, &proposal.approval_token_id)?;
-    if token.session_id != operator.session_id || token.tool != "whatif.promote" || token.run_id != proposal.proposal_id
+    let second_approver = db.promotion_four_eyes()? && proposal.requested_by != operator.display_name;
+    if (!second_approver && token.session_id != operator.session_id)
+        || token.tool != "whatif.promote"
+        || token.run_id != proposal.proposal_id
     {
         return Err("approval_mismatch: token does not belong to this proposal/session".into());
     }
