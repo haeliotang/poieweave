@@ -30,11 +30,13 @@ MANUAL_REPORTS = {
 LIVE_RAW_EXPERIMENTS = {
     "experiments/basyx-shadow",
     "experiments/basyx-shadow-nonzero",
+    "experiments/basyx-shadow-m9c",
     "experiments/federation-docker",
 }
 LIVE_REPORTS = {
     "experiments/basyx-shadow/REPORT.md",
     "experiments/basyx-shadow-nonzero/REPORT.md",
+    "experiments/basyx-shadow-m9c/REPORT.md",
 }
 PATH = re.compile(r"(experiments/[A-Za-z0-9_./-]+\.(?:md|txt|toml))")
 

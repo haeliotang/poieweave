@@ -1,0 +1,12 @@
+phase=failed
+now_ms=1793971887444
+http_status=Some(200)
+adapter_error=none
+observations=[Observation { asset: "pump-p1", status: Failed, observed_at_ms: 1793971886000, ingested_at_ms: 1793971887444, quality: Good }, Observation { asset: "bat-1", status: Available, observed_at_ms: 1793971886000, ingested_at_ms: 1793971887444, quality: Good }, Observation { asset: "filter-1", status: Available, observed_at_ms: 1793971886000, ingested_at_ms: 1793971887444, quality: Good }, Observation { asset: "bus-1", status: Available, observed_at_ms: 1793971886000, ingested_at_ms: 1793971887444, quality: Good }, Observation { asset: "robot-m1", status: Available, observed_at_ms: 1793971886000, ingested_at_ms: 1793971887444, quality: Good }, Observation { asset: "charger-1", status: Available, observed_at_ms: 1793971886000, ingested_at_ms: 1793971887444, quality: Good }]
+reading=Some(SubmodelReading { status: Failed, observed_at: Ok(1793971886000), observed_at_text: Some("2026-11-06T13:31:26Z"), units: [UnitReading { id_short: "FlowRate", raw_value: "12.5", unit: Some("m3/h"), si: Ok(0.003472222222222222) }, UnitReading { id_short: "FlowRateExport", raw_value: "100", unit: Some("bbl/d"), si: Err("unit \"bbl/d\" is not in the adapter's unit table") }], property_keys: [("OperatingState", ["idShort", "modelType", "value", "valueType"]), ("FlowRate", ["embeddedDataSpecifications", "idShort", "modelType", "value", "valueType"]), ("FlowRateExport", ["embeddedDataSpecifications", "idShort", "modelType", "value", "valueType"]), ("ObservedAt", ["idShort", "modelType", "value", "valueType"])] })
+accepted_observations=6
+disconnected_adapters=[]
+projected_pump-p1=Some(Failed)
+health=HealthReport { adapters: {"basyx-aas-readonly": AdapterHealth { connected: true, last_observation_ms: Some(1793971887444) }}, expired_evidence: 0, healthy: true }
+--- body ---
+{"modelType":"Submodel","kind":"Instance","id":"urn:poieweave:base-01:charger-1:operational-data","idShort":"OperationalData","submodelElements":[{"modelType":"Property","value":"available","valueType":"xs:string","idShort":"OperatingState"},{"modelType":"Property","value":"2026-11-06T13:31:26Z","valueType":"xs:dateTime","idShort":"ObservedAt"}]}

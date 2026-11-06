@@ -46,18 +46,26 @@ wait_ready() {
   return 1
 }
 
-inject() {
-  local state="$1" observed_at="$2" code
-  local b64
-  b64="$(python3 -c 'import base64,sys; print(base64.urlsafe_b64encode(sys.argv[1].encode()).rstrip(b"=").decode())' \
-    "urn:poieweave:base-01:pump-p1:operational-data")"
-  sed -e "s/\"value\": \"degraded\"/\"value\": \"$state\"/" -e "s/__OBSERVED_AT__/$observed_at/" \
-    "$TEMPLATE" >"$WORK/submodel.json"
+inject_one() {
+  local asset="$1" file="$2" state="$3" observed_at="$4" id b64 code
+  id="urn:poieweave:base-01:${asset}:operational-data"
+  b64="$(python3 -c 'import base64,sys; print(base64.urlsafe_b64encode(sys.argv[1].encode()).rstrip(b"=").decode())' "$id")"
+  sed -e "s/\"value\": \"degraded\"/\"value\": \"$state\"/" \
+      -e "s/\"value\": \"available\"/\"value\": \"$state\"/" \
+      -e "s/__OBSERVED_AT__/$observed_at/" "$file" >"$WORK/submodel-$asset.json"
   curl -s -o /dev/null -X DELETE "$BASE/submodels/$b64" || true
   code="$(curl -s -o "$WORK/resp" -w '%{http_code}' -X POST -H 'Content-Type: application/json' \
-    --data-binary @"$WORK/submodel.json" "$BASE/submodels")"
-  log "POST /submodels ($state, $observed_at) → $code"
+    --data-binary @"$WORK/submodel-$asset.json" "$BASE/submodels")"
+  log "POST /submodels $asset ($state, $observed_at) → $code"
   [ "$code" = "201" ] || return 1
+}
+
+inject() {
+  local state="$1" support_state="$2" observed_at="$3" code
+  inject_one pump-p1 "$TEMPLATE" "$state" "$observed_at" || return 1
+  for asset in bat-1 filter-1 bus-1 robot-m1 charger-1; do
+    inject_one "$asset" "$HERE/data/$asset.json" "$support_state" "$observed_at" || return 1
+  done
   if [ "$SHELL_ADDED" = 0 ]; then
     code="$(curl -s -o "$WORK/resp" -w '%{http_code}' -X POST -H 'Content-Type: application/json' \
       --data-binary @"$AAS" "$BASE/shells")"
@@ -89,20 +97,20 @@ docker run -d --name "$NAME" -p "127.0.0.1:$PORT:8081" "$IMAGE" >>"$LOG"
 wait_ready
 
 OBS1="$(now_utc)"
-inject failed "$OBS1" || { log "failed injection"; exit 1; }
+inject failed available "$OBS1" || { log "failed injection"; exit 1; }
 mkfifo "$FIFO"
-"$RUNNER" --base-url "$BASE" --out "$OUT" --ack "$ACK" --image "$IMAGE" <"$FIFO" >>"$LOG" 2>&1 &
+"$RUNNER" --base-url "$BASE" --out "$OUT" --ack "$ACK" --image "$IMAGE" --profile nonzero <"$FIFO" >>"$LOG" 2>&1 &
 RUNNER_PID=$!
 exec 3>"$FIFO"
 
 send "failed $OBS1" && wait_ack failed || exit 1
 
 STALE="$(stale_utc)"
-inject failed "$STALE" || { log "stale injection"; exit 1; }
+inject failed available "$STALE" || { log "stale injection"; exit 1; }
 send "stale $STALE" && wait_ack stale || exit 1
 
 OBS3="$(now_utc)"
-inject degraded "$OBS3" || { log "drift injection"; exit 1; }
+inject degraded available "$OBS3" || { log "drift injection"; exit 1; }
 send "drifted $OBS3" && wait_ack drifted || exit 1
 
 send "finish"

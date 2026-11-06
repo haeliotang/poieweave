@@ -1,0 +1,4 @@
+N1	PASS	投影 pump-p1 = Failed；计划动作 1 个；dispatched = false；unmet=[]
+N2	FAIL	pump-p1 = Some(Unknown)；expired_evidence = 6；healthy = true
+N3	FAIL	投影 pump-p1 = Degraded；计划动作 1 个；dispatched = false
+failures=2
