@@ -174,6 +174,13 @@ ProposedAction {
 - `whatif_promote_appeal(proposalId, reason)`：写 `promotion_appeals`（status=open）；`whatif_promote_appeals` 查询。
 - 这是**单操作员可用的最小冲突/申诉记录**，不是完整多主体角色模型；second-approver/角色分离仍为未来门禁。
 
+## 6.5 Four-eyes 策略
+
+- `whatif_promote_policy` / `whatif_promote_set_policy` 控制 `four_eyes`（默认关闭）。
+- 开启后：proposal.requested_by 与当前 approver 相同 → `separation_of_duties`，approve/commit 都拒绝。
+- **前置缺口**：当前 auth 只有单 operator，开启 four-eyes 后无法在本机完成第二人批准；真正 second-approver 需要多 operator 身份模型（未来）。
+- 该策略是可测试的门控，不是完整双人审批实现。
+
 ## 7. 命令
 
 | 命令 | 输入 | 输出 |

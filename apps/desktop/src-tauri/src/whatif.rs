@@ -785,6 +785,22 @@ pub fn whatif_promote_appeals(proposal_id: String, state: State<'_, AppState>) -
 }
 
 #[tauri::command]
+pub fn whatif_promote_policy(state: State<'_, AppState>) -> Result<bool, String> {
+    auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    db.promotion_four_eyes()
+}
+
+#[tauri::command]
+pub fn whatif_promote_set_policy(enabled: bool, state: State<'_, AppState>) -> Result<bool, String> {
+    let operator = auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    db.set_promotion_four_eyes(enabled, auth::now_ms())?;
+    db.append_audit(auth::now_ms(), &operator.display_name, "promotion.policy", &format!("fourEyes={enabled}"))?;
+    Ok(enabled)
+}
+
+#[tauri::command]
 pub fn whatif_promote_get(proposal_id: String, state: State<'_, AppState>) -> Result<PromotionProposal, String> {
     auth::require(&state.session)?;
     load_promotion(&state, &proposal_id)
@@ -829,6 +845,9 @@ fn decide_promotion(
     let mut proposal: PromotionProposal = serde_json::from_str(&proposal_json).map_err(|error| error.to_string())?;
     if db.promotion_conflict(proposal_id, &operator.display_name)? {
         return Err("recused: operator declared a conflict for this proposal".into());
+    }
+    if db.promotion_four_eyes()? && proposal.requested_by == operator.display_name {
+        return Err("separation_of_duties: four-eyes policy requires a different approver".into());
     }
     mandate_allows(&proposal, auth::now_ms())?;
     let token = token_for(&db, &proposal.approval_token_id)?;
@@ -918,6 +937,9 @@ pub fn whatif_promote_commit(proposal_id: String, state: State<'_, AppState>) ->
     }
     if db.promotion_conflict(&proposal.proposal_id, &operator.display_name)? {
         return Err("recused: operator declared a conflict for this proposal".into());
+    }
+    if db.promotion_four_eyes()? && proposal.requested_by == operator.display_name {
+        return Err("separation_of_duties: four-eyes policy requires a different approver".into());
     }
     if proposal.status != "approved" {
         return Err(format!("approval_required: proposal is {}", proposal.status));
