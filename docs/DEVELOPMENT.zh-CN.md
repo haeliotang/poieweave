@@ -637,3 +637,4 @@ flowchart LR
 | 0.1.141 | 2026-11-06 | D2 P1：本地 audit hash chain + verify 命令；bundle 导入校验 auditHead/count，新增 audit_mismatch；版本 0.3.9 |
 | 0.1.142 | 2026-11-06 | D2 P1：本地 HMAC 审计锚（SecretStore key + audit_anchors + verify 命令）；版本 0.4.0 |
 | 0.1.143 | 2026-11-06 | D2 P1：delivery_tombstones 本地 ledger（导入 apply、重复不覆盖、查询命令）；版本 0.4.1 |
+| 0.1.144 | 2026-11-06 | D2 P1：case packet schema/校验 + golden fixtures；版本 0.4.2 |

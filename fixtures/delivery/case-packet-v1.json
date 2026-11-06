@@ -1,0 +1,15 @@
+{
+  "schema": "poie.case-packet/0.1",
+  "caseId": "case-1",
+  "scope": "site:base-01",
+  "provenance": [
+    {
+      "kind": "source",
+      "id": "src-1",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "evidenceRefs": [
+    "evidence-1"
+  ]
+}
