@@ -203,9 +203,11 @@ fn main() {
         let a = action("a7", "key-7");
         gate.register_authorized(&a).unwrap();
         let dispatched = matches!(gate.dispatch(&a, &mut adapter, 100).unwrap(), DispatchOutcome::Dispatched { .. });
+        bench.borrow_mut().heartbeat(1_100);
         let mut early: Vec<Box<dyn VerificationSignal>> =
             vec![Box::new(FlowSensor { bench: Rc::clone(&bench), now_ms: 1_100 })];
         let early = verify_action("a7", "bench-v2-plc", &mut early).unwrap();
+        bench.borrow_mut().heartbeat(4_100);
         let mut settled: Vec<Box<dyn VerificationSignal>> =
             vec![Box::new(FlowSensor { bench: Rc::clone(&bench), now_ms: 4_100 })];
         let settled = verify_action("a7", "bench-v2-plc", &mut settled).unwrap();
