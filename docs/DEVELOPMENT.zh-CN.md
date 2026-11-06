@@ -659,3 +659,4 @@ flowchart LR
 | 0.1.163 | 2026-11-06 | M9 最小物理实验台 BOM + poie-exec writable adapter 接口规划（未采购/未接线） |
 | 0.1.164 | 2026-11-06 | M9 模拟台架闭环：gate→writable→独立流量计 5/5 PASS；幂等/过期/断连 fail-closed |
 | 0.1.165 | 2026-11-06 | M9 台架 v2：B6 ACK 无效→outcome_unknown/流路锁死，B7 3s 建立窗口，B5R PLC 看门狗/重连清除；3/3 PASS |
+| 0.1.166 | 2026-11-06 | M9 Modbus TCP 虚拟从站：FC16 寄存器契约/序号幂等/异常映射/看门狗；5/5 PASS |

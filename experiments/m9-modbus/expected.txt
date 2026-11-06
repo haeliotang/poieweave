@@ -1,0 +1,7 @@
+id	result	detail
+M1	PASS	outcome Dispatched=true; flow_x10=80
+M2	PASS	duplicate=true; executions 1->1
+M3	PASS	busy=Ok(false); failure=Ok(false)
+M4	PASS	fallback=Ok(false)
+M5	PASS	fault=1; valve=0; flow=0; cleared=true; fault_after=0
+failures=0
