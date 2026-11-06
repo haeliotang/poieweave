@@ -76,6 +76,11 @@ jobs:
           cargo run --locked -q -p poie-m9-bench-loop > /tmp/m9-bench.out
           diff experiments/m9-bench-loop/expected.txt /tmp/m9-bench.out
           test -f experiments/m9-bench-loop/REPORT.md
+      - name: M9 bench v2 settling/watchdog
+        run: |
+          cargo run --locked -q -p poie-m9-bench-v2 > /tmp/m9-bench-v2.out
+          diff experiments/m9-bench-v2/expected.txt /tmp/m9-bench-v2.out
+          test -f experiments/m9-bench-v2/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v

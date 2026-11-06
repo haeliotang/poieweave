@@ -1,0 +1,5 @@
+id	result	detail
+B6	PASS	dispatched=true; verify1=false; verify5=false; outcome_unknown=true; flow_locked=true
+B7	PASS	early=false; settled=true; state=Some(Acknowledged)
+B5R	PASS	tripped=true; valve_closed=true; blocked_before_clear=true; cleared=true
+failures=0
