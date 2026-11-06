@@ -638,3 +638,4 @@ flowchart LR
 | 0.1.142 | 2026-11-06 | D2 P1：本地 HMAC 审计锚（SecretStore key + audit_anchors + verify 命令）；版本 0.4.0 |
 | 0.1.143 | 2026-11-06 | D2 P1：delivery_tombstones 本地 ledger（导入 apply、重复不覆盖、查询命令）；版本 0.4.1 |
 | 0.1.144 | 2026-11-06 | D2 P1：case packet schema/校验 + golden fixtures；版本 0.4.2 |
+| 0.1.145 | 2026-11-06 | 第 4 步：promotion replay 比较（plan/actions/inputs）；版本 0.4.3 |

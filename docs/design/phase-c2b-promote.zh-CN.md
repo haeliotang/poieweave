@@ -157,12 +157,24 @@ ProposedAction {
 - 不实现 `interrupted` 状态；commit 失败回滚，proposal 仍 approved、token 仍 approved。
 - C2b 的“能力范围”是一次性 token 的 scope；长期 grant/revoke/inventory 属 D2 审批扩展（scope exception，owner: D2 design）。
 
+## 6.3 Replay 比较
+
+`whatif_promote_replay(proposalId)`：
+
+- 重新运行同一 snapshot+variant 的 plan；
+- 以 proposal.nowMs 重定 actions；
+- 比较 `planSha256`、`actionsSha256`、`inputsSha256`；
+- 返回 `PromotionReplayReport {ok, planMatch, actionsMatch, inputsMatch, expected/actual}`；
+- 不写库、不改变 proposal/commit 状态；
+- 用于 Phaino 式 replay 比较，而不是重执行/重提交。
+
 ## 7. 命令
 
 | 命令 | 输入 | 输出 |
 | --- | --- | --- |
 | `whatif_promote_propose` | resultId | PromotionProposal（pending + token） |
 | `whatif_promote_get` | proposalId | PromotionProposal |
+| `whatif_promote_replay` | proposalId | PromotionReplayReport |
 | `whatif_promote_list` | limit | PromotionProposal[] |
 | `whatif_promote_approve` | proposalId | PromotionProposal（approved） |
 | `whatif_promote_reject` | proposalId, reason | PromotionProposal（rejected） |

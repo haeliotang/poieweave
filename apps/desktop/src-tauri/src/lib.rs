@@ -341,6 +341,7 @@ pub fn run() {
             whatif::whatif_timed_compare,
             whatif::whatif_promote_propose,
             whatif::whatif_promote_get,
+            whatif::whatif_promote_replay,
             whatif::whatif_promote_list,
             whatif::whatif_promote_approve,
             whatif::whatif_promote_reject,

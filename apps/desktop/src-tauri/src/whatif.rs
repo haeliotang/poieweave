@@ -679,6 +679,66 @@ pub fn whatif_promote_propose(result_id: String, state: State<'_, AppState>) -> 
     Ok(proposal)
 }
 
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PromotionReplayReport {
+    pub ok: bool,
+    pub plan_match: bool,
+    pub actions_match: bool,
+    pub inputs_match: bool,
+    pub expected_plan_sha256: String,
+    pub actual_plan_sha256: String,
+    pub expected_actions_sha256: String,
+    pub actual_actions_sha256: String,
+    pub expected_inputs_sha256: String,
+    pub actual_inputs_sha256: String,
+}
+
+#[tauri::command]
+pub fn whatif_promote_replay(proposal_id: String, state: State<'_, AppState>) -> Result<PromotionReplayReport, String> {
+    auth::require(&state.session)?;
+    let proposal = load_promotion(&state, &proposal_id)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    let result_json =
+        db.whatif_result(&proposal.result_id)?.ok_or_else(|| format!("unknown_result: {}", proposal.result_id))?;
+    let result: VariantResult = serde_json::from_str(&result_json).map_err(|error| error.to_string())?;
+    let variant_json =
+        db.whatif_variant(&proposal.variant_id)?.ok_or_else(|| format!("unknown_variant: {}", proposal.variant_id))?;
+    let snapshot_json = db
+        .whatif_snapshot(&proposal.snapshot_id)?
+        .ok_or_else(|| format!("unknown_snapshot: {}", proposal.snapshot_id))?;
+    drop(db);
+    let variant: Variant = serde_json::from_str(&variant_json).map_err(|error| error.to_string())?;
+    let snapshot: Snapshot = serde_json::from_str(&snapshot_json).map_err(|error| error.to_string())?;
+    snapshot.verify_model(&state.model)?;
+    let planned = plan_for_promotion(&state.model, &snapshot, &variant)?;
+    let actual_plan_sha = poie_whatif::promotion::promotion_plan_sha256(&planned)?;
+    let actual_actions = plan_to_actions_at(&planned, snapshot.now_s, proposal.now_ms, &proposal.state_version)
+        .map_err(|error| format!("sap_rejected: {error}"))?;
+    let actual_actions_sha = poie_whatif::promotion::proposed_actions_sha256(&actual_actions)?;
+    let variant_sha = poie_digest::sha256_of("poie.whatif-variant/0.1", &variant).map_err(|error| error.to_string())?;
+    let actual_inputs_sha = poie_whatif::promotion::promotion_inputs_sha256(
+        &snapshot.snapshot_sha256,
+        &variant_sha,
+        &result.result_sha256,
+    )?;
+    let plan_match = actual_plan_sha == proposal.plan_sha256;
+    let actions_match = actual_actions_sha == proposal.actions_sha256;
+    let inputs_match = actual_inputs_sha == proposal.inputs_sha256;
+    Ok(PromotionReplayReport {
+        ok: plan_match && actions_match && inputs_match,
+        plan_match,
+        actions_match,
+        inputs_match,
+        expected_plan_sha256: proposal.plan_sha256,
+        actual_plan_sha256: actual_plan_sha,
+        expected_actions_sha256: proposal.actions_sha256,
+        actual_actions_sha256: actual_actions_sha,
+        expected_inputs_sha256: proposal.inputs_sha256,
+        actual_inputs_sha256: actual_inputs_sha,
+    })
+}
+
 #[tauri::command]
 pub fn whatif_promote_get(proposal_id: String, state: State<'_, AppState>) -> Result<PromotionProposal, String> {
     auth::require(&state.session)?;
@@ -982,6 +1042,60 @@ mod tests {
             serde_json::from_str(&db.whatif_result(&result.result_id).unwrap().unwrap()).unwrap();
         assert_eq!(loaded.result_sha256, result.result_sha256);
         assert!(loaded.outcome.structure.is_some());
+    }
+
+    #[test]
+    fn promotion_replay_is_deterministic() {
+        let path = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../scenarios/base-01/model.toml");
+        let model = poie_ontology::model::Model::load(&path).unwrap();
+        let digest = poie_objects::model_digest(&model).unwrap();
+        let snapshot = Snapshot::create(
+            poie_whatif::SnapshotInput {
+                label: "base".into(),
+                model_sha256: digest,
+                evidence_sha256: None,
+                goal: "restore:pump-p1".into(),
+                min_verification: "demonstrated".into(),
+                horizon_s: 86_400.0,
+                now_s: 0.0,
+                start_s: 0.0,
+                deadline_s: None,
+                max_depth: 12,
+                max_actions: 12,
+                seed: 7,
+            },
+            "snap-replay".into(),
+            1,
+            "acceptance".into(),
+        )
+        .unwrap();
+        let variant = Variant {
+            schema: VARIANT_SCHEMA.into(),
+            schema_version: "0.1".into(),
+            id: "var-replay".into(),
+            snapshot_id: snapshot.id.clone(),
+            label: "baseline".into(),
+            description: String::new(),
+            patch: PatchDto::default(),
+            goal: None,
+            min_verification: None,
+            deadline_s: None,
+            created_at: 1,
+            created_by: "acceptance".into(),
+        };
+        let now = 1_800_000_000_000i64;
+        let state_version = promotion_state_version();
+        let first = plan_for_promotion(&model, &snapshot, &variant).unwrap();
+        let second = plan_for_promotion(&model, &snapshot, &variant).unwrap();
+        let first_sha = poie_whatif::promotion::promotion_plan_sha256(&first).unwrap();
+        let second_sha = poie_whatif::promotion::promotion_plan_sha256(&second).unwrap();
+        assert_eq!(first_sha, second_sha);
+        let first_actions = plan_to_actions_at(&first, snapshot.now_s, now, &state_version).unwrap();
+        let second_actions = plan_to_actions_at(&second, snapshot.now_s, now, &state_version).unwrap();
+        assert_eq!(
+            poie_whatif::promotion::proposed_actions_sha256(&first_actions).unwrap(),
+            poie_whatif::promotion::proposed_actions_sha256(&second_actions).unwrap()
+        );
     }
 
     #[test]
