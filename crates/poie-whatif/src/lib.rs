@@ -320,6 +320,8 @@ pub struct VariantResult {
     pub abstained: bool,
     #[serde(default)]
     pub abstain_reason: Option<String>,
+    #[serde(default)]
+    pub counterevidence: Vec<String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -528,6 +530,7 @@ fn finish_result(
     external_dependencies: Vec<DependencyView>,
     actions: Vec<ActionView>,
 ) -> Result<VariantResult, String> {
+    let counterevidence: Vec<String> = root_causes.iter().map(|cause| cause.detail.clone()).collect();
     let settings = Settings {
         now_s: snapshot.now_s,
         start_s: snapshot.start_s,
@@ -565,6 +568,7 @@ fn finish_result(
             "search_limit" => Some("search_limit".into()),
             _ => None,
         },
+        counterevidence,
     };
     result.result_sha256 = result_digest(snapshot, variant, &result)?;
     Ok(result)
@@ -578,6 +582,7 @@ pub fn result_digest(snapshot: &Snapshot, variant: &Variant, result: &VariantRes
         "planSha256": result.plan_sha256, "completionS": result.completion_s,
         "actions": result.actions, "rootCauses": result.root_causes, "externalDependencies": result.external_dependencies,
         "residuals": result.residuals, "abstained": result.abstained, "abstainReason": result.abstain_reason,
+        "counterevidence": result.counterevidence,
     });
     sha256_of("poie.variant/0.1", &payload).map_err(|error| error.to_string())
 }
@@ -725,6 +730,7 @@ mod tests {
         assert_eq!(first.result_sha256, second.result_sha256);
         assert!(first.outcome.structure.is_some());
         assert!(first.outcome.caveat.contains("not a physical"));
+        assert_eq!(first.counterevidence.len(), first.root_causes.len());
     }
 
     #[test]

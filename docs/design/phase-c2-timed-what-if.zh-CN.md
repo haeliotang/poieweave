@@ -106,13 +106,13 @@ TimedResult {
   outcome:{timed:"feasible|blocked|unknown|search_limit|too_late|insufficient_resource|capacity_conflict|power_limited",caveat},
   completionS?, warnings[],
   residuals:{completionS,horizonS,warningCount,verdict},
-  abstained:bool, abstainReason?,
+  abstained:bool, abstainReason?, counterevidence[],
   resultSha256
 }
 ```
 
 - `resultSha256 = sha256("poie.timed-result/0.1\n" + canonical_json({snapshotSha256,scenarioSha256,modelSha256,variant:{startMode,startS,deadlineS,storageDischargeW},settings,outcome,completionS,warnings,residuals,abstained,abstainReason}))`；排除 id/createdAt；可选字段 null 不省略。
-- 固定向量（C2a v0.2 加 residuals/abstention）：`{"snapshotSha256":"bbbb…","scenarioSha256":"5cbf…","modelSha256":"aaaa…","variant":{"startMode":"beginning","startS":0.0,"deadlineS":null,"storageDischargeW":{"electric-energy":3000.0}},"settings":{"startMode":"beginning","startS":0.0,"horizonS":86400.0,"deadlineS":null},"outcome":{"timed":"power_limited","caveat":"relative to this timed scenario and bounded model; not a physical feasibility proof"},"completionS":null,"warnings":[],"residuals":{"completionS":null,"horizonS":86400.0,"warningCount":0,"verdict":"power_limited"},"abstained":false,"abstainReason":null}` → `e6f616514da00c9a4fdce83ed7bc0bf5611e73d14236ce2bf73f381a103c80fc`。
+- 固定向量（C2a v0.2 加 residuals/abstention）：`{"snapshotSha256":"bbbb…","scenarioSha256":"5cbf…","modelSha256":"aaaa…","variant":{"startMode":"beginning","startS":0.0,"deadlineS":null,"storageDischargeW":{"electric-energy":3000.0}},"settings":{"startMode":"beginning","startS":0.0,"horizonS":86400.0,"deadlineS":null},"outcome":{"timed":"power_limited","caveat":"relative to this timed scenario and bounded model; not a physical feasibility proof"},"completionS":null,"warnings":[],"residuals":{"completionS":null,"horizonS":86400.0,"warningCount":0,"verdict":"power_limited"},"abstained":false,"abstainReason":null,"counterevidence":[]}` → `52ca5982f59acbdce2e1ba2b129d38d55f19b48418a2db0d1cdc6031aced65e4`。
 - caveat 固定：`"relative to this timed scenario and bounded model; not a physical feasibility proof"`。
 
 ### 5.4 Timed Compare

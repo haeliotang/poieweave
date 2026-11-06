@@ -491,7 +491,7 @@ export interface PromotionProposal {
   approvalTokenId: string;
   actions: unknown[];
   sapPreview: { checks: { check: string; status: string; detail: string }[]; assumed: string[]; rejections: string[] };
-  assessment?: { residuals?: unknown; abstained: boolean; abstainReason?: string | null } | null;
+  assessment?: { residuals?: unknown; abstained: boolean; abstainReason?: string | null; counterevidence?: string[] } | null;
   proposalSha256: string;
 }
 

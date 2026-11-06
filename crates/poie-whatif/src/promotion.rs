@@ -39,6 +39,8 @@ pub struct PromotionAssessment {
     pub abstained: bool,
     #[serde(default)]
     pub abstain_reason: Option<String>,
+    #[serde(default)]
+    pub counterevidence: Vec<String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
