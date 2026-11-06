@@ -271,6 +271,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "poie-m9-bench-v2"
+version = "0.1.0"
+dependencies = [
+ "poie-exec",
+ "poie-state",
+]
+
+[[package]]
 name = "poie-objects"
 version = "0.1.0"
 dependencies = [
