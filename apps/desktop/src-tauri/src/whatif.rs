@@ -941,6 +941,76 @@ pub fn replay_trust_remove(public_key: String, state: State<'_, AppState>) -> Re
     Ok(())
 }
 
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PromotionAuditReport {
+    pub ok: bool,
+    pub proposal_digest_ok: bool,
+    pub actions_digest_ok: bool,
+    pub commit_digest_ok: bool,
+    pub commit_matches_proposal: bool,
+    pub audit_present: bool,
+    pub details: Vec<String>,
+}
+
+#[tauri::command]
+pub fn whatif_promote_audit(proposal_id: String, state: State<'_, AppState>) -> Result<PromotionAuditReport, String> {
+    auth::require(&state.session)?;
+    let proposal = load_promotion(&state, &proposal_id)?;
+    let proposal_digest_ok = poie_whatif::promotion::promotion_proposal_digest(&proposal)? == proposal.proposal_sha256;
+    let actions_digest_ok =
+        poie_whatif::promotion::proposed_actions_sha256(&proposal.actions)? == proposal.actions_sha256;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    let commit = db
+        .promotion_commit(&proposal_id)?
+        .map(|json| serde_json::from_str::<PromotionCommit>(&json))
+        .transpose()
+        .map_err(|error| error.to_string())?;
+    let Some(commit) = commit else {
+        return Ok(PromotionAuditReport {
+            ok: false,
+            proposal_digest_ok,
+            actions_digest_ok,
+            commit_digest_ok: false,
+            commit_matches_proposal: false,
+            audit_present: false,
+            details: vec!["no promotion commit".into()],
+        });
+    };
+    let commit_digest_ok = poie_whatif::promotion::promotion_commit_digest(&commit)? == commit.commit_sha256;
+    let commit_matches_proposal = commit.proposal_id == proposal.proposal_id
+        && commit.plan_sha256 == proposal.plan_sha256
+        && commit.actions_sha256 == proposal.actions_sha256
+        && commit.inputs_sha256 == proposal.inputs_sha256
+        && commit.token_id == proposal.approval_token_id;
+    let audit_present = db.promotion_commit_audit(&proposal_id, &commit.commit_sha256)?;
+    let mut details = Vec::new();
+    if !proposal_digest_ok {
+        details.push("proposal digest mismatch".into());
+    }
+    if !actions_digest_ok {
+        details.push("actions digest mismatch".into());
+    }
+    if !commit_digest_ok {
+        details.push("commit digest mismatch".into());
+    }
+    if !commit_matches_proposal {
+        details.push("commit fields do not match proposal".into());
+    }
+    if !audit_present {
+        details.push("promotion.committed audit row missing".into());
+    }
+    Ok(PromotionAuditReport {
+        ok: proposal_digest_ok && actions_digest_ok && commit_digest_ok && commit_matches_proposal && audit_present,
+        proposal_digest_ok,
+        actions_digest_ok,
+        commit_digest_ok,
+        commit_matches_proposal,
+        audit_present,
+        details,
+    })
+}
+
 #[tauri::command]
 pub fn whatif_promote_get(proposal_id: String, state: State<'_, AppState>) -> Result<PromotionProposal, String> {
     auth::require(&state.session)?;

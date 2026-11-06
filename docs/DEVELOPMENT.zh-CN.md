@@ -652,3 +652,4 @@ flowchart LR
 | 0.1.156 | 2026-11-06 | 第 4 步：replay 信任目录/公钥固定（DB v13）；比较前强制 pin；版本 0.4.14 |
 | 0.1.157 | 2026-11-06 | 第 4 步：Settings replay 信任目录 UI；版本 0.4.15 |
 | 0.1.158 | 2026-11-06 | 第 4 步：What-if replay packet 导出/远端比较 UI；版本 0.4.16 |
+| 0.1.159 | 2026-11-06 | C2b：promotion 三路审计一致性检查（proposal/actions/commit/audit）；版本 0.4.17 |
