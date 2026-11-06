@@ -1,0 +1,33 @@
+scenario	method	success	completion_h	actions	unmet	sap_valid	terminal_energy_kwh	decisions	max_lookahead_s
+h2c-16	A_joint	false	8.000	2	restore:lathe-1:deadline missed	true	1.500	2	0
+h2c-16	B1_task_priority	false	8.000	2		true	1.700	2	0
+h2c-16	B2_safety_stock	false	8.000	2		true	1.700	2	0
+h2c-16	B3_short_term	false	8.000	2		true	1.700	2	0
+h2c-17	A_joint	false	8.000	2	restore:lathe-1:deadline missed	true	1.500	2	0
+h2c-17	B1_task_priority	false	8.000	2		true	1.700	2	0
+h2c-17	B2_safety_stock	false	8.000	2		true	1.700	2	0
+h2c-17	B3_short_term	false	8.000	2		true	1.700	2	0
+h2c-18	A_joint	true	4.000	2		true	1.200	1	0
+h2c-18	B1_task_priority	false	8.000	2		true	1.200	1	0
+h2c-18	B2_safety_stock	false	8.000	2		true	1.200	1	0
+h2c-18	B3_short_term	false	8.000	2		true	1.200	1	0
+h2c-19	A_joint	false	8.000	2	restore:lathe-1:deadline missed	true	0.500	2	0
+h2c-19	B1_task_priority	false	8.000	2		true	0.700	2	0
+h2c-19	B2_safety_stock	false	8.000	2		true	0.700	2	0
+h2c-19	B3_short_term	false	8.000	2		true	0.700	2	0
+h2c-20	A_joint	true	4.000	2		true	-0.300	1	0
+h2c-20	B1_task_priority	false	8.000	2		true	-0.300	1	0
+h2c-20	B2_safety_stock	false	8.000	2		true	-0.300	1	0
+h2c-20	B3_short_term	false	8.000	2		true	-0.300	1	0
+h2c-21	A_joint	true	4.000	2		true	0.200	1	0
+h2c-21	B1_task_priority	false	8.000	2		true	0.200	1	0
+h2c-21	B2_safety_stock	false	8.000	2		true	0.200	1	0
+h2c-21	B3_short_term	false	8.000	2		true	0.200	1	0
+h2c-22	A_joint	false	8.000	2	restore:lathe-1:deadline missed	true	0.000	2	0
+h2c-22	B1_task_priority	false	8.000	2		true	0.200	2	0
+h2c-22	B2_safety_stock	false	8.000	2		true	0.200	2	0
+h2c-22	B3_short_term	false	8.000	2		true	0.200	2	0
+h2c-23	A_joint	false	8.000	2	restore:lathe-1:deadline missed	true	0.500	2	0
+h2c-23	B1_task_priority	false	8.000	2		true	0.700	2	0
+h2c-23	B2_safety_stock	false	8.000	2		true	0.700	2	0
+h2c-23	B3_short_term	false	8.000	2		true	0.700	2	0
