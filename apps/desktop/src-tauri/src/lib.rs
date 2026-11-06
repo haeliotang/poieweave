@@ -6,6 +6,7 @@
 //! `tauri.conf.json`.
 
 mod agent;
+mod anchor;
 mod auth;
 mod db;
 mod delivery;
@@ -87,11 +88,34 @@ fn auth_sign_out(state: State<'_, AppState>) -> Result<AuthStatus, String> {
     auth::sign_out(&db, &state.session)
 }
 
+#[derive(serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+struct AnchorReceipt {
+    count: u64,
+    head: String,
+    hmac: String,
+}
+
 #[tauri::command]
 fn audit_verify(state: State<'_, AppState>) -> Result<Option<i64>, String> {
     auth::require(&state.session)?;
     let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
     db.verify_audit_chain()
+}
+
+#[tauri::command]
+fn audit_anchor(state: State<'_, AppState>) -> Result<AnchorReceipt, String> {
+    auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    let (count, head, hmac) = anchor::anchor_current(&db, &*state.secrets)?;
+    Ok(AnchorReceipt { count, head, hmac })
+}
+
+#[tauri::command]
+fn audit_anchor_verify(state: State<'_, AppState>) -> Result<bool, String> {
+    auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    anchor::verify_current(&db, &*state.secrets)
 }
 
 #[tauri::command]
@@ -272,6 +296,8 @@ pub fn run() {
             auth_sign_out,
             audit_list,
             audit_verify,
+            audit_anchor,
+            audit_anchor_verify,
             inference_status,
             inference_configure,
             inference_forget,
