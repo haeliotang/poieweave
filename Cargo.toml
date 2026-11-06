@@ -33,6 +33,7 @@ members = [
     "experiments/shadow-run/runner",
     "experiments/basyx-shadow/runner",
     "experiments/m9-bench-loop/runner",
+    "experiments/m9-bench-v2/runner",
     "experiments/vec-base01/runner",
 ]
 
