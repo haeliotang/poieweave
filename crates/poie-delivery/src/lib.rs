@@ -10,6 +10,7 @@ use serde_json::{json, Value};
 
 pub const MANIFEST_SCHEMA: &str = "poie.site-manifest/0.1";
 pub const BUNDLE_SCHEMA: &str = "poie.site-bundle/0.1";
+pub const BUNDLE_SCHEMA_V2: &str = "poie.site-bundle/0.2";
 pub const STATE_SCHEMA: &str = "poie.delivery-state/0.1";
 pub const DIAGNOSTICS_SCHEMA: &str = "poie.delivery-diagnostics/0.1";
 pub const MAX_BUNDLE_BYTES: usize = 256 * 1024;
@@ -47,6 +48,39 @@ pub struct SiteManifest {
 pub struct SiteBundle {
     pub schema: String,
     pub manifest: SiteManifest,
+    #[serde(default)]
+    pub audit_head: Option<String>,
+    #[serde(default)]
+    pub audit_count: Option<u64>,
+    #[serde(default)]
+    pub deletions: Vec<DeletionMarker>,
+    #[serde(default)]
+    pub case_packet: Option<Value>,
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct DeletionMarker {
+    pub kind: String,
+    pub id: String,
+    #[serde(default)]
+    pub reason: String,
+    pub at: i64,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct BundleExtensions {
+    pub audit_head: Option<String>,
+    pub audit_count: Option<u64>,
+    pub deletions: Vec<DeletionMarker>,
+    pub case_packet: Option<Value>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct ParsedBundle {
+    pub manifest: SiteManifest,
+    pub manifest_sha256: String,
+    pub extensions: BundleExtensions,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -148,11 +182,16 @@ fn check_manifest(manifest: &SiteManifest) -> Result<(), String> {
 }
 
 pub fn parse_bundle(text: &str) -> Result<(SiteManifest, String), String> {
+    let parsed = parse_bundle_full(text)?;
+    Ok((parsed.manifest, parsed.manifest_sha256))
+}
+
+pub fn parse_bundle_full(text: &str) -> Result<ParsedBundle, String> {
     if text.len() > MAX_BUNDLE_BYTES {
         return Err("invalid_parameter: bundle too large".into());
     }
     let bundle: SiteBundle = serde_json::from_str(text).map_err(|error| format!("manifest_invalid: {error}"))?;
-    if bundle.schema != BUNDLE_SCHEMA {
+    if bundle.schema != BUNDLE_SCHEMA && bundle.schema != BUNDLE_SCHEMA_V2 {
         return Err(format!("unsupported_schema: {:?}", bundle.schema));
     }
     check_manifest(&bundle.manifest)?;
@@ -164,7 +203,50 @@ pub fn parse_bundle(text: &str) -> Result<(SiteManifest, String), String> {
     if digest != bundle.manifest.manifest_sha256 {
         return Err("manifest_invalid: manifestSha256 does not match".into());
     }
-    Ok((bundle.manifest, digest))
+    if let Some(head) = &bundle.audit_head {
+        if head.len() != 64 || !head.chars().all(|character| character.is_ascii_hexdigit()) {
+            return Err("manifest_invalid: auditHead must be 64 hex characters".into());
+        }
+    }
+    if let Some(count) = bundle.audit_count {
+        if count == 0 {
+            return Err("manifest_invalid: auditCount must be positive".into());
+        }
+    }
+    if bundle.deletions.len() > 256 {
+        return Err("invalid_parameter: too many deletion markers".into());
+    }
+    let mut seen = std::collections::BTreeSet::new();
+    for marker in &bundle.deletions {
+        if marker.kind.trim().is_empty() || marker.id.trim().is_empty() {
+            return Err("manifest_invalid: deletion kind/id required".into());
+        }
+        if marker.kind.len() > MAX_STRING_BYTES
+            || marker.id.len() > MAX_STRING_BYTES
+            || marker.reason.len() > MAX_STRING_BYTES
+        {
+            return Err("invalid_parameter: deletion marker too large".into());
+        }
+        if !seen.insert((marker.kind.clone(), marker.id.clone())) {
+            return Err("manifest_invalid: duplicate deletion marker".into());
+        }
+    }
+    if let Some(packet) = &bundle.case_packet {
+        let size = serde_json::to_string(packet).map_err(|error| error.to_string())?.len();
+        if size > 64 * 1024 {
+            return Err("invalid_parameter: case packet too large".into());
+        }
+    }
+    Ok(ParsedBundle {
+        manifest: bundle.manifest,
+        manifest_sha256: digest,
+        extensions: BundleExtensions {
+            audit_head: bundle.audit_head,
+            audit_count: bundle.audit_count,
+            deletions: bundle.deletions,
+            case_packet: bundle.case_packet,
+        },
+    })
 }
 
 pub fn summary(manifest: &SiteManifest, sha: &str, imported_at: i64, imported_by: &str) -> ManifestSummary {
@@ -327,8 +409,15 @@ mod tests {
     #[test]
     fn digest_and_bundle_roundtrip() {
         let manifest = manifest();
-        let bundle =
-            serde_json::to_string(&SiteBundle { schema: BUNDLE_SCHEMA.into(), manifest: manifest.clone() }).unwrap();
+        let bundle = serde_json::to_string(&SiteBundle {
+            schema: BUNDLE_SCHEMA.into(),
+            manifest: manifest.clone(),
+            audit_head: None,
+            audit_count: None,
+            deletions: Vec::new(),
+            case_packet: None,
+        })
+        .unwrap();
         let (parsed, digest) = parse_bundle(&bundle).unwrap();
         assert_eq!(digest, manifest.manifest_sha256);
         assert_eq!(parsed.site_id, "base-01");
@@ -388,5 +477,44 @@ mod tests {
             diagnostics(&state, 2, "0.1.1", "linux", "x86_64", &["token sk-secret-123 /Users/ada/secret".into()]);
         assert!(summary.log_tail.join(" ").contains("[redacted]"));
         assert!(!summary.log_tail.join(" ").contains("sk-secret"));
+    }
+
+    #[test]
+    fn bundle_v2_parses_audit_head_deletions_and_case_packet() {
+        let manifest = manifest();
+        let bundle = serde_json::to_string(&SiteBundle {
+            schema: BUNDLE_SCHEMA_V2.into(),
+            manifest: manifest.clone(),
+            audit_head: Some("a".repeat(64)),
+            audit_count: Some(7),
+            deletions: vec![DeletionMarker {
+                kind: "memory".into(),
+                id: "m1".into(),
+                reason: "withdrawn".into(),
+                at: 1,
+            }],
+            case_packet: Some(json!({"scope": "site:base-01"})),
+        })
+        .unwrap();
+        let parsed = parse_bundle_full(&bundle).unwrap();
+        assert_eq!(parsed.extensions.audit_count, Some(7));
+        assert_eq!(parsed.extensions.deletions.len(), 1);
+        assert!(parsed.extensions.case_packet.is_some());
+    }
+
+    #[test]
+    fn bundle_v2_rejects_duplicate_deletion_markers() {
+        let manifest = manifest();
+        let marker = DeletionMarker { kind: "memory".into(), id: "m1".into(), reason: String::new(), at: 1 };
+        let bundle = serde_json::to_string(&SiteBundle {
+            schema: BUNDLE_SCHEMA_V2.into(),
+            manifest,
+            audit_head: None,
+            audit_count: None,
+            deletions: vec![marker.clone(), marker],
+            case_packet: None,
+        })
+        .unwrap();
+        assert!(parse_bundle_full(&bundle).is_err());
     }
 }

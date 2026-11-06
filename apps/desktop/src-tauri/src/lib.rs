@@ -315,6 +315,7 @@ pub fn run() {
             delivery::delivery_manifest_inspect,
             delivery::delivery_import,
             delivery::delivery_state,
+            delivery::delivery_bundle_meta,
             delivery::delivery_rollback,
             delivery::delivery_clear,
             delivery::delivery_diagnostics_export

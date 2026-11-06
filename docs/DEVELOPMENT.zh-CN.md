@@ -633,3 +633,4 @@ flowchart LR
 | 0.1.137 | 2026-11-06 | C2b v0.2：C1 plan/structure 结果增加 residuals/abstained/abstainReason 并纳入 digest、UI；版本 0.3.5 |
 | 0.1.138 | 2026-11-06 | C2b v0.2：C2a timed 结果增加 residuals/abstention，promotion assessment 绑定 C1 residuals；版本 0.3.6 |
 | 0.1.139 | 2026-11-06 | C2b v0.2：C1/C2a 增加 counterevidence，promotion assessment 绑定；版本 0.3.7 |
+| 0.1.140 | 2026-11-06 | D2 P1：bundle v0.2 auditHead/auditCount/deletions/casePacket 结构与 v7 持久化；版本 0.3.8 |
