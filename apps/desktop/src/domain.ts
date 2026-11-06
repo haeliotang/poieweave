@@ -534,3 +534,5 @@ export interface DeliveryInspect {
   };
   manifestSha256: string;
 }
+
+export type TrustedReplayNode = { publicKey: string; name: string; addedAt: number; addedBy: string };
