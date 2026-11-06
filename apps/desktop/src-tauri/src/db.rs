@@ -1374,4 +1374,36 @@ mod tests {
         db.set_promotion_four_eyes(false, 2).unwrap();
         assert!(!db.promotion_four_eyes().unwrap());
     }
+
+    #[test]
+    fn legacy_single_operator_table_migrates_to_multi_operator() {
+        let path = std::env::temp_dir().join(format!("poieweave-operator-migration-{}.sqlite3", std::process::id()));
+        let _ = std::fs::remove_file(&path);
+        {
+            let connection = Connection::open(&path).unwrap();
+            connection
+                .execute_batch(
+                    "CREATE TABLE operators (
+                         id INTEGER PRIMARY KEY CHECK (id = 1),
+                         display_name TEXT NOT NULL,
+                         salt_hex TEXT NOT NULL,
+                         verifier_hex TEXT NOT NULL,
+                         iterations INTEGER NOT NULL,
+                         created_at_ms INTEGER NOT NULL
+                     );
+                     INSERT INTO operators VALUES (1, 'Ada', '00', 'ff', 1, 1);",
+                )
+                .unwrap();
+        }
+        let db = Db::open(&path).unwrap();
+        let operators = db.operators().unwrap();
+        assert_eq!(operators.len(), 1);
+        assert_eq!(operators[0].display_name, "Ada");
+        let sql: String = db
+            .connection
+            .query_row("SELECT sql FROM sqlite_master WHERE type='table' AND name='operators'", [], |row| row.get(0))
+            .unwrap();
+        assert!(!sql.contains("CHECK (id = 1)"));
+        let _ = std::fs::remove_file(&path);
+    }
 }
