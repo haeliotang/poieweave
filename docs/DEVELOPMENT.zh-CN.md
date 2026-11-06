@@ -656,3 +656,4 @@ flowchart LR
 | 0.1.160 | 2026-11-06 | H2b 预登记 + 开发诊断：Base-01 母线修复环、4h 截止不可行；留出集封存；提出 H2c |
 | 0.1.161 | 2026-11-06 | H2c 预登记 + 开发诊断 + 留出集首次运行：A 3/8 vs 基线 0/8（+37.5pp，区间含 0）；base-04 备件/仿真修正 |
 | 0.1.162 | 2026-11-06 | M9b/M9c BaSyx 预演：failed→1 个影子动作不派发；stale→Unknown/expired=6；degraded 恢复 |
+| 0.1.163 | 2026-11-06 | M9 最小物理实验台 BOM + poie-exec writable adapter 接口规划（未采购/未接线） |
