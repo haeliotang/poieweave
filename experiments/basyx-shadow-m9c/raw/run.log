@@ -1,0 +1,33 @@
+[13:35:46] build runner
+[13:35:46] docker run poie-basyx-m9c-38930 on 127.0.0.1:49744
+5cc25a3993a63d32bba36d60c8a9cf088012558fb5a26f88f257869143134f44
+[13:35:52] ready (http://127.0.0.1:49744/shells → 200)
+[13:35:52] POST /submodels pump-p1 (failed, 2026-11-06T13:35:52Z) → 201
+[13:35:52] POST /submodels bat-1 (available, 2026-11-06T13:35:52Z) → 201
+[13:35:52] POST /submodels filter-1 (available, 2026-11-06T13:35:52Z) → 201
+[13:35:52] POST /submodels bus-1 (available, 2026-11-06T13:35:52Z) → 201
+[13:35:52] POST /submodels robot-m1 (available, 2026-11-06T13:35:52Z) → 201
+[13:35:52] POST /submodels charger-1 (available, 2026-11-06T13:35:52Z) → 201
+[13:35:53] POST /shells → 201
+[13:35:53] runner ← failed 2026-11-06T13:35:52Z
+[13:35:53] POST /submodels pump-p1 (failed, 2026-11-06T13:33:53Z) → 201
+[13:35:53] POST /submodels bat-1 (available, 2026-11-06T13:33:53Z) → 201
+[13:35:53] POST /submodels filter-1 (available, 2026-11-06T13:33:53Z) → 201
+[13:35:53] POST /submodels bus-1 (available, 2026-11-06T13:33:53Z) → 201
+[13:35:54] POST /submodels robot-m1 (available, 2026-11-06T13:33:53Z) → 201
+[13:35:54] POST /submodels charger-1 (available, 2026-11-06T13:33:53Z) → 201
+[13:35:54] runner ← stale 2026-11-06T13:33:53Z
+[13:35:54] POST /submodels pump-p1 (degraded, 2026-11-06T13:35:54Z) → 201
+[13:35:54] POST /submodels bat-1 (available, 2026-11-06T13:35:54Z) → 201
+[13:35:54] POST /submodels filter-1 (available, 2026-11-06T13:35:54Z) → 201
+[13:35:54] POST /submodels bus-1 (available, 2026-11-06T13:35:54Z) → 201
+[13:35:54] POST /submodels robot-m1 (available, 2026-11-06T13:35:54Z) → 201
+[13:35:54] POST /submodels charger-1 (available, 2026-11-06T13:35:54Z) → 201
+[13:35:54] runner ← drifted 2026-11-06T13:35:54Z
+[13:35:55] runner ← finish
+N1	PASS	投影 pump-p1 = Failed；计划动作 1 个；dispatched = false；unmet=[]
+N2	PASS	pump-p1 = Some(Unknown)；expired_evidence = 6；healthy = true
+N3	PASS	投影 pump-p1 = Degraded；计划动作 1 个；dispatched = false
+failures=0
+[13:35:55] runner exit status 0 (0 = all checks PASS)
+[13:35:55] report: /Users/hao/Documents/poieweave/experiments/basyx-shadow-m9c/REPORT.md
