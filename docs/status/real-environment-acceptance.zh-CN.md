@@ -113,6 +113,12 @@ System Events 仍返回 `-10004`，但已改用 CoreGraphics 事件 + 截图驱�
 - 修复了两处真实发布缺陷：SHA256SUMS 内部目录路径、Windows 资产未版本化
 - 签名状态仍为 **未签名/未公证**；D2 不得声称已签名
 
+## 4.4 Four-eyes 双人验收状态（2026-11-06）
+
+- UI 已提供添加 operator、命名登录、four-eyes 开关。
+- 后端测试验证：different approver 允许、same approver 拒绝。
+- 真实 A/B 双人截图验收未完成：本机自动化缺少 Accessibility 权限，无法稳定驱动桌面控件；未将命令测试冒充为 UI 验收。
+
 ## 5. 结论
 
 **真实环境验收大部分通过**：构建/启动/真实 DB/宿主文件/认证/provider 配置/Agent tool loop/What-if structure 已由实际 UI 运行和 16 个宿主测试验证。  
