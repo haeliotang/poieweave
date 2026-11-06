@@ -119,18 +119,67 @@ pub fn register(db: &Db, session: &SessionState, display_name: &str, passphrase:
     status(db, session)
 }
 
-pub fn sign_in(db: &Db, session: &SessionState, passphrase: &str) -> Result<AuthStatus, String> {
-    let Some(operator) = db.operator()? else {
-        return Err("no local operator exists yet".into());
-    };
-    let salt = decode_hex(&operator.salt_hex)?;
-    let expected = decode_hex(&operator.verifier_hex)?;
-    let candidate = hash(passphrase, &salt, operator.iterations);
-    let at = now_ms();
-    if !constant_time_eq(&candidate, &expected) {
-        db.append_audit(at, &operator.display_name, "auth.sign_in_failed", "invalid passphrase")?;
-        return Err("invalid passphrase".into());
+pub fn add_operator(
+    db: &Db,
+    session: &SessionState,
+    display_name: &str,
+    passphrase: &str,
+) -> Result<AuthStatus, String> {
+    require(session)?;
+    let display_name = display_name.trim();
+    if display_name.len() < 2 || display_name.len() > 80 {
+        return Err("display name must be 2–80 characters".into());
     }
+    if passphrase.len() < 10 || passphrase.len() > 512 {
+        return Err("passphrase must be at least 10 characters".into());
+    }
+    let mut salt = [0u8; 16];
+    getrandom::getrandom(&mut salt).map_err(|error| format!("random salt: {error}"))?;
+    let verifier = hash(passphrase, &salt, PBKDF2_ITERATIONS);
+    let created_at_ms = now_ms();
+    db.create_operator(&OperatorRecord {
+        display_name: display_name.to_string(),
+        salt_hex: hex::encode(salt),
+        verifier_hex: hex::encode(verifier),
+        iterations: PBKDF2_ITERATIONS,
+        created_at_ms,
+    })?;
+    db.append_audit(created_at_ms, display_name, "auth.operator_added", "local operator added")?;
+    status(db, session)
+}
+
+pub fn sign_in(
+    db: &Db,
+    session: &SessionState,
+    passphrase: &str,
+    display_name: Option<&str>,
+) -> Result<AuthStatus, String> {
+    let operators = db.operators()?;
+    if operators.is_empty() {
+        return Err("no local operator exists yet".into());
+    }
+    let wanted = display_name.map(str::trim).filter(|value| !value.is_empty());
+    let mut matched: Option<&OperatorRecord> = None;
+    for operator in &operators {
+        if wanted.is_some_and(|name| name != operator.display_name) {
+            continue;
+        }
+        let salt = decode_hex(&operator.salt_hex)?;
+        let expected = decode_hex(&operator.verifier_hex)?;
+        let candidate = hash(passphrase, &salt, operator.iterations);
+        if constant_time_eq(&candidate, &expected) {
+            if matched.is_some() && wanted.is_none() {
+                return Err("multiple operators match this passphrase; select an operator".into());
+            }
+            matched = Some(operator);
+        }
+    }
+    let Some(operator) = matched else {
+        let actor = wanted.unwrap_or("unknown");
+        db.append_audit(now_ms(), actor, "auth.sign_in_failed", "invalid passphrase")?;
+        return Err("invalid passphrase".into());
+    };
+    let at = now_ms();
     *session.lock().map_err(|_| "session lock poisoned".to_string())? = Some(Session {
         session_id: new_session_id()?,
         display_name: operator.display_name.clone(),
@@ -184,10 +233,13 @@ mod tests {
 
         sign_out(&db, &session).unwrap();
         assert!(!status(&db, &session).unwrap().signed_in);
-        assert!(sign_in(&db, &session, "wrong passphrase").is_err());
-        assert!(sign_in(&db, &session, "correct horse battery staple").is_ok());
+        assert!(sign_in(&db, &session, "wrong passphrase", None).is_err());
+        assert!(sign_in(&db, &session, "correct horse battery staple", None).is_ok());
         assert_eq!(require(&session).unwrap().display_name, "Ada");
-        assert!(register(&db, &session, "Other", "another passphrase").is_err());
+        assert!(add_operator(&db, &session, "Bob", "another passphrase").is_ok());
+        assert_eq!(db.operators().unwrap().len(), 2);
+        assert!(sign_in(&db, &session, "another passphrase", Some("Bob")).is_ok());
+        assert_eq!(require(&session).unwrap().display_name, "Bob");
 
         let audit = db.audit(10).unwrap();
         assert!(audit.iter().any(|row| row.event == "auth.register"));

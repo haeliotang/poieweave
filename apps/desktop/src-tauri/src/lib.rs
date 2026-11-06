@@ -77,9 +77,23 @@ fn auth_register(display_name: String, passphrase: String, state: State<'_, AppS
 }
 
 #[tauri::command]
-fn auth_sign_in(passphrase: String, state: State<'_, AppState>) -> Result<AuthStatus, String> {
+fn auth_sign_in(
+    passphrase: String,
+    display_name: Option<String>,
+    state: State<'_, AppState>,
+) -> Result<AuthStatus, String> {
     let db = lock_db(&state)?;
-    auth::sign_in(&db, &state.session, &passphrase)
+    auth::sign_in(&db, &state.session, &passphrase, display_name.as_deref())
+}
+
+#[tauri::command]
+fn auth_add_operator(
+    display_name: String,
+    passphrase: String,
+    state: State<'_, AppState>,
+) -> Result<AuthStatus, String> {
+    let db = lock_db(&state)?;
+    auth::add_operator(&db, &state.session, &display_name, &passphrase)
 }
 
 #[tauri::command]
@@ -292,6 +306,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             auth_status,
             auth_register,
+            auth_add_operator,
             auth_sign_in,
             auth_sign_out,
             audit_list,
