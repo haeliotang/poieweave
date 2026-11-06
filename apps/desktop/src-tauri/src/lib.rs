@@ -114,9 +114,20 @@ struct AnchorReceipt {
 
 #[tauri::command]
 fn bench_run(scenario: String, state: State<'_, AppState>) -> Result<bench::BenchReport, String> {
-    auth::require(&state.session)?;
+    let operator = auth::require(&state.session)?;
     let mut bench = state.bench.lock().map_err(|_| "bench lock poisoned".to_string())?;
-    bench::run(&mut bench, &scenario)
+    let report = bench::run(&mut bench, &scenario)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    db.append_audit(
+        auth::now_ms(),
+        &operator.display_name,
+        "bench.run",
+        &format!(
+            "{} passed={} unknown={} fallback={} executions={}",
+            report.scenario, report.passed, report.unknown, report.fallback, report.physical_executions
+        ),
+    )?;
+    Ok(report)
 }
 
 #[tauri::command]

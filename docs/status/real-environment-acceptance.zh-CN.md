@@ -42,7 +42,7 @@
 | 真实 UI：认证/provider/Agent/What-if | 通过 | 见 §2.1 与截图 |
 | 完整门禁 | 通过 | `scripts/verify-all.sh` → `ALL GATES PASSED` |
 | Rust 列表测试 | 433 | 库 417 + 其他 16 |
-| UI smoke | 7 | Playwright（vite preview，非 Tauri host） |
+| UI smoke | 8 | Playwright（vite preview，非 Tauri host） |
 
 ## 3. 未完成/受阻
 
