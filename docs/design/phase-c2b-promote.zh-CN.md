@@ -180,6 +180,7 @@ ProposedAction {
 - 开启后：proposal.requested_by 与当前 approver 相同 → `separation_of_duties`，approve/commit 都拒绝。
 - **多 operator 身份（0.4.7）**：`operators` 表已迁移为多行；`auth_add_operator` 增加第二 operator；`auth_sign_in` 支持可选 displayName，未指定时按唯一 passphrase 匹配。第二 operator 可签出/签入后 approve/commit；token 在 four-eyes 下允许非申请人 session。
 - Settings 已提供“添加操作员”入口；登录框可选操作员名称，未填时按唯一 passphrase 匹配。
+- What-if 面板提供 four-eyes 开关；开启后自批拒绝。真实双人验收记录仍待补。
 - 该策略是可测试的门控，不是完整双人审批实现。
 
 ## 7. 命令

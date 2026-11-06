@@ -645,3 +645,4 @@ flowchart LR
 | 0.1.149 | 2026-11-06 | 第 4 步：多 operator 身份（operators 迁移、auth_add_operator、four-eyes 第二人批准）；版本 0.4.7 |
 | 0.1.150 | 2026-11-06 | 第 4 步：legacy 单 operator 表迁移测试；版本 0.4.8 |
 | 0.1.151 | 2026-11-06 | 第 4 步：Settings 添加 operator 入口 + 可选操作员名称登录；版本 0.4.9 |
+| 0.1.152 | 2026-11-06 | 第 4 步：What-if four-eyes 开关；版本 0.4.10 |
