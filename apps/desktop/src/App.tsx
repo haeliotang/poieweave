@@ -35,6 +35,7 @@ import {
   type PromotionProposal,
   type PromotionCommit,
   type TrustedReplayNode,
+  type ReplayReport,
 } from "./domain";
 import brandMark from "./assets/poieweave-mono.svg";
 import { detectLang, messagesFor, type Lang } from "./i18n";
@@ -844,6 +845,9 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
   const [promotionCommit, setPromotionCommit] = useState<PromotionCommit | null>(null);
   const [promotionError, setPromotionError] = useState("");
   const [fourEyes, setFourEyes] = useState(false);
+  const [replayPacketText, setReplayPacketText] = useState("");
+  const [replayReport, setReplayReport] = useState<ReplayReport | null>(null);
+  const [replayError, setReplayError] = useState("");
 
   useEffect(() => {
     if (!hosted) return;
@@ -889,6 +893,26 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
       const enabled = await invoke<boolean>("whatif_promote_set_policy", { enabled: !fourEyes });
       setFourEyes(enabled);
     } catch (caught) { setPromotionError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const exportReplayPacket = async () => {
+    if (!promotion) return;
+    setBusy(true); setReplayError(""); setReplayReport(null);
+    try {
+      const packet = await invoke<unknown>("whatif_promote_packet", { proposalId: promotion.proposalId });
+      setReplayPacketText(JSON.stringify(packet, null, 2));
+    } catch (caught) { setReplayError(String(caught)); } finally { setBusy(false); }
+  };
+
+  const compareReplayPacket = async () => {
+    if (!promotion || !replayPacketText.trim()) return;
+    setBusy(true); setReplayError(""); setReplayReport(null);
+    try {
+      setReplayReport(await invoke<ReplayReport>("whatif_promote_compare_packet", {
+        proposalId: promotion.proposalId,
+        packetJson: replayPacketText,
+      }));
+    } catch (caught) { setReplayError(String(caught)); } finally { setBusy(false); }
   };
 
   const prepare = async () => {
@@ -1036,6 +1060,13 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
               </div>
               {promotionCommit ? <p className="muted">{t("promotion.committed")} · {promotionCommit.commitSha256.slice(0, 12)}…</p> : null}
               {promotionError ? <p className="form-error">{promotionError}</p> : null}
+              <div className="agent-panel__actions">
+                <button type="button" onClick={() => void exportReplayPacket()} disabled={busy}>{t("replay.export")}</button>
+                <button type="button" onClick={() => void compareReplayPacket()} disabled={busy || !replayPacketText.trim()}>{t("replay.compareRemote")}</button>
+              </div>
+              <label className="field-single">{t("replay.packet")}<textarea value={replayPacketText} onChange={(event) => setReplayPacketText(event.target.value)} rows={6} spellCheck={false} /></label>
+              {replayReport ? <p className={replayReport.ok ? "muted" : "form-error"}>{replayReport.ok ? t("replay.match") : replayReport.mismatches.join(" · ")}</p> : null}
+              {replayError ? <p className="form-error">{replayError}</p> : null}
             </div>
           ) : null}
           {compare ? (

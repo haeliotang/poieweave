@@ -536,3 +536,5 @@ export interface DeliveryInspect {
 }
 
 export type TrustedReplayNode = { publicKey: string; name: string; addedAt: number; addedBy: string };
+
+export type ReplayReport = { ok: boolean; mismatches: string[] };
