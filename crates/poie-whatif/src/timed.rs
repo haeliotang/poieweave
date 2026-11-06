@@ -221,6 +221,8 @@ pub struct TimedResult {
     pub abstained: bool,
     #[serde(default)]
     pub abstain_reason: Option<String>,
+    #[serde(default)]
+    pub counterevidence: Vec<String>,
     pub result_sha256: String,
     pub created_at: i64,
 }
@@ -245,6 +247,7 @@ impl TimedResult {
             "search_limit" => Some("search_limit".to_string()),
             _ => None,
         };
+        let counterevidence = warnings.clone();
         let residuals = json!({
             "completionS": completion_s,
             "horizonS": snapshot.horizon_s,
@@ -271,6 +274,7 @@ impl TimedResult {
             residuals: Some(residuals),
             abstained,
             abstain_reason,
+            counterevidence,
             result_sha256: String::new(),
             created_at: now_ms,
         };
@@ -308,6 +312,7 @@ pub fn timed_result_digest(
         "residuals": value.get("residuals").cloned().unwrap_or(Value::Null),
         "abstained": value.get("abstained").cloned().unwrap_or(Value::Bool(false)),
         "abstainReason": value.get("abstainReason").cloned().unwrap_or(Value::Null),
+        "counterevidence": value.get("counterevidence").cloned().unwrap_or(Value::Null),
     });
     sha256_of("poie.timed-result/0.1", &payload).map_err(|error| error.to_string())
 }

@@ -628,6 +628,7 @@ pub fn whatif_promote_propose(result_id: String, state: State<'_, AppState>) -> 
             residuals: result.residuals.clone(),
             abstained: result.abstained,
             abstain_reason: result.abstain_reason.clone(),
+            counterevidence: result.counterevidence.clone(),
         }),
         Some(mandate),
         proposal_id.clone(),

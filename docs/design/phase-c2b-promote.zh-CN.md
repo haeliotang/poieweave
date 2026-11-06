@@ -71,7 +71,7 @@ PromotionProposal {
   approvalTokenId,requestedAt,requestedBy,decidedAt?,committedAt?,
   nowMs, actions:[ProposedActionDraft], actionsSha256,
   sapPreview:{checks,rejections,assumed},
-  assessment:{residuals,abstained,abstainReason}?,
+  assessment:{residuals,abstained,abstainReason,counterevidence}?,
   proposalSha256
 }
 ```
