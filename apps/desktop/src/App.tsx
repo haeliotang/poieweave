@@ -1654,8 +1654,23 @@ function SettingsDialog({
     }
   };
 
+  const addOperator = async () => {
+    if (passphrase !== confirm) {
+      setError(t("settings.auth.error") + ": passphrases do not match");
+      return;
+    }
+    const status = await run(() => invoke<AuthStatus>("auth_add_operator", { displayName, passphrase }));
+    if (status) {
+      onAuthChange(status);
+      setDisplayName("");
+      setPassphrase("");
+      setConfirm("");
+      onAuditRefresh();
+    }
+  };
+
   const signIn = async () => {
-    const status = await run(() => invoke<AuthStatus>("auth_sign_in", { passphrase }));
+    const status = await run(() => invoke<AuthStatus>("auth_sign_in", { passphrase, displayName: displayName.trim() || null }));
     if (status) {
       onAuthChange(status);
       setPassphrase("");
@@ -1777,6 +1792,13 @@ function SettingsDialog({
                   <div className="kv"><span>{t("settings.auth.expires")}</span><span>{new Date(auth.sessionExpiresAtMs).toLocaleTimeString()}</span></div>
                 ) : null}
                 <button className="secondary" type="button" onClick={signOut} disabled={busy}>{t("settings.auth.signOut")}</button>
+                <p className="muted">{t("settings.auth.addOperatorHint")}</p>
+                <div className="field-grid">
+                  <label>{t("settings.auth.displayName")}<input value={displayName} onChange={(event) => setDisplayName(event.target.value)} disabled={authDisabled} autoComplete="off" /></label>
+                  <label>{t("settings.auth.passphrase")}<input type="password" value={passphrase} onChange={(event) => setPassphrase(event.target.value)} disabled={authDisabled} autoComplete="new-password" /></label>
+                  <label>{t("settings.auth.confirm")}<input type="password" value={confirm} onChange={(event) => setConfirm(event.target.value)} disabled={authDisabled} autoComplete="new-password" /></label>
+                </div>
+                <button className="secondary" type="button" onClick={addOperator} disabled={authDisabled || !displayName.trim()}>{t("settings.auth.addOperatorButton")}</button>
               </>
             ) : null}
             {hosted && !auth.signedIn && !auth.hasOperator ? (
@@ -1792,6 +1814,7 @@ function SettingsDialog({
             ) : null}
             {hosted && !auth.signedIn && auth.hasOperator ? (
               <>
+                <label className="field-single">{t("settings.auth.optionalName")}<input value={displayName} onChange={(event) => setDisplayName(event.target.value)} disabled={authDisabled} autoComplete="username" /></label>
                 <label className="field-single">{t("settings.auth.passphrase")}<input type="password" value={passphrase} onChange={(event) => setPassphrase(event.target.value)} disabled={authDisabled} autoComplete="current-password" /></label>
                 <button className="secondary" type="button" onClick={signIn} disabled={authDisabled}>{t("settings.auth.signInButton")}</button>
               </>
