@@ -1,6 +1,6 @@
 [package]
 name = "poieweave-desktop"
-version = "0.3.5"
+version = "0.3.6"
 description = "Poieweave desktop host: filesystem sandbox, SQLite state, Tauri 2 packaging."
 edition = "2021"
 rust-version = "1.77"

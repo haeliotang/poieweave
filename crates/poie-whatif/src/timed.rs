@@ -215,6 +215,12 @@ pub struct TimedResult {
     pub outcome: TimedOutcomeKind,
     pub completion_s: Option<f64>,
     pub warnings: Vec<String>,
+    #[serde(default)]
+    pub residuals: Option<Value>,
+    #[serde(default)]
+    pub abstained: bool,
+    #[serde(default)]
+    pub abstain_reason: Option<String>,
     pub result_sha256: String,
     pub created_at: i64,
 }
@@ -233,6 +239,18 @@ impl TimedResult {
         warnings: Vec<String>,
         now_ms: i64,
     ) -> Result<Self, String> {
+        let abstained = matches!(verdict, "unknown" | "search_limit");
+        let abstain_reason = match verdict {
+            "unknown" => Some("unknown_state".to_string()),
+            "search_limit" => Some("search_limit".to_string()),
+            _ => None,
+        };
+        let residuals = json!({
+            "completionS": completion_s,
+            "horizonS": snapshot.horizon_s,
+            "warningCount": warnings.len(),
+            "verdict": verdict,
+        });
         let mut result = TimedResult {
             schema: TIMED_RESULT_SCHEMA.into(),
             schema_version: "0.1".into(),
@@ -250,6 +268,9 @@ impl TimedResult {
             outcome: TimedOutcomeKind { timed: verdict.into(), caveat: TIMED_CAVEAT.into() },
             completion_s,
             warnings,
+            residuals: Some(residuals),
+            abstained,
+            abstain_reason,
             result_sha256: String::new(),
             created_at: now_ms,
         };
@@ -284,6 +305,9 @@ pub fn timed_result_digest(
         "outcome": value.get("outcome").cloned().unwrap_or(Value::Null),
         "completionS": value.get("completionS").cloned().unwrap_or(Value::Null),
         "warnings": value.get("warnings").cloned().unwrap_or(Value::Null),
+        "residuals": value.get("residuals").cloned().unwrap_or(Value::Null),
+        "abstained": value.get("abstained").cloned().unwrap_or(Value::Bool(false)),
+        "abstainReason": value.get("abstainReason").cloned().unwrap_or(Value::Null),
     });
     sha256_of("poie.timed-result/0.1", &payload).map_err(|error| error.to_string())
 }
@@ -464,5 +488,47 @@ mod tests {
         let compared = compare_timed(&snapshot.id, None, vec![blocked, feasible]).unwrap();
         assert!(compared.rows.iter().all(|row| row.delta["completionDeltaS"].is_null()));
         assert_eq!(compared.rows[0].outcome.timed, "feasible");
+    }
+
+    #[test]
+    fn timed_result_abstains_for_unknown_verdict() {
+        let snapshot = TimedSnapshot::create(
+            TimedSnapshotInput {
+                label: "base-01-timed".into(),
+                model_sha256: "a".repeat(64),
+                scenario_path: "base-01-timed/scenario.toml".into(),
+                scenario_sha256: "5cbfc5a5711b316318fd244c89149b9ef58b6f5d8c417c4747638dc7c1c205f3".into(),
+                goal: "restore:pump-p1".into(),
+                min_verification: "demonstrated".into(),
+                start_s: 0.0,
+                horizon_s: 86_400.0,
+                deadline_s: None,
+            },
+            "snap".into(),
+            1,
+            "test".into(),
+        )
+        .unwrap();
+        let variant = TimedVariant::create(
+            TimedVariantInput {
+                snapshot_id: snapshot.id.clone(),
+                label: "v".into(),
+                description: String::new(),
+                start_mode: "beginning".into(),
+                start_s: None,
+                deadline_s: None,
+                storage_discharge_w: Default::default(),
+            },
+            "var".into(),
+            1,
+            "test".into(),
+        )
+        .unwrap();
+        let result =
+            TimedResult::create(&snapshot, &variant, "res".into(), "run".into(), 0.0, None, "unknown", None, vec![], 1)
+                .unwrap();
+        assert!(result.abstained);
+        assert_eq!(result.abstain_reason.as_deref(), Some("unknown_state"));
+        assert!(result.residuals.is_some());
     }
 }

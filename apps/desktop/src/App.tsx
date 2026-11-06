@@ -1003,7 +1003,7 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
           {promotion ? (
             <div className="agent-panel__result">
               <span className="eyebrow">{t("promotion.title")} · {promotion.status}</span>
-              <p className="muted">{promotion.scope} · {t("promotion.actions")}: {promotion.actions.length}</p>
+              <p className="muted">{promotion.scope} · {t("promotion.actions")}: {promotion.actions.length}{promotion.assessment?.abstained ? ` · ${t("whatif.abstained")}: ${promotion.assessment.abstainReason ?? "unknown"}` : ""}</p>
               {promotion.sapPreview.rejections.length > 0 ? <p className="form-error">{promotion.sapPreview.rejections.join(" · ")}</p> : null}
               <div className="agent-panel__actions">
                 {promotion.status === "pending" ? (
@@ -1128,7 +1128,7 @@ function TimedWhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
                   <td><button type="button" onClick={() => void runVariant(variant)} disabled={busy}>timed</button></td>
                   <td>
                     {results.filter((result) => result.variantId === variant.id).map((result) => (
-                      <div key={result.resultId}><span className="mono">{result.outcome.timed}</span>{result.completionS != null ? ` · ${result.completionS.toFixed(0)}s` : ""}{result.warnings.length > 0 ? ` · ${result.warnings.length} warnings` : ""}</div>
+                      <div key={result.resultId}><span className="mono">{result.outcome.timed}</span>{result.abstained ? ` · ${t("whatif.abstained")}: ${result.abstainReason ?? "unknown"}` : ""}{result.completionS != null ? ` · ${result.completionS.toFixed(0)}s` : ""}{result.warnings.length > 0 ? ` · ${result.warnings.length} warnings` : ""}</div>
                     ))}
                   </td>
                 </tr>

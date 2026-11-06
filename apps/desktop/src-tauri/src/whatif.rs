@@ -624,6 +624,11 @@ pub fn whatif_promote_propose(result_id: String, state: State<'_, AppState>) -> 
         state_version,
         actions,
         preview,
+        Some(poie_whatif::promotion::PromotionAssessment {
+            residuals: result.residuals.clone(),
+            abstained: result.abstained,
+            abstain_reason: result.abstain_reason.clone(),
+        }),
         Some(mandate),
         proposal_id.clone(),
         token_id.clone(),
@@ -694,7 +699,9 @@ pub fn whatif_promote_list(limit: Option<u32>, state: State<'_, AppState>) -> Re
 }
 
 fn mandate_allows(proposal: &PromotionProposal, now: i64) -> Result<(), String> {
-    let Some(mandate) = &proposal.mandate else { return Ok(()); };
+    let Some(mandate) = &proposal.mandate else {
+        return Ok(());
+    };
     if mandate.scope != proposal.scope {
         return Err("scope_denied: mandate scope does not match proposal".into());
     }
