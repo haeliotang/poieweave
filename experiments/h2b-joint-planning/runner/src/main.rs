@@ -369,7 +369,7 @@ fn main() -> ExitCode {
         }
     }
     let base = {
-        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../scenarios/base-01/model.toml");
+        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../scenarios/base-03/model.toml");
         Model::load(&path).expect("Base-01 model loads")
     };
     let all = scenarios();
@@ -441,10 +441,10 @@ fn summarize(results: &[ScenarioResult], title: &str, mode: RunMode) -> String {
     out.push_str(&format!("# {title}\n\n"));
     match mode {
         RunMode::Dev => out.push_str(
-            "本文件由 `poie-h2-joint-planning --dev --write <dir>` 生成；留出集未运行。预登记见 [PREREG.md](PREREG.md)。\n\n",
+            "本文件由 `poie-h2b-joint-planning --dev --write <dir>` 生成；留出集未运行。预登记见 [PREREG.md](PREREG.md)。\n\n",
         ),
         RunMode::Holdout => out.push_str(
-            "本文件由 `poie-h2-joint-planning --holdout --write <dir>` 生成，是留出集的**首次**运行；开发集结果见 [DEV-NOTES.md](DEV-NOTES.md)。预登记见 [PREREG.md](PREREG.md)。\n\n",
+            "本文件由 `poie-h2b-joint-planning --holdout --write <dir>` 生成，是留出集的**首次**运行；开发集结果见 [DEV-NOTES.md](DEV-NOTES.md)。预登记见 [PREREG.md](PREREG.md)。\n\n",
         ),
     }
     out.push_str("| 方法 | 成功 | 场景数 | 成功率 | 平均完成 (h) | 平均动作数 | SAP 通过 | 最低期末储能 (kWh) | 决策数 | 非预知 |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n");
