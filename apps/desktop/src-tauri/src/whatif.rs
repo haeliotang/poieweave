@@ -820,6 +820,10 @@ pub fn whatif_promote_list(limit: Option<u32>, state: State<'_, AppState>) -> Re
         .collect()
 }
 
+fn second_approver_allowed(four_eyes: bool, requested_by: &str, approver: &str) -> bool {
+    four_eyes && requested_by != approver
+}
+
 fn mandate_allows(proposal: &PromotionProposal, now: i64) -> Result<(), String> {
     let Some(mandate) = &proposal.mandate else {
         return Ok(());
@@ -851,7 +855,8 @@ fn decide_promotion(
     }
     mandate_allows(&proposal, auth::now_ms())?;
     let token = token_for(&db, &proposal.approval_token_id)?;
-    let second_approver = db.promotion_four_eyes()? && proposal.requested_by != operator.display_name;
+    let second_approver =
+        second_approver_allowed(db.promotion_four_eyes()?, &proposal.requested_by, &operator.display_name);
     if (!second_approver && token.session_id != operator.session_id)
         || token.tool != "whatif.promote"
         || token.run_id != proposal.proposal_id
@@ -1219,5 +1224,12 @@ mod tests {
         let state_version = promotion_state_version();
         let actions = plan_to_actions_at(&planned, snapshot.now_s, now, &state_version).unwrap();
         assert_eq!(actions[0].valid_from.0, now);
+    }
+
+    #[test]
+    fn four_eyes_only_allows_a_different_approver() {
+        assert!(second_approver_allowed(true, "Ada", "Bob"));
+        assert!(!second_approver_allowed(true, "Ada", "Ada"));
+        assert!(!second_approver_allowed(false, "Ada", "Bob"));
     }
 }
