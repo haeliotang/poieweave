@@ -842,6 +842,7 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
   const [promotion, setPromotion] = useState<PromotionProposal | null>(null);
   const [promotionCommit, setPromotionCommit] = useState<PromotionCommit | null>(null);
   const [promotionError, setPromotionError] = useState("");
+  const [fourEyes, setFourEyes] = useState(false);
 
   useEffect(() => {
     if (!hosted) return;
@@ -866,6 +867,13 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
   useEffect(() => {
     if (!hosted) return;
     let cancelled = false;
+    invoke<boolean>("whatif_promote_policy").then((enabled) => { if (!cancelled) setFourEyes(enabled); }).catch(() => { /* default off */ });
+    return () => { cancelled = true; };
+  }, [hosted]);
+
+  useEffect(() => {
+    if (!hosted) return;
+    let cancelled = false;
     (async () => {
       const proposals = await invoke<PromotionProposal[]>("whatif_promote_list", { limit: 20 });
       const active = proposals.find((proposal) => proposal.status === "pending" || proposal.status === "approved");
@@ -873,6 +881,14 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
     })().catch(() => { /* no active proposal is fine */ });
     return () => { cancelled = true; };
   }, [hosted]);
+
+  const toggleFourEyes = async () => {
+    setBusy(true); setPromotionError("");
+    try {
+      const enabled = await invoke<boolean>("whatif_promote_set_policy", { enabled: !fourEyes });
+      setFourEyes(enabled);
+    } catch (caught) { setPromotionError(String(caught)); } finally { setBusy(false); }
+  };
 
   const prepare = async () => {
     setBusy(true); setError("");
@@ -968,6 +984,7 @@ function WhatIfPanel({ lang, hosted }: { lang: Lang; hosted: boolean }) {
       {!hosted ? <p className="empty">{t("whatif.hostOnly")}</p> : (
         <>
           <p className="muted">{t("whatif.caveat")}</p>
+          <label className="checkbox-row"><input type="checkbox" checked={fourEyes} onChange={() => void toggleFourEyes()} disabled={busy} /> {t("promotion.fourEyes")}</label>
           <div className="agent-panel__actions">
             <button className="primary" type="button" onClick={() => void prepare()} disabled={busy}>{t("whatif.prepare")}</button>
             <button type="button" onClick={() => void addVariant()} disabled={busy || !snapshot}>{t("whatif.addVariant")}</button>
