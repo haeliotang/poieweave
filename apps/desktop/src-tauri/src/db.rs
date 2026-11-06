@@ -203,6 +203,10 @@ impl Db {
                      operator TEXT NOT NULL, reason TEXT NOT NULL, status TEXT NOT NULL,
                      created_at INTEGER NOT NULL
                  );
+                 CREATE TABLE IF NOT EXISTS trusted_replay_nodes (
+                     public_key TEXT PRIMARY KEY, name TEXT NOT NULL,
+                     added_at INTEGER NOT NULL, added_by TEXT NOT NULL
+                 );
                  CREATE TABLE IF NOT EXISTS audit_anchors (
                      id INTEGER PRIMARY KEY AUTOINCREMENT,
                      audit_count INTEGER NOT NULL,
@@ -210,7 +214,7 @@ impl Db {
                      hmac TEXT NOT NULL,
                      anchored_at INTEGER NOT NULL
                  );
-                 PRAGMA user_version = 12;",
+                 PRAGMA user_version = 13;",
             )
             .map_err(|error| format!("migrate: {error}"))?;
         // Existing databases created before B0 have an audit table without the
@@ -376,6 +380,43 @@ impl Db {
             .map_err(|error| error.to_string())?;
         let rows = statement
             .query_map([proposal_id], |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?, row.get(4)?)))
+            .map_err(|error| error.to_string())?;
+        rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
+    }
+
+    pub fn add_replay_trust(&self, public_key: &str, name: &str, at: i64, by: &str) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO trusted_replay_nodes (public_key,name,added_at,added_by) VALUES (?1,?2,?3,?4)
+                 ON CONFLICT(public_key) DO UPDATE SET name=?2, added_at=?3, added_by=?4",
+                params![public_key, name, at, by],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn remove_replay_trust(&self, public_key: &str) -> Result<(), String> {
+        self.connection
+            .execute("DELETE FROM trusted_replay_nodes WHERE public_key=?1", [public_key])
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn replay_trusted(&self, public_key: &str) -> Result<bool, String> {
+        let count: i64 = self
+            .connection
+            .query_row("SELECT COUNT(*) FROM trusted_replay_nodes WHERE public_key=?1", [public_key], |row| row.get(0))
+            .map_err(|error| error.to_string())?;
+        Ok(count > 0)
+    }
+
+    pub fn replay_trust(&self) -> Result<Vec<(String, String, i64, String)>, String> {
+        let mut statement = self
+            .connection
+            .prepare("SELECT public_key,name,added_at,added_by FROM trusted_replay_nodes ORDER BY added_at DESC")
+            .map_err(|error| error.to_string())?;
+        let rows = statement
+            .query_map([], |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?)))
             .map_err(|error| error.to_string())?;
         rows.collect::<Result<Vec<_>, _>>().map_err(|error| error.to_string())
     }
@@ -1235,7 +1276,7 @@ mod tests {
         {
             let db = Db::open(&path).unwrap();
             let version: i64 = db.connection.query_row("PRAGMA user_version", [], |row| row.get(0)).unwrap();
-            assert_eq!(version, 12);
+            assert_eq!(version, 13);
             let tables: Vec<String> = db
                 .connection
                 .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
@@ -1250,6 +1291,7 @@ mod tests {
                 "delivery_manifests",
                 "delivery_bundle_meta",
                 "audit_anchors",
+                "trusted_replay_nodes",
                 "promotion_conflicts",
                 "promotion_policy",
                 "promotion_appeals",
@@ -1405,5 +1447,15 @@ mod tests {
             .unwrap();
         assert!(!sql.contains("CHECK (id = 1)"));
         let _ = std::fs::remove_file(&path);
+    }
+
+    #[test]
+    fn trusted_replay_nodes_round_trip() {
+        let db = Db::open_in_memory().unwrap();
+        db.add_replay_trust("a".repeat(64).as_str(), "node-a", 1, "Ada").unwrap();
+        assert!(db.replay_trusted(&"a".repeat(64)).unwrap());
+        assert_eq!(db.replay_trust().unwrap().len(), 1);
+        db.remove_replay_trust(&"a".repeat(64)).unwrap();
+        assert!(!db.replay_trusted(&"a".repeat(64)).unwrap());
     }
 }

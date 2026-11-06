@@ -43,12 +43,14 @@ poie.replay-report/0.1
 ## 4. 命令
 
 - `whatif_promote_packet(proposalId)`：导出并签名本地 packet；node key 存 SecretStore。
-- `whatif_promote_compare_packet(proposalId, packetJson)`：先验签，再比较；无签名/验签失败 → `replay_untrusted`。
+- `whatif_promote_compare_packet(proposalId, packetJson)`：先验签，再查信任目录，再比较。
+- `replay_trust_add/list/remove`、`replay_trust_self` 管理固定公钥。
 
 ## 5. 边界
 
 - **没有网络传输**：packet JSON 需人工/外部通道交换。
-- 有 Ed25519 packet 签名，但**没有公钥固定/身份目录**：首次导入是 TOFU，`signerPublicKey` 可被替换。
+- 有 Ed25519 packet 签名与**本地信任目录**：`trusted_replay_nodes` 固定公钥；比较远端 packet 前要求签名公钥已 pin。
+- 信任添加仍需人工核对；没有远程证书链/组织目录。
 - 没有跨节点状态同步、冲突合并或在线发现。
 - 相同 digest 只证明这些 digest 字段相同，不证明两边运行时完全相同。
 

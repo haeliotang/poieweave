@@ -874,7 +874,71 @@ pub fn whatif_promote_compare_packet(
     let proposal = load_promotion(&state, &proposal_id)?;
     let remote = parse_replay(&packet_json)?;
     verify_packet(&remote)?;
+    let public_key =
+        remote.signer_public_key.as_deref().ok_or_else(|| "replay_untrusted: missing signerPublicKey".to_string())?;
+    {
+        let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+        if !db.replay_trusted(public_key)? {
+            return Err("replay_untrusted: signer public key is not pinned".into());
+        }
+    }
     compare_replay(&replay_packet(&proposal), &remote)
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TrustedReplayNode {
+    pub public_key: String,
+    pub name: String,
+    pub added_at: i64,
+    pub added_by: String,
+}
+
+#[tauri::command]
+pub fn replay_trust_list(state: State<'_, AppState>) -> Result<Vec<TrustedReplayNode>, String> {
+    auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    Ok(db
+        .replay_trust()?
+        .into_iter()
+        .map(|(public_key, name, added_at, added_by)| TrustedReplayNode { public_key, name, added_at, added_by })
+        .collect())
+}
+
+#[tauri::command]
+pub fn replay_trust_add(public_key: String, name: String, state: State<'_, AppState>) -> Result<(), String> {
+    let operator = auth::require(&state.session)?;
+    let key = public_key.trim();
+    if key.len() != 64 || !key.chars().all(|character| character.is_ascii_hexdigit()) {
+        return Err("invalid_parameter: publicKey must be 64 hex characters".into());
+    }
+    if name.trim().is_empty() || name.len() > 80 {
+        return Err("invalid_parameter: node name required".into());
+    }
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    db.add_replay_trust(key, name.trim(), auth::now_ms(), &operator.display_name)?;
+    db.append_audit(auth::now_ms(), &operator.display_name, "replay.trust_added", &format!("{name}:{key}"))?;
+    Ok(())
+}
+
+#[tauri::command]
+pub fn replay_trust_self(state: State<'_, AppState>) -> Result<String, String> {
+    let operator = auth::require(&state.session)?;
+    let key = replay_key(&*state.secrets)?;
+    let public_key = hex::encode(key.public_key().as_ref());
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    db.add_replay_trust(&public_key, "self", auth::now_ms(), &operator.display_name)?;
+    db.append_audit(auth::now_ms(), &operator.display_name, "replay.trust_self", &public_key)?;
+    Ok(public_key)
+}
+
+#[tauri::command]
+pub fn replay_trust_remove(public_key: String, state: State<'_, AppState>) -> Result<(), String> {
+    let operator = auth::require(&state.session)?;
+    let db = state.db.lock().map_err(|_| "database lock poisoned".to_string())?;
+    db.remove_replay_trust(public_key.trim())?;
+    db.append_audit(auth::now_ms(), &operator.display_name, "replay.trust_removed", public_key.trim())?;
+    Ok(())
 }
 
 #[tauri::command]
