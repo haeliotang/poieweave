@@ -42,7 +42,7 @@ pub struct InferenceConfigRow {
 pub type TimedScenarioRow = (String, String, String, String, i64);
 
 pub struct Db {
-    connection: Connection,
+    pub(crate) connection: Connection,
 }
 
 impl Db {
@@ -180,7 +180,14 @@ impl Db {
                  CREATE TABLE IF NOT EXISTS delivery_bundle_meta (
                      manifest_sha256 TEXT PRIMARY KEY, extensions_json TEXT NOT NULL, imported_at INTEGER NOT NULL
                  );
-                 PRAGMA user_version = 7;",
+                 CREATE TABLE IF NOT EXISTS audit_anchors (
+                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                     audit_count INTEGER NOT NULL,
+                     audit_head TEXT NOT NULL,
+                     hmac TEXT NOT NULL,
+                     anchored_at INTEGER NOT NULL
+                 );
+                 PRAGMA user_version = 8;",
             )
             .map_err(|error| format!("migrate: {error}"))?;
         // Existing databases created before B0 have an audit table without the
@@ -245,6 +252,25 @@ impl Db {
             )
             .map_err(|error| format!("create operator: {error}"))?;
         Ok(())
+    }
+
+    pub fn save_audit_anchor(&self, count: u64, head: &str, hmac: &str, at: i64) -> Result<(), String> {
+        self.connection
+            .execute(
+                "INSERT INTO audit_anchors (audit_count,audit_head,hmac,anchored_at) VALUES (?1,?2,?3,?4)",
+                params![count, head, hmac, at],
+            )
+            .map_err(|error| error.to_string())?;
+        Ok(())
+    }
+
+    pub fn latest_audit_anchor(&self) -> Result<Option<(u64, String, String)>, String> {
+        self.connection
+            .query_row("SELECT audit_count,audit_head,hmac FROM audit_anchors ORDER BY id DESC LIMIT 1", [], |row| {
+                Ok((row.get(0)?, row.get(1)?, row.get(2)?))
+            })
+            .optional()
+            .map_err(|error| error.to_string())
     }
 
     pub fn append_audit(&self, at_ms: i64, actor: &str, event: &str, detail: &str) -> Result<(), String> {
@@ -1052,7 +1078,7 @@ mod tests {
         {
             let db = Db::open(&path).unwrap();
             let version: i64 = db.connection.query_row("PRAGMA user_version", [], |row| row.get(0)).unwrap();
-            assert_eq!(version, 7);
+            assert_eq!(version, 8);
             let tables: Vec<String> = db
                 .connection
                 .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
@@ -1066,6 +1092,7 @@ mod tests {
                 "approval_tokens",
                 "delivery_manifests",
                 "delivery_bundle_meta",
+                "audit_anchors",
                 "delivery_state",
                 "whatif_results",
                 "whatif_snapshots",
