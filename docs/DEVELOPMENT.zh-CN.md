@@ -663,3 +663,4 @@ flowchart LR
 | 0.1.167 | 2026-11-06 | 桌面驾驶舱 M9 台架演练：B3/B4/B5/B6 命令、证据链展示、人工确认清除；版本 0.4.18 |
 | 0.1.168 | 2026-11-06 | 桌面 bench 写入 app audit + execution gate；B6/B5 unknown/fallback 同步 degraded；版本 0.4.19 |
 | 0.1.169 | 2026-11-06 | 桌面 bench/audit 复核：bench.run 审计、gate 同步、UI 测试覆盖台架卡；版本 0.4.19 |
+| 0.1.170 | 2026-11-07 | 文档同步：README 版本徽章 v0.4.19；状态快照补 H2c/M9/M9b/M9c/台架/Modbus、P0/P1/P2 缺口、独立 CI 核对 |
