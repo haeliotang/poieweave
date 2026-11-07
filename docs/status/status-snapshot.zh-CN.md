@@ -29,7 +29,7 @@
 
 ## 2. 测试与证据
 
-真实环境验收：macOS app 已构建/启动，真实 app-data DB 为 `user_version=4`，宿主文件/模型验收测试 16 通过；UI 自动化受 macOS 辅助功能权限阻塞，真实 provider 未配置。详见 [real-environment-acceptance](real-environment-acceptance.zh-CN.md)。
+真实环境验收：macOS app 已构建/启动；验收时 app-data DB 为 `user_version=4`，当前迁移已到 v13；宿主文件/模型验收测试 16 通过；真实 DeepSeek 会话已完成一次（Completion），但未做模型能力评测；UI 自动化仍受 macOS 辅助功能权限阻塞。详见 [real-environment-acceptance](real-environment-acceptance.zh-CN.md)。
 
 | 项 | 当前值 |
 | --- | --- |
@@ -37,23 +37,35 @@
 | Python 桥测试 | 9（CI 执行） |
 | 随机性质测试 | 图求解 120、记录 120、投影 120、调度 120、仿真 80、VEC 60 轨迹 + 报告 20×16 变异、规划器 80、重规划/基线 80+20+60、HLC 80、联邦分区 120、执行门 120、运行时 80、扩张 40+40、桥 40 trials |
 | 预登记场景用例 | Base-01 40、Base-02 8、时间版 20 |
-| 生成型实验产物 | **43** 个：40 个 CI 路径可重放/引用，live 容器预演按规则豁免（见 §2.1） |
+| 生成型实验产物 | **43** 个：40 个 CI 路径可重放/引用，live 容器预演按规则豁免（见 §2.1/§2.3） |
 | 检查器 | 链接、测试矩阵计数、实验重放覆盖（均 CI 执行） |
 
-### 2.1 外部事项 AI 预演（2026-11-01，不计入里程碑）
+### 2.1 AI 预演（非正式实验，不计入里程碑）
 
-由 AI 子代理或主线程为真实外部参与者准备的起点；**对应里程碑的退出条件不变**。逐项产物与限制见 [autonomous-scope-audit §6](autonomous-scope-audit.zh-CN.md)、[ai-preview-tasks](../progress/ai-preview-tasks.md)。
+由 AI 子代理/主线程为外部参与者准备的起点；**不等同于正式预登记实验或外部验收**。逐项限制见 [autonomous-scope-audit §6](autonomous-scope-audit.zh-CN.md)、[ai-preview-tasks](../progress/ai-preview-tasks.md)。
 
 | 事项 | 预演结果 | 产物 |
 | --- | --- | --- |
 | M1.8 契约评审 | 3 个互不共享上下文的评审视角，36 条、去重 25 项，其中 13 项为高严重度 | [评审汇总](ai-preview/contract-review-summary.zh-CN.md) |
 | M3.3 外部用例 | 子代理独立编写 10 例，预登记后运行 10/10 通过 | [ai-preview-cases](../../scenarios/base-01/ai-preview-cases.toml)、[运行输出](ai-preview/base01-ai-cases-run.txt) |
 | M1.10 商标检索 | 普通法、包名、域名补充检索；USPTO 50154930 已核实为真实申请 | [补充检索](ai-preview/trademark-supplement.zh-CN.md) |
-| M9.2 适配器 | BaSyx AAS 本机容器只读适配器 9/9（单容器、回环、无认证；影子计划动作数为 0） | [basyx-shadow](../../experiments/basyx-shadow/REPORT.md) |
-| M12.6 多节点 | 两个 Docker 容器 + 网络层分区，D0–D4 共 14/14（共享内核与时钟，非真实多节点） | [federation-docker](../../experiments/federation-docker/REPORT.md) |
-| H2b 诊断 | 母线 + 泵串行 4 h 在 4 h 截止下不可行；发现 Base-01 母线修复环；留出未运行 | [H2b DIAGNOSIS](../../experiments/h2b-joint-planning/DIAGNOSIS.md) |
-| H2c 联合规划 | 开发 5/16 vs 0/16；留出 3/8 vs 0/8（+37.5pp，按预登记支持；区间含 0，样本小） | [H2c REPORT](../../experiments/h2c-joint-planning/REPORT.md) |
-| M9c BaSyx 非零影子 | failed→1 个影子动作、stale→Unknown/expired=6、drift 恢复；3/3 PASS | [M9c REPORT](../../experiments/basyx-shadow-m9c/REPORT.md) |
+| M9.2 适配器（旧预演） | BaSyx AAS 本机容器只读适配器 9/9；影子计划动作数为 0，C4 为平凡满足 | [basyx-shadow](../../experiments/basyx-shadow/REPORT.md) |
+| M12.6 多节点（旧预演） | 两个 Docker 容器 + 网络层分区，D0–D4 共 14/14；共享内核与时钟 | [federation-docker](../../experiments/federation-docker/REPORT.md) |
+
+### 2.2 正式预登记实验（内部，尚未外部复核）
+
+这些实验有先于运行的 PREREG、封存/留出集与公开原始输出，但**不是外部独立复现**。
+
+| 实验 | 结果 | 产物 |
+| --- | --- | --- |
+| H2b | 母线 + 泵串行 4 h 在 4 h 截止下不可行；发现 Base-01 母线修复环；留出未运行 | [DIAGNOSIS](../../experiments/h2b-joint-planning/DIAGNOSIS.md) |
+| H2c | 开发 5/16 vs 0/16；留出 3/8 vs 0/8（+37.5pp，按预登记支持；区间含 0，样本小） | [REPORT](../../experiments/h2c-joint-planning/REPORT.md) |
+
+### 2.3 内部模拟台架/适配器验证（非物理验收）
+
+| 项 | 结果 | 产物 |
+| --- | --- | --- |
+| M9c BaSyx 非零影子 | failed→1 个影子动作、stale→Unknown/expired=6、drift 恢复；3/3 PASS | [REPORT](../../experiments/basyx-shadow-m9c/REPORT.md) |
 | M9 模拟台架 | B1–B5 5/5；B6/B7/B5R 3/3；Modbus 虚拟从站 5/5 | [bench-v2](../../experiments/m9-bench-v2/REPORT.md)、[modbus](../../experiments/m9-modbus/REPORT.md) |
 | 桌面 M9 台架 | 命令 + UI 卡 + 真实 audit/gate 接入；UI smoke 8/8；**live 点击验收未完成** | [REPORT](../../apps/desktop/README.md) |
 
@@ -62,7 +74,7 @@
 ## 3. 复现与验证运行
 
 - 每次合并：CI（fmt/clippy/test/rustdoc/Python/链接/矩阵/重放覆盖/全部场景与实验/`cargo-deny`）全绿后合并，并确认 `main` CI run 成功。
-- 2026-11-07 独立核对：`main` `55dbd77` 的 [CI run 42363128835](https://github.com/haeliotang/poieweave/actions/runs/42363128835) 为 success；此前 `0f6d36c` 的 [CI run 42261109323](https://github.com/haeliotang/poieweave/actions/runs/42261109323) 与 [Desktop build run 42261109346](https://github.com/haeliotang/poieweave/actions/runs/42261109346) 也均为 success；`v0.4.19` 全部资产已本地下载并由 `scripts/verify_release.py` 复验 `ok=true`。
+- 2026-11-07 独立核对：`main` `b8f9a75` 的 [CI run 42363447638](https://github.com/haeliotang/poieweave/actions/runs/42363447638) 为 success；`55dbd77` 的 [CI run 42363128835](https://github.com/haeliotang/poieweave/actions/runs/42363128835)、`0f6d36c` 的 [CI run 42261109323](https://github.com/haeliotang/poieweave/actions/runs/42261109323) 与 [Desktop build run 42261109346](https://github.com/haeliotang/poieweave/actions/runs/42261109346) 也均为 success；`v0.4.19` 全部资产已本地下载并由 `scripts/verify_release.py` 复验 `ok=true`。
 - 本地一键：`scripts/verify-all.sh`。
 - 干净克隆：`scripts/check-fresh-clone.sh` —— 最近在 `d0d449c` 上通过（约 1 分钟）。
 - GitHub runner：手动 dispatch scheduled workflow 的 [run 41246880552](https://github.com/haeliotang/poieweave/actions/runs/41246880552) 五个 job 全绿（verify-all、release tests、fresh-clone、advisories、licenses/bans/sources）。

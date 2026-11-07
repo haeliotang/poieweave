@@ -1,4 +1,4 @@
-# 真实环境验收记录（2026-11-05，macOS）
+# 真实环境验收记录（2026-11-05，macOS；2026-11-07 文档校正）
 
 ## 1. 范围
 
@@ -28,7 +28,7 @@
 - [acceptance-delivery.png](assets/acceptance-delivery.png)
 - [acceptance-agent-deepseek.png](assets/acceptance-agent-deepseek.png)
 
-注意：provider 是**本机 mock**，只验证工具循环、引用与宿主持久化，不验证模型能力。
+注意：本轮同时使用**本机 OpenAI-compatible mock**（验证工具循环/引用/持久化）与**真实 DeepSeek provider 会话**（Completed）。真实 provider 只证明会话链路，不是模型能力评测。
 
 ### 2.2 构建/后端证据
 
@@ -61,10 +61,15 @@ System Events 仍返回 `-10004`，但已改用 CoreGraphics 事件 + 截图驱�
 
 ### 3.2 真实 provider
 
-当前环境没有真实外部 provider key；已用本机 mock provider 验证 host 工具循环。真实模型能力验收需要：
+2026-11-05 已在真实 macOS app 中完成一次真实 DeepSeek provider 会话（`deepseek-flash`，Completed，审计可见）；同时保留本机 mock provider 用例用于工具循环/引用/持久化。
 
-- OpenAI-compatible endpoint + model + API key；或
-- 明确同意用本机 mock provider（只能验证工具循环/审批/引用，不验证模型能力）。
+仍未完成：
+
+- 真实 provider 的模型能力评测（需要独立评测集、评分与外部复核）
+- 多 provider 兼容性矩阵
+- 失败/限流/密钥轮换的长期运行验证
+
+因此“真实 DeepSeek 会话通过”不等于“模型能力已验收”。
 
 ### 3.3 其他边界
 
