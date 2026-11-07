@@ -1,14 +1,26 @@
-# 当前状态快照（2026-11-01 UTC）
+# 当前状态快照（2026-11-07 UTC）
 
 本页是给发起方/外部评审者的一页式状态；测试计数随代码更新（由 `check-test-matrix.py` 校验），最近一次干净克隆验证提交见 §3。逐项证据与索引见 [stage-gates](stage-gates.zh-CN.md)、[test-matrix](test-matrix.zh-CN.md) 与 [external-actions](external-actions.zh-CN.md)。
+
+## 0. 版本与发行状态（2026-11-07）
+
+| 项 | 值 |
+| --- | --- |
+| 当前源码版本 | **0.4.19** |
+| 最新已验证发行版 | **v0.4.19**（`release-verification.json` `ok=true`，flat `SHA256SUMS`） |
+| 上一已验证发行版 | v0.3.4 |
+| README 旧标记 | v0.1.1 已过时，README 已更正为 v0.4.19 |
+| 签名/公证 | **未签名/未公证**；不得表述为已签名 |
+
+> README 的版本徽章、已验证发行版和源码版本现在明确区分；发行 receipt 只证明资产/摘要/版本，不证明 authenticity。
 
 ## 1. 里程碑
 
 | 阶段 | 里程碑 | 状态 |
 | --- | --- | --- |
 | Foundation | M0–M5 | **完成** |
-| Autonomy | M6–M8 | **完成**（H2 为负结果，已如实报告） |
-| Embodiment | M9–M10 | 库级/模拟完成；**物理试验台、真实故障与安全演练待外部** |
+| Autonomy | M6–M8 | **完成**（H2 为负结果；H2b 发现母线修复环，H2c 小样本方向性支持；均已如实报告） |
+| Embodiment | M9–M10 | 库级/模拟完成；M9c BaSyx 非零影子 3/3、bench v2 B6/B7/B5R 3/3、Modbus 虚拟从站 5/5；**物理试验台、真实故障与安全演练待外部** |
 | Expansion | M11 | 库级与 H4 模拟完成（2026-11-01 按 VEC 修订重跑：净增益为负；原判定不确定）；**物理实施待外部** |
 | Federation | M12 | 库级/模拟 + 本机 TCP 完成；**真实多节点待外部** |
 | Product A–D MVP | A0/A1、B0/B1、C1、D1 | **完成**（C2/D2 明确延后；真实外部/发布验收另列） |
@@ -25,7 +37,7 @@
 | Python 桥测试 | 9（CI 执行） |
 | 随机性质测试 | 图求解 120、记录 120、投影 120、调度 120、仿真 80、VEC 60 轨迹 + 报告 20×16 变异、规划器 80、重规划/基线 80+20+60、HLC 80、联邦分区 120、执行门 120、运行时 80、扩张 40+40、桥 40 trials |
 | 预登记场景用例 | Base-01 40、Base-02 8、时间版 20 |
-| 生成型实验产物 | **28** 个：26 个在 CI 中重放，live 容器预演另按规则豁免/从 raw 判定（见 §2.1） |
+| 生成型实验产物 | **43** 个：40 个 CI 路径可重放/引用，live 容器预演按规则豁免（见 §2.1） |
 | 检查器 | 链接、测试矩阵计数、实验重放覆盖（均 CI 执行） |
 
 ### 2.1 外部事项 AI 预演（2026-11-01，不计入里程碑）
@@ -39,16 +51,33 @@
 | M1.10 商标检索 | 普通法、包名、域名补充检索；USPTO 50154930 已核实为真实申请 | [补充检索](ai-preview/trademark-supplement.zh-CN.md) |
 | M9.2 适配器 | BaSyx AAS 本机容器只读适配器 9/9（单容器、回环、无认证；影子计划动作数为 0） | [basyx-shadow](../../experiments/basyx-shadow/REPORT.md) |
 | M12.6 多节点 | 两个 Docker 容器 + 网络层分区，D0–D4 共 14/14（共享内核与时钟，非真实多节点） | [federation-docker](../../experiments/federation-docker/REPORT.md) |
+| H2b 诊断 | 母线 + 泵串行 4 h 在 4 h 截止下不可行；发现 Base-01 母线修复环；留出未运行 | [H2b DIAGNOSIS](../../experiments/h2b-joint-planning/DIAGNOSIS.md) |
+| H2c 联合规划 | 开发 5/16 vs 0/16；留出 3/8 vs 0/8（+37.5pp，按预登记支持；区间含 0，样本小） | [H2c REPORT](../../experiments/h2c-joint-planning/REPORT.md) |
+| M9c BaSyx 非零影子 | failed→1 个影子动作、stale→Unknown/expired=6、drift 恢复；3/3 PASS | [M9c REPORT](../../experiments/basyx-shadow-m9c/REPORT.md) |
+| M9 模拟台架 | B1–B5 5/5；B6/B7/B5R 3/3；Modbus 虚拟从站 5/5 | [bench-v2](../../experiments/m9-bench-v2/REPORT.md)、[modbus](../../experiments/m9-modbus/REPORT.md) |
+| 桌面 M9 台架 | 命令 + UI 卡 + 真实 audit/gate 接入；UI smoke 8/8；**live 点击验收未完成** | [REPORT](../../apps/desktop/README.md) |
 
 > **已裁定（2026-11-01）**：去重后 25 项中 **22 项接受、3 项推迟、0 拒绝**；按修复单元登记为 #105–#112。其中 #105（守恒，P4/P5）优先修复，合并后已**解除**研究纲领 §11 的守恒暂停；#106–#111 已合并（`blocked` 语义、SAP 执行安全、VEC 核算与统计、状态时间线），#112 的三项推迟。AI 预演不替代 M1.8 的真人评审。
 
 ## 3. 复现与验证运行
 
 - 每次合并：CI（fmt/clippy/test/rustdoc/Python/链接/矩阵/重放覆盖/全部场景与实验/`cargo-deny`）全绿后合并，并确认 `main` CI run 成功。
+- 2026-11-07 独立核对：`main` `0f6d36c` 的 [CI run 42261109323](https://github.com/haeliotang/poieweave/actions/runs/42261109323) 与 [Desktop build run 42261109346](https://github.com/haeliotang/poieweave/actions/runs/42261109346) 均为 success；`v0.4.19` 全部资产已本地下载并由 `scripts/verify_release.py` 复验 `ok=true`。
 - 本地一键：`scripts/verify-all.sh`。
 - 干净克隆：`scripts/check-fresh-clone.sh` —— 最近在 `d0d449c` 上通过（约 1 分钟）。
 - GitHub runner：手动 dispatch scheduled workflow 的 [run 41246880552](https://github.com/haeliotang/poieweave/actions/runs/41246880552) 五个 job 全绿（verify-all、release tests、fresh-clone、advisories、licenses/bans/sources）。
 - 定期：每周一 04:17 UTC scheduled workflow（`verify-all` + `cargo test --release` + `cargo-deny`；手动触发时额外 fresh-clone）。
+
+## 3.1 现实有效性缺口（2026-11-07）
+
+| 优先级 | 缺口 | 下一步 |
+| --- | --- | --- |
+| P0 | 缺少真实物理闭环 | 小型泵阀/PLC 台架，独立急停与安全保护；BOM 见 [M9 testbed](../design/m9-minimal-testbed.zh-CN.md) |
+| P0 | 缺少独立契约审查 | 邀请工业自动化、过程安全、分布式系统研究者审阅三份契约 |
+| P1 | 外部实验不足 | 获取 ≥10 个独立贡献的预登记场景 |
+| P1 | 真实多节点未验证 | 两个独立节点测试分区、时钟偏差、重连与接管 |
+| P1 | 过程模型未标定 | 用真实测量数据校准并记录误差与有效范围 |
+| P2 | 治理/发布验收 | 双人审批 live UI、签名公证、正式合规复核 |
 
 ## 4. 外部阻塞项（需要发起方/外部参与）
 
