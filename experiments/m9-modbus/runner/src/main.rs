@@ -416,8 +416,14 @@ fn main() {
     ));
 
     // M5: stop heartbeat -> watchdog closes; clear only after safe.
-    std::thread::sleep(Duration::from_millis(2_300));
-    let fault = adapter.read_registers(5, 1).map(|r| r[0]).unwrap_or(0);
+    let mut fault = 0;
+    for _ in 0..50 {
+        fault = adapter.read_registers(5, 1).map(|r| r[0]).unwrap_or(0);
+        if fault == 1 {
+            break;
+        }
+        std::thread::sleep(Duration::from_millis(100));
+    }
     let valve = adapter.read_registers(7, 1).map(|r| r[0]).unwrap_or(1);
     let flow = adapter.read_registers(6, 1).map(|r| r[0]).unwrap_or(1);
     let mut clear = vec![0x10];
