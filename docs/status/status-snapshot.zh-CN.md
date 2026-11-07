@@ -62,7 +62,7 @@
 ## 3. 复现与验证运行
 
 - 每次合并：CI（fmt/clippy/test/rustdoc/Python/链接/矩阵/重放覆盖/全部场景与实验/`cargo-deny`）全绿后合并，并确认 `main` CI run 成功。
-- 2026-11-07 独立核对：`main` `0f6d36c` 的 [CI run 42261109323](https://github.com/haeliotang/poieweave/actions/runs/42261109323) 与 [Desktop build run 42261109346](https://github.com/haeliotang/poieweave/actions/runs/42261109346) 均为 success；`v0.4.19` 全部资产已本地下载并由 `scripts/verify_release.py` 复验 `ok=true`。
+- 2026-11-07 独立核对：`main` `55dbd77` 的 [CI run 42363128835](https://github.com/haeliotang/poieweave/actions/runs/42363128835) 为 success；此前 `0f6d36c` 的 [CI run 42261109323](https://github.com/haeliotang/poieweave/actions/runs/42261109323) 与 [Desktop build run 42261109346](https://github.com/haeliotang/poieweave/actions/runs/42261109346) 也均为 success；`v0.4.19` 全部资产已本地下载并由 `scripts/verify_release.py` 复验 `ok=true`。
 - 本地一键：`scripts/verify-all.sh`。
 - 干净克隆：`scripts/check-fresh-clone.sh` —— 最近在 `d0d449c` 上通过（约 1 分钟）。
 - GitHub runner：手动 dispatch scheduled workflow 的 [run 41246880552](https://github.com/haeliotang/poieweave/actions/runs/41246880552) 五个 job 全绿（verify-all、release tests、fresh-clone、advisories、licenses/bans/sources）。
