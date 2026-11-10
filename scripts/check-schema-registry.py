@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """Check that schema literals used by product-layer docs are registered.
 
 The registry is `docs/design/SCHEMAS.md`. This is deliberately a small

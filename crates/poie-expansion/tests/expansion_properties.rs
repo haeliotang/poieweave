@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Expansion accounting invariants: structural gains/losses are a partition of
 //! the queried goals, temporal deltas follow the summary definition, and the
 //! construction check is exactly the windowed minimum-level violations.

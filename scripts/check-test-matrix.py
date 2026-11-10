@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """Check that docs/status/test-matrix.zh-CN.md matches the actual test counts.
 
 Parses the library-crate table, the total and the status-snapshot count, runs

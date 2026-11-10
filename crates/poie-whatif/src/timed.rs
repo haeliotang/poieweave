@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Phase C2a: independent timed/storage What-if DTOs.
 //!
 //! C2a deliberately does not extend C1's snapshot/variant/result types: C1

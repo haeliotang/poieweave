@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Process instances and scheduling feasibility (M5.2; Physical Ontology §3.8 draft).
 //!
 //! A process instance has a start time, a duration and the assets it occupies.

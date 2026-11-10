@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 import { defineConfig } from "@playwright/test";
 
 // The desktop UI is exercised through the browser preview build. The native

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Time-aware state (M5.1; Physical Ontology §3.8, §4).
 //!
 //! * the initial status and every explicit status change are evidence that

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Expansion accounting (M11.1, M11.2, M11.3).
 //!
 //! An expansion proposal is expressed as a capability-graph increment

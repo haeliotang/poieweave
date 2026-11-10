@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! D1 offline metadata delivery: sandbox JSON only, SQLite state, no network.
 use poie_delivery::{
     clear, diagnostics, import, parse_bundle, parse_bundle_full, parse_state, rollback, state_json, DeliveryState,

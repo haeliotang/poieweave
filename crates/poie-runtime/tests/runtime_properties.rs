@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Randomized read-only runtime invariants: projection of the latest scripted
 //! observation, disconnect behaviour (retain / mark unknown / fail closed),
 //! health reporting and evidence expiry.

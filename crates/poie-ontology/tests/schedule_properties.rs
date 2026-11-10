@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Randomized scheduling invariants: precedence, duration preservation,
 //! capacity-conflict completeness and soundness, determinism and cycle detection.
 

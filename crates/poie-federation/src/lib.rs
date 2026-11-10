@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Multi-site federation, library-level (M12.1–M12.4).
 //!
 //! Two or more simulated sites each keep an append-only record log and a hybrid

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Domain snapshot for the Python-free desktop shell.
 //!
 //! The host embeds the Base-01 model and evaluates it with the real

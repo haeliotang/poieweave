@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Versioned projections and state versions (SAP §2.3).
 //!
 //! A projection is a deterministic function of a record sequence, a projection

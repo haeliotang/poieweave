@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Bridge from SAP projections to the Physical Ontology model (SAP §8; M4.9).
 //!
 //! The ontology's asset `status` is derived from observation/estimate projections

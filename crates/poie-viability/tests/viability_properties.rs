@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Randomized VEC invariants: viability/recovery/resilience accounting,
 //! censoring rules in summaries, sustainability formulas, and deterministic
 //! reproducible methods.

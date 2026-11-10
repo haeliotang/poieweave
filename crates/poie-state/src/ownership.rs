@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Command ownership and leases (SAP §6.1; SAP-T7, T8, T12, T13).
 //!
 //! At most one site may hold command ownership for an executor at a time. A

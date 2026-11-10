@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Randomized graph-solver invariants: verdict classification matches the
 //! reported blockers, candidates are independently checked (step indices,
 //! provider/route verification), and search monotonicity holds for weaker

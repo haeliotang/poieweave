@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Parser robustness (fuzz-lite): arbitrary mutations of the Base-01 model and
 //! cases TOML must produce `Ok` or `Err`, never a panic, and the unmodified
 //! originals must still load.

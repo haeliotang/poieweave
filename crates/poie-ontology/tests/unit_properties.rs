@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Randomized unit/quantity invariants: SI conversion round-trips, dimension
 //! compatibility, parsing and the rounding tolerance (PO §2).
 

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Runs the pre-registered Base-01 cases and checks accounting invariants
 //! that the case expectations alone do not cover.
 

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Small SQLite state layer owned by the host process.
 //!
 //! The webview never gets SQL. It can only call the narrow commands in

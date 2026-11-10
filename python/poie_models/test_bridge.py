@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """Stdlib-only tests for the water model and the JSON-line bridge (M7).
 
 These tests run without third-party packages so CI can execute them with the

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Temporal gain and construction-period check (VEC §6.2.2, M11.3).
 
 use std::collections::BTreeMap;

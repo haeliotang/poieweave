@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Randomized execution-gate safety invariants: takeover and degradation never
 //! dispatch, idempotency keys dispatch at most once, validity windows, failure
 //! classification and ledger-state consistency.

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Simulation isolation (SAP §7; M4.8).
 //!
 //! A simulation branch may run its own lifecycle, but it must never dispatch a

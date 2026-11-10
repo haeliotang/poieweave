@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Phase C1: static, deterministic what-if snapshots and variants.
 //!
 //! C1 only rewrites an in-memory `Model` copy and runs graph/plan. It never

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Local shadow runtime: adapter polling, observation records, projection with
 //! evidence expiry, and health checks (M9.3). No cloud connection is required.
 

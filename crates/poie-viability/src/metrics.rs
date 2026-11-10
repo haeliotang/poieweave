@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! The four metric groups (VEC §4).
 //!
 //! A run produces a [`RunTrace`]: time-stamped service levels, hard-constraint

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Randomized record-envelope invariants: validation classification, JSON
 //! round-trip for all nine payload kinds, namespace isolation and record-id
 //! parsing.

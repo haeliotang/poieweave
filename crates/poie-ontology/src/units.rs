@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Physical quantities and units (Physical Ontology §2).
 //!
 //! Quantities are stored in coherent SI units together with their dimension.

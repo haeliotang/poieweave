@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Read-only Ontology product layer: types, objects, links, actions and functions.
 //!
 //! The formal model remains the only source of truth; this crate projects it

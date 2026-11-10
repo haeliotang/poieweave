@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Runs the cases of a scenario and reports each capability-graph result.
 //!
 //! Usage: poie-graph <cases.toml> [--routes N] [--external-deps N] [--timings] [CASE_ID ...]

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Subprocess client for the JSON-line bridge (M7.1, M7.4).
 //!
 //! The model runs in a separate Python process. The call has a wall-clock

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! SAP §9 acceptance cases implemented so far.
 //!
 //! Covered: SAP-T1 (crash after dispatch, plus a per-write-point sweep), T2

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Phase C1 what-if commands: static snapshots, Patch variants, compare.
 //!
 //! The source model is read-only here. Results are written only to the
