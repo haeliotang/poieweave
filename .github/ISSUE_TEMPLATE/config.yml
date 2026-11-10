@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 blank_issues_enabled: false
 contact_links:
   - name: Research foundations
@@ -11,7 +14,7 @@ contact_links:
     about: What stays open, what may be closed, and the invariants that constrains.
   - name: Contributing guide
     url: https://github.com/haeliotang/poieweave/blob/main/CONTRIBUTING.md
-    about: How to submit counterexamples, cases, contract changes, and code (with DCO sign-off).
+    about: How to submit counterexamples, cases, contract changes, and code (CLA required once version 1.0 is effective).
   - name: Report a security vulnerability
     url: https://github.com/haeliotang/poieweave/security/advisories/new
     about: Do not disclose vulnerabilities in public issues; use private reporting.

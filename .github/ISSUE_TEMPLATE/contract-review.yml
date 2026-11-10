@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 name: Contract review comment
 description: "M1.8 reviewer comment: a question, ambiguity, gap, or counterexample in a draft contract."
 title: "[review] "

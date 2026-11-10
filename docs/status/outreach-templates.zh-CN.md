@@ -18,7 +18,7 @@
 
 > 你好 [姓名]，
 >
-> 我们在做一个开放源码的工业能力图项目 Poieweave（Apache-2.0）。目前有三份草案契约，想请你按"**能否构造反例**"而不是文风来审读，帮我们在进入下一阶段前找出不可实现或不可判定的地方：
+> 我们在做一个开放源码的工业能力图项目 Poieweave（分层许可：应用/运行时 AGPL-3.0-or-later，契约/测试数据 Apache-2.0，文档 CC-BY-4.0）。目前有三份草案契约，想请你按"**能否构造反例**"而不是文风来审读，帮我们在进入下一阶段前找出不可实现或不可判定的地方：
 >
 > - Physical Ontology v0.3-draft：<https://github.com/haeliotang/poieweave/blob/main/specifications/physical-ontology.zh-CN.md>
 > - State and Action Protocol v0.2-draft：<https://github.com/haeliotang/poieweave/blob/main/specifications/state-action-protocol.zh-CN.md>
@@ -40,7 +40,7 @@
 
 > Hi [Name],
 >
-> We are building Poieweave, an open-source (Apache-2.0) capability-graph project. We have three draft contracts and would value a review that tries to **construct counterexamples**, not a style review:
+> We are building Poieweave, an open-source capability-graph project with a layered licence (AGPL-3.0-or-later for applications/runtime, Apache-2.0 for contracts/test data, CC-BY-4.0 for docs). We have three draft contracts and would value a review that tries to **construct counterexamples**, not a style review:
 > - Physical Ontology v0.3-draft: <https://github.com/haeliotang/poieweave/blob/main/specifications/physical-ontology.zh-CN.md>
 > - State and Action Protocol v0.2-draft: <https://github.com/haeliotang/poieweave/blob/main/specifications/state-action-protocol.zh-CN.md>
 > - Viability and Expansion Contract v0.2-draft: <https://github.com/haeliotang/poieweave/blob/main/specifications/viability-expansion.zh-CN.md>
@@ -68,10 +68,10 @@
 >
 > 按 M1.9 要求，需要发起方对 [ADR-0001 开源边界](../adr/0001-open-source-boundary.zh-CN.md) 给出**书面确认**。请特别确认：
 >
-> 1. 项目采用 Apache-2.0；
+> 1. 项目采用分层许可（AGPL-3.0-or-later / Apache-2.0 / CC-BY-4.0）；
 > 2. 六条不变式（安全与授权语义保持开放、可审计、可重放等）；
 > 3. "开放核心 + 可闭源适配器 / 客户模型 / 托管服务"的边界；
-> 4. 配套文件 `NOTICE`、DCO、`SECURITY.md` 与 `cargo-deny` 策略可接受。
+> 4. 配套文件 `NOTICE`、CLA（草案）、`SECURITY.md` 与 `cargo-deny` 策略可接受。
 >
 > 材料：[ADR-0001](../adr/0001-open-source-boundary.zh-CN.md)、[外部行动清单](external-actions.zh-CN.md#b-m19-adr-0001-开源边界确认)。
 >

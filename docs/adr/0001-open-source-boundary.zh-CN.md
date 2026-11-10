@@ -1,5 +1,7 @@
 # ADR-0001：开源边界
 
+> **历史决定，已被 2026-11-10 许可分层决定部分取代。** 当前许可见 [LICENSING.md](../../LICENSING.md)：应用/运行时 AGPL-3.0-or-later，契约/测试数据 Apache-2.0，文档 CC-BY-4.0；DCO 已改为 CLA（草案）。本 ADR 保留 2026-10-28 的原始决策与理由；其中“Apache-2.0 全仓”和“DCO 而非 CLA”不再是当前政策。
+
 - 状态：**提议**（待发起方 Inceptless 确认）
 - 日期：2026-10-31
 - 决策者：Inceptless
