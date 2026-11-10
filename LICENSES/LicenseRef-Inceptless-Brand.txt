@@ -1,0 +1,11 @@
+Inceptless brand assets — name and marks
+
+The name "Inceptless", the project names, logos, icons and Inceptless marks are
+not licensed under the code or documentation licences of this repository.
+
+You may use the names to refer to this project accurately. You may not use the
+names, logos or marks in a way that suggests official status, sponsorship or
+endorsement by Inceptless, or for a fork or derivative presented as the official
+project.
+
+Questions: support@inceptless.com

@@ -1,0 +1,51 @@
+version = 1
+SPDX-PackageName = "Poieweave"
+SPDX-PackageSupplier = "Inceptless <support@inceptless.com>"
+SPDX-PackageDownloadLocation = "https://github.com/haeliotang/poieweave"
+
+[[annotations]]
+path = ["docs/**", "specifications/**"]
+SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotations]]
+path = [
+  "README.md",
+  "CONTRIBUTING.md",
+  "SECURITY.md",
+  "NOTICE",
+  "LICENSING.md",
+  "CLA.md",
+]
+SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotations]]
+path = ["evals/**", "fixtures/**", "experiments/**", "scenarios/**"]
+SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["experiments/**/runner/**", "experiments/**/*.sh"]
+SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = ["apps/desktop/README.md", "python/poie_models/DATA.zh-CN.md", "python/poie_models/README.md", "apps/desktop/screenshots/**"]
+SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotations]]
+path = ["apps/desktop/src-tauri/icons/**", "apps/desktop/src/assets/poieweave-mono.svg"]
+SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
+SPDX-License-Identifier = "LicenseRef-Inceptless-Brand"
+
+[[annotations]]
+path = ["apps/desktop/**/*.json", "apps/desktop/src/sdk/**"]
+SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = ["Cargo.lock", "apps/desktop/pnpm-lock.yaml", "apps/desktop/src-tauri/Cargo.lock", ".gitignore"]
+SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
