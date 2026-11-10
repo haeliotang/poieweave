@@ -51,7 +51,7 @@ your organisation needs different terms, write to support@inceptless.com.
 | Versions or commits | Licence |
 | --- | --- |
 | `v0.4.19` and every earlier tag or release | Apache-2.0 |
-| `0.4.20` onward (unreleased at the time of this change) | Layered model in this file |
+| From merge commit `5d47bb3` onward (source `0.4.20`, unreleased) | Layered model in this file |
 
 Published versions are not retroactively relicensed. A tag, release asset or
 commit that was published under Apache-2.0 remains available under Apache-2.0.
