@@ -71,7 +71,7 @@
 > 1. 项目采用分层许可（AGPL-3.0-or-later / Apache-2.0 / CC-BY-4.0）；
 > 2. 六条不变式（安全与授权语义保持开放、可审计、可重放等）；
 > 3. "开放核心 + 可闭源适配器 / 客户模型 / 托管服务"的边界；
-> 4. 配套文件 `NOTICE`、CLA（草案）、`SECURITY.md` 与 `cargo-deny` 策略可接受。
+> 4. 配套文件 `NOTICE`、CLA 1.0、`SECURITY.md` 与 `cargo-deny` 策略可接受。
 >
 > 材料：[ADR-0001](../adr/0001-open-source-boundary.zh-CN.md)、[外部行动清单](external-actions.zh-CN.md#b-m19-adr-0001-开源边界确认)。
 >

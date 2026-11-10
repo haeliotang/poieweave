@@ -21,7 +21,7 @@ CI 固定使用 Rust 1.94.0（与参考开发环境一致，避免 clippy 版本
 | 状态协议参考实现与故障注入 | `crates/poie-state`：53 单元 + 13 SAP 验收（T1–T11）；10⁵ 序列属性测试；逐写入点崩溃注入；120 次随机投影不变量测试（对照独立契约 oracle）；120 次记录验证/九类负载往返随机测试；追加日志随机不变量（重开保序/序号规则/崩溃尾部/中段损坏） |
 | 时间维度与可重放 | `poie-sim` 13 测试 + 仿真随机不变量（80 trials：digest 确定、守恒分类、外部流/库存核算、SoC 边界）；Base-01 时间版 20/20，`digests.toml` CI 逐位校验 |
 | H1 实验 | [H1 REPORT](../../experiments/h1-structural/REPORT.md)（弱支持、内部证据）与 [H1 temporal REPORT](../../experiments/h1-temporal/REPORT.md)，全量/开发集/留出集/时间版原始输出均 CI 重放 |
-| M1.6–M1.7 | CI 全绿；CONTRIBUTING/SECURITY/issue 模板已合并（DCO 已于 2026-11-10 换为 CLA 草案） |
+| M1.6–M1.7 | CI 全绿；CONTRIBUTING/SECURITY/issue 模板已合并（DCO 已于 2026-11-10 换为 CLA 1.0） |
 | M1.8/M1.9/M1.10 | **未完成**：外部评审、ADR-0001 由 Inceptless 确认、正式商标检索 |
 | M3.3 | **未满足**：外部贡献用例配额（≥1/4） |
 
