@@ -10,7 +10,7 @@ Chinese and English are both welcome. Choose one language per contribution; do n
 2. **Pre-register expectations.** A scenario case must have its expected outcome written *before* the first run. Do not edit an expectation to match the output; first explain what is wrong — the model, the implementation, or the expectation — and record that reasoning.
 3. **Contracts are versioned, not frozen.** They move through `draft` → `candidate` → `stable` ([§1.2](docs/DEVELOPMENT.zh-CN.md)). Normative changes need an ADR ([§1.5](docs/DEVELOPMENT.zh-CN.md)).
 4. **Safety and authority semantics stay open.** Anything that decides whether an action may be validated, authorized, dispatched, or verified must live in the open core ([ADR-0001](docs/adr/0001-open-source-boundary.zh-CN.md), I1–I6). Do not propose a private shortcut around them.
-5. **License and CLA.** Application/runtime code is AGPL-3.0-or-later, contract and test material is Apache-2.0, and documentation is CC-BY-4.0 (see [LICENSING.md](LICENSING.md)). Contributions require signing the Inceptless CLA. The CLA is still a draft: **external contributions are not being merged until CLA 1.0 is effective**.
+5. **License and CLA.** Application/runtime code is AGPL-3.0-or-later, contract and test material is Apache-2.0, and documentation is CC-BY-4.0 (see [LICENSING.md](LICENSING.md)). Contributions require signing the [Inceptless CLA](CLA.md) at https://cla-assistant.io/haeliotang/poieweave. **PRs are merged only after the CLA check (`license/cla`) passes.**
 
 ## Toolchain and MSRV
 
@@ -78,13 +78,9 @@ Keep status statements honest: if something is a design goal, say so; if it is i
 
 ## Contributor License Agreement (CLA)
 
-External contributions require signing the [Inceptless Contributor License Agreement](CLA.md). The agreement is currently **DRAFT** and not yet in force. Until it is reviewed and published as version 1.0:
+External contributions require signing the [Inceptless Contributor License Agreement, version 1.0](CLA.md) at https://cla-assistant.io/haeliotang/poieweave. **PRs are merged only after the CLA check (`license/cla`) passes.** Corporate contributors must ensure the entity is authorised to sign.
 
-- do not expect external pull requests to be merged;
-- maintainers may still discuss issues, counterexamples and proposed contracts;
-- signing tool link: `TODO(maintainer)` — the maintainer will install and publish it before CLA 1.0 takes effect.
-
-Do not add `Signed-off-by` lines as a substitute for the CLA. Corporate contributors must ensure the entity is authorised to sign.
+Do not add `Signed-off-by` lines as a substitute for the CLA.
 
 ## Pull requests
 

@@ -5,7 +5,7 @@
 
 ## Evidence
 
-- [ ] I have signed, or will sign, the Inceptless CLA (required once CLA 1.0 is effective)
+- [ ] I have signed the Inceptless CLA; PRs are merged only after `license/cla` passes
 
 ## Checks
 

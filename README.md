@@ -248,7 +248,7 @@ A one-page [status snapshot](docs/status/status-snapshot.zh-CN.md) summarizes wh
 
 Use [issues](https://github.com/haeliotang/poieweave/issues) to discuss research questions and scoped implementation proposals. Proposed architecture should earn stability through experiments rather than being treated as a frozen specification.
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [maintenance runbook](docs/MAINTENANCE.zh-CN.md) before sending a case or a pull request: external contributions require signing the Inceptless CLA, pre-registered expectations, and the same gates CI runs. The CLA is still a draft, so external contributions are not being merged yet. Report vulnerabilities privately, as described in [SECURITY.md](SECURITY.md) — not in a public issue.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [maintenance runbook](docs/MAINTENANCE.zh-CN.md) before sending a case or a pull request: external contributions require signing the [Inceptless CLA](CLA.md) at https://cla-assistant.io/haeliotang/poieweave; PRs are merged only after the `license/cla` check passes. Pre-register expectations and pass the same gates CI runs. Report vulnerabilities privately, as described in [SECURITY.md](SECURITY.md) — not in a public issue.
 
 ## License
 
