@@ -1,9 +1,12 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 [package]
 name = "poie-exec"
 version = "0.1.0"
 description = "Bounded execution: writable adapters with idempotency and validity, execution gate with human takeover and safe degradation, independent verification signals (M10)."
 edition.workspace = true
-license.workspace = true
+license = "AGPL-3.0-or-later"
 repository.workspace = true
 
 [dependencies]

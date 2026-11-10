@@ -1,8 +1,11 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 [package]
 name = "poie-delivery"
 version = "0.1.0"
 edition.workspace = true
-license.workspace = true
+license = "AGPL-3.0-or-later"
 repository.workspace = true
 description = "D1 JSON-only offline site delivery: manifest/bundle, state, rollback, diagnostics"
 

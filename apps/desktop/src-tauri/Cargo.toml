@@ -1,11 +1,14 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 [package]
 name = "poieweave-desktop"
-version = "0.4.19"
+version = "0.4.20"
 description = "Poieweave desktop host: filesystem sandbox, SQLite state, Tauri 2 packaging."
 edition = "2021"
 rust-version = "1.77"
 publish = false
-license-file = "../../../LICENSE"
+license = "AGPL-3.0-or-later"
 
 [lib]
 name = "poieweave_desktop_lib"
