@@ -26,7 +26,7 @@ SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
 SPDX-License-Identifier = "Apache-2.0"
 
 [[annotations]]
-path = ["experiments/**/runner/**", "experiments/**/*.sh"]
+path = ["experiments/**/runner/**", "experiments/**/baseline/**", "experiments/**/*.sh", "experiments/**/Dockerfile", "experiments/**/Dockerfile.dockerignore"]
 SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
 SPDX-License-Identifier = "AGPL-3.0-or-later"
 
@@ -41,9 +41,14 @@ SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
 SPDX-License-Identifier = "LicenseRef-Inceptless-Brand"
 
 [[annotations]]
-path = ["apps/desktop/**/*.json", "apps/desktop/src/sdk/**"]
+path = ["apps/desktop/**/*.json"]
 SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
 SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = ["apps/desktop/src/sdk/**"]
+SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
+SPDX-License-Identifier = "Apache-2.0"
 
 [[annotations]]
 path = ["Cargo.lock", "apps/desktop/pnpm-lock.yaml", "apps/desktop/src-tauri/Cargo.lock", ".gitignore"]

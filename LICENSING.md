@@ -19,8 +19,9 @@ implement or interoperate with the project remain permissively licensed.
 | `scenarios/` | `Apache-2.0` | Pre-registered test models and cases; independent implementations need them. |
 | `fixtures/` | `Apache-2.0` | Frozen interchange fixtures and test vectors. |
 | `evals/` | `Apache-2.0` | Frozen agent-evaluation fixtures. |
-| `experiments/**/runner/`, `experiments/**/*.sh` | `AGPL-3.0-or-later` | Experiment runners and orchestration scripts are executable tooling. |
+| `experiments/**/runner/`, `experiments/**/baseline/`, `experiments/**/*.sh`, `experiments/**/Dockerfile`, `experiments/**/Dockerfile.dockerignore` | `AGPL-3.0-or-later` | Experiment runners, baselines and orchestration containers are executable tooling. |
 | `experiments/` (results, raw data, reports) | `Apache-2.0` | Frozen experiment results and test data; evidence must remain reusable. |
+| `apps/desktop/src/sdk/` | `Apache-2.0` | Generated public TypeScript SDK; no SPDX header so `poie-sdkgen --check` stays byte-stable. |
 | `docs/` | `CC-BY-4.0` | Documentation, design notes, status and research text. |
 | `specifications/` | `CC-BY-4.0` | Normative contract prose; byte-frozen for this change. |
 | `README.md`, `CONTRIBUTING.md`, `SECURITY.md`, `NOTICE`, `LICENSING.md`, `CLA.md` | `CC-BY-4.0` | Project documentation and contribution terms. |
@@ -50,7 +51,7 @@ your organisation needs different terms, write to support@inceptless.com.
 | Versions or commits | Licence |
 | --- | --- |
 | `v0.4.19` and every earlier tag or release | Apache-2.0 |
-| Commits after `v0.4.19`, from this licensing change onward | Layered model in this file |
+| `0.4.20` onward (unreleased at the time of this change) | Layered model in this file |
 
 Published versions are not retroactively relicensed. A tag, release asset or
 commit that was published under Apache-2.0 remains available under Apache-2.0.
