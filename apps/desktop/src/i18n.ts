@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 export type Lang = "zh" | "en";
 
 type Messages = Record<string, string>;
@@ -284,6 +287,8 @@ const zh: Messages = {
   "settings.inference.note": "尚未配置；外壳不会把数据发往任何远程端点。",
   "settings.inference.save": "保存（未接入）",
   "settings.about": "关于",
+  "settings.license": "许可证",
+  "settings.source": "源码",
   "settings.version": "版本",
   "settings.sandbox": "沙箱",
   "status.model": "模型",
@@ -590,6 +595,8 @@ const en: Messages = {
   "settings.inference.note": "Not configured; the shell sends nothing to any remote endpoint.",
   "settings.inference.save": "Save (not wired)",
   "settings.about": "About",
+  "settings.license": "License",
+  "settings.source": "Source",
   "settings.version": "Version",
   "settings.sandbox": "Sandbox",
   "status.model": "Model",

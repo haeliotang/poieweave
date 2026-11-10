@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 import { useEffect, useMemo, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import type { HostInfo } from "./types";
@@ -2061,6 +2064,8 @@ function SettingsDialog({
             <h3>{t("settings.about")}</h3>
             <div className="kv"><span>{t("settings.version")}</span><span className="mono">{host?.version ?? "0.1.0"}</span></div>
             <div className="kv"><span>{t("settings.sandbox")}</span><span className="mono truncate">{host?.sandboxRoot ?? "preview"}</span></div>
+            <div className="kv"><span>{t("settings.license")}</span><span>AGPL-3.0-or-later</span></div>
+            <div className="kv"><span>{t("settings.source")}</span><a href={host?.sourceUrl ?? "https://github.com/haeliotang/poieweave"} target="_blank" rel="noreferrer">{host?.sourceUrl ?? "https://github.com/haeliotang/poieweave"}</a></div>
           </section>
         </div>
       </div>
