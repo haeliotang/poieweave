@@ -1,2 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 max_width = 120
 use_small_heuristics = "Max"

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Issue #109 (AI-preview review P10, P11, P23) and the expansion side of #110
 //! (P12): expansion accounting rules of the Viability & Expansion Contract.
 //!

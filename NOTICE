@@ -5,9 +5,20 @@ Copyright 2026 Inceptless
 This product includes software developed by Inceptless
 (https://github.com/haeliotang/poieweave).
 
-Licensed under the Apache License, Version 2.0 (see LICENSE). The license
-does not grant trademark rights in the project name or marks (see section 6
-of the license).
+The application and runtime are licensed under the GNU Affero General Public
+License, version 3 or later (AGPL-3.0-or-later); see LICENSE. Contract,
+fixture and scenario material is licensed under Apache-2.0; documentation is
+licensed under CC-BY-4.0. See LICENSING.md for the complete layered map.
 
-Third-party dependencies retain their own licenses; they are declared in
-Cargo.toml and Cargo.lock and are not bundled into this source distribution.
+Versions published up to v0.4.19 were released under Apache-2.0 and remain
+available under that licence.
+
+The licence does not grant rights in the Inceptless or Poieweave names, logos
+or marks; see LICENSES/LicenseRef-Inceptless-Brand.txt.
+
+Third-party dependencies retain their own licenses; they are declared in the
+manifests and lockfiles and are not bundled into this source distribution.
+
+Build-time data dependency:
+- caniuse-lite (browserslist data), CC-BY-4.0, https://github.com/browserslist/caniuse-lite.
+  It is used by frontend build tooling, not the application runtime bundle.

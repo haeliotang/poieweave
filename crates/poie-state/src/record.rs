@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Record kinds and the common envelope (SAP §2.1–2.2).
 //!
 //! Every record carries the envelope below. `event_time` (source clock) and

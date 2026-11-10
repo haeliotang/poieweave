@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Read-only Ontology product commands for the desktop host.
 
 use poie_objects::{ObjectDetail, ObjectPage, OntologyCatalog};

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Actions and their lifecycle (SAP §3).
 //!
 //! The transition table is the normative one from SAP §3.3. Transitions that are

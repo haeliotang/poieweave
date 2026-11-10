@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Simulated executor for fault-injection tests (SAP §4, §6.1, §9; M4.6).
 //!
 //! The executor contract is in SAP §4 and §6.1: commands carry an idempotency

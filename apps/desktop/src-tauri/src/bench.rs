@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Desktop M9 bench scenarios: gate, duplicate/expired/fallback/outcome_unknown.
 //! Simulated only; no physical adapter and no numeric-observation change.
 

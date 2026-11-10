@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Randomized simulation invariants: deterministic digest (including chunked
 //! runs), event ordering, conservation classification, external flows, stock
 //! accounting and battery state-of-charge bounds.

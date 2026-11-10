@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Inventory reservations at the physical site (SAP §6.2; SAP-T6).
 //!
 //! The site that physically holds a batch is the only one that may reserve it.

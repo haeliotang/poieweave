@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Verdict classes, required attachments and reporting guards (VEC §3.1).
 //!
 //! The six classes are deliberately distinct: `timeout` and `numerical_failure`

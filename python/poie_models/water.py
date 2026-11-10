@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """Simplified water-treatment process model (M7.2; synthetic, uncalibrated).
 
 A deliberately small steady-state model of a raw-water pump plus one filtration

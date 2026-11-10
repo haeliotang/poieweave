@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Append-only local record log (SAP §1, §5; ADR-0003).
 //!
 //! One record per JSON line, written with a single `write_all` followed by

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Federation snapshot from the real `poie-federation` reconciler.
 //!
 //! Two simulated sites exchange logs, then reconcile over-reservation,

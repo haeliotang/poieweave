@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 name: Contract change
 description: Propose a correction, clarification, or new normative clause in one of the three contracts.
 title: "[contract] "

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Entities of the Physical Ontology (§3), model loading, validation and the
 //! mass-conservation check (§5).
 

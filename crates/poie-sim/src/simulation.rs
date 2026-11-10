@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! The discrete-event simulator (M5.4).
 //!
 //! Events are popped in `(time, sequence)` order, so the same scheduled input

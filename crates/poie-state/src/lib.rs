@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Reference implementation of the Poieweave State & Action Protocol
 //! (`specifications/state-action-protocol.zh-CN.md`, v0.2-draft).
 //!

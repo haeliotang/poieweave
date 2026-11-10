@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Cross-node replay packet: a portable, digest-only comparison record.
 //!
 //! Transport is deliberately out of scope. Two nodes exchange the JSON packet

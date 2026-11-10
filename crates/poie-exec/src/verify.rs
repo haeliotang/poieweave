@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Independent verification signals (M10.3).
 //!
 //! Every action needs at least one confirmation source that is independent of

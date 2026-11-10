@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Prediction reconciliation (M9.5): compare failure predictions with observed
 //! failures and keep out-of-window cases visible.
 

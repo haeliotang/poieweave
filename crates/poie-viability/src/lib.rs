@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Viability & Expansion Contract reference implementation (M6.1, M6.2).
 //!
 //! This crate implements the *question* and *answer* formats of VEC §2–§3:

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Local audit anchor: HMAC the current audit chain head with a random key kept
 //! in the platform secret store. This is device-local anchoring, not a
 //! third-party timestamp; it detects modification of the chain after anchoring.

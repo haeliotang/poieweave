@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Structure/temporal bridge (VEC §3.3, M6.5).
 //!
 //! When a timed trace shows a service violation, the recovery question is

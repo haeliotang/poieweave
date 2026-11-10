@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Federation: log exchange and reconnect reconciliation (M12.1, M12.3, M12.4).
 
 use std::collections::{BTreeMap, BTreeSet};

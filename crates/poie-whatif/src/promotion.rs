@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Phase C2b promotion DTOs: approved C1 plan results become proposed actions.
 //! This module does not create Authorization, dispatch, or write live state.
 

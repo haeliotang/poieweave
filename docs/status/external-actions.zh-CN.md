@@ -15,7 +15,7 @@
 ## B. M1.9 ADR-0001 开源边界确认
 
 - **需要谁**：Inceptless（发起方）书面确认。
-- **材料**：[ADR-0001](../adr/0001-open-source-boundary.zh-CN.md)、`NOTICE`、DCO、`SECURITY.md`、`cargo-deny` 配置。
+- **材料**：[ADR-0001](../adr/0001-open-source-boundary.zh-CN.md)、`NOTICE`、CLA 1.0、`SECURITY.md`、`cargo-deny` 配置。
 - **确认内容**：六条不变式与"开放核心 + 可闭源适配器/客户模型/托管服务"的边界。
 - **验收**：ADR 状态改为"已接受"，记录确认人与日期。
 - **请求**：由发起方指定确认人；如需法务复核，请提供意见渠道。

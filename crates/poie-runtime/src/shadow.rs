@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Shadow planning (M9.4): the planner runs on the projected field state, its
 //! actions are only recorded, and the "would do" plan is compared with the
 //! operator's observed actions.

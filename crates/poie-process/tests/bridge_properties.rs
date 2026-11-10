@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Randomized Rust-side bridge-client properties: every injected fault is
 //! classified, successes are validated (units, conservation, synthetic flag),
 //! and errors are never returned as model results.

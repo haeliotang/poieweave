@@ -7,7 +7,7 @@ The name comes from Greek *poiesis* (making) and *autopoiesis* (a system that pr
 [![CI](https://github.com/haeliotang/poieweave/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/haeliotang/poieweave/actions/workflows/ci.yml)
 [![Desktop build](https://github.com/haeliotang/poieweave/actions/workflows/desktop-build.yml/badge.svg?branch=main)](https://github.com/haeliotang/poieweave/actions/workflows/desktop-build.yml)
 [![Release v0.4.19](https://img.shields.io/badge/release-v0.4.19-blue.svg)](https://github.com/haeliotang/poieweave/releases/tag/v0.4.19)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![License: AGPL-3.0-or-later](https://img.shields.io/badge/License-AGPL--3.0--or--later-blue.svg)](LICENSING.md)
 
 ### Build the open foundation for self-sustaining industrial systems.
 
@@ -24,7 +24,7 @@ Our central question is simple:
 [中文研究文档 / Research & architecture](docs/research/FOUNDATIONS.zh-CN.md) · [开发文档 / Development plan](docs/DEVELOPMENT.zh-CN.md)
 
 
-**Latest verified release:** [**v0.4.19**](https://github.com/haeliotang/poieweave/releases/tag/v0.4.19) — Linux `.deb`, Windows NSIS installer / portable `.exe`, and universal macOS app zip (Apple Silicon + Intel), with flat `SHA256SUMS` and `release-verification.json` (`ok=true`). **Current source version: 0.4.19.** The previously displayed v0.1.1 badge was stale; v0.3.4 was the earlier release with a verified receipt, and v0.4.19 is the current verified release. Signing/notarization requires repository Apple secrets and remains explicitly unsigned/not notarized.
+**Latest verified release:** [**v0.4.19**](https://github.com/haeliotang/poieweave/releases/tag/v0.4.19) — Linux `.deb`, Windows NSIS installer / portable `.exe`, and universal macOS app zip (Apple Silicon + Intel), with flat `SHA256SUMS` and `release-verification.json` (`ok=true`). **Current source version: 0.4.20 (unreleased).** The previously displayed v0.1.1 badge was stale; v0.3.4 was the earlier release with a verified receipt, and v0.4.19 is the current verified release. Signing/notarization requires repository Apple secrets and remains explicitly unsigned/not notarized.
 
 ## Screenshots
 
@@ -248,15 +248,15 @@ A one-page [status snapshot](docs/status/status-snapshot.zh-CN.md) summarizes wh
 
 Use [issues](https://github.com/haeliotang/poieweave/issues) to discuss research questions and scoped implementation proposals. Proposed architecture should earn stability through experiments rather than being treated as a frozen specification.
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [maintenance runbook](docs/MAINTENANCE.zh-CN.md) before sending a case or a pull request: contributions need a DCO sign-off (`git commit -s`), pre-registered expectations, and must pass the same gates CI runs. Report vulnerabilities privately, as described in [SECURITY.md](SECURITY.md) — not in a public issue.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and the [maintenance runbook](docs/MAINTENANCE.zh-CN.md) before sending a case or a pull request: external contributions require signing the [Inceptless CLA](CLA.md) at https://cla-assistant.io/haeliotang/poieweave; PRs are merged only after the `license/cla` check passes. Pre-register expectations and pass the same gates CI runs. Report vulnerabilities privately, as described in [SECURITY.md](SECURITY.md) — not in a public issue.
 
-## Open Source License
+## License
 
-Poieweave is released under the **Apache License, Version 2.0**.
+Poieweave uses a layered licence model: applications and runtime code are **AGPL-3.0-or-later**; contract crates, scenarios, fixtures and evaluation data are **Apache-2.0**; documentation is **CC-BY-4.0**. The root [LICENSE](LICENSE) is the AGPL-3.0 text; [LICENSING.md](LICENSING.md) has the complete map, licence history and commercial-licensing contact.
 
-The root [LICENSE](LICENSE) applies to the project code and documentation unless otherwise noted. Third-party components retain their own licenses; preserve their notices when redistributing dependencies or binaries.
+Versions published up to and including `v0.4.19` remain available under Apache-2.0. Third-party components retain their own licences; preserve their notices when redistributing dependencies or binaries.
 
-The proposed open-source boundary is recorded in [ADR-0001](docs/adr/0001-open-source-boundary.zh-CN.md): specifications, the core, and all safety- and authority-relevant semantics stay open; customer-specific adapters, calibrated customer models, and hosted services may be offered separately. The license does not grant trademark rights to the project name.
+The open-source boundary is recorded in [ADR-0001](docs/adr/0001-open-source-boundary.zh-CN.md): specifications, the core, and all safety- and authority-relevant semantics stay open; customer-specific adapters, calibrated customer models, and hosted services may be offered separately. The licence does not grant rights in the Inceptless or Poieweave names, logos or marks.
 
 ## Project Origin
 
@@ -264,7 +264,7 @@ Poieweave is initiated by **Inceptless**.
 
 - Initiating Company: Inceptless
 - Project: Poieweave
-- Copyright: (c) 2026 Inceptless.
+- Copyright 2026 Inceptless.
 
 ---
 

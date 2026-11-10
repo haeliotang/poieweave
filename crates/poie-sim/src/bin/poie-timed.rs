@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Runs the pre-registered timed cases of a scenario and checks replay digests.
 //!
 //! Usage: `poie-timed <cases.toml> [--write-digests <path>] [--check-digests <path>]`

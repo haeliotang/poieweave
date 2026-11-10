@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 # Reproduce every gate that the repository claims in docs/status/stage-gates.zh-CN.md.
 set -euo pipefail
 cd "$(dirname "$0")/.."

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Versioned bridge to external process models (M7.1, M7.3, M7.4).
 //!
 //! The Rust core calls a Python model as a separate process over a JSON-line

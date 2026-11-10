@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Request/response schema for the process-model bridge (M7.1).
 
 use serde::{Deserialize, Serialize};

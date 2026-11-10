@@ -1,8 +1,8 @@
 {
   "name": "@poieweave/desktop",
-  "version": "0.4.19",
+  "version": "0.4.20",
   "private": true,
-  "license": "Apache-2.0",
+  "license": "AGPL-3.0-or-later",
   "type": "module",
   "description": "Poieweave desktop shell \u2014 Tauri 2 host + React 19 workline front-end.",
   "scripts": {

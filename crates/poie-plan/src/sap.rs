@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! SAP validation path for plans (M8.1, M8 exit requirement).
 //!
 //! Every planned action is turned into a SAP `Action`, added to an action ledger

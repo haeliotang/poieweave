@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Scenario cases: a base model, per-case patches, a query, and the expected
 //! outcome. Cases are the executable form of a scenario specification.
 

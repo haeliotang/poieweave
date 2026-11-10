@@ -1,8 +1,11 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 [package]
 name = "poie-whatif"
 version = "0.1.0"
 edition.workspace = true
-license.workspace = true
+license = "AGPL-3.0-or-later"
 repository.workspace = true
 description = "C1 deterministic static what-if snapshots, Patch variants, structure/plan outcomes and compare"
 

@@ -133,7 +133,7 @@ flowchart LR
 | --- | --- |
 | 愿景与问题边界 | `README.md` |
 | 研究纲领与架构审查 | `docs/research/FOUNDATIONS.zh-CN.md` |
-| Apache-2.0 许可证与发起方声明 | `LICENSE`、`README.md` |
+| 分层许可证与发起方声明 | `LICENSE`、`LICENSING.md`、`README.md` |
 
 ### M1 契约草案与结构原型 — 基本完成
 
@@ -156,9 +156,9 @@ flowchart LR
 | 工作包 | 内容 | 退出条件 |
 | --- | --- | --- |
 | M1.6 持续集成 | GitHub Actions（`.github/workflows/ci.yml`）：fmt、clippy、test、Base-01 用例；`cargo-deny`（`deny.toml`）检查许可、禁用项、来源与安全公告。**已完成**：PR #2 合并后 `main` 上 CI 为绿（[run #2](https://github.com/haeliotang/poieweave/actions/runs/41222603966)，2026-10-31）；2026-10-31 本地按同一组命令复跑通过 | CI 在 `main` 上为绿 |
-| M1.7 贡献指南 | `CONTRIBUTING.md`：如何提交反例、用例和契约修改；issue 模板（反例 / 契约修改 / 实验提案）；`DCO`、`SECURITY.md`。**已完成**（2026-10-31）：文件全部合并，GitHub 私有漏洞报告已启用 | 文件合并 |
+| M1.7 贡献指南 | `CONTRIBUTING.md`：如何提交反例、用例和契约修改；issue 模板（反例 / 契约修改 / 实验提案）；`SECURITY.md`。**已完成**（2026-10-31；2026-11-10 DCO 换为 CLA 1.0）：文件全部合并，GitHub 私有漏洞报告已启用 | 文件合并 |
 | M1.8 契约外部评审 | 邀请至少一位领域外读者按"能否构造反例"审读三份契约，把问题登记为 issue | 评审意见已登记，并逐条标注接受、拒绝（附理由）或推迟 |
-| M1.9 开源边界 | [ADR-0001](adr/0001-open-source-boundary.zh-CN.md)：开放核心 + 六条不变式；配套 `NOTICE`、DCO、`SECURITY.md`、`cargo-deny`。**配套文件已合并**（2026-10-31） | ADR 由 Inceptless 确认为"已接受"；配套文件合并 |
+| M1.9 开源边界 | [ADR-0001](adr/0001-open-source-boundary.zh-CN.md)：开放核心 + 六条不变式；配套 `NOTICE`、CLA 1.0、`SECURITY.md`、`cargo-deny`。**配套文件已合并**（2026-10-31） | ADR 由 Inceptless 确认为"已接受"；配套文件合并 |
 | M1.10 名称落地 | [ADR-0002](adr/0002-rename-to-poieweave.zh-CN.md)：仓库内改名与 GitHub 仓库改名已完成；**商标初步检索已记录**（§7，2026-10-31）：TMview 与 Trademarkia 未发现完全同名标记，残余风险来自 POIE 词根；官方库直连被阻断，类别专项检索待人工复核 | USPTO / EUIPO / CNIPA / WIPO 检索结果记入 ADR-0002 |
 
 **M1 退出条件**：M1.6–M1.10 完成。
@@ -479,7 +479,7 @@ flowchart LR
 1. 确认 ADR-0001 开源边界（M1.9）：`NOTICE` 已添加（2026-10-31），ADR 状态待发起方确认
 2. 完成 Poieweave 商标检索（M1.10）
 3. ~~合并 CI 配置并确认 `main` 上为绿（M1.6）~~ 已完成
-4. ~~编写 `CONTRIBUTING.md`（含 DCO）、`SECURITY.md` 与三类 issue 模板（M1.7）~~ 已完成
+4. ~~编写 `CONTRIBUTING.md`（现为 CLA；历史 DCO 已移除）、`SECURITY.md` 与三类 issue 模板（M1.7）~~ 已完成
 5. ~~实现 `requires_any`，并为 S3 增加应急供电改进版用例（M2.1、M2.8）~~ 已完成
 6. ~~实现多来源补足（M2.2）~~ 已完成
 7. ~~起草 `poie-state` 的记录类型与动作状态机，先写转移表的属性测试（M4.1、M4.4）~~ 已完成
@@ -665,3 +665,5 @@ flowchart LR
 | 0.1.169 | 2026-11-06 | 桌面 bench/audit 复核：bench.run 审计、gate 同步、UI 测试覆盖台架卡；版本 0.4.19 |
 | 0.1.170 | 2026-11-07 | 文档同步：README 版本徽章 v0.4.19；状态快照补 H2c/M9/M9b/M9c/台架/Modbus、P0/P1/P2 缺口、独立 CI 核对 |
 | 0.1.171 | 2026-11-07 | 证据分层：AI 预演/正式预登记/内部台架分节；统一 DeepSeek 会话表述；记录 b8f9a75 CI 成功 |
+| 0.1.172 | 2026-11-10 | 分层许可切换：应用/运行时 AGPL-3.0-or-later、契约/测试数据 Apache-2.0、文档 CC-BY-4.0；DCO 换 CLA 草案；源码版本 0.4.20（未发布） |
+| 0.1.173 | 2026-11-10 | CLA 升为 1.0；签署链接与 `license/cla` 合并条件落地；不动 0.1.172 原记录 |

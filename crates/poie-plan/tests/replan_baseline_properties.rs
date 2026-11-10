@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Randomized replanning and baseline invariants: the kept/cancelled partition,
 //! no work scheduled before `now`, added-action accounting, determinism, and
 //! comparable deterministic baseline plans.

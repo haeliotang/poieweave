@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Randomized candidate-route invariants (PO §6.3 rule 14, §6.5):
 //! bounded enumeration, deduplication, limit monotonicity, per-route summary
 //! consistency and the external-dependency union.

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Fuzz-lite robustness for expansion proposals: arbitrary mutations of the
 //! proposal TOML must be accepted or rejected, never panic, and a successfully
 //! loaded proposal must expand without panicking.

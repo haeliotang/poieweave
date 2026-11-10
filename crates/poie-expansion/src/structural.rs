@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Structural gain and loss (VEC §6.2.1, M11.2).
 //!
 //! Both lists are always reported, at three evaluation points (during

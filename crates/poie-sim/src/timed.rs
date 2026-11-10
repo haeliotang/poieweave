@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Timed scenario: timelines, pre-registered timed cases and deterministic replay
 //! digests (M5.5, M5.6).
 //!

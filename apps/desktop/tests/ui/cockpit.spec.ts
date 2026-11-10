@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 import { expect, test, type Page } from "@playwright/test";
 
 const views = [
@@ -81,6 +84,8 @@ test.describe("Poieweave cockpit", () => {
     await expect(dialog).toBeVisible();
     await expect(dialog.getByText("Local operator authentication runs in the Tauri host only.")).toBeVisible();
     await expect(dialog.getByText("Remote inference is enabled only in the Tauri host.")).toBeVisible();
+    await expect(dialog.getByText("AGPL-3.0-or-later")).toBeVisible();
+    await expect(dialog.getByRole("link", { name: "https://github.com/haeliotang/poieweave" })).toBeVisible();
     await dialog.getByRole("button", { name: "Close" }).click();
     await expect(dialog).toBeHidden();
   });

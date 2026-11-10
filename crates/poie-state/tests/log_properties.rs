@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Randomized append-only-log invariants (SAP §1, §5; ADR-0003):
 //! append order survives reopen, sequence numbers are enforced, crash tails are
 //! truncated, and corrupt middle lines are errors rather than silent drops.

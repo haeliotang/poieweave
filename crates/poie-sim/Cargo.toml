@@ -1,9 +1,12 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 [package]
 name = "poie-sim"
 version = "0.1.0"
 description = "Discrete-event simulation for Poieweave: deterministic ordering, per-step conservation, disturbance trajectories and battery power limits."
 edition.workspace = true
-license.workspace = true
+license = "AGPL-3.0-or-later"
 repository.workspace = true
 
 [dependencies]

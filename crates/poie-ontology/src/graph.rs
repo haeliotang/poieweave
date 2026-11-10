@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Capability-graph queries (Physical Ontology §6).
 //!
 //! The solver builds one *structural candidate* route on a single ledger:

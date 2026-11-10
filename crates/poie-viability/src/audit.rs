@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Checkable non-anticipation records (VEC §2.1, review C-06).
 //!
 //! The feasible set is defined with ∃π∀w over *non-anticipating* policies. An

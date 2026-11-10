@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 """JSON-line bridge server for the simplified water-treatment model (M7.1).
 
 Reads one request object per line from stdin, writes one response object per

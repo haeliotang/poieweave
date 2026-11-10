@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Discrete-event simulation for Poieweave (M5.3, M5.4).
 //!
 //! The simulator advances a deterministic event queue, applies disturbances

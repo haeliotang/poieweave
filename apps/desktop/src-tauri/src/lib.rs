@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Poieweave desktop host.
 //!
 //! The webview only gets a small, explicit command surface: host/domain snapshots,
@@ -60,6 +63,7 @@ struct HostInfo {
     db_path: String,
     sandbox_root: String,
     platform: &'static str,
+    source_url: String,
 }
 
 fn lock_db(state: &AppState) -> Result<std::sync::MutexGuard<'_, Db>, String> {
@@ -254,6 +258,8 @@ fn host_info(state: State<'_, AppState>) -> HostInfo {
         db_path: state.data_dir.join("poieweave.sqlite3").display().to_string(),
         sandbox_root: state.sandbox_root.display().to_string(),
         platform: std::env::consts::OS,
+        source_url: std::env::var("POIEWEAVE_SOURCE_URL")
+            .unwrap_or_else(|_| "https://github.com/haeliotang/poieweave".into()),
     }
 }
 

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Path resolution for the app-owned workspace sandbox.
 //!
 //! The host, not the webview, decides where files may live. Every path coming

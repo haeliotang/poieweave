@@ -1,9 +1,12 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: Apache-2.0
+
 [package]
 name = "poie-ontology"
 version = "0.1.0"
 description = "Reference prototype of the Poieweave Physical Ontology contract: units, entities, and capability-graph queries."
 edition.workspace = true
-license.workspace = true
+license = "Apache-2.0"
 repository.workspace = true
 
 [dependencies]

@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 //! Joint planning for production, maintenance and recovery (M8.1).
 //!
 //! The planner turns structural candidates plus time constraints into a

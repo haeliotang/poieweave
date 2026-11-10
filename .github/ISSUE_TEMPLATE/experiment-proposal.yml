@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 name: Experiment proposal
 description: Propose a pre-registered experiment, baseline, or disturbance set (H1–H4 or a new hypothesis).
 title: "[experiment] "

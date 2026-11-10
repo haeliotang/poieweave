@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Reference prototype of the Poieweave Physical Ontology contract
 //! (`specifications/physical-ontology.zh-CN.md`, v0.2-draft).
 //!

@@ -10,7 +10,7 @@ Chinese and English are both welcome. Choose one language per contribution; do n
 2. **Pre-register expectations.** A scenario case must have its expected outcome written *before* the first run. Do not edit an expectation to match the output; first explain what is wrong — the model, the implementation, or the expectation — and record that reasoning.
 3. **Contracts are versioned, not frozen.** They move through `draft` → `candidate` → `stable` ([§1.2](docs/DEVELOPMENT.zh-CN.md)). Normative changes need an ADR ([§1.5](docs/DEVELOPMENT.zh-CN.md)).
 4. **Safety and authority semantics stay open.** Anything that decides whether an action may be validated, authorized, dispatched, or verified must live in the open core ([ADR-0001](docs/adr/0001-open-source-boundary.zh-CN.md), I1–I6). Do not propose a private shortcut around them.
-5. **License and sign-off.** Everything is contributed under Apache-2.0, with a Developer Certificate of Origin sign-off (below). No CLA is required.
+5. **License and CLA.** Application/runtime code is AGPL-3.0-or-later, contract and test material is Apache-2.0, and documentation is CC-BY-4.0 (see [LICENSING.md](LICENSING.md)). Contributions require signing the [Inceptless CLA](CLA.md) at https://cla-assistant.io/haeliotang/poieweave. **PRs are merged only after the CLA check (`license/cla`) passes.**
 
 ## Toolchain and MSRV
 
@@ -76,21 +76,11 @@ Rules that CI cannot enforce:
 
 Keep status statements honest: if something is a design goal, say so; if it is implemented, link the test or run. When you change a normative clause, update every document that restates it (contract, development plan, README “What exists today”).
 
-## DCO sign-off
+## Contributor License Agreement (CLA)
 
-Every commit must be signed off. Use:
+External contributions require signing the [Inceptless Contributor License Agreement, version 1.0](CLA.md) at https://cla-assistant.io/haeliotang/poieweave. **PRs are merged only after the CLA check (`license/cla`) passes.** Corporate contributors must ensure the entity is authorised to sign.
 
-```bash
-git commit -s
-```
-
-This adds a line such as:
-
-```text
-Signed-off-by: Your Name <you@example.com>
-```
-
-The sign-off certifies the [Developer Certificate of Origin 1.1](DCO). Use your real name and a reachable address. Corporate contributors must be authorized to sign on their employer's behalf. Pull requests with unsigned commits will be asked to amend them (force-pushes on your branch are fine).
+Do not add `Signed-off-by` lines as a substitute for the CLA.
 
 ## Pull requests
 

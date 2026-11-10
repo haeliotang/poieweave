@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+// SPDX-License-Identifier: Apache-2.0
+
 //! Canonical JSON and SHA-256 digests for Poieweave product-layer artifacts.
 //!
 //! The formal PO/SAP types keep their human-readable fingerprints; this crate
