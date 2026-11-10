@@ -6,7 +6,7 @@ name = "poieweave-desktop"
 version = "0.4.20"
 description = "Poieweave desktop host: filesystem sandbox, SQLite state, Tauri 2 packaging."
 edition = "2021"
-rust-version = "1.77"
+rust-version = "1.89"
 publish = false
 license = "AGPL-3.0-or-later"
 
@@ -25,7 +25,7 @@ tauri-build = { version = "2", features = [] }
 tauri = { version = "2", features = [] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-rusqlite = { version = "0.32", features = ["bundled"] }
+rusqlite = { version = "0.41", features = ["bundled"] }
 poie-ontology = { path = "../../../crates/poie-ontology" }
 poie-objects = { path = "../../../crates/poie-objects" }
 poie-governance = { path = "../../../crates/poie-governance" }
