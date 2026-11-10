@@ -52,6 +52,10 @@ pub struct Db {
     pub(crate) connection: Connection,
 }
 
+fn u64_from_i64(value: i64, column: usize) -> Result<u64, rusqlite::Error> {
+    u64::try_from(value).map_err(|_| rusqlite::Error::IntegralValueOutOfRange(column, value))
+}
+
 impl Db {
     pub fn open(path: &Path) -> Result<Db, String> {
         let connection = Connection::open(path).map_err(|error| format!("open {}: {error}", path.display()))?;
@@ -425,6 +429,7 @@ impl Db {
     }
 
     pub fn save_audit_anchor(&self, count: u64, head: &str, hmac: &str, at: i64) -> Result<(), String> {
+        let count = i64::try_from(count).map_err(|_| "audit count exceeds SQLite INTEGER".to_string())?;
         self.connection
             .execute(
                 "INSERT INTO audit_anchors (audit_count,audit_head,hmac,anchored_at) VALUES (?1,?2,?3,?4)",
@@ -437,7 +442,7 @@ impl Db {
     pub fn latest_audit_anchor(&self) -> Result<Option<(u64, String, String)>, String> {
         self.connection
             .query_row("SELECT audit_count,audit_head,hmac FROM audit_anchors ORDER BY id DESC LIMIT 1", [], |row| {
-                Ok((row.get(0)?, row.get(1)?, row.get(2)?))
+                Ok((u64_from_i64(row.get(0)?, 0)?, row.get(1)?, row.get(2)?))
             })
             .optional()
             .map_err(|error| error.to_string())
@@ -563,10 +568,11 @@ impl Db {
 
     pub fn audit_chain(&self) -> Result<(u64, Option<String>), String> {
         self.ensure_audit_chain()?;
-        let count: u64 = self
+        let count: i64 = self
             .connection
             .query_row("SELECT COUNT(*) FROM audit", [], |row| row.get(0))
             .map_err(|error| error.to_string())?;
+        let count = u64::try_from(count).map_err(|_| "audit count out of range".to_string())?;
         let head: Option<String> = self
             .connection
             .query_row("SELECT hash FROM audit ORDER BY id DESC LIMIT 1", [], |row| row.get(0))
