@@ -4,6 +4,7 @@
 # cargo-deny policy. Rationale: docs/adr/0001-open-source-boundary.zh-CN.md §5.
 # Dependencies must be compatible with the layered AGPL/Apache/CC-BY model.
 # MPL-2.0 and LGPL require review; GPL/AGPL are allowed for this copyleft project.
+# Apache contract crates are checked separately by scripts/check-apache-licenses.py.
 
 [graph]
 all-features = true
