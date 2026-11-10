@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 # Periodic drift detection: dependencies, advisories and the pinned toolchain.
 # The per-merge CI already runs the same checks; this weekly run catches a newly
 # published advisory or a change in a dependency source without blocking merges.
