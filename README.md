@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="apps/desktop/src/assets/poieweave-mono.svg" alt="Poieweave — Capability graph" width="120">
+</p>
+
 # Poieweave
 
 > An open autonomous industrial platform initiated by **Inceptless**.
