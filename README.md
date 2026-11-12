@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="apps/desktop/src/assets/poieweave-mono.svg" alt="Poieweave — Capability graph" width="120">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="apps/desktop/src/assets/poieweave-mono-dark.svg">
+    <img src="apps/desktop/src/assets/poieweave-mono.svg" alt="Poieweave — Capability graph" width="120">
+  </picture>
 </p>
 
 # Poieweave
