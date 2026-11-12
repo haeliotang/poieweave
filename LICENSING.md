@@ -27,7 +27,7 @@ implement or interoperate with the project remain permissively licensed.
 | `README.md`, `CONTRIBUTING.md`, `SECURITY.md`, `NOTICE`, `LICENSING.md`, `CLA.md` | `CC-BY-4.0` | Project documentation and contribution terms. |
 | `.github/` | `AGPL-3.0-or-later` | CI, release and issue infrastructure. |
 | `apps/desktop/screenshots/`, `docs/status/assets/` | `CC-BY-4.0` | Documentation screenshots. |
-| `apps/desktop/src-tauri/icons/`, `apps/desktop/src/assets/poieweave-mono.svg` | `LicenseRef-Inceptless-Brand` | Project logos and application icons. |
+| `apps/desktop/src-tauri/icons/`, `apps/desktop/src/assets/poieweave-mono*.svg` | `LicenseRef-Inceptless-Brand` | Project logos and application icons. |
 | `LICENSES/` | Their own texts | Official licence texts; see below. |
 
 `LICENSES/LicenseRef-Inceptless-Brand.txt` states the brand boundary. The name

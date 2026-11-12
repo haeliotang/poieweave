@@ -36,7 +36,7 @@ SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
 SPDX-License-Identifier = "CC-BY-4.0"
 
 [[annotations]]
-path = ["apps/desktop/src-tauri/icons/**", "apps/desktop/src/assets/poieweave-mono.svg"]
+path = ["apps/desktop/src-tauri/icons/**", "apps/desktop/src/assets/poieweave-mono.svg", "apps/desktop/src/assets/poieweave-mono-dark.svg"]
 SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
 SPDX-License-Identifier = "LicenseRef-Inceptless-Brand"
 
