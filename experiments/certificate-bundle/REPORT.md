@@ -21,7 +21,16 @@ bundle=ok
 - each certificate SHA-256
 - explicit model/simulation claim scope
 
-## 3. Limits
+## 3. One-page summary
+
+`SUMMARY.md` is rendered from the bundle. `verify_summary.py` checks that every
+layer, hash prefix and disclaimer appears.
+
+```text
+summary=ok
+```
+
+## 4. Limits
 
 - Unsigned bundle; no attestation.
 - Detects content changes, not authorship or physical reality.
