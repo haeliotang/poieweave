@@ -159,6 +159,12 @@ pub struct FailureEvent {
     pub asset: String,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct BatteryLimits {
+    pub capacity_kwh: f64,
+    pub charge_kw: f64,
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct SurvivalLogEntry {
     pub at_s: f64,
@@ -189,6 +195,19 @@ pub fn simulate_longevity(
     service_id: &str,
     horizon_s: f64,
     events: &[FailureEvent],
+) -> Result<SurvivalReport, EnvelopeError> {
+    simulate_longevity_with_limits(model, service_id, horizon_s, events, None)
+}
+
+/// Same policy, with an optional battery capacity and charge-power cap.
+/// `BatteryLimits` is a study parameter because the ontology model has no
+/// battery-capacity field yet.
+pub fn simulate_longevity_with_limits(
+    model: &Model,
+    service_id: &str,
+    horizon_s: f64,
+    events: &[FailureEvent],
+    battery: Option<BatteryLimits>,
 ) -> Result<SurvivalReport, EnvelopeError> {
     let Some(service) = model.services.get(service_id) else {
         return Err(EnvelopeError(format!("unknown service {service_id}")));
@@ -228,7 +247,7 @@ pub fn simulate_longevity(
     ordered.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
     for event in ordered {
         let at = event.at_s.clamp(now, horizon_s);
-        add_recharge(&current, &mut inventory, at - now);
+        add_recharge(&current, &mut inventory, at - now, battery);
         now = at;
         if let Some(asset) = current.assets.get_mut(&event.asset) {
             asset.status = AssetStatus::Failed;
@@ -261,7 +280,7 @@ pub fn simulate_longevity(
             }
         }
     }
-    add_recharge(&current, &mut inventory, horizon_s - now);
+    add_recharge(&current, &mut inventory, horizon_s - now, battery);
     Ok(SurvivalReport {
         service: service.id.clone(),
         horizon_s,
@@ -376,7 +395,7 @@ fn energy(inventory: &BTreeMap<String, f64>) -> f64 {
     inventory.get("electric-energy").copied().unwrap_or(0.0)
 }
 
-fn recharge_kwh_per_s(model: &Model) -> Option<f64> {
+fn recharge_j_per_s(model: &Model) -> Option<f64> {
     let process = model.processes.iter().find(|process| process.id == "recharge-energy")?;
     let duration = process.duration_s?;
     let output = process.outputs.iter().find(|output| output.resource == "electric-energy")?;
@@ -386,15 +405,27 @@ fn recharge_kwh_per_s(model: &Model) -> Option<f64> {
     Some(output.si / duration)
 }
 
-fn add_recharge(model: &Model, inventory: &mut BTreeMap<String, f64>, elapsed_s: f64) {
+fn add_recharge(model: &Model, inventory: &mut BTreeMap<String, f64>, elapsed_s: f64, battery: Option<BatteryLimits>) {
     if elapsed_s <= 0.0 {
         return;
     }
     if !model.assets.get("pv-1").is_some_and(|asset| asset.status == AssetStatus::Available) {
         return;
     }
-    if let Some(rate) = recharge_kwh_per_s(model) {
-        *inventory.entry("electric-energy".into()).or_insert(0.0) += rate * elapsed_s;
+    let Some(raw_j_per_s) = recharge_j_per_s(model) else {
+        return;
+    };
+    let added_j = match battery {
+        Some(battery) => raw_j_per_s.min(battery.charge_kw * 1000.0) * elapsed_s,
+        None => raw_j_per_s * elapsed_s,
+    };
+    let energy = inventory.entry("electric-energy".into()).or_insert(0.0);
+    *energy += added_j;
+    if let Some(battery) = battery {
+        let capacity_j = battery.capacity_kwh * 3_600_000.0;
+        if *energy > capacity_j {
+            *energy = capacity_j;
+        }
     }
 }
 
@@ -453,6 +484,20 @@ mod tests {
         .unwrap();
         assert_eq!(report.survived_s, 10.0 * 86400.0);
         assert!(report.log.last().unwrap().blocked_by.is_some());
+    }
+
+    #[test]
+    fn battery_limits_cap_energy_after_idle_recharge() {
+        let report = simulate_longevity_with_limits(
+            &base05(),
+            "potable-water",
+            30.0 * 86400.0,
+            &[],
+            Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
+        )
+        .unwrap();
+        let energy = report.final_inventory.get("electric-energy").copied().unwrap_or(0.0);
+        assert!(energy <= 200.0 * 3_600_000.0 + 1.0);
     }
 
     #[test]

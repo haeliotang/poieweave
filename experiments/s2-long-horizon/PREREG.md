@@ -18,6 +18,7 @@ production and the S1 repair closure?
 - At each event, S1 closure plans the repair against the **current shared
   inventory**; the plan's remaining inventory becomes the next state.
 - Between events, `recharge-energy` adds PV energy if `pv-1` is available.
+  The run uses a study battery cap of 200 kWh and a 10 kW charge limit.
 - A blocked repair ends the run at that event; no intervention is allowed.
 
 This is a greedy fixed policy, not an optimal long-horizon planner.
@@ -27,7 +28,7 @@ This is a greedy fixed policy, not an optimal long-horizon planner.
 Base-05 has two accepted sleeves and 3 kg bronze bar. Different repair paths
 consume the bar; the prediction is that repeated repairs exhaust locally
 available bronze before day 90. Expected outcome: survival around 40 days,
-with a `missing resource bronze-bar` block.
+with a `missing resource bronze-bar` block; battery energy should cap at 200 kWh.
 
 Expected output is frozen in [expected.txt](expected.txt).
 
