@@ -8,7 +8,7 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use poie_ontology::model::Model;
-use poie_viability::survival::{simulate_longevity_with_limits, BatteryLimits, FailureEvent};
+use poie_viability::survival::{simulate_multi_service_longevity_with_limits, BatteryLimits, FailureEvent};
 
 fn root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../..")
@@ -20,12 +20,14 @@ fn main() -> ExitCode {
         panic!("load Base-05: {error}");
     });
     let horizon = 90.0 * 86400.0;
-    let events: Vec<FailureEvent> = (1..=9)
+    let mut events: Vec<FailureEvent> = (1..=9)
         .map(|index| FailureEvent { at_s: f64::from(index) * 10.0 * 86400.0, asset: "pump-p1".into() })
         .collect();
-    let report = simulate_longevity_with_limits(
+    events.push(FailureEvent { at_s: 35.0 * 86400.0, asset: "lathe-1".into() });
+    events.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
+    let report = simulate_multi_service_longevity_with_limits(
         &model,
-        "potable-water",
+        &["potable-water", "workshop-operability"],
         horizon,
         &events,
         Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
