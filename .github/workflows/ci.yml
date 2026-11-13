@@ -181,6 +181,12 @@ jobs:
           python3 experiments/s4-independent-plan/verify.py /tmp/plans.json > /tmp/s4-independent-plan.out
           diff experiments/s4-independent-plan/expected.txt /tmp/s4-independent-plan.out
           test -f experiments/s4-independent-plan/REPORT.md
+      - name: S4 plan negative controls (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-plan-export > /tmp/plans-neg.json
+          python3 experiments/s4-plan-negatives/negative.py /tmp/plans-neg.json > /tmp/s4-plan-negatives.out
+          diff experiments/s4-plan-negatives/expected.txt /tmp/s4-plan-negatives.out
+          test -f experiments/s4-plan-negatives/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
