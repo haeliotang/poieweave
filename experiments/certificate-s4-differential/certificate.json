@@ -1,0 +1,10 @@
+{
+  "claim_scope": "independent implementation evidence only; not a formal equivalence proof",
+  "differential_expected": "experiments/s4-differential-corpus/expected.txt",
+  "differential_expected_sha256": "719adf59c9e0539a9fcf4669dc866ab969e7e28f8c46241f919cfd6fe28b24ac",
+  "differential_summary": "cases=112 matched=112 mismatched=0",
+  "plans_expected": "experiments/s4-differential-corpus/expected-plans.txt",
+  "plans_expected_sha256": "fe620c0631da5ef5a3c58ef788419e90db7d78efc9ddd475b1f6dfe86cf1aed6",
+  "plans_summary": "plans=26 verified=26",
+  "schema": "poie.s4-certificate/1"
+}
