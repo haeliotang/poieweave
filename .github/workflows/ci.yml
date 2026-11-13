@@ -109,6 +109,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-horizon > /tmp/s2-horizon.out
           diff experiments/s2-survival-horizon/expected.txt /tmp/s2-horizon.out
           test -f experiments/s2-survival-horizon/REPORT.md
+      - name: S2 double-failure envelope (Base-05)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-pairs > /tmp/s2-pairs.out
+          diff experiments/s2-failure-pairs/expected.txt /tmp/s2-pairs.out
+          test -f experiments/s2-failure-pairs/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v

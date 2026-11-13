@@ -548,6 +548,18 @@ mod tests {
     }
 
     #[test]
+    fn double_failure_envelope_counts_pairs() {
+        let envelope = failure_envelope(&base05(), "potable-water", 12.0 * 3600.0, 2).unwrap();
+        assert_eq!(envelope.total(), 46);
+        assert!(envelope.recoverable < envelope.total());
+        assert!(envelope.cases.iter().any(|case| {
+            case.failed.contains(&"filter-1".to_string())
+                && case.failed.contains(&"bus-1".to_string())
+                && !case.recoverable
+        }));
+    }
+
+    #[test]
     fn longer_failure_intervals_extend_survival_horizon() {
         let make = |interval: u32| -> Vec<FailureEvent> {
             (1..=(89 / interval))

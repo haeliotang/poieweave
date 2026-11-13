@@ -1,0 +1,37 @@
+service=potable-water horizon_s=43200 total=46 recoverable=11 coverage=0.239130
+pair	failed=bat-1,bus-1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bat-1,charger-1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bat-1,filter-1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bat-1,gauge-1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bat-1,lathe-1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bat-1,pump-p1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bat-1,pv-1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bat-1,robot-m1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bus-1,charger-1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bus-1,filter-1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bus-1,gauge-1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bus-1,lathe-1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bus-1,pump-p1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bus-1,pv-1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=bus-1,robot-m1	BLOCKED	reason=cyclic asset dependency at bus-1
+pair	failed=charger-1,filter-1	BLOCKED	reason=no restorer for robot-m1
+pair	failed=charger-1,gauge-1	BLOCKED	reason=no restorer for robot-m1
+pair	failed=charger-1,lathe-1	BLOCKED	reason=no restorer for robot-m1
+pair	failed=charger-1,pump-p1	BLOCKED	reason=no restorer for robot-m1
+pair	failed=charger-1,pv-1	BLOCKED	reason=no restorer for robot-m1
+pair	failed=charger-1,robot-m1	BLOCKED	reason=no restorer for robot-m1
+pair	failed=filter-1,gauge-1	BLOCKED	reason=no restorer for filter-1
+pair	failed=filter-1,lathe-1	BLOCKED	reason=no restorer for filter-1
+pair	failed=filter-1,pump-p1	BLOCKED	reason=no restorer for filter-1
+pair	failed=filter-1,pv-1	BLOCKED	reason=no restorer for filter-1
+pair	failed=filter-1,robot-m1	BLOCKED	reason=no restorer for robot-m1
+pair	failed=gauge-1,lathe-1	RESTORABLE	max_plan_s=10800
+pair	failed=gauge-1,pump-p1	RESTORABLE	max_plan_s=10800
+pair	failed=gauge-1,pv-1	RESTORABLE	max_plan_s=10800
+pair	failed=gauge-1,robot-m1	BLOCKED	reason=no restorer for robot-m1
+pair	failed=lathe-1,pump-p1	RESTORABLE	max_plan_s=10800
+pair	failed=lathe-1,pv-1	RESTORABLE	max_plan_s=10800
+pair	failed=lathe-1,robot-m1	BLOCKED	reason=no restorer for robot-m1
+pair	failed=pump-p1,pv-1	RESTORABLE	max_plan_s=10800
+pair	failed=pump-p1,robot-m1	BLOCKED	reason=no restorer for robot-m1
+pair	failed=pv-1,robot-m1	BLOCKED	reason=no restorer for robot-m1
