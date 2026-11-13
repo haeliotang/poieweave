@@ -709,3 +709,4 @@ flowchart LR
 | 0.1.213 | 2026-11-14 | S3 恢复证书：模型哈希/审批/事件/2 回执/库存链/claim scope，独立校验 ok |
 | 0.1.214 | 2026-11-14 | S1 closure 证书：Base-04 lathe 计划 + 模型哈希 + plan replay + scope，独立校验 ok |
 | 0.1.215 | 2026-11-14 | 证书 bundle：S1/S2/S3 证书 SHA-256 索引，内容变更有检测，独立校验 ok |
+| 0.1.216 | 2026-11-14 | S2 joint 证书：Base-06 独立 25/joint 24/gap 1 + gap pair，独立校验 ok |

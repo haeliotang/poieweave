@@ -1,0 +1,19 @@
+{
+  "claim_scope": "model-level coverage only; not a joint survival certificate",
+  "gap_pairs": [
+    [
+      "pump-p1",
+      "pump-p2"
+    ]
+  ],
+  "horizon_s": 43200.0,
+  "independent_recoverable": 25,
+  "joint_recoverable": 24,
+  "max_failures": 2,
+  "model": "scenarios/base-06/model.toml",
+  "model_sha256": "09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c",
+  "optimistic_gap": 1,
+  "schema": "poie.coverage-certificate/1",
+  "service": "potable-water",
+  "total": 56
+}
