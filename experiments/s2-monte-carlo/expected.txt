@@ -1,0 +1,6 @@
+runs=100 min_days=24 median_days=72 mean_days=67.2 max_days=90 survived_90=39
+bucket	[0,40)	15
+bucket	[40,60)	22
+bucket	[60,80)	15
+bucket	[80,90)	9
+bucket	[90,91)	39

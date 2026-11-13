@@ -214,6 +214,11 @@ jobs:
           python3 experiments/s4-plan-fuzz/fuzz.py /tmp/fuzz-plans.json > /tmp/s4-plan-fuzz.out
           diff experiments/s4-plan-fuzz/expected.txt /tmp/s4-plan-fuzz.out
           test -f experiments/s4-plan-fuzz/REPORT.md
+      - name: S2 Monte Carlo failure schedules (Base-05)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-monte-carlo > /tmp/s2-monte-carlo.out
+          diff experiments/s2-monte-carlo/expected.txt /tmp/s2-monte-carlo.out
+          test -f experiments/s2-monte-carlo/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
