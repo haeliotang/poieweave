@@ -1,0 +1,3 @@
+heldout_interval_days	survived_days	blocked_by
+12	48	missing resource bronze-bar: need 1.2, have 0.6000000000000001
+25	90	none
