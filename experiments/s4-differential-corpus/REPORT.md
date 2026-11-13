@@ -12,6 +12,12 @@
 cases=112 matched=112 mismatched=0
 ```
 
+The RESTORABLE plans were also replayed independently:
+
+```text
+plans=26 verified=26
+```
+
 ## 2. What happened during the run
 
 The first comparison (27 cases) found three mismatches, all on `bus-1` in
@@ -36,6 +42,7 @@ and the model of the checker was tightened.
 ## 3. Limits
 
 - Only verdict classes are compared; blocking reasons are not.
+- Plan replay does not search alternative plans or re-solve closure.
 - Two horizons and six models; the model family is still synthetic.
 - The Python checker still lacks `requires_any`, shared-time accounting and
   full yield semantics.

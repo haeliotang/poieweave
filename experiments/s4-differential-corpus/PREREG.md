@@ -17,8 +17,9 @@ Base-07 and Base-08 at 12 h and 24 h horizons (112 cases). Python runs its
 recursive production/repair checker on the same cases. Compare verdict classes
 and report mismatches.
 
-Prediction: most cases agree; any mismatch is investigated and recorded rather
-than hidden.
+Additionally, every RESTORABLE case exports its plan steps; the independent
+plan replay verifier checks inputs/outputs/restores/durations. Prediction:
+`plans=26 verified=26`, in addition to verdict agreement.
 
 ## Limitation
 

@@ -30,16 +30,24 @@ fn main() -> ExitCode {
                 if let Some(asset) = scenario.assets.get_mut(target) {
                     asset.status = AssetStatus::Failed;
                 }
-                let outcome = match analyze(&scenario, target, horizon_s) {
-                    ClosureOutcome::Restorable(_) => "RESTORABLE",
-                    ClosureOutcome::Blocked(_) => "BLOCKED",
-                };
-                output.push(serde_json::json!({
-                    "model": relative,
-                    "target": target,
-                    "horizon_s": horizon_s,
-                    "rust": outcome,
-                }));
+                match analyze(&scenario, target, horizon_s) {
+                    ClosureOutcome::Restorable(plan) => output.push(serde_json::json!({
+                        "model": relative,
+                        "target": target,
+                        "horizon_s": horizon_s,
+                        "rust": "RESTORABLE",
+                        "outcome": "RESTORABLE",
+                        "steps": plan.steps,
+                        "total_duration_s": plan.total_duration_s,
+                    })),
+                    ClosureOutcome::Blocked(_) => output.push(serde_json::json!({
+                        "model": relative,
+                        "target": target,
+                        "horizon_s": horizon_s,
+                        "rust": "BLOCKED",
+                        "outcome": "BLOCKED",
+                    })),
+                }
             }
         }
     }
