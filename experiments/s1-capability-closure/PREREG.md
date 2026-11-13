@@ -36,7 +36,7 @@ must fit the requested horizon.
 | s1-base01-lathe | Base-01, lathe failed | `lathe-1` | 12 h | blocked by self-repair cycle |
 | s1-base04-lathe-no-spare | Base-04, no lathe-nut lot | `lathe-1` | 12 h | blocked by self-repair cycle |
 | s1-base01-pump-no-sleeve | Base-01, no sleeve lot | `pump-p1` | 12 h | restorable via turn + inspect + replace, 7.5 h |
-| s1-base01-bus-no-breaker | Base-01, bus failed, no breaker lot | `bus-1` | 12 h | blocked; robot is not available without the failed bus |
+| s1-base01-bus-no-breaker | Base-01, bus failed, no breaker lot | `bus-1` | 12 h | blocked by the bus/robot/charger support cycle |
 
 The expected output is frozen in [expected.txt](expected.txt).
 
