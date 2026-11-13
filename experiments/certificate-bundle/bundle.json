@@ -23,6 +23,12 @@
       "path": "experiments/certificate-s3-recovery/certificate.json",
       "schema": "poie.recovery-certificate/1",
       "sha256": "a006ed1f57273efb358a9d67ff89f374d52a4de52af47ad79d3b34b67738abfe"
+    },
+    {
+      "layer": "S4",
+      "path": "experiments/certificate-s4-differential/certificate.json",
+      "schema": "poie.s4-certificate/1",
+      "sha256": "0413d9a9c7c47d09cd41218b21eaa545da9b28d5b3c4c31816ec99051baedd2f"
     }
   ],
   "claim_scope": "model/simulation certificates only; no physical safety or authority claim",
