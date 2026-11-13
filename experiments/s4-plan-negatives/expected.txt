@@ -1,0 +1,4 @@
+dropped_step: rejected (target lathe-1 was not restored by any step)
+wrong_duration: rejected (duration mismatch: steps 10800.0, reported 10801.0)
+unknown_process: rejected (unknown process does-not-exist)
+mutations=3 rejected=3
