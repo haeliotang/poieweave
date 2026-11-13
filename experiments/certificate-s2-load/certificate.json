@@ -1,0 +1,40 @@
+{
+  "battery": {
+    "capacity_kwh": 200.0,
+    "charge_kw": 10.0
+  },
+  "claim_scope": "model/simulation only; not a physical safety or lifetime claim",
+  "conclusion": "0-2 kW remains material-limited at 40 days; 3-4 kW becomes energy-limited",
+  "experiment": "s2-load",
+  "horizon_days": 90,
+  "model": "scenarios/base-05/model.toml",
+  "model_sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150",
+  "rows": [
+    {
+      "blocked_by": "missing resource bronze-bar: need 1.2, have 0.6000000000000001",
+      "load_kw": 0.0,
+      "survived_days": 40.0
+    },
+    {
+      "blocked_by": "missing resource bronze-bar: need 1.2, have 0.6000000000000001",
+      "load_kw": 1.0,
+      "survived_days": 40.0
+    },
+    {
+      "blocked_by": "missing resource bronze-bar: need 1.2, have 0.6000000000000001",
+      "load_kw": 2.0,
+      "survived_days": 40.0
+    },
+    {
+      "blocked_by": "energy_depleted",
+      "load_kw": 3.0,
+      "survived_days": 3.2916666666666665
+    },
+    {
+      "blocked_by": "energy_depleted",
+      "load_kw": 4.0,
+      "survived_days": 1.0972222222222223
+    }
+  ],
+  "schema": "poie.viability-certificate/1"
+}

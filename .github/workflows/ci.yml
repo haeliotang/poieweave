@@ -224,6 +224,13 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-load > /tmp/s2-load.out
           diff experiments/s2-load/expected.txt /tmp/s2-load.out
           test -f experiments/s2-load/REPORT.md
+      - name: Viability certificate S2 load (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-certificate > /tmp/certificate-s2-load.json
+          diff experiments/certificate-s2-load/certificate.json /tmp/certificate-s2-load.json
+          python3 experiments/certificate-s2-load/verify.py /tmp/certificate-s2-load.json > /tmp/certificate-s2-load.out
+          diff experiments/certificate-s2-load/expected.txt /tmp/certificate-s2-load.out
+          test -f experiments/certificate-s2-load/REPORT.md
       - name: S4 blocked reason classes (Python)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-closure-corpus-export > /tmp/corpus-reasons.json
