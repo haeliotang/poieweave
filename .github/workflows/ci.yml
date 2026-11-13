@@ -175,6 +175,12 @@ jobs:
           python3 experiments/s4-independent-receipt/verify.py /tmp/receipts.json > /tmp/s4-independent-receipt.out
           diff experiments/s4-independent-receipt/expected.txt /tmp/s4-independent-receipt.out
           test -f experiments/s4-independent-receipt/REPORT.md
+      - name: S4 independent plan replay (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-plan-export > /tmp/plans.json
+          python3 experiments/s4-independent-plan/verify.py /tmp/plans.json > /tmp/s4-independent-plan.out
+          diff experiments/s4-independent-plan/expected.txt /tmp/s4-independent-plan.out
+          test -f experiments/s4-independent-plan/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
