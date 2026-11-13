@@ -1,0 +1,5 @@
+interval_days	survived_days	failed_at	final_energy_kwh	blocked_by
+10	40	day 40	200.0	missing resource bronze-bar: need 1.2, have 0.6000000000000001
+15	60	day 60	200.0	missing resource bronze-bar: need 1.2, have 0.6000000000000001
+20	80	day 80	200.0	missing resource bronze-bar: need 1.2, have 0.6000000000000001
+30	90	day 90	200.0	none
