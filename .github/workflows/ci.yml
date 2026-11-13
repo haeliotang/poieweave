@@ -154,6 +154,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-recovery > /tmp/s3-recovery.out
           diff experiments/s3-recovery-loop/expected.txt /tmp/s3-recovery.out
           test -f experiments/s3-recovery-loop/REPORT.md
+      - name: S3 approval state and lease (Base-05)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-approval > /tmp/s3-approval.out
+          diff experiments/s3-approval-lease/expected.txt /tmp/s3-approval.out
+          test -f experiments/s3-approval-lease/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v

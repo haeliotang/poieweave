@@ -461,12 +461,29 @@ fn add_recharge(model: &Model, inventory: &mut BTreeMap<String, f64>, elapsed_s:
     }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ApprovalDecision {
+    /// The proposal is still waiting for an operator; do not execute.
+    Required,
+    Approved,
+    Rejected,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct RecoveryPolicy {
+    pub decision: ApprovalDecision,
+    /// Maximum age of the approval at execution time. A plan whose duration
+    /// exceeds the lease is not applied.
+    pub lease_s: f64,
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct RecoveryLogEntry {
     pub at_s: f64,
     pub failed: Option<String>,
     pub repaired: Vec<String>,
     pub approved: bool,
+    pub approval: Option<String>,
     pub verified: bool,
     pub blocked_by: Option<String>,
 }
@@ -479,19 +496,33 @@ pub struct RecoveryReport {
     pub log: Vec<RecoveryLogEntry>,
 }
 
-/// S3 first slice: a closed recovery loop with an explicit approval gate.
+/// S3: a closed recovery loop with an explicit approval state and lease.
 ///
-/// A proposal is created only by the deterministic S1 closure. If `approved` is
-/// false the proposal is recorded and the run stops at that point; no repair is
-/// applied. If true, the plan is applied to the shared inventory, the service is
-/// re-verified, and the loop continues to the next event. This is an isolated
-/// simulation, not a hardware authority path.
+/// A proposal is created only by the deterministic S1 closure. `Required` and
+/// `Rejected` both stop the run without applying the plan; an `Approved` policy
+/// applies the plan only if its duration fits within `lease_s`. After applying,
+/// the service requirements are re-verified. This is an isolated simulation,
+/// not a hardware authority path.
 pub fn simulate_recovery(
     model: &Model,
     service_id: &str,
     horizon_s: f64,
     events: &[FailureEvent],
     approved: bool,
+) -> Result<RecoveryReport, EnvelopeError> {
+    let policy = RecoveryPolicy {
+        decision: if approved { ApprovalDecision::Approved } else { ApprovalDecision::Required },
+        lease_s: f64::INFINITY,
+    };
+    simulate_recovery_with_policy(model, service_id, horizon_s, events, policy)
+}
+
+pub fn simulate_recovery_with_policy(
+    model: &Model,
+    service_id: &str,
+    horizon_s: f64,
+    events: &[FailureEvent],
+    policy: RecoveryPolicy,
 ) -> Result<RecoveryReport, EnvelopeError> {
     let Some(service) = model.services.get(service_id) else {
         return Err(EnvelopeError(format!("unknown service {service_id}")));
@@ -500,17 +531,25 @@ pub fn simulate_recovery(
     let mut inventory = initial_inventory(model);
     let mut log = Vec::new();
     let mut now = 0.0;
+    let approval = approval_label(policy.decision);
 
-    match recover_service(&mut current, service, now, horizon_s, &mut inventory, approved) {
-        Ok(repaired) => {
-            log.push(RecoveryLogEntry { at_s: 0.0, failed: None, repaired, approved, verified: true, blocked_by: None })
-        }
+    match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy) {
+        Ok(repaired) => log.push(RecoveryLogEntry {
+            at_s: 0.0,
+            failed: None,
+            repaired,
+            approved: policy.decision == ApprovalDecision::Approved,
+            approval: Some(approval.clone()),
+            verified: true,
+            blocked_by: None,
+        }),
         Err(reason) => {
             log.push(RecoveryLogEntry {
                 at_s: 0.0,
                 failed: None,
                 repaired: Vec::new(),
-                approved,
+                approved: false,
+                approval: Some(approval),
                 verified: false,
                 blocked_by: Some(reason),
             });
@@ -528,12 +567,13 @@ pub fn simulate_recovery(
         } else {
             return Err(EnvelopeError(format!("unknown failed asset {}", event.asset)));
         }
-        match recover_service(&mut current, service, now, horizon_s, &mut inventory, approved) {
+        match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy) {
             Ok(repaired) => log.push(RecoveryLogEntry {
                 at_s: now,
                 failed: Some(event.asset),
                 repaired,
-                approved,
+                approved: policy.decision == ApprovalDecision::Approved,
+                approval: Some(approval.clone()),
                 verified: true,
                 blocked_by: None,
             }),
@@ -542,7 +582,8 @@ pub fn simulate_recovery(
                     at_s: now,
                     failed: Some(event.asset),
                     repaired: Vec::new(),
-                    approved,
+                    approved: false,
+                    approval: Some(approval),
                     verified: false,
                     blocked_by: Some(reason),
                 });
@@ -553,13 +594,22 @@ pub fn simulate_recovery(
     Ok(RecoveryReport { service: service.id.clone(), horizon_s, survived_s: horizon_s, log })
 }
 
+fn approval_label(decision: ApprovalDecision) -> String {
+    match decision {
+        ApprovalDecision::Required => "required",
+        ApprovalDecision::Approved => "approved",
+        ApprovalDecision::Rejected => "rejected",
+    }
+    .to_string()
+}
+
 fn recover_service(
     model: &mut Model,
     service: &Service,
     now_s: f64,
     horizon_s: f64,
     inventory: &mut BTreeMap<String, f64>,
-    approved: bool,
+    policy: RecoveryPolicy,
 ) -> Result<Vec<String>, String> {
     let remaining = (horizon_s - now_s).max(0.0);
     let mut repaired = Vec::new();
@@ -574,9 +624,7 @@ fn recover_service(
                 return Err(blocked.reasons.first().map(ToString::to_string).unwrap_or_else(|| "blocked".into()));
             }
         };
-        if !approved {
-            return Err(format!("approval_required:{asset}"));
-        }
+        check_approval(policy, asset, plan.total_duration_s)?;
         apply_recovery_plan(model, inventory, plan);
         repaired.push(asset.to_string());
     }
@@ -590,9 +638,7 @@ fn recover_service(
         for asset in &service.requires_any {
             let with_inventory = model_with_inventory(model, inventory);
             if let ClosureOutcome::Restorable(plan) = analyze(&with_inventory, asset, remaining) {
-                if !approved {
-                    return Err(format!("approval_required:{asset}"));
-                }
+                check_approval(policy, asset, plan.total_duration_s)?;
                 apply_recovery_plan(model, inventory, plan);
                 repaired.push(asset.to_string());
                 applied = true;
@@ -611,6 +657,21 @@ fn recover_service(
         return Err("post-repair verification failed".into());
     }
     Ok(repaired)
+}
+
+fn check_approval(policy: RecoveryPolicy, asset: &str, plan_duration_s: f64) -> Result<(), String> {
+    match policy.decision {
+        ApprovalDecision::Required => return Err(format!("approval_required:{asset}")),
+        ApprovalDecision::Rejected => return Err(format!("approval_rejected:{asset}")),
+        ApprovalDecision::Approved => {}
+    }
+    if plan_duration_s > policy.lease_s {
+        return Err(format!(
+            "approval_lease_expired:{asset}: need {plan_duration_s:.0}s, lease {:.0}s",
+            policy.lease_s
+        ));
+    }
+    Ok(())
 }
 
 fn apply_recovery_plan(model: &mut Model, inventory: &mut BTreeMap<String, f64>, plan: Plan) {
@@ -779,6 +840,41 @@ mod tests {
         let entry = report.log.iter().find(|entry| entry.failed.as_deref() == Some("lathe-1")).expect("lathe event");
         assert!(entry.repaired.iter().any(|asset| asset == "lathe-1"));
         assert!(entry.blocked_by.is_none());
+    }
+
+    #[test]
+    fn recovery_rejection_stops_without_side_effects() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-05/model.toml")).expect("Base-05");
+        let report = simulate_recovery_with_policy(
+            &model,
+            "potable-water",
+            30.0 * 86400.0,
+            &[],
+            RecoveryPolicy { decision: ApprovalDecision::Rejected, lease_s: 4.0 * 3600.0 },
+        )
+        .unwrap();
+        assert_eq!(report.survived_s, 0.0);
+        assert!(report.log[0].blocked_by.as_deref().is_some_and(|reason| reason.starts_with("approval_rejected:")));
+    }
+
+    #[test]
+    fn recovery_lease_expires_before_a_long_repair() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-05/model.toml")).expect("Base-05");
+        let report = simulate_recovery_with_policy(
+            &model,
+            "potable-water",
+            30.0 * 86400.0,
+            &[],
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 2.0 * 3600.0 },
+        )
+        .unwrap();
+        assert_eq!(report.survived_s, 0.0);
+        assert!(report.log[0]
+            .blocked_by
+            .as_deref()
+            .is_some_and(|reason| reason.starts_with("approval_lease_expired:")));
     }
 
     #[test]
