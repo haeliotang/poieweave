@@ -19,6 +19,7 @@ pub mod method;
 pub mod metrics;
 pub mod query;
 pub mod report;
+pub mod self_sustain;
 pub mod survival;
 pub mod verdict;
 
