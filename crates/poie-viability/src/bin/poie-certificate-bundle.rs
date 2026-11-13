@@ -18,6 +18,7 @@ fn main() -> ExitCode {
     let certificates = [
         ("S1", "experiments/certificate-s1-closure/certificate.json", "poie.closure-certificate/1"),
         ("S2", "experiments/certificate-s2-load/certificate.json", "poie.viability-certificate/1"),
+        ("S2-joint", "experiments/certificate-s2-joint/certificate.json", "poie.coverage-certificate/1"),
         ("S3", "experiments/certificate-s3-recovery/certificate.json", "poie.recovery-certificate/1"),
     ];
     let mut rows = Vec::new();

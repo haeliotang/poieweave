@@ -13,6 +13,12 @@
       "sha256": "7608e4f828cac7604eaff99b561c5bdf7b00faf3b9a0c242159a2bf4498ba463"
     },
     {
+      "layer": "S2-joint",
+      "path": "experiments/certificate-s2-joint/certificate.json",
+      "schema": "poie.coverage-certificate/1",
+      "sha256": "c11ed96a3a3df05c538f6f29ee9275f7634193a9a3300070ea2d3278843c1f63"
+    },
+    {
       "layer": "S3",
       "path": "experiments/certificate-s3-recovery/certificate.json",
       "schema": "poie.recovery-certificate/1",
