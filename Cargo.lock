@@ -398,6 +398,7 @@ dependencies = [
  "poie-digest",
  "poie-ontology",
  "serde",
+ "serde_json",
  "toml",
 ]
 
