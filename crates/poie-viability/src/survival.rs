@@ -548,6 +548,33 @@ mod tests {
     }
 
     #[test]
+    fn longer_failure_intervals_extend_survival_horizon() {
+        let make = |interval: u32| -> Vec<FailureEvent> {
+            (1..=(89 / interval))
+                .map(|index| FailureEvent { at_s: f64::from(index * interval) * 86400.0, asset: "pump-p1".into() })
+                .collect()
+        };
+        let battery = Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 });
+        let short = simulate_multi_service_longevity_with_limits(
+            &base05(),
+            &["potable-water", "workshop-operability"],
+            90.0 * 86400.0,
+            &make(10),
+            battery,
+        )
+        .unwrap();
+        let long = simulate_multi_service_longevity_with_limits(
+            &base05(),
+            &["potable-water", "workshop-operability"],
+            90.0 * 86400.0,
+            &make(20),
+            battery,
+        )
+        .unwrap();
+        assert!(long.survived_s > short.survived_s);
+    }
+
+    #[test]
     fn repeated_pump_failures_eventually_exhaust_stock() {
         let events: Vec<FailureEvent> = (0..9)
             .map(|index| FailureEvent { at_s: f64::from(index) * 10.0 * 86400.0, asset: "pump-p1".into() })
