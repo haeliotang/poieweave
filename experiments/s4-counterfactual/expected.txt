@@ -1,0 +1,4 @@
+bronze_kg	outcome
+1.1	BLOCKED
+1.2	RESTORABLE
+1.5	RESTORABLE

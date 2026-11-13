@@ -700,3 +700,4 @@ flowchart LR
 | 0.1.204 | 2026-11-14 | S4 horizon reason：900s 下 56 个 blocked（20 horizon/36 no_restorer）56/56 一致 |
 | 0.1.205 | 2026-11-14 | S4 reason fixtures：Base-09 missing_resource 与 Base-10 unverified_process 2/2 一致 |
 | 0.1.206 | 2026-11-14 | S4 minimal witness：Base-09/10 的具体 need/have 与 verification 值 2/2 精确一致 |
+| 0.1.207 | 2026-11-14 | S4 反事实阈值：Base-09 加 1.1kg bronze 仍 blocked，1.2kg 起可恢复；3/3 一致 |
