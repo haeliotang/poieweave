@@ -14,7 +14,10 @@ production and the S1 repair closure?
 ## Policy
 
 - Initial degraded pump is repaired before operation.
+- Services evaluated: `potable-water` and `workshop-operability`.
 - Pump failures are scheduled every 10 days from day 10 to day 90.
+- A lathe failure is scheduled at day 35; `workshop-operability` requires the
+  lathe, so the policy must repair it with the Base-05 spare nut.
 - At each event, S1 closure plans the repair against the **current shared
   inventory**; the plan's remaining inventory becomes the next state.
 - Between events, `recharge-energy` adds PV energy if `pv-1` is available.
