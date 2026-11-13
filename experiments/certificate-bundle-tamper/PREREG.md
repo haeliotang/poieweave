@@ -12,7 +12,7 @@ verification fail?
 
 ## Method
 
-Copy the bundle and all five certificates into a temporary root. Verify the clean
+Copy the bundle and all six certificates into a temporary root. Verify the clean
 copy (must pass). Append one byte to the S1 certificate and verify again (must
 fail). Expected: `tamper=detected`.
 
