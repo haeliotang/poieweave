@@ -89,6 +89,11 @@ jobs:
           cargo run --locked -q -p poie-m9-modbus > /tmp/m9-modbus.out
           diff experiments/m9-modbus/expected.txt /tmp/m9-modbus.out
           test -f experiments/m9-modbus/REPORT.md
+      - name: S1 recursive capability closure
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-closure > /tmp/s1-closure.out
+          diff experiments/s1-capability-closure/expected.txt /tmp/s1-closure.out
+          test -f experiments/s1-capability-closure/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v

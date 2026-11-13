@@ -1,0 +1,8 @@
+case	scenario	target	verdict	detail
+s1-base04-lathe	base-04	lathe-1	RESTORABLE	steps=restore:lathe-1=replace-lathe-nut	total_s=7200
+s1-base04-pump	base-04	pump-p1	RESTORABLE	steps=restore:pump-p1=replace-sleeve-p1	total_s=10800
+s1-base04-pump-too-short	base-04	pump-p1	BLOCKED	reasons=horizon_exceeded
+s1-base01-lathe	base-01	lathe-1	BLOCKED	reasons=cycle:asset:lathe-1
+s1-base04-lathe-no-spare	base-04	lathe-1	BLOCKED	reasons=cycle:asset:lathe-1
+s1-base01-pump-no-sleeve	base-01	pump-p1	RESTORABLE	steps=produce:sleeve-p1-raw=turn-sleeve-p1|produce:sleeve-p1=inspect-sleeve-p1|restore:pump-p1=replace-sleeve-p1	total_s=27000
+s1-base01-bus-no-breaker	base-01	bus-1	BLOCKED	reasons=no_restorer:robot-m1
