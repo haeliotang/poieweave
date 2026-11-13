@@ -461,6 +461,77 @@ fn add_recharge(model: &Model, inventory: &mut BTreeMap<String, f64>, elapsed_s:
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct JointCoverageCase {
+    pub failed: Vec<String>,
+    pub independent_recoverable: bool,
+    pub joint_recoverable: bool,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct JointCoverageReport {
+    pub service: String,
+    pub horizon_s: f64,
+    pub cases: Vec<JointCoverageCase>,
+    pub independent_recoverable: usize,
+    pub joint_recoverable: usize,
+}
+
+impl JointCoverageReport {
+    pub fn total(&self) -> usize {
+        self.cases.len()
+    }
+
+    pub fn optimistic_gap(&self) -> usize {
+        self.cases.iter().filter(|case| case.independent_recoverable && !case.joint_recoverable).count()
+    }
+}
+
+/// Compare the independent coverage envelope with a joint policy that uses one
+/// shared inventory and one serial repair order. Failures in each case are
+/// scheduled at t=0 and repaired immediately; the battery limits are optional.
+pub fn joint_coverage(
+    model: &Model,
+    service_id: &str,
+    horizon_s: f64,
+    max_failures: usize,
+    battery: Option<BatteryLimits>,
+) -> Result<JointCoverageReport, EnvelopeError> {
+    let independent = failure_envelope(model, service_id, horizon_s, max_failures)?;
+    let mut cases = Vec::new();
+    let mut independent_recoverable = 0;
+    let mut joint_recoverable = 0;
+    for case in &independent.cases {
+        if case.recoverable {
+            independent_recoverable += 1;
+        }
+        let joint = if !case.recoverable {
+            false
+        } else {
+            let events: Vec<FailureEvent> =
+                case.failed.iter().map(|asset| FailureEvent { at_s: 0.0, asset: asset.clone() }).collect();
+            let report =
+                simulate_multi_service_longevity_with_limits(model, &[service_id], horizon_s, &events, battery)?;
+            report.log.iter().all(|entry| entry.blocked_by.is_none())
+        };
+        if joint {
+            joint_recoverable += 1;
+        }
+        cases.push(JointCoverageCase {
+            failed: case.failed.clone(),
+            independent_recoverable: case.recoverable,
+            joint_recoverable: joint,
+        });
+    }
+    Ok(JointCoverageReport {
+        service: independent.service,
+        horizon_s,
+        cases,
+        independent_recoverable,
+        joint_recoverable,
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -545,6 +616,22 @@ mod tests {
         let entry = report.log.iter().find(|entry| entry.failed.as_deref() == Some("lathe-1")).expect("lathe event");
         assert!(entry.repaired.iter().any(|asset| asset == "lathe-1"));
         assert!(entry.blocked_by.is_none());
+    }
+
+    #[test]
+    fn joint_coverage_is_not_larger_than_independent_coverage() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-06/model.toml")).expect("Base-06");
+        let report = joint_coverage(
+            &model,
+            "potable-water",
+            12.0 * 3600.0,
+            2,
+            Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
+        )
+        .unwrap();
+        assert!(report.joint_recoverable <= report.independent_recoverable);
+        assert!(report.optimistic_gap() >= 1);
     }
 
     #[test]

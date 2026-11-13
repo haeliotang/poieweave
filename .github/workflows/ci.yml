@@ -119,6 +119,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-joint > /tmp/s2-joint.out
           diff experiments/s2-joint-double-failure/expected.txt /tmp/s2-joint.out
           test -f experiments/s2-joint-double-failure/REPORT.md
+      - name: S2 joint coverage comparison (Base-06)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-joint-coverage > /tmp/s2-joint-coverage.out
+          diff experiments/s2-joint-coverage/expected.txt /tmp/s2-joint-coverage.out
+          test -f experiments/s2-joint-coverage/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v

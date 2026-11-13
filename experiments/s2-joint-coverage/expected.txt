@@ -1,0 +1,2 @@
+service=potable-water horizon_s=43200 total=56 independent=25 joint=24 optimistic_gap=1
+gap	failed=pump-p1,pump-p2	joint=BLOCKED
