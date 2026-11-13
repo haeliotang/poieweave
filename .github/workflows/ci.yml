@@ -352,6 +352,12 @@ jobs:
           python3 experiments/s4-asset-lot-mutations/mutate.py target/debug/poie-model-corpus > /tmp/s4-asset-lot-mutations.out
           diff experiments/s4-asset-lot-mutations/expected.txt /tmp/s4-asset-lot-mutations.out
           test -f experiments/s4-asset-lot-mutations/REPORT.md
+      - name: S4 asset-pair mutation corpus (Python)
+        run: |
+          cargo build --locked -q -p poie-viability --bin poie-model-corpus
+          python3 experiments/s4-asset-pairs/mutate.py target/debug/poie-model-corpus > /tmp/s4-asset-pairs.out
+          diff experiments/s4-asset-pairs/expected.txt /tmp/s4-asset-pairs.out
+          test -f experiments/s4-asset-pairs/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
