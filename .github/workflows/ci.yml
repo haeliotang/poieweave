@@ -192,6 +192,11 @@ jobs:
           python3 experiments/s4-independent-closure/solve.py > /tmp/s4-independent-closure.out
           diff experiments/s4-independent-closure/expected.txt /tmp/s4-independent-closure.out
           test -f experiments/s4-independent-closure/REPORT.md
+      - name: S4 recursive closure (Python)
+        run: |
+          python3 experiments/s4-recursive-closure/solve.py > /tmp/s4-recursive-closure.out
+          diff experiments/s4-recursive-closure/expected.txt /tmp/s4-recursive-closure.out
+          test -f experiments/s4-recursive-closure/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
