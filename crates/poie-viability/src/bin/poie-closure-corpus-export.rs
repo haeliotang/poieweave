@@ -15,7 +15,7 @@ fn root() -> PathBuf {
 
 fn main() -> ExitCode {
     let root = root();
-    let models = ["base-01", "base-04", "base-05"];
+    let models = ["base-01", "base-04", "base-05", "base-06", "base-07", "base-08"];
     let mut output = Vec::new();
     for model_name in models {
         let relative = format!("scenarios/{model_name}/model.toml");
@@ -24,21 +24,23 @@ fn main() -> ExitCode {
         });
         let mut targets: Vec<_> = model.assets.keys().cloned().collect();
         targets.sort();
-        for target in targets {
-            let mut scenario = model.clone();
-            if let Some(asset) = scenario.assets.get_mut(&target) {
-                asset.status = AssetStatus::Failed;
+        for target in &targets {
+            for horizon_s in [12.0 * 3600.0, 24.0 * 3600.0] {
+                let mut scenario = model.clone();
+                if let Some(asset) = scenario.assets.get_mut(target) {
+                    asset.status = AssetStatus::Failed;
+                }
+                let outcome = match analyze(&scenario, target, horizon_s) {
+                    ClosureOutcome::Restorable(_) => "RESTORABLE",
+                    ClosureOutcome::Blocked(_) => "BLOCKED",
+                };
+                output.push(serde_json::json!({
+                    "model": relative,
+                    "target": target,
+                    "horizon_s": horizon_s,
+                    "rust": outcome,
+                }));
             }
-            let outcome = match analyze(&scenario, &target, 24.0 * 3600.0) {
-                ClosureOutcome::Restorable(_) => "RESTORABLE",
-                ClosureOutcome::Blocked(_) => "BLOCKED",
-            };
-            output.push(serde_json::json!({
-                "model": relative,
-                "target": target,
-                "horizon_s": 24.0 * 3600.0,
-                "rust": outcome,
-            }));
         }
     }
     println!("{}", serde_json::to_string_pretty(&output).expect("corpus JSON"));

@@ -12,9 +12,10 @@ broader target corpus?
 
 ## Method
 
-Rust exports verdicts for **every asset** in Base-01, Base-04 and Base-05 at a
-24 h horizon (27 cases). Python runs its recursive production/repair checker on
-the same cases. Compare verdict classes and report mismatches.
+Rust exports verdicts for **every asset** in Base-01, Base-04, Base-05, Base-06,
+Base-07 and Base-08 at 12 h and 24 h horizons (112 cases). Python runs its
+recursive production/repair checker on the same cases. Compare verdict classes
+and report mismatches.
 
 Prediction: most cases agree; any mismatch is investigated and recorded rather
 than hidden.
