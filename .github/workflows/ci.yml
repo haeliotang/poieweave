@@ -104,6 +104,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-longevity > /tmp/s2-longevity.out
           diff experiments/s2-long-horizon/expected.txt /tmp/s2-longevity.out
           test -f experiments/s2-long-horizon/REPORT.md
+      - name: S2 survival-horizon curve (Base-05)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-horizon > /tmp/s2-horizon.out
+          diff experiments/s2-survival-horizon/expected.txt /tmp/s2-horizon.out
+          test -f experiments/s2-survival-horizon/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
