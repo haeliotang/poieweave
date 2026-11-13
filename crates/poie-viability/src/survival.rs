@@ -16,7 +16,7 @@ use std::collections::BTreeMap;
 
 use poie_ontology::model::{AssetStatus, Lot, LotQuality, Model, Service};
 
-use crate::closure::{analyze, BlockReason, ClosureOutcome, StepAction};
+use crate::closure::{analyze, BlockReason, ClosureOutcome, Plan, StepAction};
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct FailureCase {
@@ -462,6 +462,169 @@ fn add_recharge(model: &Model, inventory: &mut BTreeMap<String, f64>, elapsed_s:
 }
 
 #[derive(Clone, Debug, PartialEq)]
+pub struct RecoveryLogEntry {
+    pub at_s: f64,
+    pub failed: Option<String>,
+    pub repaired: Vec<String>,
+    pub approved: bool,
+    pub verified: bool,
+    pub blocked_by: Option<String>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct RecoveryReport {
+    pub service: String,
+    pub horizon_s: f64,
+    pub survived_s: f64,
+    pub log: Vec<RecoveryLogEntry>,
+}
+
+/// S3 first slice: a closed recovery loop with an explicit approval gate.
+///
+/// A proposal is created only by the deterministic S1 closure. If `approved` is
+/// false the proposal is recorded and the run stops at that point; no repair is
+/// applied. If true, the plan is applied to the shared inventory, the service is
+/// re-verified, and the loop continues to the next event. This is an isolated
+/// simulation, not a hardware authority path.
+pub fn simulate_recovery(
+    model: &Model,
+    service_id: &str,
+    horizon_s: f64,
+    events: &[FailureEvent],
+    approved: bool,
+) -> Result<RecoveryReport, EnvelopeError> {
+    let Some(service) = model.services.get(service_id) else {
+        return Err(EnvelopeError(format!("unknown service {service_id}")));
+    };
+    let mut current = model.clone();
+    let mut inventory = initial_inventory(model);
+    let mut log = Vec::new();
+    let mut now = 0.0;
+
+    match recover_service(&mut current, service, now, horizon_s, &mut inventory, approved) {
+        Ok(repaired) => {
+            log.push(RecoveryLogEntry { at_s: 0.0, failed: None, repaired, approved, verified: true, blocked_by: None })
+        }
+        Err(reason) => {
+            log.push(RecoveryLogEntry {
+                at_s: 0.0,
+                failed: None,
+                repaired: Vec::new(),
+                approved,
+                verified: false,
+                blocked_by: Some(reason),
+            });
+            return Ok(RecoveryReport { service: service.id.clone(), horizon_s, survived_s: 0.0, log });
+        }
+    }
+
+    let mut ordered = events.to_vec();
+    ordered.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
+    for event in ordered {
+        let at = event.at_s.clamp(now, horizon_s);
+        now = at;
+        if let Some(asset) = current.assets.get_mut(&event.asset) {
+            asset.status = AssetStatus::Failed;
+        } else {
+            return Err(EnvelopeError(format!("unknown failed asset {}", event.asset)));
+        }
+        match recover_service(&mut current, service, now, horizon_s, &mut inventory, approved) {
+            Ok(repaired) => log.push(RecoveryLogEntry {
+                at_s: now,
+                failed: Some(event.asset),
+                repaired,
+                approved,
+                verified: true,
+                blocked_by: None,
+            }),
+            Err(reason) => {
+                log.push(RecoveryLogEntry {
+                    at_s: now,
+                    failed: Some(event.asset),
+                    repaired: Vec::new(),
+                    approved,
+                    verified: false,
+                    blocked_by: Some(reason),
+                });
+                return Ok(RecoveryReport { service: service.id.clone(), horizon_s, survived_s: now, log });
+            }
+        }
+    }
+    Ok(RecoveryReport { service: service.id.clone(), horizon_s, survived_s: horizon_s, log })
+}
+
+fn recover_service(
+    model: &mut Model,
+    service: &Service,
+    now_s: f64,
+    horizon_s: f64,
+    inventory: &mut BTreeMap<String, f64>,
+    approved: bool,
+) -> Result<Vec<String>, String> {
+    let remaining = (horizon_s - now_s).max(0.0);
+    let mut repaired = Vec::new();
+    for asset in &service.requires {
+        if model.assets.get(asset).is_some_and(|item| item.status == AssetStatus::Available) {
+            continue;
+        }
+        let with_inventory = model_with_inventory(model, inventory);
+        let plan = match analyze(&with_inventory, asset, remaining) {
+            ClosureOutcome::Restorable(plan) => plan,
+            ClosureOutcome::Blocked(blocked) => {
+                return Err(blocked.reasons.first().map(ToString::to_string).unwrap_or_else(|| "blocked".into()));
+            }
+        };
+        if !approved {
+            return Err(format!("approval_required:{asset}"));
+        }
+        apply_recovery_plan(model, inventory, plan);
+        repaired.push(asset.to_string());
+    }
+    if !service.requires_any.is_empty()
+        && !service
+            .requires_any
+            .iter()
+            .any(|asset| model.assets.get(asset).is_some_and(|item| item.status == AssetStatus::Available))
+    {
+        let mut applied = false;
+        for asset in &service.requires_any {
+            let with_inventory = model_with_inventory(model, inventory);
+            if let ClosureOutcome::Restorable(plan) = analyze(&with_inventory, asset, remaining) {
+                if !approved {
+                    return Err(format!("approval_required:{asset}"));
+                }
+                apply_recovery_plan(model, inventory, plan);
+                repaired.push(asset.to_string());
+                applied = true;
+                break;
+            }
+        }
+        if !applied {
+            return Err("no alternative service asset".into());
+        }
+    }
+    let verified = service
+        .requires
+        .iter()
+        .all(|asset| model.assets.get(asset).is_some_and(|item| item.status == AssetStatus::Available));
+    if !verified {
+        return Err("post-repair verification failed".into());
+    }
+    Ok(repaired)
+}
+
+fn apply_recovery_plan(model: &mut Model, inventory: &mut BTreeMap<String, f64>, plan: Plan) {
+    for step in &plan.steps {
+        if let StepAction::Restore(restored) = &step.action {
+            if let Some(asset) = model.assets.get_mut(restored) {
+                asset.status = AssetStatus::Available;
+            }
+        }
+    }
+    *inventory = plan.remaining_inventory;
+}
+
+#[derive(Clone, Debug, PartialEq)]
 pub struct JointCoverageCase {
     pub failed: Vec<String>,
     pub independent_recoverable: bool,
@@ -616,6 +779,31 @@ mod tests {
         let entry = report.log.iter().find(|entry| entry.failed.as_deref() == Some("lathe-1")).expect("lathe event");
         assert!(entry.repaired.iter().any(|asset| asset == "lathe-1"));
         assert!(entry.blocked_by.is_none());
+    }
+
+    #[test]
+    fn recovery_loop_requires_approval() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-05/model.toml")).expect("Base-05");
+        let report = simulate_recovery(&model, "potable-water", 30.0 * 86400.0, &[], false).unwrap();
+        assert_eq!(report.survived_s, 0.0);
+        assert!(report.log[0].blocked_by.as_deref().is_some_and(|reason| reason.starts_with("approval_required:")));
+    }
+
+    #[test]
+    fn approved_recovery_loop_verifies_repairs() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-05/model.toml")).expect("Base-05");
+        let report = simulate_recovery(
+            &model,
+            "potable-water",
+            30.0 * 86400.0,
+            &[FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() }],
+            true,
+        )
+        .unwrap();
+        assert_eq!(report.survived_s, 30.0 * 86400.0);
+        assert!(report.log.iter().all(|entry| entry.verified && entry.blocked_by.is_none()));
     }
 
     #[test]
