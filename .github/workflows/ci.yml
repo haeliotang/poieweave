@@ -242,6 +242,12 @@ jobs:
           python3 experiments/s4-reason-fixtures/compare.py /tmp/reason-fixtures.json > /tmp/s4-reason-fixtures.out
           diff experiments/s4-reason-fixtures/expected.txt /tmp/s4-reason-fixtures.out
           test -f experiments/s4-reason-fixtures/REPORT.md
+      - name: S4 minimal witness fixtures (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-reason-fixtures > /tmp/witness-fixtures.json
+          python3 experiments/s4-minimal-witness/compare.py /tmp/witness-fixtures.json > /tmp/s4-minimal-witness.out
+          diff experiments/s4-minimal-witness/expected.txt /tmp/s4-minimal-witness.out
+          test -f experiments/s4-minimal-witness/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
