@@ -209,15 +209,33 @@ pub fn simulate_longevity_with_limits(
     events: &[FailureEvent],
     battery: Option<BatteryLimits>,
 ) -> Result<SurvivalReport, EnvelopeError> {
-    let Some(service) = model.services.get(service_id) else {
-        return Err(EnvelopeError(format!("unknown service {service_id}")));
-    };
+    simulate_multi_service_longevity_with_limits(model, &[service_id], horizon_s, events, battery)
+}
+
+/// Same policy over several services, repaired in the provided order against
+/// one shared inventory. The first service that cannot be repaired stops the
+/// run.
+pub fn simulate_multi_service_longevity_with_limits(
+    model: &Model,
+    service_ids: &[&str],
+    horizon_s: f64,
+    events: &[FailureEvent],
+    battery: Option<BatteryLimits>,
+) -> Result<SurvivalReport, EnvelopeError> {
+    let mut services = Vec::new();
+    for service_id in service_ids {
+        let Some(service) = model.services.get(*service_id) else {
+            return Err(EnvelopeError(format!("unknown service {service_id}")));
+        };
+        services.push(service);
+    }
+    let service_label = services.iter().map(|service| service.id.as_str()).collect::<Vec<_>>().join(",");
     let mut current = model.clone();
     let mut inventory = initial_inventory(model);
     let mut log = Vec::new();
     let mut now = 0.0;
 
-    match restore_service(&mut current, service, 0.0, horizon_s, &mut inventory) {
+    match restore_services(&mut current, &services, 0.0, horizon_s, &mut inventory) {
         Ok(repaired) => log.push(SurvivalLogEntry {
             at_s: 0.0,
             failed: None,
@@ -234,7 +252,7 @@ pub fn simulate_longevity_with_limits(
                 blocked_by: Some(reason),
             });
             return Ok(SurvivalReport {
-                service: service.id.clone(),
+                service: service_label.clone(),
                 horizon_s,
                 survived_s: 0.0,
                 log,
@@ -254,7 +272,7 @@ pub fn simulate_longevity_with_limits(
         } else {
             return Err(EnvelopeError(format!("unknown failed asset {}", event.asset)));
         }
-        match restore_service(&mut current, service, now, horizon_s, &mut inventory) {
+        match restore_services(&mut current, &services, now, horizon_s, &mut inventory) {
             Ok(repaired) => log.push(SurvivalLogEntry {
                 at_s: now,
                 failed: Some(event.asset),
@@ -271,7 +289,7 @@ pub fn simulate_longevity_with_limits(
                     blocked_by: Some(reason),
                 });
                 return Ok(SurvivalReport {
-                    service: service.id.clone(),
+                    service: service_label.clone(),
                     horizon_s,
                     survived_s: now,
                     log,
@@ -282,12 +300,26 @@ pub fn simulate_longevity_with_limits(
     }
     add_recharge(&current, &mut inventory, horizon_s - now, battery);
     Ok(SurvivalReport {
-        service: service.id.clone(),
+        service: service_label.clone(),
         horizon_s,
         survived_s: horizon_s,
         log,
         final_inventory: inventory,
     })
+}
+
+fn restore_services(
+    model: &mut Model,
+    services: &[&Service],
+    now_s: f64,
+    horizon_s: f64,
+    inventory: &mut BTreeMap<String, f64>,
+) -> Result<Vec<String>, String> {
+    let mut repaired = Vec::new();
+    for service in services {
+        repaired.extend(restore_service(model, service, now_s, horizon_s, inventory)?);
+    }
+    Ok(repaired)
 }
 
 fn restore_service(
@@ -498,6 +530,21 @@ mod tests {
         .unwrap();
         let energy = report.final_inventory.get("electric-energy").copied().unwrap_or(0.0);
         assert!(energy <= 200.0 * 3_600_000.0 + 1.0);
+    }
+
+    #[test]
+    fn multi_service_repairs_a_failed_lathe() {
+        let report = simulate_multi_service_longevity_with_limits(
+            &base05(),
+            &["potable-water", "workshop-operability"],
+            30.0 * 86400.0,
+            &[FailureEvent { at_s: 10.0 * 86400.0, asset: "lathe-1".into() }],
+            None,
+        )
+        .unwrap();
+        let entry = report.log.iter().find(|entry| entry.failed.as_deref() == Some("lathe-1")).expect("lathe event");
+        assert!(entry.repaired.iter().any(|asset| asset == "lathe-1"));
+        assert!(entry.blocked_by.is_none());
     }
 
     #[test]

@@ -8,11 +8,12 @@
 ## 1. Result
 
 ```text
-service=potable-water horizon_days=90 survived_days=40 final_energy_kwh=200.0
+service=potable-water,workshop-operability horizon_days=90 survived_days=40 final_energy_kwh=200.0
 event	day=0	failed=none	repaired=pump-p1	status=ok	energy_kwh=39.5
 event	day=10	failed=pump-p1	repaired=pump-p1	status=ok	energy_kwh=199.5
 event	day=20	failed=pump-p1	repaired=pump-p1	status=ok	energy_kwh=197.4
 event	day=30	failed=pump-p1	repaired=pump-p1	status=ok	energy_kwh=197.4
+event	day=35	failed=lathe-1	repaired=lathe-1	status=ok	energy_kwh=199.7
 event	day=40	failed=pump-p1	repaired=none	status=missing resource bronze-bar: need 1.2, have 0.6000000000000001	energy_kwh=200.0
 ```
 
@@ -41,7 +42,8 @@ The S2 loop can carry state across events:
 ## 4. Limitations
 
 - Greedy, deterministic policy; no lookahead or optimisation.
-- Only one asset type fails repeatedly; no multi-failure schedule.
+- The failure schedule contains pump events and one lathe event, but it is not
+  an exhaustive multi-failure envelope.
 - Battery capacity/charge cap is a study parameter, not an ontology field;
   values are synthetic.
 - No stochastic failures, maintenance delay, or operating demand.

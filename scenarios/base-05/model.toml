@@ -306,6 +306,11 @@ verification = "modeled"
 # --- Services --------------------------------------------------------------
 
 [[service]]
+id = "workshop-operability"
+description = "Workshop can still turn and inspect parts. Structural requirements only."
+requires = ["lathe-1", "gauge-1"]
+
+[[service]]
 id = "potable-water"
 description = "Treated water supply. v0.1: structural only (required assets usable)."
 requires = ["pump-p1", "filter-1"]
