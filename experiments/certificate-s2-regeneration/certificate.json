@@ -1,0 +1,18 @@
+{
+  "claim_scope": "model-level regeneration result only; not a physical yield claim",
+  "conclusion": "local swarf recycling extends the 10-day failure horizon from 40 to 60 days",
+  "experiment": "s2-regeneration-horizon",
+  "rows": [
+    {
+      "model": "scenarios/base-05/model.toml",
+      "model_sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150",
+      "survived_days": 40.0
+    },
+    {
+      "model": "scenarios/base-08/model.toml",
+      "model_sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c",
+      "survived_days": 60.0
+    }
+  ],
+  "schema": "poie.regeneration-certificate/1"
+}

@@ -19,6 +19,12 @@
       "sha256": "c11ed96a3a3df05c538f6f29ee9275f7634193a9a3300070ea2d3278843c1f63"
     },
     {
+      "layer": "S2-regen",
+      "path": "experiments/certificate-s2-regeneration/certificate.json",
+      "schema": "poie.regeneration-certificate/1",
+      "sha256": "c0aed8992e7dea7a58ea8dcac3b2591c713306c1ce5a577b659ec4e1e4e2779a"
+    },
+    {
       "layer": "S3",
       "path": "experiments/certificate-s3-recovery/certificate.json",
       "schema": "poie.recovery-certificate/1",
