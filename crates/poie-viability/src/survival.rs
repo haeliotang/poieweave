@@ -619,6 +619,18 @@ mod tests {
     }
 
     #[test]
+    fn local_smelting_closes_the_joint_coverage_gap() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let battery = Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 });
+        let base06 = Model::load(&root.join("scenarios/base-06/model.toml")).expect("Base-06");
+        let base07 = Model::load(&root.join("scenarios/base-07/model.toml")).expect("Base-07");
+        let before = joint_coverage(&base06, "potable-water", 24.0 * 3600.0, 2, battery).unwrap();
+        let after = joint_coverage(&base07, "potable-water", 24.0 * 3600.0, 2, battery).unwrap();
+        assert!(before.optimistic_gap() >= 1);
+        assert_eq!(after.optimistic_gap(), 0);
+    }
+
+    #[test]
     fn one_extra_sleeve_closes_the_joint_coverage_gap() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
         let mut model = Model::load(&root.join("scenarios/base-06/model.toml")).expect("Base-06");

@@ -1,0 +1,2 @@
+base-06	independent=25	joint=24	gap=1
+base-07	independent=25	joint=25	gap=0
