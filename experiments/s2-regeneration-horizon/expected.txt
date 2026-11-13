@@ -1,0 +1,9 @@
+model	interval_days	survived_days	blocked_by
+base-05	10	40	missing resource bronze-bar: need 1.2, have 0.6000000000000001
+base-05	15	60	missing resource bronze-bar: need 1.2, have 0.6000000000000001
+base-05	20	80	missing resource bronze-bar: need 1.2, have 0.6000000000000001
+base-05	30	90	none
+base-08	10	60	cyclic process dependency at turn-sleeve-p1
+base-08	15	90	none
+base-08	20	90	none
+base-08	30	90	none

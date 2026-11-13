@@ -619,6 +619,38 @@ mod tests {
     }
 
     #[test]
+    fn regeneration_extends_the_ten_day_failure_horizon() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let load = |name: &str| Model::load(&root.join(format!("scenarios/{name}/model.toml"))).expect(name);
+        let make_events = || {
+            let mut events: Vec<FailureEvent> = (1..=8)
+                .map(|index| FailureEvent { at_s: f64::from(index * 10) * 86400.0, asset: "pump-p1".into() })
+                .collect();
+            events.push(FailureEvent { at_s: 35.0 * 86400.0, asset: "lathe-1".into() });
+            events.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
+            events
+        };
+        let battery = Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 });
+        let base = simulate_multi_service_longevity_with_limits(
+            &load("base-05"),
+            &["potable-water", "workshop-operability"],
+            90.0 * 86400.0,
+            &make_events(),
+            battery,
+        )
+        .unwrap();
+        let regen = simulate_multi_service_longevity_with_limits(
+            &load("base-08"),
+            &["potable-water", "workshop-operability"],
+            90.0 * 86400.0,
+            &make_events(),
+            battery,
+        )
+        .unwrap();
+        assert!(regen.survived_s > base.survived_s);
+    }
+
+    #[test]
     fn local_smelting_closes_the_joint_coverage_gap() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
         let battery = Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 });
