@@ -1,0 +1,11 @@
+service=potable-water horizon_s=43200 total=10 recoverable=5 coverage=0.500000
+case	failed=none	RESTORABLE	max_plan_s=10800
+case	failed=bat-1	BLOCKED	reason=cyclic asset dependency at bus-1
+case	failed=bus-1	BLOCKED	reason=cyclic asset dependency at bus-1
+case	failed=charger-1	BLOCKED	reason=no restorer for robot-m1
+case	failed=filter-1	BLOCKED	reason=no restorer for filter-1
+case	failed=gauge-1	RESTORABLE	max_plan_s=10800
+case	failed=lathe-1	RESTORABLE	max_plan_s=10800
+case	failed=pump-p1	RESTORABLE	max_plan_s=10800
+case	failed=pv-1	RESTORABLE	max_plan_s=10800
+case	failed=robot-m1	BLOCKED	reason=no restorer for robot-m1

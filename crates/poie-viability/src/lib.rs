@@ -19,6 +19,7 @@ pub mod method;
 pub mod metrics;
 pub mod query;
 pub mod report;
+pub mod survival;
 pub mod verdict;
 
 pub use audit::{check_non_anticipation, AuditError, DecisionRecord};
