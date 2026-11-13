@@ -697,3 +697,4 @@ flowchart LR
 | 0.1.201 | 2026-11-14 | S2 蒙特卡洛扩展：20 seeds × 100 = 2000 排程；中位 72 天，p10 28，p90 90，622/2000 撑满 |
 | 0.1.202 | 2026-11-14 | S2 负载敏感性：0–2 kW 仍材料受限（40 天）；3–4 kW 转为能量受限（3/1 天） |
 | 0.1.203 | 2026-11-14 | S4 reason class：86 个 blocked case 的 no_restorer/cycle 分类 86/86 一致 |
+| 0.1.204 | 2026-11-14 | S4 horizon reason：900s 下 56 个 blocked（20 horizon/36 no_restorer）56/56 一致 |
