@@ -208,6 +208,12 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-closure-corpus-export > /tmp/corpus-plans.json
           python3 experiments/s4-differential-corpus/verify_plans.py /tmp/corpus-plans.json > /tmp/s4-corpus-plans.out
           diff experiments/s4-differential-corpus/expected-plans.txt /tmp/s4-corpus-plans.out
+      - name: S4 systematic plan fuzzing (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-closure-corpus-export > /tmp/fuzz-plans.json
+          python3 experiments/s4-plan-fuzz/fuzz.py /tmp/fuzz-plans.json > /tmp/s4-plan-fuzz.out
+          diff experiments/s4-plan-fuzz/expected.txt /tmp/s4-plan-fuzz.out
+          test -f experiments/s4-plan-fuzz/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
