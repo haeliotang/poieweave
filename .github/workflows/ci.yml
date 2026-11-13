@@ -219,6 +219,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-monte-carlo > /tmp/s2-monte-carlo.out
           diff experiments/s2-monte-carlo/expected.txt /tmp/s2-monte-carlo.out
           test -f experiments/s2-monte-carlo/REPORT.md
+      - name: S2 site load sensitivity (Base-05)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-load > /tmp/s2-load.out
+          diff experiments/s2-load/expected.txt /tmp/s2-load.out
+          test -f experiments/s2-load/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
