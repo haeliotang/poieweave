@@ -28,7 +28,7 @@ s1-base04-pump-too-short	base-04	pump-p1	BLOCKED	reasons=horizon_exceeded
 s1-base01-lathe	base-01	lathe-1	BLOCKED	reasons=cycle:asset:lathe-1
 s1-base04-lathe-no-spare	base-04	lathe-1	BLOCKED	reasons=cycle:asset:lathe-1
 s1-base01-pump-no-sleeve	base-01	pump-p1	RESTORABLE	steps=produce:sleeve-p1-raw=turn-sleeve-p1|produce:sleeve-p1=inspect-sleeve-p1|restore:pump-p1=replace-sleeve-p1	total_s=27000
-s1-base01-bus-no-breaker	base-01	bus-1	BLOCKED	reasons=no_restorer:robot-m1
+s1-base01-bus-no-breaker	base-01	bus-1	BLOCKED	reasons=cycle:asset:bus-1
 ```
 
 ## 3. Findings
@@ -41,11 +41,10 @@ s1-base01-bus-no-breaker	base-01	bus-1	BLOCKED	reasons=no_restorer:robot-m1
 - **Self-repair cycles are found.** Without a spare lathe-nut, restoring the
   lathe requires `turn-lathe-nut`, which occupies the failed lathe: the search
   reports `cycle:asset:lathe-1` instead of assuming success.
-- **The failed bus exposes a power-dependency blocker.** Replacing the breaker
+- **The failed bus exposes a support-cycle blocker.** Replacing the breaker
   needs `electrical-repair` from `robot-m1`, but the robot needs `charger-1`,
-  which needs the failed `bus-1`. The current report exposes the nearest local
-  blocker (`no_restorer:robot-m1`); the deeper dependency is the power support
-  chain, not a missing breaker process.
+  which needs the failed `bus-1`; the search now reports
+  `cycle:asset:bus-1` instead of the shallower "no restorer" message.
 - **The horizon matters.** The pump repair is infeasible under a 2 h horizon.
 
 ## 4. Assumptions and limitations
@@ -58,8 +57,8 @@ s1-base01-bus-no-breaker	base-01	bus-1	BLOCKED	reasons=no_restorer:robot-m1
   research choice, not a safety claim.
 - A positive result is a model-level existence result, not permission to
   dispatch actions to hardware.
-- The `no_restorer:robot-m1` case is a local blocker; a later S1 iteration should
-  report the full support-chain cycle for human review.
+- No-restorer assets now inspect their support chain before returning a local
+  blocker; this is what exposes the bus/robot/charger cycle.
 
 ## 5. Reproduction
 

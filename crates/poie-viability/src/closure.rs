@@ -231,7 +231,15 @@ impl Search<'_> {
         };
         let restorers = self.model.restorers.get(asset_id).cloned().unwrap_or_default();
         if restorers.is_empty() {
-            return Err(Failure::one(BlockReason::NoRestorer(asset_id.to_string())));
+            // A failed asset with no restorer can still expose the deeper
+            // reason through its support chain. Prefer a cycle in that chain
+            // over the shallower "no restorer" message.
+            match self.ensure_supports(asset, state.clone(), stack_assets, stack_resources, stack_processes) {
+                Err(failure) if failure.reasons.iter().any(|reason| matches!(reason, BlockReason::Cycle { .. })) => {
+                    return Err(failure);
+                }
+                _ => return Err(Failure::one(BlockReason::NoRestorer(asset_id.to_string()))),
+            }
         }
         let mut best: Option<Failure> = None;
         for index in restorers {
@@ -545,7 +553,10 @@ mod tests {
         let ClosureOutcome::Blocked(blocked) = analyze(&model, "bus-1", 12.0 * 3600.0) else {
             panic!("expected blocked");
         };
-        assert!(!blocked.reasons.is_empty());
+        assert!(blocked
+            .reasons
+            .iter()
+            .any(|reason| matches!(reason, BlockReason::Cycle { kind: "asset", id } if id == "bus-1")));
     }
 
     #[test]
