@@ -94,6 +94,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-closure > /tmp/s1-closure.out
           diff experiments/s1-capability-closure/expected.txt /tmp/s1-closure.out
           test -f experiments/s1-capability-closure/REPORT.md
+      - name: S2 failure-envelope coverage (Base-05)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-survival > /tmp/s2-envelope.out
+          diff experiments/s2-failure-envelope/expected.txt /tmp/s2-envelope.out
+          test -f experiments/s2-failure-envelope/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
