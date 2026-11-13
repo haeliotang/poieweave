@@ -1,2 +1,2 @@
-receipts=2 verified=2
+receipts=2 verified=2 chain=ok
 OK

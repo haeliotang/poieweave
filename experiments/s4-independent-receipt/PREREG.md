@@ -19,9 +19,11 @@ Rust exports the two Base-05 recovery receipts as JSON. A Python verifier:
 - reimplements `poie-digest`'s canonical JSON (sorted keys, compact separators,
   zero as `0`),
 - prepends the domain separator `poie.recovery.receipt/1\n`,
-- recomputes SHA-256 and compares.
+- recomputes SHA-256 and compares,
+- checks that each receipt's `inventory_after` equals the next receipt's
+  `inventory_before`.
 
-Prediction: `receipts=2 verified=2`, `OK`.
+Prediction: `receipts=2 verified=2 chain=ok`, `OK`.
 
 ## Limitation
 

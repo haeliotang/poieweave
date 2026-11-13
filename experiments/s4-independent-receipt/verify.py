@@ -52,9 +52,13 @@ def main(path: str) -> int:
         print("ERROR: expected a JSON array of receipts", file=sys.stderr)
         return 2
     verified = sum(1 for receipt in receipts if isinstance(receipt, dict) and verify(receipt))
-    print(f"receipts={len(receipts)} verified={verified}")
-    if verified != len(receipts) or not receipts:
-        print("ERROR: not all receipts verified", file=sys.stderr)
+    chain_ok = len(receipts) >= 2 and all(
+        receipts[index].get("inventory_after") == receipts[index + 1].get("inventory_before")
+        for index in range(len(receipts) - 1)
+    )
+    print(f"receipts={len(receipts)} verified={verified} chain={'ok' if chain_ok else 'FAIL'}")
+    if verified != len(receipts) or not receipts or not chain_ok:
+        print("ERROR: receipt verification or inventory chain failed", file=sys.stderr)
         return 1
     print("OK")
     return 0

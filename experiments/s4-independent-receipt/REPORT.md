@@ -9,7 +9,7 @@
 ## 1. Result
 
 ```text
-receipts=2 verified=2
+receipts=2 verified=2 chain=ok
 OK
 ```
 
@@ -21,6 +21,8 @@ OK
   domain are shared as a contract.
 - This is the first S4 artifact: a different implementation checks the evidence
   produced by S3.
+- The Python verifier also checks the inventory-chain invariant: each repair's
+  `inventory_after` is the next repair's `inventory_before`.
 
 ## 3. Limits
 
