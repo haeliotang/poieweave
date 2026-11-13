@@ -720,3 +720,4 @@ flowchart LR
 | 0.1.224 | 2026-11-14 | S4 资产+库存变异：9 资产 × 8 lot = 72 模型，648 verdict 648/648 一致 |
 | 0.1.225 | 2026-11-14 | S4 双资产变异：C(9,2)=36 模型，324 verdict 324/324 一致 |
 | 0.1.226 | 2026-11-14 | S4 双资产+lot 变异：36×8=288 模型，2592 verdict 2592/2592 一致 |
+| 0.1.227 | 2026-11-14 | S2 指标类型化：Survival Horizon/Recovery Coverage/Regenerative Capacity + 3 测试；测试矩阵 466 |

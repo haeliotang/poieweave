@@ -1,0 +1,4 @@
+survival_horizon_base05_days=40.0
+survival_horizon_base08_days=60.0
+recovery_coverage=5/10 ratio=0.500000
+regenerative_capacity_days=20.0
