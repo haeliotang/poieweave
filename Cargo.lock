@@ -395,6 +395,7 @@ dependencies = [
 name = "poie-viability"
 version = "0.1.0"
 dependencies = [
+ "poie-digest",
  "poie-ontology",
  "serde",
  "toml",

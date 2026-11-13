@@ -22,20 +22,20 @@ use poie_ontology::model::{AssetStatus, LotQuality, Model, Process, Verification
 
 const EPSILON: f64 = 1e-9;
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize)]
 pub enum StepAction {
     Restore(String),
     Produce(String),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize)]
 pub struct Step {
     pub process: String,
     pub action: StepAction,
     pub duration_s: f64,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize)]
 pub struct Plan {
     pub steps: Vec<Step>,
     pub total_duration_s: f64,

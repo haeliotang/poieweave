@@ -29,7 +29,7 @@ fn main() -> ExitCode {
         (ApprovalDecision::Rejected, 4.0),
         (ApprovalDecision::Approved, 2.0),
     ] {
-        let policy = RecoveryPolicy { decision, lease_s: lease_h * 3600.0 };
+        let policy = RecoveryPolicy { decision, lease_s: lease_h * 3600.0, approved_plan_digest: None };
         let report = simulate_recovery_with_policy(&model, "potable-water", 30.0 * 86400.0, &events, policy).unwrap();
         let blocked = report.log.iter().find_map(|entry| entry.blocked_by.as_deref()).unwrap_or("none");
         println!("{decision:?}\t{lease_h:.1}\t{:.0}\t{blocked}", report.survived_s / 86400.0);

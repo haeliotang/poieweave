@@ -17,6 +17,7 @@ use std::collections::BTreeMap;
 use poie_ontology::model::{AssetStatus, Lot, LotQuality, Model, Service};
 
 use crate::closure::{analyze, BlockReason, ClosureOutcome, Plan, StepAction};
+use poie_digest::sha256_of;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct FailureCase {
@@ -469,12 +470,14 @@ pub enum ApprovalDecision {
     Rejected,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct RecoveryPolicy {
     pub decision: ApprovalDecision,
     /// Maximum age of the approval at execution time. A plan whose duration
     /// exceeds the lease is not applied.
     pub lease_s: f64,
+    /// If set, the approved plan digest must match the proposed plan.
+    pub approved_plan_digest: Option<String>,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -484,6 +487,7 @@ pub struct RecoveryLogEntry {
     pub repaired: Vec<String>,
     pub approved: bool,
     pub approval: Option<String>,
+    pub plan_digests: Vec<String>,
     pub verified: bool,
     pub blocked_by: Option<String>,
 }
@@ -513,6 +517,7 @@ pub fn simulate_recovery(
     let policy = RecoveryPolicy {
         decision: if approved { ApprovalDecision::Approved } else { ApprovalDecision::Required },
         lease_s: f64::INFINITY,
+        approved_plan_digest: None,
     };
     simulate_recovery_with_policy(model, service_id, horizon_s, events, policy)
 }
@@ -533,13 +538,14 @@ pub fn simulate_recovery_with_policy(
     let mut now = 0.0;
     let approval = approval_label(policy.decision);
 
-    match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy) {
-        Ok(repaired) => log.push(RecoveryLogEntry {
+    match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone()) {
+        Ok((repaired, plan_digests)) => log.push(RecoveryLogEntry {
             at_s: 0.0,
             failed: None,
             repaired,
             approved: policy.decision == ApprovalDecision::Approved,
             approval: Some(approval.clone()),
+            plan_digests,
             verified: true,
             blocked_by: None,
         }),
@@ -550,6 +556,7 @@ pub fn simulate_recovery_with_policy(
                 repaired: Vec::new(),
                 approved: false,
                 approval: Some(approval),
+                plan_digests: Vec::new(),
                 verified: false,
                 blocked_by: Some(reason),
             });
@@ -567,13 +574,14 @@ pub fn simulate_recovery_with_policy(
         } else {
             return Err(EnvelopeError(format!("unknown failed asset {}", event.asset)));
         }
-        match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy) {
-            Ok(repaired) => log.push(RecoveryLogEntry {
+        match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone()) {
+            Ok((repaired, plan_digests)) => log.push(RecoveryLogEntry {
                 at_s: now,
                 failed: Some(event.asset),
                 repaired,
                 approved: policy.decision == ApprovalDecision::Approved,
                 approval: Some(approval.clone()),
+                plan_digests,
                 verified: true,
                 blocked_by: None,
             }),
@@ -584,6 +592,7 @@ pub fn simulate_recovery_with_policy(
                     repaired: Vec::new(),
                     approved: false,
                     approval: Some(approval),
+                    plan_digests: Vec::new(),
                     verified: false,
                     blocked_by: Some(reason),
                 });
@@ -610,9 +619,10 @@ fn recover_service(
     horizon_s: f64,
     inventory: &mut BTreeMap<String, f64>,
     policy: RecoveryPolicy,
-) -> Result<Vec<String>, String> {
+) -> Result<(Vec<String>, Vec<String>), String> {
     let remaining = (horizon_s - now_s).max(0.0);
     let mut repaired = Vec::new();
+    let mut digests = Vec::new();
     for asset in &service.requires {
         if model.assets.get(asset).is_some_and(|item| item.status == AssetStatus::Available) {
             continue;
@@ -624,9 +634,11 @@ fn recover_service(
                 return Err(blocked.reasons.first().map(ToString::to_string).unwrap_or_else(|| "blocked".into()));
             }
         };
-        check_approval(policy, asset, plan.total_duration_s)?;
+        let digest = sha256_of("poie.recovery.plan/1", &plan).ok();
+        check_approval(&policy, asset, plan.total_duration_s, digest.as_deref())?;
         apply_recovery_plan(model, inventory, plan);
         repaired.push(asset.to_string());
+        digests.push(digest.unwrap_or_default());
     }
     if !service.requires_any.is_empty()
         && !service
@@ -638,9 +650,11 @@ fn recover_service(
         for asset in &service.requires_any {
             let with_inventory = model_with_inventory(model, inventory);
             if let ClosureOutcome::Restorable(plan) = analyze(&with_inventory, asset, remaining) {
-                check_approval(policy, asset, plan.total_duration_s)?;
+                let digest = sha256_of("poie.recovery.plan/1", &plan).ok();
+                check_approval(&policy, asset, plan.total_duration_s, digest.as_deref())?;
                 apply_recovery_plan(model, inventory, plan);
                 repaired.push(asset.to_string());
+                digests.push(digest.unwrap_or_default());
                 applied = true;
                 break;
             }
@@ -656,10 +670,15 @@ fn recover_service(
     if !verified {
         return Err("post-repair verification failed".into());
     }
-    Ok(repaired)
+    Ok((repaired, digests))
 }
 
-fn check_approval(policy: RecoveryPolicy, asset: &str, plan_duration_s: f64) -> Result<(), String> {
+fn check_approval(
+    policy: &RecoveryPolicy,
+    asset: &str,
+    plan_duration_s: f64,
+    plan_digest: Option<&str>,
+) -> Result<(), String> {
     match policy.decision {
         ApprovalDecision::Required => return Err(format!("approval_required:{asset}")),
         ApprovalDecision::Rejected => return Err(format!("approval_rejected:{asset}")),
@@ -670,6 +689,11 @@ fn check_approval(policy: RecoveryPolicy, asset: &str, plan_duration_s: f64) -> 
             "approval_lease_expired:{asset}: need {plan_duration_s:.0}s, lease {:.0}s",
             policy.lease_s
         ));
+    }
+    if let Some(expected) = &policy.approved_plan_digest {
+        if plan_digest != Some(expected.as_str()) {
+            return Err(format!("approval_digest_mismatch:{asset}"));
+        }
     }
     Ok(())
 }
@@ -843,6 +867,28 @@ mod tests {
     }
 
     #[test]
+    fn recovery_rejects_a_mismatched_plan_digest() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-05/model.toml")).expect("Base-05");
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+        let report = simulate_recovery_with_policy(&model, "potable-water", 30.0 * 86400.0, &[], policy).unwrap();
+        let correct = report.log[0].plan_digests[0].clone();
+        assert_eq!(correct.len(), 64);
+        let wrong = RecoveryPolicy {
+            decision: ApprovalDecision::Approved,
+            lease_s: 8.0 * 3600.0,
+            approved_plan_digest: Some("0".repeat(64)),
+        };
+        let blocked = simulate_recovery_with_policy(&model, "potable-water", 30.0 * 86400.0, &[], wrong).unwrap();
+        assert_eq!(blocked.survived_s, 0.0);
+        assert!(blocked.log[0]
+            .blocked_by
+            .as_deref()
+            .is_some_and(|reason| reason.starts_with("approval_digest_mismatch:")));
+    }
+
+    #[test]
     fn recovery_rejection_stops_without_side_effects() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
         let model = Model::load(&root.join("scenarios/base-05/model.toml")).expect("Base-05");
@@ -851,7 +897,7 @@ mod tests {
             "potable-water",
             30.0 * 86400.0,
             &[],
-            RecoveryPolicy { decision: ApprovalDecision::Rejected, lease_s: 4.0 * 3600.0 },
+            RecoveryPolicy { decision: ApprovalDecision::Rejected, lease_s: 4.0 * 3600.0, approved_plan_digest: None },
         )
         .unwrap();
         assert_eq!(report.survived_s, 0.0);
@@ -867,7 +913,7 @@ mod tests {
             "potable-water",
             30.0 * 86400.0,
             &[],
-            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 2.0 * 3600.0 },
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 2.0 * 3600.0, approved_plan_digest: None },
         )
         .unwrap();
         assert_eq!(report.survived_s, 0.0);
