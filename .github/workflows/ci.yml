@@ -197,6 +197,12 @@ jobs:
           python3 experiments/s4-recursive-closure/solve.py > /tmp/s4-recursive-closure.out
           diff experiments/s4-recursive-closure/expected.txt /tmp/s4-recursive-closure.out
           test -f experiments/s4-recursive-closure/REPORT.md
+      - name: S4 differential verdict corpus (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-closure-corpus-export > /tmp/corpus.json
+          python3 experiments/s4-differential-corpus/compare.py /tmp/corpus.json > /tmp/s4-differential-corpus.out
+          diff experiments/s4-differential-corpus/expected.txt /tmp/s4-differential-corpus.out
+          test -f experiments/s4-differential-corpus/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v

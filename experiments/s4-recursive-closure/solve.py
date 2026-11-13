@@ -39,15 +39,24 @@ class Model:
         for lot in raw.get("lot", []):
             if lot.get("quality", "accepted") == "accepted":
                 self.stock[lot["resource"]] = self.stock.get(lot["resource"], 0.0) + si(lot["quantity"])
-        self.providers: dict[str, int] = {}
+        self.capability_assets: dict[str, list[tuple[str, int]]] = {}
         for name, asset in self.assets.items():
-            if asset.get("status") == "available":
-                for capability, level in asset.get("capability_verification", {}).items():
-                    self.providers[capability] = max(self.providers.get(capability, 0), RANK.get(level, 0))
+            for capability, level in asset.get("capability_verification", {}).items():
+                self.capability_assets.setdefault(capability, []).append((name, RANK.get(level, 0)))
 
     def available(self, state: dict, asset: str) -> bool:
         status = state["assets"].get(asset, self.assets.get(asset, {}).get("status"))
         return status == "available"
+
+    def usable(self, asset: str, state: dict, visiting: tuple[str, ...] = ()) -> bool:
+        if not self.available(state, asset):
+            return False
+        if asset in visiting:
+            return True
+        for dependency in self.assets.get(asset, {}).get("requires", []):
+            if not self.usable(dependency, state, visiting + (asset,)):
+                return False
+        return True
 
     def process_ok(self, process: dict, state: dict, remaining: float) -> bool:
         if RANK.get(process.get("verification", "declared"), 0) < RANK["modeled"]:
@@ -57,16 +66,24 @@ class Model:
             return False
         if any(not self.available(state, asset) for asset in process.get("occupies", [])):
             return False
-        if any(self.providers.get(cap, 0) < RANK["modeled"] for cap in process.get("requires_capabilities", [])):
-            return False
+        for capability in process.get("requires_capabilities", []):
+            candidates = self.capability_assets.get(capability, [])
+            if not any(
+                rank >= RANK["modeled"] and self.usable(name, state)
+                for name, rank in candidates
+            ):
+                return False
         return True
 
     def try_restore(self, asset: str, state: dict, remaining: float, stack: tuple[str, ...]) -> bool:
         if self.available(state, asset):
-            return True
+            return self.usable(asset, state)
         key = f"asset:{asset}"
         if key in stack:
             return False
+        for dependency in self.assets.get(asset, {}).get("requires", []):
+            if not self.try_restore(dependency, state, remaining, stack + (key,)):
+                return False
         for process in self.processes:
             if asset not in process.get("restores", []):
                 continue
