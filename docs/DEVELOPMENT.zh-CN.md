@@ -707,3 +707,4 @@ flowchart LR
 | 0.1.211 | 2026-11-14 | S4 交叉变异：8 lot × 7 process = 56 模型，504 verdict 504/504 一致 |
 | 0.1.212 | 2026-11-14 | 可行性证书首片：S2 load 结果 + 模型哈希/假设/结论/claim scope，Python 独立校验 ok |
 | 0.1.213 | 2026-11-14 | S3 恢复证书：模型哈希/审批/事件/2 回执/库存链/claim scope，独立校验 ok |
+| 0.1.214 | 2026-11-14 | S1 closure 证书：Base-04 lathe 计划 + 模型哈希 + plan replay + scope，独立校验 ok |

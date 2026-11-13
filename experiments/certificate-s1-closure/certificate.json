@@ -1,0 +1,19 @@
+{
+  "claim_scope": "model-level closure only; not a physical repair claim",
+  "horizon_s": 7200.0,
+  "model": "scenarios/base-04/model.toml",
+  "model_sha256": "c6950b1b8c289706a400ddc3218dcec15ad4978bc24f396896a735b8d9e5427d",
+  "outcome": "RESTORABLE",
+  "schema": "poie.closure-certificate/1",
+  "steps": [
+    {
+      "action": {
+        "Restore": "lathe-1"
+      },
+      "duration_s": 7200.0,
+      "process": "replace-lathe-nut"
+    }
+  ],
+  "target": "lathe-1",
+  "total_duration_s": 7200.0
+}
