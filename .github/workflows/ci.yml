@@ -278,6 +278,13 @@ jobs:
           python3 experiments/certificate-bundle-tamper/tamper.py > /tmp/certificate-bundle-tamper.out
           diff experiments/certificate-bundle-tamper/expected.txt /tmp/certificate-bundle-tamper.out
           test -f experiments/certificate-bundle-tamper/REPORT.md
+      - name: Certificate bundle summary (Python)
+        run: |
+          python3 experiments/certificate-bundle/render.py experiments/certificate-bundle/bundle.json > /tmp/SUMMARY.md
+          diff experiments/certificate-bundle/SUMMARY.md /tmp/SUMMARY.md
+          python3 experiments/certificate-bundle/verify_summary.py experiments/certificate-bundle/bundle.json /tmp/SUMMARY.md > /tmp/certificate-bundle-summary.out
+          diff experiments/certificate-bundle/expected-summary.txt /tmp/certificate-bundle-summary.out
+          test -f experiments/certificate-bundle/SUMMARY.md
       - name: S4 blocked reason classes (Python)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-closure-corpus-export > /tmp/corpus-reasons.json

@@ -7,3 +7,6 @@ Content-addressed S1/S2/S3 certificate index.
 - [bundle.json](bundle.json)
 - [verify.py](verify.py)
 - [expected.txt](expected.txt)
+- [render.py](render.py)
+- [verify_summary.py](verify_summary.py)
+- [SUMMARY.md](SUMMARY.md)

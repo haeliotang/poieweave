@@ -16,7 +16,11 @@ Rust computes SHA-256 for each certificate and emits a bundle with layer, path,
 hash and schema. Python verifies the bundle schema, exact layer set, identities,
 file hashes and claim scope.
 
-Prediction: `bundle=ok`; changing one certificate should fail the hash check.
+A one-page Markdown summary is rendered from the bundle; a verifier checks that
+every layer row and hash prefix is present.
+
+Prediction: `bundle=ok`, `summary=ok`; changing one certificate should fail the
+hash check.
 
 ## Limitation
 
