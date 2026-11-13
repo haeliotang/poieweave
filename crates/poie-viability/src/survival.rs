@@ -18,6 +18,7 @@ use poie_ontology::model::{AssetStatus, Lot, LotQuality, Model, Service};
 
 use crate::closure::{analyze, BlockReason, ClosureOutcome, Plan, StepAction};
 use poie_digest::sha256_of;
+use serde::Serialize;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct FailureCase {
@@ -480,6 +481,63 @@ pub struct RecoveryPolicy {
     pub approved_plan_digest: Option<String>,
 }
 
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub struct RecoveryReceipt {
+    pub at_s: f64,
+    pub failed: Option<String>,
+    pub repaired: Vec<String>,
+    pub plan_digests: Vec<String>,
+    pub inventory_after: BTreeMap<String, f64>,
+    pub verified: bool,
+    pub digest: String,
+}
+
+#[derive(Serialize)]
+struct ReceiptBody<'a> {
+    at_s: f64,
+    failed: Option<&'a str>,
+    repaired: &'a [String],
+    plan_digests: &'a [String],
+    inventory_after: &'a BTreeMap<String, f64>,
+    verified: bool,
+}
+
+impl RecoveryReceipt {
+    /// Recompute and compare the receipt digest. A false result means the
+    /// receipt body was altered after issuance.
+    pub fn verify(&self) -> bool {
+        let body = ReceiptBody {
+            at_s: self.at_s,
+            failed: self.failed.as_deref(),
+            repaired: &self.repaired,
+            plan_digests: &self.plan_digests,
+            inventory_after: &self.inventory_after,
+            verified: self.verified,
+        };
+        sha256_of("poie.recovery.receipt/1", &body).is_ok_and(|digest| digest == self.digest)
+    }
+}
+
+fn make_receipt(
+    at_s: f64,
+    failed: Option<String>,
+    repaired: Vec<String>,
+    plan_digests: Vec<String>,
+    inventory_after: BTreeMap<String, f64>,
+    verified: bool,
+) -> RecoveryReceipt {
+    let body = ReceiptBody {
+        at_s,
+        failed: failed.as_deref(),
+        repaired: &repaired,
+        plan_digests: &plan_digests,
+        inventory_after: &inventory_after,
+        verified,
+    };
+    let digest = sha256_of("poie.recovery.receipt/1", &body).unwrap_or_default();
+    RecoveryReceipt { at_s, failed, repaired, plan_digests, inventory_after, verified, digest }
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct RecoveryLogEntry {
     pub at_s: f64,
@@ -488,6 +546,7 @@ pub struct RecoveryLogEntry {
     pub approved: bool,
     pub approval: Option<String>,
     pub plan_digests: Vec<String>,
+    pub receipt: Option<RecoveryReceipt>,
     pub verified: bool,
     pub blocked_by: Option<String>,
 }
@@ -542,10 +601,11 @@ pub fn simulate_recovery_with_policy(
         Ok((repaired, plan_digests)) => log.push(RecoveryLogEntry {
             at_s: 0.0,
             failed: None,
-            repaired,
+            repaired: repaired.clone(),
             approved: policy.decision == ApprovalDecision::Approved,
             approval: Some(approval.clone()),
-            plan_digests,
+            plan_digests: plan_digests.clone(),
+            receipt: Some(make_receipt(0.0, None, repaired.clone(), plan_digests, inventory.clone(), true)),
             verified: true,
             blocked_by: None,
         }),
@@ -557,6 +617,7 @@ pub fn simulate_recovery_with_policy(
                 approved: false,
                 approval: Some(approval),
                 plan_digests: Vec::new(),
+                receipt: None,
                 verified: false,
                 blocked_by: Some(reason),
             });
@@ -577,11 +638,19 @@ pub fn simulate_recovery_with_policy(
         match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone()) {
             Ok((repaired, plan_digests)) => log.push(RecoveryLogEntry {
                 at_s: now,
-                failed: Some(event.asset),
-                repaired,
+                failed: Some(event.asset.clone()),
+                repaired: repaired.clone(),
                 approved: policy.decision == ApprovalDecision::Approved,
                 approval: Some(approval.clone()),
-                plan_digests,
+                plan_digests: plan_digests.clone(),
+                receipt: Some(make_receipt(
+                    now,
+                    Some(event.asset.clone()),
+                    repaired.clone(),
+                    plan_digests,
+                    inventory.clone(),
+                    true,
+                )),
                 verified: true,
                 blocked_by: None,
             }),
@@ -593,6 +662,7 @@ pub fn simulate_recovery_with_policy(
                     approved: false,
                     approval: Some(approval),
                     plan_digests: Vec::new(),
+                    receipt: None,
                     verified: false,
                     blocked_by: Some(reason),
                 });
@@ -864,6 +934,28 @@ mod tests {
         let entry = report.log.iter().find(|entry| entry.failed.as_deref() == Some("lathe-1")).expect("lathe event");
         assert!(entry.repaired.iter().any(|asset| asset == "lathe-1"));
         assert!(entry.blocked_by.is_none());
+    }
+
+    #[test]
+    fn recovery_receipt_verifies_and_detects_tampering() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-05/model.toml")).expect("Base-05");
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+        let report = simulate_recovery_with_policy(
+            &model,
+            "potable-water",
+            30.0 * 86400.0,
+            &[FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() }],
+            policy,
+        )
+        .unwrap();
+        let receipts: Vec<_> = report.log.iter().filter_map(|entry| entry.receipt.clone()).collect();
+        assert_eq!(receipts.len(), 2);
+        assert!(receipts.iter().all(|receipt| receipt.verify()));
+        let mut tampered = receipts[0].clone();
+        tampered.verified = false;
+        assert!(!tampered.verify());
     }
 
     #[test]
