@@ -149,6 +149,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
           diff experiments/s2-heldout/expected.txt /tmp/s2-heldout.out
           test -f experiments/s2-heldout/REPORT.md
+      - name: S3 approval-gated recovery loop (Base-05)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-recovery > /tmp/s3-recovery.out
+          diff experiments/s3-recovery-loop/expected.txt /tmp/s3-recovery.out
+          test -f experiments/s3-recovery-loop/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v

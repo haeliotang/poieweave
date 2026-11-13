@@ -1,0 +1,2 @@
+approved=false	survived_days=0	events=1	blocked_by=approval_required:pump-p1
+approved=true	survived_days=30	events=3	blocked_by=none
