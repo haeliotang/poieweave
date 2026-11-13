@@ -261,6 +261,12 @@ jobs:
           python3 experiments/s4-model-mutations/mutate.py target/debug/poie-model-corpus > /tmp/s4-model-mutations.out
           diff experiments/s4-model-mutations/expected.txt /tmp/s4-model-mutations.out
           test -f experiments/s4-model-mutations/REPORT.md
+      - name: S4 process mutation corpus (Python)
+        run: |
+          cargo build --locked -q -p poie-viability --bin poie-model-corpus
+          python3 experiments/s4-process-mutations/mutate.py target/debug/poie-model-corpus > /tmp/s4-process-mutations.out
+          diff experiments/s4-process-mutations/expected.txt /tmp/s4-process-mutations.out
+          test -f experiments/s4-process-mutations/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
