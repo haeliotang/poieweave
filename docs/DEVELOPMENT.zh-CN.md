@@ -716,3 +716,4 @@ flowchart LR
 | 0.1.220 | 2026-11-14 | S2 再生证书：Base-05 40 天→Base-08 60 天 + 模型哈希，加入 bundle 六层校验 |
 | 0.1.221 | 2026-11-14 | 证书 bundle 一页式 SUMMARY.md：六层结果/摘要/disclaimer，渲染校验 ok |
 | 0.1.222 | 2026-11-14 | Self-Sustaining Core 文档更新：加入 S1–S4 差分/负载/再生结果与证书 bundle 证据 |
+| 0.1.223 | 2026-11-14 | S4 三 lot 变异：C(8,3)=56 模型 × 9 = 504 verdict，504/504 一致 |

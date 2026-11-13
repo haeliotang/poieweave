@@ -340,6 +340,12 @@ jobs:
           python3 experiments/s4-cross-mutations/mutate.py target/debug/poie-model-corpus > /tmp/s4-cross-mutations.out
           diff experiments/s4-cross-mutations/expected.txt /tmp/s4-cross-mutations.out
           test -f experiments/s4-cross-mutations/REPORT.md
+      - name: S4 triple-lot mutation corpus (Python)
+        run: |
+          cargo build --locked -q -p poie-viability --bin poie-model-corpus
+          python3 experiments/s4-triple-mutations/mutate.py target/debug/poie-model-corpus > /tmp/s4-triple-mutations.out
+          diff experiments/s4-triple-mutations/expected.txt /tmp/s4-triple-mutations.out
+          test -f experiments/s4-triple-mutations/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
