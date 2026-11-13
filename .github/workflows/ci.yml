@@ -236,6 +236,12 @@ jobs:
           python3 experiments/s4-horizon-reasons/compare.py /tmp/horizon-reasons.json > /tmp/s4-horizon-reasons.out
           diff experiments/s4-horizon-reasons/expected.txt /tmp/s4-horizon-reasons.out
           test -f experiments/s4-horizon-reasons/REPORT.md
+      - name: S4 missing-resource and unverified reason fixtures (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-reason-fixtures > /tmp/reason-fixtures.json
+          python3 experiments/s4-reason-fixtures/compare.py /tmp/reason-fixtures.json > /tmp/s4-reason-fixtures.out
+          diff experiments/s4-reason-fixtures/expected.txt /tmp/s4-reason-fixtures.out
+          test -f experiments/s4-reason-fixtures/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
