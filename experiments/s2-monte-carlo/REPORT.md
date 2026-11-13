@@ -8,27 +8,28 @@
 ## 1. Result
 
 ```text
-runs=100 min_days=24 median_days=72 mean_days=67.2 max_days=90 survived_90=39
-bucket	[0,40)	15
-bucket	[40,60)	22
-bucket	[60,80)	15
-bucket	[80,90)	9
-bucket	[90,91)	39
+runs=2000 seeds=20 min_days=20 p10_days=28 median_days=72 mean_days=64.8 p90_days=90 max_days=90 survived_90=622
+bucket	[0,40)	403
+bucket	[40,60)	380
+bucket	[60,80)	358
+bucket	[80,90)	237
+bucket	[90,91)	622
 ```
 
 ## 2. Findings
 
 - The single-interval baseline (40 days at 10-day spacing) is not representative:
   randomly spaced failures produce a broad distribution with median 72 days.
-- 39/100 schedules survive the full 90-day window.
-- The low tail (15 runs below 40 days) comes from short pump intervals that
+- **622/2000** schedules survive the full 90-day window (31.1%).
+- The low tail (403 runs below 40 days) comes from short pump intervals that
   exhaust material/stock before day 40.
+- Across 20 seeds the median is stable at 72 days; p10 is 28 and p90 is 90.
 - The distribution is still governed by material closure, not battery energy.
 
 ## 3. Limits
 
-- One deterministic LCG seed; this is a robustness illustration, not a
-  statistical confidence interval.
+- Deterministic LCG seeds; these are robustness percentiles, not calibrated
+  confidence intervals.
 - Failures are independent and schedule-only; repair times and repair failures
   are not modelled.
 - No operating demand, water demand or wear.

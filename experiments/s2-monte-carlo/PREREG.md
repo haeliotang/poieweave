@@ -12,7 +12,7 @@ distribution look like, rather than a single hand-picked interval?
 
 ## Method
 
-100 runs with a fixed LCG seed:
+20 seeds × 100 runs (2000 runs) with fixed LCG seeds:
 
 - pump-failure interval uniform in 5..=30 days, repeated until day 90;
 - one lathe failure uniformly in 20..=60 days;
@@ -20,7 +20,8 @@ distribution look like, rather than a single hand-picked interval?
 - 200 kWh battery / 10 kW charge cap;
 - 90-day horizon.
 
-Report min, median, mean, max and 90-day survival count, plus histogram buckets.
+Report min, p10, median, mean, p90, max and 90-day survival count, plus
+histogram buckets.
 
 ## Expected distribution
 

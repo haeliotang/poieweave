@@ -24,38 +24,49 @@ fn main() -> ExitCode {
         panic!("load Base-05: {error}");
     });
     let battery = Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 });
-    let mut rng = 20_261_114_u64;
+    const SEEDS: u64 = 20;
+    const RUNS_PER_SEED: usize = 100;
     let mut horizons = Vec::new();
-    for _ in 0..100 {
-        let interval = 5 + next(&mut rng) % 26; // 5..=30 days
-        let mut events = Vec::new();
-        let mut day = interval;
-        while day < 90 {
-            events.push(FailureEvent { at_s: day as f64 * 86400.0, asset: "pump-p1".into() });
-            day += interval;
+    for seed_index in 0..SEEDS {
+        let mut rng = 20_261_114_u64.wrapping_add(seed_index.wrapping_mul(0x9E37_79B9_7F4A_7C15));
+        for _ in 0..RUNS_PER_SEED {
+            let interval = 5 + next(&mut rng) % 26; // 5..=30 days
+            let mut events = Vec::new();
+            let mut day = interval;
+            while day < 90 {
+                events.push(FailureEvent { at_s: day as f64 * 86400.0, asset: "pump-p1".into() });
+                day += interval;
+            }
+            let lathe_day = 20 + next(&mut rng) % 41; // 20..=60
+            events.push(FailureEvent { at_s: lathe_day as f64 * 86400.0, asset: "lathe-1".into() });
+            events.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
+            let report = simulate_multi_service_longevity_with_limits(
+                &model,
+                &["potable-water", "workshop-operability"],
+                90.0 * 86400.0,
+                &events,
+                battery,
+            )
+            .unwrap();
+            horizons.push((report.survived_s / 86400.0).round() as u32);
         }
-        let lathe_day = 20 + next(&mut rng) % 41; // 20..=60
-        events.push(FailureEvent { at_s: lathe_day as f64 * 86400.0, asset: "lathe-1".into() });
-        events.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
-        let report = simulate_multi_service_longevity_with_limits(
-            &model,
-            &["potable-water", "workshop-operability"],
-            90.0 * 86400.0,
-            &events,
-            battery,
-        )
-        .unwrap();
-        horizons.push((report.survived_s / 86400.0).round() as u32);
     }
     horizons.sort_unstable();
+    let runs = horizons.len();
     let sum: u32 = horizons.iter().sum();
     let survived = horizons.iter().filter(|days| **days >= 90).count();
-    let median = horizons[horizons.len() / 2];
+    let percentile = |fraction: f64| {
+        let index = ((runs - 1) as f64 * fraction).round() as usize;
+        horizons[index]
+    };
     println!(
-        "runs=100 min_days={} median_days={median} mean_days={:.1} max_days={} survived_90={survived}",
+        "runs={runs} seeds={SEEDS} min_days={} p10_days={} median_days={} mean_days={:.1} p90_days={} max_days={} survived_90={survived}",
         horizons[0],
-        f64::from(sum) / 100.0,
-        horizons[99]
+        percentile(0.10),
+        percentile(0.50),
+        f64::from(sum) / runs as f64,
+        percentile(0.90),
+        horizons[runs - 1]
     );
     for bucket in [(0, 40), (40, 60), (60, 80), (80, 90), (90, 91)] {
         let count = horizons.iter().filter(|days| **days >= bucket.0 && **days < bucket.1).count();
