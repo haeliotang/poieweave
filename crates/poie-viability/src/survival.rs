@@ -548,6 +548,29 @@ mod tests {
     }
 
     #[test]
+    fn joint_shared_stock_breaks_an_independently_recoverable_pair() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-06/model.toml")).expect("Base-06");
+        let pair = vec!["pump-p1".to_string(), "pump-p2".to_string()];
+        let envelope = failure_envelope(&model, "potable-water", 12.0 * 3600.0, 2).unwrap();
+        assert!(envelope.cases.iter().any(|case| case.failed == pair && case.recoverable));
+        let events = vec![
+            FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() },
+            FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p2".into() },
+        ];
+        let report = simulate_multi_service_longevity_with_limits(
+            &model,
+            &["potable-water"],
+            30.0 * 86400.0,
+            &events,
+            Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
+        )
+        .unwrap();
+        assert_eq!(report.survived_s, 10.0 * 86400.0);
+        assert!(report.log.iter().any(|entry| entry.blocked_by.is_some()));
+    }
+
+    #[test]
     fn double_failure_envelope_counts_pairs() {
         let envelope = failure_envelope(&base05(), "potable-water", 12.0 * 3600.0, 2).unwrap();
         assert_eq!(envelope.total(), 46);

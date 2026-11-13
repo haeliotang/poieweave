@@ -1,0 +1,4 @@
+pair=failed=pump-p1,pump-p2
+independent_coverage=true
+joint_survived_days=10
+joint_blocked_by=missing resource bronze-bar: need 1.2, have 0.6
