@@ -124,6 +124,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-joint-coverage > /tmp/s2-joint-coverage.out
           diff experiments/s2-joint-coverage/expected.txt /tmp/s2-joint-coverage.out
           test -f experiments/s2-joint-coverage/REPORT.md
+      - name: S2 resupply sensitivity (Base-06)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-resupply > /tmp/s2-resupply.out
+          diff experiments/s2-resupply/expected.txt /tmp/s2-resupply.out
+          test -f experiments/s2-resupply/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
