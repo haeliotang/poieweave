@@ -701,3 +701,4 @@ flowchart LR
 | 0.1.205 | 2026-11-14 | S4 reason fixtures：Base-09 missing_resource 与 Base-10 unverified_process 2/2 一致 |
 | 0.1.206 | 2026-11-14 | S4 minimal witness：Base-09/10 的具体 need/have 与 verification 值 2/2 精确一致 |
 | 0.1.207 | 2026-11-14 | S4 反事实阈值：Base-09 加 1.1kg bronze 仍 blocked，1.2kg 起可恢复；3/3 一致 |
+| 0.1.208 | 2026-11-14 | S4 模型变异：Base-05 逐个移除 accepted lot，8 模型 × 9 资产 = 72 verdict，72/72 一致 |
