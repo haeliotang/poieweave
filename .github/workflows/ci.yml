@@ -164,6 +164,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-approval-digest > /tmp/s3-approval-digest.out
           diff experiments/s3-approval-digest/expected.txt /tmp/s3-approval-digest.out
           test -f experiments/s3-approval-digest/REPORT.md
+      - name: S3 execution receipt (Base-05)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-receipt > /tmp/s3-receipt.out
+          diff experiments/s3-receipt/expected.txt /tmp/s3-receipt.out
+          test -f experiments/s3-receipt/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
