@@ -144,6 +144,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-regen-yield > /tmp/s2-regeneration-yield.out
           diff experiments/s2-regeneration-yield/expected.txt /tmp/s2-regeneration-yield.out
           test -f experiments/s2-regeneration-yield/REPORT.md
+      - name: S2 held-out failure intervals (Base-05)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
+          diff experiments/s2-heldout/expected.txt /tmp/s2-heldout.out
+          test -f experiments/s2-heldout/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
