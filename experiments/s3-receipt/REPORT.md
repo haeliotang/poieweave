@@ -8,8 +8,8 @@
 ## 1. Result
 
 ```text
-at_day=0	plan_digest=7e4742...	receipt_digest=338f5c...	verified=true
-at_day=10	plan_digest=946dc5...	receipt_digest=aabaf1...	verified=true
+at_day=0	plan_digest=7e4742...	receipt_digest=d5e43a...	verified=true
+at_day=10	plan_digest=946dc5...	receipt_digest=52e964...	verified=true
 ```
 
 ## 2. Findings
