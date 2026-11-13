@@ -248,6 +248,13 @@ jobs:
           python3 experiments/s4-minimal-witness/compare.py /tmp/witness-fixtures.json > /tmp/s4-minimal-witness.out
           diff experiments/s4-minimal-witness/expected.txt /tmp/s4-minimal-witness.out
           test -f experiments/s4-minimal-witness/REPORT.md
+      - name: S4 counterfactual threshold (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-unblock > /tmp/unblock.txt
+          python3 experiments/s4-counterfactual/compare.py /tmp/unblock.txt > /tmp/s4-counterfactual.out
+          diff experiments/s4-counterfactual/expected.txt /tmp/unblock.txt
+          grep -q "cases=3 matched=3 mismatched=0" /tmp/s4-counterfactual.out
+          test -f experiments/s4-counterfactual/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
