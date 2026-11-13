@@ -139,6 +139,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-regen-horizon > /tmp/s2-regeneration-horizon.out
           diff experiments/s2-regeneration-horizon/expected.txt /tmp/s2-regeneration-horizon.out
           test -f experiments/s2-regeneration-horizon/REPORT.md
+      - name: S2 regeneration yield sensitivity (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-regen-yield > /tmp/s2-regeneration-yield.out
+          diff experiments/s2-regeneration-yield/expected.txt /tmp/s2-regeneration-yield.out
+          test -f experiments/s2-regeneration-yield/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v

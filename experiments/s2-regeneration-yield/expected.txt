@@ -1,0 +1,4 @@
+recycle_yield	survived_days	blocked_by
+1.00	60	cyclic process dependency at turn-sleeve-p1
+0.75	60	cyclic process dependency at turn-sleeve-p1
+0.50	50	missing resource bronze-bar: need 1.2, have 0.6

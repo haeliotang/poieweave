@@ -619,6 +619,45 @@ mod tests {
     }
 
     #[test]
+    fn lower_recycling_yield_reduces_the_ten_day_horizon() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let mut low = Model::load(&root.join("scenarios/base-08/model.toml")).expect("Base-08");
+        let process = low.processes.iter_mut().find(|process| process.id == "recycle-bronze").expect("recycle-bronze");
+        for output in &mut process.outputs {
+            if output.resource == "bronze-bar" {
+                output.si *= 0.5;
+            }
+        }
+        let make_events = || {
+            let mut events: Vec<FailureEvent> = (1..=8)
+                .map(|index| FailureEvent { at_s: f64::from(index * 10) * 86400.0, asset: "pump-p1".into() })
+                .collect();
+            events.push(FailureEvent { at_s: 35.0 * 86400.0, asset: "lathe-1".into() });
+            events.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
+            events
+        };
+        let battery = Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 });
+        let high = Model::load(&root.join("scenarios/base-08/model.toml")).expect("Base-08");
+        let normal = simulate_multi_service_longevity_with_limits(
+            &high,
+            &["potable-water", "workshop-operability"],
+            90.0 * 86400.0,
+            &make_events(),
+            battery,
+        )
+        .unwrap();
+        let reduced = simulate_multi_service_longevity_with_limits(
+            &low,
+            &["potable-water", "workshop-operability"],
+            90.0 * 86400.0,
+            &make_events(),
+            battery,
+        )
+        .unwrap();
+        assert!(reduced.survived_s <= normal.survived_s);
+    }
+
+    #[test]
     fn regeneration_extends_the_ten_day_failure_horizon() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
         let load = |name: &str| Model::load(&root.join(format!("scenarios/{name}/model.toml"))).expect(name);
