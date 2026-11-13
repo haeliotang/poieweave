@@ -14,6 +14,7 @@
 
 pub mod audit;
 pub mod bridge;
+pub mod closure;
 pub mod method;
 pub mod metrics;
 pub mod query;
