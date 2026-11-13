@@ -224,6 +224,20 @@ pub fn simulate_multi_service_longevity_with_limits(
     events: &[FailureEvent],
     battery: Option<BatteryLimits>,
 ) -> Result<SurvivalReport, EnvelopeError> {
+    simulate_multi_service_longevity_with_load(model, service_ids, horizon_s, events, battery, 0.0)
+}
+
+/// Same policy with a constant site load in kW. Energy is drained over each
+/// interval; if the inventory would go negative, the run stops with
+/// `energy_depleted` before the next event.
+pub fn simulate_multi_service_longevity_with_load(
+    model: &Model,
+    service_ids: &[&str],
+    horizon_s: f64,
+    events: &[FailureEvent],
+    battery: Option<BatteryLimits>,
+    load_kw: f64,
+) -> Result<SurvivalReport, EnvelopeError> {
     let mut services = Vec::new();
     for service_id in service_ids {
         let Some(service) = model.services.get(*service_id) else {
@@ -267,7 +281,23 @@ pub fn simulate_multi_service_longevity_with_limits(
     ordered.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
     for event in ordered {
         let at = event.at_s.clamp(now, horizon_s);
-        add_recharge(&current, &mut inventory, at - now, battery);
+        if let Err(offset) = apply_energy_interval(&current, &mut inventory, at - now, battery, load_kw) {
+            let failed_at = now + offset;
+            log.push(SurvivalLogEntry {
+                at_s: failed_at,
+                failed: None,
+                repaired: Vec::new(),
+                energy_after: energy(&inventory),
+                blocked_by: Some("energy_depleted".into()),
+            });
+            return Ok(SurvivalReport {
+                service: service_label.clone(),
+                horizon_s,
+                survived_s: failed_at,
+                log,
+                final_inventory: inventory,
+            });
+        }
         now = at;
         if let Some(asset) = current.assets.get_mut(&event.asset) {
             asset.status = AssetStatus::Failed;
@@ -300,7 +330,23 @@ pub fn simulate_multi_service_longevity_with_limits(
             }
         }
     }
-    add_recharge(&current, &mut inventory, horizon_s - now, battery);
+    if let Err(offset) = apply_energy_interval(&current, &mut inventory, horizon_s - now, battery, load_kw) {
+        let failed_at = now + offset;
+        log.push(SurvivalLogEntry {
+            at_s: failed_at,
+            failed: None,
+            repaired: Vec::new(),
+            energy_after: energy(&inventory),
+            blocked_by: Some("energy_depleted".into()),
+        });
+        return Ok(SurvivalReport {
+            service: service_label.clone(),
+            horizon_s,
+            survived_s: failed_at,
+            log,
+            final_inventory: inventory,
+        });
+    }
     Ok(SurvivalReport {
         service: service_label.clone(),
         horizon_s,
@@ -439,6 +485,50 @@ fn recharge_j_per_s(model: &Model) -> Option<f64> {
     Some(output.si / duration)
 }
 
+fn apply_energy_interval(
+    model: &Model,
+    inventory: &mut BTreeMap<String, f64>,
+    elapsed_s: f64,
+    battery: Option<BatteryLimits>,
+    load_kw: f64,
+) -> Result<(), f64> {
+    if elapsed_s <= 0.0 {
+        return Ok(());
+    }
+    let energy = inventory.entry("electric-energy".into()).or_insert(0.0);
+    let mut net_j_per_s = 0.0;
+    if model.assets.get("pv-1").is_some_and(|asset| asset.status == AssetStatus::Available) {
+        if let Some(raw_j_per_s) = recharge_j_per_s(model) {
+            net_j_per_s += match battery {
+                Some(battery) => raw_j_per_s.min(battery.charge_kw * 1000.0),
+                None => raw_j_per_s,
+            };
+        }
+    }
+    net_j_per_s -= load_kw.max(0.0) * 1000.0;
+    if net_j_per_s < 0.0 {
+        let time_to_empty = *energy / -net_j_per_s;
+        if time_to_empty < elapsed_s {
+            *energy = 0.0;
+            return Err(time_to_empty);
+        }
+    }
+    *energy += net_j_per_s * elapsed_s;
+    if let Some(battery) = battery {
+        let capacity_j = battery.capacity_kwh * 3_600_000.0;
+        if *energy > capacity_j {
+            *energy = capacity_j;
+        }
+    }
+    if *energy < 0.0 {
+        *energy = 0.0;
+        Err(0.0)
+    } else {
+        Ok(())
+    }
+}
+
+#[allow(dead_code)]
 fn add_recharge(model: &Model, inventory: &mut BTreeMap<String, f64>, elapsed_s: f64, battery: Option<BatteryLimits>) {
     if elapsed_s <= 0.0 {
         return;
@@ -1207,6 +1297,34 @@ mod tests {
                 && case.failed.contains(&"bus-1".to_string())
                 && !case.recoverable
         }));
+    }
+
+    #[test]
+    fn high_site_load_makes_energy_the_limiting_factor() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-05/model.toml")).expect("Base-05");
+        let battery = Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 });
+        let events = vec![FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() }];
+        let idle = simulate_multi_service_longevity_with_load(
+            &model,
+            &["potable-water", "workshop-operability"],
+            30.0 * 86400.0,
+            &events,
+            battery,
+            0.0,
+        )
+        .unwrap();
+        let loaded = simulate_multi_service_longevity_with_load(
+            &model,
+            &["potable-water", "workshop-operability"],
+            30.0 * 86400.0,
+            &events,
+            battery,
+            3.0,
+        )
+        .unwrap();
+        assert!(loaded.survived_s < idle.survived_s);
+        assert!(loaded.log.iter().any(|entry| entry.blocked_by.as_deref() == Some("energy_depleted")));
     }
 
     #[test]

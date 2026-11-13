@@ -1,0 +1,6 @@
+load_kw	survived_days	final_energy_kwh	blocked_by
+0.0	40	200.0	missing resource bronze-bar: need 1.2, have 0.6000000000000001
+1.0	40	200.0	missing resource bronze-bar: need 1.2, have 0.6000000000000001
+2.0	40	200.0	missing resource bronze-bar: need 1.2, have 0.6000000000000001
+3.0	3	0.0	energy_depleted
+4.0	1	0.0	energy_depleted
