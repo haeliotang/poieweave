@@ -64,11 +64,31 @@ S4 的 112 例差分语料一开始在 `bus-1` 上出现 3 个 Python/Rust 不�
 
 这类“发现差异并修正独立实现”的结果，比单纯 PASS 更有研究价值。
 
+### 2.6 证据包与证书
+
+S1–S4 的关键结论已经打包为机器可核查证书：
+
+| 层 | 证书 | 核心内容 |
+| --- | --- | --- |
+| S1 | closure | Base-04 lathe verdict + plan |
+| S2 | load | 0–2 kW 材料受限 / 3–4 kW 能量受限 |
+| S2-joint | coverage | Base-06 独立 25 vs 联合 24 |
+| S2-regen | regeneration | Base-05 40 天 → Base-08 60 天 |
+| S3 | recovery | 审批 + 事件 + 2 回执 + 库存链 |
+| S4 | differential | 112/112 verdict、26/26 plan evidence |
+
+证书通过 SHA-256 组成 bundle；独立验证器检查层集合、路径、schema 和哈希，
+篡改负例返回 `tamper=detected`。一页式摘要见
+[certificate bundle SUMMARY](../../experiments/certificate-bundle/SUMMARY.md)。
+
+这些证书仍**未签名**，只证明内容完整性与模型身份，不证明作者、时效或物理真实性。
+
 ## 3. 不应该从中得出的结论
 
 - 不能推出真实设备的寿命、失效概率或安全性。
 - 不能推出系统已具备工业自主能力。
 - 不能把独立验证等同于形式化等价证明。
+- 不能把内容寻址证书当作签名、第三方 attestation 或物理验收。
 - 不能把合成库存/回收收率当作真实产率。
 - 不能把 H2c 的小样本方向性结果当作普遍优势。
 
@@ -80,7 +100,8 @@ S4 的 112 例差分语料一开始在 `bus-1` 上出现 3 个 Python/Rust 不�
 4. 正式 Survival Horizon / Recovery Coverage / Regenerative Capacity 定义与留出集。
 5. 独立过程模型、FMI co-simulation 或 SMT 验证。
 6. 隔离 VM 的多进程/时钟/磁盘故障实验。
-7. M9/M10 物理试验台与外部契约审查。
+7. 证书签名/第三方 attestation 与 freshness/rollback 防护。
+8. M9/M10 物理试验台与外部契约审查。
 
 ## 5. 当前可复现入口
 

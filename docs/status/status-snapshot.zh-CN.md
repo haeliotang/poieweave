@@ -61,7 +61,7 @@
 | --- | --- | --- |
 | H2b | 母线 + 泵串行 4 h 在 4 h 截止下不可行；发现 Base-01 母线修复环；留出未运行 | [DIAGNOSIS](../../experiments/h2b-joint-planning/DIAGNOSIS.md) |
 | H2c | 开发 5/16 vs 0/16；留出 3/8 vs 0/8（+37.5pp，按预登记支持；区间含 0，样本小） | [REPORT](../../experiments/h2c-joint-planning/REPORT.md) |
-| S1–S4 Self-Sustaining Core | 能力闭合、生存边界、再生、审批回执与独立验证的模型级综合 | [综合文档](../research/self-sustaining-core.zh-CN.md) |
+| S1–S4 Self-Sustaining Core | 能力闭合、生存边界、再生、审批回执、独立验证与证书 bundle | [综合文档](../research/self-sustaining-core.zh-CN.md) |
 
 ### 2.3 内部模拟台架/适配器验证（非物理验收）
 
