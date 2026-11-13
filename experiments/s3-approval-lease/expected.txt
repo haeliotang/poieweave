@@ -1,0 +1,5 @@
+decision	lease_h	survived_days	blocked_by
+Approved	8.0	30	none
+Required	4.0	0	approval_required:pump-p1
+Rejected	4.0	0	approval_rejected:pump-p1
+Approved	2.0	0	approval_lease_expired:pump-p1: need 10800s, lease 7200s
