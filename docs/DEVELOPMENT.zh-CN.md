@@ -699,3 +699,4 @@ flowchart LR
 | 0.1.203 | 2026-11-14 | S4 reason class：86 个 blocked case 的 no_restorer/cycle 分类 86/86 一致 |
 | 0.1.204 | 2026-11-14 | S4 horizon reason：900s 下 56 个 blocked（20 horizon/36 no_restorer）56/56 一致 |
 | 0.1.205 | 2026-11-14 | S4 reason fixtures：Base-09 missing_resource 与 Base-10 unverified_process 2/2 一致 |
+| 0.1.206 | 2026-11-14 | S4 minimal witness：Base-09/10 的具体 need/have 与 verification 值 2/2 精确一致 |
