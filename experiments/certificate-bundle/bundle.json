@@ -1,0 +1,24 @@
+{
+  "certificates": [
+    {
+      "layer": "S1",
+      "path": "experiments/certificate-s1-closure/certificate.json",
+      "schema": "poie.closure-certificate/1",
+      "sha256": "2dddca964d33c74725ccfde3683c347bc6cbd0a7e4c97f85a1ab740639faf339"
+    },
+    {
+      "layer": "S2",
+      "path": "experiments/certificate-s2-load/certificate.json",
+      "schema": "poie.viability-certificate/1",
+      "sha256": "7608e4f828cac7604eaff99b561c5bdf7b00faf3b9a0c242159a2bf4498ba463"
+    },
+    {
+      "layer": "S3",
+      "path": "experiments/certificate-s3-recovery/certificate.json",
+      "schema": "poie.recovery-certificate/1",
+      "sha256": "a006ed1f57273efb358a9d67ff89f374d52a4de52af47ad79d3b34b67738abfe"
+    }
+  ],
+  "claim_scope": "model/simulation certificates only; no physical safety or authority claim",
+  "schema": "poie.certificate-bundle/1"
+}

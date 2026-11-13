@@ -1,0 +1,28 @@
+# Certificate Bundle — report
+
+- Date: 2026-11-14
+- Status: content-addressed certificate index; unsigned
+- Runner: `cargo run --locked -q -p poie-viability --bin poie-certificate-bundle`
+  then `python3 experiments/certificate-bundle/verify.py`
+- Bundle: [bundle.json](bundle.json)
+- Expected verifier output: [expected.txt](expected.txt)
+
+## 1. Result
+
+```text
+bundle=ok
+```
+
+## 2. What is checked
+
+- bundle schema
+- exact S1/S2/S3 layer set
+- each certificate path and schema
+- each certificate SHA-256
+- explicit model/simulation claim scope
+
+## 3. Limits
+
+- Unsigned bundle; no attestation.
+- Detects content changes, not authorship or physical reality.
+- Three certificates only.
