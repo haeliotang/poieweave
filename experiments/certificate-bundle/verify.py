@@ -20,7 +20,8 @@ EXPECTED = {
 }
 
 
-def main(path: str) -> int:
+def main(path: str, root_arg: str | None = None) -> int:
+    root = Path(root_arg) if root_arg else ROOT
     bundle = json.loads(Path(path).read_text())
     problems: list[str] = []
     if bundle.get("schema") != "poie.certificate-bundle/1":
@@ -33,7 +34,7 @@ def main(path: str) -> int:
         if row.get("path") != relative or row.get("schema") != schema:
             problems.append(f"{layer} identity")
             continue
-        path = ROOT / relative
+        path = root / relative
         if not path.is_file():
             problems.append(f"{layer} missing")
             continue
@@ -50,7 +51,7 @@ def main(path: str) -> int:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("usage: verify.py <bundle.json>", file=sys.stderr)
+    if len(sys.argv) not in (2, 3):
+        print("usage: verify.py <bundle.json> [root]", file=sys.stderr)
         raise SystemExit(2)
-    raise SystemExit(main(sys.argv[1]))
+    raise SystemExit(main(sys.argv[1], sys.argv[2] if len(sys.argv) == 3 else None))

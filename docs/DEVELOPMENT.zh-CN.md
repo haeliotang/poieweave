@@ -712,3 +712,4 @@ flowchart LR
 | 0.1.216 | 2026-11-14 | S2 joint 证书：Base-06 独立 25/joint 24/gap 1 + gap pair，独立校验 ok |
 | 0.1.217 | 2026-11-14 | 证书 bundle 扩展：加入 S2 joint 覆盖证书，四证书内容寻址索引独立校验 ok |
 | 0.1.218 | 2026-11-14 | S4 差分证书：112/112 verdict + 26/26 plan 证据哈希，加入 S1–S4 bundle，独立校验 ok |
+| 0.1.219 | 2026-11-14 | 证书 bundle 负例：修改 S1 证书后 bundle 校验失败，tamper=detected |
