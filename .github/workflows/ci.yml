@@ -224,6 +224,12 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-load > /tmp/s2-load.out
           diff experiments/s2-load/expected.txt /tmp/s2-load.out
           test -f experiments/s2-load/REPORT.md
+      - name: S4 blocked reason classes (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-closure-corpus-export > /tmp/corpus-reasons.json
+          python3 experiments/s4-reason-classes/compare.py /tmp/corpus-reasons.json > /tmp/s4-reason-classes.out
+          diff experiments/s4-reason-classes/expected.txt /tmp/s4-reason-classes.out
+          test -f experiments/s4-reason-classes/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
