@@ -1,0 +1,6 @@
+case	verdict
+scenarios/base-01/model.toml:pump-p1	RESTORABLE
+scenarios/base-01/model.toml:lathe-1	BLOCKED
+scenarios/base-04/model.toml:lathe-1	RESTORABLE
+scenarios/base-05/model.toml:pump-p1	RESTORABLE
+scenarios/base-05/model.toml:filter-1	BLOCKED
