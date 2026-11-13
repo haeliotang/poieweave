@@ -15,6 +15,7 @@ EXPECTED = {
     "S1": ("experiments/certificate-s1-closure/certificate.json", "poie.closure-certificate/1"),
     "S2": ("experiments/certificate-s2-load/certificate.json", "poie.viability-certificate/1"),
     "S2-joint": ("experiments/certificate-s2-joint/certificate.json", "poie.coverage-certificate/1"),
+    "S2-regen": ("experiments/certificate-s2-regeneration/certificate.json", "poie.regeneration-certificate/1"),
     "S3": ("experiments/certificate-s3-recovery/certificate.json", "poie.recovery-certificate/1"),
     "S4": ("experiments/certificate-s4-differential/certificate.json", "poie.s4-certificate/1"),
 }
@@ -27,7 +28,7 @@ def main(path: str, root_arg: str | None = None) -> int:
     if bundle.get("schema") != "poie.certificate-bundle/1":
         problems.append("schema")
     rows = {row.get("layer"): row for row in bundle.get("certificates", [])}
-    if sorted(rows) != ["S1", "S2", "S2-joint", "S3", "S4"]:
+    if sorted(rows) != ["S1", "S2", "S2-joint", "S2-regen", "S3", "S4"]:
         problems.append("layers")
     for layer, (relative, schema) in EXPECTED.items():
         row = rows.get(layer, {})

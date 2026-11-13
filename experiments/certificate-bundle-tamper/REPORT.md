@@ -13,7 +13,7 @@ tamper=detected
 
 ## 2. What happens
 
-1. Bundle + five certificates copied to a temp root.
+1. Bundle + six certificates copied to a temp root.
 2. Clean copy verifies `bundle=ok`.
 3. One byte is appended to the S1 certificate.
 4. Verification now fails because the certificate SHA-256 no longer matches the
