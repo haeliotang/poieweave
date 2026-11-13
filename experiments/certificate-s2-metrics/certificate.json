@@ -1,0 +1,20 @@
+{
+  "base05": {
+    "model": "scenarios/base-05/model.toml",
+    "model_sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150",
+    "survival_horizon_days": 40.0
+  },
+  "base08": {
+    "model": "scenarios/base-08/model.toml",
+    "model_sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c",
+    "survival_horizon_days": 60.0
+  },
+  "claim_scope": "model-level metric definitions only; not a physical forecast",
+  "recovery_coverage": {
+    "ratio": 0.5,
+    "recoverable": 5,
+    "total": 10
+  },
+  "regenerative_capacity_days": 20.0,
+  "schema": "poie.metrics-certificate/1"
+}

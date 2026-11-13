@@ -3,7 +3,7 @@
 - Experiment ID: `certificate-bundle`
 - Date: 2026-11-14
 - Status: completed; see [REPORT.md](REPORT.md)
-- Scope: content-addressed index of S1/S2/S2-joint/S2-regen/S3/S4 certificates.
+- Scope: content-addressed index of S1/S2/S2-joint/S2-regen/S2-metrics/S3/S4 certificates.
 
 ## Question
 
