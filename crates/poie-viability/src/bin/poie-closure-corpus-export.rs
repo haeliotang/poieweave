@@ -40,12 +40,13 @@ fn main() -> ExitCode {
                         "steps": plan.steps,
                         "total_duration_s": plan.total_duration_s,
                     })),
-                    ClosureOutcome::Blocked(_) => output.push(serde_json::json!({
+                    ClosureOutcome::Blocked(blocked) => output.push(serde_json::json!({
                         "model": relative,
                         "target": target,
                         "horizon_s": horizon_s,
                         "rust": "BLOCKED",
                         "outcome": "BLOCKED",
+                        "reasons": blocked.reasons.iter().map(ToString::to_string).collect::<Vec<_>>(),
                     })),
                 }
             }
