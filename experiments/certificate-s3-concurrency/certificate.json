@@ -1,0 +1,28 @@
+{
+  "claim_scope": "model/simulation scheduling observation only; no hardware authority claim",
+  "rows": [
+    {
+      "deadline_s": 14400.0,
+      "lathe_s": 7200.0,
+      "layout": "one-robot",
+      "occupancy_overlap": true,
+      "parallel_meets": false,
+      "parallel_s": 18000.0,
+      "pump_s": 10800.0,
+      "sequential_meets": false,
+      "sequential_s": 18000.0
+    },
+    {
+      "deadline_s": 14400.0,
+      "lathe_s": 7200.0,
+      "layout": "two-robots",
+      "occupancy_overlap": false,
+      "parallel_meets": true,
+      "parallel_s": 10800.0,
+      "pump_s": 10800.0,
+      "sequential_meets": false,
+      "sequential_s": 18000.0
+    }
+  ],
+  "schema": "poie.concurrency-certificate/1"
+}
