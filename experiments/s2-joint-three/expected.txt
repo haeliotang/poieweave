@@ -1,0 +1,7 @@
+bronze_kg	energy_kwh	survived_days	blocked_by
+3.0	20	60	cyclic process dependency at turn-sleeve-p1
+3.0	40	60	cyclic process dependency at turn-sleeve-p1
+3.0	80	60	cyclic process dependency at turn-sleeve-p1
+6.0	20	90	none
+6.0	40	90	none
+6.0	80	90	none
