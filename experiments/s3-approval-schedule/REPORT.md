@@ -11,6 +11,8 @@
 case	receipts	survived_days	blocked_by
 approved-all	3	30	none
 reject-day20	2	20	approval_rejected:pump-p1
+multi-approved-all	3	30	none
+multi-reject-day20	2	20	potable-water:approval_rejected:pump-p1
 ```
 
 ## 2. Findings
@@ -19,6 +21,8 @@ reject-day20	2	20	approval_rejected:pump-p1
   full 30 days.
 - Schedule with a day-20 rejection: initial and day-10 repairs succeed (two
   receipts), then the day-20 proposal is rejected and the run stops at day 20.
+- The multi-service variant gives the same counts, with the rejection prefixed by
+  the service (`potable-water:approval_rejected:pump-p1`).
 
 ## 3. Significance
 
