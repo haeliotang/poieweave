@@ -552,6 +552,12 @@ jobs:
           python3 experiments/s4-duration-quantity/mutate.py target/debug/poie-model-corpus > /tmp/s4-duration-quantity.out
           diff experiments/s4-duration-quantity/expected.txt /tmp/s4-duration-quantity.out
           test -f experiments/s4-duration-quantity/REPORT.md
+      - name: S4 energy-input mutation corpus (Python)
+        run: |
+          cargo build --locked -q -p poie-viability --bin poie-model-corpus
+          python3 experiments/s4-input-energy/mutate.py target/debug/poie-model-corpus > /tmp/s4-input-energy.out
+          diff experiments/s4-input-energy/expected.txt /tmp/s4-input-energy.out
+          test -f experiments/s4-input-energy/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
