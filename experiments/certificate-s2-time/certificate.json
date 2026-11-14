@@ -1,0 +1,80 @@
+{
+  "claim_scope": "model/simulation time semantics only; no physical timing claim",
+  "deadline": {
+    "advanced_complete": 13,
+    "deadline_day": 11,
+    "failure_day": 10,
+    "instant_complete": 10,
+    "repair_days": 3
+  },
+  "dense": {
+    "event_driven_times_h": [
+      3.0,
+      6.0
+    ],
+    "instant_times_h": [
+      0.0,
+      1.0
+    ],
+    "repair_s": 10800.0
+  },
+  "grease_boundary": {
+    "advanced_days": [
+      10,
+      16,
+      21,
+      21,
+      21
+    ],
+    "instant_days": [
+      4,
+      6,
+      8,
+      8,
+      8
+    ],
+    "stocks": [
+      0.1,
+      0.15,
+      0.2,
+      0.3,
+      0.5
+    ]
+  },
+  "insert_boundary": {
+    "advanced_days": [
+      15,
+      20,
+      26,
+      31,
+      31
+    ],
+    "instant_days": [
+      6,
+      8,
+      10,
+      12,
+      12
+    ],
+    "stocks": [
+      1,
+      2,
+      3,
+      4,
+      6
+    ]
+  },
+  "schema": "poie.time-certificate/1",
+  "sparse": [
+    {
+      "event_driven_days": 60,
+      "instant_days": 60,
+      "load_kw": 0.0
+    },
+    {
+      "event_driven_days": 16,
+      "instant_days": 16,
+      "load_kw": 2.6
+    }
+  ]
+}

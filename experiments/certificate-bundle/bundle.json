@@ -37,6 +37,12 @@
       "sha256": "36bde32ac53520e420aa7ad91bfd7d673f4bf2769de7550ccf8fa177b18a138d"
     },
     {
+      "layer": "S2-time",
+      "path": "experiments/certificate-s2-time/certificate.json",
+      "schema": "poie.time-certificate/1",
+      "sha256": "bdffb0243778a485c0eeb3fe7441369c771413f57c9addb504096f23f348c71b"
+    },
+    {
       "layer": "S3",
       "path": "experiments/certificate-s3-recovery/certificate.json",
       "schema": "poie.recovery-certificate/1",

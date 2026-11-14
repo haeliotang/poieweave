@@ -637,6 +637,13 @@ jobs:
           python3 experiments/certificate-s2-order/verify.py /tmp/certificate-s2-order.json > /tmp/certificate-s2-order.out
           diff experiments/certificate-s2-order/expected.txt /tmp/certificate-s2-order.out
           test -f experiments/certificate-s2-order/REPORT.md
+      - name: Time certificate S2 (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-time-certificate > /tmp/certificate-s2-time.json
+          diff experiments/certificate-s2-time/certificate.json /tmp/certificate-s2-time.json
+          python3 experiments/certificate-s2-time/verify.py /tmp/certificate-s2-time.json > /tmp/certificate-s2-time.out
+          diff experiments/certificate-s2-time/expected.txt /tmp/certificate-s2-time.out
+          test -f experiments/certificate-s2-time/REPORT.md
       - name: Approval certificate S4 (Python)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-approval-certificate > /tmp/certificate-s4-approval.json
