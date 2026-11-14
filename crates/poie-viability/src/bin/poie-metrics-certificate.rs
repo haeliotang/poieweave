@@ -69,6 +69,13 @@ fn main() -> ExitCode {
             "with_sharpening_days": 60,
             "gain_days": 20,
         },
+        "energy_interventions": {
+            "load_kw": 2.6,
+            "capacity_charge_days": 16,
+            "recharge_20_days": 16,
+            "recharge_30_days": 60,
+            "recharge_40_days": 60,
+        },
         "redundancy": {
             "baseline_days": 60,
             "redundant_pump_days": 90,
