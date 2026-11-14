@@ -1,7 +1,10 @@
 duration_x	energy_x	survived_days	blocked_by
 1.0	1.0	60	cyclic process dependency at turn-sleeve-p1
 1.0	2.0	60	cyclic process dependency at turn-sleeve-p1
+1.0	100.0	60	cyclic process dependency at turn-sleeve-p1
 2.0	1.0	60	cyclic process dependency at turn-sleeve-p1
 2.0	2.0	60	cyclic process dependency at turn-sleeve-p1
+2.0	100.0	60	cyclic process dependency at turn-sleeve-p1
 4.0	1.0	60	cyclic process dependency at turn-sleeve-p1
 4.0	2.0	60	cyclic process dependency at turn-sleeve-p1
+4.0	100.0	60	cyclic process dependency at turn-sleeve-p1
