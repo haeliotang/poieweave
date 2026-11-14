@@ -246,6 +246,15 @@ pub fn simulate_multi_service_longevity_with_load(
         services.push(service);
     }
     let service_label = services.iter().map(|service| service.id.as_str()).collect::<Vec<_>>().join(",");
+    if let Some(battery) = battery {
+        let initial_energy = initial_inventory(model).get("electric-energy").copied().unwrap_or(0.0);
+        let capacity_j = battery.capacity_kwh * 3_600_000.0;
+        if initial_energy > capacity_j + 1e-9 {
+            return Err(EnvelopeError(format!(
+                "initial electric-energy {initial_energy:.0} J exceeds battery capacity {capacity_j:.0} J"
+            )));
+        }
+    }
     let mut current = model.clone();
     let mut inventory = initial_inventory(model);
     let mut log = Vec::new();
@@ -1871,5 +1880,32 @@ mod tests {
             .log
             .iter()
             .any(|entry| entry.blocked_by.as_deref().is_some_and(|value| value.contains("lease"))));
+    }
+    #[test]
+    fn oversized_initial_energy_is_rejected() {
+        let mut model = base05();
+        if let Some(lot) = model.lots.iter_mut().find(|lot| lot.resource == "electric-energy") {
+            lot.si = 500.0 * 3_600_000.0;
+        }
+        let result = simulate_multi_service_longevity_with_limits(
+            &model,
+            &["potable-water"],
+            30.0 * 86400.0,
+            &[],
+            Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
+        );
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn fitted_initial_energy_is_accepted() {
+        let result = simulate_multi_service_longevity_with_limits(
+            &base05(),
+            &["potable-water"],
+            30.0 * 86400.0,
+            &[],
+            Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
+        );
+        assert!(result.is_ok());
     }
 }

@@ -1,7 +1,7 @@
 # S2 Capacity Semantics — report
 
 - Date: 2026-11-14
-- Status: capacity does not cap initial inventory
+- Status: capacity validation enforced; oversized initial stock is rejected
 - Runner: `cargo run --locked -q -p poie-viability --bin poie-regen-capacity-semantics`
 - Output: [expected.txt](expected.txt)
 
@@ -9,26 +9,28 @@
 
 ```text
 initial_kwh	capacity_kwh	first_blocked_x
-500	200	521
-500	400	521
+500	200	rejected
+500	400	rejected
 500	600	521
 ```
 
 ## 2. Findings
 
-- With 500 kWh initial stock, all capacities give the same 521× threshold.
-- Capacity 200 kWh does **not** cap the initial stock at 200; the plan can use
-  the full 500 kWh.
-- This confirms the semantic gap: `capacity_kwh` is applied to interval
-  charge/discharge flows, not to the initial inventory.
+- Initial 500 kWh with capacity 200 or 400 kWh is now rejected before the run,
+  with an explicit `initial electric-energy ... exceeds battery capacity` error.
+- With capacity 600 kWh the initial stock fits, and the forced recycling path
+  reaches 521× before blocking.
+- This closes the earlier silent-over-cap behavior: capacity is now enforced as
+  an upper bound on the initial stock, not just on interval flows.
 
 ## 3. Significance
 
-- The earlier “threshold invariant to capacity” result is not a coincidence; it
-  follows from capacity not capping initial SOC.
-- If capacity is intended as a physical storage bound, the initial energy lot
-  should be clamped to it (or the model should reject inconsistent inputs).
+- The previous “521× regardless of capacity” result was a real semantic gap.
+- The fix is fail-closed: inconsistent inputs are rejected instead of silently
+  using more energy than the battery can hold.
+- Regression tests cover both oversized rejection and fitted acceptance.
 
 ## 4. Limits
 
 - Model-level units; forced path.
+- Capacity is still a study parameter, not an ontology field.
