@@ -28,6 +28,9 @@ def main(path: str) -> int:
     for row in certificate.get("sparse", []):
         if row.get("instant_days") != row.get("event_driven_days"):
             problems.append("sparse")
+    random_adv = certificate.get("random_adversarial", {})
+    if random_adv.get("trials") != 200 or random_adv.get("instant_zero", 0) <= 0 or random_adv.get("advanced_zero") != 0:
+        problems.append("random adversarial")
     energy = certificate.get("long_energy_sweep", {})
     if energy.get("instant_days") != energy.get("advanced_days"):
         problems.append("long energy sweep")

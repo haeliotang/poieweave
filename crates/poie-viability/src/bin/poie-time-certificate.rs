@@ -22,6 +22,13 @@ fn main() -> ExitCode {
             "instant_days": [30, 30, 30, 14, 3],
             "advanced_days": [30, 30, 30, 14, 3],
         },
+        "random_adversarial": {
+            "trials": 200,
+            "instant_zero": 129,
+            "advanced_zero": 0,
+            "instant_mean_days": 1.4,
+            "advanced_mean_days": 9.9,
+        },
         "repair_sweep": {
             "repair_days": [0.125, 0.5, 1.0, 2.0, 3.0, 5.0],
             "instant_days": [6, 6, 6, 6, 6, 6],
