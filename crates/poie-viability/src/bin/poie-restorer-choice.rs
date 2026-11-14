@@ -31,10 +31,12 @@ fn main() -> ExitCode {
     let mut model = base.clone();
     model.add_process(slow);
     let slow_index = model.processes.len() - 1;
-    println!("order=fast-first\t{}", outcome(&model, 4.0 * 3600.0));
+    println!("order=fast-first-h4\t{}", outcome(&model, 4.0 * 3600.0));
+    println!("order=fast-first-h10\t{}", outcome(&model, 10.0 * 3600.0));
     let restorers = model.restorers.get_mut("pump-p1").unwrap();
     restorers.retain(|index| *index != slow_index);
     restorers.insert(0, slow_index);
-    println!("order=slow-first\t{}", outcome(&model, 4.0 * 3600.0));
+    println!("order=slow-first-h4\t{}", outcome(&model, 4.0 * 3600.0));
+    println!("order=slow-first-h10\t{}", outcome(&model, 10.0 * 3600.0));
     ExitCode::SUCCESS
 }

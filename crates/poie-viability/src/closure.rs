@@ -258,6 +258,7 @@ impl Search<'_> {
             }
         }
         let mut best: Option<Failure> = None;
+        let mut best_success: Option<State> = None;
         for index in restorers {
             let process = &self.model.processes[index];
             if process.verification < self.min_verification {
@@ -286,7 +287,9 @@ impl Search<'_> {
                 Ok(next) => match self.ensure_supports(asset, next, stack_assets, stack_resources, stack_processes) {
                     Ok(mut supported) => {
                         supported.usable.insert(asset_id.to_string());
-                        return Ok(supported);
+                        if best_success.as_ref().is_none_or(|current| supported.total_s < current.total_s) {
+                            best_success = Some(supported);
+                        }
                     }
                     Err(failure) => {
                         best = Some(match best {
@@ -302,6 +305,9 @@ impl Search<'_> {
                     });
                 }
             }
+        }
+        if let Some(success) = best_success {
+            return Ok(success);
         }
         Err(best.unwrap_or_else(|| Failure::one(BlockReason::NoRestorer(asset_id.to_string()))))
     }
@@ -673,5 +679,21 @@ mod tests {
         apply_process_outputs(&process, &mut inventory);
         assert!((inventory["good"] - 8.0).abs() < 1e-9);
         assert!((inventory["reject"] - 2.0).abs() < 1e-9);
+    }
+    #[test]
+    fn restorer_choice_minimizes_plan_duration() {
+        let mut model = load("scenarios/base-05/model.toml");
+        let mut slow = model.processes.iter().find(|process| process.id == "replace-sleeve-p1").unwrap().clone();
+        slow.id = "replace-sleeve-slow".into();
+        slow.duration_s = Some(6.0 * 3600.0);
+        model.add_process(slow);
+        let slow_index = model.processes.len() - 1;
+        let restorers = model.restorers.get_mut("pump-p1").unwrap();
+        restorers.retain(|index| *index != slow_index);
+        restorers.insert(0, slow_index);
+        match analyze(&model, "pump-p1", 10.0 * 3600.0) {
+            ClosureOutcome::Restorable(plan) => assert_eq!(plan.total_duration_s, 10_800.0),
+            ClosureOutcome::Blocked(blocked) => panic!("blocked: {:?}", blocked.reasons),
+        }
     }
 }
