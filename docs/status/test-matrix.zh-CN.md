@@ -12,7 +12,7 @@
 | `poie-sdkgen` | 1 | 生成物与提交 SDK 一致 | A |
 | `poie-digest` | 4 | 规范键序/域分隔/负零/哈希变化 | A |
 | `poie-objects` | 3 | Catalog 确定性、对象/链接、分页游标 | A |
-| `poie-ontology` | 96 | 图求解 120 trials；调度 120 trials；TOML 变异不 panic（120×2）；单位换算/解析 200×2；路线枚举 120+80 | M2、M4 |
+| `poie-ontology` | 97 | 图求解 120 trials；调度 120 trials；TOML 变异不 panic（120×2）；单位换算/解析 200×2；路线枚举 120+80 | M2、M4 |
 | `poie-state` | 97 | 状态机 10⁵ 序列（单元内）；投影 120 trials；记录验证/往返 120 trials；日志重开/崩溃尾部随机测试 | M4、M5、M12 |
 | `poie-sim` | 22 | 仿真 80 trials | M4、M6 |
 | `poie-viability` | 107 | 指标 60 轨迹；报告 20 份 × 16 类变异 | M6 |
@@ -23,7 +23,7 @@
 | `poie-expansion` | 24 | 结构 40/时序 40 trials；提案 TOML 变异不 panic（120） | M11 |
 | `poie-federation` | 13 | HLC 80 trials；分区/重连 120 trials | M12 |
 
-**库 crate 测试合计：463 个已列出的测试**；另有其他包 16 个（`poie-h1-baseline` 5、`poie-vec-base01` 2、`poie-basyx-shadow` 9），总计 479。
+**库 crate 测试合计：464 个已列出的测试**；另有其他包 16 个（`poie-h1-baseline` 5、`poie-vec-base01` 2、`poie-basyx-shadow` 9），总计 480。
 
 ## 2. 场景与实验重放
 

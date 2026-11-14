@@ -48,7 +48,7 @@ fn main() -> ExitCode {
                 lot.si = count;
             }
             if mode == "sharpen" {
-                model.processes.push(sharpen_process());
+                model.add_process(sharpen_process());
             }
             let report = simulate_multi_service_longevity_with_limits(
                 &model,

@@ -2,7 +2,7 @@
 
 - Experiment ID: `s2-insert-regeneration`
 - Date: 2026-11-14
-- Status: completed; sharpening did not change the horizon
+- Status: completed; sharpening extends the horizon once the process index is kept consistent
 - Scope: add a modeled sharpen-insert process.
 
 ## Question
@@ -19,4 +19,4 @@ Prediction: sharpening should raise the horizon for low insert counts.
 
 ## Limitation
 
-One process model; policy is greedy.
+One process model; greedy policy.
