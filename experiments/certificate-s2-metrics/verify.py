@@ -47,6 +47,17 @@ def main(path: str) -> int:
     }
     if any(energy_interventions.get(key) != value for key, value in expected_energy.items()):
         problems.append("energy interventions")
+    adversarial = certificate.get("adversarial", {})
+    expected_adversarial = {
+        "subsets": 31,
+        "min_days": 0,
+        "minimal_size": 1,
+        "minimal_set": "filter-1",
+        "day0_days": 0,
+        "day10_days": 10,
+    }
+    if any(adversarial.get(key) != value for key, value in expected_adversarial.items()):
+        problems.append("adversarial")
     redundancy = certificate.get("redundancy", {})
     expected_redundancy = {
         "baseline_days": 60,
