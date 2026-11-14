@@ -370,6 +370,12 @@ jobs:
           python3 experiments/s4-approval-gate/verify.py < /tmp/s4-approval-gate.json > /tmp/s4-approval-gate.out
           diff experiments/s4-approval-gate/expected.txt /tmp/s4-approval-gate.out
           test -f experiments/s4-approval-gate/REPORT.md
+      - name: S4 independent energy model (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-energy-horizon > /tmp/s4-energy-model.tsv
+          python3 experiments/s4-energy-model/verify.py /tmp/s4-energy-model.tsv > /tmp/s4-energy-model.out
+          diff experiments/s4-energy-model/expected.txt /tmp/s4-energy-model.out
+          test -f experiments/s4-energy-model/REPORT.md
       - name: S3 lease renewal (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-lease-renewal > /tmp/s3-lease-renewal.out
