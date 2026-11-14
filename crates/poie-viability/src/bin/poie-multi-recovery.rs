@@ -18,13 +18,21 @@ fn root() -> PathBuf {
 fn main() -> ExitCode {
     let root = root();
     let model = Model::load(&root.join("scenarios/base-05/model.toml")).unwrap();
-    let events = vec![FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() }];
-    for (label, lease_s) in [("approved-8h", 8.0 * 3600.0), ("lease-1h", 3600.0)] {
+    let one_event = vec![FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() }];
+    let two_events = vec![
+        FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() },
+        FailureEvent { at_s: 20.0 * 86400.0, asset: "lathe-1".into() },
+    ];
+    for (label, lease_s, events) in [
+        ("approved-8h", 8.0 * 3600.0, one_event.as_slice()),
+        ("lease-1h", 3600.0, one_event.as_slice()),
+        ("two-events-8h", 8.0 * 3600.0, two_events.as_slice()),
+    ] {
         let report = simulate_multi_service_recovery_with_policy(
             &model,
             &["potable-water", "workshop-operability"],
             30.0 * 86400.0,
-            &events,
+            events,
             RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s, approved_plan_digest: None },
         )
         .unwrap();

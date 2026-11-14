@@ -11,8 +11,8 @@ Can a single shared-inventory recovery loop keep more than one service verified?
 
 ## Method
 
-Base-05, services `potable-water` and `workshop-operability`, day-10 pump
-failure, 30-day horizon. Run with an approved 8 h lease and a 1 h lease.
+Base-05, services `potable-water` and `workshop-operability`, day-10 pump failure (and a two-event variant with a day-20 lathe failure),
+30-day horizon. Run with an approved 8 h lease and a 1 h lease.
 
 Prediction: 8 h survives 30 days with receipts; 1 h lease blocks.
 
