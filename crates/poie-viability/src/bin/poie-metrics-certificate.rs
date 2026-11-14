@@ -76,6 +76,12 @@ fn main() -> ExitCode {
             "recharge_30_days": 60,
             "recharge_40_days": 60,
         },
+        "adversarial_resupply": {
+            "subsets": 31,
+            "no_supply_min_days": 0,
+            "with_supply_min_days": 0,
+            "minimal_set": "filter-1",
+        },
         "resupply": {
             "interval_days": [10, 20, 30, 60],
             "survived_days": [60, 50, 40, 30],
