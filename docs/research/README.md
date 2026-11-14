@@ -7,6 +7,7 @@
 - [阶段总结](self-sustaining-core-milestone.zh-CN.md)
 - [研究现状总览](self-sustaining-core-status.zh-CN.md)
 - [研究综述与门槛](self-sustaining-core.zh-CN.md)
+- [声明与证据对应表](claims-ledger.zh-CN.md)
 - [负结果与已修正错误](negative-results.zh-CN.md)
 - [复现指南](reproduction.zh-CN.md)
 
