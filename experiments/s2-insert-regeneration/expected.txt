@@ -1,0 +1,7 @@
+insert_count	mode	survived_days	blocked_by
+2	baseline	40	missing resource cutting-insert: need 1, have 0
+2	sharpen	40	missing resource cutting-insert: need 1, have 0
+3	baseline	50	missing resource cutting-insert: need 1, have 0
+3	sharpen	50	missing resource cutting-insert: need 1, have 0
+4	baseline	60	cyclic process dependency at turn-sleeve-p1
+4	sharpen	60	cyclic process dependency at turn-sleeve-p1
