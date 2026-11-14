@@ -18,7 +18,8 @@ certificate=ok
 including a per-event denial.
 - The verifier independently applies the gate rules and checks execution and
   blocker prefixes.
-- It is included in `experiments/certificate-bundle/bundle.json` as layer
+- It also records the approval-schedule cases (3 receipts/30 days vs 2/20 days).
+  It is included in `experiments/certificate-bundle/bundle.json` as layer
   `S4-approval`.
 
 ## 3. Limits

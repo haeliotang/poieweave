@@ -47,6 +47,22 @@ def main(path: str) -> int:
             problems.append(f"{name}: blocker")
         if prefix != "none" and not blocked.startswith(prefix):
             problems.append(f"{name}: reason")
+    schedule = certificate.get("schedule_cases", [])
+    if len(schedule) != 2:
+        problems.append("schedule count")
+    else:
+        expected = [
+            ("approved-all", 3, 30.0, "none"),
+            ("reject-day20", 2, 20.0, "approval_rejected:pump-p1"),
+        ]
+        for row, (name, receipts, days, blocked) in zip(schedule, expected):
+            if (
+                row.get("name") != name
+                or row.get("receipts") != receipts
+                or row.get("survived_days") != days
+                or row.get("blocked_by") != blocked
+            ):
+                problems.append(f"schedule {name}")
     print("certificate=ok" if not problems else "certificate=failed")
     for problem in problems:
         print(problem)
