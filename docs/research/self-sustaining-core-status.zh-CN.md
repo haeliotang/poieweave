@@ -65,6 +65,8 @@ FMI 3.0 集成现状与契约草案：[fmi-co-simulation.zh-CN.md](../design/fmi
 
 发布签名与信任锚设计：[release-signing.zh-CN.md](../design/release-signing.zh-CN.md)（未实现）
 
+软件级故障隔离测试计划：[software-fault-isolation.zh-CN.md](../design/software-fault-isolation.zh-CN.md)（部分未执行）
+
 ## 5. 明确未完成
 
 - 无真实硬件、工业场地或外部专家；M9/M10 物理验收仍未执行。
