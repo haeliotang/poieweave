@@ -37,7 +37,22 @@ def main() -> int:
             file=sys.stderr,
         )
         return 1
-    print(f"ok status counts: {artifacts} artifacts, {paths} CI paths")
+    matrix = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/check-test-matrix.py")],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    matrix_match = re.search(r"ok status snapshot: (\d+)", matrix.stdout)
+    if matrix.returncode != 0 or matrix_match is None:
+        print(matrix.stdout, matrix.stderr)
+        return 1
+    tests = int(matrix_match.group(1))
+    test_status = re.search(r"Rust 列表测试 \| \*\*(\d+)\*\*", STATUS.read_text())
+    if test_status is None or int(test_status.group(1)) != tests:
+        print(f"status test mismatch: status={test_status.group(1) if test_status else 'missing'} actual={tests}", file=sys.stderr)
+        return 1
+    print(f"ok status counts: {artifacts} artifacts, {paths} CI paths, {tests} tests")
     return 0
 
 
