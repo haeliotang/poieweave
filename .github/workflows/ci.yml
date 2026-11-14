@@ -99,6 +99,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-tool-cycle > /tmp/s1-tool-cycle.out
           diff experiments/s1-tool-cycle/expected.txt /tmp/s1-tool-cycle.out
           test -f experiments/s1-tool-cycle/REPORT.md
+      - name: S1 alternative restorer (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-alt-restorer > /tmp/s1-alt-restorer.out
+          diff experiments/s1-alt-restorer/expected.txt /tmp/s1-alt-restorer.out
+          test -f experiments/s1-alt-restorer/REPORT.md
       - name: S2 failure-envelope coverage (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-survival > /tmp/s2-envelope.out
