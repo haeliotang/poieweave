@@ -17,8 +17,8 @@ tamper=detected
 
 ## 2. Findings
 
-- Seven checks are aggregated: energy 4/4, PV 2/2, grease 6/6, concurrency 2/2,
-time 2/2, approval-schedule 4/4, tool-cycle 2/2.
+- Eight checks are aggregated: energy 4/4, PV 2/2, grease 6/6, concurrency 2/2,
+time 2/2, approval-schedule 4/4, tool-cycle 2/2, path-choice 4/4.
 - The verifier re-reads each expected file and checks the counts, so the layer
   cannot silently claim numbers the experiments do not publish.
 

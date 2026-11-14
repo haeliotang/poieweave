@@ -544,6 +544,12 @@ jobs:
           python3 experiments/s4-tool-cycle-model/verify.py /tmp/s4-tool-cycle-model.tsv > /tmp/s4-tool-cycle-model.out
           diff experiments/s4-tool-cycle-model/expected.txt /tmp/s4-tool-cycle-model.out
           test -f experiments/s4-tool-cycle-model/REPORT.md
+      - name: S4 independent path-choice model (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-alt-choice > /tmp/s4-path-choice-model.tsv
+          python3 experiments/s4-path-choice-model/verify.py /tmp/s4-path-choice-model.tsv > /tmp/s4-path-choice-model.out
+          diff experiments/s4-path-choice-model/expected.txt /tmp/s4-path-choice-model.out
+          test -f experiments/s4-path-choice-model/REPORT.md
       - name: S3 lease renewal (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-lease-renewal > /tmp/s3-lease-renewal.out

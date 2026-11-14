@@ -41,6 +41,12 @@
       "expected": "experiments/s4-tool-cycle-model/expected.txt",
       "matched": 2,
       "name": "tool-cycle"
+    },
+    {
+      "cases": 4,
+      "expected": "experiments/s4-path-choice-model/expected.txt",
+      "matched": 4,
+      "name": "path-choice"
     }
   ],
   "claim_scope": "independent narrow models only; not whole-system equivalence",

@@ -76,7 +76,7 @@
       "layer": "S4-independent",
       "path": "experiments/certificate-s4-independent/certificate.json",
       "schema": "poie.independent-certificate/1",
-      "sha256": "9779a0c129683b170faaff14cc6b16065e876fadf59089e0494d057cbfc4fcc0"
+      "sha256": "137d0986dd8261c6bf0f273ed091753531ef39eae3247678aa7106462ddce7d4"
     }
   ],
   "claim_scope": "model/simulation certificates only; no physical safety or authority claim",
