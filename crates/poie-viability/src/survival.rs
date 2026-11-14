@@ -779,6 +779,137 @@ pub fn simulate_recovery_with_policy(
     Ok(RecoveryReport { service: service.id.clone(), horizon_s, survived_s: horizon_s, log })
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct MultiServiceRecoveryReport {
+    pub services: Vec<String>,
+    pub horizon_s: f64,
+    pub survived_s: f64,
+    pub log: Vec<RecoveryLogEntry>,
+}
+
+/// S3: approval-gated recovery loop across several services with one shared
+/// inventory. All services must stay verified after each repair event.
+pub fn simulate_multi_service_recovery_with_policy(
+    model: &Model,
+    service_ids: &[&str],
+    horizon_s: f64,
+    events: &[FailureEvent],
+    policy: RecoveryPolicy,
+) -> Result<MultiServiceRecoveryReport, EnvelopeError> {
+    let mut services = Vec::new();
+    for service_id in service_ids {
+        let Some(service) = model.services.get(*service_id) else {
+            return Err(EnvelopeError(format!("unknown service {service_id}")));
+        };
+        services.push(service.clone());
+    }
+    let mut current = model.clone();
+    let mut inventory = initial_inventory(model);
+    let mut log = Vec::new();
+    let approval = approval_label(policy.decision);
+
+    let initial_before = inventory.clone();
+    let mut repaired = Vec::new();
+    let mut digests = Vec::new();
+    for service in &services {
+        match recover_service(&mut current, service, 0.0, horizon_s, &mut inventory, policy.clone()) {
+            Ok((next_repaired, next_digests)) => {
+                repaired.extend(next_repaired);
+                digests.extend(next_digests);
+            }
+            Err(reason) => {
+                log.push(RecoveryLogEntry {
+                    at_s: 0.0,
+                    failed: None,
+                    repaired: Vec::new(),
+                    approved: false,
+                    approval: Some(approval.clone()),
+                    plan_digests: Vec::new(),
+                    receipt: None,
+                    verified: false,
+                    blocked_by: Some(format!("{}:{reason}", service.id)),
+                });
+                return Ok(MultiServiceRecoveryReport {
+                    services: services.iter().map(|item| item.id.clone()).collect(),
+                    horizon_s,
+                    survived_s: 0.0,
+                    log,
+                });
+            }
+        }
+    }
+    log.push(RecoveryLogEntry {
+        at_s: 0.0,
+        failed: None,
+        repaired: repaired.clone(),
+        approved: policy.decision == ApprovalDecision::Approved,
+        approval: Some(approval.clone()),
+        plan_digests: digests.clone(),
+        receipt: Some(make_receipt(0.0, None, repaired, digests, initial_before, inventory.clone(), true)),
+        verified: true,
+        blocked_by: None,
+    });
+
+    let mut ordered = events.to_vec();
+    ordered.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
+    let mut now = 0.0;
+    for event in ordered {
+        now = event.at_s.clamp(now, horizon_s);
+        if let Some(asset) = current.assets.get_mut(&event.asset) {
+            asset.status = AssetStatus::Failed;
+        } else {
+            return Err(EnvelopeError(format!("unknown failed asset {}", event.asset)));
+        }
+        let before = inventory.clone();
+        let mut repaired = Vec::new();
+        let mut digests = Vec::new();
+        for service in &services {
+            match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone()) {
+                Ok((next_repaired, next_digests)) => {
+                    repaired.extend(next_repaired);
+                    digests.extend(next_digests);
+                }
+                Err(reason) => {
+                    log.push(RecoveryLogEntry {
+                        at_s: now,
+                        failed: Some(event.asset.clone()),
+                        repaired: Vec::new(),
+                        approved: false,
+                        approval: Some(approval),
+                        plan_digests: Vec::new(),
+                        receipt: None,
+                        verified: false,
+                        blocked_by: Some(format!("{}:{reason}", service.id)),
+                    });
+                    return Ok(MultiServiceRecoveryReport {
+                        services: services.iter().map(|item| item.id.clone()).collect(),
+                        horizon_s,
+                        survived_s: now,
+                        log,
+                    });
+                }
+            }
+        }
+        log.push(RecoveryLogEntry {
+            at_s: now,
+            failed: Some(event.asset.clone()),
+            repaired: repaired.clone(),
+            approved: policy.decision == ApprovalDecision::Approved,
+            approval: Some(approval.clone()),
+            plan_digests: digests.clone(),
+            receipt: Some(make_receipt(now, Some(event.asset), repaired, digests, before, inventory.clone(), true)),
+            verified: true,
+            blocked_by: None,
+        });
+    }
+    Ok(MultiServiceRecoveryReport {
+        services: services.iter().map(|item| item.id.clone()).collect(),
+        horizon_s,
+        survived_s: horizon_s,
+        log,
+    })
+}
+
 fn approval_label(decision: ApprovalDecision) -> String {
     match decision {
         ApprovalDecision::Required => "required",
@@ -1362,5 +1493,42 @@ mod tests {
         let report = simulate_longevity(&base05(), "potable-water", 90.0 * 86400.0, &events).unwrap();
         assert!(report.survived_s < 90.0 * 86400.0);
         assert!(report.log.iter().any(|entry| entry.blocked_by.is_some()));
+    }
+    #[test]
+    fn multi_service_recovery_repairs_shared_outage() {
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+        let events = vec![FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() }];
+        let report = simulate_multi_service_recovery_with_policy(
+            &base05(),
+            &["potable-water", "workshop-operability"],
+            30.0 * 86400.0,
+            &events,
+            policy,
+        )
+        .unwrap();
+        assert_eq!(report.survived_s, 30.0 * 86400.0);
+        assert_eq!(report.services.len(), 2);
+        assert!(report.log.iter().filter(|entry| entry.receipt.is_some()).count() >= 2);
+    }
+
+    #[test]
+    fn multi_service_recovery_stops_on_short_lease() {
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 3600.0, approved_plan_digest: None };
+        let events = vec![FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() }];
+        let report = simulate_multi_service_recovery_with_policy(
+            &base05(),
+            &["potable-water", "workshop-operability"],
+            30.0 * 86400.0,
+            &events,
+            policy,
+        )
+        .unwrap();
+        assert!(report.survived_s <= 10.0 * 86400.0);
+        assert!(report
+            .log
+            .iter()
+            .any(|entry| entry.blocked_by.as_deref().is_some_and(|value| value.contains("lease"))));
     }
 }
