@@ -22,6 +22,13 @@ fn main() -> ExitCode {
             "instant_days": [30, 30, 30, 14, 3],
             "advanced_days": [30, 30, 30, 14, 3],
         },
+        "random_window": {
+            "trials": 200,
+            "instant_zero": 13,
+            "advanced_zero": 0,
+            "instant_mean_days": 4.4,
+            "advanced_mean_days": 14.0,
+        },
         "random_adversarial": {
             "trials": 200,
             "instant_zero": 129,

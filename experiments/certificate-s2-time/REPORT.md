@@ -33,6 +33,8 @@ tamper=detected
   identical under both semantics.
 - Random adversarial sample: 129/200 zero-day outcomes instantaneously vs 0/200
   clock-advanced (mean 1.4 vs 9.9 days).
+- Delaying subsets to days 0-10 reduces the instantaneous zero-day mass to 13/200
+  but keeps it nonzero; clock-advanced remains 0/200 (mean 4.4 vs 14.0).
 
 ## 3. Significance
 
