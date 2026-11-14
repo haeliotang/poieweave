@@ -1,0 +1,23 @@
+{
+  "claim_scope": "model-level ordering result only; not a scheduling optimality claim",
+  "conclusion": "repair order does not close the Base-06 shared-material gap",
+  "model": "scenarios/base-06/model.toml",
+  "model_sha256": "09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c",
+  "rows": [
+    {
+      "best_joint": 24,
+      "max_failures": 2,
+      "order_sensitive": 0,
+      "recoverable_cases": 25,
+      "standard_joint": 24
+    },
+    {
+      "best_joint": 40,
+      "max_failures": 3,
+      "order_sensitive": 0,
+      "recoverable_cases": 44,
+      "standard_joint": 40
+    }
+  ],
+  "schema": "poie.order-certificate/1"
+}

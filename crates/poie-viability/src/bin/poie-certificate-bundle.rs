@@ -21,6 +21,7 @@ fn main() -> ExitCode {
         ("S2-joint", "experiments/certificate-s2-joint/certificate.json", "poie.coverage-certificate/1"),
         ("S2-regen", "experiments/certificate-s2-regeneration/certificate.json", "poie.regeneration-certificate/1"),
         ("S2-metrics", "experiments/certificate-s2-metrics/certificate.json", "poie.metrics-certificate/1"),
+        ("S2-order", "experiments/certificate-s2-order/certificate.json", "poie.order-certificate/1"),
         ("S3", "experiments/certificate-s3-recovery/certificate.json", "poie.recovery-certificate/1"),
         ("S3-multi", "experiments/certificate-s3-multi/certificate.json", "poie.multi-recovery-certificate/1"),
         ("S4", "experiments/certificate-s4-differential/certificate.json", "poie.s4-certificate/1"),
