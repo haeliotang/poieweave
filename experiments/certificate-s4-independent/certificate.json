@@ -29,6 +29,12 @@
       "expected": "experiments/s4-time-model/expected.txt",
       "matched": 2,
       "name": "time"
+    },
+    {
+      "cases": 4,
+      "expected": "experiments/s4-approval-schedule-model/expected.txt",
+      "matched": 4,
+      "name": "approval-schedule"
     }
   ],
   "claim_scope": "independent narrow models only; not whole-system equivalence",
