@@ -722,3 +722,4 @@ flowchart LR
 | 0.1.226 | 2026-11-14 | S4 双资产+lot 变异：36×8=288 模型，2592 verdict 2592/2592 一致 |
 | 0.1.227 | 2026-11-14 | S2 指标类型化：Survival Horizon/Recovery Coverage/Regenerative Capacity + 3 测试；测试矩阵 466 |
 | 0.1.228 | 2026-11-14 | S2 指标证书：40/60 天、5/10 覆盖、+20 天再生，加入 bundle 七层校验 |
+| 0.1.229 | 2026-11-14 | S4 验证降级变异：7 个 process 逐个降为 declared，63 verdict 63/63 一致 |
