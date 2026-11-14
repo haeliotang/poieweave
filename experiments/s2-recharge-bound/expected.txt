@@ -1,0 +1,5 @@
+recharge_output_kwh=20.0
+recharge_duration_h=8.0
+average_recharge_kw=2.50
+first_energy_limited_load_kw=2.6
+delta_kw=0.10
