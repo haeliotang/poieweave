@@ -30,7 +30,7 @@ def main(path: str) -> int:
     if certificate.get("schema") != "poie.independent-certificate/1":
         problems.append("schema")
     checks = certificate.get("checks", [])
-    if len(checks) != 4:
+    if len(checks) != 5:
         problems.append("check count")
     for check in checks:
         relative = check.get("expected", "")
