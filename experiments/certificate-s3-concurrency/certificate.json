@@ -1,5 +1,30 @@
 {
   "claim_scope": "model/simulation scheduling observation only; no hardware authority claim",
+  "robot_sweep": {
+    "deadline_s": 14400.0,
+    "repairs_s": [
+      10800.0,
+      7200.0,
+      7200.0
+    ],
+    "rows": [
+      {
+        "makespan_s": 25200.0,
+        "meets": false,
+        "robots": 1
+      },
+      {
+        "makespan_s": 14400.0,
+        "meets": true,
+        "robots": 2
+      },
+      {
+        "makespan_s": 10800.0,
+        "meets": true,
+        "robots": 3
+      }
+    ]
+  },
   "rows": [
     {
       "deadline_s": 14400.0,

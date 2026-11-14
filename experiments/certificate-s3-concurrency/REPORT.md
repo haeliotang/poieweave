@@ -30,3 +30,8 @@ tamper=detected
 ## 4. Limits
 
 - Static makespan model; no scheduler, preemption, or hardware.
+
+## Robot sweep
+
+Three repairs (3 h, 2 h, 2 h) under a 4 h deadline: one robot 7 h (miss), two
+4 h (meet), three 3 h (meet). The certificate verifier checks these makespans.
