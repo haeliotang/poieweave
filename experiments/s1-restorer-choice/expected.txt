@@ -1,2 +1,4 @@
-order=fast-first	RESTORABLE 10800s
-order=slow-first	RESTORABLE 10800s
+order=fast-first-h4	RESTORABLE 10800s
+order=fast-first-h10	RESTORABLE 10800s
+order=slow-first-h4	RESTORABLE 10800s
+order=slow-first-h10	RESTORABLE 10800s
