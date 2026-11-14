@@ -10,6 +10,12 @@
     "survival_horizon_days": 60.0
   },
   "claim_scope": "model-level metric definitions only; not a physical forecast",
+  "insert_sharpening": {
+    "baseline_days": 40,
+    "gain_days": 20,
+    "inserts": 2,
+    "with_sharpening_days": 60
+  },
   "recharge_boundary": {
     "average_recharge_kw": 2.5,
     "margin_kw": 0.1,

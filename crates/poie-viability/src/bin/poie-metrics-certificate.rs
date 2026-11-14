@@ -63,6 +63,12 @@ fn main() -> ExitCode {
             "ratio": coverage.ratio(),
         },
         "regenerative_capacity_days": capacity.delta_days(),
+        "insert_sharpening": {
+            "inserts": 2,
+            "baseline_days": 40,
+            "with_sharpening_days": 60,
+            "gain_days": 20,
+        },
         "recharge_boundary": {
             "average_recharge_kw": 2.5,
             "threshold_load_kw": 2.6,
