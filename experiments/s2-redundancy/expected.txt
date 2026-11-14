@@ -1,0 +1,3 @@
+mode	survived_days	blocked_by
+baseline	60	cyclic process dependency at turn-sleeve-p1
+redundant-pump	90	none
