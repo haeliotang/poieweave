@@ -594,6 +594,12 @@ jobs:
           python3 experiments/s4-degraded-triples/mutate.py target/debug/poie-model-corpus > /tmp/s4-degraded-triples.out
           diff experiments/s4-degraded-triples/expected.txt /tmp/s4-degraded-triples.out
           test -f experiments/s4-degraded-triples/REPORT.md
+      - name: S4 degraded + capability mutation corpus (Python)
+        run: |
+          cargo build --locked -q -p poie-viability --bin poie-model-corpus
+          python3 experiments/s4-degraded-capability/mutate.py target/debug/poie-model-corpus > /tmp/s4-degraded-capability.out
+          diff experiments/s4-degraded-capability/expected.txt /tmp/s4-degraded-capability.out
+          test -f experiments/s4-degraded-capability/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
