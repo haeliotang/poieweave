@@ -1,0 +1,4 @@
+yield	survived_days	blocked_by
+1.0	60	cyclic process dependency at turn-sleeve-p1
+0.8	60	cyclic process dependency at turn-sleeve-p1
+0.5	60	cyclic process dependency at turn-sleeve-p1
