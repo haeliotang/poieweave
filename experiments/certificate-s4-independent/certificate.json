@@ -17,6 +17,12 @@
       "expected": "experiments/s4-grease-model/expected.txt",
       "matched": 6,
       "name": "grease"
+    },
+    {
+      "cases": 2,
+      "expected": "experiments/s4-concurrency-model/expected.txt",
+      "matched": 2,
+      "name": "concurrency"
     }
   ],
   "claim_scope": "independent narrow models only; not whole-system equivalence",
