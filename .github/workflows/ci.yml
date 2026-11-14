@@ -414,6 +414,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-time-boundary > /tmp/s2-time-boundary.out
           diff experiments/s2-time-boundary/expected.txt /tmp/s2-time-boundary.out
           test -f experiments/s2-time-boundary/REPORT.md
+      - name: S2 time-semantics insert boundary (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-time-insert > /tmp/s2-time-insert.out
+          diff experiments/s2-time-insert/expected.txt /tmp/s2-time-insert.out
+          test -f experiments/s2-time-insert/REPORT.md
       - name: S2 external resupply deliveries (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-resupply-delivery > /tmp/s2-resupply-delivery.out
