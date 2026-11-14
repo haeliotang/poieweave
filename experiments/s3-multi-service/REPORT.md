@@ -12,6 +12,7 @@ approved-8h: services=potable-water,workshop-operability survived_days=30.0 rece
 lease-1h: services=potable-water,workshop-operability survived_days=0.0 receipts=0 blocked=potable-water:approval_lease_expired:pump-p1: need 10800s, lease 3600s
 two-events-8h: services=potable-water,workshop-operability survived_days=30.0 receipts=3 blocked=
 missing-sleeve: services=potable-water,workshop-operability survived_days=10.0 receipts=1 blocked=potable-water:missing resource bronze-bar: need 1.2, have 0
+revoked-day5: services=potable-water,workshop-operability survived_days=10.0 receipts=1 blocked=approval_revoked
 ```
 
 ## 2. Findings
@@ -22,6 +23,8 @@ missing-sleeve: services=potable-water,workshop-operability survived_days=10.0 r
 - The loop stops on the first blocked service and records its reason.
 - With no accepted sleeve and no bronze, the day-10 repair blocks on
   `missing resource bronze-bar`; the run ends at day 10 with one receipt.
+- Revoking at day 5 blocks the day-10 repair with `approval_revoked`; the run
+  ends at day 10 with one receipt.
 
 ## 3. Limits
 
