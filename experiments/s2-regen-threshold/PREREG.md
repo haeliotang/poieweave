@@ -2,7 +2,7 @@
 
 - Experiment ID: `s2-regen-threshold`
 - Date: 2026-11-14
-- Status: completed; 60× safe, 70× blocks
+- Status: completed; 60× safe, 61× blocks
 - Scope: forced recycling path, energy multiplier sweep.
 
 ## Question

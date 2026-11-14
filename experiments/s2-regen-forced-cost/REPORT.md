@@ -21,7 +21,7 @@ energy_x	survived_days	blocked_by
   `recycle-bronze` before turning and replacing the sleeve.
 - At 100× electricity, the plan is immediately blocked by missing energy
   (360 MJ needed, 216 MJ available).
-- At 10×/50× it still survives 10 days, so the current model has a very wide
+- At 10×/50× it still survives 10 days (exact threshold is 60×/61×), so the current model has a very wide
   cost-insensitive band before energy binding.
 
 ## 3. Interpretation

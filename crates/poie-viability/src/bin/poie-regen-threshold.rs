@@ -43,7 +43,7 @@ fn main() -> ExitCode {
     let base = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
     let mut safe = 1u32;
     let mut blocked = 100u32;
-    for multiplier in [1u32, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100] {
+    for multiplier in 1u32..=100 {
         let days = horizon_for(&base, f64::from(multiplier));
         println!("energy_x={multiplier} survived_days={days:.0}");
         if days >= 10.0 {
