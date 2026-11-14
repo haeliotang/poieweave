@@ -124,6 +124,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-joint-coverage > /tmp/s2-joint-coverage.out
           diff experiments/s2-joint-coverage/expected.txt /tmp/s2-joint-coverage.out
           test -f experiments/s2-joint-coverage/REPORT.md
+      - name: S2 repair-order sensitivity (Base-06)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-order > /tmp/s2-order-sensitivity.out
+          diff experiments/s2-order-sensitivity/expected.txt /tmp/s2-order-sensitivity.out
+          test -f experiments/s2-order-sensitivity/REPORT.md
       - name: S2 resupply sensitivity (Base-06)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-resupply > /tmp/s2-resupply.out
