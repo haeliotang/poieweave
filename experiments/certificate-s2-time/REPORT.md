@@ -29,6 +29,8 @@ tamper=detected
   clock-advanced repair.
 - The repair-duration sweep shows no effect up to 1 day, then 7/10/16 days at
   2/3/5 days while the instantaneous horizon stays at 6.
+- The long-repair energy sweep (0/1/2/2.6/3 kW -> 30/30/30/14/3 days) is
+  identical under both semantics.
 
 ## 3. Significance
 
