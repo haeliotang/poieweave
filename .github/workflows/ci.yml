@@ -369,6 +369,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-approval-matrix > /tmp/s3-approval-matrix.out
           diff experiments/s3-approval-matrix/expected.txt /tmp/s3-approval-matrix.out
           test -f experiments/s3-approval-matrix/REPORT.md
+      - name: S3 approval schedule (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-approval-schedule > /tmp/s3-approval-schedule.out
+          diff experiments/s3-approval-schedule/expected.txt /tmp/s3-approval-schedule.out
+          test -f experiments/s3-approval-schedule/REPORT.md
       - name: S3 per-event denial (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-denial > /tmp/s3-denial.out
