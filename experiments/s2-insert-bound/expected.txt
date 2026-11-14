@@ -1,0 +1,7 @@
+insert_count	survived_days	blocked_by
+2	40	missing resource cutting-insert: need 1, have 0
+3	50	missing resource cutting-insert: need 1, have 0
+4	60	cyclic process dependency at turn-sleeve-p1
+6	60	cyclic process dependency at turn-sleeve-p1
+8	60	cyclic process dependency at turn-sleeve-p1
+12	60	cyclic process dependency at turn-sleeve-p1
