@@ -249,6 +249,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-joint-three > /tmp/s2-joint-three.out
           diff experiments/s2-joint-three/expected.txt /tmp/s2-joint-three.out
           test -f experiments/s2-joint-three/REPORT.md
+      - name: S2 joint frontier under load (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-joint-load > /tmp/s2-joint-load.out
+          diff experiments/s2-joint-load/expected.txt /tmp/s2-joint-load.out
+          test -f experiments/s2-joint-load/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out

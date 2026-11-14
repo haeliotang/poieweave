@@ -1,0 +1,5 @@
+load_kw	bronze_kg	survived_days	blocked_by
+2	3.0	60	cyclic process dependency at turn-sleeve-p1
+2	6.0	90	none
+3	3.0	3	energy_depleted
+3	6.0	3	energy_depleted
