@@ -264,6 +264,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-sharpen-yield > /tmp/s2-sharpen-yield.out
           diff experiments/s2-sharpen-yield/expected.txt /tmp/s2-sharpen-yield.out
           test -f experiments/s2-sharpen-yield/REPORT.md
+      - name: S2 joint yield and bronze frontier (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-joint-yield > /tmp/s2-joint-yield.out
+          diff experiments/s2-joint-yield/expected.txt /tmp/s2-joint-yield.out
+          test -f experiments/s2-joint-yield/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
