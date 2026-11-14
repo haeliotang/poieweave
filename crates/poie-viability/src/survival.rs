@@ -1533,6 +1533,28 @@ mod tests {
     }
 
     #[test]
+    fn multi_service_recovery_blocks_on_missing_input() {
+        let mut model = base05();
+        model.lots.retain(|lot| lot.id != "lot-sleeve-01" && lot.id != "lot-bronze");
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+        let events = vec![FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() }];
+        let report = simulate_multi_service_recovery_with_policy(
+            &model,
+            &["potable-water", "workshop-operability"],
+            30.0 * 86400.0,
+            &events,
+            policy,
+        )
+        .unwrap();
+        assert_eq!(report.survived_s, 10.0 * 86400.0);
+        assert!(report
+            .log
+            .iter()
+            .any(|entry| entry.blocked_by.as_deref().is_some_and(|value| value.contains("missing resource"))));
+    }
+
+    #[test]
     fn multi_service_recovery_stops_on_short_lease() {
         let policy =
             RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 3600.0, approved_plan_digest: None };

@@ -44,5 +44,23 @@ fn main() -> ExitCode {
             report.survived_s / 86400.0,
         );
     }
+    let mut no_sleeve = model.clone();
+    no_sleeve.lots.retain(|lot| lot.id != "lot-sleeve-01" && lot.id != "lot-bronze");
+    let blocked = simulate_multi_service_recovery_with_policy(
+        &no_sleeve,
+        &["potable-water", "workshop-operability"],
+        30.0 * 86400.0,
+        &one_event,
+        RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None },
+    )
+    .unwrap();
+    let blocked_reason = blocked.log.iter().find_map(|entry| entry.blocked_by.clone()).unwrap_or_default();
+    println!(
+        "missing-sleeve: services={} survived_days={:.1} receipts={} blocked={blocked_reason}",
+        blocked.services.join(","),
+        blocked.survived_s / 86400.0,
+        blocked.log.iter().filter(|entry| entry.receipt.is_some()).count(),
+    );
+
     ExitCode::SUCCESS
 }
