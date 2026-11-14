@@ -45,6 +45,11 @@ def main(path: str) -> int:
         problems.append(f"plan: {plan_problem}")
     if not certificate.get("claim_scope", "").startswith("model-level closure only"):
         problems.append("claim scope")
+    tool_cycle = certificate.get("tool_cycle", {})
+    if tool_cycle.get("without_spare") != "cycle:asset:lathe-1":
+        problems.append("tool cycle")
+    if tool_cycle.get("with_spare_duration_s") != 7200.0:
+        problems.append("tool cycle unblock")
     if problems:
         print(f"certificate=FAIL problems={problems}")
         return 1

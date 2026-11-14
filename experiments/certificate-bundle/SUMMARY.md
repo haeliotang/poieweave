@@ -5,7 +5,7 @@
 
 | Layer | Schema | SHA-256 (prefix) | Key result |
 | --- | --- | --- | --- |
-| S1 | `poie.closure-certificate/1` | `2dddca964d33c747` | RESTORABLE lathe-1 (7200.0s) |
+| S1 | `poie.closure-certificate/1` | `c2eed4727383807d` | RESTORABLE lathe-1 (7200.0s) |
 | S2 | `poie.viability-certificate/1` | `7608e4f828cac760` | 5 load rows; 0-2 kW material-limited, 3-4 kW energy-limited |
 | S2-joint | `poie.coverage-certificate/1` | `c11ed96a3a3df05c` | independent 25 vs joint 24; gap 1 |
 | S2-regen | `poie.regeneration-certificate/1` | `c0aed8992e7dea7a` | 40.0d → 60.0d |
