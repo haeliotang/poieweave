@@ -625,6 +625,11 @@ jobs:
           python3 experiments/certificate-bundle/verify.py /tmp/certificate-bundle.json > /tmp/certificate-bundle.out
           diff experiments/certificate-bundle/expected.txt /tmp/certificate-bundle.out
           test -f experiments/certificate-bundle/REPORT.md
+      - name: Certificate attestation plumbing (openssl)
+        run: |
+          python3 experiments/certificate-attestation/attest.py > /tmp/certificate-attestation.out
+          diff experiments/certificate-attestation/expected.txt /tmp/certificate-attestation.out
+          test -f experiments/certificate-attestation/REPORT.md
       - name: Certificate bundle tamper test (Python)
         run: |
           python3 experiments/certificate-bundle-tamper/tamper.py > /tmp/certificate-bundle-tamper.out
