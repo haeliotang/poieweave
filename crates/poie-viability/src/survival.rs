@@ -692,7 +692,7 @@ pub fn simulate_recovery_with_policy(
     events: &[FailureEvent],
     policy: RecoveryPolicy,
 ) -> Result<RecoveryReport, EnvelopeError> {
-    simulate_recovery_inner(model, service_id, horizon_s, events, policy, None)
+    simulate_recovery_inner(model, service_id, horizon_s, events, policy, None, None)
 }
 
 /// S3: recovery with a revocation deadline. Once `revoke_at_s` is reached, no
@@ -705,7 +705,22 @@ pub fn simulate_recovery_with_revocation(
     policy: RecoveryPolicy,
     revoke_at_s: f64,
 ) -> Result<RecoveryReport, EnvelopeError> {
-    simulate_recovery_inner(model, service_id, horizon_s, events, policy, Some(revoke_at_s))
+    simulate_recovery_inner(model, service_id, horizon_s, events, policy, Some(revoke_at_s), None)
+}
+
+/// S3: recovery with a denial at one event time.
+///
+/// Repairs before the denial remain applied; the denial stops the run at that
+/// event with `approval_denied_at_event`.
+pub fn simulate_recovery_with_denial(
+    model: &Model,
+    service_id: &str,
+    horizon_s: f64,
+    events: &[FailureEvent],
+    policy: RecoveryPolicy,
+    deny_at_s: f64,
+) -> Result<RecoveryReport, EnvelopeError> {
+    simulate_recovery_inner(model, service_id, horizon_s, events, policy, None, Some(deny_at_s))
 }
 
 fn simulate_recovery_inner(
@@ -715,6 +730,7 @@ fn simulate_recovery_inner(
     events: &[FailureEvent],
     policy: RecoveryPolicy,
     revoke_at_s: Option<f64>,
+    deny_at_s: Option<f64>,
 ) -> Result<RecoveryReport, EnvelopeError> {
     let Some(service) = model.services.get(service_id) else {
         return Err(EnvelopeError(format!("unknown service {service_id}")));
@@ -798,6 +814,20 @@ fn simulate_recovery_inner(
                 receipt: None,
                 verified: false,
                 blocked_by: Some("approval_revoked".into()),
+            });
+            return Ok(RecoveryReport { service: service.id.clone(), horizon_s, survived_s: now, log });
+        }
+        if deny_at_s.is_some_and(|deny| (now - deny).abs() < 1e-9) {
+            log.push(RecoveryLogEntry {
+                at_s: now,
+                failed: Some(event.asset.clone()),
+                repaired: Vec::new(),
+                approved: false,
+                approval: Some(approval.clone()),
+                plan_digests: Vec::new(),
+                receipt: None,
+                verified: false,
+                blocked_by: Some(format!("approval_denied_at_event:{}", event.asset)),
             });
             return Ok(RecoveryReport { service: service.id.clone(), horizon_s, survived_s: now, log });
         }
@@ -1984,5 +2014,21 @@ mod tests {
             .blocked_by
             .as_deref()
             .is_some_and(|reason| reason.starts_with("approval_revoked_mid_plan"))));
+    }
+    #[test]
+    fn denial_at_an_event_stops_after_prior_repairs() {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
+        let events = vec![
+            FailureEvent { at_s: 10.0 * 86_400.0, asset: "pump-p1".into() },
+            FailureEvent { at_s: 20.0 * 86_400.0, asset: "pump-p1".into() },
+        ];
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+        let report =
+            simulate_recovery_with_denial(&model, "potable-water", 30.0 * 86_400.0, &events, policy, 10.0 * 86_400.0)
+                .unwrap();
+        assert_eq!(report.survived_s, 10.0 * 86_400.0);
+        assert!(report.log.iter().any(|entry| entry.blocked_by.as_deref() == Some("approval_denied_at_event:pump-p1")));
     }
 }

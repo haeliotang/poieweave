@@ -1,0 +1,5 @@
+deny_day	executed	survived_days	blocked_by
+none	true	30	none
+10	true	10	approval_denied_at_event:pump-p1
+20	true	20	approval_denied_at_event:pump-p1
+5	true	30	none
