@@ -61,6 +61,8 @@ FMI 3.0 集成现状与契约草案：[fmi-co-simulation.zh-CN.md](../design/fmi
 
 物理验收前置条件与证据清单：[physical-acceptance-plan.zh-CN.md](../design/physical-acceptance-plan.zh-CN.md)（未执行）
 
+复现命令与预期输出：[reproduction.zh-CN.md](reproduction.zh-CN.md)
+
 ## 5. 明确未完成
 
 - 无真实硬件、工业场地或外部专家；M9/M10 物理验收仍未执行。
