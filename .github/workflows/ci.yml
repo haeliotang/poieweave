@@ -412,6 +412,12 @@ jobs:
           python3 experiments/s4-energy-pv/verify.py /tmp/s4-energy-pv.tsv > /tmp/s4-energy-pv.out
           diff experiments/s4-energy-pv/expected.txt /tmp/s4-energy-pv.out
           test -f experiments/s4-energy-pv/REPORT.md
+      - name: S4 independent grease model (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-grease-cost > /tmp/s4-grease-model.tsv
+          python3 experiments/s4-grease-model/verify.py /tmp/s4-grease-model.tsv > /tmp/s4-grease-model.out
+          diff experiments/s4-grease-model/expected.txt /tmp/s4-grease-model.out
+          test -f experiments/s4-grease-model/REPORT.md
       - name: S3 lease renewal (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-lease-renewal > /tmp/s3-lease-renewal.out
