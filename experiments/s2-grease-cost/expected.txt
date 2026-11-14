@@ -1,0 +1,7 @@
+grease_kg	mode	survived_days	blocked_by
+0.10	cheap	20	missing resource grease: need 0.05, have 0
+0.10	expensive	0	missing resource grease: need 0.2, have 0.1
+0.15	cheap	30	horizon exceeded: need 10800s, horizon 0s
+0.15	expensive	0	missing resource grease: need 0.2, have 0.15
+0.20	cheap	30	horizon exceeded: need 10800s, horizon 0s
+0.20	expensive	10	missing resource grease: need 0.2, have 0
