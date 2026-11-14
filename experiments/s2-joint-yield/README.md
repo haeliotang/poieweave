@@ -1,6 +1,6 @@
 # S2 — Joint Yield × Bronze
 
-Yield 1.0: bronze 3/6 → 60/90+ days; yield 0.8/0.5: both 40 days.
+Yield 1.0: 60/90+ days; 0.8: 60/80; 0.5: 50/50.
 
 - [PREREG.md](PREREG.md)
 - [REPORT.md](REPORT.md)
