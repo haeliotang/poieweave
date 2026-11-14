@@ -1315,6 +1315,24 @@ mod tests {
     }
 
     #[test]
+    fn base06_three_failure_order_search_still_has_no_order_sensitivity() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-06/model.toml")).expect("Base-06");
+        let report = joint_coverage_with_order_search(
+            &model,
+            "potable-water",
+            12.0 * 3600.0,
+            3,
+            Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
+        )
+        .unwrap();
+        assert_eq!(report.total, 44);
+        assert_eq!(report.standard_joint, 40);
+        assert_eq!(report.best_joint, 40);
+        assert_eq!(report.order_sensitive(), 0);
+    }
+
+    #[test]
     fn base06_order_search_does_not_close_the_joint_gap() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
         let model = Model::load(&root.join("scenarios/base-06/model.toml")).expect("Base-06");

@@ -8,7 +8,7 @@
 ## Question
 
 The Base-06 fixed-order joint coverage is 24/25 recoverable cases. Does trying
-every repair order for each two-failure case improve coverage?
+every repair order for each 2- and 3-failure case improve coverage?
 
 ## Method
 

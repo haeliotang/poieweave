@@ -1,4 +1,2 @@
-recoverable_cases=25
-standard_joint=24
-best_joint=24
-order_sensitive=0
+max_failures=2 recoverable_cases=25 standard_joint=24 best_joint=24 order_sensitive=0
+max_failures=3 recoverable_cases=44 standard_joint=40 best_joint=40 order_sensitive=0
