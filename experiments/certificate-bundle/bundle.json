@@ -65,6 +65,12 @@
       "path": "experiments/certificate-s3-concurrency/certificate.json",
       "schema": "poie.concurrency-certificate/1",
       "sha256": "d95134d6c2f170e89e51a843a84518523710cd461c8fa723be659c76c4fec014"
+    },
+    {
+      "layer": "S4-independent",
+      "path": "experiments/certificate-s4-independent/certificate.json",
+      "schema": "poie.independent-certificate/1",
+      "sha256": "0b8b13391cdab7a71c47aa7bd563707daf27fb2892381308a076cc2271fdddb4"
     }
   ],
   "claim_scope": "model/simulation certificates only; no physical safety or authority claim",

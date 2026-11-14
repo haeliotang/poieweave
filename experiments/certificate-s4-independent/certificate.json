@@ -1,0 +1,24 @@
+{
+  "checks": [
+    {
+      "cases": 4,
+      "expected": "experiments/s4-energy-model/expected.txt",
+      "matched": 4,
+      "name": "energy"
+    },
+    {
+      "cases": 2,
+      "expected": "experiments/s4-energy-pv/expected.txt",
+      "matched": 2,
+      "name": "pv"
+    },
+    {
+      "cases": 6,
+      "expected": "experiments/s4-grease-model/expected.txt",
+      "matched": 6,
+      "name": "grease"
+    }
+  ],
+  "claim_scope": "independent narrow models only; not whole-system equivalence",
+  "schema": "poie.independent-certificate/1"
+}
