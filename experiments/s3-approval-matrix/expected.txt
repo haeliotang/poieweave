@@ -1,0 +1,7 @@
+case	executed	survived_days	blocked_by
+required	false	0	approval_required:pump-p1
+rejected	false	0	approval_rejected:pump-p1
+lease-1h	false	0	approval_lease_expired:pump-p1: need 10800s, lease 3600s
+approved-8h	true	30	none
+wrong-digest	false	0	approval_digest_mismatch:pump-p1
+revoked-day5	true	10	approval_revoked
