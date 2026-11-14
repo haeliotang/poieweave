@@ -11,7 +11,7 @@ Does `BatteryLimits.capacity_kwh` cap the initial electric-energy stock?
 
 ## Method
 
-Forced recycling path, initial energy fixed at 500 kWh, capacities 200/400/600
+Forced recycling path, initial energy fixed at 500 kWh, capacities 200/400/500/600
 kWh; find first blocked recycle-energy multiplier.
 
 Prediction: if capacity caps initial SOC, threshold should be near capacity plus
