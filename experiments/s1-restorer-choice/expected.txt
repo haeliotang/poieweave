@@ -1,0 +1,2 @@
+order=fast-first	RESTORABLE 10800s
+order=slow-first	RESTORABLE 10800s
