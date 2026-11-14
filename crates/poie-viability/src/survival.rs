@@ -535,6 +535,164 @@ pub fn simulate_multi_service_longevity_event_driven(
     Ok(SurvivalReport { service: service_label, horizon_s, survived_s: horizon_s, log, final_inventory: inventory })
 }
 
+/// One external resupply delivery at an absolute time.
+#[derive(Clone, Debug, PartialEq)]
+pub struct Resupply {
+    pub at_s: f64,
+    pub resource: String,
+    pub si: f64,
+}
+
+/// S2: like `simulate_multi_service_longevity_with_load`, plus discrete external
+/// resupply deliveries interleaved with failures.
+pub fn simulate_multi_service_longevity_with_resupply(
+    model: &Model,
+    service_ids: &[&str],
+    horizon_s: f64,
+    events: &[FailureEvent],
+    resupplies: &[Resupply],
+    battery: Option<BatteryLimits>,
+    load_kw: f64,
+) -> Result<SurvivalReport, EnvelopeError> {
+    let mut services = Vec::new();
+    for service_id in service_ids {
+        let Some(service) = model.services.get(*service_id) else {
+            return Err(EnvelopeError(format!("unknown service {service_id}")));
+        };
+        services.push(service);
+    }
+    let service_label = services.iter().map(|service| service.id.as_str()).collect::<Vec<_>>().join(",");
+    let mut current = model.clone();
+    let mut inventory = initial_inventory(model);
+    let mut log = Vec::new();
+    let mut now = 0.0;
+    match restore_services(&mut current, &services, 0.0, horizon_s, &mut inventory) {
+        Ok((repaired, _repair_s)) => log.push(SurvivalLogEntry {
+            at_s: 0.0,
+            failed: None,
+            repaired,
+            energy_after: energy(&inventory),
+            blocked_by: None,
+        }),
+        Err(reason) => {
+            log.push(SurvivalLogEntry {
+                at_s: 0.0,
+                failed: None,
+                repaired: Vec::new(),
+                energy_after: energy(&inventory),
+                blocked_by: Some(reason),
+            });
+            return Ok(SurvivalReport {
+                service: service_label.clone(),
+                horizon_s,
+                survived_s: 0.0,
+                log,
+                final_inventory: inventory,
+            });
+        }
+    }
+
+    enum Item<'a> {
+        Failure(&'a FailureEvent),
+        Supply(&'a Resupply),
+    }
+    let mut timeline: Vec<(f64, Item)> = Vec::new();
+    for event in events {
+        timeline.push((event.at_s, Item::Failure(event)));
+    }
+    for supply in resupplies {
+        timeline.push((supply.at_s, Item::Supply(supply)));
+    }
+    timeline.sort_by(|left, right| {
+        left.0
+            .total_cmp(&right.0)
+            .then_with(|| matches!(left.1, Item::Supply(_)).cmp(&matches!(right.1, Item::Supply(_))).reverse())
+    });
+    for (at_s, item) in timeline {
+        let at = at_s.clamp(now, horizon_s);
+        if let Err(offset) = apply_energy_interval(&current, &mut inventory, at - now, battery, load_kw) {
+            let failed_at = now + offset;
+            log.push(SurvivalLogEntry {
+                at_s: failed_at,
+                failed: None,
+                repaired: Vec::new(),
+                energy_after: energy(&inventory),
+                blocked_by: Some("energy_depleted".into()),
+            });
+            return Ok(SurvivalReport {
+                service: service_label.clone(),
+                horizon_s,
+                survived_s: failed_at,
+                log,
+                final_inventory: inventory,
+            });
+        }
+        now = at;
+        match item {
+            Item::Supply(supply) => {
+                *inventory.entry(supply.resource.clone()).or_insert(0.0) += supply.si;
+                log.push(SurvivalLogEntry {
+                    at_s: now,
+                    failed: None,
+                    repaired: Vec::new(),
+                    energy_after: energy(&inventory),
+                    blocked_by: None,
+                });
+            }
+            Item::Failure(event) => {
+                if let Some(asset) = current.assets.get_mut(&event.asset) {
+                    asset.status = AssetStatus::Failed;
+                } else {
+                    return Err(EnvelopeError(format!("unknown failed asset {}", event.asset)));
+                }
+                match restore_services(&mut current, &services, now, horizon_s, &mut inventory) {
+                    Ok((repaired, _repair_s)) => log.push(SurvivalLogEntry {
+                        at_s: now,
+                        failed: Some(event.asset.clone()),
+                        repaired,
+                        energy_after: energy(&inventory),
+                        blocked_by: None,
+                    }),
+                    Err(reason) => {
+                        log.push(SurvivalLogEntry {
+                            at_s: now,
+                            failed: Some(event.asset.clone()),
+                            repaired: Vec::new(),
+                            energy_after: energy(&inventory),
+                            blocked_by: Some(reason),
+                        });
+                        return Ok(SurvivalReport {
+                            service: service_label.clone(),
+                            horizon_s,
+                            survived_s: now,
+                            log,
+                            final_inventory: inventory,
+                        });
+                    }
+                }
+            }
+        }
+    }
+    if let Err(offset) = apply_energy_interval(&current, &mut inventory, horizon_s - now, battery, load_kw) {
+        let failed_at = now + offset;
+        log.push(SurvivalLogEntry {
+            at_s: failed_at,
+            failed: None,
+            repaired: Vec::new(),
+            energy_after: energy(&inventory),
+            blocked_by: Some("energy_depleted".into()),
+        });
+        return Ok(SurvivalReport {
+            service: service_label.clone(),
+            horizon_s,
+            survived_s: failed_at,
+            log,
+            final_inventory: inventory,
+        });
+    }
+    Ok(SurvivalReport { service: service_label, horizon_s, survived_s: horizon_s, log, final_inventory: inventory })
+}
+
 fn restore_services(
     model: &mut Model,
     services: &[&Service],
@@ -2230,5 +2388,22 @@ mod tests {
         let times: Vec<f64> =
             report.log.iter().filter(|entry| entry.failed.is_some()).map(|entry| entry.at_s / 3600.0).collect();
         assert_eq!(times, vec![3.0, 6.0]);
+    }
+    #[test]
+    fn resupply_adds_to_inventory() {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
+        let resupplies = vec![Resupply { at_s: 10.0 * 86_400.0, resource: "cutting-insert".into(), si: 1.0 }];
+        let report = simulate_multi_service_longevity_with_resupply(
+            &model,
+            &["potable-water", "workshop-operability"],
+            20.0 * 86_400.0,
+            &[],
+            &resupplies,
+            Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
+            0.0,
+        )
+        .unwrap();
+        assert!(report.final_inventory["cutting-insert"] >= 5.0);
     }
 }
