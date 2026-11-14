@@ -404,6 +404,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-resupply-delivery > /tmp/s2-resupply-delivery.out
           diff experiments/s2-resupply-delivery/expected.txt /tmp/s2-resupply-delivery.out
           test -f experiments/s2-resupply-delivery/REPORT.md
+      - name: S2 resupply frequency sweep (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-resupply-frequency > /tmp/s2-resupply-frequency.out
+          diff experiments/s2-resupply-frequency/expected.txt /tmp/s2-resupply-frequency.out
+          test -f experiments/s2-resupply-frequency/REPORT.md
       - name: S4 approval gate (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-approval-export > /tmp/s4-approval-gate.json
