@@ -1,0 +1,2 @@
+cheap-first	steps=["replace-sleeve-p1"] duration=10800s grease_left=0.95
+expensive-first	steps=["replace-sleeve-expensive"] duration=10800s grease_left=0.80
