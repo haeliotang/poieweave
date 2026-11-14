@@ -50,6 +50,20 @@
     "shared_robot_days": 35
   },
   "regenerative_capacity_days": 20.0,
+  "resupply": {
+    "interval_days": [
+      10,
+      20,
+      30,
+      60
+    ],
+    "survived_days": [
+      60,
+      50,
+      40,
+      30
+    ]
+  },
   "schema": "poie.metrics-certificate/1",
   "yield_sensitivity": {
     "yield_0_5_days": 50,
