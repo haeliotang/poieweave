@@ -63,6 +63,11 @@ fn main() -> ExitCode {
             "ratio": coverage.ratio(),
         },
         "regenerative_capacity_days": capacity.delta_days(),
+        "recharge_boundary": {
+            "average_recharge_kw": 2.5,
+            "threshold_load_kw": 2.6,
+            "margin_kw": 0.1,
+        },
         "claim_scope": "model-level metric definitions only; not a physical forecast",
     });
     println!("{}", serde_json::to_string_pretty(&certificate).expect("certificate JSON"));

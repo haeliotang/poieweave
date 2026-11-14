@@ -19,6 +19,7 @@ certificate=ok
 - Base-08 SHA-256, 60-day Survival Horizon
 - Recovery Coverage 5/10 = 0.5
 - Regenerative Capacity +20 days
+- Recharge boundary: average 2.5 kW, switch 2.6 kW, margin 0.1 kW
 - model-level metric claim scope
 
 ## 3. Integration

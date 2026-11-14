@@ -34,6 +34,9 @@ def main(path: str) -> int:
         problems.append("coverage")
     if certificate.get("regenerative_capacity_days") != 20.0:
         problems.append("regenerative capacity")
+    boundary = certificate.get("recharge_boundary", {})
+    if boundary.get("average_recharge_kw") != 2.5 or boundary.get("threshold_load_kw") != 2.6 or boundary.get("margin_kw") != 0.1:
+        problems.append("recharge boundary")
     if not certificate.get("claim_scope", "").startswith("model-level metric definitions only"):
         problems.append("claim scope")
     if problems:
