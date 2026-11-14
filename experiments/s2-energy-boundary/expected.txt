@@ -1,0 +1,19 @@
+load_kw	capacity_kwh	charge_kw	survived_days	blocked_by
+2	100	3	60	cyclic process dependency at turn-sleeve-p1
+2	100	10	60	cyclic process dependency at turn-sleeve-p1
+2	100	30	60	cyclic process dependency at turn-sleeve-p1
+2	200	3	60	cyclic process dependency at turn-sleeve-p1
+2	200	10	60	cyclic process dependency at turn-sleeve-p1
+2	200	30	60	cyclic process dependency at turn-sleeve-p1
+2	300	3	60	cyclic process dependency at turn-sleeve-p1
+2	300	10	60	cyclic process dependency at turn-sleeve-p1
+2	300	30	60	cyclic process dependency at turn-sleeve-p1
+3	100	3	3	energy_depleted
+3	100	10	3	energy_depleted
+3	100	30	3	energy_depleted
+3	200	3	3	energy_depleted
+3	200	10	3	energy_depleted
+3	200	30	3	energy_depleted
+3	300	3	3	energy_depleted
+3	300	10	3	energy_depleted
+3	300	30	3	energy_depleted

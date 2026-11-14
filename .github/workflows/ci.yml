@@ -189,6 +189,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-regen-capacity-semantics > /tmp/s2-regen-capacity-semantics.out
           diff experiments/s2-regen-capacity-semantics/expected.txt /tmp/s2-regen-capacity-semantics.out
           test -f experiments/s2-regen-capacity-semantics/REPORT.md
+      - name: S2 energy boundary (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-energy-boundary > /tmp/s2-energy-boundary.out
+          diff experiments/s2-energy-boundary/expected.txt /tmp/s2-energy-boundary.out
+          test -f experiments/s2-energy-boundary/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
