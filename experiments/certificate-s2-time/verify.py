@@ -41,6 +41,14 @@ def main(path: str) -> int:
     for name in ("base05", "base08"):
         if regen.get(f"{name}_instant") != regen.get(f"{name}_advanced"):
             problems.append(f"regeneration {name}")
+        long_instant = regen.get(f"long_{name}_instant", [])
+        long_advanced = regen.get(f"long_{name}_advanced", [])
+        if not (len(long_instant) == len(long_advanced) == 4):
+            problems.append(f"long regeneration {name} length")
+        elif any(new < old for old, new in zip(long_instant, long_advanced)):
+            problems.append(f"long regeneration {name} direction")
+        elif long_instant[-1] != long_advanced[-1] or long_instant[0] == long_advanced[0]:
+            problems.append(f"long regeneration {name} endpoints")
     for name, keys in (("grease_boundary", 5), ("insert_boundary", 5)):
         boundary = certificate.get(name, {})
         stocks = boundary.get("stocks", [])

@@ -23,7 +23,8 @@ tamper=detected
 - Grease and insert boundaries both shift and saturate higher under
   clock-advanced semantics.
 - Regeneration horizons (Base-05/08) are identical under both semantics at the
-  nominal repair duration.
+  nominal repair duration, but with 5-day repairs and dense failures they shift
+  (Base-05 8/12/20 -> 20/20/20; Base-08 12/18/30 -> 31/31/31).
 
 ## 3. Significance
 
