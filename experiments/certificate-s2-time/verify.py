@@ -28,6 +28,9 @@ def main(path: str) -> int:
     for row in certificate.get("sparse", []):
         if row.get("instant_days") != row.get("event_driven_days"):
             problems.append("sparse")
+    window = certificate.get("random_window", {})
+    if window.get("trials") != 200 or window.get("instant_zero", 0) <= 0 or window.get("advanced_zero") != 0:
+        problems.append("random window")
     random_adv = certificate.get("random_adversarial", {})
     if random_adv.get("trials") != 200 or random_adv.get("instant_zero", 0) <= 0 or random_adv.get("advanced_zero") != 0:
         problems.append("random adversarial")

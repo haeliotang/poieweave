@@ -100,6 +100,13 @@
     "instant_zero": 129,
     "trials": 200
   },
+  "random_window": {
+    "advanced_mean_days": 14.0,
+    "advanced_zero": 0,
+    "instant_mean_days": 4.4,
+    "instant_zero": 13,
+    "trials": 200
+  },
   "regeneration": {
     "base05_advanced": [
       40,

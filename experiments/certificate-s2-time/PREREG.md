@@ -13,7 +13,7 @@ invariants an independent verifier can check?
 ## Method
 
 Emit dense event times, sparse horizons, deadline arithmetic, grease/insert
-boundaries, the regeneration negative control, and the long-repair regeneration variant, the adversarial minimum shift, the repair-duration sweep, the long-repair energy sweep, and the random adversarial sample. The Python verifier checks the arithmetic and saturation invariants.
+boundaries, the regeneration negative control, and the long-repair regeneration variant, the adversarial minimum shift, the repair-duration sweep, the long-repair energy sweep, the random adversarial sample, and the delayed random window. The Python verifier checks the arithmetic and saturation invariants.
 
 Prediction: `certificate=ok` and bundle remains green.
 
