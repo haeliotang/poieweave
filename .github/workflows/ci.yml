@@ -449,6 +449,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-time-horizon > /tmp/s2-time-horizon.out
           diff experiments/s2-time-horizon/expected.txt /tmp/s2-time-horizon.out
           test -f experiments/s2-time-horizon/REPORT.md
+      - name: S2 repair-duration sweep (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-time-repair-sweep > /tmp/s2-time-repair-sweep.out
+          diff experiments/s2-time-repair-sweep/expected.txt /tmp/s2-time-repair-sweep.out
+          test -f experiments/s2-time-repair-sweep/REPORT.md
       - name: S2 time-semantics grease boundary (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-time-boundary > /tmp/s2-time-boundary.out
