@@ -324,6 +324,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-adversarial-failures > /tmp/s2-adversarial-failures.out
           diff experiments/s2-adversarial-failures/expected.txt /tmp/s2-adversarial-failures.out
           test -f experiments/s2-adversarial-failures/REPORT.md
+      - name: S2 adversarial failure timing (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-adversarial-timing > /tmp/s2-adversarial-timing.out
+          diff experiments/s2-adversarial-timing/expected.txt /tmp/s2-adversarial-timing.out
+          test -f experiments/s2-adversarial-timing/REPORT.md
       - name: S2 filter restorer (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-filter-restorer > /tmp/s2-filter-restorer.out

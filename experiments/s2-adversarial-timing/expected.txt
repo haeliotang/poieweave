@@ -1,0 +1,35 @@
+at_day	set	size	survived_days	blocked_by
+0	baseline	0	60	none
+0	pump-p1	1	60	none
+0	pump-p1+filter-1	2	0	no restorer for filter-1
+0	pump-p1+robot-m1	2	60	none
+0	pump-p1+pv-1	2	60	none
+0	pump-p1+lathe-1	2	60	none
+0	filter-1	1	0	no restorer for filter-1
+0	filter-1+robot-m1	2	0	no restorer for filter-1
+0	filter-1+pv-1	2	0	no restorer for filter-1
+0	filter-1+lathe-1	2	0	no restorer for filter-1
+0	robot-m1	1	60	none
+0	robot-m1+pv-1	2	60	none
+0	robot-m1+lathe-1	2	0	no restorer for robot-m1
+0	pv-1	1	60	none
+0	pv-1+lathe-1	2	60	none
+0	lathe-1	1	60	none
+0	worst	1	0	filter-1
+10	baseline	0	60	none
+10	pump-p1	1	60	none
+10	pump-p1+filter-1	2	10	no restorer for filter-1
+10	pump-p1+robot-m1	2	60	none
+10	pump-p1+pv-1	2	60	none
+10	pump-p1+lathe-1	2	60	none
+10	filter-1	1	10	no restorer for filter-1
+10	filter-1+robot-m1	2	10	no restorer for filter-1
+10	filter-1+pv-1	2	10	no restorer for filter-1
+10	filter-1+lathe-1	2	10	no restorer for filter-1
+10	robot-m1	1	60	none
+10	robot-m1+pv-1	2	60	none
+10	robot-m1+lathe-1	2	10	no restorer for robot-m1
+10	pv-1	1	60	none
+10	pv-1+lathe-1	2	60	none
+10	lathe-1	1	60	none
+10	worst	1	10	filter-1
