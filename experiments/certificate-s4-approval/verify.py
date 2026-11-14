@@ -16,7 +16,7 @@ def main(path: str) -> int:
         problems.append("schema")
     plan_duration = certificate.get("plan_duration_s")
     cases = certificate.get("cases", [])
-    if len(cases) != 6:
+    if len(cases) != 7:
         problems.append("case count")
     for case in cases:
         name = case.get("name")
@@ -24,6 +24,7 @@ def main(path: str) -> int:
         lease_s = case.get("lease_s", 0)
         digest_ok = case.get("digest_ok")
         revoke_at_s = case.get("revoke_at_s")
+        deny_at_s = case.get("deny_at_s")
         executed = case.get("executed")
         blocked = case.get("blocked_by", "")
         if decision == "Required":
@@ -36,6 +37,8 @@ def main(path: str) -> int:
             expected_executed, prefix = False, "approval_digest_mismatch"
         elif revoke_at_s is not None:
             expected_executed, prefix = True, "approval_revoked"
+        elif deny_at_s is not None:
+            expected_executed, prefix = True, "approval_denied_at_event"
         else:
             expected_executed, prefix = True, "none"
         if executed != expected_executed:
