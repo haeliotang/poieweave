@@ -27,6 +27,7 @@ fn main() -> ExitCode {
         ("S4", "experiments/certificate-s4-differential/certificate.json", "poie.s4-certificate/1"),
         ("S4-approval", "experiments/certificate-s4-approval/certificate.json", "poie.approval-certificate/1"),
         ("S3-concurrency", "experiments/certificate-s3-concurrency/certificate.json", "poie.concurrency-certificate/1"),
+        ("S4-independent", "experiments/certificate-s4-independent/certificate.json", "poie.independent-certificate/1"),
     ];
     let mut rows = Vec::new();
     for (layer, relative, expected_schema) in certificates {

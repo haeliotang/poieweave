@@ -605,6 +605,13 @@ jobs:
           python3 experiments/certificate-s3-concurrency/verify.py /tmp/certificate-s3-concurrency.json > /tmp/certificate-s3-concurrency.out
           diff experiments/certificate-s3-concurrency/expected.txt /tmp/certificate-s3-concurrency.out
           test -f experiments/certificate-s3-concurrency/REPORT.md
+      - name: Independent-model certificate S4 (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-independent-certificate > /tmp/certificate-s4-independent.json
+          diff experiments/certificate-s4-independent/certificate.json /tmp/certificate-s4-independent.json
+          python3 experiments/certificate-s4-independent/verify.py /tmp/certificate-s4-independent.json > /tmp/certificate-s4-independent.out
+          diff experiments/certificate-s4-independent/expected.txt /tmp/certificate-s4-independent.out
+          test -f experiments/certificate-s4-independent/REPORT.md
       - name: Certificate bundle S1/S2/S3/S4 (Python)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-certificate-bundle > /tmp/certificate-bundle.json

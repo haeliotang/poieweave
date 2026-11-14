@@ -23,6 +23,7 @@ EXPECTED = {
     "S4": ("experiments/certificate-s4-differential/certificate.json", "poie.s4-certificate/1"),
     "S4-approval": ("experiments/certificate-s4-approval/certificate.json", "poie.approval-certificate/1"),
     "S3-concurrency": ("experiments/certificate-s3-concurrency/certificate.json", "poie.concurrency-certificate/1"),
+    "S4-independent": ("experiments/certificate-s4-independent/certificate.json", "poie.independent-certificate/1"),
 }
 
 
@@ -52,7 +53,7 @@ def main(path: str, root_arg: str | None = None) -> int:
             continue
         if hashlib.sha256(path.read_bytes()).hexdigest() != row.get("sha256"):
             problems.append(f"{relative}: digest")
-    if sorted(rows) != ["S1", "S2", "S2-joint", "S2-metrics", "S2-order", "S2-regen", "S3", "S3-concurrency", "S3-multi", "S4", "S4-approval"]:
+    if sorted(rows) != ["S1", "S2", "S2-joint", "S2-metrics", "S2-order", "S2-regen", "S3", "S3-concurrency", "S3-multi", "S4", "S4-approval", "S4-independent"]:
         problems.append("layers")
     for layer, (relative, schema) in EXPECTED.items():
         row = rows.get(layer, {})
