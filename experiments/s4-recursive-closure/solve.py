@@ -29,6 +29,18 @@ def si(text: str) -> float:
     return float(match.group(1)) * UNITS[match.group(2).strip().lower()]
 
 
+def add_outputs(process: dict, stock: dict) -> None:
+    """Apply process outputs, including an optional process_yield split."""
+    spec = process.get("process_yield") or {}
+    for item in process.get("outputs", []):
+        amount = si(item["quantity"])
+        fraction = float(spec.get("fraction", 1.0)) if spec.get("output") == item["resource"] else 1.0
+        stock[item["resource"]] = stock.get(item["resource"], 0.0) + amount * fraction
+        if fraction < 1.0:
+            reject = spec["reject"]
+            stock[reject] = stock.get(reject, 0.0) + amount * (1.0 - fraction)
+
+
 class Model:
     def __init__(self, relative: str) -> None:
         with (ROOT / relative).open("rb") as handle:
@@ -97,8 +109,7 @@ class Model:
                     break
             if not okay:
                 continue
-            for item in process.get("outputs", []):
-                trial["stock"][item["resource"]] = trial["stock"].get(item["resource"], 0.0) + si(item["quantity"])
+            add_outputs(process, trial["stock"])
             trial["assets"][asset] = "available"
             state.clear()
             state.update(trial)
@@ -126,8 +137,7 @@ class Model:
                     break
             if not okay:
                 continue
-            for item in process.get("outputs", []):
-                trial["stock"][item["resource"]] = trial["stock"].get(item["resource"], 0.0) + si(item["quantity"])
+            add_outputs(process, trial["stock"])
             if trial["stock"].get(resource, 0.0) + 1e-9 < need:
                 continue
             trial["stock"][resource] -= need
