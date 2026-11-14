@@ -787,3 +787,4 @@ flowchart LR
 | 0.1.291 | 2026-11-14 | S2 修磨产率负例：1.0/0.8/0.5 均 60 天，closure/survival 未应用 process_yield |
 | 0.1.292 | 2026-11-14 | 修复 closure 产率：应用 process_yield 与 reject；1.0→60 天，0.8/0.5→40 天；测试 481 |
 | 0.1.293 | 2026-11-14 | S4 产率变异：7 process 逐个 yield 0.5，63/63 一致 |
+| 0.1.294 | 2026-11-14 | S2 产率×bronze：yield 1.0 前沿 60/90+；0.8/0.5 均 40 天 insert 短缺 |
