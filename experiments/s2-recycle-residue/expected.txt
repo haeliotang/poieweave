@@ -1,0 +1,5 @@
+bar_recovery_kg	residue_kg	survived_days	blocked_by
+1.2	0.0	60	cyclic process dependency at turn-sleeve-p1
+1.0	0.2	60	cyclic process dependency at turn-sleeve-p1
+0.9	0.3	60	cyclic process dependency at turn-sleeve-p1
+0.6	0.6	50	missing resource bronze-bar: need 1.2, have 0.6
