@@ -1,4 +1,10 @@
 {
+  "adversarial": {
+    "advanced_min_days": 5,
+    "instant_min_days": 0,
+    "minimal_set": "pump-p1",
+    "subsets": 31
+  },
   "claim_scope": "model/simulation time semantics only; no physical timing claim",
   "deadline": {
     "advanced_complete": 13,

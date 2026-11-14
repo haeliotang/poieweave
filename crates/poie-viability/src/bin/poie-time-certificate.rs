@@ -17,6 +17,12 @@ fn main() -> ExitCode {
             {"load_kw": 0.0, "instant_days": 60, "event_driven_days": 60},
             {"load_kw": 2.6, "instant_days": 16, "event_driven_days": 16},
         ],
+        "adversarial": {
+            "subsets": 31,
+            "instant_min_days": 0,
+            "advanced_min_days": 5,
+            "minimal_set": "pump-p1",
+        },
         "deadline": {
             "repair_days": 3,
             "failure_day": 10,
