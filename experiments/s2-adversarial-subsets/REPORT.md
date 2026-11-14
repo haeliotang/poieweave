@@ -1,21 +1,22 @@
 # S2 Adversarial Subsets — report
 
 - Date: 2026-11-14
-- Status: all 31 subsets searched; minimal 0-day set is filter-1
+- Status: all 31 subsets searched at two times; minimal set stays filter-1
 - Runner: `cargo run --locked -q -p poie-viability --bin poie-adversarial-subsets`
 - Output: [expected.txt](expected.txt)
 
 ## 1. Result
 
 ```text
-subsets	min_days	minimal_size	minimal_set
-31	0	1	filter-1
+at_day	subsets	min_days	minimal_size	minimal_set
+0	31	0	1	filter-1
+10	31	10	1	filter-1
 ```
 
 ## 2. Findings
 
-- All 31 non-empty subsets were simulated at t=0.
-- The minimum horizon is 0 days.
+- All 31 non-empty subsets were simulated at t=0 and day 10.
+- The minimum horizon is 0 days at t=0 and 10 days at day 10.
 - The smallest set reaching it is `filter-1` alone, size 1.
 - Larger sets may also reach 0, but none is smaller.
 
