@@ -10,6 +10,7 @@
 ```text
 approved-8h: services=potable-water,workshop-operability survived_days=30.0 receipts=2 blocked=
 lease-1h: services=potable-water,workshop-operability survived_days=0.0 receipts=0 blocked=potable-water:approval_lease_expired:pump-p1: need 10800s, lease 3600s
+two-events-8h: services=potable-water,workshop-operability survived_days=30.0 receipts=3 blocked=
 ```
 
 ## 2. Findings
@@ -22,5 +23,5 @@ lease-1h: services=potable-water,workshop-operability survived_days=0.0 receipts
 ## 3. Limits
 
 - Isolated simulation, not a hardware authority path.
-- Two services and one failure event.
+- Two services; one or two failure events.
 - No concurrent repairs or renewal.

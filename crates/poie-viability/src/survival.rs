@@ -1513,6 +1513,26 @@ mod tests {
     }
 
     #[test]
+    fn multi_service_recovery_handles_two_events() {
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+        let events = vec![
+            FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() },
+            FailureEvent { at_s: 20.0 * 86400.0, asset: "lathe-1".into() },
+        ];
+        let report = simulate_multi_service_recovery_with_policy(
+            &base05(),
+            &["potable-water", "workshop-operability"],
+            30.0 * 86400.0,
+            &events,
+            policy,
+        )
+        .unwrap();
+        assert_eq!(report.survived_s, 30.0 * 86400.0);
+        assert_eq!(report.log.iter().filter(|entry| entry.receipt.is_some()).count(), 3);
+    }
+
+    #[test]
     fn multi_service_recovery_stops_on_short_lease() {
         let policy =
             RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 3600.0, approved_plan_digest: None };

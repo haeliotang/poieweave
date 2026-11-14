@@ -1,2 +1,3 @@
 approved-8h: services=potable-water,workshop-operability survived_days=30.0 receipts=2 blocked=
 lease-1h: services=potable-water,workshop-operability survived_days=0.0 receipts=0 blocked=potable-water:approval_lease_expired:pump-p1: need 10800s, lease 3600s
+two-events-8h: services=potable-water,workshop-operability survived_days=30.0 receipts=3 blocked=
