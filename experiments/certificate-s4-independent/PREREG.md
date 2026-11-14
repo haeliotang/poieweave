@@ -3,7 +3,7 @@
 - Experiment ID: `certificate-s4-independent`
 - Date: 2026-11-14
 - Status: completed; 12th bundle layer
-- Scope: aggregate the energy, PV, grease, concurrency, time and approval-schedule independent-model checks.
+- Scope: aggregate the energy, PV, grease, concurrency, time and approval-schedule and tool-cycle independent-model checks.
 
 ## Question
 
