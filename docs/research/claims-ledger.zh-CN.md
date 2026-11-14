@@ -25,6 +25,7 @@
 | C16 | 独立模型 8 项 26 案例一致 | `certificate-s4-independent`、`s4-*` | 窄模型 |
 | C17 | bundle 可在 clean-room 中验证 | `certificate-clean-room` | 同一 verifier 代码 |
 | C18 | 随机对抗中 0 天 collapse 是瞬时语义假象 | `experiments/s2-adversarial-random-time`、time 证书 | 200 子集、单一长修复 |
+| C19 | 延迟故障只减少、不消除瞬时 0 天质量 | `experiments/s2-adversarial-random-window`、time 证书 | day0–10 窗口 |
 
 ## 不应出现的声明
 
