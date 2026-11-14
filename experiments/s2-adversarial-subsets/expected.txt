@@ -1,0 +1,2 @@
+subsets	min_days	minimal_size	minimal_set
+31	0	1	filter-1
