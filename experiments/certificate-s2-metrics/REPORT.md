@@ -20,6 +20,7 @@ certificate=ok
 - Recovery Coverage 5/10 = 0.5
 - Regenerative Capacity +20 days
 - Insert sharpening: 2 inserts 40 -> 60 days (+20)
+- Yield sensitivity: 1.0/0.8/0.5 -> 60/60/50 days
 - Recharge boundary: average 2.5 kW, switch 2.6 kW, margin 0.1 kW
 - model-level metric claim scope
 

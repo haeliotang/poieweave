@@ -69,6 +69,11 @@ fn main() -> ExitCode {
             "with_sharpening_days": 60,
             "gain_days": 20,
         },
+        "yield_sensitivity": {
+            "yield_1_0_days": 60,
+            "yield_0_8_days": 60,
+            "yield_0_5_days": 50,
+        },
         "recharge_boundary": {
             "average_recharge_kw": 2.5,
             "threshold_load_kw": 2.6,

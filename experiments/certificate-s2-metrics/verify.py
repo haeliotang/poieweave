@@ -37,6 +37,9 @@ def main(path: str) -> int:
     sharpening = certificate.get("insert_sharpening", {})
     if sharpening.get("baseline_days") != 40 or sharpening.get("with_sharpening_days") != 60 or sharpening.get("gain_days") != 20:
         problems.append("insert sharpening")
+    yield_sensitivity = certificate.get("yield_sensitivity", {})
+    if yield_sensitivity.get("yield_1_0_days") != 60 or yield_sensitivity.get("yield_0_8_days") != 60 or yield_sensitivity.get("yield_0_5_days") != 50:
+        problems.append("yield sensitivity")
     boundary = certificate.get("recharge_boundary", {})
     if boundary.get("average_recharge_kw") != 2.5 or boundary.get("threshold_load_kw") != 2.6 or boundary.get("margin_kw") != 0.1:
         problems.append("recharge boundary")
