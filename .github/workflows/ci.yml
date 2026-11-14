@@ -384,6 +384,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-concurrency-deadline > /tmp/s3-concurrency-deadline.out
           diff experiments/s3-concurrency-deadline/expected.txt /tmp/s3-concurrency-deadline.out
           test -f experiments/s3-concurrency-deadline/REPORT.md
+      - name: S3 event during repair (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-event-during-repair > /tmp/s3-event-during-repair.out
+          diff experiments/s3-event-during-repair/expected.txt /tmp/s3-event-during-repair.out
+          test -f experiments/s3-event-during-repair/REPORT.md
       - name: S4 approval gate (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-approval-export > /tmp/s4-approval-gate.json

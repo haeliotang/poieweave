@@ -1,0 +1,2 @@
+repair_s	event_s	inside_repair	receipts	blocked_by
+10800	3600	true	1	no restorer for filter-1
