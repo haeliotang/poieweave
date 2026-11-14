@@ -469,6 +469,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-time-energy > /tmp/s2-time-energy.out
           diff experiments/s2-time-energy/expected.txt /tmp/s2-time-energy.out
           test -f experiments/s2-time-energy/REPORT.md
+      - name: S2 energy-load sweep under long repairs (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-time-energy-sweep > /tmp/s2-time-energy-sweep.out
+          diff experiments/s2-time-energy-sweep/expected.txt /tmp/s2-time-energy-sweep.out
+          test -f experiments/s2-time-energy-sweep/REPORT.md
       - name: S2 resupply with clock-advanced repair (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-resupply-time > /tmp/s2-resupply-time.out
