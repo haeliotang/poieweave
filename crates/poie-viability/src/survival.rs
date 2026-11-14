@@ -740,7 +740,7 @@ fn simulate_recovery_inner(
         });
         return Ok(RecoveryReport { service: service.id.clone(), horizon_s, survived_s: now, log });
     }
-    match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone()) {
+    match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone(), revoke_at_s) {
         Ok((repaired, plan_digests)) => log.push(RecoveryLogEntry {
             at_s: 0.0,
             failed: None,
@@ -801,7 +801,7 @@ fn simulate_recovery_inner(
             });
             return Ok(RecoveryReport { service: service.id.clone(), horizon_s, survived_s: now, log });
         }
-        match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone()) {
+        match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone(), revoke_at_s) {
             Ok((repaired, plan_digests)) => log.push(RecoveryLogEntry {
                 at_s: now,
                 failed: Some(event.asset.clone()),
@@ -916,7 +916,7 @@ fn simulate_multi_service_recovery_inner(
     let mut repaired = Vec::new();
     let mut digests = Vec::new();
     for service in &services {
-        match recover_service(&mut current, service, 0.0, horizon_s, &mut inventory, policy.clone()) {
+        match recover_service(&mut current, service, 0.0, horizon_s, &mut inventory, policy.clone(), revoke_at_s) {
             Ok((next_repaired, next_digests)) => {
                 repaired.extend(next_repaired);
                 digests.extend(next_digests);
@@ -987,7 +987,7 @@ fn simulate_multi_service_recovery_inner(
         let mut repaired = Vec::new();
         let mut digests = Vec::new();
         for service in &services {
-            match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone()) {
+            match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone(), revoke_at_s) {
                 Ok((next_repaired, next_digests)) => {
                     repaired.extend(next_repaired);
                     digests.extend(next_digests);
@@ -1049,6 +1049,7 @@ fn recover_service(
     horizon_s: f64,
     inventory: &mut BTreeMap<String, f64>,
     policy: RecoveryPolicy,
+    revoke_at_s: Option<f64>,
 ) -> Result<(Vec<String>, Vec<String>), String> {
     let remaining = (horizon_s - now_s).max(0.0);
     let mut repaired = Vec::new();
@@ -1066,6 +1067,14 @@ fn recover_service(
         };
         let digest = sha256_of("poie.recovery.plan/1", &plan).ok();
         check_approval(&policy, asset, plan.total_duration_s, digest.as_deref())?;
+        if let Some(revoke) = revoke_at_s {
+            if revoke > now_s && revoke < now_s + plan.total_duration_s {
+                return Err(format!(
+                    "approval_revoked_mid_plan:{asset}: revoke {revoke:.0}s during {:.0}s plan",
+                    plan.total_duration_s
+                ));
+            }
+        }
         apply_recovery_plan(model, inventory, plan);
         repaired.push(asset.to_string());
         digests.push(digest.unwrap_or_default());
@@ -1082,6 +1091,14 @@ fn recover_service(
             if let ClosureOutcome::Restorable(plan) = analyze(&with_inventory, asset, remaining) {
                 let digest = sha256_of("poie.recovery.plan/1", &plan).ok();
                 check_approval(&policy, asset, plan.total_duration_s, digest.as_deref())?;
+                if let Some(revoke) = revoke_at_s {
+                    if revoke > now_s && revoke < now_s + plan.total_duration_s {
+                        return Err(format!(
+                            "approval_revoked_mid_plan:{asset}: revoke {revoke:.0}s during {:.0}s plan",
+                            plan.total_duration_s
+                        ));
+                    }
+                }
                 apply_recovery_plan(model, inventory, plan);
                 repaired.push(asset.to_string());
                 digests.push(digest.unwrap_or_default());
@@ -1953,5 +1970,19 @@ mod tests {
         )
         .unwrap();
         assert_eq!(report.survived_s / 86400.0, 60.0);
+    }
+    #[test]
+    fn revocation_inside_a_plan_cancels_it() {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+        let report = simulate_recovery_with_revocation(&model, "potable-water", 86_400.0, &[], policy, 1.0).unwrap();
+        assert_eq!(report.survived_s, 0.0);
+        assert!(report.log.iter().all(|entry| entry.receipt.is_none()));
+        assert!(report.log.iter().any(|entry| entry
+            .blocked_by
+            .as_deref()
+            .is_some_and(|reason| reason.starts_with("approval_revoked_mid_plan"))));
     }
 }

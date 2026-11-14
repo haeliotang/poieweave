@@ -1,7 +1,7 @@
 # S3 In-Flight Revocation — report
 
 - Date: 2026-11-14
-- Status: only t=0 revocation prevents execution
+- Status: in-flight revocation cancels before applying the plan
 - Runner: `cargo run --locked -q -p poie-viability --bin poie-revocation-boundary`
 - Output: [expected.txt](expected.txt)
 
@@ -10,26 +10,32 @@
 ```text
 revoke_at_s	executed	survived_s	blocked_by	receipts
 0	false	0	approval_revoked	0
-1	true	86400	none	1
-10799	true	86400	none	1
+1	false	0	approval_revoked_mid_plan:pump-p1: revoke 1s during 10800s plan	0
+10799	false	0	approval_revoked_mid_plan:pump-p1: revoke 10799s during 10800s plan	0
 10800	true	86400	none	1
 ```
 
 ## 2. Findings
 
-- Revoking at t=0 prevents the plan: no execution and no receipt.
-- Revoking at t=1 s or later does not stop the plan that started at t=0; the run
-  still executes and produces a receipt.
-- The simulation applies the plan atomically at the decision point and checks
-  revocation only at loop boundaries, so an in-flight plan is not cancelled.
+- A revocation at t=0 is rejected before execution.
+- A revocation strictly inside the 3 h plan now cancels the plan before any
+  effect: no execution and no receipt.
+- A revocation exactly at the plan end (10800 s) does not cancel; the plan
+  completes and produces a receipt.
 
-## 3. Significance
+## 3. Fix
 
-- This distinguishes two revocation semantics: "blocks future proposals" vs
-  "cancels in-flight execution". The current model implements the former.
-- It is a concrete gap for S3: cancellation during execution is not modeled.
+`recover_service` now checks `revoke_at_s` against `[now, now + plan_duration)`
+after approval and before applying the plan. A mid-plan revocation returns
+`approval_revoked_mid_plan:<asset>`.
 
-## 4. Limits
+## 4. Significance
 
-- One plan/policy; no mid-plan cancellation model.
-- Model-level units.
+- This closes the earlier gap where revocation only affected future proposals.
+- The boundary is half-open: revoke at completion time is allowed; strictly
+  before completion cancels.
+
+## 5. Limits
+
+- Cancellation is atomic before any plan effect; no partial execution rollback.
+- One plan/policy; model-level units.
