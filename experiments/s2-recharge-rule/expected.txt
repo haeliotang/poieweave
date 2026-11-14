@@ -1,4 +1,4 @@
-recharge_kwh	average_kw	first_energy_limited_load_kw
-10	1.25	1.3
-20	2.50	2.6
-40	5.00	5.1
+recharge_kwh	average_kw	first_energy_limited_load_kw	margin_kw
+10	1.25	1.3	0.05
+20	2.50	2.6	0.10
+40	5.00	5.1	0.10

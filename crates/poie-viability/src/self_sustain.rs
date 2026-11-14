@@ -63,6 +63,22 @@ impl RegenerativeCapacityMetric {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct RechargeBoundary {
+    pub average_recharge_kw: f64,
+    pub threshold_load_kw: f64,
+}
+
+impl RechargeBoundary {
+    pub fn margin_kw(&self) -> f64 {
+        self.threshold_load_kw - self.average_recharge_kw
+    }
+
+    pub fn load_is_sustainable(&self, load_kw: f64) -> bool {
+        load_kw <= self.average_recharge_kw
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -86,5 +102,12 @@ mod tests {
         let capacity =
             RegenerativeCapacityMetric { baseline_seconds: 40.0 * 86400.0, regenerated_seconds: 60.0 * 86400.0 };
         assert!((capacity.delta_days() - 20.0).abs() < 1e-9);
+    }
+    #[test]
+    fn recharge_boundary_reports_margin_and_sustainability() {
+        let boundary = RechargeBoundary { average_recharge_kw: 2.5, threshold_load_kw: 2.6 };
+        assert!((boundary.margin_kw() - 0.1).abs() < 1e-9);
+        assert!(boundary.load_is_sustainable(2.5));
+        assert!(!boundary.load_is_sustainable(2.6));
     }
 }
