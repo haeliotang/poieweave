@@ -15,7 +15,7 @@
 | S3 | `poie.recovery-certificate/1` | `a006ed1f57273efb` | 2 receipts; approved 8 h lease |
 | S3-multi | `poie.multi-recovery-certificate/1` | `a399132eb44e7e7e` |  |
 | S4 | `poie.s4-certificate/1` | `0413d9a9c7c47d09` | cases=112 matched=112 mismatched=0; plans=26 verified=26 |
-| S4-approval | `poie.approval-certificate/1` | `74b214e10a9dcf8b` |  |
+| S4-approval | `poie.approval-certificate/1` | `dcb612de34e30d7c` |  |
 | S3-concurrency | `poie.concurrency-certificate/1` | `d95134d6c2f170e8` |  |
 | S4-independent | `poie.independent-certificate/1` | `cf34ff2e56f86ab2` |  |
 

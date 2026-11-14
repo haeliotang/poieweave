@@ -64,7 +64,7 @@
       "layer": "S4-approval",
       "path": "experiments/certificate-s4-approval/certificate.json",
       "schema": "poie.approval-certificate/1",
-      "sha256": "74b214e10a9dcf8b334132711726d1aafd1ca48942fdcb43ea572b1e9b52f267"
+      "sha256": "dcb612de34e30d7c51752bd25f18a7620005fc2567cb3233da23491482b5f846"
     },
     {
       "layer": "S3-concurrency",

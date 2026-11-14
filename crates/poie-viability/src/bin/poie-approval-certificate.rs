@@ -8,8 +8,8 @@ use std::process::ExitCode;
 
 use poie_ontology::model::Model;
 use poie_viability::survival::{
-    simulate_recovery_with_denial, simulate_recovery_with_policy, simulate_recovery_with_revocation, ApprovalDecision,
-    FailureEvent, RecoveryPolicy,
+    simulate_recovery_with_approval_schedule, simulate_recovery_with_denial, simulate_recovery_with_policy,
+    simulate_recovery_with_revocation, ApprovalDecision, FailureEvent, RecoveryPolicy,
 };
 
 fn root() -> PathBuf {
@@ -60,7 +60,52 @@ fn main() -> ExitCode {
             "blocked_by": blocked,
         }));
     }
+    let schedule_events = vec![
+        FailureEvent { at_s: 10.0 * 86_400.0, asset: "pump-p1".into() },
+        FailureEvent { at_s: 20.0 * 86_400.0, asset: "pump-p1".into() },
+    ];
+    let schedule_policy =
+        RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+    let approved_all = simulate_recovery_with_policy(
+        &model,
+        "potable-water",
+        30.0 * 86_400.0,
+        &schedule_events,
+        schedule_policy.clone(),
+    )
+    .unwrap();
+    let all_receipts = approved_all.log.iter().filter(|entry| entry.receipt.is_some()).count();
+    let all_blocked =
+        approved_all.log.iter().find_map(|entry| entry.blocked_by.clone()).unwrap_or_else(|| "none".into());
+    let schedule = vec![(0.0, ApprovalDecision::Approved), (20.0 * 86_400.0, ApprovalDecision::Rejected)];
+    let rejected = simulate_recovery_with_approval_schedule(
+        &model,
+        "potable-water",
+        30.0 * 86_400.0,
+        &schedule_events,
+        schedule_policy,
+        &schedule,
+    )
+    .unwrap();
+    let rejected_receipts = rejected.log.iter().filter(|entry| entry.receipt.is_some()).count();
+    let rejected_blocked =
+        rejected.log.iter().find_map(|entry| entry.blocked_by.clone()).unwrap_or_else(|| "none".into());
+    let schedule_rows = vec![
+        serde_json::json!({
+            "name": "approved-all",
+            "receipts": all_receipts,
+            "survived_days": approved_all.survived_s / 86_400.0,
+            "blocked_by": all_blocked,
+        }),
+        serde_json::json!({
+            "name": "reject-day20",
+            "receipts": rejected_receipts,
+            "survived_days": rejected.survived_s / 86_400.0,
+            "blocked_by": rejected_blocked,
+        }),
+    ];
     let certificate = serde_json::json!({
+        "schedule_cases": schedule_rows,
         "schema": "poie.approval-certificate/1",
         "plan_duration_s": 10800.0,
         "cases": rows,

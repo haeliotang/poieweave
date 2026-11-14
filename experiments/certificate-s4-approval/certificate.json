@@ -73,5 +73,19 @@
   ],
   "claim_scope": "model/simulation approval semantics only; no physical authority claim",
   "plan_duration_s": 10800.0,
+  "schedule_cases": [
+    {
+      "blocked_by": "none",
+      "name": "approved-all",
+      "receipts": 3,
+      "survived_days": 30.0
+    },
+    {
+      "blocked_by": "approval_rejected:pump-p1",
+      "name": "reject-day20",
+      "receipts": 2,
+      "survived_days": 20.0
+    }
+  ],
   "schema": "poie.approval-certificate/1"
 }
