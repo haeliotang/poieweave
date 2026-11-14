@@ -1,0 +1,4 @@
+charge_kw	first_energy_limited_load_kw
+3	2.6
+10	2.6
+30	2.6
