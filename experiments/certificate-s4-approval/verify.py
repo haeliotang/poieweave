@@ -48,12 +48,14 @@ def main(path: str) -> int:
         if prefix != "none" and not blocked.startswith(prefix):
             problems.append(f"{name}: reason")
     schedule = certificate.get("schedule_cases", [])
-    if len(schedule) != 2:
+    if len(schedule) != 4:
         problems.append("schedule count")
     else:
         expected = [
             ("approved-all", 3, 30.0, "none"),
             ("reject-day20", 2, 20.0, "approval_rejected:pump-p1"),
+            ("multi-approved-all", 3, 30.0, "none"),
+            ("multi-reject-day20", 2, 20.0, "potable-water:approval_rejected:pump-p1"),
         ]
         for row, (name, receipts, days, blocked) in zip(schedule, expected):
             if (
