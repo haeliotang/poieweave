@@ -1,35 +1,37 @@
 # S3 Time Semantics — report
 
 - Date: 2026-11-14
-- Status: event-driven repair advances the clock; instantaneous does not
+- Status: dense failures expose timing; sparse horizons are unchanged
 - Runner: `cargo run --locked -q -p poie-viability --bin poie-time-semantics`
 - Output: [expected.txt](expected.txt)
 
 ## 1. Result
 
 ```text
-mode	event_times_h	survived_days
-instant-repair	[0.0, 1.0]	1
-event-driven	[3.0, 6.0]	1
+case	load_kw	mode	event_times_h	survived_days
+dense	0.0	instant-repair	[0.0, 1.0]	1
+dense	0.0	event-driven	[3.0, 6.0]	1
+sparse	0.0	instant-repair	-	60
+sparse	0.0	event-driven	-	60
+sparse	2.6	instant-repair	-	16
+sparse	2.6	event-driven	-	16
 ```
 
 ## 2. Findings
 
-- The original loop processes the two failures at 0 h and 1 h; the applied 3 h
-  repair does not move the clock.
-- The new event-driven loop advances by 3 h per repair: the first event is
-  deferred to 3 h and the second to 6 h.
-- Both survive the 1-day horizon in this scenario; the difference is timing, not
-  this horizon.
+- Dense failures: the old loop processes at 0/1 h, the event-driven loop at
+  3/6 h, because each 3 h repair advances the clock.
+- Sparse 10-day failures: both semantics give 60 days at zero load and 16 days at
+  2.6 kW; the repair overhead is too small to change the horizon.
+- Time semantics therefore changes event order/timing first; horizon changes
+  require repairs dense enough to consume a meaningful fraction of the horizon.
 
 ## 3. Significance
 
-- This closes the `s3-event-during-repair` gap in a separate function without
-  changing existing horizon results.
-- It provides a concrete target for migrating survival runs to event-driven
-  semantics.
+- The event-driven function is a drop-in alternative for later migration.
+- It shows why the earlier boundary results remain stable for sparse schedules.
 
 ## 4. Limits
 
-- One scenario; no scheduler/preemption.
+- One dense and one sparse schedule; no scheduler/preemption.
 - Existing `simulate_*_with_load` functions are unchanged.
