@@ -39,6 +39,15 @@ def main(path: str) -> int:
         ("two-robots", False),
     ]:
         problems.append("layouts")
+    sweep = certificate.get("robot_sweep", {})
+    sweep_rows = sweep.get("rows", [])
+    expected = [(1, 25200.0, False), (2, 14400.0, True), (3, 10800.0, True)]
+    if len(sweep_rows) != 3:
+        problems.append("robot sweep count")
+    else:
+        for row, (robots, makespan, meets) in zip(sweep_rows, expected):
+            if row.get("robots") != robots or row.get("makespan_s") != makespan or row.get("meets") != meets:
+                problems.append(f"robot sweep {robots}")
     print("certificate=ok" if not problems else "certificate=failed")
     for problem in problems:
         print(problem)

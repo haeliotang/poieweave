@@ -82,9 +82,31 @@ fn main() -> ExitCode {
             "parallel_meets": parallel_s <= deadline_s,
         }));
     }
+    let repairs = [3.0_f64 * 3600.0, 2.0 * 3600.0, 2.0 * 3600.0];
+    let sweep_deadline_s = 4.0 * 3600.0;
+    let robot_sweep: Vec<serde_json::Value> = (1..=3)
+        .map(|robots| {
+            let mut free = vec![0.0_f64; robots];
+            for repair in repairs {
+                let (index, _) = free.iter().enumerate().min_by(|left, right| left.1.total_cmp(right.1)).unwrap();
+                free[index] += repair;
+            }
+            let makespan = free.iter().copied().fold(0.0_f64, f64::max);
+            serde_json::json!({
+                "robots": robots,
+                "makespan_s": makespan,
+                "meets": makespan <= sweep_deadline_s,
+            })
+        })
+        .collect();
     let certificate = serde_json::json!({
         "schema": "poie.concurrency-certificate/1",
         "rows": rows,
+        "robot_sweep": {
+            "repairs_s": repairs,
+            "deadline_s": sweep_deadline_s,
+            "rows": robot_sweep,
+        },
         "claim_scope": "model/simulation scheduling observation only; no hardware authority claim",
     });
     println!("{}", serde_json::to_string_pretty(&certificate).expect("certificate JSON"));
