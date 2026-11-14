@@ -683,6 +683,30 @@ pub fn simulate_recovery_with_policy(
     events: &[FailureEvent],
     policy: RecoveryPolicy,
 ) -> Result<RecoveryReport, EnvelopeError> {
+    simulate_recovery_inner(model, service_id, horizon_s, events, policy, None)
+}
+
+/// S3: recovery with a revocation deadline. Once `revoke_at_s` is reached, no
+/// further repair is applied; the loop records `approval_revoked` and stops.
+pub fn simulate_recovery_with_revocation(
+    model: &Model,
+    service_id: &str,
+    horizon_s: f64,
+    events: &[FailureEvent],
+    policy: RecoveryPolicy,
+    revoke_at_s: f64,
+) -> Result<RecoveryReport, EnvelopeError> {
+    simulate_recovery_inner(model, service_id, horizon_s, events, policy, Some(revoke_at_s))
+}
+
+fn simulate_recovery_inner(
+    model: &Model,
+    service_id: &str,
+    horizon_s: f64,
+    events: &[FailureEvent],
+    policy: RecoveryPolicy,
+    revoke_at_s: Option<f64>,
+) -> Result<RecoveryReport, EnvelopeError> {
     let Some(service) = model.services.get(service_id) else {
         return Err(EnvelopeError(format!("unknown service {service_id}")));
     };
@@ -693,6 +717,20 @@ pub fn simulate_recovery_with_policy(
     let approval = approval_label(policy.decision);
 
     let initial_before = inventory.clone();
+    if revoke_at_s.is_some_and(|revoke| now >= revoke) {
+        log.push(RecoveryLogEntry {
+            at_s: now,
+            failed: None,
+            repaired: Vec::new(),
+            approved: false,
+            approval: Some(approval.clone()),
+            plan_digests: Vec::new(),
+            receipt: None,
+            verified: false,
+            blocked_by: Some("approval_revoked".into()),
+        });
+        return Ok(RecoveryReport { service: service.id.clone(), horizon_s, survived_s: now, log });
+    }
     match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone()) {
         Ok((repaired, plan_digests)) => log.push(RecoveryLogEntry {
             at_s: 0.0,
@@ -740,6 +778,20 @@ pub fn simulate_recovery_with_policy(
             return Err(EnvelopeError(format!("unknown failed asset {}", event.asset)));
         }
         let before = inventory.clone();
+        if revoke_at_s.is_some_and(|revoke| now >= revoke) {
+            log.push(RecoveryLogEntry {
+                at_s: now,
+                failed: Some(event.asset.clone()),
+                repaired: Vec::new(),
+                approved: false,
+                approval: Some(approval.clone()),
+                plan_digests: Vec::new(),
+                receipt: None,
+                verified: false,
+                blocked_by: Some("approval_revoked".into()),
+            });
+            return Ok(RecoveryReport { service: service.id.clone(), horizon_s, survived_s: now, log });
+        }
         match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone()) {
             Ok((repaired, plan_digests)) => log.push(RecoveryLogEntry {
                 at_s: now,
@@ -1494,6 +1546,34 @@ mod tests {
         assert!(report.survived_s < 90.0 * 86400.0);
         assert!(report.log.iter().any(|entry| entry.blocked_by.is_some()));
     }
+    #[test]
+    fn revocation_blocks_further_repairs() {
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+        let events = vec![FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() }];
+        let report = simulate_recovery_with_revocation(
+            &base05(),
+            "potable-water",
+            30.0 * 86400.0,
+            &events,
+            policy,
+            5.0 * 86400.0,
+        )
+        .unwrap();
+        assert_eq!(report.survived_s, 10.0 * 86400.0);
+        assert!(report.log.iter().any(|entry| entry.blocked_by.as_deref() == Some("approval_revoked")));
+    }
+
+    #[test]
+    fn revocation_before_start_blocks_immediately() {
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+        let report =
+            simulate_recovery_with_revocation(&base05(), "potable-water", 30.0 * 86400.0, &[], policy, 0.0).unwrap();
+        assert_eq!(report.survived_s, 0.0);
+        assert!(report.log.iter().any(|entry| entry.blocked_by.as_deref() == Some("approval_revoked")));
+    }
+
     #[test]
     fn multi_service_recovery_repairs_shared_outage() {
         let policy =

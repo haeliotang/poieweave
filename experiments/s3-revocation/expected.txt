@@ -1,0 +1,2 @@
+revoke-day5: survived_days=10.0 blocked=approval_revoked
+revoke-start: survived_days=0.0 blocked=approval_revoked
