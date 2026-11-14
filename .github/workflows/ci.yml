@@ -324,6 +324,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-revocation-boundary > /tmp/s3-revocation-inflight.out
           diff experiments/s3-revocation-inflight/expected.txt /tmp/s3-revocation-inflight.out
           test -f experiments/s3-revocation-inflight/REPORT.md
+      - name: S3 lease renewal (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-lease-renewal > /tmp/s3-lease-renewal.out
+          diff experiments/s3-lease-renewal/expected.txt /tmp/s3-lease-renewal.out
+          test -f experiments/s3-lease-renewal/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
