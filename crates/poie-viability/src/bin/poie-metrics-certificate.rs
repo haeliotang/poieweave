@@ -76,6 +76,14 @@ fn main() -> ExitCode {
             "recharge_30_days": 60,
             "recharge_40_days": 60,
         },
+        "adversarial": {
+            "subsets": 31,
+            "min_days": 0,
+            "minimal_size": 1,
+            "minimal_set": "filter-1",
+            "day0_days": 0,
+            "day10_days": 10,
+        },
         "redundancy": {
             "baseline_days": 60,
             "redundant_pump_days": 90,

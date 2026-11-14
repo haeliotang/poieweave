@@ -23,6 +23,7 @@ certificate=ok
 - Yield sensitivity: 1.0/0.8/0.5 -> 60/60/50 days
 - Redundancy: baseline 60 -> redundant pump 90; shared filter 30 -> restorer 90; shared robot 35 -> restorer 90
 - Energy interventions at 2.6 kW: capacity/charge 16; recharge 20/30/40 kWh -> 16/60/60
+- Adversarial: 31 subsets, minimum 0 days, minimal set filter-1; day-10 failure gives 10 days
 - Recharge boundary: average 2.5 kW, switch 2.6 kW, margin 0.1 kW
 - model-level metric claim scope
 
