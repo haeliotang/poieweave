@@ -1,0 +1,3 @@
+mode	event_times_h	survived_days
+instant-repair	[0.0, 1.0]	1
+event-driven	[3.0, 6.0]	1

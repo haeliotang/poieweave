@@ -261,7 +261,7 @@ pub fn simulate_multi_service_longevity_with_load(
     let mut now = 0.0;
 
     match restore_services(&mut current, &services, 0.0, horizon_s, &mut inventory) {
-        Ok(repaired) => log.push(SurvivalLogEntry {
+        Ok((repaired, _repair_s)) => log.push(SurvivalLogEntry {
             at_s: 0.0,
             failed: None,
             repaired,
@@ -314,7 +314,7 @@ pub fn simulate_multi_service_longevity_with_load(
             return Err(EnvelopeError(format!("unknown failed asset {}", event.asset)));
         }
         match restore_services(&mut current, &services, now, horizon_s, &mut inventory) {
-            Ok(repaired) => log.push(SurvivalLogEntry {
+            Ok((repaired, _repair_s)) => log.push(SurvivalLogEntry {
                 at_s: now,
                 failed: Some(event.asset),
                 repaired,
@@ -365,18 +365,191 @@ pub fn simulate_multi_service_longevity_with_load(
     })
 }
 
+/// S3: like `simulate_multi_service_longevity_with_load`, but a repair's
+/// duration advances the simulation clock before the next event is processed.
+pub fn simulate_multi_service_longevity_event_driven(
+    model: &Model,
+    service_ids: &[&str],
+    horizon_s: f64,
+    events: &[FailureEvent],
+    battery: Option<BatteryLimits>,
+    load_kw: f64,
+) -> Result<SurvivalReport, EnvelopeError> {
+    let mut services = Vec::new();
+    for service_id in service_ids {
+        let Some(service) = model.services.get(*service_id) else {
+            return Err(EnvelopeError(format!("unknown service {service_id}")));
+        };
+        services.push(service);
+    }
+    let service_label = services.iter().map(|service| service.id.as_str()).collect::<Vec<_>>().join(",");
+    if let Some(battery) = battery {
+        let initial_energy = initial_inventory(model).get("electric-energy").copied().unwrap_or(0.0);
+        let capacity_j = battery.capacity_kwh * 3_600_000.0;
+        if initial_energy > capacity_j + 1e-9 {
+            return Err(EnvelopeError(format!(
+                "initial electric-energy {initial_energy:.0} J exceeds battery capacity {capacity_j:.0} J"
+            )));
+        }
+    }
+    let mut current = model.clone();
+    let mut inventory = initial_inventory(model);
+    let mut log = Vec::new();
+    let mut now = 0.0;
+    let (repaired, repair_s) = match restore_services(&mut current, &services, 0.0, horizon_s, &mut inventory) {
+        Ok(result) => result,
+        Err(reason) => {
+            log.push(SurvivalLogEntry {
+                at_s: 0.0,
+                failed: None,
+                repaired: Vec::new(),
+                energy_after: energy(&inventory),
+                blocked_by: Some(reason),
+            });
+            return Ok(SurvivalReport {
+                service: service_label.clone(),
+                horizon_s,
+                survived_s: 0.0,
+                log,
+                final_inventory: inventory,
+            });
+        }
+    };
+    let repair_s = repair_s.min((horizon_s - now).max(0.0));
+    if let Err(offset) = apply_energy_interval(&current, &mut inventory, repair_s, battery, load_kw) {
+        let failed_at = now + offset;
+        log.push(SurvivalLogEntry {
+            at_s: failed_at,
+            failed: None,
+            repaired: Vec::new(),
+            energy_after: energy(&inventory),
+            blocked_by: Some("energy_depleted".into()),
+        });
+        return Ok(SurvivalReport {
+            service: service_label.clone(),
+            horizon_s,
+            survived_s: failed_at,
+            log,
+            final_inventory: inventory,
+        });
+    }
+    now += repair_s;
+    log.push(SurvivalLogEntry {
+        at_s: 0.0,
+        failed: None,
+        repaired,
+        energy_after: energy(&inventory),
+        blocked_by: None,
+    });
+
+    let mut ordered = events.to_vec();
+    ordered.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
+    for event in ordered {
+        let at = event.at_s.clamp(now, horizon_s);
+        if let Err(offset) = apply_energy_interval(&current, &mut inventory, at - now, battery, load_kw) {
+            let failed_at = now + offset;
+            log.push(SurvivalLogEntry {
+                at_s: failed_at,
+                failed: None,
+                repaired: Vec::new(),
+                energy_after: energy(&inventory),
+                blocked_by: Some("energy_depleted".into()),
+            });
+            return Ok(SurvivalReport {
+                service: service_label.clone(),
+                horizon_s,
+                survived_s: failed_at,
+                log,
+                final_inventory: inventory,
+            });
+        }
+        now = at;
+        if let Some(asset) = current.assets.get_mut(&event.asset) {
+            asset.status = AssetStatus::Failed;
+        } else {
+            return Err(EnvelopeError(format!("unknown failed asset {}", event.asset)));
+        }
+        let (repaired, repair_s) = match restore_services(&mut current, &services, now, horizon_s, &mut inventory) {
+            Ok(result) => result,
+            Err(reason) => {
+                log.push(SurvivalLogEntry {
+                    at_s: now,
+                    failed: Some(event.asset),
+                    repaired: Vec::new(),
+                    energy_after: energy(&inventory),
+                    blocked_by: Some(reason),
+                });
+                return Ok(SurvivalReport {
+                    service: service_label.clone(),
+                    horizon_s,
+                    survived_s: now,
+                    log,
+                    final_inventory: inventory,
+                });
+            }
+        };
+        let repair_s = repair_s.min((horizon_s - now).max(0.0));
+        if let Err(offset) = apply_energy_interval(&current, &mut inventory, repair_s, battery, load_kw) {
+            let failed_at = now + offset;
+            log.push(SurvivalLogEntry {
+                at_s: failed_at,
+                failed: Some(event.asset),
+                repaired: Vec::new(),
+                energy_after: energy(&inventory),
+                blocked_by: Some("energy_depleted".into()),
+            });
+            return Ok(SurvivalReport {
+                service: service_label.clone(),
+                horizon_s,
+                survived_s: failed_at,
+                log,
+                final_inventory: inventory,
+            });
+        }
+        now += repair_s;
+        log.push(SurvivalLogEntry {
+            at_s: at,
+            failed: Some(event.asset),
+            repaired,
+            energy_after: energy(&inventory),
+            blocked_by: None,
+        });
+    }
+    if let Err(offset) = apply_energy_interval(&current, &mut inventory, horizon_s - now, battery, load_kw) {
+        let failed_at = now + offset;
+        log.push(SurvivalLogEntry {
+            at_s: failed_at,
+            failed: None,
+            repaired: Vec::new(),
+            energy_after: energy(&inventory),
+            blocked_by: Some("energy_depleted".into()),
+        });
+        return Ok(SurvivalReport {
+            service: service_label.clone(),
+            horizon_s,
+            survived_s: failed_at,
+            log,
+            final_inventory: inventory,
+        });
+    }
+    Ok(SurvivalReport { service: service_label, horizon_s, survived_s: horizon_s, log, final_inventory: inventory })
+}
+
 fn restore_services(
     model: &mut Model,
     services: &[&Service],
     now_s: f64,
     horizon_s: f64,
     inventory: &mut BTreeMap<String, f64>,
-) -> Result<Vec<String>, String> {
+) -> Result<(Vec<String>, f64), String> {
     let mut repaired = Vec::new();
+    let mut total_s = 0.0;
     for service in services {
-        repaired.extend(restore_service(model, service, now_s, horizon_s, inventory)?);
+        let (next_repaired, next_s) = restore_service(model, service, now_s, horizon_s, inventory)?;
+        repaired.extend(next_repaired);
+        total_s += next_s;
     }
-    Ok(repaired)
+    Ok((repaired, total_s))
 }
 
 fn restore_service(
@@ -385,14 +558,15 @@ fn restore_service(
     now_s: f64,
     horizon_s: f64,
     inventory: &mut BTreeMap<String, f64>,
-) -> Result<Vec<String>, String> {
+) -> Result<(Vec<String>, f64), String> {
     let remaining = (horizon_s - now_s).max(0.0);
     let mut repaired = Vec::new();
+    let mut total_s = 0.0;
     for asset in &service.requires {
         if model.assets.get(asset).is_some_and(|item| item.status == AssetStatus::Available) {
             continue;
         }
-        repair_one(model, asset, remaining, inventory, &mut repaired)?;
+        total_s += repair_one(model, asset, remaining, inventory, &mut repaired)?;
     }
     if !service.requires_any.is_empty() {
         let already_available = service
@@ -401,11 +575,13 @@ fn restore_service(
             .any(|asset| model.assets.get(asset).is_some_and(|item| item.status == AssetStatus::Available));
         if !already_available {
             let mut best: Option<String> = None;
+            let mut alternative_s = 0.0;
             for asset in &service.requires_any {
                 let snapshot = (model.clone(), inventory.clone());
                 match repair_one(model, asset, remaining, inventory, &mut Vec::new()) {
-                    Ok(()) => {
+                    Ok(duration_s) => {
                         best = Some(asset.clone());
+                        alternative_s = duration_s;
                         break;
                     }
                     Err(reason) => {
@@ -418,12 +594,15 @@ fn restore_service(
                 }
             }
             match best {
-                Some(asset) if !asset.starts_with("blocked:") => repaired.push(asset),
+                Some(asset) if !asset.starts_with("blocked:") => {
+                    repaired.push(asset);
+                    total_s += alternative_s;
+                }
                 _ => return Err(best.unwrap_or_else(|| "no alternative service asset".into())),
             }
         }
     }
-    Ok(repaired)
+    Ok((repaired, total_s))
 }
 
 fn repair_one(
@@ -432,7 +611,7 @@ fn repair_one(
     remaining_s: f64,
     inventory: &mut BTreeMap<String, f64>,
     repaired: &mut Vec<String>,
-) -> Result<(), String> {
+) -> Result<f64, String> {
     let with_inventory = model_with_inventory(model, inventory);
     match analyze(&with_inventory, asset, remaining_s) {
         ClosureOutcome::Restorable(plan) => {
@@ -445,7 +624,7 @@ fn repair_one(
             }
             *inventory = plan.remaining_inventory;
             repaired.push(asset.to_string());
-            Ok(())
+            Ok(plan.total_duration_s)
         }
         ClosureOutcome::Blocked(blocked) => {
             Err(blocked.reasons.first().map(ToString::to_string).unwrap_or_else(|| "blocked".into()))
@@ -2030,5 +2209,26 @@ mod tests {
                 .unwrap();
         assert_eq!(report.survived_s, 10.0 * 86_400.0);
         assert!(report.log.iter().any(|entry| entry.blocked_by.as_deref() == Some("approval_denied_at_event:pump-p1")));
+    }
+    #[test]
+    fn event_driven_repair_advances_the_clock() {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
+        let events = vec![
+            FailureEvent { at_s: 0.0, asset: "pump-p1".into() },
+            FailureEvent { at_s: 3600.0, asset: "pump-p1".into() },
+        ];
+        let report = simulate_multi_service_longevity_event_driven(
+            &model,
+            &["potable-water", "workshop-operability"],
+            86_400.0,
+            &events,
+            Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
+            0.0,
+        )
+        .unwrap();
+        let times: Vec<f64> =
+            report.log.iter().filter(|entry| entry.failed.is_some()).map(|entry| entry.at_s / 3600.0).collect();
+        assert_eq!(times, vec![3.0, 6.0]);
     }
 }
