@@ -1,0 +1,3 @@
+case	nut_stock	outcome	detail
+no-spare	0	blocked	cycle:asset:lathe-1
+one-spare	1	restorable	7200s
