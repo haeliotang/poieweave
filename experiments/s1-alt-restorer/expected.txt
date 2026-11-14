@@ -1,0 +1,3 @@
+case	alt_part	outcome	detail
+cycle-only	0	blocked	cycle:asset:lathe-1
+alt-unblocked	1	restorable	14400s
