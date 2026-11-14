@@ -27,6 +27,8 @@ certificate=ok
 - Resupply: delivery interval 10/20/30/60 days -> 60/50/40/30-day horizon
 - Capability gap: with insert resupply every 10 days the worst subset is still
   filter-1 at 0 days; material resupply cannot fix a missing repair capability
+- Effect ordering: baseline 12/31 days (instant/advanced) vs redundant pump 90;
+  redundancy dominates repair-time semantics
 - Recharge boundary: average 2.5 kW, switch 2.6 kW, margin 0.1 kW
 - model-level metric claim scope
 

@@ -47,6 +47,13 @@ def main(path: str) -> int:
     }
     if any(energy_interventions.get(key) != value for key, value in expected_energy.items()):
         problems.append("energy interventions")
+    redundancy = certificate.get("redundancy_time", {})
+    if not (
+        redundancy.get("baseline_advanced_days", 0) > redundancy.get("baseline_instant_days", 999)
+        and redundancy.get("redundant_days", 0) > redundancy.get("baseline_advanced_days", 999)
+        and redundancy.get("redundant_days") == 90
+    ):
+        problems.append("redundancy time")
     gap = certificate.get("adversarial_resupply", {})
     if gap.get("no_supply_min_days") != gap.get("with_supply_min_days") or gap.get("minimal_set") != "filter-1":
         problems.append("adversarial resupply")

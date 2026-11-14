@@ -55,6 +55,11 @@
     "shared_filter_days": 30,
     "shared_robot_days": 35
   },
+  "redundancy_time": {
+    "baseline_advanced_days": 31,
+    "baseline_instant_days": 12,
+    "redundant_days": 90
+  },
   "regenerative_capacity_days": 20.0,
   "resupply": {
     "interval_days": [
