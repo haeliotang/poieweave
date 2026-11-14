@@ -33,6 +33,7 @@ fn main() -> ExitCode {
         ("grease", "experiments/s4-grease-model/expected.txt"),
         ("concurrency", "experiments/s4-concurrency-model/expected.txt"),
         ("time", "experiments/s4-time-model/expected.txt"),
+        ("approval-schedule", "experiments/s4-approval-schedule-model/expected.txt"),
     ];
     let mut rows = Vec::new();
     for (name, relative) in checks {
