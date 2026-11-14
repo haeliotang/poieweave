@@ -37,6 +37,16 @@ def main(path: str) -> int:
     sharpening = certificate.get("insert_sharpening", {})
     if sharpening.get("baseline_days") != 40 or sharpening.get("with_sharpening_days") != 60 or sharpening.get("gain_days") != 20:
         problems.append("insert sharpening")
+    energy_interventions = certificate.get("energy_interventions", {})
+    expected_energy = {
+        "load_kw": 2.6,
+        "capacity_charge_days": 16,
+        "recharge_20_days": 16,
+        "recharge_30_days": 60,
+        "recharge_40_days": 60,
+    }
+    if any(energy_interventions.get(key) != value for key, value in expected_energy.items()):
+        problems.append("energy interventions")
     redundancy = certificate.get("redundancy", {})
     expected_redundancy = {
         "baseline_days": 60,
