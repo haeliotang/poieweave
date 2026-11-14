@@ -214,6 +214,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-recharge-bound > /tmp/s2-recharge-bound.out
           diff experiments/s2-recharge-bound/expected.txt /tmp/s2-recharge-bound.out
           test -f experiments/s2-recharge-bound/REPORT.md
+      - name: S2 recharge rule (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-recharge-rule > /tmp/s2-recharge-rule.out
+          diff experiments/s2-recharge-rule/expected.txt /tmp/s2-recharge-rule.out
+          test -f experiments/s2-recharge-rule/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
