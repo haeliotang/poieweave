@@ -28,6 +28,13 @@ def main(path: str) -> int:
     for row in certificate.get("sparse", []):
         if row.get("instant_days") != row.get("event_driven_days"):
             problems.append("sparse")
+    adversarial = certificate.get("adversarial", {})
+    if adversarial.get("subsets") != 31:
+        problems.append("adversarial subsets")
+    if adversarial.get("instant_min_days") != 0:
+        problems.append("adversarial instant")
+    if adversarial.get("advanced_min_days", 0) <= adversarial.get("instant_min_days", 0):
+        problems.append("adversarial advanced")
     deadline = certificate.get("deadline", {})
     if deadline.get("instant_complete") != deadline.get("failure_day"):
         problems.append("deadline instant")

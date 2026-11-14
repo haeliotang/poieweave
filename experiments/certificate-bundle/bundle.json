@@ -40,7 +40,7 @@
       "layer": "S2-time",
       "path": "experiments/certificate-s2-time/certificate.json",
       "schema": "poie.time-certificate/1",
-      "sha256": "88b34fcbb13dd5c2b3b9cf480a78f7d8be96db12f7a6fbbea2fbe91570316b6c"
+      "sha256": "c21ce7f9914ee83a6319a8f0156d4ff4b7a56d2c4933fe2075c364ae1520183e"
     },
     {
       "layer": "S3",

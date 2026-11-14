@@ -25,6 +25,8 @@ tamper=detected
 - Regeneration horizons (Base-05/08) are identical under both semantics at the
   nominal repair duration, but with 5-day repairs and dense failures they shift
   (Base-05 8/12/20 -> 20/20/20; Base-08 12/18/30 -> 31/31/31).
+- The adversarial minimum over 31 subsets rises from 0 to 5 days with
+  clock-advanced repair.
 
 ## 3. Significance
 
