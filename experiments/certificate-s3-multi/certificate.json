@@ -1,0 +1,119 @@
+{
+  "approval": {
+    "decision": "approved",
+    "lease_s": 28800.0
+  },
+  "claim_scope": "isolated simulation only; multi-service recovery is not a hardware authority",
+  "events": [
+    {
+      "asset": "pump-p1",
+      "at_s": 864000.0
+    },
+    {
+      "asset": "lathe-1",
+      "at_s": 1728000.0
+    }
+  ],
+  "horizon_days": 30,
+  "model": "scenarios/base-05/model.toml",
+  "model_sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150",
+  "receipts": [
+    {
+      "at_s": 0.0,
+      "digest": "d5e43a621b606d6f2bc3dba8f499065ee0b2a2f7a12cb2cfa7066dd40125d5cc",
+      "failed": null,
+      "inventory_after": {
+        "breaker-b1": 1.0,
+        "bronze-bar": 3.0,
+        "cutting-insert": 4.0,
+        "electric-energy": 142200000.0,
+        "grease": 0.95,
+        "lathe-nut": 1.0,
+        "sleeve-p1": 1.0,
+        "worn-sleeve-p1": 1.0
+      },
+      "inventory_before": {
+        "breaker-b1": 1.0,
+        "bronze-bar": 3.0,
+        "cutting-insert": 4.0,
+        "electric-energy": 144000000.0,
+        "grease": 1.0,
+        "lathe-nut": 1.0,
+        "sleeve-p1": 2.0
+      },
+      "plan_digests": [
+        "7e4742b19d617d5cb7b96b4c4dcef25c26a550a8a3365fd72a9bd1bb704b427a"
+      ],
+      "repaired": [
+        "pump-p1"
+      ],
+      "verified": true
+    },
+    {
+      "at_s": 864000.0,
+      "digest": "52e964da81b32f29e391e7c100a1c883ef781b7b9e6c4ed18e5f6d413df7bbda",
+      "failed": "pump-p1",
+      "inventory_after": {
+        "breaker-b1": 1.0,
+        "bronze-bar": 3.0,
+        "cutting-insert": 4.0,
+        "electric-energy": 140400000.0,
+        "grease": 0.8999999999999999,
+        "lathe-nut": 1.0,
+        "worn-sleeve-p1": 2.0
+      },
+      "inventory_before": {
+        "breaker-b1": 1.0,
+        "bronze-bar": 3.0,
+        "cutting-insert": 4.0,
+        "electric-energy": 142200000.0,
+        "grease": 0.95,
+        "lathe-nut": 1.0,
+        "sleeve-p1": 1.0,
+        "worn-sleeve-p1": 1.0
+      },
+      "plan_digests": [
+        "946dc5948aebac9ce6e1287e0e0317bb03e61cae86da9fea891eb01cddef6f8c"
+      ],
+      "repaired": [
+        "pump-p1"
+      ],
+      "verified": true
+    },
+    {
+      "at_s": 1728000.0,
+      "digest": "baaf76781f0fce5289692fcc75cc6253dce0d5253e26b631c8105b71349760a1",
+      "failed": "lathe-1",
+      "inventory_after": {
+        "breaker-b1": 1.0,
+        "broken-lathe-nut": 1.0,
+        "bronze-bar": 3.0,
+        "cutting-insert": 4.0,
+        "electric-energy": 139320000.0,
+        "grease": 0.8999999999999999,
+        "worn-sleeve-p1": 2.0
+      },
+      "inventory_before": {
+        "breaker-b1": 1.0,
+        "bronze-bar": 3.0,
+        "cutting-insert": 4.0,
+        "electric-energy": 140400000.0,
+        "grease": 0.8999999999999999,
+        "lathe-nut": 1.0,
+        "worn-sleeve-p1": 2.0
+      },
+      "plan_digests": [
+        "15d2e5454e6d9803e056234e3d03e322207278b9369b3b22ac7edcad5c58375a"
+      ],
+      "repaired": [
+        "lathe-1"
+      ],
+      "verified": true
+    }
+  ],
+  "schema": "poie.multi-recovery-certificate/1",
+  "services": [
+    "potable-water",
+    "workshop-operability"
+  ]
+}

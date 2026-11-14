@@ -730,3 +730,4 @@ flowchart LR
 | 0.1.234 | 2026-11-14 | Self-Sustaining Core 文档记录 S4 发现的 capability verification 缺口、修复与回归 |
 | 0.1.235 | 2026-11-14 | S3 多服务恢复：共享库存 + 双服务审批闭环；8h lease 30 天，1h lease 阻止；测试 469 |
 | 0.1.236 | 2026-11-14 | S3 多服务多事件：pump day10 + lathe day20，3 receipts，30 天；测试 470 |
+| 0.1.237 | 2026-11-14 | S3 多服务恢复证书：双服务/双事件/3 回执，加入 bundle 八层校验 |
