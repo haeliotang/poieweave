@@ -50,6 +50,9 @@ def main(path: str) -> int:
         problems.append("tool cycle")
     if tool_cycle.get("with_spare_duration_s") != 7200.0:
         problems.append("tool cycle unblock")
+    alternative = certificate.get("alternative_restorer", {})
+    if alternative.get("duration_s") != 14400.0:
+        problems.append("alternative restorer")
     if problems:
         print(f"certificate=FAIL problems={problems}")
         return 1

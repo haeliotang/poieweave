@@ -32,3 +32,9 @@ certificate=ok
 The certificate also records the Base-08 tool-repair cycle: with no lathe-nut
 stock the closure reports `cycle:asset:lathe-1`; with one spare nut the repair is
 restorable in 7200 s. The verifier checks both fields.
+
+## Alternative restorer
+
+The certificate also records the synthetic alternative-restorer bypass: with one
+external part stocked, the lathe is restorable in 14400 s instead of reporting
+the cycle. The verifier checks the duration.

@@ -4,7 +4,7 @@
       "layer": "S1",
       "path": "experiments/certificate-s1-closure/certificate.json",
       "schema": "poie.closure-certificate/1",
-      "sha256": "c2eed4727383807db1114a153d90dd2cd9118fa2d076b9b4adfe39762ac87cb2"
+      "sha256": "5b64c00b3937a47721af86fee8936da58095f00636b44099030ac408431ef205"
     },
     {
       "layer": "S2",
