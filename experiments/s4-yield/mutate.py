@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import itertools
 import json
 import re
 import subprocess
@@ -32,11 +33,11 @@ def resource_doc(raw: dict, resource_id: str) -> str:
     raise ValueError(resource_id)
 
 
-def with_yield(text: str, process_id: str, raw: dict) -> str:
+def with_yield(text: str, process_id: str, raw: dict, fraction: float) -> str:
     target = next(match for match in PROCESS.finditer(text) if f'id = "{process_id}"' in match.group(0))
     outputs = OUTPUTS.search(target.group(0))
     output_resource = RESOURCE.search(outputs.group(1)).group(1)
-    line = f'\nyield = {{ output = "{output_resource}", fraction = 0.5, reject = "yield-reject" }}'
+    line = f'\nyield = {{ output = "{output_resource}", fraction = {fraction}, reject = "yield-reject" }}'
 
     def replace(match: re.Match[str]) -> str:
         block = match.group(0)
@@ -58,9 +59,9 @@ def main(binary: str) -> int:
     total = 0
     matched = 0
     with tempfile.TemporaryDirectory() as directory:
-        for process_id in processes:
-            path = Path(directory) / f"{process_id}.toml"
-            path.write_text(with_yield(text, process_id, raw))
+        for process_id, fraction in itertools.product(processes, [0.9, 0.5]):
+            path = Path(directory) / f"{process_id}__{fraction}.toml"
+            path.write_text(with_yield(text, process_id, raw, fraction))
             output = subprocess.run([binary, str(path)], check=True, capture_output=True, text=True).stdout
             rust = {row["target"]: row["outcome"] for row in json.loads(output)}
             python_model = Model(str(path))
@@ -71,7 +72,7 @@ def main(binary: str) -> int:
                     matched += 1
                 else:
                     print(f"MISMATCH process={process_id} target={target} rust={outcome} python={python}")
-    print(f"mutated_models={len(processes)} cases={total} matched={matched} mismatched={total - matched}")
+    print(f"mutated_models={len(processes) * 2} cases={total} matched={matched} mismatched={total - matched}")
     return 0 if matched == total else 1
 
 

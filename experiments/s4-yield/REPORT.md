@@ -9,13 +9,13 @@
 ## 1. Result
 
 ```text
-mutated_models=7 cases=63 matched=63 mismatched=0
+mutated_models=14 cases=126 matched=126 mismatched=0
 ```
 
 ## 2. Findings
 
-- With both implementations applying `yield` (good fraction + reject share),
-  Rust and Python agree on all 63 cases.
+- With both implementations applying `yield` (good fraction + reject share) and
+  repeating sub-unity-yield producers, Rust and Python agree on all 126 cases.
 - Python's solver was extended with `add_outputs` to match the fixed Rust
   closure semantics.
 - The mutation also inserts a reject resource matching each output's unit/mass,
@@ -23,5 +23,5 @@ mutated_models=7 cases=63 matched=63 mismatched=0
 
 ## 3. Limits
 
-- One process at a time; yield fixed at 0.5.
+- One process at a time; yields 0.9 and 0.5.
 - Not a formal equivalence proof.

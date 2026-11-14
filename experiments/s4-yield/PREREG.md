@@ -11,8 +11,8 @@ Do Rust and Python agree once both apply process yield?
 
 ## Method
 
-For each of the 7 processes, add a 0.5 yield on its first output with a
-matching reject resource; compare all 9 target verdicts: 63 cases.
+For each of the 7 processes, add a 0.9 and a 0.5 yield on its first output
+with a matching reject resource; compare all 9 target verdicts: 126 cases.
 
 Prediction: agreement; mismatch investigated.
 

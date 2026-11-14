@@ -1,6 +1,6 @@
 # S4 — Yield Mutations
 
-Each process gets a 0.5 yield; 63/63 verdict agreement.
+Each process gets 0.9 and 0.5 yield variants; 126/126 verdict agreement.
 
 - [PREREG.md](PREREG.md)
 - [REPORT.md](REPORT.md)
