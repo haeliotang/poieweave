@@ -1,0 +1,6 @@
+grease_kg	instant_days	event_driven_days
+0.10	4	10
+0.15	6	16
+0.20	8	21
+0.30	8	21
+0.50	8	21
