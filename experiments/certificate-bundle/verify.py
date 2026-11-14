@@ -32,6 +32,25 @@ def main(path: str, root_arg: str | None = None) -> int:
     if bundle.get("schema") != "poie.certificate-bundle/1":
         problems.append("schema")
     rows = {row.get("layer"): row for row in bundle.get("certificates", [])}
+    model_rows = bundle.get("model_digests", [])
+    if not model_rows:
+        problems.append("model digests")
+    seen_models = set()
+    for row in model_rows:
+        relative = row.get("path")
+        if not isinstance(relative, str) or not relative.startswith("scenarios/") or not relative.endswith("/model.toml"):
+            problems.append("model path")
+            continue
+        if relative in seen_models:
+            problems.append(f"{relative}: duplicate")
+            continue
+        seen_models.add(relative)
+        path = root / relative
+        if not path.is_file():
+            problems.append(f"{relative}: missing")
+            continue
+        if hashlib.sha256(path.read_bytes()).hexdigest() != row.get("sha256"):
+            problems.append(f"{relative}: digest")
     if sorted(rows) != ["S1", "S2", "S2-joint", "S2-metrics", "S2-order", "S2-regen", "S3", "S3-multi", "S4", "S4-approval"]:
         problems.append("layers")
     for layer, (relative, schema) in EXPECTED.items():

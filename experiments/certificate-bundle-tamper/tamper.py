@@ -37,6 +37,7 @@ def main() -> int:
             target = root / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / relative, target)
+        shutil.copytree(ROOT / "scenarios", root / "scenarios")
         clean = subprocess.run([sys.executable, str(VERIFY), str(root / BUNDLE), str(root)], capture_output=True, text=True)
         if clean.returncode != 0 or "bundle=ok" not in clean.stdout:
             print(f"clean bundle failed: {clean.stdout} {clean.stderr}", file=sys.stderr)
