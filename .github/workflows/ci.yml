@@ -299,6 +299,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-redundancy-robot > /tmp/s2-redundancy-robot.out
           diff experiments/s2-redundancy-robot/expected.txt /tmp/s2-redundancy-robot.out
           test -f experiments/s2-redundancy-robot/REPORT.md
+      - name: S2 redundancy under load (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-redundancy-load > /tmp/s2-redundancy-load.out
+          diff experiments/s2-redundancy-load/expected.txt /tmp/s2-redundancy-load.out
+          test -f experiments/s2-redundancy-load/REPORT.md
       - name: S2 filter restorer (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-filter-restorer > /tmp/s2-filter-restorer.out
