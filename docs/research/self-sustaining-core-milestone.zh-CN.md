@@ -46,6 +46,7 @@
 | 修复时长阈值 | ≤1 天不变；2/3/5 天→7/10/16 |
 | 冗余 × 时间 | baseline 12/31 → redundant 90 |
 | 随机对抗 × 时间 | 瞬时 129/200 零天，完成时间 0/200；均值 1.4 vs 9.9 |
+| 延迟随机窗口 | 瞬时 13/200 零天，完成时间 0/200；均值 4.4 vs 14.0 |
 
 限制：无并发调度器；拒绝会停止运行。
 
@@ -77,7 +78,7 @@
 ## 6. 证据包
 
 - 491 tests
-- 205 generated artifacts；367 CI paths
+- 206 generated artifacts；369 CI paths
 - 13 层证书 bundle，绑定 12 个模型 SHA-256
 - 正检：certificate/bundle/summary ok；负检：tamper detected；clean-room ok
 - 17 项证书不变量一键检查
