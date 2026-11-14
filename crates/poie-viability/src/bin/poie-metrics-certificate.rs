@@ -69,6 +69,14 @@ fn main() -> ExitCode {
             "with_sharpening_days": 60,
             "gain_days": 20,
         },
+        "redundancy": {
+            "baseline_days": 60,
+            "redundant_pump_days": 90,
+            "shared_filter_days": 30,
+            "filter_restorer_days": 90,
+            "shared_robot_days": 35,
+            "robot_restorer_days": 90,
+        },
         "yield_sensitivity": {
             "yield_1_0_days": 60,
             "yield_0_8_days": 60,

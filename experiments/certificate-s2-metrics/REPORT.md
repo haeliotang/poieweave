@@ -21,6 +21,7 @@ certificate=ok
 - Regenerative Capacity +20 days
 - Insert sharpening: 2 inserts 40 -> 60 days (+20)
 - Yield sensitivity: 1.0/0.8/0.5 -> 60/60/50 days
+- Redundancy: baseline 60 -> redundant pump 90; shared filter 30 -> restorer 90; shared robot 35 -> restorer 90
 - Recharge boundary: average 2.5 kW, switch 2.6 kW, margin 0.1 kW
 - model-level metric claim scope
 

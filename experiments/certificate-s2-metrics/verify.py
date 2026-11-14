@@ -37,6 +37,17 @@ def main(path: str) -> int:
     sharpening = certificate.get("insert_sharpening", {})
     if sharpening.get("baseline_days") != 40 or sharpening.get("with_sharpening_days") != 60 or sharpening.get("gain_days") != 20:
         problems.append("insert sharpening")
+    redundancy = certificate.get("redundancy", {})
+    expected_redundancy = {
+        "baseline_days": 60,
+        "redundant_pump_days": 90,
+        "shared_filter_days": 30,
+        "filter_restorer_days": 90,
+        "shared_robot_days": 35,
+        "robot_restorer_days": 90,
+    }
+    if any(redundancy.get(key) != value for key, value in expected_redundancy.items()):
+        problems.append("redundancy")
     yield_sensitivity = certificate.get("yield_sensitivity", {})
     if yield_sensitivity.get("yield_1_0_days") != 60 or yield_sensitivity.get("yield_0_8_days") != 60 or yield_sensitivity.get("yield_0_5_days") != 50:
         problems.append("yield sensitivity")

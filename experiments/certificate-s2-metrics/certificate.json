@@ -26,6 +26,14 @@
     "recoverable": 5,
     "total": 10
   },
+  "redundancy": {
+    "baseline_days": 60,
+    "filter_restorer_days": 90,
+    "redundant_pump_days": 90,
+    "robot_restorer_days": 90,
+    "shared_filter_days": 30,
+    "shared_robot_days": 35
+  },
   "regenerative_capacity_days": 20.0,
   "schema": "poie.metrics-certificate/1",
   "yield_sensitivity": {
