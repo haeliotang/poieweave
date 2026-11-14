@@ -64,6 +64,33 @@ S4 的 112 例差分语料一开始在 `bus-1` 上出现 3 个 Python/Rust 不�
 
 这类“发现差异并修正独立实现”的结果，比单纯 PASS 更有研究价值。
 
+### 2.5.1 S4 发现并修复 capability verification 缺口
+
+后续的 capability-verification 变异发现了一个真实语义错误：Rust 的
+`ensure_capability` 只检查 provider 资产是否可用，没有检查 provider 在该
+capability 上的 verification 等级。Python 独立 checker 要求 provider 的
+capability 证据达到 `modeled` 或更好。
+
+初始结果：
+
+```text
+capability=sleeve-replacement target=pump-p1 rust=RESTORABLE python=BLOCKED
+capability=lathe-repair       target=lathe-1  rust=RESTORABLE python=BLOCKED
+45 cases: 43 matched, 2 mismatched
+```
+
+修复方式是新增 `BlockReason::UnverifiedCapability`，在求解 provider 前检查
+`asset.capability_verification(capability) >= min_verification`，并增加回归测试。
+修复后：
+
+```text
+single capability: 45/45
+all 31 non-empty capability subsets: 279/279
+5-seed combined fuzz: 4500/4500
+```
+
+这是 S4 的核心价值：独立实现不是重复跑一遍，而是能发现主实现没有执行的检查。
+
 ### 2.6 证据包与证书
 
 S1–S4 的关键结论已经打包为机器可核查证书：
