@@ -54,6 +54,8 @@
 - 正检：`certificate=ok`、`bundle=ok`、`summary=ok`；负检：`tamper=detected`。
 - 签名：临时密钥 detached signature plumbing；**不是**信任锚或第三方 attestation。
 
+负结果与已修正错误汇总：[negative-results.zh-CN.md](negative-results.zh-CN.md)
+
 ## 5. 明确未完成
 
 - 无真实硬件、工业场地或外部专家；M9/M10 物理验收仍未执行。
