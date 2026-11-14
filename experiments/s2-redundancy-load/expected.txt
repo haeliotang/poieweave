@@ -1,0 +1,7 @@
+mode	load_kw	survived_days	blocked_by
+baseline	2.5	60	cyclic process dependency at turn-sleeve-p1
+baseline	2.6	16	energy_depleted
+baseline	3.0	3	energy_depleted
+redundant-pump	2.5	90	none
+redundant-pump	2.6	17	energy_depleted
+redundant-pump	3.0	3	energy_depleted
