@@ -1,0 +1,7 @@
+worn_stock	bronze_kg	survived_days	blocked_by
+0	3.0	50	missing resource cutting-insert: need 1, have 0.5
+0	6.0	50	missing resource cutting-insert: need 1, have 0.5
+2	3.0	60	cyclic process dependency at turn-sleeve-p1
+2	6.0	70	missing resource cutting-insert: need 1, have 0.5
+4	3.0	60	cyclic process dependency at turn-sleeve-p1
+4	6.0	90	none
