@@ -344,6 +344,12 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-approval-matrix > /tmp/s3-approval-matrix.out
           diff experiments/s3-approval-matrix/expected.txt /tmp/s3-approval-matrix.out
           test -f experiments/s3-approval-matrix/REPORT.md
+      - name: S4 approval gate (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-approval-export > /tmp/s4-approval-gate.json
+          python3 experiments/s4-approval-gate/verify.py < /tmp/s4-approval-gate.json > /tmp/s4-approval-gate.out
+          diff experiments/s4-approval-gate/expected.txt /tmp/s4-approval-gate.out
+          test -f experiments/s4-approval-gate/REPORT.md
       - name: S3 lease renewal (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-lease-renewal > /tmp/s3-lease-renewal.out
