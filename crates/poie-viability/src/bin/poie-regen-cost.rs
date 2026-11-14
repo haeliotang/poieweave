@@ -32,7 +32,7 @@ fn main() -> ExitCode {
     let battery = Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 });
     println!("duration_x\tenergy_x\tsurvived_days\tblocked_by");
     for duration_multiplier in [1.0, 2.0, 4.0] {
-        for energy_multiplier in [1.0, 2.0] {
+        for energy_multiplier in [1.0, 2.0, 100.0] {
             let model = with_cost(base.clone(), duration_multiplier, energy_multiplier);
             let mut events: Vec<FailureEvent> = (1..=8)
                 .map(|index| FailureEvent { at_s: f64::from(index * 10) * 86400.0, asset: "pump-p1".into() })
