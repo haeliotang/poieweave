@@ -1,0 +1,12 @@
+energy_x=1 survived_days=10
+energy_x=10 survived_days=10
+energy_x=20 survived_days=10
+energy_x=30 survived_days=10
+energy_x=40 survived_days=10
+energy_x=50 survived_days=10
+energy_x=60 survived_days=10
+energy_x=70 survived_days=0
+energy_x=80 survived_days=0
+energy_x=90 survived_days=0
+energy_x=100 survived_days=0
+max_safe_x=60 first_blocked_x=70
