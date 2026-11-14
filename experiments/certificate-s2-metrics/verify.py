@@ -34,6 +34,9 @@ def main(path: str) -> int:
         problems.append("coverage")
     if certificate.get("regenerative_capacity_days") != 20.0:
         problems.append("regenerative capacity")
+    sharpening = certificate.get("insert_sharpening", {})
+    if sharpening.get("baseline_days") != 40 or sharpening.get("with_sharpening_days") != 60 or sharpening.get("gain_days") != 20:
+        problems.append("insert sharpening")
     boundary = certificate.get("recharge_boundary", {})
     if boundary.get("average_recharge_kw") != 2.5 or boundary.get("threshold_load_kw") != 2.6 or boundary.get("margin_kw") != 0.1:
         problems.append("recharge boundary")
