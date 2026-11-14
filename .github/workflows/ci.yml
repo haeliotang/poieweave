@@ -144,6 +144,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-regen-event > /tmp/s2-regen-event.out
           diff experiments/s2-regen-event/expected.txt /tmp/s2-regen-event.out
           test -f experiments/s2-regen-event/REPORT.md
+      - name: S2 regeneration with long repairs (Base-05/08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-regen-long > /tmp/s2-regen-long.out
+          diff experiments/s2-regen-long/expected.txt /tmp/s2-regen-long.out
+          test -f experiments/s2-regen-long/REPORT.md
       - name: S2 regeneration horizon (Base-05 vs Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-regen-horizon > /tmp/s2-regeneration-horizon.out
