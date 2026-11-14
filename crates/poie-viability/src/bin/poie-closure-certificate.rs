@@ -67,6 +67,12 @@ fn main() -> ExitCode {
         ClosureOutcome::Restorable(plan) => plan.total_duration_s,
         ClosureOutcome::Blocked(_) => 0.0,
     };
+    let mut both = alternative.clone();
+    both.lots.iter_mut().find(|lot| lot.id == "lot-lathe-nut").unwrap().si = 1.0;
+    let both_duration_s = match analyze(&both, "lathe-1", 24.0 * 3600.0) {
+        ClosureOutcome::Restorable(plan) => plan.total_duration_s,
+        ClosureOutcome::Blocked(_) => 0.0,
+    };
     let certificate = match analyze(&scenario, "lathe-1", 7200.0) {
         ClosureOutcome::Restorable(plan) => serde_json::json!({
             "schema": "poie.closure-certificate/1",
@@ -84,6 +90,11 @@ fn main() -> ExitCode {
             },
             "alternative_restorer": {
                 "duration_s": alternative_duration_s,
+            },
+            "path_choice": {
+                "spare_s": spare_duration_s,
+                "alt_s": alternative_duration_s,
+                "both_s": both_duration_s,
             },
         }),
         ClosureOutcome::Blocked(blocked) => {

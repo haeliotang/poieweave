@@ -38,3 +38,9 @@ restorable in 7200 s. The verifier checks both fields.
 The certificate also records the synthetic alternative-restorer bypass: with one
 external part stocked, the lathe is restorable in 14400 s instead of reporting
 the cycle. The verifier checks the duration.
+
+## Path choice
+
+The certificate records `spare_s=7200`, `alt_s=14400`, `both_s=7200`: with both
+paths available closure keeps the cheaper spare path. The verifier checks the
+ordering.
