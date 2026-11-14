@@ -796,3 +796,4 @@ flowchart LR
 | 0.1.300 | 2026-11-14 | S2 冗余泵：60→90 天，requires_any N+1 移除终点阻塞 |
 | 0.1.301 | 2026-11-14 | S2 冗余 vs 共享 filter：两种模式均 30 天 no restorer |
 | 0.1.302 | 2026-11-14 | S2 冗余 vs 共享维修机器人：30/35 天，均 no restorer robot-m1 |
+| 0.1.303 | 2026-11-14 | S2 filter restorer：30 天 no restorer → 90 天 none |
