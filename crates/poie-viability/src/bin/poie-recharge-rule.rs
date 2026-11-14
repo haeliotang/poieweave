@@ -7,6 +7,7 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use poie_ontology::model::Model;
+use poie_viability::self_sustain::RechargeBoundary;
 use poie_viability::survival::{simulate_multi_service_longevity_with_load, BatteryLimits, FailureEvent};
 
 fn root() -> PathBuf {
@@ -49,12 +50,13 @@ fn first_energy_limited(model: &Model, max_load_tenths: u32) -> f64 {
 fn main() -> ExitCode {
     let root = root();
     let base = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
-    println!("recharge_kwh\taverage_kw\tfirst_energy_limited_load_kw");
+    println!("recharge_kwh\taverage_kw\tfirst_energy_limited_load_kw\tmargin_kw");
     for kwh in [10.0, 20.0, 40.0] {
         let average_kw = kwh / 8.0;
         let model = with_recharge(base.clone(), kwh);
         let threshold = first_energy_limited(&model, 80);
-        println!("{kwh:.0}\t{average_kw:.2}\t{threshold:.1}");
+        let boundary = RechargeBoundary { average_recharge_kw: average_kw, threshold_load_kw: threshold };
+        println!("{kwh:.0}\t{average_kw:.2}\t{threshold:.1}\t{:.2}", boundary.margin_kw());
     }
     ExitCode::SUCCESS
 }
