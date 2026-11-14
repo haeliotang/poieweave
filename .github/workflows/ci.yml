@@ -248,6 +248,13 @@ jobs:
           python3 experiments/certificate-s3-recovery/verify.py /tmp/certificate-s3-recovery.json > /tmp/certificate-s3-recovery.out
           diff experiments/certificate-s3-recovery/expected.txt /tmp/certificate-s3-recovery.out
           test -f experiments/certificate-s3-recovery/REPORT.md
+      - name: Multi-service recovery certificate S3 (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-multi-recovery-certificate > /tmp/certificate-s3-multi.json
+          diff experiments/certificate-s3-multi/certificate.json /tmp/certificate-s3-multi.json
+          python3 experiments/certificate-s3-multi/verify.py /tmp/certificate-s3-multi.json > /tmp/certificate-s3-multi.out
+          diff experiments/certificate-s3-multi/expected.txt /tmp/certificate-s3-multi.out
+          test -f experiments/certificate-s3-multi/REPORT.md
       - name: Closure certificate S1 (Python)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-closure-certificate > /tmp/certificate-s1-closure.json

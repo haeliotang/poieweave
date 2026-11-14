@@ -16,7 +16,7 @@ bundle=ok
 ## 2. What is checked
 
 - bundle schema
-- exact S1/S2/S2-joint/S2-regen/S2-metrics/S3/S4 layer set
+- exact S1/S2/S2-joint/S2-regen/S2-metrics/S3/S3-multi/S4 layer set
 - each certificate path and schema
 - each certificate SHA-256
 - explicit model/simulation claim scope
@@ -34,4 +34,4 @@ summary=ok
 
 - Unsigned bundle; no attestation.
 - Detects content changes, not authorship or physical reality.
-- Seven certificates only.
+- Eight certificates only.
