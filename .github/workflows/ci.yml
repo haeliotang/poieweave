@@ -771,6 +771,8 @@ jobs:
           python3 experiments/certificate-clean-room/clean_room.py > /tmp/certificate-clean-room.out
           diff experiments/certificate-clean-room/expected.txt /tmp/certificate-clean-room.out
           test -f experiments/certificate-clean-room/REPORT.md
+      - name: All certificate invariants
+        run: python3 scripts/check-certificate-invariants.py
           diff experiments/certificate-bundle-tamper/expected.txt /tmp/certificate-bundle-tamper.out
           test -f experiments/certificate-bundle-tamper/REPORT.md
       - name: Certificate bundle summary (Python)
