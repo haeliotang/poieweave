@@ -399,6 +399,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-robot-sweep > /tmp/s3-robot-sweep.out
           diff experiments/s3-robot-sweep/expected.txt /tmp/s3-robot-sweep.out
           test -f experiments/s3-robot-sweep/REPORT.md
+      - name: S3 repair deadline (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-repair-deadline > /tmp/s3-repair-deadline.out
+          diff experiments/s3-repair-deadline/expected.txt /tmp/s3-repair-deadline.out
+          test -f experiments/s3-repair-deadline/REPORT.md
       - name: S2 external resupply deliveries (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-resupply-delivery > /tmp/s2-resupply-delivery.out
