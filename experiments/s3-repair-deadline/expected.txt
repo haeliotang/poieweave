@@ -1,0 +1,2 @@
+repair_days	failure_day	deadline_day	instant_complete	instant_meets	clock_advanced_complete	clock_advanced_meets
+3	10	11	10	true	13	false
