@@ -1,0 +1,4 @@
+mode	insert_stock	survived_days	blocked_by
+one-insert-no-resupply	1	30	missing resource cutting-insert: need 1, have 0
+four-inserts-no-resupply	4	60	cyclic process dependency at turn-sleeve-p1
+one-insert-resupply	1	40	missing resource cutting-insert: need 1, have 0
