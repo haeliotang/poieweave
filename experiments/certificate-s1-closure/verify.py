@@ -53,6 +53,9 @@ def main(path: str) -> int:
     alternative = certificate.get("alternative_restorer", {})
     if alternative.get("duration_s") != 14400.0:
         problems.append("alternative restorer")
+    choice = certificate.get("path_choice", {})
+    if not (choice.get("spare_s") == 7200.0 and choice.get("alt_s") == 14400.0 and choice.get("both_s") == 7200.0):
+        problems.append("path choice")
     if problems:
         print(f"certificate=FAIL problems={problems}")
         return 1
