@@ -784,3 +784,4 @@ flowchart LR
 | 0.1.288 | 2026-11-14 | S2 三耗材前沿：零负载下 energy 20–80 kWh 不 binding，bronze 3/6 kg→60/90+ 天 |
 | 0.1.289 | 2026-11-14 | S2 负载下联合前沿：2 kW bronze 主导 60/90+；3 kW 两者均 3 天 energy_depleted |
 | 0.1.290 | 2026-11-14 | S2 负荷切换点联合前沿：2.5 kW bronze 主导 60/90+；2.6 kW 均 16 天 energy_depleted |
+| 0.1.291 | 2026-11-14 | S2 修磨产率负例：1.0/0.8/0.5 均 60 天，closure/survival 未应用 process_yield |
