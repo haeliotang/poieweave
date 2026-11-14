@@ -47,6 +47,7 @@ fn reason_label(reason: &BlockReason) -> String {
         BlockReason::UnknownDuration(process) => format!("unknown_duration:{process}"),
         BlockReason::HorizonExceeded { .. } => "horizon_exceeded".to_string(),
         BlockReason::UnverifiedProcess { process, .. } => format!("unverified_process:{process}"),
+        BlockReason::UnverifiedCapability { capability, .. } => format!("unverified_capability:{capability}"),
     }
 }
 
