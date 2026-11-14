@@ -159,6 +159,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-approval > /tmp/s3-approval.out
           diff experiments/s3-approval-lease/expected.txt /tmp/s3-approval.out
           test -f experiments/s3-approval-lease/REPORT.md
+      - name: S3 multi-service recovery (Base-05)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-multi-recovery > /tmp/s3-multi-service.out
+          diff experiments/s3-multi-service/expected.txt /tmp/s3-multi-service.out
+          test -f experiments/s3-multi-service/REPORT.md
       - name: S3 approval digest binding (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-approval-digest > /tmp/s3-approval-digest.out
