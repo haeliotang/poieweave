@@ -76,6 +76,11 @@ fn main() -> ExitCode {
             "recharge_30_days": 60,
             "recharge_40_days": 60,
         },
+        "redundancy_time": {
+            "baseline_instant_days": 12,
+            "baseline_advanced_days": 31,
+            "redundant_days": 90,
+        },
         "adversarial_resupply": {
             "subsets": 31,
             "no_supply_min_days": 0,
