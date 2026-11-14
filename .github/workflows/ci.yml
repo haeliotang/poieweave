@@ -447,6 +447,12 @@ jobs:
           python3 experiments/s4-quantity-asset/mutate.py target/debug/poie-model-corpus > /tmp/s4-quantity-asset.out
           diff experiments/s4-quantity-asset/expected.txt /tmp/s4-quantity-asset.out
           test -f experiments/s4-quantity-asset/REPORT.md
+      - name: S4 quantity-ratio mutation corpus (Python)
+        run: |
+          cargo build --locked -q -p poie-viability --bin poie-model-corpus
+          python3 experiments/s4-quantity-ratios/mutate.py target/debug/poie-model-corpus > /tmp/s4-quantity-ratios.out
+          diff experiments/s4-quantity-ratios/expected.txt /tmp/s4-quantity-ratios.out
+          test -f experiments/s4-quantity-ratios/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
