@@ -7,6 +7,12 @@
     "minimal_size": 1,
     "subsets": 31
   },
+  "adversarial_resupply": {
+    "minimal_set": "filter-1",
+    "no_supply_min_days": 0,
+    "subsets": 31,
+    "with_supply_min_days": 0
+  },
   "base05": {
     "model": "scenarios/base-05/model.toml",
     "model_sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150",
