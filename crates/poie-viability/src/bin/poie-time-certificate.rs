@@ -17,6 +17,11 @@ fn main() -> ExitCode {
             {"load_kw": 0.0, "instant_days": 60, "event_driven_days": 60},
             {"load_kw": 2.6, "instant_days": 16, "event_driven_days": 16},
         ],
+        "repair_sweep": {
+            "repair_days": [0.125, 0.5, 1.0, 2.0, 3.0, 5.0],
+            "instant_days": [6, 6, 6, 6, 6, 6],
+            "advanced_days": [6, 6, 6, 7, 10, 16],
+        },
         "adversarial": {
             "subsets": 31,
             "instant_min_days": 0,
