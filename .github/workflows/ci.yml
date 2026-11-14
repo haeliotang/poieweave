@@ -753,6 +753,11 @@ jobs:
       - name: Certificate bundle tamper test (Python)
         run: |
           python3 experiments/certificate-bundle-tamper/tamper.py > /tmp/certificate-bundle-tamper.out
+      - name: Certificate clean-room verification (Python)
+        run: |
+          python3 experiments/certificate-clean-room/clean_room.py > /tmp/certificate-clean-room.out
+          diff experiments/certificate-clean-room/expected.txt /tmp/certificate-clean-room.out
+          test -f experiments/certificate-clean-room/REPORT.md
           diff experiments/certificate-bundle-tamper/expected.txt /tmp/certificate-bundle-tamper.out
           test -f experiments/certificate-bundle-tamper/REPORT.md
       - name: Certificate bundle summary (Python)
