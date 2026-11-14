@@ -1,3 +1,7 @@
-mode	event_times_h	survived_days
-instant-repair	[0.0, 1.0]	1
-event-driven	[3.0, 6.0]	1
+case	load_kw	mode	event_times_h	survived_days
+dense	0.0	instant-repair	[0.0, 1.0]	1
+dense	0.0	event-driven	[3.0, 6.0]	1
+sparse	0.0	instant-repair	-	60
+sparse	0.0	event-driven	-	60
+sparse	2.6	instant-repair	-	16
+sparse	2.6	event-driven	-	16

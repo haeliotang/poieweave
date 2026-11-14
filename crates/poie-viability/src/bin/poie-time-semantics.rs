@@ -20,20 +20,25 @@ fn event_times(report: &poie_viability::survival::SurvivalReport) -> Vec<f64> {
     report.log.iter().filter(|entry| entry.failed.is_some()).map(|entry| entry.at_s / 3600.0).collect()
 }
 
+fn sparse_events() -> Vec<FailureEvent> {
+    (1..=8).map(|index| FailureEvent { at_s: f64::from(index * 10) * 86_400.0, asset: "pump-p1".into() }).collect()
+}
+
 fn main() -> ExitCode {
     let root = root();
     let model = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
-    let events = vec![
+    let battery = Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 });
+    println!("case\tload_kw\tmode\tevent_times_h\tsurvived_days");
+
+    let dense = vec![
         FailureEvent { at_s: 0.0, asset: "pump-p1".into() },
         FailureEvent { at_s: 3600.0, asset: "pump-p1".into() },
     ];
-    let battery = Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 });
-    println!("mode\tevent_times_h\tsurvived_days");
     let old = simulate_multi_service_longevity_with_load(
         &model,
         &["potable-water", "workshop-operability"],
         86_400.0,
-        &events,
+        &dense,
         battery,
         0.0,
     )
@@ -42,12 +47,35 @@ fn main() -> ExitCode {
         &model,
         &["potable-water", "workshop-operability"],
         86_400.0,
-        &events,
+        &dense,
         battery,
         0.0,
     )
     .unwrap();
-    println!("instant-repair\t{:?}\t{:.0}", event_times(&old), old.survived_s / 86400.0);
-    println!("event-driven\t{:?}\t{:.0}", event_times(&new), new.survived_s / 86400.0);
+    println!("dense\t0.0\tinstant-repair\t{:?}\t{:.0}", event_times(&old), old.survived_s / 86400.0);
+    println!("dense\t0.0\tevent-driven\t{:?}\t{:.0}", event_times(&new), new.survived_s / 86400.0);
+
+    for load_kw in [0.0, 2.6] {
+        let old = simulate_multi_service_longevity_with_load(
+            &model,
+            &["potable-water", "workshop-operability"],
+            90.0 * 86_400.0,
+            &sparse_events(),
+            battery,
+            load_kw,
+        )
+        .unwrap();
+        let new = simulate_multi_service_longevity_event_driven(
+            &model,
+            &["potable-water", "workshop-operability"],
+            90.0 * 86_400.0,
+            &sparse_events(),
+            battery,
+            load_kw,
+        )
+        .unwrap();
+        println!("sparse\t{load_kw:.1}\tinstant-repair\t-\t{:.0}", old.survived_s / 86400.0);
+        println!("sparse\t{load_kw:.1}\tevent-driven\t-\t{:.0}", new.survived_s / 86400.0);
+    }
     ExitCode::SUCCESS
 }
