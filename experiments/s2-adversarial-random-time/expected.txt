@@ -1,0 +1,2 @@
+trials	old_zero	new_zero	old_mean	new_mean
+200	129	0	1.4	9.9
