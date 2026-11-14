@@ -1,0 +1,5 @@
+worn_stock	survived_days	blocked_by
+0	50	missing resource cutting-insert: need 1, have 0.5
+2	70	missing resource cutting-insert: need 1, have 0.5
+4	90	none
+8	90	none

@@ -274,6 +274,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-yield-accumulation > /tmp/s2-yield-accumulation.out
           diff experiments/s2-yield-accumulation/expected.txt /tmp/s2-yield-accumulation.out
           test -f experiments/s2-yield-accumulation/REPORT.md
+      - name: S2 worn-insert boundary at 0.5 yield (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-worn-bound > /tmp/s2-worn-bound.out
+          diff experiments/s2-worn-bound/expected.txt /tmp/s2-worn-bound.out
+          test -f experiments/s2-worn-bound/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
