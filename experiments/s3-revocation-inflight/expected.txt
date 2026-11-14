@@ -1,0 +1,5 @@
+revoke_at_s	executed	survived_s	blocked_by	receipts
+0	false	0	approval_revoked	0
+1	true	86400	none	1
+10799	true	86400	none	1
+10800	true	86400	none	1
