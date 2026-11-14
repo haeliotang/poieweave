@@ -1,0 +1,12 @@
+load_kw	survived_days	blocked_by
+2.0	60	cyclic process dependency at turn-sleeve-p1
+2.1	60	cyclic process dependency at turn-sleeve-p1
+2.2	60	cyclic process dependency at turn-sleeve-p1
+2.3	60	cyclic process dependency at turn-sleeve-p1
+2.4	60	cyclic process dependency at turn-sleeve-p1
+2.5	60	cyclic process dependency at turn-sleeve-p1
+2.6	16	energy_depleted
+2.7	8	energy_depleted
+2.8	5	energy_depleted
+2.9	4	energy_depleted
+3.0	3	energy_depleted
