@@ -1,5 +1,7 @@
 # 当前状态快照（2026-11-07 UTC）
 
+研究现状总览：[self-sustaining-core-status.zh-CN.md](../research/self-sustaining-core-status.zh-CN.md)
+
 本页是给发起方/外部评审者的一页式状态；测试计数随代码更新（由 `check-test-matrix.py` 校验），最近一次干净克隆验证提交见 §3。逐项证据与索引见 [stage-gates](stage-gates.zh-CN.md)、[test-matrix](test-matrix.zh-CN.md) 与 [external-actions](external-actions.zh-CN.md)。
 
 ## 0. 版本与发行状态（2026-11-07）
