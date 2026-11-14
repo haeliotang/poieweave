@@ -1,0 +1,4 @@
+recharge_kwh	average_kw	survived_days	blocked_by
+20	2.50	16	energy_depleted
+30	3.75	60	cyclic process dependency at turn-sleeve-p1
+40	5.00	60	cyclic process dependency at turn-sleeve-p1
