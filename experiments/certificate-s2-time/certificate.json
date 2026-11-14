@@ -93,6 +93,13 @@
       3.0
     ]
   },
+  "random_adversarial": {
+    "advanced_mean_days": 9.9,
+    "advanced_zero": 0,
+    "instant_mean_days": 1.4,
+    "instant_zero": 129,
+    "trials": 200
+  },
   "regeneration": {
     "base05_advanced": [
       40,

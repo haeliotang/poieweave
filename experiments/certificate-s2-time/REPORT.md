@@ -31,6 +31,8 @@ tamper=detected
   2/3/5 days while the instantaneous horizon stays at 6.
 - The long-repair energy sweep (0/1/2/2.6/3 kW -> 30/30/30/14/3 days) is
   identical under both semantics.
+- Random adversarial sample: 129/200 zero-day outcomes instantaneously vs 0/200
+  clock-advanced (mean 1.4 vs 9.9 days).
 
 ## 3. Significance
 
