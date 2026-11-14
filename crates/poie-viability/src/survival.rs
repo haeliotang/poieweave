@@ -848,6 +848,30 @@ pub fn simulate_multi_service_recovery_with_policy(
     events: &[FailureEvent],
     policy: RecoveryPolicy,
 ) -> Result<MultiServiceRecoveryReport, EnvelopeError> {
+    simulate_multi_service_recovery_inner(model, service_ids, horizon_s, events, policy, None)
+}
+
+/// S3: multi-service recovery with a revocation deadline. Once revoked, no
+/// further service repair is applied.
+pub fn simulate_multi_service_recovery_with_revocation(
+    model: &Model,
+    service_ids: &[&str],
+    horizon_s: f64,
+    events: &[FailureEvent],
+    policy: RecoveryPolicy,
+    revoke_at_s: f64,
+) -> Result<MultiServiceRecoveryReport, EnvelopeError> {
+    simulate_multi_service_recovery_inner(model, service_ids, horizon_s, events, policy, Some(revoke_at_s))
+}
+
+fn simulate_multi_service_recovery_inner(
+    model: &Model,
+    service_ids: &[&str],
+    horizon_s: f64,
+    events: &[FailureEvent],
+    policy: RecoveryPolicy,
+    revoke_at_s: Option<f64>,
+) -> Result<MultiServiceRecoveryReport, EnvelopeError> {
     let mut services = Vec::new();
     for service_id in service_ids {
         let Some(service) = model.services.get(*service_id) else {
@@ -861,6 +885,25 @@ pub fn simulate_multi_service_recovery_with_policy(
     let approval = approval_label(policy.decision);
 
     let initial_before = inventory.clone();
+    if revoke_at_s.is_some_and(|revoke| 0.0 >= revoke) {
+        log.push(RecoveryLogEntry {
+            at_s: 0.0,
+            failed: None,
+            repaired: Vec::new(),
+            approved: false,
+            approval: Some(approval.clone()),
+            plan_digests: Vec::new(),
+            receipt: None,
+            verified: false,
+            blocked_by: Some("approval_revoked".into()),
+        });
+        return Ok(MultiServiceRecoveryReport {
+            services: services.iter().map(|item| item.id.clone()).collect(),
+            horizon_s,
+            survived_s: 0.0,
+            log,
+        });
+    }
     let mut repaired = Vec::new();
     let mut digests = Vec::new();
     for service in &services {
@@ -913,6 +956,25 @@ pub fn simulate_multi_service_recovery_with_policy(
             return Err(EnvelopeError(format!("unknown failed asset {}", event.asset)));
         }
         let before = inventory.clone();
+        if revoke_at_s.is_some_and(|revoke| now >= revoke) {
+            log.push(RecoveryLogEntry {
+                at_s: now,
+                failed: Some(event.asset.clone()),
+                repaired: Vec::new(),
+                approved: false,
+                approval: Some(approval.clone()),
+                plan_digests: Vec::new(),
+                receipt: None,
+                verified: false,
+                blocked_by: Some("approval_revoked".into()),
+            });
+            return Ok(MultiServiceRecoveryReport {
+                services: services.iter().map(|item| item.id.clone()).collect(),
+                horizon_s,
+                survived_s: now,
+                log,
+            });
+        }
         let mut repaired = Vec::new();
         let mut digests = Vec::new();
         for service in &services {
@@ -1571,6 +1633,24 @@ mod tests {
         let report =
             simulate_recovery_with_revocation(&base05(), "potable-water", 30.0 * 86400.0, &[], policy, 0.0).unwrap();
         assert_eq!(report.survived_s, 0.0);
+        assert!(report.log.iter().any(|entry| entry.blocked_by.as_deref() == Some("approval_revoked")));
+    }
+
+    #[test]
+    fn multi_service_recovery_respects_revocation() {
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+        let events = vec![FailureEvent { at_s: 10.0 * 86400.0, asset: "pump-p1".into() }];
+        let report = simulate_multi_service_recovery_with_revocation(
+            &base05(),
+            &["potable-water", "workshop-operability"],
+            30.0 * 86400.0,
+            &events,
+            policy,
+            5.0 * 86400.0,
+        )
+        .unwrap();
+        assert_eq!(report.survived_s, 10.0 * 86400.0);
         assert!(report.log.iter().any(|entry| entry.blocked_by.as_deref() == Some("approval_revoked")));
     }
 

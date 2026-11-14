@@ -8,7 +8,8 @@ use std::process::ExitCode;
 
 use poie_ontology::model::Model;
 use poie_viability::survival::{
-    simulate_multi_service_recovery_with_policy, ApprovalDecision, FailureEvent, RecoveryPolicy,
+    simulate_multi_service_recovery_with_policy, simulate_multi_service_recovery_with_revocation, ApprovalDecision,
+    FailureEvent, RecoveryPolicy,
 };
 
 fn root() -> PathBuf {
@@ -60,6 +61,23 @@ fn main() -> ExitCode {
         blocked.services.join(","),
         blocked.survived_s / 86400.0,
         blocked.log.iter().filter(|entry| entry.receipt.is_some()).count(),
+    );
+
+    let revoked = simulate_multi_service_recovery_with_revocation(
+        &model,
+        &["potable-water", "workshop-operability"],
+        30.0 * 86400.0,
+        &one_event,
+        RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None },
+        5.0 * 86400.0,
+    )
+    .unwrap();
+    let revoked_reason = revoked.log.iter().find_map(|entry| entry.blocked_by.clone()).unwrap_or_default();
+    println!(
+        "revoked-day5: services={} survived_days={:.1} receipts={} blocked={revoked_reason}",
+        revoked.services.join(","),
+        revoked.survived_s / 86400.0,
+        revoked.log.iter().filter(|entry| entry.receipt.is_some()).count(),
     );
 
     ExitCode::SUCCESS
