@@ -1,0 +1,3 @@
+layout	pump_s	lathe_s	robot_overlap	sequential_s	ideal_parallel_s
+one-robot	10800	7200	true	18000	10800
+two-robots	10800	7200	false	18000	10800
