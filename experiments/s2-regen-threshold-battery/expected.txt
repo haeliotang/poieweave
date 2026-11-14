@@ -1,0 +1,5 @@
+capacity_kwh	max_safe_x	first_blocked_x
+100	60	61
+200	60	61
+300	60	61
+400	60	61
