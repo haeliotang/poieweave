@@ -149,6 +149,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-regen-yield > /tmp/s2-regeneration-yield.out
           diff experiments/s2-regeneration-yield/expected.txt /tmp/s2-regeneration-yield.out
           test -f experiments/s2-regeneration-yield/REPORT.md
+      - name: S2 regeneration yield × interval (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-regen-cross > /tmp/s2-regen-cross.out
+          diff experiments/s2-regen-cross/expected.txt /tmp/s2-regen-cross.out
+          test -f experiments/s2-regen-cross/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
