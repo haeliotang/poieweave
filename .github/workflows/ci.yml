@@ -435,6 +435,12 @@ jobs:
           python3 experiments/s4-capability-subsets/mutate.py target/debug/poie-model-corpus > /tmp/s4-capability-subsets.out
           diff experiments/s4-capability-subsets/expected.txt /tmp/s4-capability-subsets.out
           test -f experiments/s4-capability-subsets/REPORT.md
+      - name: S4 quantity mutation corpus (Python)
+        run: |
+          cargo build --locked -q -p poie-viability --bin poie-model-corpus
+          python3 experiments/s4-quantity-mutations/mutate.py target/debug/poie-model-corpus > /tmp/s4-quantity-mutations.out
+          diff experiments/s4-quantity-mutations/expected.txt /tmp/s4-quantity-mutations.out
+          test -f experiments/s4-quantity-mutations/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
