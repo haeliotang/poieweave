@@ -1,0 +1,61 @@
+{
+  "cases": [
+    {
+      "blocked_by": "approval_required:pump-p1",
+      "decision": "Required",
+      "digest_ok": true,
+      "executed": false,
+      "lease_s": 28800.0,
+      "name": "required",
+      "revoke_at_s": null
+    },
+    {
+      "blocked_by": "approval_rejected:pump-p1",
+      "decision": "Rejected",
+      "digest_ok": true,
+      "executed": false,
+      "lease_s": 28800.0,
+      "name": "rejected",
+      "revoke_at_s": null
+    },
+    {
+      "blocked_by": "approval_lease_expired:pump-p1: need 10800s, lease 3600s",
+      "decision": "Approved",
+      "digest_ok": true,
+      "executed": false,
+      "lease_s": 3600.0,
+      "name": "lease-1h",
+      "revoke_at_s": null
+    },
+    {
+      "blocked_by": "none",
+      "decision": "Approved",
+      "digest_ok": true,
+      "executed": true,
+      "lease_s": 28800.0,
+      "name": "approved-8h",
+      "revoke_at_s": null
+    },
+    {
+      "blocked_by": "approval_digest_mismatch:pump-p1",
+      "decision": "Approved",
+      "digest_ok": false,
+      "executed": false,
+      "lease_s": 28800.0,
+      "name": "wrong-digest",
+      "revoke_at_s": null
+    },
+    {
+      "blocked_by": "approval_revoked",
+      "decision": "Approved",
+      "digest_ok": true,
+      "executed": true,
+      "lease_s": 28800.0,
+      "name": "revoked-day5",
+      "revoke_at_s": 432000.0
+    }
+  ],
+  "claim_scope": "model/simulation approval semantics only; no physical authority claim",
+  "plan_duration_s": 10800.0,
+  "schema": "poie.approval-certificate/1"
+}
