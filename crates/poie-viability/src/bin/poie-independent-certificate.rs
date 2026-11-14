@@ -35,6 +35,7 @@ fn main() -> ExitCode {
         ("time", "experiments/s4-time-model/expected.txt"),
         ("approval-schedule", "experiments/s4-approval-schedule-model/expected.txt"),
         ("tool-cycle", "experiments/s4-tool-cycle-model/expected.txt"),
+        ("path-choice", "experiments/s4-path-choice-model/expected.txt"),
     ];
     let mut rows = Vec::new();
     for (name, relative) in checks {
