@@ -15,5 +15,9 @@
     }
   ],
   "target": "lathe-1",
+  "tool_cycle": {
+    "with_spare_duration_s": 7200.0,
+    "without_spare": "cycle:asset:lathe-1"
+  },
   "total_duration_s": 7200.0
 }

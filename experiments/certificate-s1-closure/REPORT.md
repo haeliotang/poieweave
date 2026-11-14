@@ -26,3 +26,9 @@ certificate=ok
 - One case only.
 - Self-issued, unsigned.
 - No physical repair or hardware evidence.
+
+## Tool cycle
+
+The certificate also records the Base-08 tool-repair cycle: with no lathe-nut
+stock the closure reports `cycle:asset:lathe-1`; with one spare nut the repair is
+restorable in 7200 s. The verifier checks both fields.
