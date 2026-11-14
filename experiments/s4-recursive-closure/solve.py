@@ -138,6 +138,22 @@ class Model:
             if not okay:
                 continue
             add_outputs(process, trial["stock"])
+            runs = 1
+            while trial["stock"].get(resource, 0.0) + 1e-9 < need and runs < 20:
+                before = trial["stock"].get(resource, 0.0)
+                repeated = copy.deepcopy(trial)
+                okay = True
+                for item in process.get("inputs", []):
+                    if not self.try_resource(item["resource"], si(item["quantity"]), repeated, remaining, stack + (key,)):
+                        okay = False
+                        break
+                if not okay:
+                    break
+                add_outputs(process, repeated["stock"])
+                if repeated["stock"].get(resource, 0.0) <= before + 1e-9:
+                    break
+                trial = repeated
+                runs += 1
             if trial["stock"].get(resource, 0.0) + 1e-9 < need:
                 continue
             trial["stock"][resource] -= need
