@@ -12,7 +12,7 @@ Can approval decisions vary over time for later recovery proposals?
 ## Method
 
 Base-08; pump failures at days 10 and 20; approved 8 h policy; compare all
-approved with a schedule that rejects at day 20.
+approved with a schedule that rejects at day 20, for one and two services.
 
 Prediction: all-approved reaches 30 days with three receipts; the day-20
 rejection stops at 20 days with two receipts.

@@ -1365,7 +1365,7 @@ pub fn simulate_multi_service_recovery_with_policy(
     events: &[FailureEvent],
     policy: RecoveryPolicy,
 ) -> Result<MultiServiceRecoveryReport, EnvelopeError> {
-    simulate_multi_service_recovery_inner(model, service_ids, horizon_s, events, policy, None)
+    simulate_multi_service_recovery_inner(model, service_ids, horizon_s, events, policy, None, None)
 }
 
 /// S3: multi-service recovery with a revocation deadline. Once revoked, no
@@ -1378,7 +1378,19 @@ pub fn simulate_multi_service_recovery_with_revocation(
     policy: RecoveryPolicy,
     revoke_at_s: f64,
 ) -> Result<MultiServiceRecoveryReport, EnvelopeError> {
-    simulate_multi_service_recovery_inner(model, service_ids, horizon_s, events, policy, Some(revoke_at_s))
+    simulate_multi_service_recovery_inner(model, service_ids, horizon_s, events, policy, Some(revoke_at_s), None)
+}
+
+/// S3: multi-service recovery with a time-varying approval schedule.
+pub fn simulate_multi_service_recovery_with_approval_schedule(
+    model: &Model,
+    service_ids: &[&str],
+    horizon_s: f64,
+    events: &[FailureEvent],
+    policy: RecoveryPolicy,
+    schedule: &[(f64, ApprovalDecision)],
+) -> Result<MultiServiceRecoveryReport, EnvelopeError> {
+    simulate_multi_service_recovery_inner(model, service_ids, horizon_s, events, policy, None, Some(schedule))
 }
 
 fn simulate_multi_service_recovery_inner(
@@ -1388,6 +1400,7 @@ fn simulate_multi_service_recovery_inner(
     events: &[FailureEvent],
     policy: RecoveryPolicy,
     revoke_at_s: Option<f64>,
+    schedule: Option<&[(f64, ApprovalDecision)]>,
 ) -> Result<MultiServiceRecoveryReport, EnvelopeError> {
     let mut services = Vec::new();
     for service_id in service_ids {
@@ -1492,10 +1505,24 @@ fn simulate_multi_service_recovery_inner(
                 log,
             });
         }
+        let event_decision = schedule
+            .and_then(|entries| entries.iter().rev().find(|(at, _)| *at <= now).map(|(_, decision)| *decision))
+            .unwrap_or(policy.decision);
+        let mut event_policy = policy.clone();
+        event_policy.decision = event_decision;
+        let event_approval = approval_label(event_decision);
         let mut repaired = Vec::new();
         let mut digests = Vec::new();
         for service in &services {
-            match recover_service(&mut current, service, now, horizon_s, &mut inventory, policy.clone(), revoke_at_s) {
+            match recover_service(
+                &mut current,
+                service,
+                now,
+                horizon_s,
+                &mut inventory,
+                event_policy.clone(),
+                revoke_at_s,
+            ) {
                 Ok((next_repaired, next_digests)) => {
                     repaired.extend(next_repaired);
                     digests.extend(next_digests);
@@ -1506,7 +1533,7 @@ fn simulate_multi_service_recovery_inner(
                         failed: Some(event.asset.clone()),
                         repaired: Vec::new(),
                         approved: false,
-                        approval: Some(approval.clone()),
+                        approval: Some(event_approval.clone()),
                         plan_digests: Vec::new(),
                         receipt: None,
                         verified: false,
@@ -1525,8 +1552,8 @@ fn simulate_multi_service_recovery_inner(
             at_s: now,
             failed: Some(event.asset.clone()),
             repaired: repaired.clone(),
-            approved: policy.decision == ApprovalDecision::Approved,
-            approval: Some(approval.clone()),
+            approved: event_decision == ApprovalDecision::Approved,
+            approval: Some(event_approval.clone()),
             plan_digests: digests.clone(),
             receipt: Some(make_receipt(now, Some(event.asset), repaired, digests, before, inventory.clone(), true)),
             verified: true,
@@ -2589,5 +2616,31 @@ mod tests {
         .unwrap();
         assert_eq!(report.survived_s, 20.0 * 86_400.0);
         assert!(report.log.iter().any(|entry| entry.blocked_by.as_deref() == Some("approval_rejected:pump-p1")));
+    }
+    #[test]
+    fn multi_service_schedule_rejects_a_later_event() {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
+        let events = vec![
+            FailureEvent { at_s: 10.0 * 86_400.0, asset: "pump-p1".into() },
+            FailureEvent { at_s: 20.0 * 86_400.0, asset: "pump-p1".into() },
+        ];
+        let policy =
+            RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+        let schedule = vec![(0.0, ApprovalDecision::Approved), (20.0 * 86_400.0, ApprovalDecision::Rejected)];
+        let report = simulate_multi_service_recovery_with_approval_schedule(
+            &model,
+            &["potable-water", "workshop-operability"],
+            30.0 * 86_400.0,
+            &events,
+            policy,
+            &schedule,
+        )
+        .unwrap();
+        assert_eq!(report.survived_s, 20.0 * 86_400.0);
+        assert!(report
+            .log
+            .iter()
+            .any(|entry| entry.blocked_by.as_deref() == Some("potable-water:approval_rejected:pump-p1")));
     }
 }

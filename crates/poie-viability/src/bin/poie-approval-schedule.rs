@@ -8,6 +8,7 @@ use std::process::ExitCode;
 
 use poie_ontology::model::Model;
 use poie_viability::survival::{
+    simulate_multi_service_recovery_with_approval_schedule, simulate_multi_service_recovery_with_policy,
     simulate_recovery_with_approval_schedule, simulate_recovery_with_policy, ApprovalDecision, FailureEvent,
     RecoveryPolicy,
 };
@@ -38,5 +39,36 @@ fn main() -> ExitCode {
     let later_receipts = later.log.iter().filter(|entry| entry.receipt.is_some()).count();
     let later_blocked = later.log.iter().find_map(|entry| entry.blocked_by.clone()).unwrap_or_else(|| "none".into());
     println!("reject-day20\t{later_receipts}\t{:.0}\t{later_blocked}", later.survived_s / 86_400.0);
+
+    let services = ["potable-water", "workshop-operability"];
+    let multi_all = simulate_multi_service_recovery_with_policy(
+        &model,
+        &services,
+        30.0 * 86_400.0,
+        &events,
+        RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None },
+    )
+    .unwrap();
+    let multi_all_receipts = multi_all.log.iter().filter(|entry| entry.receipt.is_some()).count();
+    let multi_all_blocked =
+        multi_all.log.iter().find_map(|entry| entry.blocked_by.clone()).unwrap_or_else(|| "none".into());
+    println!("multi-approved-all\t{multi_all_receipts}\t{:.0}\t{multi_all_blocked}", multi_all.survived_s / 86_400.0);
+    let multi_schedule = vec![(0.0, ApprovalDecision::Approved), (20.0 * 86_400.0, ApprovalDecision::Rejected)];
+    let multi_later = simulate_multi_service_recovery_with_approval_schedule(
+        &model,
+        &services,
+        30.0 * 86_400.0,
+        &events,
+        RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None },
+        &multi_schedule,
+    )
+    .unwrap();
+    let multi_later_receipts = multi_later.log.iter().filter(|entry| entry.receipt.is_some()).count();
+    let multi_later_blocked =
+        multi_later.log.iter().find_map(|entry| entry.blocked_by.clone()).unwrap_or_else(|| "none".into());
+    println!(
+        "multi-reject-day20\t{multi_later_receipts}\t{:.0}\t{multi_later_blocked}",
+        multi_later.survived_s / 86_400.0
+    );
     ExitCode::SUCCESS
 }

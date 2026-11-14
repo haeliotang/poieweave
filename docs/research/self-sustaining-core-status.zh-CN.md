@@ -47,7 +47,7 @@
 
 ## 4. 可核查证据包
 
-- Rust 测试：490（库 crate 474 + 其他包 16）。
+- Rust 测试：491（库 crate 475 + 其他包 16）。
 - 生成型实验产物：190 个；CI 可重放/引用路径 337 个。
 - 证书 bundle：13 层，绑定 12 个模型文件 SHA-256。
 - 正检：`certificate=ok`、`bundle=ok`、`summary=ok`；负检：`tamper=detected`。
