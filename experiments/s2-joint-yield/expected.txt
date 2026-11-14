@@ -1,7 +1,7 @@
 yield	bronze_kg	survived_days	blocked_by
 1.0	3.0	60	cyclic process dependency at turn-sleeve-p1
 1.0	6.0	90	none
-0.8	3.0	40	missing resource cutting-insert: need 1, have 0.8
-0.8	6.0	40	missing resource cutting-insert: need 1, have 0.8
-0.5	3.0	40	missing resource cutting-insert: need 1, have 0.5
-0.5	6.0	40	missing resource cutting-insert: need 1, have 0.5
+0.8	3.0	60	cyclic process dependency at turn-sleeve-p1
+0.8	6.0	80	missing resource cutting-insert: need 1, have 0.8
+0.5	3.0	50	missing resource cutting-insert: need 1, have 0.5
+0.5	6.0	50	missing resource cutting-insert: need 1, have 0.5

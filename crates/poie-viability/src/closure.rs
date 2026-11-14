@@ -486,7 +486,33 @@ impl Search<'_> {
                 StepAction::Produce(resource.to_string()),
             ) {
                 Ok(mut next) => {
-                    let produced = next.inventory.get(resource).copied().unwrap_or(0.0);
+                    let mut produced = next.inventory.get(resource).copied().unwrap_or(0.0);
+                    // A process with sub-unity yield may need several runs to
+                    // cover one requirement. Repeat the run while it makes
+                    // progress; the recursion and horizon checks bound the loop.
+                    let yield_fraction = process.yield_fraction_for(resource);
+                    let mut runs = 1usize;
+                    while yield_fraction < 1.0 && produced + EPSILON < quantity && runs < 20 {
+                        let before = produced;
+                        match self.run_process(
+                            process,
+                            next.clone(),
+                            stack_assets,
+                            stack_resources,
+                            stack_processes,
+                            StepAction::Produce(resource.to_string()),
+                        ) {
+                            Ok(more) => {
+                                next = more;
+                                produced = next.inventory.get(resource).copied().unwrap_or(0.0);
+                                if produced <= before + EPSILON {
+                                    break;
+                                }
+                                runs += 1;
+                            }
+                            Err(_) => break,
+                        }
+                    }
                     if produced + EPSILON >= quantity {
                         let remaining = produced - quantity;
                         if remaining <= EPSILON {

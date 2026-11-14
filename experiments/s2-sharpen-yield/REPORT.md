@@ -10,8 +10,8 @@
 ```text
 yield	survived_days	blocked_by
 1.0	60	cyclic process dependency at turn-sleeve-p1
-0.8	40	missing resource cutting-insert: need 1, have 0.8
-0.5	40	missing resource cutting-insert: need 1, have 0.5
+0.8	60	cyclic process dependency at turn-sleeve-p1
+0.5	50	missing resource cutting-insert: need 1, have 0.5
 ```
 
 ## 2. Discovered gap and fix
@@ -20,16 +20,17 @@ The first run showed no effect: `process_yield` was applied by the ontology
 graph/scheduler but not by closure/survival. Closure added the full output
 quantity regardless of declared yield.
 
-Fix: `apply_process_outputs` now applies the good fraction and emits the reject
-share to the declared reject resource, with a unit test. After the fix, yield
-0.8/0.5 produce only 0.8/0.5 inserts, so the plan blocks on missing
-`cutting-insert`.
+Fix: `apply_process_outputs` applies the good fraction and emits the reject
+share to the declared reject resource; `ensure_resource` also repeats a producer
+when its yield is below 1.0, so 0.8 can be accumulated over two runs.
 
 ## 3. Findings
 
-- Yield 1.0 still reaches 60 days.
-- Yield 0.8 and 0.5 stop at 40 days with a shortfall of 0.2/0.5 inserts.
-- Yield therefore is a real regeneration limit once it is consistently applied.
+- Yield 1.0 reaches 60 days.
+- Yield 0.8 also reaches 60 days: two 0.8 runs accumulate enough inserts.
+- Yield 0.5 stops at 50 days: repeated runs work, but worn-insert supply becomes
+  the limit before the full horizon.
+- Yield is a real regeneration limit once it is consistently applied.
 
 ## 4. Significance
 

@@ -1,11 +1,21 @@
 # S2 Yield Accumulation — report
 
 - Date: 2026-11-14
-- Status: negative; S1 does not combine partial-yield runs
+- Status: fixed; repeated partial-yield runs accumulate
 - Runner: `cargo run --locked -q -p poie-viability --bin poie-yield-accumulation`
 - Output: [expected.txt](expected.txt)
 
 ## 1. Result
+
+```text
+yield	survived_days	blocked_by
+1.0	60	cyclic process dependency at turn-sleeve-p1
+0.9	60	cyclic process dependency at turn-sleeve-p1
+0.8	60	cyclic process dependency at turn-sleeve-p1
+0.5	50	missing resource cutting-insert: need 1, have 0.5
+```
+
+## 2. Result before the fix
 
 ```text
 yield	survived_days	blocked_by
@@ -15,23 +25,26 @@ yield	survived_days	blocked_by
 0.5	40	missing resource cutting-insert: need 1, have 0.5
 ```
 
-## 2. Finding
+## 3. Finding
 
-At 0.9 yield, two sharpening runs would produce 1.8 inserts, enough for one
-insert. The closure nevertheless blocks with "have 0.9": `ensure_resource`
-looks for a single producer run whose output covers the whole need, and does not
-accumulate multiple partial runs.
+Before the fix, 0.9 yield blocked with "have 0.9": `ensure_resource` looked for a
+single producer run whose output covered the whole need, and did not accumulate
+multiple partial runs.
 
-## 3. Significance
+Fix: `ensure_resource` now repeats the producer while it makes progress (bounded
+by recursion, horizon checks and a run cap). With the fix, 0.9/0.8 accumulate
+enough inserts to reach 60 days; 0.5 reaches 50 days because worn-insert supply
+becomes the limit.
 
-- This is a conservative planning limitation (false negative), not an
-  over-approximation.
-- It matters for regeneration: low-yield routes can be viable through repeated
-  runs, but the current S1 cannot see that.
-- It gives a concrete next improvement: allow repeated producer runs when a
-  single run's yield is below the need.
+## 4. Significance
 
-## 4. Limits
+- This removes a conservative false negative in S1: low-yield routes can be
+  viable through repeated runs.
+- It changes the S2 conclusion for 0.8/0.9 yield from 40 to 60 days.
+- The 0.5 case shows that accumulation is not infinite: the input byproduct can
+  become the next limit.
+
+## 5. Limits
 
 - One producer/policy; 2 inserts, 3 kg bronze.
 - Model-level units.
