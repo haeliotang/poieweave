@@ -244,6 +244,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-joint-consumables > /tmp/s2-joint-consumables.out
           diff experiments/s2-joint-consumables/expected.txt /tmp/s2-joint-consumables.out
           test -f experiments/s2-joint-consumables/REPORT.md
+      - name: S2 three-consumable frontier (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-joint-three > /tmp/s2-joint-three.out
+          diff experiments/s2-joint-three/expected.txt /tmp/s2-joint-three.out
+          test -f experiments/s2-joint-three/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
