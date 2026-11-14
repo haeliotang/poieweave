@@ -12,8 +12,8 @@ certificate and included in the bundle?
 
 ## Method
 
-Emit schema, plan duration and six cases (required, rejected, short lease,
-approved, wrong digest, revoked). The Python verifier recomputes expected
+Emit schema, plan duration and seven cases (required, rejected, short lease,
+approved, wrong digest, revoked, denied-at-event). The Python verifier recomputes expected
 execution and blocker prefixes.
 
 Prediction: `certificate=ok`.

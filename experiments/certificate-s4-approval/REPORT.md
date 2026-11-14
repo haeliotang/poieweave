@@ -14,7 +14,8 @@ certificate=ok
 
 ## 2. Findings
 
-- The certificate carries the six approval cases and their observed outcomes.
+- The certificate carries the seven approval cases and their observed outcomes,
+including a per-event denial.
 - The verifier independently applies the gate rules and checks execution and
   blocker prefixes.
 - It is included in `experiments/certificate-bundle/bundle.json` as layer

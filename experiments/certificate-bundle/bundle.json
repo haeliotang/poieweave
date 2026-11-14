@@ -58,7 +58,7 @@
       "layer": "S4-approval",
       "path": "experiments/certificate-s4-approval/certificate.json",
       "schema": "poie.approval-certificate/1",
-      "sha256": "b198803e4eb9ab17be7730f11dedf0d95ca73a9420bc55fb8eec9c2f045423ec"
+      "sha256": "74b214e10a9dcf8b334132711726d1aafd1ca48942fdcb43ea572b1e9b52f267"
     }
   ],
   "claim_scope": "model/simulation certificates only; no physical safety or authority claim",

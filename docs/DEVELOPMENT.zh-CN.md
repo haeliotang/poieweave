@@ -821,3 +821,4 @@ flowchart LR
 | 0.1.325 | 2026-11-14 | bundle 绑定场景模型 SHA-256：12 个 model.toml 独立复算 |
 | 0.1.326 | 2026-11-14 | S2 grease 成本：cheap 20–30 天，expensive 0–10 天 |
 | 0.1.327 | 2026-11-14 | S3 事件级拒绝：day10/20 精确停止；无匹配 day5 无影响；测试 486 |
+| 0.1.328 | 2026-11-14 | S4 approval 证书加入 denied-at-event：7 案例独立校验 |

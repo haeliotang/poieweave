@@ -3,6 +3,7 @@
     {
       "blocked_by": "approval_required:pump-p1",
       "decision": "Required",
+      "deny_at_s": null,
       "digest_ok": true,
       "executed": false,
       "lease_s": 28800.0,
@@ -12,6 +13,7 @@
     {
       "blocked_by": "approval_rejected:pump-p1",
       "decision": "Rejected",
+      "deny_at_s": null,
       "digest_ok": true,
       "executed": false,
       "lease_s": 28800.0,
@@ -21,6 +23,7 @@
     {
       "blocked_by": "approval_lease_expired:pump-p1: need 10800s, lease 3600s",
       "decision": "Approved",
+      "deny_at_s": null,
       "digest_ok": true,
       "executed": false,
       "lease_s": 3600.0,
@@ -30,6 +33,7 @@
     {
       "blocked_by": "none",
       "decision": "Approved",
+      "deny_at_s": null,
       "digest_ok": true,
       "executed": true,
       "lease_s": 28800.0,
@@ -39,6 +43,7 @@
     {
       "blocked_by": "approval_digest_mismatch:pump-p1",
       "decision": "Approved",
+      "deny_at_s": null,
       "digest_ok": false,
       "executed": false,
       "lease_s": 28800.0,
@@ -48,11 +53,22 @@
     {
       "blocked_by": "approval_revoked",
       "decision": "Approved",
+      "deny_at_s": null,
       "digest_ok": true,
       "executed": true,
       "lease_s": 28800.0,
       "name": "revoked-day5",
       "revoke_at_s": 432000.0
+    },
+    {
+      "blocked_by": "approval_denied_at_event:pump-p1",
+      "decision": "Approved",
+      "deny_at_s": 864000.0,
+      "digest_ok": true,
+      "executed": true,
+      "lease_s": 28800.0,
+      "name": "denied-day10",
+      "revoke_at_s": null
     }
   ],
   "claim_scope": "model/simulation approval semantics only; no physical authority claim",
