@@ -23,6 +23,12 @@
       "expected": "experiments/s4-concurrency-model/expected.txt",
       "matched": 2,
       "name": "concurrency"
+    },
+    {
+      "cases": 2,
+      "expected": "experiments/s4-time-model/expected.txt",
+      "matched": 2,
+      "name": "time"
     }
   ],
   "claim_scope": "independent narrow models only; not whole-system equivalence",
