@@ -704,6 +704,22 @@ impl Model {
         })
     }
 
+    /// Add a process and keep the producer/restorer indexes consistent.
+    ///
+    /// `processes` is public, so callers can mutate it directly; doing so
+    /// leaves `producers` and `restorers` stale and makes closure analysis
+    /// silently ignore the new process. Use this method instead.
+    pub fn add_process(&mut self, process: Process) {
+        let index = self.processes.len();
+        for output in &process.outputs {
+            self.producers.entry(output.resource.clone()).or_default().push(index);
+        }
+        for restore in &process.restores {
+            self.restorers.entry(restore.clone()).or_default().push(index);
+        }
+        self.processes.push(process);
+    }
+
     pub fn process(&self, id: &str) -> Option<&Process> {
         self.processes.iter().find(|p| p.id == id)
     }
@@ -1357,5 +1373,18 @@ verification = "demonstrated"
         }
         assert!(!declared.contains(&"pump-p1"), "pump-p1 cites obs/vibration-p1-0031");
         assert_eq!(m.assets["pump-p1"].status_evidence.as_deref(), Some("obs/vibration-p1-0031"));
+    }
+    #[test]
+    fn added_process_updates_producer_index() {
+        let path = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../scenarios/base-01/model.toml");
+        let mut model = Model::load(&path).unwrap();
+        let mut process = model.processes[0].clone();
+        process.id = "added-process".into();
+        process.outputs = vec![Flow { resource: "added-resource".into(), si: 1.0 }];
+        process.restores = vec!["added-asset".into()];
+        model.add_process(process);
+        assert!(model.process("added-process").is_some());
+        assert_eq!(model.producers["added-resource"], vec![model.processes.len() - 1]);
+        assert_eq!(model.restorers["added-asset"], vec![model.processes.len() - 1]);
     }
 }
