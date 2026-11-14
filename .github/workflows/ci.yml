@@ -359,6 +359,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-concurrency > /tmp/s3-concurrency.out
           diff experiments/s3-concurrency/expected.txt /tmp/s3-concurrency.out
           test -f experiments/s3-concurrency/REPORT.md
+      - name: S3 concurrency deadline (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-concurrency-deadline > /tmp/s3-concurrency-deadline.out
+          diff experiments/s3-concurrency-deadline/expected.txt /tmp/s3-concurrency-deadline.out
+          test -f experiments/s3-concurrency-deadline/REPORT.md
       - name: S4 approval gate (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-approval-export > /tmp/s4-approval-gate.json
