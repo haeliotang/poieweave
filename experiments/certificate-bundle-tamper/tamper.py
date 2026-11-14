@@ -20,6 +20,7 @@ CERTIFICATES = [
     "experiments/certificate-s2-joint/certificate.json",
     "experiments/certificate-s2-regeneration/certificate.json",
     "experiments/certificate-s2-metrics/certificate.json",
+    "experiments/certificate-s2-order/certificate.json",
     "experiments/certificate-s3-recovery/certificate.json",
     "experiments/certificate-s3-multi/certificate.json",
     "experiments/certificate-s4-differential/certificate.json",

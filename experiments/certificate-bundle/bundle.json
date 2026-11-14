@@ -31,6 +31,12 @@
       "sha256": "4afe706d3c7399ca30f94d22c7ae7977d7a22fcf1dce45cf953c65051ddb98ee"
     },
     {
+      "layer": "S2-order",
+      "path": "experiments/certificate-s2-order/certificate.json",
+      "schema": "poie.order-certificate/1",
+      "sha256": "36bde32ac53520e420aa7ad91bfd7d673f4bf2769de7550ccf8fa177b18a138d"
+    },
+    {
       "layer": "S3",
       "path": "experiments/certificate-s3-recovery/certificate.json",
       "schema": "poie.recovery-certificate/1",

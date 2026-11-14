@@ -300,6 +300,13 @@ jobs:
           python3 experiments/certificate-s2-metrics/verify.py /tmp/certificate-s2-metrics.json > /tmp/certificate-s2-metrics.out
           diff experiments/certificate-s2-metrics/expected.txt /tmp/certificate-s2-metrics.out
           test -f experiments/certificate-s2-metrics/REPORT.md
+      - name: Repair-order certificate S2 (Python)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-order-certificate > /tmp/certificate-s2-order.json
+          diff experiments/certificate-s2-order/certificate.json /tmp/certificate-s2-order.json
+          python3 experiments/certificate-s2-order/verify.py /tmp/certificate-s2-order.json > /tmp/certificate-s2-order.out
+          diff experiments/certificate-s2-order/expected.txt /tmp/certificate-s2-order.out
+          test -f experiments/certificate-s2-order/REPORT.md
       - name: Certificate bundle S1/S2/S3 (Python)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-certificate-bundle > /tmp/certificate-bundle.json
