@@ -11,6 +11,7 @@
 initial_kwh	capacity_kwh	first_blocked_x
 500	200	rejected
 500	400	rejected
+500	500	521
 500	600	521
 ```
 
@@ -18,8 +19,8 @@ initial_kwh	capacity_kwh	first_blocked_x
 
 - Initial 500 kWh with capacity 200 or 400 kWh is now rejected before the run,
   with an explicit `initial electric-energy ... exceeds battery capacity` error.
-- With capacity 600 kWh the initial stock fits, and the forced recycling path
-  reaches 521× before blocking.
+- At capacity 500 kWh (exact fit) and 600 kWh the initial stock fits, and the
+  forced recycling path reaches 521× before blocking.
 - This closes the earlier silent-over-cap behavior: capacity is now enforced as
   an upper bound on the initial stock, not just on interval flows.
 

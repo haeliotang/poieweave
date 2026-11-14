@@ -1,4 +1,5 @@
 initial_kwh	capacity_kwh	first_blocked_x
 500	200	rejected
 500	400	rejected
+500	500	521
 500	600	521

@@ -53,7 +53,7 @@ fn main() -> ExitCode {
     let root = root();
     let base = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
     println!("initial_kwh\tcapacity_kwh\tfirst_blocked_x");
-    for capacity_kwh in [200.0, 400.0, 600.0] {
+    for capacity_kwh in [200.0, 400.0, 500.0, 600.0] {
         match first_blocked(&base, capacity_kwh, 500.0 * 3.6e6) {
             Ok(blocked) => println!("500\t{capacity_kwh:.0}\t{blocked}"),
             Err(_) => println!("500\t{capacity_kwh:.0}\trejected"),
