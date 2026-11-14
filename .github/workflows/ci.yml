@@ -194,6 +194,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-energy-boundary > /tmp/s2-energy-boundary.out
           diff experiments/s2-energy-boundary/expected.txt /tmp/s2-energy-boundary.out
           test -f experiments/s2-energy-boundary/REPORT.md
+      - name: S2 load threshold (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-load-threshold > /tmp/s2-load-threshold.out
+          diff experiments/s2-load-threshold/expected.txt /tmp/s2-load-threshold.out
+          test -f experiments/s2-load-threshold/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
