@@ -11,7 +11,7 @@
 | S2-regen | `poie.regeneration-certificate/1` | `c0aed8992e7dea7a` | 40.0d → 60.0d |
 | S2-metrics | `poie.metrics-certificate/1` | `f52a221cd057be35` |  |
 | S2-order | `poie.order-certificate/1` | `36bde32ac53520e4` |  |
-| S2-time | `poie.time-certificate/1` | `bdffb0243778a485` |  |
+| S2-time | `poie.time-certificate/1` | `e8c4acf1d44fb854` |  |
 | S3 | `poie.recovery-certificate/1` | `a006ed1f57273efb` | 2 receipts; approved 8 h lease |
 | S3-multi | `poie.multi-recovery-certificate/1` | `a399132eb44e7e7e` |  |
 | S4 | `poie.s4-certificate/1` | `0413d9a9c7c47d09` | cases=112 matched=112 mismatched=0; plans=26 verified=26 |

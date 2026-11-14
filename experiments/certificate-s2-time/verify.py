@@ -37,6 +37,10 @@ def main(path: str) -> int:
         deadline.get("advanced_complete", 99) <= deadline.get("deadline_day", 0)
     ):
         problems.append("deadline flip")
+    regen = certificate.get("regeneration", {})
+    for name in ("base05", "base08"):
+        if regen.get(f"{name}_instant") != regen.get(f"{name}_advanced"):
+            problems.append(f"regeneration {name}")
     for name, keys in (("grease_boundary", 5), ("insert_boundary", 5)):
         boundary = certificate.get(name, {})
         stocks = boundary.get("stocks", [])

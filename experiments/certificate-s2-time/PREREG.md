@@ -12,8 +12,8 @@ invariants an independent verifier can check?
 
 ## Method
 
-Emit dense event times, sparse horizons, deadline arithmetic, and grease/insert
-boundaries. The Python verifier checks the arithmetic and saturation invariants.
+Emit dense event times, sparse horizons, deadline arithmetic, grease/insert
+boundaries, and the regeneration negative control. The Python verifier checks the arithmetic and saturation invariants.
 
 Prediction: `certificate=ok` and bundle remains green.
 

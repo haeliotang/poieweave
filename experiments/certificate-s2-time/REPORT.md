@@ -22,6 +22,8 @@ tamper=detected
 - The 3-day repair flips the 11-day deadline (10 meets, 13 misses).
 - Grease and insert boundaries both shift and saturate higher under
   clock-advanced semantics.
+- Regeneration horizons (Base-05/08) are identical under both semantics at the
+  nominal repair duration.
 
 ## 3. Significance
 

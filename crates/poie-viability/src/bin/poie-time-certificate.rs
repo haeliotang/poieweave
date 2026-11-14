@@ -29,6 +29,12 @@ fn main() -> ExitCode {
             "instant_days": [4, 6, 8, 8, 8],
             "advanced_days": [10, 16, 21, 21, 21],
         },
+        "regeneration": {
+            "base05_instant": [40, 60, 80, 90],
+            "base05_advanced": [40, 60, 80, 90],
+            "base08_instant": [60, 90, 90, 90],
+            "base08_advanced": [60, 90, 90, 90],
+        },
         "insert_boundary": {
             "stocks": [1, 2, 3, 4, 6],
             "instant_days": [6, 8, 10, 12, 12],
