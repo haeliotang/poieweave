@@ -1,0 +1,5 @@
+energy_x	survived_days	blocked_by
+1	10	cyclic process dependency at turn-sleeve-p1
+10	10	cyclic process dependency at turn-sleeve-p1
+50	10	cyclic process dependency at turn-sleeve-p1
+100	0	missing resource electric-energy: need 360000000, have 216000000
