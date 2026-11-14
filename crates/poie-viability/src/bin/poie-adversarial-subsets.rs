@@ -13,9 +13,8 @@ fn root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../..")
 }
 
-fn run(model: &Model, failed: &[&str]) -> (f64, String) {
-    let events: Vec<FailureEvent> =
-        failed.iter().map(|asset| FailureEvent { at_s: 0.0, asset: (*asset).into() }).collect();
+fn run(model: &Model, failed: &[&str], at_s: f64) -> (f64, String) {
+    let events: Vec<FailureEvent> = failed.iter().map(|asset| FailureEvent { at_s, asset: (*asset).into() }).collect();
     let report = simulate_multi_service_longevity_with_limits(
         model,
         &["potable-water", "workshop-operability"],
@@ -32,18 +31,21 @@ fn main() -> ExitCode {
     let root = root();
     let model = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
     let assets = ["pump-p1", "filter-1", "robot-m1", "pv-1", "lathe-1"];
-    println!("subsets\tmin_days\tminimal_size\tminimal_set");
-    let mut min_days = f64::INFINITY;
-    let mut minimal: (usize, String) = (assets.len() + 1, String::new());
-    for mask in 1u32..(1 << assets.len()) {
-        let failed: Vec<&str> =
-            (0..assets.len()).filter(|index| mask & (1 << index) != 0).map(|index| assets[index]).collect();
-        let (days, _blocked) = run(&model, &failed);
-        if days < min_days || (days == min_days && failed.len() < minimal.0) {
-            min_days = days;
-            minimal = (failed.len(), failed.join("+"));
+    println!("at_day\tsubsets\tmin_days\tminimal_size\tminimal_set");
+    for at_day in [0.0, 10.0] {
+        let at_s = at_day * 86_400.0;
+        let mut min_days = f64::INFINITY;
+        let mut minimal: (usize, String) = (assets.len() + 1, String::new());
+        for mask in 1u32..(1 << assets.len()) {
+            let failed: Vec<&str> =
+                (0..assets.len()).filter(|index| mask & (1 << index) != 0).map(|index| assets[index]).collect();
+            let (days, _blocked) = run(&model, &failed, at_s);
+            if days < min_days || (days == min_days && failed.len() < minimal.0) {
+                min_days = days;
+                minimal = (failed.len(), failed.join("+"));
+            }
         }
+        println!("{at_day:.0}\t{}\t{min_days:.0}\t{}\t{}", (1 << assets.len()) - 1, minimal.0, minimal.1);
     }
-    println!("{}\t{min_days:.0}\t{}\t{}", (1 << assets.len()) - 1, minimal.0, minimal.1);
     ExitCode::SUCCESS
 }
