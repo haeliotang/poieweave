@@ -27,5 +27,10 @@
     "total": 10
   },
   "regenerative_capacity_days": 20.0,
-  "schema": "poie.metrics-certificate/1"
+  "schema": "poie.metrics-certificate/1",
+  "yield_sensitivity": {
+    "yield_0_5_days": 50,
+    "yield_0_8_days": 60,
+    "yield_1_0_days": 60
+  }
 }

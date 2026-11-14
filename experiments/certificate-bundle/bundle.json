@@ -28,7 +28,7 @@
       "layer": "S2-metrics",
       "path": "experiments/certificate-s2-metrics/certificate.json",
       "schema": "poie.metrics-certificate/1",
-      "sha256": "f5fa7ec66e82b13f4d0faca138438398714c4651311fae9f2839810792b3f68e"
+      "sha256": "f1039ea9dfda3e7d04f2db32ea0df73b620be2950965089919eca7601a3f7590"
     },
     {
       "layer": "S2-order",
