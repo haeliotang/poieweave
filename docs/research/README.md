@@ -4,6 +4,7 @@
 
 ## 总览
 
+- [阶段总结](self-sustaining-core-milestone.zh-CN.md)
 - [研究现状总览](self-sustaining-core-status.zh-CN.md)
 - [研究综述与门槛](self-sustaining-core.zh-CN.md)
 - [负结果与已修正错误](negative-results.zh-CN.md)
