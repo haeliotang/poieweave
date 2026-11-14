@@ -11,6 +11,14 @@
 
 ## 2. 基础验证
 
+一键运行：
+
+```bash
+./scripts/check-all.sh
+```
+
+或逐项运行：
+
 ```bash
 cargo test --workspace --locked
 cargo clippy --workspace --all-targets -- -D warnings
