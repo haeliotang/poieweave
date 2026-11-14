@@ -1,4 +1,7 @@
 {
+  "alternative_restorer": {
+    "duration_s": 14400.0
+  },
   "claim_scope": "model-level closure only; not a physical repair claim",
   "horizon_s": 7200.0,
   "model": "scenarios/base-04/model.toml",

@@ -43,6 +43,30 @@ fn main() -> ExitCode {
         ClosureOutcome::Restorable(plan) => plan.total_duration_s,
         ClosureOutcome::Blocked(_) => 0.0,
     };
+    let mut alternative = no_spare.clone();
+    let template = alternative.processes.iter().find(|process| process.id == "replace-lathe-nut").unwrap().clone();
+    let mut external = template;
+    external.id = "replace-lathe-nut-external".into();
+    external.inputs = vec![
+        poie_ontology::model::Flow { resource: "external-lathe-nut".into(), si: 1.0 },
+        poie_ontology::model::Flow { resource: "electric-energy".into(), si: 0.3 },
+    ];
+    external.outputs = Vec::new();
+    external.requires_capabilities = vec!["lathe-repair".into()];
+    external.restores = vec!["lathe-1".into()];
+    external.duration_s = Some(4.0 * 3600.0);
+    external.verification = poie_ontology::model::Verification::Demonstrated;
+    alternative.add_process(external);
+    alternative.lots.push(poie_ontology::model::Lot {
+        id: "lot-external-lathe-nut".into(),
+        resource: "external-lathe-nut".into(),
+        si: 1.0,
+        quality: poie_ontology::model::LotQuality::Accepted,
+    });
+    let alternative_duration_s = match analyze(&alternative, "lathe-1", 24.0 * 3600.0) {
+        ClosureOutcome::Restorable(plan) => plan.total_duration_s,
+        ClosureOutcome::Blocked(_) => 0.0,
+    };
     let certificate = match analyze(&scenario, "lathe-1", 7200.0) {
         ClosureOutcome::Restorable(plan) => serde_json::json!({
             "schema": "poie.closure-certificate/1",
@@ -57,6 +81,9 @@ fn main() -> ExitCode {
             "tool_cycle": {
                 "without_spare": cycle,
                 "with_spare_duration_s": spare_duration_s,
+            },
+            "alternative_restorer": {
+                "duration_s": alternative_duration_s,
             },
         }),
         ClosureOutcome::Blocked(blocked) => {
