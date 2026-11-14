@@ -206,8 +206,8 @@ pub fn analyze_with_min_verification(
             horizon_s,
         });
     }
-    let search = Search { model, horizon_s, min_verification };
     let state = State::initial(model);
+    let search = Search { model, horizon_s, min_verification, initial_inventory: state.inventory.clone() };
     let mut assets = Vec::new();
     let mut resources = Vec::new();
     let mut processes = Vec::new();
@@ -225,9 +225,22 @@ struct Search<'a> {
     model: &'a Model,
     horizon_s: f64,
     min_verification: Verification,
+    initial_inventory: BTreeMap<String, f64>,
 }
 
 impl Search<'_> {
+    /// Fraction of the initial stock consumed across resources; lower is better.
+    fn relative_consumption(&self, inventory: &BTreeMap<String, f64>) -> f64 {
+        self.initial_inventory
+            .iter()
+            .filter(|(_, initial)| **initial > EPSILON)
+            .map(|(resource, initial)| {
+                let current = inventory.get(resource).copied().unwrap_or(0.0);
+                (initial - current).max(0.0) / initial
+            })
+            .sum()
+    }
+
     fn solve_asset(
         &self,
         asset_id: &str,
@@ -287,7 +300,17 @@ impl Search<'_> {
                 Ok(next) => match self.ensure_supports(asset, next, stack_assets, stack_resources, stack_processes) {
                     Ok(mut supported) => {
                         supported.usable.insert(asset_id.to_string());
-                        if best_success.as_ref().is_none_or(|current| supported.total_s < current.total_s) {
+                        let better = best_success.as_ref().is_none_or(|current| {
+                            if supported.total_s + EPSILON < current.total_s {
+                                true
+                            } else if (supported.total_s - current.total_s).abs() <= EPSILON {
+                                self.relative_consumption(&supported.inventory)
+                                    < self.relative_consumption(&current.inventory) - EPSILON
+                            } else {
+                                false
+                            }
+                        });
+                        if better {
                             best_success = Some(supported);
                         }
                     }
@@ -693,6 +716,29 @@ mod tests {
         restorers.insert(0, slow_index);
         match analyze(&model, "pump-p1", 10.0 * 3600.0) {
             ClosureOutcome::Restorable(plan) => assert_eq!(plan.total_duration_s, 10_800.0),
+            ClosureOutcome::Blocked(blocked) => panic!("blocked: {:?}", blocked.reasons),
+        }
+    }
+    #[test]
+    fn equal_duration_restorers_prefer_lower_input_cost() {
+        let mut model = load("scenarios/base-05/model.toml");
+        let mut expensive = model.processes.iter().find(|process| process.id == "replace-sleeve-p1").unwrap().clone();
+        expensive.id = "replace-sleeve-expensive".into();
+        for input in &mut expensive.inputs {
+            if input.resource == "grease" {
+                input.si = 0.20;
+            }
+        }
+        model.add_process(expensive);
+        let expensive_index = model.processes.len() - 1;
+        let restorers = model.restorers.get_mut("pump-p1").unwrap();
+        restorers.retain(|index| *index != expensive_index);
+        restorers.insert(0, expensive_index);
+        match analyze(&model, "pump-p1", 4.0 * 3600.0) {
+            ClosureOutcome::Restorable(plan) => {
+                assert_eq!(plan.steps[0].process, "replace-sleeve-p1");
+                assert!((plan.remaining_inventory["grease"] - 0.95).abs() < 1e-9);
+            }
             ClosureOutcome::Blocked(blocked) => panic!("blocked: {:?}", blocked.reasons),
         }
     }
