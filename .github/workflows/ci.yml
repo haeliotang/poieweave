@@ -279,6 +279,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-worn-bound > /tmp/s2-worn-bound.out
           diff experiments/s2-worn-bound/expected.txt /tmp/s2-worn-bound.out
           test -f experiments/s2-worn-bound/REPORT.md
+      - name: S2 worn and bronze frontier at 0.5 yield (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-joint-worn > /tmp/s2-joint-worn.out
+          diff experiments/s2-joint-worn/expected.txt /tmp/s2-joint-worn.out
+          test -f experiments/s2-joint-worn/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
