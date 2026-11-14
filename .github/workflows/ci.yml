@@ -299,6 +299,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-redundancy-robot > /tmp/s2-redundancy-robot.out
           diff experiments/s2-redundancy-robot/expected.txt /tmp/s2-redundancy-robot.out
           test -f experiments/s2-redundancy-robot/REPORT.md
+      - name: S2 filter restorer (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-filter-restorer > /tmp/s2-filter-restorer.out
+          diff experiments/s2-filter-restorer/expected.txt /tmp/s2-filter-restorer.out
+          test -f experiments/s2-filter-restorer/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out

@@ -1,0 +1,3 @@
+mode	survived_days	blocked_by
+redundant-only	30	no restorer for filter-1
+redundant+filter-restorer	90	none
