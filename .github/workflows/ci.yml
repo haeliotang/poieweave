@@ -229,6 +229,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-recycle-residue > /tmp/s2-recycle-residue.out
           diff experiments/s2-recycle-residue/expected.txt /tmp/s2-recycle-residue.out
           test -f experiments/s2-recycle-residue/REPORT.md
+      - name: S2 cutting-insert boundary (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-insert-bound > /tmp/s2-insert-bound.out
+          diff experiments/s2-insert-bound/expected.txt /tmp/s2-insert-bound.out
+          test -f experiments/s2-insert-bound/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
