@@ -289,6 +289,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-redundancy > /tmp/s2-redundancy.out
           diff experiments/s2-redundancy/expected.txt /tmp/s2-redundancy.out
           test -f experiments/s2-redundancy/REPORT.md
+      - name: S2 redundancy vs shared filter (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-redundancy-filter > /tmp/s2-redundancy-filter.out
+          diff experiments/s2-redundancy-filter/expected.txt /tmp/s2-redundancy-filter.out
+          test -f experiments/s2-redundancy-filter/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
