@@ -394,6 +394,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-time-semantics > /tmp/s3-time-semantics.out
           diff experiments/s3-time-semantics/expected.txt /tmp/s3-time-semantics.out
           test -f experiments/s3-time-semantics/REPORT.md
+      - name: S3 robot count sweep
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-robot-sweep > /tmp/s3-robot-sweep.out
+          diff experiments/s3-robot-sweep/expected.txt /tmp/s3-robot-sweep.out
+          test -f experiments/s3-robot-sweep/REPORT.md
       - name: S4 approval gate (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-approval-export > /tmp/s4-approval-gate.json
