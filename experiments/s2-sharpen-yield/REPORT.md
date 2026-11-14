@@ -1,7 +1,7 @@
 # S2 Sharpening Yield — report
 
 - Date: 2026-11-14
-- Status: negative; yield is not applied by S1/S2
+- Status: positive after fix; yield now affects S1/S2
 - Runner: `cargo run --locked -q -p poie-viability --bin poie-sharpen-yield`
 - Output: [expected.txt](expected.txt)
 
@@ -10,29 +10,32 @@
 ```text
 yield	survived_days	blocked_by
 1.0	60	cyclic process dependency at turn-sleeve-p1
-0.8	60	cyclic process dependency at turn-sleeve-p1
-0.5	60	cyclic process dependency at turn-sleeve-p1
+0.8	40	missing resource cutting-insert: need 1, have 0.8
+0.5	40	missing resource cutting-insert: need 1, have 0.5
 ```
 
-## 2. Findings
+## 2. Discovered gap and fix
 
-- Yield 0.5 does not change the horizon at all.
-- A repository search shows `process_yield` is applied by the ontology graph and
-  scheduling code, but **not** by the closure or survival code.
-- S1/S2 therefore plan as if sharpening always returns one good insert.
+The first run showed no effect: `process_yield` was applied by the ontology
+graph/scheduler but not by closure/survival. Closure added the full output
+quantity regardless of declared yield.
 
-## 3. Significance
+Fix: `apply_process_outputs` now applies the good fraction and emits the reject
+share to the declared reject resource, with a unit test. After the fix, yield
+0.8/0.5 produce only 0.8/0.5 inserts, so the plan blocks on missing
+`cutting-insert`.
 
-- This is a cross-module consistency gap: the same model field means different
-  things in different engines.
-- It is also a negative result for the current S2 claim set: yield-based
-  regeneration limits are not yet testable inside S2.
+## 3. Findings
 
-## 4. Next probes
+- Yield 1.0 still reaches 60 days.
+- Yield 0.8 and 0.5 stop at 40 days with a shortfall of 0.2/0.5 inserts.
+- Yield therefore is a real regeneration limit once it is consistently applied.
 
-- Apply `process_yield` in closure/survival output accounting.
-- Add a differential test where ontology schedule and S2 agree on yield.
-- Re-run this experiment to see the expected yield-dependent horizon.
+## 4. Significance
+
+- This closes the third "declared field not enforced" gap found in this line of
+  work (after initial-SOC capacity and stale producer indices).
+- It makes yield-aware regeneration limits testable in S2.
 
 ## 5. Limits
 

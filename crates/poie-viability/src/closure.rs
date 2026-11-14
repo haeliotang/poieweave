@@ -22,6 +22,18 @@ use poie_ontology::model::{AssetStatus, LotQuality, Model, Process, Verification
 
 const EPSILON: f64 = 1e-9;
 
+fn apply_process_outputs(process: &Process, inventory: &mut BTreeMap<String, f64>) {
+    for output in &process.outputs {
+        let fraction = process.yield_fraction_for(&output.resource);
+        *inventory.entry(output.resource.clone()).or_insert(0.0) += output.si * fraction;
+        if let Some(spec) = &process.process_yield {
+            if spec.output == output.resource && fraction < 1.0 {
+                *inventory.entry(spec.reject.clone()).or_insert(0.0) += output.si * (1.0 - fraction);
+            }
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, serde::Serialize)]
 pub enum StepAction {
     Restore(String),
@@ -368,9 +380,7 @@ impl Search<'_> {
                     stack_processes,
                 )?;
             }
-            for output in &process.outputs {
-                *state.inventory.entry(output.resource.clone()).or_insert(0.0) += output.si;
-            }
+            apply_process_outputs(process, &mut state.inventory);
             state.total_s += duration_s;
             state.steps.push(Step { process: process.id.clone(), action, duration_s });
             Ok(state)
@@ -515,6 +525,7 @@ impl Search<'_> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use poie_ontology::model::Flow;
     use std::path::Path;
 
     fn load(relative: &str) -> Model {
@@ -612,5 +623,29 @@ mod tests {
             panic!("expected blocked");
         };
         assert_eq!(blocked.reasons, vec![BlockReason::UnknownAsset("does-not-exist".into())]);
+    }
+    #[test]
+    fn process_yield_applies_good_fraction_and_reject() {
+        let process = Process {
+            id: "yielded".into(),
+            inputs: Vec::new(),
+            outputs: vec![Flow { resource: "good".into(), si: 10.0 }],
+            occupies: Vec::new(),
+            requires_capabilities: Vec::new(),
+            restores: Vec::new(),
+            duration_s: Some(60.0),
+            verification: Verification::Modeled,
+            asset_mass_change_kg: 0.0,
+            mass_tolerance: 0.01,
+            process_yield: Some(poie_ontology::model::YieldSpec {
+                output: "good".into(),
+                fraction: 0.8,
+                reject: "reject".into(),
+            }),
+        };
+        let mut inventory = BTreeMap::new();
+        apply_process_outputs(&process, &mut inventory);
+        assert!((inventory["good"] - 8.0).abs() < 1e-9);
+        assert!((inventory["reject"] - 2.0).abs() < 1e-9);
     }
 }

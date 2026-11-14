@@ -2,7 +2,7 @@
 
 - Experiment ID: `s2-sharpen-yield`
 - Date: 2026-11-14
-- Status: completed; yield has no effect on S2 horizons
+- Status: completed; yield now changes the horizon after the closure fix
 - Scope: sharpen-insert yield 1.0/0.8/0.5.
 
 ## Question
