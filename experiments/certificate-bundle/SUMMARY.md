@@ -9,7 +9,7 @@
 | S2 | `poie.viability-certificate/1` | `7608e4f828cac760` | 5 load rows; 0-2 kW material-limited, 3-4 kW energy-limited |
 | S2-joint | `poie.coverage-certificate/1` | `c11ed96a3a3df05c` | independent 25 vs joint 24; gap 1 |
 | S2-regen | `poie.regeneration-certificate/1` | `c0aed8992e7dea7a` | 40.0d → 60.0d |
-| S2-metrics | `poie.metrics-certificate/1` | `9619e9aca53ce82c` |  |
+| S2-metrics | `poie.metrics-certificate/1` | `f52a221cd057be35` |  |
 | S2-order | `poie.order-certificate/1` | `36bde32ac53520e4` |  |
 | S2-time | `poie.time-certificate/1` | `bdffb0243778a485` |  |
 | S3 | `poie.recovery-certificate/1` | `a006ed1f57273efb` | 2 receipts; approved 8 h lease |

@@ -24,6 +24,7 @@ certificate=ok
 - Redundancy: baseline 60 -> redundant pump 90; shared filter 30 -> restorer 90; shared robot 35 -> restorer 90
 - Energy interventions at 2.6 kW: capacity/charge 16; recharge 20/30/40 kWh -> 16/60/60
 - Adversarial: 31 subsets, minimum 0 days, minimal set filter-1; day-10 failure gives 10 days
+- Resupply: delivery interval 10/20/30/60 days -> 60/50/40/30-day horizon
 - Recharge boundary: average 2.5 kW, switch 2.6 kW, margin 0.1 kW
 - model-level metric claim scope
 
