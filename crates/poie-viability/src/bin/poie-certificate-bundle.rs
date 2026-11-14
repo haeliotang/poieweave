@@ -40,9 +40,29 @@ fn main() -> ExitCode {
             "schema": expected_schema,
         }));
     }
+    let mut model_rows = Vec::new();
+    let mut scenario_dirs: Vec<PathBuf> = fs::read_dir(root.join("scenarios"))
+        .expect("scenarios directory")
+        .filter_map(|entry| entry.ok().map(|entry| entry.path()))
+        .filter(|path| path.is_dir())
+        .collect();
+    scenario_dirs.sort();
+    for scenario in scenario_dirs {
+        let relative = scenario.strip_prefix(&root).unwrap().join("model.toml");
+        let path = root.join(&relative);
+        if !path.is_file() {
+            continue;
+        }
+        let bytes = fs::read(&path).expect("model bytes");
+        model_rows.push(serde_json::json!({
+            "path": relative.to_string_lossy(),
+            "sha256": hex_sha256(&bytes),
+        }));
+    }
     let bundle = serde_json::json!({
         "schema": "poie.certificate-bundle/1",
         "certificates": rows,
+        "model_digests": model_rows,
         "claim_scope": "model/simulation certificates only; no physical safety or authority claim",
     });
     println!("{}", serde_json::to_string_pretty(&bundle).expect("bundle JSON"));

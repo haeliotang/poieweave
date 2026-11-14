@@ -35,3 +35,9 @@ summary=ok
 - Unsigned bundle; no attestation.
 - Detects content changes, not authorship or physical reality.
 - Nine certificates only.
+
+## Model binding
+
+The bundle also records SHA-256 for every `scenarios/*/model.toml`, and
+`verify.py` recomputes those digests. This binds certificates to the current
+scenario files, not just to each other.

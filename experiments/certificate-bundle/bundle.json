@@ -62,5 +62,47 @@
     }
   ],
   "claim_scope": "model/simulation certificates only; no physical safety or authority claim",
+  "model_digests": [
+    {
+      "path": "scenarios/base-01/model.toml",
+      "sha256": "87b08971a16a1c7b7e13bdc935db91aba81b2f390b1d8d0f098016c73d44a495"
+    },
+    {
+      "path": "scenarios/base-02/model.toml",
+      "sha256": "fe643319779ff1ad60a1eb3d66bef8f2354dcdba9690097b45a144aae91ee04f"
+    },
+    {
+      "path": "scenarios/base-03/model.toml",
+      "sha256": "59f2e614b81b41b8cc5182b112046960c9a72e684e643909c9accdac99deb219"
+    },
+    {
+      "path": "scenarios/base-04/model.toml",
+      "sha256": "c6950b1b8c289706a400ddc3218dcec15ad4978bc24f396896a735b8d9e5427d"
+    },
+    {
+      "path": "scenarios/base-05/model.toml",
+      "sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150"
+    },
+    {
+      "path": "scenarios/base-06/model.toml",
+      "sha256": "09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c"
+    },
+    {
+      "path": "scenarios/base-07/model.toml",
+      "sha256": "638f30342f960a9fa64d533c97c2f0b467ba652e694768966a9a637261ba8965"
+    },
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    },
+    {
+      "path": "scenarios/base-09/model.toml",
+      "sha256": "d81446f047b098d7b6e129be8d0edb7eb644bab1fc92e288c0a5ffe3fcf864eb"
+    },
+    {
+      "path": "scenarios/base-10/model.toml",
+      "sha256": "6f7ab51912845560b560f97d7b9d6f5fdb65f3f469587c6ef554752874423d31"
+    }
+  ],
   "schema": "poie.certificate-bundle/1"
 }

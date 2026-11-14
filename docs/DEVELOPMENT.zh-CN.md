@@ -818,3 +818,4 @@ flowchart LR
 | 0.1.322 | 2026-11-14 | S3 审批矩阵：required/rejected/lease/digest 均 fail-closed；撤销保留 t=0 修复 |
 | 0.1.323 | 2026-11-14 | S4 审批门独立验证：Python 独立判定 6/6 一致 |
 | 0.1.324 | 2026-11-14 | 证书 bundle 第 10 层：S4 approval 证书，6 案例独立校验 |
+| 0.1.325 | 2026-11-14 | bundle 绑定场景模型 SHA-256：12 个 model.toml 独立复算 |
