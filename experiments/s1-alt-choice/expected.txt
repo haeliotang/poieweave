@@ -1,0 +1,5 @@
+case	spare	alt_part	outcome	detail
+cycle	0	0	blocked	cycle:asset:lathe-1
+spare-only	1	0	restorable	7200s
+alt-only	0	1	restorable	14400s
+both	1	1	restorable	7200s
