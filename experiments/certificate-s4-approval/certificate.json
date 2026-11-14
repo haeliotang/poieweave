@@ -85,6 +85,18 @@
       "name": "reject-day20",
       "receipts": 2,
       "survived_days": 20.0
+    },
+    {
+      "blocked_by": "none",
+      "name": "multi-approved-all",
+      "receipts": 3,
+      "survived_days": 30.0
+    },
+    {
+      "blocked_by": "potable-water:approval_rejected:pump-p1",
+      "name": "multi-reject-day20",
+      "receipts": 2,
+      "survived_days": 20.0
     }
   ],
   "schema": "poie.approval-certificate/1"

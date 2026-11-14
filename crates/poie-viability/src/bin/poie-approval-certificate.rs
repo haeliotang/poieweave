@@ -8,6 +8,7 @@ use std::process::ExitCode;
 
 use poie_ontology::model::Model;
 use poie_viability::survival::{
+    simulate_multi_service_recovery_with_approval_schedule, simulate_multi_service_recovery_with_policy,
     simulate_recovery_with_approval_schedule, simulate_recovery_with_denial, simulate_recovery_with_policy,
     simulate_recovery_with_revocation, ApprovalDecision, FailureEvent, RecoveryPolicy,
 };
@@ -90,6 +91,32 @@ fn main() -> ExitCode {
     let rejected_receipts = rejected.log.iter().filter(|entry| entry.receipt.is_some()).count();
     let rejected_blocked =
         rejected.log.iter().find_map(|entry| entry.blocked_by.clone()).unwrap_or_else(|| "none".into());
+    let multi_services = ["potable-water", "workshop-operability"];
+    let multi_policy =
+        RecoveryPolicy { decision: ApprovalDecision::Approved, lease_s: 8.0 * 3600.0, approved_plan_digest: None };
+    let multi_all = simulate_multi_service_recovery_with_policy(
+        &model,
+        &multi_services,
+        30.0 * 86_400.0,
+        &schedule_events,
+        multi_policy.clone(),
+    )
+    .unwrap();
+    let multi_all_receipts = multi_all.log.iter().filter(|entry| entry.receipt.is_some()).count();
+    let multi_all_blocked =
+        multi_all.log.iter().find_map(|entry| entry.blocked_by.clone()).unwrap_or_else(|| "none".into());
+    let multi_rejected = simulate_multi_service_recovery_with_approval_schedule(
+        &model,
+        &multi_services,
+        30.0 * 86_400.0,
+        &schedule_events,
+        multi_policy,
+        &schedule,
+    )
+    .unwrap();
+    let multi_rejected_receipts = multi_rejected.log.iter().filter(|entry| entry.receipt.is_some()).count();
+    let multi_rejected_blocked =
+        multi_rejected.log.iter().find_map(|entry| entry.blocked_by.clone()).unwrap_or_else(|| "none".into());
     let schedule_rows = vec![
         serde_json::json!({
             "name": "approved-all",
@@ -102,6 +129,18 @@ fn main() -> ExitCode {
             "receipts": rejected_receipts,
             "survived_days": rejected.survived_s / 86_400.0,
             "blocked_by": rejected_blocked,
+        }),
+        serde_json::json!({
+            "name": "multi-approved-all",
+            "receipts": multi_all_receipts,
+            "survived_days": multi_all.survived_s / 86_400.0,
+            "blocked_by": multi_all_blocked,
+        }),
+        serde_json::json!({
+            "name": "multi-reject-day20",
+            "receipts": multi_rejected_receipts,
+            "survived_days": multi_rejected.survived_s / 86_400.0,
+            "blocked_by": multi_rejected_blocked,
         }),
     ];
     let certificate = serde_json::json!({
