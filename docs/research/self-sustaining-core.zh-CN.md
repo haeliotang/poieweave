@@ -57,12 +57,19 @@ S3 把审批从布尔值推进到：
 - 计划 SHA-256 摘要绑定（计划变化触发 mismatch）
 - 每次成功恢复生成可自校验的执行回执
 - 回执包含 plan digest、修复前后库存、验证结果
+- 多服务共享库存恢复：8 h 租约可维持 30 天；1 h 租约在 3 h 泵维修前阻止
+- 多服务多事件：day-10 泵 + day-20 车床，3 份回执
+- 缺失 sleeve/bronze 时 day-10 阻塞并记录 `missing resource`
+- 审批撤销：day-5 撤销后 day-10 修复被拒绝并记录 `approval_revoked`
 
 ### 2.5 独立验证发现了真实差异
 
 S4 的 112 例差分语料一开始在 `bus-1` 上出现 3 个 Python/Rust 不一致。根因是 Python checker 没有传播 capability provider 的可用性（robot → charger → bus）。修正后 **112/112** verdict 一致；26 个可恢复计划全部独立回放通过；130 个结构化变异全部被拒绝。
 
 这类“发现差异并修正独立实现”的结果，比单纯 PASS 更有研究价值。
+后续又扩展到 504 个三 lot、648 个资产+lot、2592 个双资产+lot、900/4500 个
+随机组合 fuzz 与 279 个能力子集案例，均一致；真正的第二次发现是 capability
+verification 缺口（见 §2.5.1）。
 
 ### 2.5.1 S4 发现并修复 capability verification 缺口
 
@@ -101,10 +108,12 @@ S1–S4 的关键结论已经打包为机器可核查证书：
 | S2 | load | 0–2 kW 材料受限 / 3–4 kW 能量受限 |
 | S2-joint | coverage | Base-06 独立 25 vs 联合 24 |
 | S2-regen | regeneration | Base-05 40 天 → Base-08 60 天 |
+| S2-metrics | metrics | 40/60 天、5/10 覆盖、+20 天再生 |
 | S3 | recovery | 审批 + 事件 + 2 回执 + 库存链 |
+| S3-multi | multi-recovery | 双服务/双事件/3 回执 |
 | S4 | differential | 112/112 verdict、26/26 plan evidence |
 
-证书通过 SHA-256 组成 bundle；独立验证器检查层集合、路径、schema 和哈希，
+八层证书通过 SHA-256 组成 bundle；独立验证器检查层集合、路径、schema 和哈希，
 篡改负例返回 `tamper=detected`。一页式摘要见
 [certificate bundle SUMMARY](../../experiments/certificate-bundle/SUMMARY.md)。
 
