@@ -558,6 +558,12 @@ jobs:
           python3 experiments/s4-input-energy/mutate.py target/debug/poie-model-corpus > /tmp/s4-input-energy.out
           diff experiments/s4-input-energy/expected.txt /tmp/s4-input-energy.out
           test -f experiments/s4-input-energy/REPORT.md
+      - name: S4 degraded status mutation corpus (Python)
+        run: |
+          cargo build --locked -q -p poie-viability --bin poie-model-corpus
+          python3 experiments/s4-degraded/mutate.py target/debug/poie-model-corpus > /tmp/s4-degraded.out
+          diff experiments/s4-degraded/expected.txt /tmp/s4-degraded.out
+          test -f experiments/s4-degraded/REPORT.md
 
       - name: Python model and bridge tests (M7)
         run: python3 -m unittest discover -s python/poie_models -p "test_*.py" -v
