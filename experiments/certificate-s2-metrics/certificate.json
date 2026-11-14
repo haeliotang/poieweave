@@ -10,6 +10,11 @@
     "survival_horizon_days": 60.0
   },
   "claim_scope": "model-level metric definitions only; not a physical forecast",
+  "recharge_boundary": {
+    "average_recharge_kw": 2.5,
+    "margin_kw": 0.1,
+    "threshold_load_kw": 2.6
+  },
   "recovery_coverage": {
     "ratio": 0.5,
     "recoverable": 5,
