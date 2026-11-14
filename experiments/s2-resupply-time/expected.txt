@@ -1,0 +1,5 @@
+interval_days	instant_days	event_driven_days	blocked_by
+10	60	60	cyclic process dependency at turn-sleeve-p1
+20	50	50	missing resource cutting-insert: need 1, have 0
+30	40	40	missing resource cutting-insert: need 1, have 0
+60	30	30	missing resource cutting-insert: need 1, have 0
