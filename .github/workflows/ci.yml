@@ -239,6 +239,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-insert-regeneration > /tmp/s2-insert-regeneration.out
           diff experiments/s2-insert-regeneration/expected.txt /tmp/s2-insert-regeneration.out
           test -f experiments/s2-insert-regeneration/REPORT.md
+      - name: S2 joint consumables (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-joint-consumables > /tmp/s2-joint-consumables.out
+          diff experiments/s2-joint-consumables/expected.txt /tmp/s2-joint-consumables.out
+          test -f experiments/s2-joint-consumables/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out

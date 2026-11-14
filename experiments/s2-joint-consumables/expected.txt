@@ -1,0 +1,9 @@
+inserts	bronze_kg	survived_days	blocked_by
+2	0.0	30	cyclic process dependency at turn-sleeve-p1
+2	1.5	40	cyclic process dependency at turn-sleeve-p1
+2	3.0	60	cyclic process dependency at turn-sleeve-p1
+2	6.0	90	none
+4	0.0	30	cyclic process dependency at turn-sleeve-p1
+4	1.5	40	cyclic process dependency at turn-sleeve-p1
+4	3.0	60	cyclic process dependency at turn-sleeve-p1
+4	6.0	90	none
