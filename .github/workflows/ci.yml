@@ -179,6 +179,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-regen-threshold-battery > /tmp/s2-regen-threshold-battery.out
           diff experiments/s2-regen-threshold-battery/expected.txt /tmp/s2-regen-threshold-battery.out
           test -f experiments/s2-regen-threshold-battery/REPORT.md
+      - name: S2 threshold vs initial energy (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-regen-threshold-initial > /tmp/s2-regen-threshold-initial.out
+          diff experiments/s2-regen-threshold-initial/expected.txt /tmp/s2-regen-threshold-initial.out
+          test -f experiments/s2-regen-threshold-initial/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out

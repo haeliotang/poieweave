@@ -1,0 +1,6 @@
+initial_kwh	first_blocked_x
+20	41
+40	61
+60	81
+80	101
+120	141
