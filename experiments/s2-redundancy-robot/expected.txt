@@ -1,0 +1,3 @@
+mode	survived_days	blocked_by
+baseline	30	no restorer for robot-m1
+redundant-pump	35	no restorer for robot-m1
