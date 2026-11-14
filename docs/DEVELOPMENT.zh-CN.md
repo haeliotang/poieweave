@@ -723,3 +723,4 @@ flowchart LR
 | 0.1.227 | 2026-11-14 | S2 指标类型化：Survival Horizon/Recovery Coverage/Regenerative Capacity + 3 测试；测试矩阵 466 |
 | 0.1.228 | 2026-11-14 | S2 指标证书：40/60 天、5/10 覆盖、+20 天再生，加入 bundle 七层校验 |
 | 0.1.229 | 2026-11-14 | S4 验证降级变异：7 个 process 逐个降为 declared，63 verdict 63/63 一致 |
+| 0.1.230 | 2026-11-14 | S4 能力验证变异发现 Rust 缺口：capability provider 未校验；修复后 45/45，测试 467 |

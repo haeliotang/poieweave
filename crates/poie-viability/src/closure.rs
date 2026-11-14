@@ -52,6 +52,7 @@ pub enum BlockReason {
     UnknownDuration(String),
     HorizonExceeded { needed_s: f64, horizon_s: f64 },
     UnverifiedProcess { process: String, required: Verification, actual: Verification },
+    UnverifiedCapability { capability: String, required: Verification, actual: Verification },
 }
 
 impl fmt::Display for BlockReason {
@@ -71,6 +72,9 @@ impl fmt::Display for BlockReason {
             BlockReason::UnverifiedProcess { process, required, actual } => {
                 write!(f, "unverified process {process}: {actual:?} < {required:?}")
             }
+            BlockReason::UnverifiedCapability { capability, required, actual } => {
+                write!(f, "unverified capability {capability}: {actual:?} < {required:?}")
+            }
         }
     }
 }
@@ -82,7 +86,7 @@ impl BlockReason {
             BlockReason::MissingResource { .. } => 1,
             BlockReason::MissingCapability(_) => 2,
             BlockReason::NoRestorer(_) => 3,
-            BlockReason::UnverifiedProcess { .. } => 4,
+            BlockReason::UnverifiedProcess { .. } | BlockReason::UnverifiedCapability { .. } => 4,
             BlockReason::UnknownDuration(_) => 5,
             BlockReason::HorizonExceeded { .. } => 6,
             BlockReason::UnknownAsset(_) => 7,
@@ -389,6 +393,21 @@ impl Search<'_> {
         }
         let mut best: Option<Failure> = None;
         for provider in providers {
+            if let Some(asset) = self.model.assets.get(&provider) {
+                let actual = asset.capability_verification(capability);
+                if actual < self.min_verification {
+                    let failure = Failure::one(BlockReason::UnverifiedCapability {
+                        capability: capability.to_string(),
+                        required: self.min_verification,
+                        actual,
+                    });
+                    best = Some(match best {
+                        Some(current) => current.better(failure),
+                        None => failure,
+                    });
+                    continue;
+                }
+            }
             match self.solve_asset(&provider, state.clone(), stack_assets, stack_resources, stack_processes) {
                 Ok(next) => return Ok(next),
                 Err(failure) => {
@@ -566,6 +585,24 @@ mod tests {
             panic!("expected blocked");
         };
         assert!(blocked.reasons.iter().any(|reason| matches!(reason, BlockReason::HorizonExceeded { .. })));
+    }
+
+    #[test]
+    fn unverified_capability_provider_is_blocked() {
+        let mut model = failed(load("scenarios/base-04/model.toml"), "lathe-1");
+        model
+            .assets
+            .get_mut("robot-m1")
+            .expect("robot")
+            .capability_verification
+            .insert("lathe-repair".into(), Verification::Declared);
+        let ClosureOutcome::Blocked(blocked) = analyze(&model, "lathe-1", 12.0 * 3600.0) else {
+            panic!("expected blocked");
+        };
+        assert!(blocked.reasons.iter().any(|reason| matches!(
+            reason,
+            BlockReason::UnverifiedCapability { capability, .. } if capability == "lathe-repair"
+        )));
     }
 
     #[test]
