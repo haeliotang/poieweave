@@ -464,6 +464,12 @@ jobs:
           python3 experiments/s4-concurrency-model/verify.py /tmp/s4-concurrency-model.tsv > /tmp/s4-concurrency-model.out
           diff experiments/s4-concurrency-model/expected.txt /tmp/s4-concurrency-model.out
           test -f experiments/s4-concurrency-model/REPORT.md
+      - name: S4 independent time model (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-time-semantics > /tmp/s4-time-model.tsv
+          python3 experiments/s4-time-model/verify.py /tmp/s4-time-model.tsv > /tmp/s4-time-model.out
+          diff experiments/s4-time-model/expected.txt /tmp/s4-time-model.out
+          test -f experiments/s4-time-model/REPORT.md
       - name: S3 lease renewal (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-lease-renewal > /tmp/s3-lease-renewal.out
