@@ -64,6 +64,32 @@
       6
     ]
   },
+  "regeneration": {
+    "base05_advanced": [
+      40,
+      60,
+      80,
+      90
+    ],
+    "base05_instant": [
+      40,
+      60,
+      80,
+      90
+    ],
+    "base08_advanced": [
+      60,
+      90,
+      90,
+      90
+    ],
+    "base08_instant": [
+      60,
+      90,
+      90,
+      90
+    ]
+  },
   "schema": "poie.time-certificate/1",
   "sparse": [
     {
