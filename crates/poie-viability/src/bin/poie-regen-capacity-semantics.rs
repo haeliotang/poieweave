@@ -13,7 +13,7 @@ fn root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../..")
 }
 
-fn horizon_for(base: &Model, multiplier: u32, capacity_kwh: f64, initial_joules: f64) -> f64 {
+fn horizon_for(base: &Model, multiplier: u32, capacity_kwh: f64, initial_joules: f64) -> Result<f64, String> {
     let mut model = base.clone();
     model.lots.retain(|lot| !lot.id.starts_with("lot-sleeve") && lot.id != "lot-bronze");
     if let Some(lot) = model.lots.iter_mut().find(|lot| lot.resource == "electric-energy") {
@@ -36,18 +36,17 @@ fn horizon_for(base: &Model, multiplier: u32, capacity_kwh: f64, initial_joules:
         &events,
         Some(BatteryLimits { capacity_kwh, charge_kw: 10.0 }),
     )
-    .unwrap()
-    .survived_s
-        / 86400.0
+    .map(|report| report.survived_s / 86400.0)
+    .map_err(|error| error.to_string())
 }
 
-fn first_blocked(base: &Model, capacity_kwh: f64, initial_joules: f64) -> u32 {
+fn first_blocked(base: &Model, capacity_kwh: f64, initial_joules: f64) -> Result<u32, String> {
     for multiplier in 1u32..=700 {
-        if horizon_for(base, multiplier, capacity_kwh, initial_joules) < 10.0 {
-            return multiplier;
+        if horizon_for(base, multiplier, capacity_kwh, initial_joules)? < 10.0 {
+            return Ok(multiplier);
         }
     }
-    0
+    Ok(0)
 }
 
 fn main() -> ExitCode {
@@ -55,8 +54,10 @@ fn main() -> ExitCode {
     let base = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
     println!("initial_kwh\tcapacity_kwh\tfirst_blocked_x");
     for capacity_kwh in [200.0, 400.0, 600.0] {
-        let blocked = first_blocked(&base, capacity_kwh, 500.0 * 3.6e6);
-        println!("500\t{capacity_kwh:.0}\t{blocked}");
+        match first_blocked(&base, capacity_kwh, 500.0 * 3.6e6) {
+            Ok(blocked) => println!("500\t{capacity_kwh:.0}\t{blocked}"),
+            Err(_) => println!("500\t{capacity_kwh:.0}\trejected"),
+        }
     }
     ExitCode::SUCCESS
 }

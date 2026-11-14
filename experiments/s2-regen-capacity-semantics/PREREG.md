@@ -2,7 +2,7 @@
 
 - Experiment ID: `s2-regen-capacity-semantics`
 - Date: 2026-11-14
-- Status: completed; capacity does not cap initial inventory
+- Status: completed; capacity now rejects oversized initial inventory
 - Scope: initial energy 500 kWh, capacity 200–600 kWh.
 
 ## Question
