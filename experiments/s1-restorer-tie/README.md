@@ -1,6 +1,6 @@
 # S1 — Restorer Tie-Break
 
-Equal duration: cheap-first leaves 0.95 kg grease, expensive-first 0.80.
+Equal duration: both orders now choose the cheap restorer (0.95 kg grease left).
 
 - [PREREG.md](PREREG.md)
 - [REPORT.md](REPORT.md)

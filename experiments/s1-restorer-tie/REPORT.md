@@ -1,7 +1,7 @@
 # S1 Restorer Tie-Break — report
 
 - Date: 2026-11-14
-- Status: equal-duration tie is order-sensitive, not cost-aware
+- Status: fixed; lower input cost wins the equal-duration tie
 - Runner: `cargo run --locked -q -p poie-viability --bin poie-restorer-tie`
 - Output: [expected.txt](expected.txt)
 
@@ -9,24 +9,28 @@
 
 ```text
 cheap-first	steps=["replace-sleeve-p1"] duration=10800s grease_left=0.95
-expensive-first	steps=["replace-sleeve-expensive"] duration=10800s grease_left=0.80
+expensive-first	steps=["replace-sleeve-p1"] duration=10800s grease_left=0.95
 ```
 
-## 2. Findings
+## 2. Before the fix
 
-- Both plans take 3 h, but the chosen restorer follows index order.
-- Cheap-first leaves 0.95 kg grease; expensive-first leaves 0.80 kg.
-- S1 does not compare input cost when durations tie.
+Expensive-first selected `replace-sleeve-expensive` and left 0.80 kg grease,
+because equal-duration ties followed index order.
 
-## 3. Significance
+## 3. Fix
 
-- This is a real limitation for long-horizon survival: an equal-duration but
-  more expensive plan can be selected purely by process order, consuming scarce
-  inventory earlier than necessary.
-- It complements the slow-restorer result: duration is optimized, resource cost
-  is not part of the tie-break.
+After duration comparison, closure compares relative consumption of the initial
+stock (`relative_consumption`) and keeps the lower-cost state. A regression test
+covers the expensive-first order.
 
-## 4. Limits
+## 4. Findings
 
-- One tie pair and one differing input.
+- Both orders now select the 0.05 kg restorer and leave 0.95 kg grease.
+- Duration is the primary criterion; input cost breaks ties.
+- This makes restorer choice independent of process order for this pair.
+
+## 5. Limits
+
+- One tie pair; relative-consumption metric is a heuristic, not a formal cost
+  optimum across all resources.
 - Model-level units.

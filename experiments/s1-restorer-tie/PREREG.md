@@ -2,7 +2,7 @@
 
 - Experiment ID: `s1-restorer-tie`
 - Date: 2026-11-14
-- Status: completed; equal-duration tie is order-sensitive
+- Status: completed; equal-duration tie now prefers lower input cost
 - Scope: cheap vs expensive restorer with the same duration.
 
 ## Question
