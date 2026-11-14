@@ -1,0 +1,18 @@
+set	size	survived_days	blocked_by
+baseline	0	60	none
+pump-p1	1	60	none
+pump-p1+filter-1	2	0	no restorer for filter-1
+pump-p1+robot-m1	2	60	none
+pump-p1+pv-1	2	60	none
+pump-p1+lathe-1	2	60	none
+filter-1	1	0	no restorer for filter-1
+filter-1+robot-m1	2	0	no restorer for filter-1
+filter-1+pv-1	2	0	no restorer for filter-1
+filter-1+lathe-1	2	0	no restorer for filter-1
+robot-m1	1	60	none
+robot-m1+pv-1	2	60	none
+robot-m1+lathe-1	2	0	no restorer for robot-m1
+pv-1	1	60	none
+pv-1+lathe-1	2	60	none
+lathe-1	1	60	none
+worst	1	0	filter-1
