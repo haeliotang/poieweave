@@ -28,6 +28,16 @@ def main(path: str) -> int:
     for row in certificate.get("sparse", []):
         if row.get("instant_days") != row.get("event_driven_days"):
             problems.append("sparse")
+    sweep = certificate.get("repair_sweep", {})
+    sweep_days = sweep.get("advanced_days", [])
+    if len(sweep_days) != 6 or len(sweep.get("instant_days", [])) != 6:
+        problems.append("repair sweep length")
+    elif sweep.get("instant_days", []) != [6, 6, 6, 6, 6, 6]:
+        problems.append("repair sweep instant")
+    elif sweep_days[:3] != [6, 6, 6] or sweep_days[-1] != 16:
+        problems.append("repair sweep endpoints")
+    elif any(right < left for left, right in zip(sweep_days, sweep_days[1:])):
+        problems.append("repair sweep monotone")
     adversarial = certificate.get("adversarial", {})
     if adversarial.get("subsets") != 31:
         problems.append("adversarial subsets")

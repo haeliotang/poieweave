@@ -120,6 +120,32 @@
       60
     ]
   },
+  "repair_sweep": {
+    "advanced_days": [
+      6,
+      6,
+      6,
+      7,
+      10,
+      16
+    ],
+    "instant_days": [
+      6,
+      6,
+      6,
+      6,
+      6,
+      6
+    ],
+    "repair_days": [
+      0.125,
+      0.5,
+      1.0,
+      2.0,
+      3.0,
+      5.0
+    ]
+  },
   "schema": "poie.time-certificate/1",
   "sparse": [
     {

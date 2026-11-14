@@ -27,6 +27,8 @@ tamper=detected
   (Base-05 8/12/20 -> 20/20/20; Base-08 12/18/30 -> 31/31/31).
 - The adversarial minimum over 31 subsets rises from 0 to 5 days with
   clock-advanced repair.
+- The repair-duration sweep shows no effect up to 1 day, then 7/10/16 days at
+  2/3/5 days while the instantaneous horizon stays at 6.
 
 ## 3. Significance
 
