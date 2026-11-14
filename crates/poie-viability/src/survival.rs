@@ -1201,6 +1201,109 @@ pub fn joint_coverage(
     })
 }
 
+#[derive(Clone, Debug, PartialEq)]
+pub struct OrderCoverageCase {
+    pub failed: Vec<String>,
+    pub standard_joint: bool,
+    pub best_joint: bool,
+    pub best_order: Option<Vec<String>>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct OrderCoverageReport {
+    pub total: usize,
+    pub standard_joint: usize,
+    pub best_joint: usize,
+    pub improved: Vec<OrderCoverageCase>,
+}
+
+impl OrderCoverageReport {
+    pub fn order_sensitive(&self) -> usize {
+        self.improved.len()
+    }
+}
+
+fn permutations(items: &[String]) -> Vec<Vec<String>> {
+    if items.len() <= 1 {
+        return vec![items.to_vec()];
+    }
+    let mut result = Vec::new();
+    for (index, item) in items.iter().enumerate() {
+        let mut rest = items.to_vec();
+        rest.remove(index);
+        for mut tail in permutations(&rest) {
+            let mut next = vec![item.clone()];
+            next.append(&mut tail);
+            result.push(next);
+        }
+    }
+    result
+}
+
+/// S2: compare the fixed failure order with the best repair order per case.
+pub fn joint_coverage_with_order_search(
+    model: &Model,
+    service_id: &str,
+    horizon_s: f64,
+    max_failures: usize,
+    battery: Option<BatteryLimits>,
+) -> Result<OrderCoverageReport, EnvelopeError> {
+    let independent = failure_envelope(model, service_id, horizon_s, max_failures)?;
+    let mut standard_joint = 0;
+    let mut best_joint = 0;
+    let mut improved = Vec::new();
+    for case in &independent.cases {
+        if !case.recoverable {
+            continue;
+        }
+        let standard_events: Vec<FailureEvent> =
+            case.failed.iter().map(|asset| FailureEvent { at_s: 0.0, asset: asset.clone() }).collect();
+        let standard =
+            simulate_multi_service_longevity_with_limits(model, &[service_id], horizon_s, &standard_events, battery)?
+                .log
+                .iter()
+                .all(|entry| entry.blocked_by.is_none());
+        if standard {
+            standard_joint += 1;
+        }
+        let mut best = false;
+        let mut best_order = None;
+        for order in permutations(&case.failed) {
+            let events: Vec<FailureEvent> =
+                order.iter().map(|asset| FailureEvent { at_s: 0.0, asset: asset.clone() }).collect();
+            let recovered =
+                simulate_multi_service_longevity_with_limits(model, &[service_id], horizon_s, &events, battery)?
+                    .log
+                    .iter()
+                    .all(|entry| entry.blocked_by.is_none());
+            if recovered {
+                best = true;
+                if !standard {
+                    best_order = Some(order.clone());
+                }
+                break;
+            }
+        }
+        if best {
+            best_joint += 1;
+        }
+        if best && !standard {
+            improved.push(OrderCoverageCase {
+                failed: case.failed.clone(),
+                standard_joint: standard,
+                best_joint: best,
+                best_order,
+            });
+        }
+    }
+    Ok(OrderCoverageReport {
+        total: independent.cases.iter().filter(|case| case.recoverable).count(),
+        standard_joint,
+        best_joint,
+        improved,
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1209,6 +1312,24 @@ mod tests {
     fn base05() -> Model {
         let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
         Model::load(&root.join("scenarios/base-05/model.toml")).expect("Base-05")
+    }
+
+    #[test]
+    fn base06_order_search_does_not_close_the_joint_gap() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let model = Model::load(&root.join("scenarios/base-06/model.toml")).expect("Base-06");
+        let report = joint_coverage_with_order_search(
+            &model,
+            "potable-water",
+            12.0 * 3600.0,
+            2,
+            Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
+        )
+        .unwrap();
+        assert_eq!(report.total, 25);
+        assert_eq!(report.standard_joint, 24);
+        assert_eq!(report.best_joint, 24);
+        assert_eq!(report.order_sensitive(), 0);
     }
 
     #[test]
