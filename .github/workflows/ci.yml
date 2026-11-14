@@ -154,6 +154,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-regen-cross > /tmp/s2-regen-cross.out
           diff experiments/s2-regen-cross/expected.txt /tmp/s2-regen-cross.out
           test -f experiments/s2-regen-cross/REPORT.md
+      - name: S2 regeneration cost (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-regen-cost > /tmp/s2-regen-cost.out
+          diff experiments/s2-regen-cost/expected.txt /tmp/s2-regen-cost.out
+          test -f experiments/s2-regen-cost/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
