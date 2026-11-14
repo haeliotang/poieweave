@@ -304,6 +304,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-redundancy-load > /tmp/s2-redundancy-load.out
           diff experiments/s2-redundancy-load/expected.txt /tmp/s2-redundancy-load.out
           test -f experiments/s2-redundancy-load/REPORT.md
+      - name: S2 energy interventions at the switch (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-energy-interventions > /tmp/s2-energy-interventions.out
+          diff experiments/s2-energy-interventions/expected.txt /tmp/s2-energy-interventions.out
+          test -f experiments/s2-energy-interventions/REPORT.md
       - name: S2 filter restorer (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-filter-restorer > /tmp/s2-filter-restorer.out
