@@ -798,3 +798,4 @@ flowchart LR
 | 0.1.302 | 2026-11-14 | S2 冗余 vs 共享维修机器人：30/35 天，均 no restorer robot-m1 |
 | 0.1.303 | 2026-11-14 | S2 filter restorer：30 天 no restorer → 90 天 none |
 | 0.1.304 | 2026-11-14 | S2 robot restorer：35 天 no restorer → 90 天 none |
+| 0.1.305 | 2026-11-14 | S2 双 restorer：任一单独均 30 天；filter+robot 才 90 天 |

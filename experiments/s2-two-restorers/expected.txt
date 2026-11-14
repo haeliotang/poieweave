@@ -1,0 +1,5 @@
+mode	survived_days	blocked_by
+redundant-only	30	no restorer for filter-1
+filter-only	30	no restorer for robot-m1
+robot-only	30	no restorer for filter-1
+filter+robot	90	none
