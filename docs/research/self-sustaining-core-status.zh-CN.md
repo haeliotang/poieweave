@@ -57,6 +57,8 @@
 
 负结果与已修正错误汇总：[negative-results.zh-CN.md](negative-results.zh-CN.md)
 
+FMI 3.0 集成现状与契约草案：[fmi-co-simulation.zh-CN.md](../design/fmi-co-simulation.zh-CN.md)（设计说明，未实现）
+
 ## 5. 明确未完成
 
 - 无真实硬件、工业场地或外部专家；M9/M10 物理验收仍未执行。
