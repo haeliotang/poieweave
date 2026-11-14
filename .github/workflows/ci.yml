@@ -309,6 +309,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-robot-restorer > /tmp/s2-robot-restorer.out
           diff experiments/s2-robot-restorer/expected.txt /tmp/s2-robot-restorer.out
           test -f experiments/s2-robot-restorer/REPORT.md
+      - name: S2 two restorers (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-two-restorers > /tmp/s2-two-restorers.out
+          diff experiments/s2-two-restorers/expected.txt /tmp/s2-two-restorers.out
+          test -f experiments/s2-two-restorers/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
