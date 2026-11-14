@@ -28,6 +28,11 @@ def main(path: str) -> int:
     for row in certificate.get("sparse", []):
         if row.get("instant_days") != row.get("event_driven_days"):
             problems.append("sparse")
+    energy = certificate.get("long_energy_sweep", {})
+    if energy.get("instant_days") != energy.get("advanced_days"):
+        problems.append("long energy sweep")
+    elif energy.get("advanced_days") != [30, 30, 30, 14, 3]:
+        problems.append("long energy values")
     sweep = certificate.get("repair_sweep", {})
     sweep_days = sweep.get("advanced_days", [])
     if len(sweep_days) != 6 or len(sweep.get("instant_days", [])) != 6:
