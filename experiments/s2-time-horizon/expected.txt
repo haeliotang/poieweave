@@ -1,0 +1,3 @@
+mode	survived_days	blocked_by
+instant-repair	6	missing resource grease: need 0.05, have 0
+event-driven	16	missing resource grease: need 0.05, have 0
