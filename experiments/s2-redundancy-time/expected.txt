@@ -1,0 +1,3 @@
+mode	load_kw	instant_days	event_driven_days
+baseline	0.0	12	31
+redundant-pump	0.0	90	90
