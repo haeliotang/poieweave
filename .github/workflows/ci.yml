@@ -329,6 +329,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-lease-renewal > /tmp/s3-lease-renewal.out
           diff experiments/s3-lease-renewal/expected.txt /tmp/s3-lease-renewal.out
           test -f experiments/s3-lease-renewal/REPORT.md
+      - name: S1 restorer choice (Base-05)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-restorer-choice > /tmp/s1-restorer-choice.out
+          diff experiments/s1-restorer-choice/expected.txt /tmp/s1-restorer-choice.out
+          test -f experiments/s1-restorer-choice/REPORT.md
       - name: S2 held-out failure intervals (Base-05)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-heldout > /tmp/s2-heldout.out
