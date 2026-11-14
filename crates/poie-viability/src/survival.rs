@@ -1908,4 +1908,50 @@ mod tests {
         );
         assert!(result.is_ok());
     }
+    #[test]
+    fn repeated_partial_yield_runs_extend_the_horizon() {
+        use poie_ontology::model::{Flow, Process, Verification, YieldSpec};
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let mut model = Model::load(&root.join("scenarios/base-08/model.toml")).unwrap();
+        model.add_process(Process {
+            id: "sharpen-insert".into(),
+            inputs: vec![
+                Flow { resource: "worn-insert".into(), si: 1.0 },
+                Flow { resource: "electric-energy".into(), si: 0.3 * 3_600_000.0 },
+            ],
+            outputs: vec![Flow { resource: "cutting-insert".into(), si: 1.0 }],
+            occupies: vec!["gauge-1".into()],
+            requires_capabilities: Vec::new(),
+            restores: Vec::new(),
+            duration_s: Some(3600.0),
+            verification: Verification::Modeled,
+            asset_mass_change_kg: 0.0,
+            mass_tolerance: 0.01,
+            process_yield: Some(YieldSpec {
+                output: "cutting-insert".into(),
+                fraction: 0.8,
+                reject: "worn-insert-reject".into(),
+            }),
+        });
+        if let Some(lot) = model.lots.iter_mut().find(|lot| lot.resource == "cutting-insert") {
+            lot.si = 2.0;
+        }
+        if let Some(lot) = model.lots.iter_mut().find(|lot| lot.resource == "bronze-bar") {
+            lot.si = 3.0;
+        }
+        let mut events: Vec<FailureEvent> = (1..=8)
+            .map(|index| FailureEvent { at_s: f64::from(index * 10) * 86400.0, asset: "pump-p1".into() })
+            .collect();
+        events.push(FailureEvent { at_s: 35.0 * 86400.0, asset: "lathe-1".into() });
+        events.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
+        let report = simulate_multi_service_longevity_with_limits(
+            &model,
+            &["potable-water", "workshop-operability"],
+            90.0 * 86400.0,
+            &events,
+            Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
+        )
+        .unwrap();
+        assert_eq!(report.survived_s / 86400.0, 60.0);
+    }
 }

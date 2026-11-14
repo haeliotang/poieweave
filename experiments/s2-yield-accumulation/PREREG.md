@@ -2,7 +2,7 @@
 
 - Experiment ID: `s2-yield-accumulation`
 - Date: 2026-11-14
-- Status: completed; S1 does not combine partial-yield runs
+- Status: completed; repeated runs now accumulate
 - Scope: yields 1.0/0.9/0.75/0.5 at 2 inserts, 3 kg bronze.
 
 ## Question
