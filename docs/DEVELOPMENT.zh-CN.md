@@ -727,3 +727,4 @@ flowchart LR
 | 0.1.231 | 2026-11-14 | S4 随机组合 fuzz：seed 20261114，100 模型 × 9 = 900 verdict，900/900 一致 |
 | 0.1.232 | 2026-11-14 | S4 多 seed fuzz：5 seeds × 100 模型 × 9 = 4500 verdict，4500/4500 一致 |
 | 0.1.233 | 2026-11-14 | S4 能力子集变异：31 个非空子集，279 verdict 279/279 一致 |
+| 0.1.234 | 2026-11-14 | Self-Sustaining Core 文档记录 S4 发现的 capability verification 缺口、修复与回归 |
