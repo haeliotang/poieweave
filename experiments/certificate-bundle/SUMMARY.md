@@ -17,7 +17,7 @@
 | S4 | `poie.s4-certificate/1` | `0413d9a9c7c47d09` | cases=112 matched=112 mismatched=0; plans=26 verified=26 |
 | S4-approval | `poie.approval-certificate/1` | `2a0e465d670ee348` |  |
 | S3-concurrency | `poie.concurrency-certificate/1` | `54f2f102509dde6c` |  |
-| S4-independent | `poie.independent-certificate/1` | `ee6bf30d57d936d7` |  |
+| S4-independent | `poie.independent-certificate/1` | `9779a0c129683b17` |  |
 
 > Model-level and isolated-simulation evidence only. This summary is not a
 > physical safety, lifetime, authority or industrial-autonomy certificate.

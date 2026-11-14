@@ -506,6 +506,12 @@ jobs:
           python3 experiments/s4-approval-schedule-model/verify.py /tmp/s4-approval-schedule-model.tsv > /tmp/s4-approval-schedule-model.out
           diff experiments/s4-approval-schedule-model/expected.txt /tmp/s4-approval-schedule-model.out
           test -f experiments/s4-approval-schedule-model/REPORT.md
+      - name: S4 independent tool-cycle model (Base-08)
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-tool-cycle > /tmp/s4-tool-cycle-model.tsv
+          python3 experiments/s4-tool-cycle-model/verify.py /tmp/s4-tool-cycle-model.tsv > /tmp/s4-tool-cycle-model.out
+          diff experiments/s4-tool-cycle-model/expected.txt /tmp/s4-tool-cycle-model.out
+          test -f experiments/s4-tool-cycle-model/REPORT.md
       - name: S3 lease renewal (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-lease-renewal > /tmp/s3-lease-renewal.out

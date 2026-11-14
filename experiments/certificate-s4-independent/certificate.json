@@ -35,6 +35,12 @@
       "expected": "experiments/s4-approval-schedule-model/expected.txt",
       "matched": 4,
       "name": "approval-schedule"
+    },
+    {
+      "cases": 2,
+      "expected": "experiments/s4-tool-cycle-model/expected.txt",
+      "matched": 2,
+      "name": "tool-cycle"
     }
   ],
   "claim_scope": "independent narrow models only; not whole-system equivalence",
