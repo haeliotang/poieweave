@@ -113,11 +113,31 @@ S1–S4 的关键结论已经打包为机器可核查证书：
 | S3-multi | multi-recovery | 双服务/双事件/3 回执 |
 | S4 | differential | 112/112 verdict、26/26 plan evidence |
 
-八层证书通过 SHA-256 组成 bundle；独立验证器检查层集合、路径、schema 和哈希，
+九层证书通过 SHA-256 组成 bundle；独立验证器检查层集合、路径、schema 和哈希，
 篡改负例返回 `tamper=detected`。一页式摘要见
 [certificate bundle SUMMARY](../../experiments/certificate-bundle/SUMMARY.md)。
 
 这些证书仍**未签名**，只证明内容完整性与模型身份，不证明作者、时效或物理真实性。
+
+
+### 2.7 近期新增的可证伪结果
+
+1. **电池容量语义修复**：初始电能超过声明容量时，长时仿真现在 fail-closed
+   拒绝，而不是静默使用超额能量；等号边界（容量等于初始库存）仍被允许。
+2. **负载切换点可解释**：Base-08 的材料/能量切换在 2.6 kW，平均 PV 充电为
+   2.5 kW；把充电输出改为 10/20/40 kWh 后切换点移动到 1.3/2.6/5.1 kW，
+   证明该边界由能量流入决定，而不是容量或充电功率上限。
+3. **生产索引陈旧错误**：直接 `model.processes.push` 不会更新
+   `producers`，导致新增修磨 process 对 S1 不可见。新增
+   `Model::add_process` 后，刀片修磨把 2/3 片 insert 的生存期从
+   40/50 天提升到 60 天；这是首个再生路径真正改变 S2 边界的结果。
+4. **耗材前沿会移动**：开启修磨后，insert 数量不再主导；bronze 库存
+   0/1.5/3/6 kg 对应 30/40/60/90+ 天。解决一个耗材瓶颈会暴露下一个。
+5. **质量守恒残余物**：回收 1.2 kg swarf 到 bar+slag 时，0.9 kg 回收仍
+   60 天，0.6 kg 降至 50 天并阻塞于缺少 bronze-bar；残余物只在低回收率
+   时进入关键路径。
+
+这些结果的共同限制仍是：单模型、单策略、模型级单位，不能外推为物理寿命。
 
 ## 3. 不应该从中得出的结论
 
@@ -132,8 +152,8 @@ S1–S4 的关键结论已经打包为机器可核查证书：
 
 1. 运行需求/水消耗与真实负载。
 2. 随机故障、维修延迟、并发占用。
-3. 质量守恒的回收收率、污染和残渣。
-4. 正式 Survival Horizon / Recovery Coverage / Regenerative Capacity 定义与留出集。
+3. 质量守恒的回收收率、污染和残渣（已有无污染残余原型，仍缺污染/质量降级）。
+4. 正式 Survival Horizon / Recovery Coverage / Regenerative Capacity 定义与留出集（已有原型，仍缺外部/独立数据）。
 5. 独立过程模型、FMI co-simulation 或 SMT 验证。
 6. 隔离 VM 的多进程/时钟/磁盘故障实验。
 7. 证书签名/第三方 attestation 与 freshness/rollback 防护。
@@ -147,6 +167,10 @@ cargo run --locked -q -p poie-viability --bin poie-horizon
 cargo run --locked -q -p poie-viability --bin poie-joint-coverage
 cargo run --locked -q -p poie-viability --bin poie-recovery
 cargo run --locked -q -p poie-viability --bin poie-closure-corpus-export
+cargo run --locked -q -p poie-viability --bin poie-recharge-rule
+cargo run --locked -q -p poie-viability --bin poie-insert-regeneration
+cargo run --locked -q -p poie-viability --bin poie-joint-consumables
+cargo run --locked -q -p poie-viability --bin poie-recycle-residue
 python3 experiments/s4-differential-corpus/compare.py /tmp/corpus.json
 ```
 
