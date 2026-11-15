@@ -2,7 +2,7 @@
 
 - Experiment ID: `s5-migration-batch2`
 - Date: 2026-11-15
-- Status: contention differences explained; dense difference unexplained and blocking
+- Status: contention explained; dense difference traced to a missing-key inventory defect and fixed
 - Scope: dense long repair and one- vs two-robot contention.
 
 ## Question
@@ -16,7 +16,7 @@ Run both paths with identical inputs and record horizon, termination, event coun
 and last committed event time.
 
 Prediction: contention differences match robot serialization; dense may expose an
-unexplained cycle and must block migration.
+unexplained cycle and must remain blocked until explained.
 
 ## Limitation
 
