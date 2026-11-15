@@ -1,0 +1,5 @@
+interval_days	legacy_days	canonical_days	delta_days	legacy_energy_kwh	canonical_energy_kwh	canonical_termination	legacy_events	canonical_events	failure_times	first_divergence	classification
+10	40	40	0.0	200.0	200.0	blocked:[MissingResource { resource: "bronze-bar", needed: 1.2, available: 0.6000000000000001 }]	6	10	match	event_count	EXPECTED_AGREEMENT
+15	60	60	0.0	200.0	200.0	blocked:[MissingResource { resource: "bronze-bar", needed: 1.2, available: 0.6000000000000001 }]	6	10	match	event_count	EXPECTED_AGREEMENT
+20	80	80	0.0	200.0	200.0	blocked:[MissingResource { resource: "bronze-bar", needed: 1.2, available: 0.6000000000000001 }]	6	10	match	event_count	EXPECTED_AGREEMENT
+30	90	90	0.0	200.0	200.0	completed	4	8	match	event_count	EXPECTED_AGREEMENT

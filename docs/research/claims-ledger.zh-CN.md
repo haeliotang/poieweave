@@ -11,7 +11,7 @@
 | C2 | 1 个 spare 可解锁 2 h 修复 | `experiments/s1-tool-cycle`、S1 证书 | 单资产 |
 | C3 | 替代 restorer 可旁路循环（4 h） | `experiments/s1-alt-restorer`、S1 证书 | 合成替代过程 |
 | C4 | 两条路径都存在时选更便宜的 2 h | `experiments/s1-alt-choice`、S1 证书 `path_choice` | 单资产 |
-| C5 | Base-05 故障间隔 10/15/20/30 天 → 40/60/80/≥90 天 | `experiments/s2-failure-envelope` 等 | 模型内 |
+| C5 | Base-05 故障间隔 10/15/20/30 天 → 40/60/80/≥90 天 | `experiments/s2-survival-horizon` | 模型内 |
 | C6 | Base-06 独立覆盖 25/56、联合 24/56 | `experiments/s2-joint-coverage` | 双故障、约定假设 |
 | C7 | 再生能力使 horizon 40→60 天 | `experiments/s2-regeneration` | 模型内 |
 | C8 | 负载 3/4 kW 时能量成为 binding constraint | `experiments/s2-load-threshold` | 模型内 |
@@ -62,6 +62,7 @@
 | C53 | Batch 3 三场景无未解释分歧 | `experiments/s5-migration-batch3` | 不含 3D 联合 |
 | C54 | 联合能源账本逐项守恒（6+7.5+2-3-0.5-2.5=9.5） | `experiments/s5-migration-batch3`、engine 测试 | 当前结算语义 |
 | C55 | horizon 同刻补货不进入本次运行 | `experiments/s5-migration-batch3`、engine 测试 | 边界规则 |
+| C56 | canonical C5 四区间 horizon/energy/失败时刻一致 | `experiments/s2-canonical-c5` | trace 事件数为记录粒度差异 |
 
 ## 不应出现的声明
 

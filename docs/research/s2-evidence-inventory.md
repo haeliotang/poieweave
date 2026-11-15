@@ -8,11 +8,11 @@ currently produces the formal result; it is not a claim of equivalence.
 
 ## Summary
 
-- S2 claims: 12
-- S2 experiment directories: 72
-- Experiments referenced by claims: 12
+- S2 claims: 13
+- S2 experiment directories: 73
+- Experiments referenced by claims: 13
 - Unmapped experiments: 60
-- Formal S2 experiments migrated to canonical: 0
+- Formal S2 experiments migrated to canonical: 1
 - Stochastic experiments missing a recorded seed: 2
 - S2 certificates: 6
 - Status-page S2 result lines: 13
@@ -22,18 +22,19 @@ currently produces the formal result; it is not a claim of equivalence.
 
 | claim | experiments | canonical adapter | migration |
 | --- | --- | --- | --- |
-| C5 | s2-failure-envelope | NOT_MIGRATED | NOT_MIGRATED |
-| C6 | s2-joint-coverage | NOT_MIGRATED | NOT_MIGRATED |
-| C7 | s2-regeneration | NOT_MIGRATED | NOT_MIGRATED |
-| C8 | s2-load-threshold | NOT_MIGRATED | NOT_MIGRATED |
-| C9 | s2-redundancy-load | NOT_MIGRATED | NOT_MIGRATED |
-| C10 | s2-resupply-frequency | NOT_MIGRATED | NOT_MIGRATED |
-| C11 | s2-adversarial-resupply | NOT_MIGRATED | NOT_MIGRATED |
-| C12 | s2-time-boundary | NOT_MIGRATED | NOT_MIGRATED |
-| C13 | s2-time-energy | NOT_MIGRATED | NOT_MIGRATED |
-| C14 | s2-redundancy-time | NOT_MIGRATED | NOT_MIGRATED |
-| C18 | s2-adversarial-random-time | NOT_MIGRATED | NOT_MIGRATED |
-| C19 | s2-adversarial-random-window | NOT_MIGRATED | NOT_MIGRATED |
+| C5 | s2-survival-horizon | engine::run_engine | MIGRATED |
+| C6 | s2-joint-coverage | engine::run_engine | MIGRATED |
+| C7 | s2-regeneration | engine::run_engine | MIGRATED |
+| C8 | s2-load-threshold | engine::run_engine | MIGRATED |
+| C9 | s2-redundancy-load | engine::run_engine | MIGRATED |
+| C10 | s2-resupply-frequency | engine::run_engine | MIGRATED |
+| C11 | s2-adversarial-resupply | engine::run_engine | MIGRATED |
+| C12 | s2-time-boundary | engine::run_engine | MIGRATED |
+| C13 | s2-time-energy | engine::run_engine | MIGRATED |
+| C14 | s2-redundancy-time | engine::run_engine | MIGRATED |
+| C18 | s2-adversarial-random-time | engine::run_engine | MIGRATED |
+| C19 | s2-adversarial-random-window | engine::run_engine | MIGRATED |
+| C56 | s2-canonical-c5 | engine::run_engine | MIGRATED |
 
 ## Status-page S2 results
 
@@ -60,75 +61,76 @@ claim list means the result has not yet been normalized into the claims ledger.
 
 | experiment | runner | model | claims | seed | status |
 | --- | --- | --- | --- | --- | --- |
-| s2-adversarial-failures | poie-adversarial-failures | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-adversarial-random | poie-adversarial-random | base-08 | NONE | 0x9e37_79b9_7f4a_7c15 | UNMAPPED |
-| s2-adversarial-random-time | poie-adversarial-random-time | base-08 | C18 | 0x9e37_79b9_7f4a_7c15 | CLAIMED_LEGACY |
-| s2-adversarial-random-window | poie-adversarial-random-window | base-08 | C19 | 0x9e37_79b9_7f4a_7c15 | CLAIMED_LEGACY |
-| s2-adversarial-resupply | poie-adversarial-resupply | base-08 | C11 | NOT_APPLICABLE | CLAIMED_LEGACY |
-| s2-adversarial-subsets | poie-adversarial-subsets | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-adversarial-time | poie-adversarial-time | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-adversarial-timing | poie-adversarial-timing | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-energy-boundary | poie-energy-boundary | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-energy-interventions | poie-energy-interventions | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-energy-recharge | poie-energy-recharge | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-failure-envelope | poie-survival | base-01, base-04, base-05 | C5 | NOT_APPLICABLE | CLAIMED_LEGACY |
-| s2-failure-pairs | poie-pairs | base-05 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-filter-restorer | poie-filter-restorer | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-grease-cost | poie-grease-cost | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-heldout | poie-heldout | base-05 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-insert-bound | poie-insert-bound | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-insert-regeneration | poie-insert-regeneration | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-joint-boundary | poie-joint-boundary | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-joint-consumables | poie-joint-consumables | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-joint-coverage | poie-joint-coverage | base-06 | C6 | NOT_APPLICABLE | CLAIMED_LEGACY |
-| s2-joint-double-failure | poie-joint | base-05, base-06 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-joint-load | poie-joint-load | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-joint-three | poie-joint-three | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-joint-worn | poie-joint-worn | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-joint-yield | poie-joint-yield | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-load | poie-load | base-05 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-load-threshold | poie-load-threshold | base-08 | C8 | NOT_APPLICABLE | CLAIMED_LEGACY |
-| s2-load-threshold-capacity | poie-load-threshold-capacity | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-load-threshold-charge | poie-load-threshold-charge | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-long-horizon | poie-longevity | base-05 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-metrics | poie-metrics | base-05, base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-monte-carlo | poie-monte-carlo | base-05 | NONE | 0x9E37_79B9_7F4A_7C15 | UNMAPPED |
-| s2-order-sensitivity | poie-order | base-06 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-recharge-bound | poie-recharge-bound | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-recharge-rule | poie-recharge-rule | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-recharge-rule-base05 | poie-recharge-rule-base05 | base-05, base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-recycle-residue | poie-recycle-residue | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-redundancy | poie-redundancy | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-redundancy-filter | poie-redundancy-filter | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-redundancy-load | poie-redundancy-load | base-08 | C9 | NOT_APPLICABLE | CLAIMED_LEGACY |
-| s2-redundancy-robot | poie-redundancy-robot | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-redundancy-time | poie-redundancy-time | base-08 | C14 | NOT_APPLICABLE | CLAIMED_LEGACY |
-| s2-regen-capacity-semantics | poie-regen-capacity-semantics | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-regen-cost | poie-regen-cost | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-regen-cost-load | poie-regen-cost-load | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-regen-cross | poie-regen-cross | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-regen-event | poie-regen-event | base-05, base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-regen-forced-cost | poie-regen-forced-cost | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-regen-long | poie-regen-long | base-05, base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-regen-threshold | poie-regen-threshold | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-regen-threshold-battery | poie-regen-threshold-battery | base-08 | NONE | NOT_RECORDED | UNMAPPED |
-| s2-regen-threshold-initial | poie-regen-threshold-initial | base-08 | NONE | NOT_RECORDED | UNMAPPED |
-| s2-regeneration | poie-regeneration | base-06, base-07 | C7 | NOT_APPLICABLE | CLAIMED_LEGACY |
-| s2-regeneration-horizon | poie-regen-horizon | base-05, base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-regeneration-yield | poie-regen-yield | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-resupply | poie-resupply | base-06 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-resupply-delivery | poie-resupply-delivery | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-resupply-frequency | poie-resupply-frequency | base-08 | C10 | NOT_APPLICABLE | CLAIMED_LEGACY |
-| s2-resupply-time | poie-resupply-time | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-robot-restorer | poie-robot-restorer | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-sharpen-yield | poie-sharpen-yield | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-survival-horizon | poie-horizon | base-05 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-time-boundary | poie-time-boundary | base-08 | C12 | NOT_APPLICABLE | CLAIMED_LEGACY |
-| s2-time-energy | poie-time-energy | base-08 | C13 | NOT_APPLICABLE | CLAIMED_LEGACY |
-| s2-time-energy-sweep | poie-time-energy-sweep | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-time-horizon | poie-time-horizon | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-time-insert | poie-time-insert | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-time-repair-sweep | poie-time-repair-sweep | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-two-restorers | poie-two-restorers | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-worn-bound | poie-worn-bound | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
-| s2-yield-accumulation | poie-yield-accumulation | base-08 | NONE | NOT_APPLICABLE | UNMAPPED |
+| s2-adversarial-failures | poie-adversarial-failures | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-adversarial-random | poie-adversarial-random | base-08 | NONE | 0x9e37_79b9_7f4a_7c15 | NOT_MIGRATED |
+| s2-adversarial-random-time | poie-adversarial-random-time | base-08 | C18 | 0x9e37_79b9_7f4a_7c15 | NOT_MIGRATED |
+| s2-adversarial-random-window | poie-adversarial-random-window | base-08 | C19 | 0x9e37_79b9_7f4a_7c15 | NOT_MIGRATED |
+| s2-adversarial-resupply | poie-adversarial-resupply | base-08 | C11 | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-adversarial-subsets | poie-adversarial-subsets | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-adversarial-time | poie-adversarial-time | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-adversarial-timing | poie-adversarial-timing | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-canonical-c5 | poie-migration-c5 | base-05 | C56 | NOT_APPLICABLE | CANONICAL_MIGRATED |
+| s2-energy-boundary | poie-energy-boundary | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-energy-interventions | poie-energy-interventions | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-energy-recharge | poie-energy-recharge | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-failure-envelope | poie-survival | base-01, base-04, base-05 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-failure-pairs | poie-pairs | base-05 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-filter-restorer | poie-filter-restorer | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-grease-cost | poie-grease-cost | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-heldout | poie-heldout | base-05 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-insert-bound | poie-insert-bound | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-insert-regeneration | poie-insert-regeneration | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-joint-boundary | poie-joint-boundary | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-joint-consumables | poie-joint-consumables | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-joint-coverage | poie-joint-coverage | base-06 | C6 | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-joint-double-failure | poie-joint | base-05, base-06 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-joint-load | poie-joint-load | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-joint-three | poie-joint-three | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-joint-worn | poie-joint-worn | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-joint-yield | poie-joint-yield | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-load | poie-load | base-05 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-load-threshold | poie-load-threshold | base-08 | C8 | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-load-threshold-capacity | poie-load-threshold-capacity | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-load-threshold-charge | poie-load-threshold-charge | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-long-horizon | poie-longevity | base-05 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-metrics | poie-metrics | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-monte-carlo | poie-monte-carlo | base-05 | NONE | 0x9E37_79B9_7F4A_7C15 | NOT_MIGRATED |
+| s2-order-sensitivity | poie-order | base-06 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-recharge-bound | poie-recharge-bound | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-recharge-rule | poie-recharge-rule | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-recharge-rule-base05 | poie-recharge-rule-base05 | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-recycle-residue | poie-recycle-residue | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-redundancy | poie-redundancy | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-redundancy-filter | poie-redundancy-filter | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-redundancy-load | poie-redundancy-load | base-08 | C9 | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-redundancy-robot | poie-redundancy-robot | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-redundancy-time | poie-redundancy-time | base-08 | C14 | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regen-capacity-semantics | poie-regen-capacity-semantics | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regen-cost | poie-regen-cost | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regen-cost-load | poie-regen-cost-load | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regen-cross | poie-regen-cross | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regen-event | poie-regen-event | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regen-forced-cost | poie-regen-forced-cost | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regen-long | poie-regen-long | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regen-threshold | poie-regen-threshold | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regen-threshold-battery | poie-regen-threshold-battery | base-08 | NONE | NOT_RECORDED | NOT_MIGRATED |
+| s2-regen-threshold-initial | poie-regen-threshold-initial | base-08 | NONE | NOT_RECORDED | NOT_MIGRATED |
+| s2-regeneration | poie-regeneration | base-06, base-07 | C7 | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regeneration-horizon | poie-regen-horizon | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regeneration-yield | poie-regen-yield | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-resupply | poie-resupply | base-06 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-resupply-delivery | poie-resupply-delivery | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-resupply-frequency | poie-resupply-frequency | base-08 | C10 | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-resupply-time | poie-resupply-time | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-robot-restorer | poie-robot-restorer | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-sharpen-yield | poie-sharpen-yield | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-survival-horizon | poie-horizon | base-05 | C5 | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-time-boundary | poie-time-boundary | base-08 | C12 | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-time-energy | poie-time-energy | base-08 | C13 | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-time-energy-sweep | poie-time-energy-sweep | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-time-horizon | poie-time-horizon | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-time-insert | poie-time-insert | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-time-repair-sweep | poie-time-repair-sweep | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-two-restorers | poie-two-restorers | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-worn-bound | poie-worn-bound | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-yield-accumulation | poie-yield-accumulation | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
