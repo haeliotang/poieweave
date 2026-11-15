@@ -1,0 +1,7 @@
+insert_count	mode	legacy_days	canonical_days	delta_days	legacy_energy_kwh	canonical_energy_kwh	canonical_termination	failure_times	classification
+2	baseline	40	40	0.0	200.0	200.0	blocked:[MissingResource { resource: "cutting-insert", needed: 1.0, available: 0.0 }]	match	EXPECTED_AGREEMENT
+2	sharpen	60	60	0.0	200.0	200.0	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	match	EXPECTED_AGREEMENT
+3	baseline	50	50	0.0	200.0	200.0	blocked:[MissingResource { resource: "cutting-insert", needed: 1.0, available: 0.0 }]	match	EXPECTED_AGREEMENT
+3	sharpen	60	60	0.0	200.0	200.0	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	match	EXPECTED_AGREEMENT
+4	baseline	60	60	0.0	200.0	200.0	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	match	EXPECTED_AGREEMENT
+4	sharpen	60	60	0.0	200.0	200.0	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	match	EXPECTED_AGREEMENT

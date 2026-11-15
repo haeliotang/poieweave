@@ -13,7 +13,7 @@
 | C4 | 两条路径都存在时选更便宜的 2 h | `experiments/s1-alt-choice`、S1 证书 `path_choice` | 单资产 |
 | C5 | Base-05 故障间隔 10/15/20/30 天 → 40/60/80/≥90 天 | `experiments/s2-survival-horizon` | 模型内 |
 | C6 | Base-06 独立覆盖 25/56、联合 24/56 | `experiments/s2-joint-coverage` | 双故障、约定假设 |
-| C7 | 再生能力使 horizon 40→60 天 | `experiments/s2-regeneration` | 模型内 |
+| C7 | 再生能力使 horizon 40→60 天 | `experiments/s2-insert-regeneration` | 模型内 |
 | C8 | 负载 3/4 kW 时能量成为 binding constraint | `experiments/s2-load-threshold` | 模型内 |
 | C9 | 冗余泵 60→90 天 | `experiments/s2-redundancy-load` | 单冗余布局 |
 | C10 | 补货间隔 10/20/30/60 天 → 60/50/40/30 天 | `experiments/s2-resupply-frequency` | 单一 consumable |
@@ -64,6 +64,7 @@
 | C55 | horizon 同刻补货不进入本次运行 | `experiments/s5-migration-batch3`、engine 测试 | 边界规则 |
 | C56 | canonical C5 四区间 horizon/energy/失败时刻一致 | `experiments/s2-canonical-c5` | trace 事件数为记录粒度差异 |
 | C57 | canonical C6 独立 25/56、联合 24/56 一致 | `experiments/s2-canonical-c6` | 覆盖枚举为外部适配器 |
+| C58 | canonical C7 六行 40/60、50/60 一致 | `experiments/s2-canonical-c7` | 模型内 |
 
 ## 不应出现的声明
 

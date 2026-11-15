@@ -24,7 +24,7 @@
       "id": "C7",
       "statement": "再生能力使 horizon 40→60 天",
       "evidence": [
-        "s2-regeneration"
+        "s2-insert-regeneration"
       ],
       "certificates": [],
       "boundary": "模型内"
@@ -129,6 +129,15 @@
       ],
       "certificates": [],
       "boundary": "覆盖枚举为外部适配器"
+    },
+    {
+      "id": "C58",
+      "statement": "canonical C7 六行 40/60、50/60 一致",
+      "evidence": [
+        "s2-canonical-c7"
+      ],
+      "certificates": [],
+      "boundary": "模型内"
     }
   ],
   "experiments": [
@@ -383,6 +392,32 @@
       "risk": "HIGH"
     },
     {
+      "experiment": "s2-canonical-c7",
+      "report": "experiments/s2-canonical-c7/REPORT.md",
+      "prereg": "experiments/s2-canonical-c7/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c7"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "insert_count\tmode\tlegacy_days\tcanonical_days\tdelta_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tfailure_times\tclassification\n2\tbaseline\t40\t40\t0.0\t200.0\t200.0\tblocked:[MissingResource { resource: \"cutting-insert\", needed: 1.0, available: 0.0 }]\tmatch\tEXPECTED_AGREEMENT\n2\tsharpen\t60\t60\t0.0\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tmatch\tEXPECTED_AGREEMENT\n3\tbaseline\t50\t50\t0.0\t200.0\t200.0\tblocked:[MissingResource { resource: \"cutting-insert\", needed: 1.0, available: 0.0 }]\tmatch\tEXPECTED_AGREEMENT\n3\tsharpen\t60\t60\t0.0\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tmatch\tEXPECTED_AGREEMENT\n4\tbaseline\t60\t60\t0.0\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tmatch\tEXPECTED_AGREEMENT\n4\tsharpen\t60\t60\t0.0\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tmatch\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "insert_count\tmode\tlegacy_days\tcanonical_days\tdelta_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tfailure_times\tclassification",
+        "2\tbaseline\t40\t40\t0.0\t200.0\t200.0\tblocked:[MissingResource { resource: \"cutting-insert\", needed: 1.0, available: 0.0 }]\tmatch\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C58"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
       "experiment": "s2-energy-boundary",
       "report": "experiments/s2-energy-boundary/REPORT.md",
       "prereg": "experiments/s2-energy-boundary/PREREG.md",
@@ -618,11 +653,13 @@
       ],
       "stochastic": false,
       "seed": "NOT_APPLICABLE",
-      "claim_ids": [],
+      "claim_ids": [
+        "C7"
+      ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "migration_status": "NOT_MIGRATED",
-      "risk": "MEDIUM"
+      "risk": "HIGH"
     },
     {
       "experiment": "s2-joint-boundary",
@@ -1496,13 +1533,11 @@
       ],
       "stochastic": false,
       "seed": "NOT_APPLICABLE",
-      "claim_ids": [
-        "C7"
-      ],
+      "claim_ids": [],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "migration_status": "NOT_MIGRATED",
-      "risk": "HIGH"
+      "risk": "MEDIUM"
     },
     {
       "experiment": "s2-regeneration-horizon",
@@ -2185,14 +2220,14 @@
     }
   ],
   "summary": {
-    "s2_claims": 14,
-    "s2_experiments": 74,
-    "claimed_experiments": 14,
+    "s2_claims": 15,
+    "s2_experiments": 75,
+    "claimed_experiments": 15,
     "unmapped_experiments": 60,
-    "formal_s2_experiments_migrated_to_canonical": 2,
+    "formal_s2_experiments_migrated_to_canonical": 3,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 14,
+    "claims_with_experiment_evidence": 15,
     "status_s2_result_lines": 13,
     "unmapped_status_results": 13
   }
