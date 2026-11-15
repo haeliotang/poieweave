@@ -1873,7 +1873,7 @@ pub fn joint_coverage_with_order_search(
 /// scheduled interval instead of being treated as instantaneous.
 ///
 /// The scheduler computes the makespan; inventory is applied by
-/// [`restore_services`] once per failure batch. This is a coarse coupling: it
+/// `restore_services` once per failure batch. This is a coarse coupling: it
 /// models shared robot occupancy and repair duration, not per-step material
 /// interlocks.
 #[allow(clippy::too_many_arguments)]
