@@ -205,16 +205,18 @@ impl SurvivalReport {
     /// `survived_s` field. `IncompleteAtHorizon` is reported when the last log
     /// records a horizon overrun rather than a completed repair.
     pub fn termination(&self) -> SurvivalTermination {
-        let Some(last_blocked) = self.log.iter().rev().find(|entry| entry.blocked_by.is_some()) else {
+        let Some(last) = self.log.last() else {
             return SurvivalTermination::CompletedHorizon;
         };
-        let reason = last_blocked.blocked_by.as_deref().unwrap_or_default();
-        if reason.contains("exceeds horizon") {
-            SurvivalTermination::IncompleteAtHorizon
-        } else if self.survived_s >= self.horizon_s - 1e-9 {
-            SurvivalTermination::CompletedHorizon
-        } else {
+        if last.blocked_by.is_some() && last.at_s >= self.horizon_s - 1e-9 {
+            // A terminal block at the horizon did not preserve service through
+            // the horizon, regardless of the reason text.
+            return SurvivalTermination::IncompleteAtHorizon;
+        }
+        if self.log.iter().any(|entry| entry.blocked_by.is_some()) {
             SurvivalTermination::Blocked
+        } else {
+            SurvivalTermination::CompletedHorizon
         }
     }
 }
@@ -2397,7 +2399,7 @@ mod tests {
             0.0,
         )
         .unwrap();
-        assert!(report.final_inventory["electric-energy"] > 10.0 * 3_600_000.0);
+        assert!(report.final_inventory["electric-energy"] > 10.0 * 3_600_000.0, "{:?}", report);
         assert_eq!(report.termination(), SurvivalTermination::CompletedHorizon);
     }
 
@@ -2443,6 +2445,61 @@ mod tests {
         let repaired = apply_plans(&mut model, &mut inventory, &[single.clone(), single], &planning_base).unwrap();
         assert_eq!(repaired, vec!["pump-p1"]);
         assert_eq!(inventory["electric-energy"], 6.0);
+    }
+
+    #[test]
+    fn a_block_at_the_horizon_is_not_completed() {
+        let report = SurvivalReport {
+            service: "test".into(),
+            horizon_s: 10.0,
+            survived_s: 10.0,
+            log: vec![SurvivalLogEntry {
+                at_s: 10.0,
+                failed: Some("pump-p1".into()),
+                repaired: Vec::new(),
+                energy_after: 0.0,
+                blocked_by: Some("inventory negative".into()),
+            }],
+            final_inventory: BTreeMap::new(),
+        };
+        assert_eq!(report.termination(), SurvivalTermination::IncompleteAtHorizon);
+    }
+
+    #[test]
+    fn a_pv_repair_only_generates_after_completion() {
+        use poie_ontology::model::{Process, Verification};
+
+        let mut model = base08();
+        set_energy_kwh(&mut model, 10.0);
+        model.assets.get_mut("pv-1").unwrap().status = AssetStatus::Failed;
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Available;
+        model.add_process(Process {
+            id: "repair-pv-test".into(),
+            inputs: Vec::new(),
+            outputs: Vec::new(),
+            occupies: Vec::new(),
+            requires_capabilities: Vec::new(),
+            restores: vec!["pv-1".into()],
+            duration_s: Some(3600.0),
+            verification: Verification::Demonstrated,
+            asset_mass_change_kg: 0.0,
+            mass_tolerance: 0.0,
+            process_yield: None,
+        });
+        let report = simulate_multi_service_longevity_scheduled(
+            &model,
+            &["potable-water"],
+            2.0 * 3600.0,
+            &[FailureEvent { at_s: 0.0, asset: "pv-1".into() }],
+            &["robot-m1".into()],
+            None,
+            0.0,
+        )
+        .unwrap();
+        // Repair window: pv-1 is still failed, so no generation.
+        assert!((report.log[1].energy_after - 10.0 * 3_600_000.0).abs() < 1.0, "{:?}", report.log);
+        // One hour of generation after completion.
+        assert!(report.final_inventory["electric-energy"] > 10.0 * 3_600_000.0, "{:?}", report);
     }
 
     #[test]
