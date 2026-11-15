@@ -853,7 +853,7 @@ pub fn simulate_multi_service_longevity_event_driven_with_resupply(
 /// Applies the exact plans that the scheduler timed. Each plan's remaining
 /// inventory is expressed against the same pre-batch snapshot; deltas are
 /// summed so two independently planned repairs cannot both spend the same lot.
-fn apply_plans(
+pub(crate) fn apply_plans(
     model: &mut Model,
     inventory: &mut BTreeMap<String, f64>,
     plans: &[Plan],
@@ -886,7 +886,7 @@ fn apply_plans(
     Ok(restored)
 }
 
-fn restore_services(
+pub(crate) fn restore_services(
     model: &mut Model,
     services: &[&Service],
     now_s: f64,
@@ -983,7 +983,7 @@ fn repair_one(
     }
 }
 
-fn model_with_inventory(model: &Model, inventory: &BTreeMap<String, f64>) -> Model {
+pub(crate) fn model_with_inventory(model: &Model, inventory: &BTreeMap<String, f64>) -> Model {
     let mut clone = model.clone();
     let mut lots = Vec::new();
     for (index, (resource, quantity)) in inventory.iter().enumerate() {
@@ -1000,7 +1000,7 @@ fn model_with_inventory(model: &Model, inventory: &BTreeMap<String, f64>) -> Mod
     clone
 }
 
-fn initial_inventory(model: &Model) -> BTreeMap<String, f64> {
+pub(crate) fn initial_inventory(model: &Model) -> BTreeMap<String, f64> {
     let mut inventory = BTreeMap::new();
     for lot in &model.lots {
         if lot.quality == LotQuality::Accepted && lot.si > 0.0 {
@@ -1010,7 +1010,7 @@ fn initial_inventory(model: &Model) -> BTreeMap<String, f64> {
     inventory
 }
 
-fn energy(inventory: &BTreeMap<String, f64>) -> f64 {
+pub(crate) fn energy(inventory: &BTreeMap<String, f64>) -> f64 {
     inventory.get("electric-energy").copied().unwrap_or(0.0)
 }
 
@@ -1024,7 +1024,7 @@ fn recharge_j_per_s(model: &Model) -> Option<f64> {
     Some(output.si / duration)
 }
 
-fn apply_energy_interval(
+pub(crate) fn apply_energy_interval(
     model: &Model,
     inventory: &mut BTreeMap<String, f64>,
     elapsed_s: f64,

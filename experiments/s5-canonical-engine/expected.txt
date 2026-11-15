@@ -1,0 +1,2 @@
+scenario	canonical_days	legacy_days	termination	verdict
+base-08-sparse	30	30	completed	same

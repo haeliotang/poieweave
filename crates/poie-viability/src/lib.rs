@@ -16,6 +16,7 @@ pub mod audit;
 pub mod bridge;
 pub mod clock;
 pub mod closure;
+pub mod engine;
 pub mod method;
 pub mod metrics;
 pub mod query;

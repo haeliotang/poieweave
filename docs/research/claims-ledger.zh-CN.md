@@ -40,6 +40,8 @@
 | C31 | horizon 处未完成维修不被报告为完成 | `experiments/s5-scheduled-survival`、`SurvivalTermination` 测试 | 批次级 |
 | C32 | horizon 时刻的阻塞不会被归类为完成 | `experiments/s5-scheduled-survival`、survival 测试 | 结构化判定 |
 | C33 | PV 修复完成前不产生该 PV 电力 | `experiments/s5-scheduled-survival`、survival 测试 | 最小合成 PV |
+| C34 | canonical kernel 产生类型化终止与逐事件 trace | `experiments/s5-canonical-engine`、engine 测试 | 稀疏场景 |
+| C35 | 稀疏直接修复场景 canonical 与 legacy 一致 | `experiments/s5-canonical-engine` | 单场景 |
 
 ## 不应出现的声明
 
