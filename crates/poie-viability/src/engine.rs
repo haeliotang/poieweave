@@ -73,7 +73,9 @@ enum TimelineItem {
 struct RunningRepair {
     plans: Vec<Plan>,
     planning_base: BTreeMap<String, f64>,
-    required: BTreeSet<String>,
+    execution_dependencies: BTreeSet<String>,
+    restoration_targets: BTreeSet<String>,
+    resources: Vec<String>,
     end_s: f64,
     label: String,
 }
@@ -95,18 +97,21 @@ fn start_repair(
     let planning_base = inventory.clone();
     let planning_model = model_with_inventory(current, &planning_base);
     let mut plans = Vec::new();
-    let mut required = BTreeSet::new();
+    let mut execution_dependencies = BTreeSet::new();
+    let mut restoration_targets = BTreeSet::new();
     for failure in pending {
         match analyze(&planning_model, &failure.asset, remaining_s) {
             ClosureOutcome::Restorable(plan) => {
                 for step in &plan.steps {
                     if let Some(process) = current.processes.iter().find(|process| process.id == step.process) {
                         for asset in &process.occupies {
-                            required.insert(asset.clone());
+                            if !alternative_pool.contains(asset) {
+                                execution_dependencies.insert(asset.clone());
+                            }
                         }
                     }
                     if let crate::closure::StepAction::Restore(asset) = &step.action {
-                        required.insert(asset.clone());
+                        restoration_targets.insert(asset.clone());
                     }
                 }
                 plans.push(plan);
@@ -117,7 +122,7 @@ fn start_repair(
         }
     }
     let mut pool = resources.to_vec();
-    for asset in &required {
+    for asset in &execution_dependencies {
         if !pool.contains(asset) && !alternative_pool.contains(asset) {
             pool.push(asset.clone());
         }
@@ -135,8 +140,19 @@ fn start_repair(
     if schedule.makespan_s > remaining_s + 1e-9 {
         return Err(StartError::Incomplete);
     }
+    for step in &schedule.steps {
+        execution_dependencies.extend(step.resources.iter().cloned());
+    }
     let label = pending.iter().map(|failure| failure.asset.as_str()).collect::<Vec<_>>().join(",");
-    Ok(RunningRepair { plans, planning_base, required, end_s: now_s + schedule.makespan_s, label })
+    Ok(RunningRepair {
+        plans,
+        planning_base,
+        execution_dependencies,
+        restoration_targets,
+        resources: schedule.steps.iter().flat_map(|step| step.resources.clone()).collect(),
+        end_s: now_s + schedule.makespan_s,
+        label,
+    })
 }
 
 fn plan_summary(plans: &[Plan]) -> Vec<String> {
@@ -299,7 +315,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     inventory_before: before,
                     inventory_after: inventory.clone(),
                     plans: plan_summary(&repair.plans),
-                    resources: Vec::new(),
+                    resources: repair.resources.clone(),
                 });
                 continue;
             }
@@ -361,7 +377,10 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
             }
         }
         if let Some(repair) = running.as_ref() {
-            if let Some(hit) = failed.iter().find(|failure| repair.required.contains(&failure.asset)) {
+            if let Some(hit) = failed.iter().find(|failure| {
+                repair.execution_dependencies.contains(&failure.asset)
+                    || repair.restoration_targets.contains(&failure.asset)
+            }) {
                 return Ok(EngineOutcome {
                     termination: EngineTermination::Blocked(format!(
                         "repair interrupted at {:.0}s: {} failed",
@@ -508,6 +527,87 @@ mod tests {
             .trace
             .iter()
             .any(|event| event.kind.starts_with("repair_completed") && event.at_s == 3.0 * 3600.0));
+    }
+
+    fn two_robot_options<'a>(failures: Vec<FailureEvent>, pool: Vec<String>) -> EngineOptions<'a> {
+        EngineOptions {
+            services: vec!["potable-water", "workshop-operability"],
+            horizon_s: 5.0 * 3600.0,
+            failures,
+            resupplies: Vec::new(),
+            resources: pool.clone(),
+            alternative_pool: pool,
+            battery: None,
+            load_kw: 0.0,
+        }
+    }
+
+    fn long_repair_model() -> Model {
+        let mut model = base08();
+        for lot in &mut model.lots {
+            if lot.resource == "sleeve-p1" {
+                lot.si = 1.0;
+            }
+        }
+        model.processes.iter_mut().find(|process| process.id == "replace-sleeve-p1").unwrap().duration_s =
+            Some(5.0 * 3600.0);
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        let mut second = model.assets.get("robot-m1").unwrap().clone();
+        second.id = "robot-m2".into();
+        model.assets.insert("robot-m2".into(), second);
+        model
+    }
+
+    #[test]
+    fn failure_of_the_selected_robot_interrupts_the_repair() {
+        let model = long_repair_model();
+        let pool = vec!["robot-m2".into(), "robot-m1".into()];
+        let outcome = run_engine(
+            &model,
+            &two_robot_options(vec![FailureEvent { at_s: 2.0 * 3600.0, asset: "robot-m2".into() }], pool),
+        )
+        .unwrap();
+        assert!(
+            matches!(outcome.termination, EngineTermination::Blocked(ref reason) if reason.contains("interrupted"))
+        );
+        assert!(!outcome.trace.iter().any(|event| event.kind.starts_with("repair_completed")));
+    }
+
+    #[test]
+    fn failure_of_an_unselected_robot_does_not_interrupt() {
+        let model = long_repair_model();
+        let pool = vec!["robot-m2".into(), "robot-m1".into()];
+        let outcome = run_engine(
+            &model,
+            &two_robot_options(vec![FailureEvent { at_s: 2.0 * 3600.0, asset: "robot-m1".into() }], pool),
+        )
+        .unwrap();
+        let completed = outcome.trace.iter().find(|event| event.kind.starts_with("repair_completed")).unwrap();
+        assert!(completed.resources.contains(&"robot-m2".into()), "{:?}", completed.resources);
+    }
+
+    #[test]
+    fn failure_of_a_required_tool_interrupts_the_repair() {
+        let mut model = long_repair_model();
+        let mut tool = model.assets.get("robot-m1").unwrap().clone();
+        tool.id = "tool-t1".into();
+        tool.provides.clear();
+        tool.requires.clear();
+        tool.requires_any.clear();
+        model.assets.insert("tool-t1".into(), tool);
+        model.processes.iter_mut().find(|process| process.id == "replace-sleeve-p1").unwrap().occupies =
+            vec!["tool-t1".into()];
+        let outcome = run_engine(
+            &model,
+            &two_robot_options(
+                vec![FailureEvent { at_s: 2.0 * 3600.0, asset: "tool-t1".into() }],
+                vec!["robot-m1".into()],
+            ),
+        )
+        .unwrap();
+        assert!(
+            matches!(outcome.termination, EngineTermination::Blocked(ref reason) if reason.contains("interrupted"))
+        );
     }
 
     #[test]
