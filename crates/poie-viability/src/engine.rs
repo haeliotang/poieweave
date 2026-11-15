@@ -522,7 +522,19 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     energy_curtailed_j: flow.curtailed_j,
                 });
                 let relevant = services.iter().any(|service| {
-                    service.requires.contains(&failure.asset) || service.requires_any.contains(&failure.asset)
+                    if service.requires.contains(&failure.asset) {
+                        return true;
+                    }
+                    if !service.requires_any.contains(&failure.asset) {
+                        return false;
+                    }
+                    !service.requires_any.iter().any(|alternative| {
+                        alternative != &failure.asset
+                            && current
+                                .assets
+                                .get(alternative)
+                                .is_some_and(|asset| asset.status == AssetStatus::Available)
+                    })
                 });
                 failed.push(failure.clone());
                 if relevant {
@@ -934,6 +946,39 @@ mod tests {
             "{:?}",
             outcome.termination
         );
+    }
+
+    #[test]
+    fn redundant_service_alternative_suppresses_unnecessary_repair() {
+        use poie_ontology::model::Asset;
+        use std::collections::BTreeMap;
+
+        let mut model = base08();
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Available;
+        model.assets.insert(
+            "pump-p2".into(),
+            Asset {
+                id: "pump-p2".into(),
+                kind: "pump".into(),
+                status: AssetStatus::Available,
+                status_evidence: None,
+                requires: Vec::new(),
+                requires_any: Vec::new(),
+                provides: Vec::new(),
+                capability_verification: BTreeMap::new(),
+                degraded: None,
+            },
+        );
+        let service = model.services.get_mut("potable-water").unwrap();
+        service.requires.retain(|asset| asset != "pump-p1");
+        service.requires_any = vec!["pump-p1".into(), "pump-p2".into()];
+        let outcome = run_engine(
+            &model,
+            &options(vec![FailureEvent { at_s: 10.0 * 86_400.0, asset: "pump-p1".into() }], 90.0 * 86_400.0),
+        )
+        .unwrap();
+        assert_eq!(outcome.termination, EngineTermination::CompletedHorizon);
+        assert!(!outcome.trace.iter().any(|event| event.kind.starts_with("repair_completed")));
     }
 
     #[test]
