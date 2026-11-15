@@ -1070,9 +1070,11 @@ pub(crate) fn apply_energy_interval_ledger(
     let requested_load_j = load_kw.max(0.0) * 1000.0 * elapsed_s;
     let available_j = *energy + generated_j - requested_load_j;
     if available_j < 0.0 {
-        let actual_load_j = *energy + generated_j;
+        let load_rate = load_kw.max(0.0) * 1000.0;
+        let net_rate = load_rate - generated_j_per_s;
+        let time_to_empty = if net_rate > 0.0 { *energy / net_rate } else { 0.0 };
         *energy = 0.0;
-        return Err(actual_load_j / (load_kw.max(0.0) * 1000.0).max(1.0));
+        return Err(time_to_empty);
     }
     let mut curtailed_j = 0.0;
     *energy = available_j;
