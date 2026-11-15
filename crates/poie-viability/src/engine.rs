@@ -17,8 +17,8 @@ use crate::clock::EventClock;
 use crate::closure::{analyze, ClosureOutcome, Plan};
 use crate::scheduler::schedule_plans_with_alternatives;
 use crate::survival::{
-    apply_energy_interval, apply_plans, energy, initial_inventory, model_with_inventory, BatteryLimits, FailureEvent,
-    Resupply,
+    apply_energy_interval_ledger, apply_plans, energy, initial_inventory, model_with_inventory, BatteryLimits,
+    FailureEvent, Resupply,
 };
 
 /// Explicit terminal state; never inferred from log text.
@@ -47,6 +47,11 @@ pub struct EngineTrace {
     pub plans: Vec<String>,
     pub resources: Vec<String>,
     pub witness: Vec<WitnessEntry>,
+    pub energy_generated_j: f64,
+    pub energy_resupply_j: f64,
+    pub energy_load_j: f64,
+    pub energy_repair_j: f64,
+    pub energy_curtailed_j: f64,
 }
 
 /// Full canonical result.
@@ -262,6 +267,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
     }
     let mut clock = EventClock::new(options.horizon_s);
     let mut trace = Vec::new();
+    let mut interval_flow = crate::survival::EnergyFlow::default();
 
     // Initial repair is its own event.
     let planning_model = model_with_inventory(&current, &inventory);
@@ -379,13 +385,20 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
             break;
         }
         let gap = clock.advance_to(next_s);
-        if let Err(offset) = apply_energy_interval(&current, &mut inventory, gap, options.battery, options.load_kw) {
-            return Ok(EngineOutcome {
-                termination: EngineTermination::Blocked("energy_depleted".into()),
-                survived_s: clock.now_s() - gap + offset,
-                trace,
-                final_inventory: inventory,
-            });
+        match apply_energy_interval_ledger(&current, &mut inventory, gap, options.battery, options.load_kw) {
+            Ok(flow) => {
+                interval_flow.generated_j += flow.generated_j;
+                interval_flow.load_j += flow.load_j;
+                interval_flow.curtailed_j += flow.curtailed_j;
+            }
+            Err(offset) => {
+                return Ok(EngineOutcome {
+                    termination: EngineTermination::Blocked("energy_depleted".into()),
+                    survived_s: clock.now_s() - gap + offset,
+                    trace,
+                    final_inventory: inventory,
+                });
+            }
         }
         if let Some(repair) = running.as_ref() {
             if repair.end_s <= clock.now_s() + 1e-9 {
@@ -399,6 +412,16 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                         final_inventory: inventory,
                     });
                 }
+                let repair_j: f64 = repair
+                    .plans
+                    .iter()
+                    .map(|plan| {
+                        let before = repair.planning_base.get("electric-energy").copied().unwrap_or(0.0);
+                        let after = plan.remaining_inventory.get("electric-energy").copied().unwrap_or(0.0);
+                        (before - after).max(0.0)
+                    })
+                    .sum();
+                let flow = std::mem::take(&mut interval_flow);
                 trace.push(EngineTrace {
                     at_s: clock.now_s(),
                     kind: format!("repair_completed:{}", repair.label),
@@ -407,6 +430,11 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     plans: plan_summary(&repair.plans),
                     resources: repair.resources.clone(),
                     witness: repair.witness.clone(),
+                    energy_generated_j: flow.generated_j,
+                    energy_resupply_j: 0.0,
+                    energy_load_j: flow.load_j,
+                    energy_repair_j: repair_j,
+                    energy_curtailed_j: flow.curtailed_j,
                 });
                 continue;
             }
@@ -432,12 +460,21 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
             if let TimelineItem::Supply(supply) = item {
                 let before = inventory.clone();
                 *inventory.entry(supply.resource.clone()).or_insert(0.0) += supply.si;
+                let mut resupply_j = if supply.resource == "electric-energy" { supply.si } else { 0.0 };
+                let mut curtailed_j = 0.0;
                 if let Some(battery) = options.battery {
                     let capacity_j = battery.capacity_kwh * 3_600_000.0;
                     if let Some(stored) = inventory.get_mut("electric-energy") {
-                        *stored = stored.min(capacity_j);
+                        if *stored > capacity_j {
+                            curtailed_j = *stored - capacity_j;
+                            *stored = capacity_j;
+                        }
                     }
                 }
+                if resupply_j > 0.0 && curtailed_j > 0.0 {
+                    resupply_j -= curtailed_j;
+                }
+                let flow = std::mem::take(&mut interval_flow);
                 trace.push(EngineTrace {
                     at_s: clock.now_s(),
                     kind: format!("resupply:{}", supply.resource),
@@ -446,6 +483,11 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     plans: Vec::new(),
                     resources: Vec::new(),
                     witness: Vec::new(),
+                    energy_generated_j: flow.generated_j,
+                    energy_resupply_j: resupply_j,
+                    energy_load_j: flow.load_j,
+                    energy_repair_j: 0.0,
+                    energy_curtailed_j: flow.curtailed_j + curtailed_j,
                 });
             }
         }
@@ -463,6 +505,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     }
                 }
                 let before = inventory.clone();
+                let flow = std::mem::take(&mut interval_flow);
                 trace.push(EngineTrace {
                     at_s: clock.now_s(),
                     kind: format!("failure:{}", failure.asset),
@@ -471,6 +514,11 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     plans: Vec::new(),
                     resources: Vec::new(),
                     witness: Vec::new(),
+                    energy_generated_j: flow.generated_j,
+                    energy_resupply_j: 0.0,
+                    energy_load_j: flow.load_j,
+                    energy_repair_j: 0.0,
+                    energy_curtailed_j: flow.curtailed_j,
                 });
                 failed.push(failure.clone());
             }
@@ -496,14 +544,22 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
     }
 
     let tail = clock.advance_to(options.horizon_s);
-    if let Err(offset) = apply_energy_interval(&current, &mut inventory, tail, options.battery, options.load_kw) {
-        return Ok(EngineOutcome {
-            termination: EngineTermination::Blocked("energy_depleted".into()),
-            survived_s: clock.now_s() - tail + offset,
-            trace,
-            final_inventory: inventory,
-        });
+    match apply_energy_interval_ledger(&current, &mut inventory, tail, options.battery, options.load_kw) {
+        Ok(flow) => {
+            interval_flow.generated_j += flow.generated_j;
+            interval_flow.load_j += flow.load_j;
+            interval_flow.curtailed_j += flow.curtailed_j;
+        }
+        Err(offset) => {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::Blocked("energy_depleted".into()),
+                survived_s: clock.now_s() - tail + offset,
+                trace,
+                final_inventory: inventory,
+            });
+        }
     }
+    let flow = std::mem::take(&mut interval_flow);
     trace.push(EngineTrace {
         at_s: clock.now_s(),
         kind: "horizon".into(),
@@ -512,6 +568,11 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
         plans: Vec::new(),
         resources: Vec::new(),
         witness: Vec::new(),
+        energy_generated_j: flow.generated_j,
+        energy_resupply_j: 0.0,
+        energy_load_j: flow.load_j,
+        energy_repair_j: 0.0,
+        energy_curtailed_j: flow.curtailed_j,
     });
     Ok(EngineOutcome {
         termination: EngineTermination::CompletedHorizon,
@@ -799,6 +860,51 @@ mod tests {
         let outcome = run_engine(&model, &opts).unwrap();
         let expected = (10.0 - 5.0 - 0.5) * 3_600_000.0;
         assert!((outcome.final_inventory["electric-energy"] - expected).abs() < 1.0, "{:?}", outcome.final_inventory);
+    }
+
+    #[test]
+    fn resupply_exactly_at_horizon_is_not_applied() {
+        let mut model = base08();
+        set_energy(&mut model, 1.0);
+        model.assets.get_mut("pv-1").unwrap().status = AssetStatus::Failed;
+        let mut opts = options(Vec::new(), 3600.0);
+        opts.battery = Some(BatteryLimits { capacity_kwh: 10.0, charge_kw: 10.0 });
+        opts.resupplies = vec![Resupply { at_s: 3600.0, resource: "electric-energy".into(), si: 2.0 * 3_600_000.0 }];
+        let outcome = run_engine(&model, &opts).unwrap();
+        assert!(!outcome.trace.iter().any(|event| event.kind.starts_with("resupply:")));
+        assert!((outcome.final_inventory["electric-energy"] - 3_600_000.0).abs() < 1.0);
+    }
+
+    #[test]
+    fn joint_energy_ledger_conserves_every_flow() {
+        let mut model = base08();
+        set_energy(&mut model, 6.0);
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        for lot in &mut model.lots {
+            if lot.resource == "sleeve-p1" {
+                lot.si = 1.0;
+            }
+        }
+        let mut opts = options(Vec::new(), 3.0 * 3600.0);
+        opts.battery = Some(BatteryLimits { capacity_kwh: 10.0, charge_kw: 10.0 });
+        opts.load_kw = 1.0;
+        opts.resupplies = vec![Resupply { at_s: 3600.0, resource: "electric-energy".into(), si: 2.0 * 3_600_000.0 }];
+        let outcome = run_engine(&model, &opts).unwrap();
+        let generated: f64 = outcome.trace.iter().map(|event| event.energy_generated_j).sum();
+        let resupply: f64 = outcome.trace.iter().map(|event| event.energy_resupply_j).sum();
+        let load: f64 = outcome.trace.iter().map(|event| event.energy_load_j).sum();
+        let repair: f64 = outcome.trace.iter().map(|event| event.energy_repair_j).sum();
+        let curtailed: f64 = outcome.trace.iter().map(|event| event.energy_curtailed_j).sum();
+        let initial = 6.0 * 3_600_000.0;
+        let final_j = outcome.final_inventory["electric-energy"];
+        assert!((final_j - 9.5 * 3_600_000.0).abs() < 1.0, "{}", final_j / 3_600_000.0);
+        assert!((generated - 7.5 * 3_600_000.0).abs() < 1.0);
+        assert!((resupply - 2.0 * 3_600_000.0).abs() < 1.0);
+        assert!((load - 3.0 * 3_600_000.0).abs() < 1.0);
+        assert!((repair - 0.5 * 3_600_000.0).abs() < 1.0);
+        assert!((curtailed - 2.5 * 3_600_000.0).abs() < 1.0);
+        let conserved = initial + generated + resupply - load - repair - curtailed;
+        assert!((conserved - final_j).abs() < 1.0, "{conserved} vs {final_j}");
     }
 
     #[test]

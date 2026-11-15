@@ -1028,6 +1028,14 @@ fn recharge_j_per_s(model: &Model) -> Option<f64> {
     Some(output.si / duration)
 }
 
+/// Energy flows for one interval, used by the canonical ledger.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub(crate) struct EnergyFlow {
+    pub generated_j: f64,
+    pub load_j: f64,
+    pub curtailed_j: f64,
+}
+
 pub(crate) fn apply_energy_interval(
     model: &Model,
     inventory: &mut BTreeMap<String, f64>,
@@ -1035,40 +1043,49 @@ pub(crate) fn apply_energy_interval(
     battery: Option<BatteryLimits>,
     load_kw: f64,
 ) -> Result<(), f64> {
+    apply_energy_interval_ledger(model, inventory, elapsed_s, battery, load_kw).map(|_| ())
+}
+
+pub(crate) fn apply_energy_interval_ledger(
+    model: &Model,
+    inventory: &mut BTreeMap<String, f64>,
+    elapsed_s: f64,
+    battery: Option<BatteryLimits>,
+    load_kw: f64,
+) -> Result<EnergyFlow, f64> {
     if elapsed_s <= 0.0 {
-        return Ok(());
+        return Ok(EnergyFlow::default());
     }
     let energy = inventory.entry("electric-energy".into()).or_insert(0.0);
-    let mut net_j_per_s = 0.0;
+    let mut generated_j_per_s = 0.0;
     if model.assets.get("pv-1").is_some_and(|asset| asset.status == AssetStatus::Available) {
         if let Some(raw_j_per_s) = recharge_j_per_s(model) {
-            net_j_per_s += match battery {
+            generated_j_per_s = match battery {
                 Some(battery) => raw_j_per_s.min(battery.charge_kw * 1000.0),
                 None => raw_j_per_s,
             };
         }
     }
-    net_j_per_s -= load_kw.max(0.0) * 1000.0;
-    if net_j_per_s < 0.0 {
-        let time_to_empty = *energy / -net_j_per_s;
-        if time_to_empty < elapsed_s {
-            *energy = 0.0;
-            return Err(time_to_empty);
-        }
+    let generated_j = generated_j_per_s * elapsed_s;
+    let requested_load_j = load_kw.max(0.0) * 1000.0 * elapsed_s;
+    let available_j = *energy + generated_j - requested_load_j;
+    if available_j < 0.0 {
+        let load_rate = load_kw.max(0.0) * 1000.0;
+        let net_rate = load_rate - generated_j_per_s;
+        let time_to_empty = if net_rate > 0.0 { *energy / net_rate } else { 0.0 };
+        *energy = 0.0;
+        return Err(time_to_empty);
     }
-    *energy += net_j_per_s * elapsed_s;
+    let mut curtailed_j = 0.0;
+    *energy = available_j;
     if let Some(battery) = battery {
         let capacity_j = battery.capacity_kwh * 3_600_000.0;
         if *energy > capacity_j {
+            curtailed_j = *energy - capacity_j;
             *energy = capacity_j;
         }
     }
-    if *energy < 0.0 {
-        *energy = 0.0;
-        Err(0.0)
-    } else {
-        Ok(())
-    }
+    Ok(EnergyFlow { generated_j, load_j: requested_load_j, curtailed_j })
 }
 
 #[allow(dead_code)]
