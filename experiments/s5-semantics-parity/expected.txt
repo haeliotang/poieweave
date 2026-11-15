@@ -1,0 +1,5 @@
+scenario	instant_days	advanced_days	verdict
+base-05@2d->5d	4	10	ok
+base-05@3d->5d	6	10	ok
+base-08@2d->5d	6	16	ok
+parity=ok

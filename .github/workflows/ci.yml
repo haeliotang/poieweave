@@ -468,6 +468,21 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-scheduled-survival > /tmp/s5-scheduled-survival.out
           diff experiments/s5-scheduled-survival/expected.txt /tmp/s5-scheduled-survival.out
           test -f experiments/s5-scheduled-survival/REPORT.md
+      - name: FMI 3.0 description/container conformance
+        run: |
+          python3 experiments/fmi-conformance/validate.py > /tmp/fmi-conformance.out
+          diff experiments/fmi-conformance/expected.txt /tmp/fmi-conformance.out
+          test -f experiments/fmi-conformance/REPORT.md
+      - name: Multi-process crash tail
+        run: |
+          python3 experiments/s5-multiprocess-crash/run.py > /tmp/s5-multiprocess-crash.out
+          diff experiments/s5-multiprocess-crash/expected.txt /tmp/s5-multiprocess-crash.out
+          test -f experiments/s5-multiprocess-crash/REPORT.md
+      - name: S5 semantics parity guard
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-semantics-parity > /tmp/s5-semantics-parity.out
+          diff experiments/s5-semantics-parity/expected.txt /tmp/s5-semantics-parity.out
+          test -f experiments/s5-semantics-parity/REPORT.md
       - name: S3 repair deadline (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-repair-deadline > /tmp/s3-repair-deadline.out
@@ -785,6 +800,12 @@ jobs:
           python3 experiments/certificate-attestation/attest.py > /tmp/certificate-attestation.out
           diff experiments/certificate-attestation/expected.txt /tmp/certificate-attestation.out
           test -f experiments/certificate-attestation/REPORT.md
+      - name: Certificate attestation with operator key path (openssl)
+        run: |
+          openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out /tmp/poie-operator-key.pem
+          python3 experiments/certificate-attestation/attest.py --key /tmp/poie-operator-key.pem > /tmp/certificate-attestation-key.out
+          diff experiments/certificate-attestation/expected.txt /tmp/certificate-attestation-key.out
+          rm -f /tmp/poie-operator-key.pem
       - name: Certificate bundle tamper test (Python)
         run: |
           python3 experiments/certificate-bundle-tamper/tamper.py > /tmp/certificate-bundle-tamper.out

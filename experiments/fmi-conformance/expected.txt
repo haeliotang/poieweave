@@ -1,0 +1,6 @@
+fmi-version=3.0
+co-simulation=declared
+variables=2
+container=zip
+fmi-model-description=ok
+fmi-cosimulation=not_run
