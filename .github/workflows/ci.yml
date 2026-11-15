@@ -463,6 +463,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-scheduler > /tmp/s3-scheduler.out
           diff experiments/s3-scheduler/expected.txt /tmp/s3-scheduler.out
           test -f experiments/s3-scheduler/REPORT.md
+      - name: S5 scheduled survival
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-scheduled-survival > /tmp/s5-scheduled-survival.out
+          diff experiments/s5-scheduled-survival/expected.txt /tmp/s5-scheduled-survival.out
+          test -f experiments/s5-scheduled-survival/REPORT.md
       - name: S3 repair deadline (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-repair-deadline > /tmp/s3-repair-deadline.out
