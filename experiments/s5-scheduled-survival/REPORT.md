@@ -42,8 +42,10 @@ robots	completion_h	horizon_days	blocked
 - Initial repair uses the same transaction: planning snapshot, energy settlement,
   inventory delta, validation, commit.
 - `SurvivalTermination` distinguishes `CompletedHorizon`, `Blocked` and
-  `IncompleteAtHorizon`; a repair still in flight at the horizon is not reported
-  as completed.
+  `IncompleteAtHorizon`; a terminal block at the horizon is classified as
+  incomplete, without matching error strings.
+- A synthetic PV repair test shows zero generation during the repair window and
+  generation only after completion.
 
 ## 6. Limits
 

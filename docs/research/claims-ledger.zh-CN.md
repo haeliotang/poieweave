@@ -38,6 +38,8 @@
 | C29 | 库存按规划快照结算，状态原子提交 | `experiments/s5-scheduled-survival`、survival 测试 | 批次级、无回滚日志 |
 | C30 | 初始维修不覆盖已结算的能源/负载 | `experiments/s5-scheduled-survival`、survival 测试 | 模型级 |
 | C31 | horizon 处未完成维修不被报告为完成 | `experiments/s5-scheduled-survival`、`SurvivalTermination` 测试 | 批次级 |
+| C32 | horizon 时刻的阻塞不会被归类为完成 | `experiments/s5-scheduled-survival`、survival 测试 | 结构化判定 |
+| C33 | PV 修复完成前不产生该 PV 电力 | `experiments/s5-scheduled-survival`、survival 测试 | 最小合成 PV |
 
 ## 不应出现的声明
 
