@@ -14,15 +14,7 @@ fn root() -> PathBuf {
 }
 
 fn main() -> ExitCode {
-    let mut model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
-    let mut second = model.assets.get("robot-m1").unwrap().clone();
-    second.id = "robot-m2".into();
-    model.assets.insert("robot-m2".into(), second);
-    for process in &mut model.processes {
-        if process.id == "replace-sleeve-p1" || process.id == "replace-lathe-nut" {
-            process.occupies = vec!["robot-m1".into(), "robot-m2".into()];
-        }
-    }
+    let model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
     let events =
         vec![FailureEvent { at_s: 0.0, asset: "pump-p1".into() }, FailureEvent { at_s: 0.0, asset: "lathe-1".into() }];
     println!("robots\tcompletion_h\thorizon_days\tblocked");

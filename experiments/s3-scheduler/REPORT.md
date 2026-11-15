@@ -21,12 +21,19 @@ robots	makespan_h	plan_ends_h
 - Three robots: plan ends 3/2/2, makespan 3 h.
 - Plans remain internally sequential; only different plans overlap.
 
-## 3. Significance
+## 3. Resource semantics
+
+- `schedule_plans` is strict PO mode: every `process.occupies` entry is required.
+- The 7/4/3 h experiment uses `schedule_plans_with_requirement` with an explicit
+  alternative robot pool; the chosen robot is recorded per step.
+- `occupies` is never treated as "pick one" anymore.
+
+## 4. Significance
 
 - This is the first shared scheduler implementation, replacing the earlier
   hard-coded greedy sweep in experiments.
 - It gives a reusable library primitive for later survival integration.
 
-## 4. Limits
+## 5. Limits
 
 - Greedy list scheduling; no preemption; model-level units.

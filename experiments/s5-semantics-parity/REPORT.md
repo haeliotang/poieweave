@@ -20,12 +20,20 @@ parity=ok
 - Clock-advanced horizons are 10-16 days where instantaneous returns 4-6.
 - No scenario violates the causal guard `advanced >= instant`.
 
-## 3. Significance
+## 3. Scope of the guard
+
+- This is three pre-registered observations, not a universal causal law.
+- Clock-advanced repair can in principle reduce a horizon by delaying a critical
+  service; the general invariants are monotonic time, no capability before
+  repair completion, no overlapping resource use and no use of unavailable
+  material. Those are enforced by unit tests, not by this comparison.
+
+## 4. Significance
 
 - It makes the semantics difference explicit instead of silently mixing paths.
 - It is a regression guard: a future path that reports a shorter horizon under
   clock-advanced semantics fails the command.
 
-## 4. Limits
+## 5. Limits
 
 - Three scenarios; not a theorem; instantaneous mode remains legacy.

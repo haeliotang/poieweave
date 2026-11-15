@@ -26,12 +26,14 @@
 | C17 | bundle 可在 clean-room 中验证 | `certificate-clean-room` | 同一 verifier 代码 |
 | C18 | 随机对抗中 0 天 collapse 是瞬时语义假象 | `experiments/s2-adversarial-random-time`、time 证书 | 200 子集、单一长修复 |
 | C19 | 延迟故障只减少、不消除瞬时 0 天质量 | `experiments/s2-adversarial-random-window`、time 证书 | day0–10 窗口 |
-| C20 | 共享机器人池可按计划并发调度 | `experiments/s3-scheduler`、scheduler 测试 | 贪心、无抢占 |
-| C21 | 生存循环可用调度 makespan 与共享时钟推进 | `experiments/s5-scheduled-survival`、survival 测试 | 批次级库存耦合 |
+| C20 | 显式替代资源组可按计划并发调度 | `experiments/s3-scheduler`、scheduler 测试 | 贪心、无抢占；`occupies` 为 AND |
+| C21 | 生存循环应用被调度计划并按 makespan 推进 | `experiments/s5-scheduled-survival`、survival 测试 | 批次级库存耦合 |
 | C22 | 最小 FMI 3.0 描述与容器通过检查 | `experiments/fmi-conformance` | 不执行 FMU |
 | C23 | 另一进程的 crash tail 可在重开时截断 | `experiments/s5-multiprocess-crash` | 单写者、本地文件 |
 | C24 | 签名路径可使用操作员提供的私钥 | `experiments/certificate-attestation`（`--key`） | 非信任锚 |
-| C25 | 测试场景中 advanced horizon 不低于 instant | `experiments/s5-semantics-parity` | 三场景回归守卫 |
+| C25 | 三个预登记场景中 advanced horizon 不低于 instant | `experiments/s5-semantics-parity` | 观察，不是普遍不变量 |
+| C26 | `occupies` 的所有资源必须同时可用 | `experiments/s3-scheduler`、scheduler 测试 | 严格模式 |
+| C27 | 调度与执行使用同一计划，且资源区间不重叠 | `experiments/s5-scheduled-survival`、scheduler 测试 | 批次级库存 |
 
 ## 不应出现的声明
 
