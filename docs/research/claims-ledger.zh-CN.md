@@ -54,6 +54,12 @@
 | C45 | 所选能力提供者的上游依赖失效会中断 | `experiments/s5-migration-batch2`、engine 测试 | 派生 witness |
 | C46 | 未选能力提供者失效不中断当前维修 | `experiments/s5-migration-batch2`、engine 测试 | 派生 witness |
 | C47 | `repair_completed` trace 含 capability witness | `experiments/s5-migration-batch2`、engine 测试 | 当前派生实现 |
+| C48 | 初始能源超过电池容量被拒绝 | `experiments/s5-migration-batch3`、engine 测试 | 输入校验 |
+| C49 | 离散补货能源不超过电池容量 | `experiments/s5-migration-batch3`、engine 测试 | 截断策略 |
+| C50 | 负载耗尽时刻按真实时间积分 | `experiments/s5-migration-batch3`、engine 测试 | 单负载 |
+| C51 | 维修期间负载持续扣除 | `experiments/s5-migration-batch3`、engine 测试 | 无 PV |
+| C52 | 补货到达前不可追溯使用 | `experiments/s5-migration-batch3`、engine 测试 | 单一 consumable |
+| C53 | Batch 3 三场景无未解释分歧 | `experiments/s5-migration-batch3` | 不含 3D 联合 |
 
 ## 不应出现的声明
 

@@ -493,6 +493,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-migration-batch2 > /tmp/s5-migration-batch2.out
           diff experiments/s5-migration-batch2/expected.txt /tmp/s5-migration-batch2.out
           test -f experiments/s5-migration-batch2/REPORT.md
+      - name: S5 migration batch 3
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-migration-batch3 > /tmp/s5-migration-batch3.out
+          diff experiments/s5-migration-batch3/expected.txt /tmp/s5-migration-batch3.out
+          test -f experiments/s5-migration-batch3/REPORT.md
       - name: S3 repair deadline (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-repair-deadline > /tmp/s3-repair-deadline.out

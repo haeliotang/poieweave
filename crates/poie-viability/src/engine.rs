@@ -17,7 +17,8 @@ use crate::clock::EventClock;
 use crate::closure::{analyze, ClosureOutcome, Plan};
 use crate::scheduler::schedule_plans_with_alternatives;
 use crate::survival::{
-    apply_energy_interval, apply_plans, initial_inventory, model_with_inventory, BatteryLimits, FailureEvent, Resupply,
+    apply_energy_interval, apply_plans, energy, initial_inventory, model_with_inventory, BatteryLimits, FailureEvent,
+    Resupply,
 };
 
 /// Explicit terminal state; never inferred from log text.
@@ -250,6 +251,15 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
     }
     let mut current = model.clone();
     let mut inventory = initial_inventory(model);
+    if let Some(battery) = options.battery {
+        let capacity_j = battery.capacity_kwh * 3_600_000.0;
+        if energy(&inventory) > capacity_j + 1e-9 {
+            return Err(EngineError(format!(
+                "initial electric-energy {:.0} J exceeds battery capacity {capacity_j:.0} J",
+                energy(&inventory)
+            )));
+        }
+    }
     let mut clock = EventClock::new(options.horizon_s);
     let mut trace = Vec::new();
 
@@ -422,6 +432,12 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
             if let TimelineItem::Supply(supply) = item {
                 let before = inventory.clone();
                 *inventory.entry(supply.resource.clone()).or_insert(0.0) += supply.si;
+                if let Some(battery) = options.battery {
+                    let capacity_j = battery.capacity_kwh * 3_600_000.0;
+                    if let Some(stored) = inventory.get_mut("electric-energy") {
+                        *stored = stored.min(capacity_j);
+                    }
+                }
                 trace.push(EngineTrace {
                     at_s: clock.now_s(),
                     kind: format!("resupply:{}", supply.resource),
@@ -720,6 +736,90 @@ mod tests {
         .unwrap();
         assert!(
             matches!(outcome.termination, EngineTermination::Blocked(ref reason) if reason.contains("interrupted"))
+        );
+    }
+
+    fn set_energy(model: &mut Model, kwh: f64) {
+        use poie_ontology::model::{Lot, LotQuality};
+        model.lots.retain(|lot| lot.resource != "electric-energy");
+        model.lots.push(Lot {
+            id: "test-energy".into(),
+            resource: "electric-energy".into(),
+            si: kwh * 3_600_000.0,
+            quality: LotQuality::Accepted,
+        });
+    }
+
+    #[test]
+    fn rejects_initial_energy_over_battery_capacity() {
+        let mut model = base08();
+        set_energy(&mut model, 10.0);
+        let mut opts = options(Vec::new(), 3600.0);
+        opts.battery = Some(BatteryLimits { capacity_kwh: 1.0, charge_kw: 10.0 });
+        assert!(run_engine(&model, &opts).is_err());
+    }
+
+    #[test]
+    fn resupply_energy_is_capped_by_battery_capacity() {
+        let mut model = base08();
+        set_energy(&mut model, 0.5);
+        model.assets.get_mut("pv-1").unwrap().status = AssetStatus::Failed;
+        let mut opts = options(Vec::new(), 2.0 * 3600.0);
+        opts.battery = Some(BatteryLimits { capacity_kwh: 1.0, charge_kw: 10.0 });
+        opts.resupplies = vec![Resupply { at_s: 3600.0, resource: "electric-energy".into(), si: 5.0 * 3_600_000.0 }];
+        let outcome = run_engine(&model, &opts).unwrap();
+        assert!(outcome.final_inventory["electric-energy"] <= 3_600_000.0 + 1.0);
+    }
+
+    #[test]
+    fn load_depletes_energy_at_the_correct_time() {
+        let mut model = base08();
+        set_energy(&mut model, 1.0);
+        model.assets.get_mut("pv-1").unwrap().status = AssetStatus::Failed;
+        let mut opts = options(Vec::new(), 5.0 * 3600.0);
+        opts.load_kw = 1.0;
+        let outcome = run_engine(&model, &opts).unwrap();
+        assert!((outcome.survived_s - 3600.0).abs() < 1.0, "{}", outcome.survived_s);
+        assert!(matches!(outcome.termination, EngineTermination::Blocked(ref reason) if reason == "energy_depleted"));
+    }
+
+    #[test]
+    fn load_is_charged_over_the_repair_window() {
+        let mut model = base08();
+        set_energy(&mut model, 10.0);
+        model.assets.get_mut("pv-1").unwrap().status = AssetStatus::Failed;
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        for lot in &mut model.lots {
+            if lot.resource == "sleeve-p1" {
+                lot.si = 1.0;
+            }
+        }
+        let mut opts = options(Vec::new(), 5.0 * 3600.0);
+        opts.load_kw = 1.0;
+        let outcome = run_engine(&model, &opts).unwrap();
+        let expected = (10.0 - 5.0 - 0.5) * 3_600_000.0;
+        assert!((outcome.final_inventory["electric-energy"] - expected).abs() < 1.0, "{:?}", outcome.final_inventory);
+    }
+
+    #[test]
+    fn resupply_cannot_be_used_before_it_arrives() {
+        let mut model = base08();
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        for lot in &mut model.lots {
+            if lot.resource == "sleeve-p1" {
+                lot.si = 1.0;
+            }
+            if lot.resource == "grease" {
+                lot.si = 0.0;
+            }
+        }
+        let mut opts = options(Vec::new(), 4.0 * 3600.0);
+        opts.resupplies = vec![Resupply { at_s: 3600.0, resource: "grease".into(), si: 1.0 }];
+        let outcome = run_engine(&model, &opts).unwrap();
+        assert!(
+            matches!(outcome.termination, EngineTermination::Blocked(ref reason) if reason.contains("grease")),
+            "{:?}",
+            outcome.termination
         );
     }
 
