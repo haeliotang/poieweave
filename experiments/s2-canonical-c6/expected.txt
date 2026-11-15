@@ -1,0 +1,3 @@
+service	total	independent	legacy_joint	canonical_joint	first_divergence	classification
+potable-water	56	25	24	24	none	EXPECTED_AGREEMENT
+case	legacy_joint	canonical_joint	canonical_reason
