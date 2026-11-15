@@ -138,6 +138,15 @@
       ],
       "certificates": [],
       "boundary": "模型内"
+    },
+    {
+      "id": "C59",
+      "statement": "canonical C8 11 行负载制度与能源一致",
+      "evidence": [
+        "s2-canonical-c8"
+      ],
+      "certificates": [],
+      "boundary": "恒定负载"
     }
   ],
   "experiments": [
@@ -411,6 +420,32 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C58"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-c8",
+      "report": "experiments/s2-canonical-c8/REPORT.md",
+      "prereg": "experiments/s2-canonical-c8/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c8"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 12,
+      "expected_output": "load_kw\tlegacy_days\tcanonical_days\tdelta_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification\n2.0\t60\t60\t0.0\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT\n2.1\t60\t60\t0.0\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT\n2.2\t60\t60\t0.0\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT\n2.3\t60\t60\t0.0\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT\n2.4\t60\t60\t0.0\t170.3\t170.3\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT\n2.5\t60\t60\t0.0\t26.3\t26.3\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT\n2.6\t16\t16\t0.0\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\n2.7\t8\t8\t0.0\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\n2.8\t5\t5\t0.0\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\n2.9\t4\t4\t0.0\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\n3.0\t3\t3\t0.0\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "load_kw\tlegacy_days\tcanonical_days\tdelta_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification",
+        "2.0\t60\t60\t0.0\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C59"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -2220,14 +2255,14 @@
     }
   ],
   "summary": {
-    "s2_claims": 15,
-    "s2_experiments": 75,
-    "claimed_experiments": 15,
+    "s2_claims": 16,
+    "s2_experiments": 76,
+    "claimed_experiments": 16,
     "unmapped_experiments": 60,
-    "formal_s2_experiments_migrated_to_canonical": 3,
+    "formal_s2_experiments_migrated_to_canonical": 4,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 15,
+    "claims_with_experiment_evidence": 16,
     "status_s2_result_lines": 13,
     "unmapped_status_results": 13
   }
