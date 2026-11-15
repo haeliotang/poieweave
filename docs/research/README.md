@@ -11,6 +11,7 @@
 - [负结果与已修正错误](negative-results.zh-CN.md)
 - [复现指南](reproduction.zh-CN.md)
 - [Canonical Engine](canonical-engine.zh-CN.md)
+- [Migration Log](migration-log.zh-CN.md)
 
 ## 设计与外部依赖
 
