@@ -77,6 +77,8 @@ FMI 3.0 集成现状与契约草案：[fmi-co-simulation.zh-CN.md](../design/fmi
 
 复现命令与预期输出：[reproduction.zh-CN.md](reproduction.zh-CN.md)
 
+S2 盘点与证据映射缺口：[s2-evidence-audit.zh-CN.md](s2-evidence-audit.zh-CN.md)
+
 发布签名与信任锚设计：[release-signing.zh-CN.md](../design/release-signing.zh-CN.md)（未实现）
 
 软件级故障隔离测试计划：[software-fault-isolation.zh-CN.md](../design/software-fault-isolation.zh-CN.md)（部分未执行）
