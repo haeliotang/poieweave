@@ -24,9 +24,9 @@
 
 | 指标 | 数量 |
 | --- | --- |
-| S2 claims | 14 |
-| S2 experiment 目录 | 74 |
-| 被 claim 引用的 experiment | 14 |
+| S2 claims | 15 |
+| S2 experiment 目录 | 75 |
+| 被 claim 引用的 experiment | 15 |
 | 未被 claim 引用的 experiment | 60 |
 | 已迁移到 canonical 的正式 S2 experiment | **0** |
 | 缺少记录种子的随机 experiment | 2 |
@@ -77,6 +77,11 @@ claim ID，也没有显式证书绑定。Phase A 的下一步必须决定每一�
 - 降级为诊断性观察
 
 不能把“已写入状态页”等同于“已被正式 claim 和证书覆盖”。
+
+### F8：C7 的 claim 证据映射错误已修正
+
+原 claims ledger 将 C7 指向 `s2-regeneration`（Base-06/07 覆盖），但 40→60
+数值来自 `s2-insert-regeneration`。已修正并新增 `s2-canonical-c7`。
 
 ### F7：C5 的 claim 证据映射错误已修正
 
