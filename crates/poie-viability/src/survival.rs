@@ -16,7 +16,9 @@ use std::collections::BTreeMap;
 
 use poie_ontology::model::{AssetStatus, Lot, LotQuality, Model, Service};
 
+use crate::clock::EventClock;
 use crate::closure::{analyze, BlockReason, ClosureOutcome, Plan, StepAction};
+use crate::scheduler::schedule_plans;
 use poie_digest::sha256_of;
 use serde::Serialize;
 
@@ -1865,6 +1867,251 @@ pub fn joint_coverage_with_order_search(
     })
 }
 
+/// S5 canonical path: failures are repaired through the shared scheduler and a
+/// single monotonic [`EventClock`]. Plans may overlap when they need different
+/// resources; a plan's own steps stay sequential. Energy is charged over the
+/// scheduled interval instead of being treated as instantaneous.
+///
+/// The scheduler computes the makespan; inventory is applied by
+/// [`restore_services`] once per failure batch. This is a coarse coupling: it
+/// models shared robot occupancy and repair duration, not per-step material
+/// interlocks.
+#[allow(clippy::too_many_arguments)]
+pub fn simulate_multi_service_longevity_scheduled(
+    model: &Model,
+    service_ids: &[&str],
+    horizon_s: f64,
+    events: &[FailureEvent],
+    resource_ids: &[String],
+    battery: Option<BatteryLimits>,
+    load_kw: f64,
+) -> Result<SurvivalReport, EnvelopeError> {
+    let mut services = Vec::new();
+    for service_id in service_ids {
+        let Some(service) = model.services.get(*service_id) else {
+            return Err(EnvelopeError(format!("unknown service {service_id}")));
+        };
+        services.push(service);
+    }
+    let service_label = services.iter().map(|service| service.id.as_str()).collect::<Vec<_>>().join(",");
+    if let Some(battery) = battery {
+        let initial_energy = initial_inventory(model).get("electric-energy").copied().unwrap_or(0.0);
+        let capacity_j = battery.capacity_kwh * 3_600_000.0;
+        if initial_energy > capacity_j + 1e-9 {
+            return Err(EnvelopeError(format!(
+                "initial electric-energy {initial_energy:.0} J exceeds battery capacity {capacity_j:.0} J"
+            )));
+        }
+    }
+    let mut current = model.clone();
+    let mut inventory = initial_inventory(model);
+    let mut log = Vec::new();
+    let mut clock = EventClock::new(horizon_s);
+
+    let (repaired, repair_s) = match restore_services(&mut current, &services, 0.0, horizon_s, &mut inventory) {
+        Ok(result) => result,
+        Err(reason) => {
+            log.push(SurvivalLogEntry {
+                at_s: 0.0,
+                failed: None,
+                repaired: Vec::new(),
+                energy_after: energy(&inventory),
+                blocked_by: Some(reason),
+            });
+            return Ok(SurvivalReport {
+                service: service_label.clone(),
+                horizon_s,
+                survived_s: 0.0,
+                log,
+                final_inventory: inventory,
+            });
+        }
+    };
+    let elapsed = clock.advance_by(repair_s);
+    if let Err(offset) = apply_energy_interval(&current, &mut inventory, elapsed, battery, load_kw) {
+        let failed_at = clock.now_s() - elapsed + offset;
+        log.push(SurvivalLogEntry {
+            at_s: failed_at,
+            failed: None,
+            repaired: Vec::new(),
+            energy_after: energy(&inventory),
+            blocked_by: Some("energy_depleted".into()),
+        });
+        return Ok(SurvivalReport {
+            service: service_label,
+            horizon_s,
+            survived_s: failed_at,
+            log,
+            final_inventory: inventory,
+        });
+    }
+    log.push(SurvivalLogEntry {
+        at_s: 0.0,
+        failed: None,
+        repaired,
+        energy_after: energy(&inventory),
+        blocked_by: None,
+    });
+
+    let mut ordered = events.to_vec();
+    ordered.sort_by(|left, right| left.at_s.total_cmp(&right.at_s));
+    let mut index = 0usize;
+    while index < ordered.len() {
+        let at = ordered[index].at_s.clamp(clock.now_s(), horizon_s);
+        let gap = clock.advance_to(at);
+        if let Err(offset) = apply_energy_interval(&current, &mut inventory, gap, battery, load_kw) {
+            let failed_at = clock.now_s() - gap + offset;
+            log.push(SurvivalLogEntry {
+                at_s: failed_at,
+                failed: None,
+                repaired: Vec::new(),
+                energy_after: energy(&inventory),
+                blocked_by: Some("energy_depleted".into()),
+            });
+            return Ok(SurvivalReport {
+                service: service_label,
+                horizon_s,
+                survived_s: failed_at,
+                log,
+                final_inventory: inventory,
+            });
+        }
+        if clock.remaining_s() <= 0.0 {
+            break;
+        }
+        let batch_start = index;
+        while index < ordered.len() && ordered[index].at_s == ordered[batch_start].at_s {
+            index += 1;
+        }
+        let batch = &ordered[batch_start..index];
+        let labels = batch.iter().map(|event| event.asset.as_str()).collect::<Vec<_>>().join(",");
+        let mut plans = Vec::new();
+        for event in batch {
+            match current.assets.get_mut(&event.asset) {
+                Some(asset) => asset.status = AssetStatus::Failed,
+                None => {
+                    log.push(SurvivalLogEntry {
+                        at_s: clock.now_s(),
+                        failed: Some(event.asset.clone()),
+                        repaired: Vec::new(),
+                        energy_after: energy(&inventory),
+                        blocked_by: Some(format!("unknown asset {}", event.asset)),
+                    });
+                    return Ok(SurvivalReport {
+                        service: service_label,
+                        horizon_s,
+                        survived_s: clock.now_s(),
+                        log,
+                        final_inventory: inventory,
+                    });
+                }
+            }
+            match analyze(&current, &event.asset, clock.remaining_s()) {
+                ClosureOutcome::Restorable(plan) => plans.push(plan),
+                ClosureOutcome::Blocked(blocked) => {
+                    log.push(SurvivalLogEntry {
+                        at_s: clock.now_s(),
+                        failed: Some(labels.clone()),
+                        repaired: Vec::new(),
+                        energy_after: energy(&inventory),
+                        blocked_by: Some(format!("{:?}", blocked.reasons)),
+                    });
+                    return Ok(SurvivalReport {
+                        service: service_label,
+                        horizon_s,
+                        survived_s: clock.now_s(),
+                        log,
+                        final_inventory: inventory,
+                    });
+                }
+            }
+        }
+        let schedule = match schedule_plans(&current, &plans, resource_ids) {
+            Ok(schedule) => schedule,
+            Err(error) => {
+                log.push(SurvivalLogEntry {
+                    at_s: clock.now_s(),
+                    failed: Some(labels.clone()),
+                    repaired: Vec::new(),
+                    energy_after: energy(&inventory),
+                    blocked_by: Some(format!("schedule failed: {error:?}")),
+                });
+                return Ok(SurvivalReport {
+                    service: service_label,
+                    horizon_s,
+                    survived_s: clock.now_s(),
+                    log,
+                    final_inventory: inventory,
+                });
+            }
+        };
+        let repaired = match restore_services(&mut current, &services, clock.now_s(), horizon_s, &mut inventory) {
+            Ok((repaired, _)) => repaired,
+            Err(reason) => {
+                log.push(SurvivalLogEntry {
+                    at_s: clock.now_s(),
+                    failed: Some(labels),
+                    repaired: Vec::new(),
+                    energy_after: energy(&inventory),
+                    blocked_by: Some(reason),
+                });
+                return Ok(SurvivalReport {
+                    service: service_label,
+                    horizon_s,
+                    survived_s: clock.now_s(),
+                    log,
+                    final_inventory: inventory,
+                });
+            }
+        };
+        let repair_window = clock.advance_by(schedule.makespan_s);
+        if let Err(offset) = apply_energy_interval(&current, &mut inventory, repair_window, battery, load_kw) {
+            let failed_at = clock.now_s() - repair_window + offset;
+            log.push(SurvivalLogEntry {
+                at_s: failed_at,
+                failed: Some(labels),
+                repaired: Vec::new(),
+                energy_after: energy(&inventory),
+                blocked_by: Some("energy_depleted".into()),
+            });
+            return Ok(SurvivalReport {
+                service: service_label,
+                horizon_s,
+                survived_s: failed_at,
+                log,
+                final_inventory: inventory,
+            });
+        }
+        log.push(SurvivalLogEntry {
+            at_s: clock.now_s(),
+            failed: Some(labels),
+            repaired,
+            energy_after: energy(&inventory),
+            blocked_by: None,
+        });
+    }
+
+    let tail = clock.advance_to(horizon_s);
+    if let Err(offset) = apply_energy_interval(&current, &mut inventory, tail, battery, load_kw) {
+        let failed_at = clock.now_s() - tail + offset;
+        log.push(SurvivalLogEntry {
+            at_s: failed_at,
+            failed: None,
+            repaired: Vec::new(),
+            energy_after: energy(&inventory),
+            blocked_by: Some("energy_depleted".into()),
+        });
+        return Ok(SurvivalReport {
+            service: service_label,
+            horizon_s,
+            survived_s: failed_at,
+            log,
+            final_inventory: inventory,
+        });
+    }
+    Ok(SurvivalReport { service: service_label, horizon_s, survived_s: clock.now_s(), log, final_inventory: inventory })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1909,6 +2156,44 @@ mod tests {
         assert_eq!(report.standard_joint, 24);
         assert_eq!(report.best_joint, 24);
         assert_eq!(report.order_sensitive(), 0);
+    }
+
+    fn base08() -> Model {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        Model::load(&root.join("scenarios/base-08/model.toml")).expect("Base-08")
+    }
+
+    #[test]
+    fn scheduled_survival_advances_clock_by_repair_duration() {
+        let report = simulate_multi_service_longevity_scheduled(
+            &base08(),
+            &["potable-water"],
+            24.0 * 3600.0,
+            &[FailureEvent { at_s: 0.0, asset: "pump-p1".into() }],
+            &["robot-m1".into()],
+            None,
+            0.0,
+        )
+        .unwrap();
+        assert_eq!(report.log[0].at_s, 0.0);
+        assert_eq!(report.log[1].at_s, 6.0 * 3600.0);
+        assert_eq!(report.survived_s, 24.0 * 3600.0);
+    }
+
+    #[test]
+    fn scheduled_survival_reports_a_blocked_asset() {
+        let report = simulate_multi_service_longevity_scheduled(
+            &base08(),
+            &["potable-water"],
+            24.0 * 3600.0,
+            &[FailureEvent { at_s: 0.0, asset: "filter-1".into() }],
+            &["robot-m1".into()],
+            None,
+            0.0,
+        )
+        .unwrap();
+        assert_eq!(report.log[1].at_s, 3.0 * 3600.0);
+        assert!(report.log[1].blocked_by.is_some());
     }
 
     #[test]

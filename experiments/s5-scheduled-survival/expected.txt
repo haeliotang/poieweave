@@ -1,0 +1,3 @@
+robots	completion_h	horizon_days	blocked
+1	8	30	none
+2	6	30	none

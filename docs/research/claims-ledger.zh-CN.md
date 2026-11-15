@@ -27,6 +27,7 @@
 | C18 | 随机对抗中 0 天 collapse 是瞬时语义假象 | `experiments/s2-adversarial-random-time`、time 证书 | 200 子集、单一长修复 |
 | C19 | 延迟故障只减少、不消除瞬时 0 天质量 | `experiments/s2-adversarial-random-window`、time 证书 | day0–10 窗口 |
 | C20 | 共享机器人池可按计划并发调度 | `experiments/s3-scheduler`、scheduler 测试 | 贪心、无抢占 |
+| C21 | 生存循环可用调度 makespan 与共享时钟推进 | `experiments/s5-scheduled-survival`、survival 测试 | 批次级库存耦合 |
 
 ## 不应出现的声明
 
