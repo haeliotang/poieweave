@@ -211,6 +211,44 @@ pub fn schedule_plans_with_requirement(
     schedule_tasks(&tasks, resource_ids)
 }
 
+/// Explicit alternative policy without erasing other required resources.
+///
+/// `process.occupies` entries listed in `replaceable` are replaced by the
+/// alternative `groups`; every other `occupies` entry stays required. This is
+/// the safe way to model a robot pool: tools and fixtures remain AND
+/// requirements.
+pub fn schedule_plans_with_alternatives(
+    model: &Model,
+    plans: &[Plan],
+    resource_ids: &[String],
+    replaceable: &[String],
+    groups: &[Vec<String>],
+) -> Result<ScheduleReport, ScheduleError> {
+    let mut tasks = Vec::new();
+    for (plan_index, plan) in plans.iter().enumerate() {
+        if plan.steps.is_empty() {
+            return Err(ScheduleError::EmptyPlan(plan_index));
+        }
+        for (step_index, step) in plan.steps.iter().enumerate() {
+            let process = model
+                .processes
+                .iter()
+                .find(|process| process.id == step.process)
+                .ok_or_else(|| ScheduleError::UnknownProcess(step.process.clone()))?;
+            let required: Vec<String> =
+                process.occupies.iter().filter(|resource| !replaceable.contains(resource)).cloned().collect();
+            tasks.push(SchedulableTask {
+                plan_index,
+                step_index,
+                process: step.process.clone(),
+                duration_s: step.duration_s,
+                requirement: ResourceRequirement { required, alternatives: groups.to_vec() },
+            });
+        }
+    }
+    schedule_tasks(&tasks, resource_ids)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -263,6 +301,15 @@ mod tests {
         let serial = schedule_plans_with_requirement(&model, &plans, &robots(2), &requirement).unwrap();
         assert_eq!(serial.makespan_s, 3.0 * 3600.0);
         assert_ne!(serial.steps[0].resources, serial.steps[1].resources);
+    }
+
+    #[test]
+    fn alternatives_do_not_erase_required_tools() {
+        let model = model();
+        let plans = vec![plan(3.0 * 3600.0, "replace-sleeve-p1")];
+        let pool = robots(2);
+        let result = schedule_plans_with_alternatives(&model, &plans, &pool, &pool, std::slice::from_ref(&pool));
+        assert!(matches!(result, Err(ScheduleError::MissingResource(ref resource)) if resource == "tool-t1"));
     }
 
     #[test]

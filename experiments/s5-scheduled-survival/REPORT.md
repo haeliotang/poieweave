@@ -27,7 +27,10 @@ robots	completion_h	horizon_days	blocked
   loop no longer re-plans through `restore_services` after scheduling.
 - Energy is settled over the repair interval **before** asset status is updated,
   so a failed PV asset cannot generate during its own repair.
-- Inventory deltas from multiple plans are summed against one pre-batch snapshot.
+- Inventory deltas from multiple plans are summed against the planning snapshot,
+  then added to the post-energy balance; a test covers this exact ordering.
+- Status changes are committed only after inventory validation; a negative test
+  confirms no partial asset status.
 
 ## 4. Significance
 
