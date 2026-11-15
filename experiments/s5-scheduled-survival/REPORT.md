@@ -37,6 +37,14 @@ robots	completion_h	horizon_days	blocked
 - First survival path that uses `schedule_plans` and `EventClock`.
 - It makes resource occupancy affect horizon timing, a prerequisite for S5.
 
-## 5. Limits
+## 5. Initial repair and termination
+
+- Initial repair uses the same transaction: planning snapshot, energy settlement,
+  inventory delta, validation, commit.
+- `SurvivalTermination` distinguishes `CompletedHorizon`, `Blocked` and
+  `IncompleteAtHorizon`; a repair still in flight at the horizon is not reported
+  as completed.
+
+## 6. Limits
 
 - Coarse inventory coupling per batch; no preemption; model-level units.

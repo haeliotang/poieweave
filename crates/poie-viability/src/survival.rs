@@ -178,6 +178,19 @@ pub struct SurvivalLogEntry {
     pub blocked_by: Option<String>,
 }
 
+/// How a survival run ended; consumers must not infer completion from
+/// `survived_s == horizon_s` alone.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SurvivalTermination {
+    /// Every event was processed and the horizon was reached.
+    CompletedHorizon,
+    /// The run stopped before the horizon because a repair was blocked.
+    Blocked,
+    /// A repair was still in flight when the horizon was reached; it was not
+    /// committed as available.
+    IncompleteAtHorizon,
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct SurvivalReport {
     pub service: String,
@@ -185,6 +198,25 @@ pub struct SurvivalReport {
     pub survived_s: f64,
     pub log: Vec<SurvivalLogEntry>,
     pub final_inventory: BTreeMap<String, f64>,
+}
+
+impl SurvivalReport {
+    /// Classifies the terminal state without changing the historical
+    /// `survived_s` field. `IncompleteAtHorizon` is reported when the last log
+    /// records a horizon overrun rather than a completed repair.
+    pub fn termination(&self) -> SurvivalTermination {
+        let Some(last_blocked) = self.log.iter().rev().find(|entry| entry.blocked_by.is_some()) else {
+            return SurvivalTermination::CompletedHorizon;
+        };
+        let reason = last_blocked.blocked_by.as_deref().unwrap_or_default();
+        if reason.contains("exceeds horizon") {
+            SurvivalTermination::IncompleteAtHorizon
+        } else if self.survived_s >= self.horizon_s - 1e-9 {
+            SurvivalTermination::CompletedHorizon
+        } else {
+            SurvivalTermination::Blocked
+        }
+    }
 }
 
 /// A greedy, single-threaded recovery policy over scheduled failures.
@@ -1944,8 +1976,9 @@ pub fn simulate_multi_service_longevity_scheduled(
     let mut log = Vec::new();
     let mut clock = EventClock::new(horizon_s);
 
+    let planning_base = inventory.clone();
     let mut pending_model = current.clone();
-    let mut pending_inventory = inventory.clone();
+    let mut pending_inventory = planning_base.clone();
     let (repaired, repair_s) =
         match restore_services(&mut pending_model, &services, 0.0, horizon_s, &mut pending_inventory) {
             Ok(result) => result,
@@ -2000,8 +2033,30 @@ pub fn simulate_multi_service_longevity_scheduled(
             final_inventory: inventory,
         });
     }
+    let mut committed = inventory.clone();
+    for (resource, after) in &pending_inventory {
+        let before = planning_base.get(resource).copied().unwrap_or(0.0);
+        *committed.entry(resource.clone()).or_insert(0.0) += after - before;
+    }
+    if let Some((resource, quantity)) = committed.iter().find(|(_, quantity)| **quantity < -1e-9) {
+        let reason = format!("initial repair inventory negative for {resource} ({quantity:.3})");
+        log.push(SurvivalLogEntry {
+            at_s: clock.now_s(),
+            failed: None,
+            repaired: Vec::new(),
+            energy_after: energy(&inventory),
+            blocked_by: Some(reason),
+        });
+        return Ok(SurvivalReport {
+            service: service_label,
+            horizon_s,
+            survived_s: clock.now_s(),
+            log,
+            final_inventory: inventory,
+        });
+    }
     current = pending_model;
-    inventory = pending_inventory;
+    inventory = committed;
     log.push(SurvivalLogEntry {
         at_s: 0.0,
         failed: None,
@@ -2274,6 +2329,120 @@ mod tests {
         let blocked = report.log.iter().filter_map(|entry| entry.blocked_by.as_deref()).collect::<Vec<_>>().join(";");
         assert!(blocked.contains("schedule failed"), "{blocked}");
         assert!(blocked.contains("tool-t1"), "{blocked}");
+    }
+
+    fn set_energy_kwh(model: &mut Model, kwh: f64) {
+        model.lots.retain(|lot| lot.resource != "electric-energy");
+        model.lots.push(Lot {
+            id: "test-energy".into(),
+            resource: "electric-energy".into(),
+            si: kwh * 3_600_000.0,
+            quality: LotQuality::Accepted,
+        });
+    }
+
+    #[test]
+    fn initial_repair_energy_ledger_keeps_energy_and_load() {
+        let mut model = base08();
+        set_energy_kwh(&mut model, 10.0);
+        model.assets.get_mut("pv-1").unwrap().status = AssetStatus::Failed;
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        let report = simulate_multi_service_longevity_scheduled(
+            &model,
+            &["potable-water"],
+            10_800.0,
+            &[],
+            &["robot-m1".into()],
+            None,
+            5.0 / 3.0,
+        )
+        .unwrap();
+        let expected = (10.0 - 0.5 - 5.0) * 3_600_000.0;
+        assert!((report.final_inventory["electric-energy"] - expected).abs() < 1.0, "{:?}", report.final_inventory);
+        assert_eq!(report.termination(), SurvivalTermination::CompletedHorizon);
+    }
+
+    #[test]
+    fn initial_repair_energy_depletion_stops_before_commit() {
+        let mut model = base08();
+        set_energy_kwh(&mut model, 1.0);
+        model.assets.get_mut("pv-1").unwrap().status = AssetStatus::Failed;
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        let report = simulate_multi_service_longevity_scheduled(
+            &model,
+            &["potable-water"],
+            10_800.0,
+            &[],
+            &["robot-m1".into()],
+            None,
+            1.0,
+        )
+        .unwrap();
+        assert!((report.survived_s - 3_600.0).abs() < 1.0, "{}", report.survived_s);
+        assert_eq!(report.termination(), SurvivalTermination::Blocked);
+    }
+
+    #[test]
+    fn initial_repair_keeps_pv_income_before_commit() {
+        let mut model = base08();
+        set_energy_kwh(&mut model, 10.0);
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        let report = simulate_multi_service_longevity_scheduled(
+            &model,
+            &["potable-water"],
+            10_800.0,
+            &[],
+            &["robot-m1".into()],
+            None,
+            0.0,
+        )
+        .unwrap();
+        assert!(report.final_inventory["electric-energy"] > 10.0 * 3_600_000.0);
+        assert_eq!(report.termination(), SurvivalTermination::CompletedHorizon);
+    }
+
+    #[test]
+    fn repair_past_horizon_is_incomplete_not_completed() {
+        let mut model = base08();
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Available;
+        model.assets.get_mut("lathe-1").unwrap().status = AssetStatus::Available;
+        for process in &mut model.processes {
+            if process.id == "replace-sleeve-p1" || process.id == "replace-lathe-nut" {
+                process.duration_s = Some(2.0 * 3600.0);
+            }
+        }
+        let report = simulate_multi_service_longevity_scheduled(
+            &model,
+            &["potable-water", "workshop-operability"],
+            3.0 * 3600.0,
+            &[FailureEvent { at_s: 0.0, asset: "pump-p1".into() }, FailureEvent { at_s: 0.0, asset: "lathe-1".into() }],
+            &["robot-m1".into()],
+            None,
+            0.0,
+        )
+        .unwrap();
+        assert_eq!(report.survived_s, 3.0 * 3600.0);
+        assert_eq!(report.termination(), SurvivalTermination::IncompleteAtHorizon);
+    }
+
+    #[test]
+    fn two_plans_competing_for_energy_are_summed_once() {
+        let mut model = base08();
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        let planning_base = BTreeMap::from([("electric-energy".to_string(), 10.0)]);
+        let single = Plan {
+            steps: vec![Step {
+                process: "replace-sleeve-p1".into(),
+                action: StepAction::Restore("pump-p1".into()),
+                duration_s: 10_800.0,
+            }],
+            total_duration_s: 10_800.0,
+            remaining_inventory: BTreeMap::from([("electric-energy".to_string(), 8.0)]),
+        };
+        let mut inventory = planning_base.clone();
+        let repaired = apply_plans(&mut model, &mut inventory, &[single.clone(), single], &planning_base).unwrap();
+        assert_eq!(repaired, vec!["pump-p1"]);
+        assert_eq!(inventory["electric-energy"], 6.0);
     }
 
     #[test]
