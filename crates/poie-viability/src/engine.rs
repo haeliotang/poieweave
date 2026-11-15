@@ -478,6 +478,39 @@ mod tests {
     }
 
     #[test]
+    fn pv_failure_during_repair_stops_generation_from_that_time() {
+        let mut model = base08();
+        for lot in &mut model.lots {
+            if lot.resource == "sleeve-p1" {
+                lot.si = 1.0;
+            }
+        }
+        model.processes.iter_mut().find(|process| process.id == "replace-sleeve-p1").unwrap().duration_s =
+            Some(5.0 * 3600.0);
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        let control = run_engine(&model, &options(Vec::new(), 5.0 * 3600.0)).unwrap();
+        let with_failure =
+            run_engine(&model, &options(vec![FailureEvent { at_s: 2.0 * 3600.0, asset: "pv-1".into() }], 5.0 * 3600.0))
+                .unwrap();
+        assert!(with_failure.final_inventory["electric-energy"] < control.final_inventory["electric-energy"]);
+        assert!(with_failure.trace.iter().any(|event| event.kind == "failure:pv-1" && event.at_s == 2.0 * 3600.0));
+    }
+
+    #[test]
+    fn repair_completing_exactly_at_horizon_is_completed() {
+        let mut model = base08();
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Available;
+        let outcome =
+            run_engine(&model, &options(vec![FailureEvent { at_s: 0.0, asset: "pump-p1".into() }], 3.0 * 3600.0))
+                .unwrap();
+        assert_eq!(outcome.termination, EngineTermination::CompletedHorizon);
+        assert!(outcome
+            .trace
+            .iter()
+            .any(|event| event.kind.starts_with("repair_completed") && event.at_s == 3.0 * 3600.0));
+    }
+
+    #[test]
     fn same_time_resupply_and_failure_both_apply_once() {
         let model = base08();
         let mut opts = options(vec![FailureEvent { at_s: 86_400.0, asset: "lathe-1".into() }], 2.0 * 86_400.0);
