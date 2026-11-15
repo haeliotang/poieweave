@@ -1,4 +1,4 @@
 scenario	canonical_days	legacy_days	delta_days	canonical_termination	canonical_events	legacy_events	canonical_last_h	legacy_last_h
-dense-long-repair	15.6	15.6	0.0	blocked:[MissingResource { resource: "grease", needed: 0.05, available: 0.0 }]	3	4	375.5	375.5
-contention-1-robot	1.000	1.000	0.000	completed	3	3	5.0	3.0
-contention-2-robots	1.000	1.000	0.000	completed	3	3	3.0	3.0
+dense-long-repair	2.0	15.6	-13.6	blocked:repair interrupted at 172800s: pump-p1 failed	1	4	48.0	375.5
+contention-1-robot	1.000	1.000	0.000	completed	4	3	5.0	3.0
+contention-2-robots	1.000	1.000	0.000	completed	4	3	3.0	3.0
