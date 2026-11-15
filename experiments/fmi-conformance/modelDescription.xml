@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription fmiVersion="3.0" modelName="poie-minimal-energy" instantiationToken="poie-minimal-1">
+  <CoSimulation modelIdentifier="poie_minimal_energy" canHandleVariableStepSize="false"/>
+  <ModelVariables>
+    <Float64 name="soc_j" valueReference="1" causality="output" variability="continuous" initial="exact"/>
+    <Float64 name="load_w" valueReference="2" causality="input" variability="continuous" initial="exact"/>
+  </ModelVariables>
+  <ModelStructure>
+    <Outputs>
+      <Unknown index="1"/>
+    </Outputs>
+  </ModelStructure>
+</fmiModelDescription>
