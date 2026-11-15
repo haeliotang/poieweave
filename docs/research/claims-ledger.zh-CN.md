@@ -26,6 +26,7 @@
 | C17 | bundle 可在 clean-room 中验证 | `certificate-clean-room` | 同一 verifier 代码 |
 | C18 | 随机对抗中 0 天 collapse 是瞬时语义假象 | `experiments/s2-adversarial-random-time`、time 证书 | 200 子集、单一长修复 |
 | C19 | 延迟故障只减少、不消除瞬时 0 天质量 | `experiments/s2-adversarial-random-window`、time 证书 | day0–10 窗口 |
+| C20 | 共享机器人池可按计划并发调度 | `experiments/s3-scheduler`、scheduler 测试 | 贪心、无抢占 |
 
 ## 不应出现的声明
 

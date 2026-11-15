@@ -1,0 +1,4 @@
+robots	makespan_h	plan_ends_h
+1	7	3,5,7
+2	4	3,2,4
+3	3	3,2,2
