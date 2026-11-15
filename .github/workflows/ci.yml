@@ -59,6 +59,8 @@ jobs:
         run: python3 scripts/check-status-counts.py
       - name: Claims ledger evidence
         run: python3 scripts/check-claims.py
+      - name: S2 evidence inventory
+        run: python3 scripts/build-s2-inventory.py --check
       - name: H2b development diagnostic replay
         run: |
           cargo run --locked -q -p poie-h2b-joint-planning -- --dev --diagnose --write /tmp/h2b-replay > /tmp/h2b-replay.out

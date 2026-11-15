@@ -12,6 +12,7 @@
 - [复现指南](reproduction.zh-CN.md)
 - [Canonical Engine](canonical-engine.zh-CN.md)
 - [Migration Log](migration-log.zh-CN.md)
+- [S2 Evidence Audit](s2-evidence-audit.zh-CN.md)
 
 ## 设计与外部依赖
 

@@ -939,3 +939,4 @@ flowchart LR
 | 0.1.443 | 2026-11-15 | Dependency witness 首版：能力提供者与上游依赖；测试 523 |
 | 0.1.444 | 2026-11-15 | S5 迁移批次 3：load/resupply/battery；214/385、528 测试 |
 | 0.1.445 | 2026-11-16 | 3D 联合能源账本与 horizon 补货边界；测试 530 |
+| 0.1.446 | 2026-11-16 | Phase A：S2 Evidence Inventory 与审计（12 claims/72 实验/0 迁移） |

@@ -12,6 +12,7 @@ python3 scripts/check-test-matrix.py
 python3 scripts/check-experiment-replays.py
 python3 scripts/check-status-counts.py
 python3 scripts/check-claims.py
+python3 scripts/build-s2-inventory.py --check
 python3 scripts/check-certificate-invariants.py
 python3 scripts/check-docs.py
 

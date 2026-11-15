@@ -1,0 +1,2129 @@
+{
+  "schema": "poie.s2-evidence-inventory/0.1",
+  "scope": "model-level S2 evidence; no physical validation",
+  "claims": [
+    {
+      "id": "C5",
+      "statement": "Base-05 故障间隔 10/15/20/30 天 → 40/60/80/≥90 天",
+      "evidence": [
+        "s2-failure-envelope"
+      ],
+      "certificates": [],
+      "boundary": "模型内"
+    },
+    {
+      "id": "C6",
+      "statement": "Base-06 独立覆盖 25/56、联合 24/56",
+      "evidence": [
+        "s2-joint-coverage"
+      ],
+      "certificates": [],
+      "boundary": "双故障、约定假设"
+    },
+    {
+      "id": "C7",
+      "statement": "再生能力使 horizon 40→60 天",
+      "evidence": [
+        "s2-regeneration"
+      ],
+      "certificates": [],
+      "boundary": "模型内"
+    },
+    {
+      "id": "C8",
+      "statement": "负载 3/4 kW 时能量成为 binding constraint",
+      "evidence": [
+        "s2-load-threshold"
+      ],
+      "certificates": [],
+      "boundary": "模型内"
+    },
+    {
+      "id": "C9",
+      "statement": "冗余泵 60→90 天",
+      "evidence": [
+        "s2-redundancy-load"
+      ],
+      "certificates": [],
+      "boundary": "单冗余布局"
+    },
+    {
+      "id": "C10",
+      "statement": "补货间隔 10/20/30/60 天 → 60/50/40/30 天",
+      "evidence": [
+        "s2-resupply-frequency"
+      ],
+      "certificates": [],
+      "boundary": "单一 consumable"
+    },
+    {
+      "id": "C11",
+      "statement": "补货不能修复能力缺口（filter-1 仍 0 天）",
+      "evidence": [
+        "s2-adversarial-resupply"
+      ],
+      "certificates": [],
+      "boundary": "31 子集"
+    },
+    {
+      "id": "C12",
+      "statement": "时间语义改变 grease/insert 边界与 deadline",
+      "evidence": [
+        "s2-time-boundary"
+      ],
+      "certificates": [
+        "certificate-s2-time"
+      ],
+      "boundary": "长修复/密集故障"
+    },
+    {
+      "id": "C13",
+      "statement": "时间语义在能量/sparse/标称再生下不变",
+      "evidence": [
+        "s2-time-energy"
+      ],
+      "certificates": [],
+      "boundary": "指定负载/修复时长"
+    },
+    {
+      "id": "C14",
+      "statement": "冗余效应大于时间语义效应",
+      "evidence": [
+        "s2-redundancy-time"
+      ],
+      "certificates": [],
+      "boundary": "单一布局"
+    },
+    {
+      "id": "C18",
+      "statement": "随机对抗中 0 天 collapse 是瞬时语义假象",
+      "evidence": [
+        "s2-adversarial-random-time"
+      ],
+      "certificates": [],
+      "boundary": "200 子集、单一长修复"
+    },
+    {
+      "id": "C19",
+      "statement": "延迟故障只减少、不消除瞬时 0 天质量",
+      "evidence": [
+        "s2-adversarial-random-window"
+      ],
+      "certificates": [],
+      "boundary": "day0–10 窗口"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment": "s2-adversarial-failures",
+      "report": "experiments/s2-adversarial-failures/REPORT.md",
+      "prereg": "experiments/s2-adversarial-failures/PREREG.md",
+      "runner_binaries": [
+        "poie-adversarial-failures"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 18,
+      "expected_output": "set\tsize\tsurvived_days\tblocked_by\nbaseline\t0\t60\tnone\npump-p1\t1\t60\tnone\npump-p1+filter-1\t2\t0\tno restorer for filter-1\npump-p1+robot-m1\t2\t60\tnone\npump-p1+pv-1\t2\t60\tnone\npump-p1+lathe-1\t2\t60\tnone\nfilter-1\t1\t0\tno restorer for filter-1\nfilter-1+robot-m1\t2\t0\tno restorer for filter-1\nfilter-1+pv-1\t2\t0\tno restorer for filter-1\nfilter-1+lathe-1\t2\t0\tno restorer for filter-1\nrobot-m1\t1\t60\tnone\nrobot-m1+pv-1\t2\t60\tnone\nrobot-m1+lathe-1\t2\t0\tno restorer for robot-m1\npv-1\t1\t60\tnone\npv-1+lathe-1\t2\t60\tnone\nlathe-1\t1\t60\tnone\nworst\t1\t0\tfilter-1\n",
+      "expected_head": [
+        "set\tsize\tsurvived_days\tblocked_by",
+        "baseline\t0\t60\tnone"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-adversarial-random",
+      "report": "experiments/s2-adversarial-random/REPORT.md",
+      "prereg": "experiments/s2-adversarial-random/PREREG.md",
+      "runner_binaries": [
+        "poie-adversarial-random"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 2,
+      "expected_output": "trials\tzero\tunder30\tunder60\tmean_days\tmin_days\tworst_set\tat_day\n500\t2\t103\t215\t60.3\t0\tfilter-1+pv-1\t0\n",
+      "expected_head": [
+        "trials\tzero\tunder30\tunder60\tmean_days\tmin_days\tworst_set\tat_day",
+        "500\t2\t103\t215\t60.3\t0\tfilter-1+pv-1\t0"
+      ],
+      "stochastic": true,
+      "seed": "0x9e37_79b9_7f4a_7c15",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-adversarial-random-time",
+      "report": "experiments/s2-adversarial-random-time/REPORT.md",
+      "prereg": "experiments/s2-adversarial-random-time/PREREG.md",
+      "runner_binaries": [
+        "poie-adversarial-random-time"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 2,
+      "expected_output": "trials\told_zero\tnew_zero\told_mean\tnew_mean\n200\t129\t0\t1.4\t9.9\n",
+      "expected_head": [
+        "trials\told_zero\tnew_zero\told_mean\tnew_mean",
+        "200\t129\t0\t1.4\t9.9"
+      ],
+      "stochastic": true,
+      "seed": "0x9e37_79b9_7f4a_7c15",
+      "claim_ids": [
+        "C18"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-adversarial-random-window",
+      "report": "experiments/s2-adversarial-random-window/REPORT.md",
+      "prereg": "experiments/s2-adversarial-random-window/PREREG.md",
+      "runner_binaries": [
+        "poie-adversarial-random-window"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 2,
+      "expected_output": "trials\told_zero\tnew_zero\told_mean\tnew_mean\n200\t13\t0\t4.4\t14.0\n",
+      "expected_head": [
+        "trials\told_zero\tnew_zero\told_mean\tnew_mean",
+        "200\t13\t0\t4.4\t14.0"
+      ],
+      "stochastic": true,
+      "seed": "0x9e37_79b9_7f4a_7c15",
+      "claim_ids": [
+        "C19"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-adversarial-resupply",
+      "report": "experiments/s2-adversarial-resupply/REPORT.md",
+      "prereg": "experiments/s2-adversarial-resupply/PREREG.md",
+      "runner_binaries": [
+        "poie-adversarial-resupply"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "at_day\tsubsets\tno_supply_min\twith_supply_min\tminimal_size\tminimal_set\n0\t31\t0\t0\t1\tfilter-1\n10\t31\t0\t0\t1\tfilter-1\n",
+      "expected_head": [
+        "at_day\tsubsets\tno_supply_min\twith_supply_min\tminimal_size\tminimal_set",
+        "0\t31\t0\t0\t1\tfilter-1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C11"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-adversarial-subsets",
+      "report": "experiments/s2-adversarial-subsets/REPORT.md",
+      "prereg": "experiments/s2-adversarial-subsets/PREREG.md",
+      "runner_binaries": [
+        "poie-adversarial-subsets"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "at_day\tsubsets\tmin_days\tminimal_size\tminimal_set\n0\t31\t0\t1\tfilter-1\n10\t31\t10\t1\tfilter-1\n",
+      "expected_head": [
+        "at_day\tsubsets\tmin_days\tminimal_size\tminimal_set",
+        "0\t31\t0\t1\tfilter-1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-adversarial-time",
+      "report": "experiments/s2-adversarial-time/REPORT.md",
+      "prereg": "experiments/s2-adversarial-time/PREREG.md",
+      "runner_binaries": [
+        "poie-adversarial-time"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "at_day\tsubsets\tinstant_min\tevent_min\tminimal_size\tminimal_set\n0\t31\t0\t5\t1\tpump-p1\n10\t31\t0\t5\t1\tpump-p1\n",
+      "expected_head": [
+        "at_day\tsubsets\tinstant_min\tevent_min\tminimal_size\tminimal_set",
+        "0\t31\t0\t5\t1\tpump-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-adversarial-timing",
+      "report": "experiments/s2-adversarial-timing/REPORT.md",
+      "prereg": "experiments/s2-adversarial-timing/PREREG.md",
+      "runner_binaries": [
+        "poie-adversarial-timing"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 35,
+      "expected_output": "at_day\tset\tsize\tsurvived_days\tblocked_by\n0\tbaseline\t0\t60\tnone\n0\tpump-p1\t1\t60\tnone\n0\tpump-p1+filter-1\t2\t0\tno restorer for filter-1\n0\tpump-p1+robot-m1\t2\t60\tnone\n0\tpump-p1+pv-1\t2\t60\tnone\n0\tpump-p1+lathe-1\t2\t60\tnone\n0\tfilter-1\t1\t0\tno restorer for filter-1\n0\tfilter-1+robot-m1\t2\t0\tno restorer for filter-1\n0\tfilter-1+pv-1\t2\t0\tno restorer for filter-1\n0\tfilter-1+lathe-1\t2\t0\tno restorer for filter-1\n0\trobot-m1\t1\t60\tnone\n0\trobot-m1+pv-1\t2\t60\tnone\n0\trobot-m1+lathe-1\t2\t0\tno restorer for robot-m1\n0\tpv-1\t1\t60\tnone\n0\tpv-1+lathe-1\t2\t60\tnone\n0\tlathe-1\t1\t60\tnone\n0\tworst\t1\t0\tfilter-1\n10\tbaseline\t0\t60\tnone\n10\tpump-p1\t1\t60\tnone\n10\tpump-p1+filter-1\t2\t10\tno restorer for filter-1\n10\tpump-p1+robot-m1\t2\t60\tnone\n10\tpump-p1+pv-1\t2\t60\tnone\n10\tpump-p1+lathe-1\t2\t60\tnone\n10\tfilter-1\t1\t10\tno restorer for filter-1\n10\tfilter-1+robot-m1\t2\t10\tno restorer for filter-1\n10\tfilter-1+pv-1\t2\t10\tno restorer for filter-1\n10\tfilter-1+lathe-1\t2\t10\tno restorer for filter-1\n10\trobot-m1\t1\t60\tnone\n10\trobot-m1+pv-1\t2\t60\tnone\n10\trobot-m1+lathe-1\t2\t10\tno restorer for robot-m1\n10\tpv-1\t1\t60\tnone\n10\tpv-1+lathe-1\t2\t60\tnone\n10\tlathe-1\t1\t60\tnone\n10\tworst\t1\t10\tfilter-1\n",
+      "expected_head": [
+        "at_day\tset\tsize\tsurvived_days\tblocked_by",
+        "0\tbaseline\t0\t60\tnone"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-energy-boundary",
+      "report": "experiments/s2-energy-boundary/REPORT.md",
+      "prereg": "experiments/s2-energy-boundary/PREREG.md",
+      "runner_binaries": [
+        "poie-energy-boundary"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 19,
+      "expected_output": "load_kw\tcapacity_kwh\tcharge_kw\tsurvived_days\tblocked_by\n2\t100\t3\t60\tcyclic process dependency at turn-sleeve-p1\n2\t100\t10\t60\tcyclic process dependency at turn-sleeve-p1\n2\t100\t30\t60\tcyclic process dependency at turn-sleeve-p1\n2\t200\t3\t60\tcyclic process dependency at turn-sleeve-p1\n2\t200\t10\t60\tcyclic process dependency at turn-sleeve-p1\n2\t200\t30\t60\tcyclic process dependency at turn-sleeve-p1\n2\t300\t3\t60\tcyclic process dependency at turn-sleeve-p1\n2\t300\t10\t60\tcyclic process dependency at turn-sleeve-p1\n2\t300\t30\t60\tcyclic process dependency at turn-sleeve-p1\n3\t100\t3\t3\tenergy_depleted\n3\t100\t10\t3\tenergy_depleted\n3\t100\t30\t3\tenergy_depleted\n3\t200\t3\t3\tenergy_depleted\n3\t200\t10\t3\tenergy_depleted\n3\t200\t30\t3\tenergy_depleted\n3\t300\t3\t3\tenergy_depleted\n3\t300\t10\t3\tenergy_depleted\n3\t300\t30\t3\tenergy_depleted\n",
+      "expected_head": [
+        "load_kw\tcapacity_kwh\tcharge_kw\tsurvived_days\tblocked_by",
+        "2\t100\t3\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-energy-interventions",
+      "report": "experiments/s2-energy-interventions/REPORT.md",
+      "prereg": "experiments/s2-energy-interventions/PREREG.md",
+      "runner_binaries": [
+        "poie-energy-interventions"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 10,
+      "expected_output": "load_kw\tcapacity_kwh\tcharge_kw\tsurvived_days\tblocked_by\n2.6\t100\t3\t16\tenergy_depleted\n2.6\t100\t10\t16\tenergy_depleted\n2.6\t100\t30\t16\tenergy_depleted\n2.6\t200\t3\t16\tenergy_depleted\n2.6\t200\t10\t16\tenergy_depleted\n2.6\t200\t30\t16\tenergy_depleted\n2.6\t300\t3\t16\tenergy_depleted\n2.6\t300\t10\t16\tenergy_depleted\n2.6\t300\t30\t16\tenergy_depleted\n",
+      "expected_head": [
+        "load_kw\tcapacity_kwh\tcharge_kw\tsurvived_days\tblocked_by",
+        "2.6\t100\t3\t16\tenergy_depleted"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-energy-recharge",
+      "report": "experiments/s2-energy-recharge/REPORT.md",
+      "prereg": "experiments/s2-energy-recharge/PREREG.md",
+      "runner_binaries": [
+        "poie-energy-recharge"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "recharge_kwh\taverage_kw\tsurvived_days\tblocked_by\n20\t2.50\t16\tenergy_depleted\n30\t3.75\t60\tcyclic process dependency at turn-sleeve-p1\n40\t5.00\t60\tcyclic process dependency at turn-sleeve-p1\n",
+      "expected_head": [
+        "recharge_kwh\taverage_kw\tsurvived_days\tblocked_by",
+        "20\t2.50\t16\tenergy_depleted"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-failure-envelope",
+      "report": "experiments/s2-failure-envelope/REPORT.md",
+      "prereg": "experiments/s2-failure-envelope/PREREG.md",
+      "runner_binaries": [
+        "poie-survival"
+      ],
+      "models": [
+        "base-01",
+        "base-04",
+        "base-05"
+      ],
+      "expected_output_lines": 11,
+      "expected_output": "service=potable-water horizon_s=43200 total=10 recoverable=5 coverage=0.500000\ncase\tfailed=none\tRESTORABLE\tmax_plan_s=10800\ncase\tfailed=bat-1\tBLOCKED\treason=cyclic asset dependency at bus-1\ncase\tfailed=bus-1\tBLOCKED\treason=cyclic asset dependency at bus-1\ncase\tfailed=charger-1\tBLOCKED\treason=no restorer for robot-m1\ncase\tfailed=filter-1\tBLOCKED\treason=no restorer for filter-1\ncase\tfailed=gauge-1\tRESTORABLE\tmax_plan_s=10800\ncase\tfailed=lathe-1\tRESTORABLE\tmax_plan_s=10800\ncase\tfailed=pump-p1\tRESTORABLE\tmax_plan_s=10800\ncase\tfailed=pv-1\tRESTORABLE\tmax_plan_s=10800\ncase\tfailed=robot-m1\tBLOCKED\treason=no restorer for robot-m1\n",
+      "expected_head": [
+        "service=potable-water horizon_s=43200 total=10 recoverable=5 coverage=0.500000",
+        "case\tfailed=none\tRESTORABLE\tmax_plan_s=10800"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C5"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-failure-pairs",
+      "report": "experiments/s2-failure-pairs/REPORT.md",
+      "prereg": "experiments/s2-failure-pairs/PREREG.md",
+      "runner_binaries": [
+        "poie-pairs"
+      ],
+      "models": [
+        "base-05"
+      ],
+      "expected_output_lines": 37,
+      "expected_output": "service=potable-water horizon_s=43200 total=46 recoverable=11 coverage=0.239130\npair\tfailed=bat-1,bus-1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bat-1,charger-1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bat-1,filter-1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bat-1,gauge-1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bat-1,lathe-1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bat-1,pump-p1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bat-1,pv-1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bat-1,robot-m1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bus-1,charger-1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bus-1,filter-1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bus-1,gauge-1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bus-1,lathe-1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bus-1,pump-p1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bus-1,pv-1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=bus-1,robot-m1\tBLOCKED\treason=cyclic asset dependency at bus-1\npair\tfailed=charger-1,filter-1\tBLOCKED\treason=no restorer for robot-m1\npair\tfailed=charger-1,gauge-1\tBLOCKED\treason=no restorer for robot-m1\npair\tfailed=charger-1,lathe-1\tBLOCKED\treason=no restorer for robot-m1\npair\tfailed=charger-1,pump-p1\tBLOCKED\treason=no restorer for robot-m1\npair\tfailed=charger-1,pv-1\tBLOCKED\treason=no restorer for robot-m1\npair\tfailed=charger-1,robot-m1\tBLOCKED\treason=no restorer for robot-m1\npair\tfailed=filter-1,gauge-1\tBLOCKED\treason=no restorer for filter-1\npair\tfailed=filter-1,lathe-1\tBLOCKED\treason=no restorer for filter-1\npair\tfailed=filter-1,pump-p1\tBLOCKED\treason=no restorer for filter-1\npair\tfailed=filter-1,pv-1\tBLOCKED\treason=no restorer for filter-1\npair\tfailed=filter-1,robot-m1\tBLOCKED\treason=no restorer for robot-m1\npair\tfailed=gauge-1,lathe-1\tRESTORABLE\tmax_plan_s=10800\npair\tfailed=gauge-1,pump-p1\tRESTORABLE\tmax_plan_s=10800\npair\tfailed=gauge-1,pv-1\tRESTORABLE\tmax_plan_s=10800\npair\tfailed=gauge-1,robot-m1\tBLOCKED\treason=no restorer for robot-m1\npair\tfailed=lathe-1,pump-p1\tRESTORABLE\tmax_plan_s=10800\npair\tfailed=lathe-1,pv-1\tRESTORABLE\tmax_plan_s=10800\npair\tfailed=lathe-1,robot-m1\tBLOCKED\treason=no restorer for robot-m1\npair\tfailed=pump-p1,pv-1\tRESTORABLE\tmax_plan_s=10800\npair\tfailed=pump-p1,robot-m1\tBLOCKED\treason=no restorer for robot-m1\npair\tfailed=pv-1,robot-m1\tBLOCKED\treason=no restorer for robot-m1\n",
+      "expected_head": [
+        "service=potable-water horizon_s=43200 total=46 recoverable=11 coverage=0.239130",
+        "pair\tfailed=bat-1,bus-1\tBLOCKED\treason=cyclic asset dependency at bus-1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-filter-restorer",
+      "report": "experiments/s2-filter-restorer/REPORT.md",
+      "prereg": "experiments/s2-filter-restorer/PREREG.md",
+      "runner_binaries": [
+        "poie-filter-restorer"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "mode\tsurvived_days\tblocked_by\nredundant-only\t30\tno restorer for filter-1\nredundant+filter-restorer\t90\tnone\n",
+      "expected_head": [
+        "mode\tsurvived_days\tblocked_by",
+        "redundant-only\t30\tno restorer for filter-1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-grease-cost",
+      "report": "experiments/s2-grease-cost/REPORT.md",
+      "prereg": "experiments/s2-grease-cost/PREREG.md",
+      "runner_binaries": [
+        "poie-grease-cost"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "grease_kg\tmode\tsurvived_days\tblocked_by\n0.10\tcheap\t20\tmissing resource grease: need 0.05, have 0\n0.10\texpensive\t0\tmissing resource grease: need 0.2, have 0.1\n0.15\tcheap\t30\thorizon exceeded: need 10800s, horizon 0s\n0.15\texpensive\t0\tmissing resource grease: need 0.2, have 0.15\n0.20\tcheap\t30\thorizon exceeded: need 10800s, horizon 0s\n0.20\texpensive\t10\tmissing resource grease: need 0.2, have 0\n",
+      "expected_head": [
+        "grease_kg\tmode\tsurvived_days\tblocked_by",
+        "0.10\tcheap\t20\tmissing resource grease: need 0.05, have 0"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-heldout",
+      "report": "experiments/s2-heldout/REPORT.md",
+      "prereg": "experiments/s2-heldout/PREREG.md",
+      "runner_binaries": [
+        "poie-heldout"
+      ],
+      "models": [
+        "base-05"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "heldout_interval_days\tsurvived_days\tblocked_by\n12\t48\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001\n25\t90\tnone\n",
+      "expected_head": [
+        "heldout_interval_days\tsurvived_days\tblocked_by",
+        "12\t48\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-insert-bound",
+      "report": "experiments/s2-insert-bound/REPORT.md",
+      "prereg": "experiments/s2-insert-bound/PREREG.md",
+      "runner_binaries": [
+        "poie-insert-bound"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "insert_count\tsurvived_days\tblocked_by\n2\t40\tmissing resource cutting-insert: need 1, have 0\n3\t50\tmissing resource cutting-insert: need 1, have 0\n4\t60\tcyclic process dependency at turn-sleeve-p1\n6\t60\tcyclic process dependency at turn-sleeve-p1\n8\t60\tcyclic process dependency at turn-sleeve-p1\n12\t60\tcyclic process dependency at turn-sleeve-p1\n",
+      "expected_head": [
+        "insert_count\tsurvived_days\tblocked_by",
+        "2\t40\tmissing resource cutting-insert: need 1, have 0"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-insert-regeneration",
+      "report": "experiments/s2-insert-regeneration/REPORT.md",
+      "prereg": "experiments/s2-insert-regeneration/PREREG.md",
+      "runner_binaries": [
+        "poie-insert-regeneration"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "insert_count\tmode\tsurvived_days\tblocked_by\n2\tbaseline\t40\tmissing resource cutting-insert: need 1, have 0\n2\tsharpen\t60\tcyclic process dependency at turn-sleeve-p1\n3\tbaseline\t50\tmissing resource cutting-insert: need 1, have 0\n3\tsharpen\t60\tcyclic process dependency at turn-sleeve-p1\n4\tbaseline\t60\tcyclic process dependency at turn-sleeve-p1\n4\tsharpen\t60\tcyclic process dependency at turn-sleeve-p1\n",
+      "expected_head": [
+        "insert_count\tmode\tsurvived_days\tblocked_by",
+        "2\tbaseline\t40\tmissing resource cutting-insert: need 1, have 0"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-joint-boundary",
+      "report": "experiments/s2-joint-boundary/REPORT.md",
+      "prereg": "experiments/s2-joint-boundary/PREREG.md",
+      "runner_binaries": [
+        "poie-joint-boundary"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "load_kw\tbronze_kg\tsurvived_days\tblocked_by\n2.4\t3.0\t60\tcyclic process dependency at turn-sleeve-p1\n2.4\t6.0\t90\tnone\n2.5\t3.0\t60\tcyclic process dependency at turn-sleeve-p1\n2.5\t6.0\t90\tnone\n2.6\t3.0\t16\tenergy_depleted\n2.6\t6.0\t16\tenergy_depleted\n",
+      "expected_head": [
+        "load_kw\tbronze_kg\tsurvived_days\tblocked_by",
+        "2.4\t3.0\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-joint-consumables",
+      "report": "experiments/s2-joint-consumables/REPORT.md",
+      "prereg": "experiments/s2-joint-consumables/PREREG.md",
+      "runner_binaries": [
+        "poie-joint-consumables"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 9,
+      "expected_output": "inserts\tbronze_kg\tsurvived_days\tblocked_by\n2\t0.0\t30\tcyclic process dependency at turn-sleeve-p1\n2\t1.5\t40\tcyclic process dependency at turn-sleeve-p1\n2\t3.0\t60\tcyclic process dependency at turn-sleeve-p1\n2\t6.0\t90\tnone\n4\t0.0\t30\tcyclic process dependency at turn-sleeve-p1\n4\t1.5\t40\tcyclic process dependency at turn-sleeve-p1\n4\t3.0\t60\tcyclic process dependency at turn-sleeve-p1\n4\t6.0\t90\tnone\n",
+      "expected_head": [
+        "inserts\tbronze_kg\tsurvived_days\tblocked_by",
+        "2\t0.0\t30\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-joint-coverage",
+      "report": "experiments/s2-joint-coverage/REPORT.md",
+      "prereg": "experiments/s2-joint-coverage/PREREG.md",
+      "runner_binaries": [
+        "poie-joint-coverage"
+      ],
+      "models": [
+        "base-06"
+      ],
+      "expected_output_lines": 2,
+      "expected_output": "service=potable-water horizon_s=43200 total=56 independent=25 joint=24 optimistic_gap=1\ngap\tfailed=pump-p1,pump-p2\tjoint=BLOCKED\n",
+      "expected_head": [
+        "service=potable-water horizon_s=43200 total=56 independent=25 joint=24 optimistic_gap=1",
+        "gap\tfailed=pump-p1,pump-p2\tjoint=BLOCKED"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C6"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-joint-double-failure",
+      "report": "experiments/s2-joint-double-failure/REPORT.md",
+      "prereg": "experiments/s2-joint-double-failure/PREREG.md",
+      "runner_binaries": [
+        "poie-joint"
+      ],
+      "models": [
+        "base-05",
+        "base-06"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "pair=failed=pump-p1,pump-p2\nindependent_coverage=true\njoint_survived_days=10\njoint_blocked_by=missing resource bronze-bar: need 1.2, have 0.6\n",
+      "expected_head": [
+        "pair=failed=pump-p1,pump-p2",
+        "independent_coverage=true"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-joint-load",
+      "report": "experiments/s2-joint-load/REPORT.md",
+      "prereg": "experiments/s2-joint-load/PREREG.md",
+      "runner_binaries": [
+        "poie-joint-load"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "load_kw\tbronze_kg\tsurvived_days\tblocked_by\n2\t3.0\t60\tcyclic process dependency at turn-sleeve-p1\n2\t6.0\t90\tnone\n3\t3.0\t3\tenergy_depleted\n3\t6.0\t3\tenergy_depleted\n",
+      "expected_head": [
+        "load_kw\tbronze_kg\tsurvived_days\tblocked_by",
+        "2\t3.0\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-joint-three",
+      "report": "experiments/s2-joint-three/REPORT.md",
+      "prereg": "experiments/s2-joint-three/PREREG.md",
+      "runner_binaries": [
+        "poie-joint-three"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "bronze_kg\tenergy_kwh\tsurvived_days\tblocked_by\n3.0\t20\t60\tcyclic process dependency at turn-sleeve-p1\n3.0\t40\t60\tcyclic process dependency at turn-sleeve-p1\n3.0\t80\t60\tcyclic process dependency at turn-sleeve-p1\n6.0\t20\t90\tnone\n6.0\t40\t90\tnone\n6.0\t80\t90\tnone\n",
+      "expected_head": [
+        "bronze_kg\tenergy_kwh\tsurvived_days\tblocked_by",
+        "3.0\t20\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-joint-worn",
+      "report": "experiments/s2-joint-worn/REPORT.md",
+      "prereg": "experiments/s2-joint-worn/PREREG.md",
+      "runner_binaries": [
+        "poie-joint-worn"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "worn_stock\tbronze_kg\tsurvived_days\tblocked_by\n0\t3.0\t50\tmissing resource cutting-insert: need 1, have 0.5\n0\t6.0\t50\tmissing resource cutting-insert: need 1, have 0.5\n2\t3.0\t60\tcyclic process dependency at turn-sleeve-p1\n2\t6.0\t70\tmissing resource cutting-insert: need 1, have 0.5\n4\t3.0\t60\tcyclic process dependency at turn-sleeve-p1\n4\t6.0\t90\tnone\n",
+      "expected_head": [
+        "worn_stock\tbronze_kg\tsurvived_days\tblocked_by",
+        "0\t3.0\t50\tmissing resource cutting-insert: need 1, have 0.5"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-joint-yield",
+      "report": "experiments/s2-joint-yield/REPORT.md",
+      "prereg": "experiments/s2-joint-yield/PREREG.md",
+      "runner_binaries": [
+        "poie-joint-yield"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "yield\tbronze_kg\tsurvived_days\tblocked_by\n1.0\t3.0\t60\tcyclic process dependency at turn-sleeve-p1\n1.0\t6.0\t90\tnone\n0.8\t3.0\t60\tcyclic process dependency at turn-sleeve-p1\n0.8\t6.0\t80\tmissing resource cutting-insert: need 1, have 0.8\n0.5\t3.0\t50\tmissing resource cutting-insert: need 1, have 0.5\n0.5\t6.0\t50\tmissing resource cutting-insert: need 1, have 0.5\n",
+      "expected_head": [
+        "yield\tbronze_kg\tsurvived_days\tblocked_by",
+        "1.0\t3.0\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-load",
+      "report": "experiments/s2-load/REPORT.md",
+      "prereg": "experiments/s2-load/PREREG.md",
+      "runner_binaries": [
+        "poie-load"
+      ],
+      "models": [
+        "base-05"
+      ],
+      "expected_output_lines": 6,
+      "expected_output": "load_kw\tsurvived_days\tfinal_energy_kwh\tblocked_by\n0.0\t40\t200.0\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001\n1.0\t40\t200.0\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001\n2.0\t40\t200.0\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001\n3.0\t3\t0.0\tenergy_depleted\n4.0\t1\t0.0\tenergy_depleted\n",
+      "expected_head": [
+        "load_kw\tsurvived_days\tfinal_energy_kwh\tblocked_by",
+        "0.0\t40\t200.0\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-load-threshold",
+      "report": "experiments/s2-load-threshold/REPORT.md",
+      "prereg": "experiments/s2-load-threshold/PREREG.md",
+      "runner_binaries": [
+        "poie-load-threshold"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 12,
+      "expected_output": "load_kw\tsurvived_days\tblocked_by\n2.0\t60\tcyclic process dependency at turn-sleeve-p1\n2.1\t60\tcyclic process dependency at turn-sleeve-p1\n2.2\t60\tcyclic process dependency at turn-sleeve-p1\n2.3\t60\tcyclic process dependency at turn-sleeve-p1\n2.4\t60\tcyclic process dependency at turn-sleeve-p1\n2.5\t60\tcyclic process dependency at turn-sleeve-p1\n2.6\t16\tenergy_depleted\n2.7\t8\tenergy_depleted\n2.8\t5\tenergy_depleted\n2.9\t4\tenergy_depleted\n3.0\t3\tenergy_depleted\n",
+      "expected_head": [
+        "load_kw\tsurvived_days\tblocked_by",
+        "2.0\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C8"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-load-threshold-capacity",
+      "report": "experiments/s2-load-threshold-capacity/REPORT.md",
+      "prereg": "experiments/s2-load-threshold-capacity/PREREG.md",
+      "runner_binaries": [
+        "poie-load-threshold-capacity"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "capacity_kwh\tfirst_energy_limited_load_kw\n100\t2.6\n200\t2.6\n300\t2.6\n",
+      "expected_head": [
+        "capacity_kwh\tfirst_energy_limited_load_kw",
+        "100\t2.6"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-load-threshold-charge",
+      "report": "experiments/s2-load-threshold-charge/REPORT.md",
+      "prereg": "experiments/s2-load-threshold-charge/PREREG.md",
+      "runner_binaries": [
+        "poie-load-threshold-charge"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "charge_kw\tfirst_energy_limited_load_kw\n3\t2.6\n10\t2.6\n30\t2.6\n",
+      "expected_head": [
+        "charge_kw\tfirst_energy_limited_load_kw",
+        "3\t2.6"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-long-horizon",
+      "report": "experiments/s2-long-horizon/REPORT.md",
+      "prereg": "experiments/s2-long-horizon/PREREG.md",
+      "runner_binaries": [
+        "poie-longevity"
+      ],
+      "models": [
+        "base-05"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "service=potable-water,workshop-operability horizon_days=90 survived_days=40 final_energy_kwh=200.0\nevent\tday=0\tfailed=none\trepaired=pump-p1\tstatus=ok\tenergy_kwh=39.5\nevent\tday=10\tfailed=pump-p1\trepaired=pump-p1\tstatus=ok\tenergy_kwh=199.5\nevent\tday=20\tfailed=pump-p1\trepaired=pump-p1\tstatus=ok\tenergy_kwh=197.4\nevent\tday=30\tfailed=pump-p1\trepaired=pump-p1\tstatus=ok\tenergy_kwh=197.4\nevent\tday=35\tfailed=lathe-1\trepaired=lathe-1\tstatus=ok\tenergy_kwh=199.7\nevent\tday=40\tfailed=pump-p1\trepaired=none\tstatus=missing resource bronze-bar: need 1.2, have 0.6000000000000001\tenergy_kwh=200.0\n",
+      "expected_head": [
+        "service=potable-water,workshop-operability horizon_days=90 survived_days=40 final_energy_kwh=200.0",
+        "event\tday=0\tfailed=none\trepaired=pump-p1\tstatus=ok\tenergy_kwh=39.5"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-metrics",
+      "report": "experiments/s2-metrics/REPORT.md",
+      "prereg": "experiments/s2-metrics/PREREG.md",
+      "runner_binaries": [
+        "poie-metrics"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "survival_horizon_base05_days=40.0\nsurvival_horizon_base08_days=60.0\nrecovery_coverage=5/10 ratio=0.500000\nregenerative_capacity_days=20.0\n",
+      "expected_head": [
+        "survival_horizon_base05_days=40.0",
+        "survival_horizon_base08_days=60.0"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-monte-carlo",
+      "report": "experiments/s2-monte-carlo/REPORT.md",
+      "prereg": "experiments/s2-monte-carlo/PREREG.md",
+      "runner_binaries": [
+        "poie-monte-carlo"
+      ],
+      "models": [
+        "base-05"
+      ],
+      "expected_output_lines": 6,
+      "expected_output": "runs=2000 seeds=20 min_days=20 p10_days=28 median_days=72 mean_days=64.8 p90_days=90 max_days=90 survived_90=622\nbucket\t[0,40)\t403\nbucket\t[40,60)\t380\nbucket\t[60,80)\t358\nbucket\t[80,90)\t237\nbucket\t[90,91)\t622\n",
+      "expected_head": [
+        "runs=2000 seeds=20 min_days=20 p10_days=28 median_days=72 mean_days=64.8 p90_days=90 max_days=90 survived_90=622",
+        "bucket\t[0,40)\t403"
+      ],
+      "stochastic": true,
+      "seed": "0x9E37_79B9_7F4A_7C15",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-order-sensitivity",
+      "report": "experiments/s2-order-sensitivity/REPORT.md",
+      "prereg": "experiments/s2-order-sensitivity/PREREG.md",
+      "runner_binaries": [
+        "poie-order"
+      ],
+      "models": [
+        "base-06"
+      ],
+      "expected_output_lines": 2,
+      "expected_output": "max_failures=2 recoverable_cases=25 standard_joint=24 best_joint=24 order_sensitive=0\nmax_failures=3 recoverable_cases=44 standard_joint=40 best_joint=40 order_sensitive=0\n",
+      "expected_head": [
+        "max_failures=2 recoverable_cases=25 standard_joint=24 best_joint=24 order_sensitive=0",
+        "max_failures=3 recoverable_cases=44 standard_joint=40 best_joint=40 order_sensitive=0"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-recharge-bound",
+      "report": "experiments/s2-recharge-bound/REPORT.md",
+      "prereg": "experiments/s2-recharge-bound/PREREG.md",
+      "runner_binaries": [
+        "poie-recharge-bound"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "recharge_output_kwh=20.0\nrecharge_duration_h=8.0\naverage_recharge_kw=2.50\nfirst_energy_limited_load_kw=2.6\ndelta_kw=0.10\n",
+      "expected_head": [
+        "recharge_output_kwh=20.0",
+        "recharge_duration_h=8.0"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-recharge-rule",
+      "report": "experiments/s2-recharge-rule/REPORT.md",
+      "prereg": "experiments/s2-recharge-rule/PREREG.md",
+      "runner_binaries": [
+        "poie-recharge-rule"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "recharge_kwh\taverage_kw\tfirst_energy_limited_load_kw\tmargin_kw\n10\t1.25\t1.3\t0.05\n20\t2.50\t2.6\t0.10\n40\t5.00\t5.1\t0.10\n",
+      "expected_head": [
+        "recharge_kwh\taverage_kw\tfirst_energy_limited_load_kw\tmargin_kw",
+        "10\t1.25\t1.3\t0.05"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-recharge-rule-base05",
+      "report": "experiments/s2-recharge-rule-base05/REPORT.md",
+      "prereg": "experiments/s2-recharge-rule-base05/PREREG.md",
+      "runner_binaries": [
+        "poie-recharge-rule-base05"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "recharge_kwh\taverage_kw\tfirst_energy_limited_load_kw\tmargin_kw\n10\t1.25\t1.3\t0.05\n20\t2.50\t2.6\t0.10\n40\t5.00\t5.1\t0.10\n",
+      "expected_head": [
+        "recharge_kwh\taverage_kw\tfirst_energy_limited_load_kw\tmargin_kw",
+        "10\t1.25\t1.3\t0.05"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-recycle-residue",
+      "report": "experiments/s2-recycle-residue/REPORT.md",
+      "prereg": "experiments/s2-recycle-residue/PREREG.md",
+      "runner_binaries": [
+        "poie-recycle-residue"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "bar_recovery_kg\tresidue_kg\tsurvived_days\tblocked_by\n1.2\t0.0\t60\tcyclic process dependency at turn-sleeve-p1\n1.0\t0.2\t60\tcyclic process dependency at turn-sleeve-p1\n0.9\t0.3\t60\tcyclic process dependency at turn-sleeve-p1\n0.6\t0.6\t50\tmissing resource bronze-bar: need 1.2, have 0.6\n",
+      "expected_head": [
+        "bar_recovery_kg\tresidue_kg\tsurvived_days\tblocked_by",
+        "1.2\t0.0\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-redundancy",
+      "report": "experiments/s2-redundancy/REPORT.md",
+      "prereg": "experiments/s2-redundancy/PREREG.md",
+      "runner_binaries": [
+        "poie-redundancy"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "mode\tsurvived_days\tblocked_by\nbaseline\t60\tcyclic process dependency at turn-sleeve-p1\nredundant-pump\t90\tnone\n",
+      "expected_head": [
+        "mode\tsurvived_days\tblocked_by",
+        "baseline\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-redundancy-filter",
+      "report": "experiments/s2-redundancy-filter/REPORT.md",
+      "prereg": "experiments/s2-redundancy-filter/PREREG.md",
+      "runner_binaries": [
+        "poie-redundancy-filter"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "mode\tsurvived_days\tblocked_by\nbaseline\t30\tno restorer for filter-1\nredundant-pump\t30\tno restorer for filter-1\n",
+      "expected_head": [
+        "mode\tsurvived_days\tblocked_by",
+        "baseline\t30\tno restorer for filter-1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-redundancy-load",
+      "report": "experiments/s2-redundancy-load/REPORT.md",
+      "prereg": "experiments/s2-redundancy-load/PREREG.md",
+      "runner_binaries": [
+        "poie-redundancy-load"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "mode\tload_kw\tsurvived_days\tblocked_by\nbaseline\t2.5\t60\tcyclic process dependency at turn-sleeve-p1\nbaseline\t2.6\t16\tenergy_depleted\nbaseline\t3.0\t3\tenergy_depleted\nredundant-pump\t2.5\t90\tnone\nredundant-pump\t2.6\t17\tenergy_depleted\nredundant-pump\t3.0\t3\tenergy_depleted\n",
+      "expected_head": [
+        "mode\tload_kw\tsurvived_days\tblocked_by",
+        "baseline\t2.5\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C9"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-redundancy-robot",
+      "report": "experiments/s2-redundancy-robot/REPORT.md",
+      "prereg": "experiments/s2-redundancy-robot/PREREG.md",
+      "runner_binaries": [
+        "poie-redundancy-robot"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "mode\tsurvived_days\tblocked_by\nbaseline\t30\tno restorer for robot-m1\nredundant-pump\t35\tno restorer for robot-m1\n",
+      "expected_head": [
+        "mode\tsurvived_days\tblocked_by",
+        "baseline\t30\tno restorer for robot-m1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-redundancy-time",
+      "report": "experiments/s2-redundancy-time/REPORT.md",
+      "prereg": "experiments/s2-redundancy-time/PREREG.md",
+      "runner_binaries": [
+        "poie-redundancy-time"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "mode\tload_kw\tinstant_days\tevent_driven_days\nbaseline\t0.0\t12\t31\nredundant-pump\t0.0\t90\t90\n",
+      "expected_head": [
+        "mode\tload_kw\tinstant_days\tevent_driven_days",
+        "baseline\t0.0\t12\t31"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C14"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-regen-capacity-semantics",
+      "report": "experiments/s2-regen-capacity-semantics/REPORT.md",
+      "prereg": "experiments/s2-regen-capacity-semantics/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-capacity-semantics"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "initial_kwh\tcapacity_kwh\tfirst_blocked_x\n500\t200\trejected\n500\t400\trejected\n500\t500\t521\n500\t600\t521\n",
+      "expected_head": [
+        "initial_kwh\tcapacity_kwh\tfirst_blocked_x",
+        "500\t200\trejected"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-regen-cost",
+      "report": "experiments/s2-regen-cost/REPORT.md",
+      "prereg": "experiments/s2-regen-cost/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-cost"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 10,
+      "expected_output": "duration_x\tenergy_x\tsurvived_days\tblocked_by\n1.0\t1.0\t60\tcyclic process dependency at turn-sleeve-p1\n1.0\t2.0\t60\tcyclic process dependency at turn-sleeve-p1\n1.0\t100.0\t60\tcyclic process dependency at turn-sleeve-p1\n2.0\t1.0\t60\tcyclic process dependency at turn-sleeve-p1\n2.0\t2.0\t60\tcyclic process dependency at turn-sleeve-p1\n2.0\t100.0\t60\tcyclic process dependency at turn-sleeve-p1\n4.0\t1.0\t60\tcyclic process dependency at turn-sleeve-p1\n4.0\t2.0\t60\tcyclic process dependency at turn-sleeve-p1\n4.0\t100.0\t60\tcyclic process dependency at turn-sleeve-p1\n",
+      "expected_head": [
+        "duration_x\tenergy_x\tsurvived_days\tblocked_by",
+        "1.0\t1.0\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-regen-cost-load",
+      "report": "experiments/s2-regen-cost-load/REPORT.md",
+      "prereg": "experiments/s2-regen-cost-load/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-cost-load"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "duration_x\tload_kw\tsurvived_days\tblocked_by\n1.0\t0.0\t60\tcyclic process dependency at turn-sleeve-p1\n1.0\t2.0\t60\tcyclic process dependency at turn-sleeve-p1\n1.0\t3.0\t3\tenergy_depleted\n4.0\t0.0\t60\tcyclic process dependency at turn-sleeve-p1\n4.0\t2.0\t60\tcyclic process dependency at turn-sleeve-p1\n4.0\t3.0\t3\tenergy_depleted\n",
+      "expected_head": [
+        "duration_x\tload_kw\tsurvived_days\tblocked_by",
+        "1.0\t0.0\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-regen-cross",
+      "report": "experiments/s2-regen-cross/REPORT.md",
+      "prereg": "experiments/s2-regen-cross/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-cross"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 13,
+      "expected_output": "recycle_yield\tinterval_days\tsurvived_days\tblocked_by\n1.00\t10\t60\tcyclic process dependency at turn-sleeve-p1\n1.00\t15\t90\tnone\n1.00\t20\t90\tnone\n1.00\t30\t90\tnone\n0.75\t10\t60\tcyclic process dependency at turn-sleeve-p1\n0.75\t15\t90\tnone\n0.75\t20\t90\tnone\n0.75\t30\t90\tnone\n0.50\t10\t50\tmissing resource bronze-bar: need 1.2, have 0.6\n0.50\t15\t75\tmissing resource bronze-bar: need 1.2, have 0.6\n0.50\t20\t90\tnone\n0.50\t30\t90\tnone\n",
+      "expected_head": [
+        "recycle_yield\tinterval_days\tsurvived_days\tblocked_by",
+        "1.00\t10\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-regen-event",
+      "report": "experiments/s2-regen-event/REPORT.md",
+      "prereg": "experiments/s2-regen-event/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-event"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 9,
+      "expected_output": "model\tinterval_days\tinstant_days\tevent_driven_days\nbase-05\t10\t40\t40\nbase-05\t15\t60\t60\nbase-05\t20\t80\t80\nbase-05\t30\t90\t90\nbase-08\t10\t60\t60\nbase-08\t15\t90\t90\nbase-08\t20\t90\t90\nbase-08\t30\t90\t90\n",
+      "expected_head": [
+        "model\tinterval_days\tinstant_days\tevent_driven_days",
+        "base-05\t10\t40\t40"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-regen-forced-cost",
+      "report": "experiments/s2-regen-forced-cost/REPORT.md",
+      "prereg": "experiments/s2-regen-forced-cost/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-forced-cost"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "energy_x\tsurvived_days\tblocked_by\n1\t10\tcyclic process dependency at turn-sleeve-p1\n10\t10\tcyclic process dependency at turn-sleeve-p1\n50\t10\tcyclic process dependency at turn-sleeve-p1\n100\t0\tmissing resource electric-energy: need 360000000, have 216000000\n",
+      "expected_head": [
+        "energy_x\tsurvived_days\tblocked_by",
+        "1\t10\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-regen-long",
+      "report": "experiments/s2-regen-long/REPORT.md",
+      "prereg": "experiments/s2-regen-long/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-long"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 9,
+      "expected_output": "model\tinterval_days\tinstant_days\tevent_driven_days\nbase-05\t2\t8\t20\nbase-05\t3\t12\t20\nbase-05\t5\t20\t20\nbase-05\t10\t40\t40\nbase-08\t2\t12\t31\nbase-08\t3\t18\t31\nbase-08\t5\t30\t31\nbase-08\t10\t60\t60\n",
+      "expected_head": [
+        "model\tinterval_days\tinstant_days\tevent_driven_days",
+        "base-05\t2\t8\t20"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-regen-threshold",
+      "report": "experiments/s2-regen-threshold/REPORT.md",
+      "prereg": "experiments/s2-regen-threshold/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-threshold"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 101,
+      "expected_output": "energy_x=1 survived_days=10\nenergy_x=2 survived_days=10\nenergy_x=3 survived_days=10\nenergy_x=4 survived_days=10\nenergy_x=5 survived_days=10\nenergy_x=6 survived_days=10\nenergy_x=7 survived_days=10\nenergy_x=8 survived_days=10\nenergy_x=9 survived_days=10\nenergy_x=10 survived_days=10\nenergy_x=11 survived_days=10\nenergy_x=12 survived_days=10\nenergy_x=13 survived_days=10\nenergy_x=14 survived_days=10\nenergy_x=15 survived_days=10\nenergy_x=16 survived_days=10\nenergy_x=17 survived_days=10\nenergy_x=18 survived_days=10\nenergy_x=19 survived_days=10\nenergy_x=20 survived_days=10\nenergy_x=21 survived_days=10\nenergy_x=22 survived_days=10\nenergy_x=23 survived_days=10\nenergy_x=24 survived_days=10\nenergy_x=25 survived_days=10\nenergy_x=26 survived_days=10\nenergy_x=27 survived_days=10\nenergy_x=28 survived_days=10\nenergy_x=29 survived_days=10\nenergy_x=30 survived_days=10\nenergy_x=31 survived_days=10\nenergy_x=32 survived_days=10\nenergy_x=33 survived_days=10\nenergy_x=34 survived_days=10\nenergy_x=35 survived_days=10\nenergy_x=36 survived_days=10\nenergy_x=37 survived_days=10\nenergy_x=38 survived_days=10\nenergy_x=39 survived_days=10\nenergy_x=40 survived_days=10\nenergy_x=41 survived_days=10\nenergy_x=42 survived_days=10\nenergy_x=43 survived_days=10\nenergy_x=44 survived_days=10\nenergy_x=45 survived_days=10\nenergy_x=46 survived_days=10\nenergy_x=47 survived_days=10\nenergy_x=48 survived_days=10\nenergy_x=49 survived_days=10\nenergy_x=50 survived_days=10\nenergy_x=51 survived_days=10\nenergy_x=52 survived_days=10\nenergy_x=53 survived_days=10\nenergy_x=54 survived_days=10\nenergy_x=55 survived_days=10\nenergy_x=56 survived_days=10\nenergy_x=57 survived_days=10\nenergy_x=58 survived_days=10\nenergy_x=59 survived_days=10\nenergy_x=60 survived_days=10\nenergy_x=61 survived_days=0\nenergy_x=62 survived_days=0\nenergy_x=63 survived_days=0\nenergy_x=64 survived_days=0\nenergy_x=65 survived_days=0\nenergy_x=66 survived_days=0\nenergy_x=67 survived_days=0\nenergy_x=68 survived_days=0\nenergy_x=69 survived_days=0\nenergy_x=70 survived_days=0\nenergy_x=71 survived_days=0\nenergy_x=72 survived_days=0\nenergy_x=73 survived_days=0\nenergy_x=74 survived_days=0\nenergy_x=75 survived_days=0\nenergy_x=76 survived_days=0\nenergy_x=77 survived_days=0\nenergy_x=78 survived_days=0\nenergy_x=79 survived_days=0\nenergy_x=80 survived_days=0\nenergy_x=81 survived_days=0\nenergy_x=82 survived_days=0\nenergy_x=83 survived_days=0\nenergy_x=84 survived_days=0\nenergy_x=85 survived_days=0\nenergy_x=86 survived_days=0\nenergy_x=87 survived_days=0\nenergy_x=88 survived_days=0\nenergy_x=89 survived_days=0\nenergy_x=90 survived_days=0\nenergy_x=91 survived_days=0\nenergy_x=92 survived_days=0\nenergy_x=93 survived_days=0\nenergy_x=94 survived_days=0\nenergy_x=95 survived_days=0\nenergy_x=96 survived_days=0\nenergy_x=97 survived_days=0\nenergy_x=98 survived_days=0\nenergy_x=99 survived_days=0\nenergy_x=100 survived_days=0\nmax_safe_x=60 first_blocked_x=61\n",
+      "expected_head": [
+        "energy_x=1 survived_days=10",
+        "energy_x=2 survived_days=10"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-regen-threshold-battery",
+      "report": "experiments/s2-regen-threshold-battery/REPORT.md",
+      "prereg": "experiments/s2-regen-threshold-battery/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-threshold-battery"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "capacity_kwh\tmax_safe_x\tfirst_blocked_x\n100\t60\t61\n200\t60\t61\n300\t60\t61\n400\t60\t61\n",
+      "expected_head": [
+        "capacity_kwh\tmax_safe_x\tfirst_blocked_x",
+        "100\t60\t61"
+      ],
+      "stochastic": true,
+      "seed": "NOT_RECORDED",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-regen-threshold-initial",
+      "report": "experiments/s2-regen-threshold-initial/REPORT.md",
+      "prereg": "experiments/s2-regen-threshold-initial/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-threshold-initial"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 6,
+      "expected_output": "initial_kwh\tfirst_blocked_x\n20\t41\n40\t61\n60\t81\n80\t101\n120\t141\n",
+      "expected_head": [
+        "initial_kwh\tfirst_blocked_x",
+        "20\t41"
+      ],
+      "stochastic": true,
+      "seed": "NOT_RECORDED",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-regeneration",
+      "report": "experiments/s2-regeneration/REPORT.md",
+      "prereg": "experiments/s2-regeneration/PREREG.md",
+      "runner_binaries": [
+        "poie-regeneration"
+      ],
+      "models": [
+        "base-06",
+        "base-07"
+      ],
+      "expected_output_lines": 2,
+      "expected_output": "base-06\tindependent=25\tjoint=24\tgap=1\nbase-07\tindependent=25\tjoint=25\tgap=0\n",
+      "expected_head": [
+        "base-06\tindependent=25\tjoint=24\tgap=1",
+        "base-07\tindependent=25\tjoint=25\tgap=0"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C7"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-regeneration-horizon",
+      "report": "experiments/s2-regeneration-horizon/REPORT.md",
+      "prereg": "experiments/s2-regeneration-horizon/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-horizon"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 9,
+      "expected_output": "model\tinterval_days\tsurvived_days\tblocked_by\nbase-05\t10\t40\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001\nbase-05\t15\t60\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001\nbase-05\t20\t80\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001\nbase-05\t30\t90\tnone\nbase-08\t10\t60\tcyclic process dependency at turn-sleeve-p1\nbase-08\t15\t90\tnone\nbase-08\t20\t90\tnone\nbase-08\t30\t90\tnone\n",
+      "expected_head": [
+        "model\tinterval_days\tsurvived_days\tblocked_by",
+        "base-05\t10\t40\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-regeneration-yield",
+      "report": "experiments/s2-regeneration-yield/REPORT.md",
+      "prereg": "experiments/s2-regeneration-yield/PREREG.md",
+      "runner_binaries": [
+        "poie-regen-yield"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "recycle_yield\tsurvived_days\tblocked_by\n1.00\t60\tcyclic process dependency at turn-sleeve-p1\n0.75\t60\tcyclic process dependency at turn-sleeve-p1\n0.50\t50\tmissing resource bronze-bar: need 1.2, have 0.6\n",
+      "expected_head": [
+        "recycle_yield\tsurvived_days\tblocked_by",
+        "1.00\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-resupply",
+      "report": "experiments/s2-resupply/REPORT.md",
+      "prereg": "experiments/s2-resupply/PREREG.md",
+      "runner_binaries": [
+        "poie-resupply"
+      ],
+      "models": [
+        "base-06"
+      ],
+      "expected_output_lines": 2,
+      "expected_output": "before\tindependent=25\tjoint=24\tgap=1\nafter_resupply\tindependent=25\tjoint=25\tgap=0\n",
+      "expected_head": [
+        "before\tindependent=25\tjoint=24\tgap=1",
+        "after_resupply\tindependent=25\tjoint=25\tgap=0"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-resupply-delivery",
+      "report": "experiments/s2-resupply-delivery/REPORT.md",
+      "prereg": "experiments/s2-resupply-delivery/PREREG.md",
+      "runner_binaries": [
+        "poie-resupply-delivery"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "mode\tinsert_stock\tsurvived_days\tblocked_by\none-insert-no-resupply\t1\t30\tmissing resource cutting-insert: need 1, have 0\nfour-inserts-no-resupply\t4\t60\tcyclic process dependency at turn-sleeve-p1\none-insert-resupply\t1\t40\tmissing resource cutting-insert: need 1, have 0\n",
+      "expected_head": [
+        "mode\tinsert_stock\tsurvived_days\tblocked_by",
+        "one-insert-no-resupply\t1\t30\tmissing resource cutting-insert: need 1, have 0"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-resupply-frequency",
+      "report": "experiments/s2-resupply-frequency/REPORT.md",
+      "prereg": "experiments/s2-resupply-frequency/PREREG.md",
+      "runner_binaries": [
+        "poie-resupply-frequency"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "interval_days\tsurvived_days\tblocked_by\n10\t60\tcyclic process dependency at turn-sleeve-p1\n20\t50\tmissing resource cutting-insert: need 1, have 0\n30\t40\tmissing resource cutting-insert: need 1, have 0\n60\t30\tmissing resource cutting-insert: need 1, have 0\n",
+      "expected_head": [
+        "interval_days\tsurvived_days\tblocked_by",
+        "10\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C10"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-resupply-time",
+      "report": "experiments/s2-resupply-time/REPORT.md",
+      "prereg": "experiments/s2-resupply-time/PREREG.md",
+      "runner_binaries": [
+        "poie-resupply-time"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "interval_days\tinstant_days\tevent_driven_days\tblocked_by\n10\t60\t60\tcyclic process dependency at turn-sleeve-p1\n20\t50\t50\tmissing resource cutting-insert: need 1, have 0\n30\t40\t40\tmissing resource cutting-insert: need 1, have 0\n60\t30\t30\tmissing resource cutting-insert: need 1, have 0\n",
+      "expected_head": [
+        "interval_days\tinstant_days\tevent_driven_days\tblocked_by",
+        "10\t60\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-robot-restorer",
+      "report": "experiments/s2-robot-restorer/REPORT.md",
+      "prereg": "experiments/s2-robot-restorer/PREREG.md",
+      "runner_binaries": [
+        "poie-robot-restorer"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "mode\tsurvived_days\tblocked_by\nredundant-only\t35\tno restorer for robot-m1\nredundant+robot-restorer\t90\tnone\n",
+      "expected_head": [
+        "mode\tsurvived_days\tblocked_by",
+        "redundant-only\t35\tno restorer for robot-m1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-sharpen-yield",
+      "report": "experiments/s2-sharpen-yield/REPORT.md",
+      "prereg": "experiments/s2-sharpen-yield/PREREG.md",
+      "runner_binaries": [
+        "poie-sharpen-yield"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "yield\tsurvived_days\tblocked_by\n1.0\t60\tcyclic process dependency at turn-sleeve-p1\n0.8\t60\tcyclic process dependency at turn-sleeve-p1\n0.5\t50\tmissing resource cutting-insert: need 1, have 0.5\n",
+      "expected_head": [
+        "yield\tsurvived_days\tblocked_by",
+        "1.0\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-survival-horizon",
+      "report": "experiments/s2-survival-horizon/REPORT.md",
+      "prereg": "experiments/s2-survival-horizon/PREREG.md",
+      "runner_binaries": [
+        "poie-horizon"
+      ],
+      "models": [
+        "base-05"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "interval_days\tsurvived_days\tfailed_at\tfinal_energy_kwh\tblocked_by\n10\t40\tday 40\t200.0\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001\n15\t60\tday 60\t200.0\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001\n20\t80\tday 80\t200.0\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001\n30\t90\tday 90\t200.0\tnone\n",
+      "expected_head": [
+        "interval_days\tsurvived_days\tfailed_at\tfinal_energy_kwh\tblocked_by",
+        "10\t40\tday 40\t200.0\tmissing resource bronze-bar: need 1.2, have 0.6000000000000001"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-time-boundary",
+      "report": "experiments/s2-time-boundary/REPORT.md",
+      "prereg": "experiments/s2-time-boundary/PREREG.md",
+      "runner_binaries": [
+        "poie-time-boundary"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 6,
+      "expected_output": "grease_kg\tinstant_days\tevent_driven_days\n0.10\t4\t10\n0.15\t6\t16\n0.20\t8\t21\n0.30\t8\t21\n0.50\t8\t21\n",
+      "expected_head": [
+        "grease_kg\tinstant_days\tevent_driven_days",
+        "0.10\t4\t10"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C12"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-time-energy",
+      "report": "experiments/s2-time-energy/REPORT.md",
+      "prereg": "experiments/s2-time-energy/PREREG.md",
+      "runner_binaries": [
+        "poie-time-energy"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "load_kw\tinstant_days\tevent_driven_days\n2.6\t16\t16\n3.0\t3\t3\n4.0\t1\t1\n",
+      "expected_head": [
+        "load_kw\tinstant_days\tevent_driven_days",
+        "2.6\t16\t16"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C13"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-time-energy-sweep",
+      "report": "experiments/s2-time-energy-sweep/REPORT.md",
+      "prereg": "experiments/s2-time-energy-sweep/PREREG.md",
+      "runner_binaries": [
+        "poie-time-energy-sweep"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 6,
+      "expected_output": "load_kw\tinstant_days\tevent_driven_days\n0.0\t30\t30\n1.0\t30\t30\n2.0\t30\t30\n2.6\t14\t14\n3.0\t3\t3\n",
+      "expected_head": [
+        "load_kw\tinstant_days\tevent_driven_days",
+        "0.0\t30\t30"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-time-horizon",
+      "report": "experiments/s2-time-horizon/REPORT.md",
+      "prereg": "experiments/s2-time-horizon/PREREG.md",
+      "runner_binaries": [
+        "poie-time-horizon"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "mode\tsurvived_days\tblocked_by\ninstant-repair\t6\tmissing resource grease: need 0.05, have 0\nevent-driven\t16\tmissing resource grease: need 0.05, have 0\n",
+      "expected_head": [
+        "mode\tsurvived_days\tblocked_by",
+        "instant-repair\t6\tmissing resource grease: need 0.05, have 0"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-time-insert",
+      "report": "experiments/s2-time-insert/REPORT.md",
+      "prereg": "experiments/s2-time-insert/PREREG.md",
+      "runner_binaries": [
+        "poie-time-insert"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 6,
+      "expected_output": "inserts\tinstant_days\tevent_driven_days\n1\t6\t15\n2\t8\t20\n3\t10\t26\n4\t12\t31\n6\t12\t31\n",
+      "expected_head": [
+        "inserts\tinstant_days\tevent_driven_days",
+        "1\t6\t15"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-time-repair-sweep",
+      "report": "experiments/s2-time-repair-sweep/REPORT.md",
+      "prereg": "experiments/s2-time-repair-sweep/PREREG.md",
+      "runner_binaries": [
+        "poie-time-repair-sweep"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "repair_days\tinstant_days\tevent_driven_days\n0.125\t6\t6\n0.5\t6\t6\n1\t6\t6\n2\t6\t7\n3\t6\t10\n5\t6\t16\n",
+      "expected_head": [
+        "repair_days\tinstant_days\tevent_driven_days",
+        "0.125\t6\t6"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-two-restorers",
+      "report": "experiments/s2-two-restorers/REPORT.md",
+      "prereg": "experiments/s2-two-restorers/PREREG.md",
+      "runner_binaries": [
+        "poie-two-restorers"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "mode\tsurvived_days\tblocked_by\nredundant-only\t30\tno restorer for filter-1\nfilter-only\t30\tno restorer for robot-m1\nrobot-only\t30\tno restorer for filter-1\nfilter+robot\t90\tnone\n",
+      "expected_head": [
+        "mode\tsurvived_days\tblocked_by",
+        "redundant-only\t30\tno restorer for filter-1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-worn-bound",
+      "report": "experiments/s2-worn-bound/REPORT.md",
+      "prereg": "experiments/s2-worn-bound/PREREG.md",
+      "runner_binaries": [
+        "poie-worn-bound"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "worn_stock\tsurvived_days\tblocked_by\n0\t50\tmissing resource cutting-insert: need 1, have 0.5\n2\t70\tmissing resource cutting-insert: need 1, have 0.5\n4\t90\tnone\n8\t90\tnone\n",
+      "expected_head": [
+        "worn_stock\tsurvived_days\tblocked_by",
+        "0\t50\tmissing resource cutting-insert: need 1, have 0.5"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-yield-accumulation",
+      "report": "experiments/s2-yield-accumulation/REPORT.md",
+      "prereg": "experiments/s2-yield-accumulation/PREREG.md",
+      "runner_binaries": [
+        "poie-yield-accumulation"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "yield\tsurvived_days\tblocked_by\n1.0\t60\tcyclic process dependency at turn-sleeve-p1\n0.9\t60\tcyclic process dependency at turn-sleeve-p1\n0.8\t60\tcyclic process dependency at turn-sleeve-p1\n0.5\t50\tmissing resource cutting-insert: need 1, have 0.5\n",
+      "expected_head": [
+        "yield\tsurvived_days\tblocked_by",
+        "1.0\t60\tcyclic process dependency at turn-sleeve-p1"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "NOT_MIGRATED",
+      "migration_status": "NOT_MIGRATED",
+      "risk": "MEDIUM"
+    }
+  ],
+  "certificates": [
+    {
+      "certificate": "certificate-s2-joint",
+      "report": "experiments/certificate-s2-joint/REPORT.md",
+      "keys": [
+        "claim_scope",
+        "gap_pairs",
+        "horizon_s",
+        "independent_recoverable",
+        "joint_recoverable",
+        "max_failures",
+        "model",
+        "model_sha256",
+        "optimistic_gap",
+        "schema",
+        "service",
+        "total"
+      ],
+      "claims": [],
+      "certificate_keys": [
+        "claim_scope",
+        "gap_pairs",
+        "horizon_s",
+        "independent_recoverable",
+        "joint_recoverable",
+        "max_failures",
+        "model",
+        "model_sha256",
+        "optimistic_gap",
+        "schema",
+        "service",
+        "total"
+      ],
+      "status": "LEGACY_ONLY"
+    },
+    {
+      "certificate": "certificate-s2-load",
+      "report": "experiments/certificate-s2-load/REPORT.md",
+      "keys": [
+        "battery",
+        "claim_scope",
+        "conclusion",
+        "experiment",
+        "horizon_days",
+        "model",
+        "model_sha256",
+        "rows",
+        "schema"
+      ],
+      "claims": [],
+      "certificate_keys": [
+        "battery",
+        "claim_scope",
+        "conclusion",
+        "experiment",
+        "horizon_days",
+        "model",
+        "model_sha256",
+        "rows",
+        "schema"
+      ],
+      "status": "LEGACY_ONLY"
+    },
+    {
+      "certificate": "certificate-s2-metrics",
+      "report": "experiments/certificate-s2-metrics/REPORT.md",
+      "keys": [
+        "adversarial",
+        "adversarial_resupply",
+        "base05",
+        "base08",
+        "claim_scope",
+        "energy_interventions",
+        "insert_sharpening",
+        "recharge_boundary",
+        "recovery_coverage",
+        "redundancy",
+        "redundancy_time",
+        "regenerative_capacity_days",
+        "resupply",
+        "schema",
+        "yield_sensitivity"
+      ],
+      "claims": [],
+      "certificate_keys": [
+        "adversarial",
+        "adversarial_resupply",
+        "base05",
+        "base08",
+        "claim_scope",
+        "energy_interventions",
+        "insert_sharpening",
+        "recharge_boundary",
+        "recovery_coverage",
+        "redundancy",
+        "redundancy_time",
+        "regenerative_capacity_days",
+        "resupply",
+        "schema",
+        "yield_sensitivity"
+      ],
+      "status": "LEGACY_ONLY"
+    },
+    {
+      "certificate": "certificate-s2-order",
+      "report": "experiments/certificate-s2-order/REPORT.md",
+      "keys": [
+        "claim_scope",
+        "conclusion",
+        "model",
+        "model_sha256",
+        "rows",
+        "schema"
+      ],
+      "claims": [],
+      "certificate_keys": [
+        "claim_scope",
+        "conclusion",
+        "model",
+        "model_sha256",
+        "rows",
+        "schema"
+      ],
+      "status": "LEGACY_ONLY"
+    },
+    {
+      "certificate": "certificate-s2-regeneration",
+      "report": "experiments/certificate-s2-regeneration/REPORT.md",
+      "keys": [
+        "claim_scope",
+        "conclusion",
+        "experiment",
+        "rows",
+        "schema"
+      ],
+      "claims": [],
+      "certificate_keys": [
+        "claim_scope",
+        "conclusion",
+        "experiment",
+        "rows",
+        "schema"
+      ],
+      "status": "LEGACY_ONLY"
+    },
+    {
+      "certificate": "certificate-s2-time",
+      "report": "experiments/certificate-s2-time/REPORT.md",
+      "keys": [
+        "adversarial",
+        "claim_scope",
+        "deadline",
+        "dense",
+        "grease_boundary",
+        "insert_boundary",
+        "long_energy_sweep",
+        "random_adversarial",
+        "random_window",
+        "regeneration",
+        "repair_sweep",
+        "schema",
+        "sparse"
+      ],
+      "claims": [
+        "C12"
+      ],
+      "certificate_keys": [
+        "adversarial",
+        "claim_scope",
+        "deadline",
+        "dense",
+        "grease_boundary",
+        "insert_boundary",
+        "long_energy_sweep",
+        "random_adversarial",
+        "random_window",
+        "regeneration",
+        "repair_sweep",
+        "schema",
+        "sparse"
+      ],
+      "status": "LEGACY_ONLY"
+    }
+  ],
+  "status_results": [
+    {
+      "text": "Base-05：10/15/20/30 天泵故障间隔 → 40/60/80/≥90 天。",
+      "claim_ids": []
+    },
+    {
+      "text": "Base-06：56 个双故障案例，独立覆盖 25/56，联合覆盖 24/56，唯一缺口 `pump-p1,pump-p2`。",
+      "claim_ids": []
+    },
+    {
+      "text": "Base-08 再生：40→60 天；50% 产出率 → 50 天。",
+      "claim_ids": []
+    },
+    {
+      "text": "2000 个 Monte Carlo 排程：中位 72 天，p10 28，p90 90。",
+      "claim_ids": []
+    },
+    {
+      "text": "负载边界：0–2 kW 材料受限（40 天）；3/4 kW 能量受限（3/1 天）。",
+      "claim_ids": []
+    },
+    {
+      "text": "冗余：泵 60→90；共享过滤器 30 `no restorer`；过滤器修复器 90；共享机器人 35；机器人修复器 90。",
+      "claim_ids": []
+    },
+    {
+      "text": "补货频率：10/20/30/60 天 → 60/50/40/30 天。",
+      "claim_ids": []
+    },
+    {
+      "text": "对抗子集：31 个子集，最小 0 天，最小集合 `filter-1`。",
+      "claim_ids": []
+    },
+    {
+      "text": "时间语义：grease 边界 4/6/8 vs 10/16/21 天；insert 边界 6/8/10/12 vs 15/20/26/31 天；能量边界不变；补货到位时 horizon 不变。",
+      "claim_ids": []
+    },
+    {
+      "text": "随机对抗 × 时间：瞬时 129/200 零天（均值 1.4），完成时间 0/200（均值 9.9）。",
+      "claim_ids": []
+    },
+    {
+      "text": "延迟随机窗口（day0–10）：瞬时 13/200 零天（均值 4.4），完成时间 0/200（均值 14.0）。",
+      "claim_ids": []
+    },
+    {
+      "text": "长修复再生（5 天修复、2–5 天故障）：Base-05 8/12/20→20/20/20；Base-08 12/18/30→31/31/31；10 天故障时间语义再次一致。",
+      "claim_ids": []
+    },
+    {
+      "text": "S1 工具循环：无备件 `cycle:asset:lathe-1`；1 备件 2 h 解锁；外部件替代 restorer 4 h 旁路；两者都有时选 2 h。",
+      "claim_ids": []
+    }
+  ],
+  "summary": {
+    "s2_claims": 12,
+    "s2_experiments": 72,
+    "claimed_experiments": 12,
+    "unmapped_experiments": 60,
+    "formal_s2_experiments_migrated_to_canonical": 0,
+    "stochastic_experiments_missing_seed": 2,
+    "s2_certificates": 6,
+    "claims_with_experiment_evidence": 12,
+    "status_s2_result_lines": 13,
+    "unmapped_status_results": 13
+  }
+}
