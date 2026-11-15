@@ -28,6 +28,14 @@ pub enum EngineTermination {
     IncompleteAtHorizon(String),
 }
 
+/// One capability choice and the assets it depends on during the repair.
+#[derive(Clone, Debug, PartialEq)]
+pub struct WitnessEntry {
+    pub capability: String,
+    pub provider: String,
+    pub dependencies: Vec<String>,
+}
+
 /// One committed event.
 #[derive(Clone, Debug, PartialEq)]
 pub struct EngineTrace {
@@ -37,6 +45,7 @@ pub struct EngineTrace {
     pub inventory_after: BTreeMap<String, f64>,
     pub plans: Vec<String>,
     pub resources: Vec<String>,
+    pub witness: Vec<WitnessEntry>,
 }
 
 /// Full canonical result.
@@ -76,6 +85,7 @@ struct RunningRepair {
     execution_dependencies: BTreeSet<String>,
     restoration_targets: BTreeSet<String>,
     resources: Vec<String>,
+    witness: Vec<WitnessEntry>,
     end_s: f64,
     label: String,
 }
@@ -83,6 +93,69 @@ struct RunningRepair {
 enum StartError {
     Blocked(String),
     Incomplete,
+}
+
+fn collect_asset_dependencies(model: &Model, asset: &str, seen: &mut BTreeSet<String>) {
+    if !seen.insert(asset.to_string()) {
+        return;
+    }
+    let Some(item) = model.assets.get(asset) else { return };
+    for required in &item.requires {
+        collect_asset_dependencies(model, required, seen);
+    }
+    if let Some(alternative) = item
+        .requires_any
+        .iter()
+        .find(|candidate| model.assets.get(*candidate).is_some_and(|asset| asset.status == AssetStatus::Available))
+    {
+        collect_asset_dependencies(model, alternative, seen);
+    }
+}
+
+fn derive_witness(model: &Model, plans: &[Plan], selected: &[String]) -> Vec<WitnessEntry> {
+    let mut witness = Vec::new();
+    let mut seen: BTreeSet<String> = BTreeSet::new();
+    for plan in plans {
+        for step in &plan.steps {
+            let Some(process) = model.processes.iter().find(|process| process.id == step.process) else { continue };
+            for capability in &process.requires_capabilities {
+                if witness.iter().any(|entry: &WitnessEntry| entry.capability == *capability) {
+                    continue;
+                }
+                let mut ordered: Vec<&String> = selected
+                    .iter()
+                    .filter(|candidate| {
+                        model.assets.get(*candidate).is_some_and(|asset| asset.provides.contains(capability))
+                    })
+                    .collect();
+                if let Some(providers) = model.providers.get(capability) {
+                    for provider in providers {
+                        if !ordered.contains(&provider) {
+                            ordered.push(provider);
+                        }
+                    }
+                }
+                let Some(provider) = ordered.into_iter().find(|provider| {
+                    model.assets.get(*provider).is_some_and(|asset| asset.status == AssetStatus::Available)
+                }) else {
+                    continue;
+                };
+                let mut dependencies = BTreeSet::new();
+                collect_asset_dependencies(model, provider, &mut dependencies);
+                dependencies.remove(provider);
+                for dependency in &dependencies {
+                    seen.insert(dependency.clone());
+                }
+                seen.insert(provider.clone());
+                witness.push(WitnessEntry {
+                    capability: capability.clone(),
+                    provider: provider.clone(),
+                    dependencies: dependencies.into_iter().collect(),
+                });
+            }
+        }
+    }
+    witness
 }
 
 fn start_repair(
@@ -143,6 +216,12 @@ fn start_repair(
     for step in &schedule.steps {
         execution_dependencies.extend(step.resources.iter().cloned());
     }
+    let selected = schedule.steps.iter().flat_map(|step| step.resources.clone()).collect::<Vec<_>>();
+    let witness = derive_witness(current, &plans, &selected);
+    for entry in &witness {
+        execution_dependencies.insert(entry.provider.clone());
+        execution_dependencies.extend(entry.dependencies.iter().cloned());
+    }
     let label = pending.iter().map(|failure| failure.asset.as_str()).collect::<Vec<_>>().join(",");
     Ok(RunningRepair {
         plans,
@@ -150,6 +229,7 @@ fn start_repair(
         execution_dependencies,
         restoration_targets,
         resources: schedule.steps.iter().flat_map(|step| step.resources.clone()).collect(),
+        witness,
         end_s: now_s + schedule.makespan_s,
         label,
     })
@@ -316,6 +396,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     inventory_after: inventory.clone(),
                     plans: plan_summary(&repair.plans),
                     resources: repair.resources.clone(),
+                    witness: repair.witness.clone(),
                 });
                 continue;
             }
@@ -348,6 +429,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     inventory_after: inventory.clone(),
                     plans: Vec::new(),
                     resources: Vec::new(),
+                    witness: Vec::new(),
                 });
             }
         }
@@ -372,6 +454,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     inventory_after: inventory.clone(),
                     plans: Vec::new(),
                     resources: Vec::new(),
+                    witness: Vec::new(),
                 });
                 failed.push(failure.clone());
             }
@@ -412,6 +495,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
         inventory_after: inventory.clone(),
         plans: Vec::new(),
         resources: Vec::new(),
+        witness: Vec::new(),
     });
     Ok(EngineOutcome {
         termination: EngineTermination::CompletedHorizon,
@@ -584,6 +668,35 @@ mod tests {
         .unwrap();
         let completed = outcome.trace.iter().find(|event| event.kind.starts_with("repair_completed")).unwrap();
         assert!(completed.resources.contains(&"robot-m2".into()), "{:?}", completed.resources);
+    }
+
+    #[test]
+    fn failure_of_an_upstream_dependency_interrupts_the_repair() {
+        let model = long_repair_model();
+        let outcome = run_engine(
+            &model,
+            &two_robot_options(
+                vec![FailureEvent { at_s: 2.0 * 3600.0, asset: "bus-1".into() }],
+                vec!["robot-m1".into()],
+            ),
+        )
+        .unwrap();
+        assert!(
+            matches!(outcome.termination, EngineTermination::Blocked(ref reason) if reason.contains("interrupted"))
+        );
+    }
+
+    #[test]
+    fn failure_of_an_unselected_capability_provider_does_not_interrupt() {
+        let mut model = long_repair_model();
+        model.providers.entry("sleeve-replacement".into()).or_default().push("robot-m2".into());
+        let pool = vec!["robot-m2".into(), "robot-m1".into()];
+        let outcome = run_engine(
+            &model,
+            &two_robot_options(vec![FailureEvent { at_s: 2.0 * 3600.0, asset: "robot-m1".into() }], pool),
+        )
+        .unwrap();
+        assert!(outcome.trace.iter().any(|event| event.kind.starts_with("repair_completed")));
     }
 
     #[test]
