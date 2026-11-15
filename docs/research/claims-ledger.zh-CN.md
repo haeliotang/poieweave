@@ -34,6 +34,8 @@
 | C25 | 三个预登记场景中 advanced horizon 不低于 instant | `experiments/s5-semantics-parity` | 观察，不是普遍不变量 |
 | C26 | `occupies` 的所有资源必须同时可用 | `experiments/s3-scheduler`、scheduler 测试 | 严格模式 |
 | C27 | 调度与执行使用同一计划，且资源区间不重叠 | `experiments/s5-scheduled-survival`、scheduler 测试 | 批次级库存 |
+| C28 | 替代策略不会删除未标记为可替代的必需资源 | `experiments/s3-scheduler`、scheduler 测试 | 显式 replaceable 集合 |
+| C29 | 库存按规划快照结算，状态原子提交 | `experiments/s5-scheduled-survival`、survival 测试 | 批次级、无回滚日志 |
 
 ## 不应出现的声明
 

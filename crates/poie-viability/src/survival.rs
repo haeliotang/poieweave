@@ -18,7 +18,7 @@ use poie_ontology::model::{AssetStatus, Lot, LotQuality, Model, Service};
 
 use crate::clock::EventClock;
 use crate::closure::{analyze, BlockReason, ClosureOutcome, Plan, StepAction};
-use crate::scheduler::{schedule_plans_with_requirement, ResourceRequirement};
+use crate::scheduler::schedule_plans_with_alternatives;
 use poie_digest::sha256_of;
 use serde::Serialize;
 
@@ -823,31 +823,33 @@ fn apply_plans(
     model: &mut Model,
     inventory: &mut BTreeMap<String, f64>,
     plans: &[Plan],
+    planning_base: &BTreeMap<String, f64>,
 ) -> Result<Vec<String>, String> {
-    let base = inventory.clone();
-    let mut net = base.clone();
-    let mut repaired = Vec::new();
+    let mut net = inventory.clone();
+    let mut restored = Vec::new();
     for plan in plans {
         for (resource, after) in &plan.remaining_inventory {
-            let before = base.get(resource).copied().unwrap_or(0.0);
+            let before = planning_base.get(resource).copied().unwrap_or(0.0);
             *net.entry(resource.clone()).or_insert(0.0) += after - before;
         }
         for step in &plan.steps {
             if let StepAction::Restore(asset) = &step.action {
-                if let Some(target) = model.assets.get_mut(asset) {
-                    target.status = AssetStatus::Available;
-                    repaired.push(asset.clone());
-                }
+                restored.push(asset.clone());
             }
         }
     }
     if let Some((resource, quantity)) = net.iter().find(|(_, quantity)| **quantity < -1e-9) {
         return Err(format!("inventory would go negative for {resource} ({quantity:.3})"));
     }
-    repaired.sort();
-    repaired.dedup();
+    for asset in &restored {
+        if let Some(target) = model.assets.get_mut(asset) {
+            target.status = AssetStatus::Available;
+        }
+    }
+    restored.sort();
+    restored.dedup();
     *inventory = net;
-    Ok(repaired)
+    Ok(restored)
 }
 
 fn restore_services(
@@ -1942,25 +1944,44 @@ pub fn simulate_multi_service_longevity_scheduled(
     let mut log = Vec::new();
     let mut clock = EventClock::new(horizon_s);
 
-    let (repaired, repair_s) = match restore_services(&mut current, &services, 0.0, horizon_s, &mut inventory) {
-        Ok(result) => result,
-        Err(reason) => {
-            log.push(SurvivalLogEntry {
-                at_s: 0.0,
-                failed: None,
-                repaired: Vec::new(),
-                energy_after: energy(&inventory),
-                blocked_by: Some(reason),
-            });
-            return Ok(SurvivalReport {
-                service: service_label.clone(),
-                horizon_s,
-                survived_s: 0.0,
-                log,
-                final_inventory: inventory,
-            });
-        }
-    };
+    let mut pending_model = current.clone();
+    let mut pending_inventory = inventory.clone();
+    let (repaired, repair_s) =
+        match restore_services(&mut pending_model, &services, 0.0, horizon_s, &mut pending_inventory) {
+            Ok(result) => result,
+            Err(reason) => {
+                log.push(SurvivalLogEntry {
+                    at_s: 0.0,
+                    failed: None,
+                    repaired: Vec::new(),
+                    energy_after: energy(&inventory),
+                    blocked_by: Some(reason),
+                });
+                return Ok(SurvivalReport {
+                    service: service_label.clone(),
+                    horizon_s,
+                    survived_s: 0.0,
+                    log,
+                    final_inventory: inventory,
+                });
+            }
+        };
+    if repair_s > clock.remaining_s() + 1e-9 {
+        log.push(SurvivalLogEntry {
+            at_s: horizon_s,
+            failed: None,
+            repaired: Vec::new(),
+            energy_after: energy(&inventory),
+            blocked_by: Some("initial repair exceeds horizon".into()),
+        });
+        return Ok(SurvivalReport {
+            service: service_label,
+            horizon_s,
+            survived_s: horizon_s,
+            log,
+            final_inventory: inventory,
+        });
+    }
     let elapsed = clock.advance_by(repair_s);
     if let Err(offset) = apply_energy_interval(&current, &mut inventory, elapsed, battery, load_kw) {
         let failed_at = clock.now_s() - elapsed + offset;
@@ -1979,6 +2000,8 @@ pub fn simulate_multi_service_longevity_scheduled(
             final_inventory: inventory,
         });
     }
+    current = pending_model;
+    inventory = pending_inventory;
     log.push(SurvivalLogEntry {
         at_s: 0.0,
         failed: None,
@@ -2019,7 +2042,6 @@ pub fn simulate_multi_service_longevity_scheduled(
         }
         let batch = &ordered[batch_start..index];
         let labels = batch.iter().map(|event| event.asset.as_str()).collect::<Vec<_>>().join(",");
-        let mut plans = Vec::new();
         for event in batch {
             match current.assets.get_mut(&event.asset) {
                 Some(asset) => asset.status = AssetStatus::Failed,
@@ -2040,7 +2062,12 @@ pub fn simulate_multi_service_longevity_scheduled(
                     });
                 }
             }
-            match analyze(&current, &event.asset, clock.remaining_s()) {
+        }
+        let planning_base = inventory.clone();
+        let planning_model = model_with_inventory(&current, &planning_base);
+        let mut plans = Vec::new();
+        for event in batch {
+            match analyze(&planning_model, &event.asset, clock.remaining_s()) {
                 ClosureOutcome::Restorable(plan) => plans.push(plan),
                 ClosureOutcome::Blocked(blocked) => {
                     log.push(SurvivalLogEntry {
@@ -2060,8 +2087,13 @@ pub fn simulate_multi_service_longevity_scheduled(
                 }
             }
         }
-        let requirement = ResourceRequirement::one_of(resource_ids);
-        let schedule = match schedule_plans_with_requirement(&current, &plans, resource_ids, &requirement) {
+        let schedule = match schedule_plans_with_alternatives(
+            &current,
+            &plans,
+            resource_ids,
+            resource_ids,
+            &[resource_ids.to_vec()],
+        ) {
             Ok(schedule) => schedule,
             Err(error) => {
                 log.push(SurvivalLogEntry {
@@ -2080,6 +2112,22 @@ pub fn simulate_multi_service_longevity_scheduled(
                 });
             }
         };
+        if schedule.makespan_s > clock.remaining_s() + 1e-9 {
+            log.push(SurvivalLogEntry {
+                at_s: horizon_s,
+                failed: Some(labels.clone()),
+                repaired: Vec::new(),
+                energy_after: energy(&inventory),
+                blocked_by: Some("repair exceeds horizon".into()),
+            });
+            return Ok(SurvivalReport {
+                service: service_label,
+                horizon_s,
+                survived_s: horizon_s,
+                log,
+                final_inventory: inventory,
+            });
+        }
         let repair_window = clock.advance_by(schedule.makespan_s);
         if let Err(offset) = apply_energy_interval(&current, &mut inventory, repair_window, battery, load_kw) {
             let failed_at = clock.now_s() - repair_window + offset;
@@ -2098,7 +2146,7 @@ pub fn simulate_multi_service_longevity_scheduled(
                 final_inventory: inventory,
             });
         }
-        let repaired = match apply_plans(&mut current, &mut inventory, &plans) {
+        let repaired = match apply_plans(&mut current, &mut inventory, &plans, &planning_base) {
             Ok(repaired) => repaired,
             Err(reason) => {
                 log.push(SurvivalLogEntry {
@@ -2150,7 +2198,10 @@ pub fn simulate_multi_service_longevity_scheduled(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::collections::BTreeMap;
     use std::path::Path;
+
+    use crate::closure::Step;
 
     fn base05() -> Model {
         let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
@@ -2196,6 +2247,79 @@ mod tests {
     fn base08() -> Model {
         let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
         Model::load(&root.join("scenarios/base-08/model.toml")).expect("Base-08")
+    }
+
+    #[test]
+    fn scheduled_survival_refuses_when_a_required_tool_is_missing() {
+        let mut model = base08();
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Available;
+        let mut tool = model.assets.get("robot-m1").unwrap().clone();
+        tool.id = "tool-t1".into();
+        tool.provides.clear();
+        tool.requires.clear();
+        tool.requires_any.clear();
+        model.assets.insert("tool-t1".into(), tool);
+        model.processes.iter_mut().find(|process| process.id == "replace-sleeve-p1").unwrap().occupies =
+            vec!["robot-m1".into(), "tool-t1".into()];
+        let report = simulate_multi_service_longevity_scheduled(
+            &model,
+            &["potable-water"],
+            24.0 * 3600.0,
+            &[FailureEvent { at_s: 100.0, asset: "pump-p1".into() }],
+            &["robot-m1".into(), "robot-m2".into()],
+            None,
+            0.0,
+        )
+        .unwrap();
+        let blocked = report.log.iter().filter_map(|entry| entry.blocked_by.as_deref()).collect::<Vec<_>>().join(";");
+        assert!(blocked.contains("schedule failed"), "{blocked}");
+        assert!(blocked.contains("tool-t1"), "{blocked}");
+    }
+
+    #[test]
+    fn apply_plans_uses_the_planning_baseline_and_is_atomic() {
+        let mut model = base08();
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        let mut planning_base = BTreeMap::new();
+        planning_base.insert("electric-energy".to_string(), 10.0);
+        let mut plan_remaining = planning_base.clone();
+        plan_remaining.insert("electric-energy".to_string(), 8.0);
+        let plan = Plan {
+            steps: vec![Step {
+                process: "replace-sleeve-p1".into(),
+                action: StepAction::Restore("pump-p1".into()),
+                duration_s: 10_800.0,
+            }],
+            total_duration_s: 10_800.0,
+            remaining_inventory: plan_remaining,
+        };
+        let mut inventory = planning_base.clone();
+        inventory.insert("electric-energy".to_string(), 5.0);
+        let repaired = apply_plans(&mut model, &mut inventory, std::slice::from_ref(&plan), &planning_base).unwrap();
+        assert_eq!(repaired, vec!["pump-p1"]);
+        assert_eq!(inventory["electric-energy"], 3.0);
+        assert_eq!(model.assets["pump-p1"].status, AssetStatus::Available);
+    }
+
+    #[test]
+    fn apply_plans_does_not_commit_status_on_negative_inventory() {
+        let mut model = base08();
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        let planning_base = BTreeMap::from([("electric-energy".to_string(), 1.0)]);
+        let plan = Plan {
+            steps: vec![Step {
+                process: "replace-sleeve-p1".into(),
+                action: StepAction::Restore("pump-p1".into()),
+                duration_s: 10_800.0,
+            }],
+            total_duration_s: 10_800.0,
+            remaining_inventory: BTreeMap::from([("electric-energy".to_string(), -2.0)]),
+        };
+        let mut inventory = planning_base.clone();
+        let result = apply_plans(&mut model, &mut inventory, &[plan], &planning_base);
+        assert!(result.is_err());
+        assert_eq!(model.assets["pump-p1"].status, AssetStatus::Failed);
+        assert_eq!(inventory["electric-energy"], 1.0);
     }
 
     #[test]

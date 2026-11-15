@@ -27,6 +27,9 @@ robots	makespan_h	plan_ends_h
 - The 7/4/3 h experiment uses `schedule_plans_with_requirement` with an explicit
   alternative robot pool; the chosen robot is recorded per step.
 - `occupies` is never treated as "pick one" anymore.
+- `schedule_plans_with_alternatives` only replaces resources listed as
+  replaceable; a required tool remains required. A negative test confirms a
+  two-robot pool without `tool-t1` returns `MissingResource`.
 
 ## 4. Significance
 
