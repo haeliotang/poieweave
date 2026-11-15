@@ -1,4 +1,4 @@
-scenario	canonical_horizon_h	legacy_horizon_h	canonical_energy_kwh	classification
-load-repair	5.0	5.0	4.5	load-integrates
-resupply-before-arrival	0.0	0.0	40.0	blocked:[MissingResource { resource: "grease", needed: 0.05, available: 0.0 }]
-initial-overcapacity	0.0	0.0	10.0	canonical_reject=true,legacy_reject=true
+scenario	canonical_horizon_h	legacy_horizon_h	canonical_energy_kwh	legacy_energy_kwh	classification
+load-repair	5.0	5.0	4.5	4.5	load-integrates
+resupply-before-arrival	0.0	0.0	40.0	40.0	blocked:[MissingResource { resource: "grease", needed: 0.05, available: 0.0 }]
+initial-overcapacity	0.0	0.0	10.0	10.0	canonical_reject=true,legacy_reject=true

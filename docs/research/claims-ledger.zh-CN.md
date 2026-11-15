@@ -60,6 +60,8 @@
 | C51 | 维修期间负载持续扣除 | `experiments/s5-migration-batch3`、engine 测试 | 无 PV |
 | C52 | 补货到达前不可追溯使用 | `experiments/s5-migration-batch3`、engine 测试 | 单一 consumable |
 | C53 | Batch 3 三场景无未解释分歧 | `experiments/s5-migration-batch3` | 不含 3D 联合 |
+| C54 | 联合能源账本逐项守恒（6+7.5+2-3-0.5-2.5=9.5） | `experiments/s5-migration-batch3`、engine 测试 | 当前结算语义 |
+| C55 | horizon 同刻补货不进入本次运行 | `experiments/s5-migration-batch3`、engine 测试 | 边界规则 |
 
 ## 不应出现的声明
 

@@ -32,7 +32,9 @@ fn set_energy(model: &mut Model, kwh: f64) {
 }
 
 fn main() -> ExitCode {
-    println!("scenario\tcanonical_horizon_h\tlegacy_horizon_h\tcanonical_energy_kwh\tclassification");
+    println!(
+        "scenario\tcanonical_horizon_h\tlegacy_horizon_h\tcanonical_energy_kwh\tlegacy_energy_kwh\tclassification"
+    );
     // 3B: load over a repair window.
     let mut model = base08();
     set_energy(&mut model, 10.0);
@@ -64,10 +66,11 @@ fn main() -> ExitCode {
     )
     .unwrap();
     println!(
-        "load-repair\t{:.1}\t{:.1}\t{:.1}\tload-integrates",
+        "load-repair\t{:.1}\t{:.1}\t{:.1}\t{:.1}\tload-integrates",
         canonical.survived_s / 3600.0,
         legacy.survived_s / 3600.0,
-        canonical.final_inventory["electric-energy"] / 3_600_000.0
+        canonical.final_inventory["electric-energy"] / 3_600_000.0,
+        legacy.final_inventory["electric-energy"] / 3_600_000.0
     );
 
     // 3A: resupply before arrival is not usable.
@@ -107,10 +110,11 @@ fn main() -> ExitCode {
         EngineTermination::IncompleteAtHorizon(reason) => format!("incomplete:{reason}"),
     };
     println!(
-        "resupply-before-arrival\t{:.1}\t{:.1}\t{:.1}\t{}",
+        "resupply-before-arrival\t{:.1}\t{:.1}\t{:.1}\t{:.1}\t{}",
         canonical.survived_s / 3600.0,
         legacy.survived_s / 3600.0,
         canonical.final_inventory["electric-energy"] / 3_600_000.0,
+        legacy.final_inventory["electric-energy"] / 3_600_000.0,
         canonical_label
     );
 
@@ -137,7 +141,7 @@ fn main() -> ExitCode {
         0.0,
     )
     .is_err();
-    println!("initial-overcapacity\t0.0\t0.0\t10.0\tcanonical_reject={canonical},legacy_reject={legacy}");
+    println!("initial-overcapacity\t0.0\t0.0\t10.0\t10.0\tcanonical_reject={canonical},legacy_reject={legacy}");
 
     ExitCode::SUCCESS
 }
