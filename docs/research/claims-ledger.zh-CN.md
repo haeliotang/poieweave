@@ -46,6 +46,8 @@
 | C37 | 密集长修复在维修期间故障时第 2 天中断 | `experiments/s5-migration-batch2` | 新的因果时序语义 |
 | C38 | 规划后缺失的资源键按零扣除 | `experiments/s5-migration-batch2`、survival/engine 测试 | 单计划与多计划 |
 | C39 | 同时刻补货与故障各执行一次 | `experiments/s5-migration-batch2`、engine 测试 | 事件队列 |
+| C40 | 维修期间 PV 故障从事件时刻停止发电 | `experiments/s5-migration-batch2`、engine 测试 | 单 PV |
+| C41 | 维修恰好完成于 horizon 记为 Completed | `experiments/s5-migration-batch2`、engine 测试 | 边界规则 |
 
 ## 不应出现的声明
 
