@@ -24,9 +24,9 @@
 
 | 指标 | 数量 |
 | --- | --- |
-| S2 claims | 12 |
-| S2 experiment 目录 | 72 |
-| 被 claim 引用的 experiment | 12 |
+| S2 claims | 13 |
+| S2 experiment 目录 | 73 |
+| 被 claim 引用的 experiment | 13 |
 | 未被 claim 引用的 experiment | 60 |
 | 已迁移到 canonical 的正式 S2 experiment | **0** |
 | 缺少记录种子的随机 experiment | 2 |
@@ -78,6 +78,12 @@ claim ID，也没有显式证书绑定。Phase A 的下一步必须决定每一�
 
 不能把“已写入状态页”等同于“已被正式 claim 和证书覆盖”。
 
+### F7：C5 的 claim 证据映射错误已修正
+
+原 claims ledger 将 C5 指向 `s2-failure-envelope`，但 40/60/80/90 数值来自
+`s2-survival-horizon`。已修正为后者，并新增 `s2-canonical-c5` 作为 canonical
+迁移证据。`s2-failure-envelope` 重新成为未映射实验。
+
 ### F6：Batch 3D 状态需要区分内核测试与迁移对照
 
 3D 的 9.5 kWh 守恒是 **engine 单元测试**，不是独立的正式 S2 迁移 artifact。迁移日志已修正为：
@@ -91,6 +97,7 @@ claim ID，也没有显式证书绑定。Phase A 的下一步必须决定每一�
 - 机器可读清单：完成 v0.2（含 expected 输出、状态页数值、证书记录）
 - 全部 claim 与 experiment 的正式/探索分类：未完成
 - 60 个未映射实验的处置：未完成
+- C5 细节态对比：summary/energy/failure-time 一致，trace 事件数为记录粒度差异
 - 13 条状态页数值结论的 claim 归一化：未完成
 - 证书影响矩阵：未开始
 

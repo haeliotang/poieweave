@@ -6,7 +6,7 @@
       "id": "C5",
       "statement": "Base-05 故障间隔 10/15/20/30 天 → 40/60/80/≥90 天",
       "evidence": [
-        "s2-failure-envelope"
+        "s2-survival-horizon"
       ],
       "certificates": [],
       "boundary": "模型内"
@@ -111,6 +111,15 @@
       ],
       "certificates": [],
       "boundary": "day0–10 窗口"
+    },
+    {
+      "id": "C56",
+      "statement": "canonical C5 四区间 horizon/energy/失败时刻一致",
+      "evidence": [
+        "s2-canonical-c5"
+      ],
+      "certificates": [],
+      "boundary": "trace 事件数为记录粒度差异"
     }
   ],
   "experiments": [
@@ -313,6 +322,32 @@
       "risk": "MEDIUM"
     },
     {
+      "experiment": "s2-canonical-c5",
+      "report": "experiments/s2-canonical-c5/REPORT.md",
+      "prereg": "experiments/s2-canonical-c5/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c5"
+      ],
+      "models": [
+        "base-05"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "interval_days\tlegacy_days\tcanonical_days\tdelta_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tlegacy_events\tcanonical_events\tfailure_times\tfirst_divergence\tclassification\n10\t40\t40\t0.0\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\t6\t10\tmatch\tevent_count\tEXPECTED_AGREEMENT\n15\t60\t60\t0.0\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\t6\t10\tmatch\tevent_count\tEXPECTED_AGREEMENT\n20\t80\t80\t0.0\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\t6\t10\tmatch\tevent_count\tEXPECTED_AGREEMENT\n30\t90\t90\t0.0\t200.0\t200.0\tcompleted\t4\t8\tmatch\tevent_count\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "interval_days\tlegacy_days\tcanonical_days\tdelta_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tlegacy_events\tcanonical_events\tfailure_times\tfirst_divergence\tclassification",
+        "10\t40\t40\t0.0\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\t6\t10\tmatch\tevent_count\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C56"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
       "experiment": "s2-energy-boundary",
       "report": "experiments/s2-energy-boundary/REPORT.md",
       "prereg": "experiments/s2-energy-boundary/PREREG.md",
@@ -404,13 +439,11 @@
       ],
       "stochastic": false,
       "seed": "NOT_APPLICABLE",
-      "claim_ids": [
-        "C5"
-      ],
+      "claim_ids": [],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "migration_status": "NOT_MIGRATED",
-      "risk": "HIGH"
+      "risk": "MEDIUM"
     },
     {
       "experiment": "s2-failure-pairs",
@@ -1649,11 +1682,13 @@
       ],
       "stochastic": false,
       "seed": "NOT_APPLICABLE",
-      "claim_ids": [],
+      "claim_ids": [
+        "C5"
+      ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "migration_status": "NOT_MIGRATED",
-      "risk": "MEDIUM"
+      "risk": "HIGH"
     },
     {
       "experiment": "s2-time-boundary",
@@ -2115,14 +2150,14 @@
     }
   ],
   "summary": {
-    "s2_claims": 12,
-    "s2_experiments": 72,
-    "claimed_experiments": 12,
+    "s2_claims": 13,
+    "s2_experiments": 73,
+    "claimed_experiments": 13,
     "unmapped_experiments": 60,
-    "formal_s2_experiments_migrated_to_canonical": 0,
+    "formal_s2_experiments_migrated_to_canonical": 1,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 12,
+    "claims_with_experiment_evidence": 13,
     "status_s2_result_lines": 13,
     "unmapped_status_results": 13
   }

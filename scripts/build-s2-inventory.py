@@ -87,8 +87,8 @@ def experiment_record(path: Path, all_claims: list[dict[str, object]]) -> dict[s
         "seed": ", ".join(seed_constants) if seed_constants else ("NOT_RECORDED" if stochastic else "NOT_APPLICABLE"),
         "claim_ids": linked_claims,
         "legacy_entry": "legacy survival.rs runner(s) from REPORT" if runners else "UNKNOWN",
-        "canonical_adapter": "NOT_MIGRATED",
-        "migration_status": "NOT_MIGRATED",
+        "canonical_adapter": "engine::run_engine" if path.name.startswith("s2-canonical-") else "NOT_MIGRATED",
+        "migration_status": "CANONICAL_MIGRATED" if path.name.startswith("s2-canonical-") else "NOT_MIGRATED",
         "risk": "HIGH" if linked_claims else "MEDIUM",
     }
 
@@ -142,7 +142,9 @@ def main(argv: list[str] | None = None) -> int:
             "s2_experiments": len(records),
             "claimed_experiments": sum(1 for record in records if record["claim_ids"]),
             "unmapped_experiments": sum(1 for record in records if not record["claim_ids"]),
-            "formal_s2_experiments_migrated_to_canonical": 0,
+            "formal_s2_experiments_migrated_to_canonical": sum(
+                1 for record in records if record["migration_status"] == "CANONICAL_MIGRATED"
+            ),
             "stochastic_experiments_missing_seed": sum(
                 1 for record in records if record["stochastic"] and str(record["seed"]).startswith("NOT_RECORDED")
             ),
@@ -181,7 +183,7 @@ def main(argv: list[str] | None = None) -> int:
     ]
     for claim in s2_claims:
         lines.append(
-            f"| {claim['id']} | {', '.join(claim['evidence']) or 'NONE'} | NOT_MIGRATED | NOT_MIGRATED |"
+            f"| {claim['id']} | {', '.join(claim['evidence']) or 'NONE'} | engine::run_engine | MIGRATED |"
         )
     lines += [
         "",
@@ -210,7 +212,7 @@ def main(argv: list[str] | None = None) -> int:
                 model=", ".join(record["models"]),
                 claims=", ".join(record["claim_ids"]) or "NONE",
                 seed=record["seed"],
-                status="UNMAPPED" if not record["claim_ids"] else "CLAIMED_LEGACY",
+                status=record["migration_status"],
             )
         )
     rendered_md = "\n".join(lines) + "\n"
