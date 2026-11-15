@@ -1,0 +1,7 @@
+mode	load_kw	legacy_days	canonical_days	legacy_energy_kwh	canonical_energy_kwh	canonical_termination	classification
+baseline	2.5	60	60	26.3	26.3	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	EXPECTED_AGREEMENT
+baseline	2.6	16	16	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT
+baseline	3.0	3	3	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT
+redundant-pump	2.5	90	90	39.7	39.7	completed	EXPECTED_AGREEMENT
+redundant-pump	2.6	17	17	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT
+redundant-pump	3.0	3	3	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT

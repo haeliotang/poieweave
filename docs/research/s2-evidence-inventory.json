@@ -147,6 +147,15 @@
       ],
       "certificates": [],
       "boundary": "恒定负载"
+    },
+    {
+      "id": "C60",
+      "statement": "canonical C9 冗余泵 60→90、17 天一致",
+      "evidence": [
+        "s2-canonical-c9"
+      ],
+      "certificates": [],
+      "boundary": "单一冗余布局"
     }
   ],
   "experiments": [
@@ -446,6 +455,32 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C59"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-c9",
+      "report": "experiments/s2-canonical-c9/REPORT.md",
+      "prereg": "experiments/s2-canonical-c9/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c9"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "mode\tload_kw\tlegacy_days\tcanonical_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification\nbaseline\t2.5\t60\t60\t26.3\t26.3\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT\nbaseline\t2.6\t16\t16\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\nbaseline\t3.0\t3\t3\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\nredundant-pump\t2.5\t90\t90\t39.7\t39.7\tcompleted\tEXPECTED_AGREEMENT\nredundant-pump\t2.6\t17\t17\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\nredundant-pump\t3.0\t3\t3\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "mode\tload_kw\tlegacy_days\tcanonical_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification",
+        "baseline\t2.5\t60\t60\t26.3\t26.3\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C60"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -2255,14 +2290,14 @@
     }
   ],
   "summary": {
-    "s2_claims": 16,
-    "s2_experiments": 76,
-    "claimed_experiments": 16,
+    "s2_claims": 17,
+    "s2_experiments": 77,
+    "claimed_experiments": 17,
     "unmapped_experiments": 60,
-    "formal_s2_experiments_migrated_to_canonical": 4,
+    "formal_s2_experiments_migrated_to_canonical": 5,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 16,
+    "claims_with_experiment_evidence": 17,
     "status_s2_result_lines": 13,
     "unmapped_status_results": 13
   }
