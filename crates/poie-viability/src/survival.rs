@@ -18,7 +18,7 @@ use poie_ontology::model::{AssetStatus, Lot, LotQuality, Model, Service};
 
 use crate::clock::EventClock;
 use crate::closure::{analyze, BlockReason, ClosureOutcome, Plan, StepAction};
-use crate::scheduler::schedule_plans;
+use crate::scheduler::{schedule_plans_with_requirement, ResourceRequirement};
 use poie_digest::sha256_of;
 use serde::Serialize;
 
@@ -814,6 +814,40 @@ pub fn simulate_multi_service_longevity_event_driven_with_resupply(
         }
     }
     Ok(SurvivalReport { service: service_label, horizon_s, survived_s: horizon_s, log, final_inventory: inventory })
+}
+
+/// Applies the exact plans that the scheduler timed. Each plan's remaining
+/// inventory is expressed against the same pre-batch snapshot; deltas are
+/// summed so two independently planned repairs cannot both spend the same lot.
+fn apply_plans(
+    model: &mut Model,
+    inventory: &mut BTreeMap<String, f64>,
+    plans: &[Plan],
+) -> Result<Vec<String>, String> {
+    let base = inventory.clone();
+    let mut net = base.clone();
+    let mut repaired = Vec::new();
+    for plan in plans {
+        for (resource, after) in &plan.remaining_inventory {
+            let before = base.get(resource).copied().unwrap_or(0.0);
+            *net.entry(resource.clone()).or_insert(0.0) += after - before;
+        }
+        for step in &plan.steps {
+            if let StepAction::Restore(asset) = &step.action {
+                if let Some(target) = model.assets.get_mut(asset) {
+                    target.status = AssetStatus::Available;
+                    repaired.push(asset.clone());
+                }
+            }
+        }
+    }
+    if let Some((resource, quantity)) = net.iter().find(|(_, quantity)| **quantity < -1e-9) {
+        return Err(format!("inventory would go negative for {resource} ({quantity:.3})"));
+    }
+    repaired.sort();
+    repaired.dedup();
+    *inventory = net;
+    Ok(repaired)
 }
 
 fn restore_services(
@@ -2026,7 +2060,8 @@ pub fn simulate_multi_service_longevity_scheduled(
                 }
             }
         }
-        let schedule = match schedule_plans(&current, &plans, resource_ids) {
+        let requirement = ResourceRequirement::one_of(resource_ids);
+        let schedule = match schedule_plans_with_requirement(&current, &plans, resource_ids, &requirement) {
             Ok(schedule) => schedule,
             Err(error) => {
                 log.push(SurvivalLogEntry {
@@ -2035,25 +2070,6 @@ pub fn simulate_multi_service_longevity_scheduled(
                     repaired: Vec::new(),
                     energy_after: energy(&inventory),
                     blocked_by: Some(format!("schedule failed: {error:?}")),
-                });
-                return Ok(SurvivalReport {
-                    service: service_label,
-                    horizon_s,
-                    survived_s: clock.now_s(),
-                    log,
-                    final_inventory: inventory,
-                });
-            }
-        };
-        let repaired = match restore_services(&mut current, &services, clock.now_s(), horizon_s, &mut inventory) {
-            Ok((repaired, _)) => repaired,
-            Err(reason) => {
-                log.push(SurvivalLogEntry {
-                    at_s: clock.now_s(),
-                    failed: Some(labels),
-                    repaired: Vec::new(),
-                    energy_after: energy(&inventory),
-                    blocked_by: Some(reason),
                 });
                 return Ok(SurvivalReport {
                     service: service_label,
@@ -2082,6 +2098,25 @@ pub fn simulate_multi_service_longevity_scheduled(
                 final_inventory: inventory,
             });
         }
+        let repaired = match apply_plans(&mut current, &mut inventory, &plans) {
+            Ok(repaired) => repaired,
+            Err(reason) => {
+                log.push(SurvivalLogEntry {
+                    at_s: clock.now_s(),
+                    failed: Some(labels),
+                    repaired: Vec::new(),
+                    energy_after: energy(&inventory),
+                    blocked_by: Some(reason),
+                });
+                return Ok(SurvivalReport {
+                    service: service_label,
+                    horizon_s,
+                    survived_s: clock.now_s(),
+                    log,
+                    final_inventory: inventory,
+                });
+            }
+        };
         log.push(SurvivalLogEntry {
             at_s: clock.now_s(),
             failed: Some(labels),

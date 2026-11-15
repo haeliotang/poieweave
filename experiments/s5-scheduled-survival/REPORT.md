@@ -21,11 +21,19 @@ robots	completion_h	horizon_days	blocked
 - Two robots overlap them, taking 3 h, completing at 6 h.
 - The survival loop therefore consumes scheduler makespan, not a sum of plans.
 
-## 3. Significance
+## 3. Binding and order
+
+- The exact `Plan` objects scheduled are the ones applied by `apply_plans`; the
+  loop no longer re-plans through `restore_services` after scheduling.
+- Energy is settled over the repair interval **before** asset status is updated,
+  so a failed PV asset cannot generate during its own repair.
+- Inventory deltas from multiple plans are summed against one pre-batch snapshot.
+
+## 4. Significance
 
 - First survival path that uses `schedule_plans` and `EventClock`.
 - It makes resource occupancy affect horizon timing, a prerequisite for S5.
 
-## 4. Limits
+## 5. Limits
 
 - Coarse inventory coupling per batch; no preemption; model-level units.

@@ -15,8 +15,9 @@ instantaneous legacy semantics in the tested scenarios?
 For each scenario run both semantics with identical events, inventory and
 battery, then require `advanced_days >= instant_days`.
 
-Prediction: no violation; the invariant holds.
+Prediction: no violation in these scenarios. This is an observation, not a
+universal invariant.
 
 ## Limitation
 
-This is a guard, not a proof for all models.
+Three scenarios only; advanced horizon may be shorter in other models.

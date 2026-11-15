@@ -9,7 +9,7 @@ use std::process::ExitCode;
 
 use poie_ontology::model::Model;
 use poie_viability::closure::{Plan, Step, StepAction};
-use poie_viability::scheduler::schedule_plans;
+use poie_viability::scheduler::{schedule_plans_with_requirement, ResourceRequirement};
 
 fn root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../..")
@@ -39,7 +39,8 @@ fn main() -> ExitCode {
     println!("robots\tmakespan_h\tplan_ends_h");
     for robots in 1..=3usize {
         let resources = (1..=robots).map(|index| format!("robot-m{index}")).collect::<Vec<_>>();
-        let report = schedule_plans(&model, &plans, &resources).unwrap();
+        let requirement = ResourceRequirement::one_of(&resources);
+        let report = schedule_plans_with_requirement(&model, &plans, &resources, &requirement).unwrap();
         let ends = report.plan_end_s.iter().map(|end| format!("{:.0}", end / 3600.0)).collect::<Vec<_>>().join(",");
         println!("{robots}\t{:.0}\t{ends}", report.makespan_s / 3600.0);
     }
