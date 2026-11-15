@@ -58,7 +58,17 @@
 
 不得通过直接修改 expected 输出让 CI 变绿。
 
-## 5. 未完成
+## 5. Dependency witness（首版）
+
+每次运行中的维修记录 `WitnessEntry`：
+
+- 选择了哪个能力提供者
+- 该提供者的递归 `requires`/`requires_any` 依赖
+- 依赖写入 `execution_dependencies`，`repair_completed` trace 保留 witness
+
+当前 witness 由引擎从计划与调度结果派生，不是 S1 求解器直接输出；这是下一阶段的过渡实现。
+
+## 6. 未完成
 
 - 初始维修仍是独立实现，未进入事件枚举
 - 事件期间新故障/取消未进入运行中 schedule

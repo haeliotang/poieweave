@@ -51,6 +51,9 @@
 | C42 | 实际选中的机器人失效会中断维修 | `experiments/s5-migration-batch2`、engine 测试 | 替代池 |
 | C43 | 未选中的备用机器人失效不中断当前维修 | `experiments/s5-migration-batch2`、engine 测试 | 执行依赖绑定 |
 | C44 | 必需工具失效会中断维修 | `experiments/s5-migration-batch2`、engine 测试 | fail-closed |
+| C45 | 所选能力提供者的上游依赖失效会中断 | `experiments/s5-migration-batch2`、engine 测试 | 派生 witness |
+| C46 | 未选能力提供者失效不中断当前维修 | `experiments/s5-migration-batch2`、engine 测试 | 派生 witness |
+| C47 | `repair_completed` trace 含 capability witness | `experiments/s5-migration-batch2`、engine 测试 | 当前派生实现 |
 
 ## 不应出现的声明
 
