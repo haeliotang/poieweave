@@ -8,11 +8,11 @@ currently produces the formal result; it is not a claim of equivalence.
 
 ## Summary
 
-- S2 claims: 13
-- S2 experiment directories: 73
-- Experiments referenced by claims: 13
+- S2 claims: 14
+- S2 experiment directories: 74
+- Experiments referenced by claims: 14
 - Unmapped experiments: 60
-- Formal S2 experiments migrated to canonical: 1
+- Formal S2 experiments migrated to canonical: 2
 - Stochastic experiments missing a recorded seed: 2
 - S2 certificates: 6
 - Status-page S2 result lines: 13
@@ -35,6 +35,7 @@ currently produces the formal result; it is not a claim of equivalence.
 | C18 | s2-adversarial-random-time | engine::run_engine | MIGRATED |
 | C19 | s2-adversarial-random-window | engine::run_engine | MIGRATED |
 | C56 | s2-canonical-c5 | engine::run_engine | MIGRATED |
+| C57 | s2-canonical-c6 | engine::run_engine | MIGRATED |
 
 ## Status-page S2 results
 
@@ -70,6 +71,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-adversarial-time | poie-adversarial-time | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-adversarial-timing | poie-adversarial-timing | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-canonical-c5 | poie-migration-c5 | base-05 | C56 | NOT_APPLICABLE | CANONICAL_MIGRATED |
+| s2-canonical-c6 | poie-migration-c6 | base-06 | C57 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-energy-boundary | poie-energy-boundary | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-energy-interventions | poie-energy-interventions | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-energy-recharge | poie-energy-recharge | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |

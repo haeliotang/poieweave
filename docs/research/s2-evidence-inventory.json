@@ -120,6 +120,15 @@
       ],
       "certificates": [],
       "boundary": "trace 事件数为记录粒度差异"
+    },
+    {
+      "id": "C57",
+      "statement": "canonical C6 独立 25/56、联合 24/56 一致",
+      "evidence": [
+        "s2-canonical-c6"
+      ],
+      "certificates": [],
+      "boundary": "覆盖枚举为外部适配器"
     }
   ],
   "experiments": [
@@ -341,6 +350,32 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C56"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-c6",
+      "report": "experiments/s2-canonical-c6/REPORT.md",
+      "prereg": "experiments/s2-canonical-c6/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c6"
+      ],
+      "models": [
+        "base-06"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "service\ttotal\tindependent\tlegacy_joint\tcanonical_joint\tfirst_divergence\tclassification\npotable-water\t56\t25\t24\t24\tnone\tEXPECTED_AGREEMENT\ncase\tlegacy_joint\tcanonical_joint\tcanonical_reason\n",
+      "expected_head": [
+        "service\ttotal\tindependent\tlegacy_joint\tcanonical_joint\tfirst_divergence\tclassification",
+        "potable-water\t56\t25\t24\t24\tnone\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C57"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -2150,14 +2185,14 @@
     }
   ],
   "summary": {
-    "s2_claims": 13,
-    "s2_experiments": 73,
-    "claimed_experiments": 13,
+    "s2_claims": 14,
+    "s2_experiments": 74,
+    "claimed_experiments": 14,
     "unmapped_experiments": 60,
-    "formal_s2_experiments_migrated_to_canonical": 1,
+    "formal_s2_experiments_migrated_to_canonical": 2,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 13,
+    "claims_with_experiment_evidence": 14,
     "status_s2_result_lines": 13,
     "unmapped_status_results": 13
   }

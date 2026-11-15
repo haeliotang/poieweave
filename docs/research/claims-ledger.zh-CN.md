@@ -63,6 +63,7 @@
 | C54 | 联合能源账本逐项守恒（6+7.5+2-3-0.5-2.5=9.5） | `experiments/s5-migration-batch3`、engine 测试 | 当前结算语义 |
 | C55 | horizon 同刻补货不进入本次运行 | `experiments/s5-migration-batch3`、engine 测试 | 边界规则 |
 | C56 | canonical C5 四区间 horizon/energy/失败时刻一致 | `experiments/s2-canonical-c5` | trace 事件数为记录粒度差异 |
+| C57 | canonical C6 独立 25/56、联合 24/56 一致 | `experiments/s2-canonical-c6` | 覆盖枚举为外部适配器 |
 
 ## 不应出现的声明
 

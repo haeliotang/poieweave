@@ -456,6 +456,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
             index += 1;
         }
         let mut failed: Vec<FailureEvent> = Vec::new();
+        let mut repairable: Vec<FailureEvent> = Vec::new();
         for (_, item) in &timeline[batch_start..index] {
             if let TimelineItem::Supply(supply) = item {
                 let before = inventory.clone();
@@ -520,7 +521,13 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     energy_repair_j: 0.0,
                     energy_curtailed_j: flow.curtailed_j,
                 });
+                let relevant = services.iter().any(|service| {
+                    service.requires.contains(&failure.asset) || service.requires_any.contains(&failure.asset)
+                });
                 failed.push(failure.clone());
+                if relevant {
+                    repairable.push(failure.clone());
+                }
             }
         }
         if let Some(repair) = running.as_ref() {
@@ -540,7 +547,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                 });
             }
         }
-        pending.extend(failed);
+        pending.extend(repairable);
     }
 
     let tail = clock.advance_to(options.horizon_s);
@@ -927,6 +934,18 @@ mod tests {
             "{:?}",
             outcome.termination
         );
+    }
+
+    #[test]
+    fn non_service_asset_failure_does_not_trigger_repair_or_block() {
+        let mut model = base08();
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Available;
+        let outcome =
+            run_engine(&model, &options(vec![FailureEvent { at_s: 3600.0, asset: "charger-1".into() }], 2.0 * 3600.0))
+                .unwrap();
+        assert_eq!(outcome.termination, EngineTermination::CompletedHorizon);
+        assert!(outcome.trace.iter().any(|event| event.kind == "failure:charger-1"));
+        assert!(!outcome.trace.iter().any(|event| event.kind.starts_with("repair_completed")));
     }
 
     #[test]
