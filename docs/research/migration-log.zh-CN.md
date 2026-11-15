@@ -10,7 +10,7 @@
 | 1 | 稀疏直接修复（Base-08） | 接受 | 30 天一致 |
 | 2a | 单机器人竞争 | 接受 | canonical 5 h vs legacy 3 h，资源占用语义修复 |
 | 2b | 双机器人竞争 | 接受 | 3 h 一致 |
-| 2c | 密集长修复 | **阻塞** | canonical 出现未解释 `Cycle { turn-sleeve-p1 }` |
+| 2c | 密集长修复 | 接受 | 差异源于耗尽键被跳过，修复后 15.6 天一致 |
 | 3 | resupply/负载/电池 | 未开始 | — |
 | 4 | S2 指标/证书 | 未开始 | — |
 
@@ -31,5 +31,6 @@
 详见 [s5-migration-batch2](../../experiments/s5-migration-batch2/REPORT.md)。
 
 - 竞争场景的差异来自共享机器人序列化，属于语义修复。
-- 密集长修复的 canonical 路径在 20.9 天因 turn-sleeve 循环终止，legacy 为
-  15.6 天，差异未解释，迁移阻塞。
+- 密集长修复的差异源于 `Plan.remaining_inventory` 在资源归零时删除键，而
+  增量逻辑跳过缺失键，导致最后一个备件未被扣除。修复后 canonical 与 legacy
+  均为 15.6 天，分类为迁移实现缺陷。

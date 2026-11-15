@@ -80,8 +80,12 @@ fn commit_delta(
     planned: &BTreeMap<String, f64>,
 ) -> Result<(), String> {
     let mut committed = inventory.clone();
-    for (resource, after) in planned {
+    let mut keys: Vec<&String> = planning_base.keys().chain(planned.keys()).collect();
+    keys.sort();
+    keys.dedup();
+    for resource in keys {
         let before = planning_base.get(resource).copied().unwrap_or(0.0);
+        let after = planned.get(resource).copied().unwrap_or(0.0);
         *committed.entry(resource.clone()).or_insert(0.0) += after - before;
     }
     if let Some((resource, quantity)) = committed.iter().find(|(_, quantity)| **quantity < -1e-9) {
@@ -396,6 +400,14 @@ mod tests {
         .unwrap();
         assert_eq!(outcome.survived_s, legacy.survived_s, "{:?} {:?}", outcome.termination, outcome.trace);
         assert_eq!(outcome.termination, EngineTermination::CompletedHorizon);
+    }
+
+    #[test]
+    fn commit_delta_handles_keys_removed_from_the_plan() {
+        let planning_base = BTreeMap::from([("sleeve-p1".to_string(), 1.0)]);
+        let mut inventory = planning_base.clone();
+        commit_delta(&mut inventory, &planning_base, &BTreeMap::new()).unwrap();
+        assert_eq!(inventory.get("sleeve-p1").copied().unwrap_or(0.0), 0.0);
     }
 
     #[test]

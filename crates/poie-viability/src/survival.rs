@@ -862,8 +862,12 @@ pub(crate) fn apply_plans(
     let mut net = inventory.clone();
     let mut restored = Vec::new();
     for plan in plans {
-        for (resource, after) in &plan.remaining_inventory {
+        let mut keys: Vec<&String> = planning_base.keys().chain(plan.remaining_inventory.keys()).collect();
+        keys.sort();
+        keys.dedup();
+        for resource in keys {
             let before = planning_base.get(resource).copied().unwrap_or(0.0);
+            let after = plan.remaining_inventory.get(resource).copied().unwrap_or(0.0);
             *net.entry(resource.clone()).or_insert(0.0) += after - before;
         }
         for step in &plan.steps {
@@ -2525,6 +2529,21 @@ mod tests {
         assert_eq!(repaired, vec!["pump-p1"]);
         assert_eq!(inventory["electric-energy"], 3.0);
         assert_eq!(model.assets["pump-p1"].status, AssetStatus::Available);
+    }
+
+    #[test]
+    fn apply_plans_deducts_resources_removed_from_the_plan_map() {
+        let mut model = base08();
+        let planning_base = BTreeMap::from([("sleeve-p1".to_string(), 1.0), ("grease".to_string(), 0.15)]);
+        let plan = Plan {
+            steps: Vec::new(),
+            total_duration_s: 0.0,
+            remaining_inventory: BTreeMap::from([("grease".to_string(), 0.10)]),
+        };
+        let mut inventory = planning_base.clone();
+        apply_plans(&mut model, &mut inventory, &[plan], &planning_base).unwrap();
+        assert_eq!(inventory.get("sleeve-p1").copied().unwrap_or(0.0), 0.0);
+        assert!((inventory["grease"] - 0.10).abs() < 1e-9);
     }
 
     #[test]
