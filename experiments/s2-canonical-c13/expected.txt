@@ -1,0 +1,4 @@
+load_kw	instant_days	event_days	canonical_days	event_energy_kwh	canonical_energy_kwh	canonical_termination	classification
+2.6	16	16.250	16.250	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT
+3.0	3	3.292	3.333	0.0	0.0	blocked:energy_depleted	SEMANTIC_CORRECTION_REPAIR_SCHEDULE
+4.0	1	1.097	1.111	0.0	0.0	blocked:energy_depleted	SEMANTIC_CORRECTION_REPAIR_SCHEDULE
