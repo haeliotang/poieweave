@@ -77,6 +77,7 @@
 | C68 | 2000 次 Monte Carlo 排程分布：中位 72、p10 28、p90 90 | `experiments/s2-monte-carlo` | legacy LCG；尚未 canonical 重算 |
 | C69 | Base-05 负载 0–4 kW 五行 canonical 一致 | `experiments/s2-canonical-load-base05` | certificate-s2-load 绑定 |
 | C70 | Base-05/08 再生间隔八行 canonical 一致 | `experiments/s2-canonical-regen-horizon` | certificate-s2-regeneration 绑定 |
+| C71 | metrics 四组：3 组一致，coverage 定义改为服务影响 9/10 | `experiments/s2-canonical-metrics-groups` | 定义已版本化，不覆盖旧 5/10 |
 
 ## 不应出现的声明
 

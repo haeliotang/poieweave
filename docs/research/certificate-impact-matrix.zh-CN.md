@@ -53,7 +53,7 @@ canonical reproduces 8/8 rows including final energy and termination; canonical 
 
 ### `certificate-s2-metrics`
 
-split into 13 metric groups: 4 migrated, 2 semantic, 2 partial, 1 superseded baseline, 4 not migrated; no reissue
+split into 13 metric groups: 7 migrated, 3 semantic, 2 partial, 1 superseded baseline, 0 not migrated; aggregate still blocked on versioning the coverage definition; no reissue
 
 - scope: cross-model metric definitions and values
 

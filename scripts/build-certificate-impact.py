@@ -59,7 +59,7 @@ MAPPING = {
         "status": "BLOCKED",
         "classification": "NOT_MIGRATED",
         "scope": "cross-model metric definitions and values",
-        "rationale": "split into 13 metric groups: 4 migrated, 2 semantic, 2 partial, 1 superseded baseline, 4 not migrated; no reissue",
+        "rationale": "split into 13 metric groups: 7 migrated, 3 semantic, 2 partial, 1 superseded baseline, 0 not migrated; aggregate still blocked on versioning the coverage definition; no reissue",
     },
     "certificate-s2-order": {
         "claims": [],

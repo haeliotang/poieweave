@@ -10,22 +10,22 @@ This splits the aggregate metrics certificate into metric groups. It does not re
 | `base08` | C7 | s2-canonical-c7 | `MIGRATED` |
 | `energy_interventions` | C8, C13 | s2-canonical-c8, s2-canonical-c13 | `PARTIAL` |
 | `insert_sharpening` | C7 | s2-canonical-c7 | `MIGRATED` |
-| `recharge_boundary` | NONE | NONE | `NOT_MIGRATED` |
-| `recovery_coverage` | NONE | NONE | `NOT_MIGRATED` |
+| `recharge_boundary` | C71 | s2-canonical-metrics-groups | `MIGRATED` |
+| `recovery_coverage` | C71 | s2-canonical-metrics-groups | `MIGRATED_WITH_SEMANTIC_CORRECTION` |
 | `redundancy` | C9, C14 | s2-canonical-c9, s2-canonical-c14 | `PARTIAL` |
 | `redundancy_time` | C14 | s2-canonical-c14 | `SUPERSEDED_BASELINE` |
-| `regenerative_capacity_days` | NONE | NONE | `NOT_MIGRATED` |
+| `regenerative_capacity_days` | C71 | s2-canonical-metrics-groups | `MIGRATED` |
 | `resupply` | C10 | s2-canonical-c10 | `MIGRATED` |
-| `yield_sensitivity` | NONE | NONE | `NOT_MIGRATED` |
+| `yield_sensitivity` | C71 | s2-canonical-metrics-groups | `MIGRATED` |
 
 ## Summary
 
 - groups: 13
-- migrated: 4
-- migrated with semantic correction: 2
+- migrated: 7
+- migrated with semantic correction: 3
 - partial: 2
 - superseded baseline: 1
-- not migrated: 4
+- not migrated: 0
 - reissued: 0
 
 ## Reasons
@@ -56,11 +56,11 @@ load rows agree; recharge intervention rows not canonicalised
 
 ### `recharge_boundary`
 
-average-recharge threshold not yet canonicalised
+average recharge 2.50 kW and first energy-limited load 2.6 kW agree
 
 ### `recovery_coverage`
 
-Base-05 5/10 independent coverage lacks a canonical coverage adapter
+legacy 5/10 = asset restorability; canonical 9/10 = service impact; definition versioned
 
 ### `redundancy`
 
@@ -72,7 +72,7 @@ redundant 90 agrees; baseline 31->2 d under canonical in-repair failures
 
 ### `regenerative_capacity_days`
 
-single scalar without scenario binding
+canonical Base-08 minus Base-05 horizon = 20 days
 
 ### `resupply`
 
@@ -80,5 +80,5 @@ interval->horizon mapping agrees 4/4
 
 ### `yield_sensitivity`
 
-yield rows not canonicalised
+yield 1.0/0.8/0.5 -> 60/60/50 days in both paths
 
