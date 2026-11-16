@@ -435,6 +435,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C92",
+      "statement": "aux batch16：grease-cost + yield-accumulation 10/10 一致",
+      "evidence": [
+        "s2-canonical-aux-batch16"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -862,6 +871,35 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C91"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch16",
+      "report": "experiments/s2-canonical-aux-batch16/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch16/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch16"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 11,
+      "expected_output": "experiment\trow\tlegacy_days\tcanonical_days\tclassification\ngrease-cost\tgrease=0.10,mode=cheap\t20\t20.000\tEXPECTED_AGREEMENT\ngrease-cost\tgrease=0.10,mode=expensive\t0\t0.000\tEXPECTED_AGREEMENT\ngrease-cost\tgrease=0.15,mode=cheap\t30\t30.000\tEXPECTED_AGREEMENT\ngrease-cost\tgrease=0.15,mode=expensive\t0\t0.000\tEXPECTED_AGREEMENT\ngrease-cost\tgrease=0.20,mode=cheap\t30\t30.000\tEXPECTED_AGREEMENT\ngrease-cost\tgrease=0.20,mode=expensive\t10\t10.000\tEXPECTED_AGREEMENT\nyield-accumulation\tyield=1.00\t60\t60.000\tEXPECTED_AGREEMENT\nyield-accumulation\tyield=0.90\t60\t60.000\tEXPECTED_AGREEMENT\nyield-accumulation\tyield=0.75\t60\t60.000\tEXPECTED_AGREEMENT\nyield-accumulation\tyield=0.50\t50\t50.000\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\trow\tlegacy_days\tcanonical_days\tclassification",
+        "grease-cost\tgrease=0.10,mode=cheap\t20\t20.000\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C92"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -1888,7 +1926,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
-      "covered_by_claims": [],
+      "covered_by_claims": [
+        "C92"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3536,7 +3576,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
-      "covered_by_claims": [],
+      "covered_by_claims": [
+        "C92"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -4034,20 +4076,20 @@
     }
   ],
   "summary": {
-    "s2_claims": 48,
-    "s2_experiments": 107,
-    "claimed_experiments": 48,
+    "s2_claims": 49,
+    "s2_experiments": 108,
+    "claimed_experiments": 49,
     "unmapped_experiments": 59,
-    "formal_s2_experiments_migrated_to_canonical": 20,
+    "formal_s2_experiments_migrated_to_canonical": 21,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 15,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 48,
+    "claims_with_experiment_evidence": 49,
     "status_s2_result_lines": 12,
-    "aux_experiments_with_canonical_evidence": 49,
-    "aux_experiments_without_canonical_evidence": 10,
+    "aux_experiments_with_canonical_evidence": 51,
+    "aux_experiments_without_canonical_evidence": 8,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
   }
