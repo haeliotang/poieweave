@@ -24,6 +24,7 @@ python3 scripts/check-canonical-claim-certificate-tamper.py
 python3 scripts/build-claim-certificate-coverage.py --check
 python3 audit/phase1/check.py
 python3 audit/phase2/check.py
+python3 audit/phase2/check_observatory.py
 python3 scripts/check-docs.py
 
 echo "ok all checks"
