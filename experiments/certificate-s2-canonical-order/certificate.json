@@ -1,0 +1,37 @@
+{
+  "canonical_classification": "EXPECTED_AGREEMENT",
+  "certificate_id": "poie-s2-canonical-order-v1",
+  "claims": [
+    "C72"
+  ],
+  "claims_sha256": "056d6a00952870a316385cf230543bba9d2ddb25e50faf62fee5ac8c0cd02047",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_commit": "fdd619c",
+  "experiment": {
+    "expected": "experiments/s2-canonical-order/expected.txt",
+    "expected_sha256": "e1f45972610b067352d21c6786ff85d7be80eddc2e4a0df1b34a06c851c86404",
+    "path": "experiments/s2-canonical-order"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-06/model.toml",
+      "sha256": "09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c"
+    }
+  ],
+  "result_marker": "2\t25\t24\t24\t24\t24\t0\tEXPECTED_AGREEMENT",
+  "runner": {
+    "binary": "poie-migration-order",
+    "sha256": "c8b69b64f87d5ca0406dd69e835333d8470569a806e9cb8b5f1ba8183caf9722",
+    "source": "crates/poie-viability/src/bin/poie-migration-order.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/1",
+  "scope": "Base-06 repair order: 24/25 and 40/44 recover in both standard and best order; order_sensitive=0.",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "source_certificate": "experiments/certificate-s2-order/certificate.json",
+  "source_certificate_sha256": "36bde32ac53520e420aa7ad91bfd7d673f4bf2769de7550ccf8fa177b18a138d",
+  "status": "REISSUED",
+  "verifier": "poie-canonical-s2-certificate/1"
+}

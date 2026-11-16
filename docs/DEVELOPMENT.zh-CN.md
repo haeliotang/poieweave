@@ -969,3 +969,4 @@ flowchart LR
 | 0.1.473 | 2026-11-16 | 迁移 load/regen 证书行；228/415 |
 | 0.1.474 | 2026-11-16 | 重签 3 个 canonical S2 证书；20 cert invariants |
 | 0.1.475 | 2026-11-16 | metrics 四组迁移；coverage 定义版本化；229/417 |
+| 0.1.476 | 2026-11-16 | order 证书 canonical 一致；230/419 |

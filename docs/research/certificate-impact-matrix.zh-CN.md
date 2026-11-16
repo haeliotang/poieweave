@@ -9,7 +9,7 @@ This matrix records certificate impact only. No certificate is reissued by this 
 | `certificate-s2-load` | `scenarios/base-05/model.toml` | C69 | s2-canonical-load-base05 | `EXPECTED_AGREEMENT` | `REISSUED` | yes |
 | `certificate-s2-regeneration` | `multi-model` | C70 | s2-canonical-regen-horizon | `EXPECTED_AGREEMENT` | `REISSUED` | yes |
 | `certificate-s2-metrics` | `multi-model` | NONE | NONE | `NOT_MIGRATED` | `BLOCKED` | no |
-| `certificate-s2-order` | `scenarios/base-06/model.toml` | NONE | NONE | `NOT_MIGRATED` | `BLOCKED` | no |
+| `certificate-s2-order` | `scenarios/base-06/model.toml` | C72 | s2-canonical-order | `EXPECTED_AGREEMENT` | `REISSUED` | yes |
 
 ## Summary
 
@@ -17,8 +17,8 @@ This matrix records certificate impact only. No certificate is reissued by this 
 - historical valid with original semantics: 0
 - superseded: 1
 - invalidated: 0
-- reissued: 3
-- blocked: 2
+- reissued: 4
+- blocked: 1
 
 ## Rationale
 
@@ -59,8 +59,9 @@ split into 13 metric groups: 7 migrated, 3 semantic, 2 partial, 1 superseded bas
 
 ### `certificate-s2-order`
 
-no formal claim in the claims ledger and no canonical order adapter; do not reissue
+canonical permutation search reproduces 24/25 and 40/44 with order_sensitive=0; canonical certificate issued
 
 - scope: Base-06 repair-order sensitivity
 - model sha256: `09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c`
+- canonical certificate: `experiments/certificate-s2-canonical-order/certificate.json`
 

@@ -62,12 +62,13 @@ MAPPING = {
         "rationale": "split into 13 metric groups: 7 migrated, 3 semantic, 2 partial, 1 superseded baseline, 0 not migrated; aggregate still blocked on versioning the coverage definition; no reissue",
     },
     "certificate-s2-order": {
-        "claims": [],
-        "canonical": [],
-        "status": "BLOCKED",
-        "classification": "NOT_MIGRATED",
+        "claims": ["C72"],
+        "canonical": ["s2-canonical-order"],
+        "status": "REISSUED",
+        "classification": "EXPECTED_AGREEMENT",
         "scope": "Base-06 repair-order sensitivity",
-        "rationale": "no formal claim in the claims ledger and no canonical order adapter; do not reissue",
+        "rationale": "canonical permutation search reproduces 24/25 and 40/44 with order_sensitive=0; canonical certificate issued",
+        "canonical_certificate": "experiments/certificate-s2-canonical-order/certificate.json",
     },
 }
 

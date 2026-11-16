@@ -33,6 +33,17 @@ SPECS = {
         "result_marker": "3.0\t3.292\t3.292\t0.0\t0.0",
         "scope": "Base-05 load 0-4 kW: 0-2 kW material-limited 40 d; 3/4 kW energy-limited 3.292/1.097 d.",
     },
+    "certificate-s2-canonical-order": {
+        "certificate_id": "poie-s2-canonical-order-v1",
+        "source": "experiments/certificate-s2-order/certificate.json",
+        "claims": ["C72"],
+        "experiment": "experiments/s2-canonical-order",
+        "runner_bin": "poie-migration-order",
+        "runner_src": "crates/poie-viability/src/bin/poie-migration-order.rs",
+        "models": ["scenarios/base-06/model.toml"],
+        "result_marker": "2\t25\t24\t24\t24\t24\t0\tEXPECTED_AGREEMENT",
+        "scope": "Base-06 repair order: 24/25 and 40/44 recover in both standard and best order; order_sensitive=0.",
+    },
     "certificate-s2-canonical-regeneration": {
         "certificate_id": "poie-s2-canonical-regeneration-v1",
         "source": "experiments/certificate-s2-regeneration/certificate.json",
