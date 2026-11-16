@@ -1406,6 +1406,75 @@ jobs:
           path: ${{ runner.temp }}/s5v-linux/evidence
           if-no-files-found: error
 
+  s5v-n4-linux:
+    name: S5-V N4 discrete-event Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install independent FMI importer
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Build N4 FMUs
+        run: |
+          external/fmu-n4-pv-battery/build.sh
+          external/fmu-n4-pv-battery/build-harness.sh
+          external/fmu-n4-pv-battery/build-negative.sh regen
+          external/fmu-n4-pv-battery/build-negative.sh duration
+          external/fmu-n4-pv-battery/build-negative.sh order
+      - name: Run canonical N4 events
+        run: cargo run --locked -q -p poie-viability --bin poie-s5v-n4-canonical
+      - name: Execute independent FMU cases
+        run: |
+          run_case() {
+            case "$1" in
+              N4-00) fail=-1;;
+              N4-01) fail=7200;;
+              N4-02) fail=4500;;
+              N4-03) fail=10800;;
+              *) echo "unknown case $1"; exit 1;;
+            esac
+            for step in 3600 900 1000; do
+              external/fmu-n4-pv-battery/build/harness external/fmu-n4-pv-battery/poie-n4-pv-battery.fmu "$step" "$fail" 72000 "audit/phase4/results/$1-harness-$step.csv"
+              python3 audit/phase4/fmpy_import.py --step "$step" --failure "$fail" --stop 72000 --output "audit/phase4/results/$1-fmpy-$step.csv" --log "audit/phase4/external/$1-fmpy-$step.log"
+            done
+          }
+          run_case N4-00
+          run_case N4-01
+          run_case N4-02
+          run_case N4-03
+      - name: Run event comparator, steps and negative controls
+        run: |
+          python3 audit/phase4/compare.py
+          python3 audit/phase4/step_sensitivity.py
+          python3 audit/phase4/cross_importer.py
+          python3 audit/phase4/event_evidence.py
+          external/fmu-n4-pv-battery/build/harness external/fmu-n4-pv-battery/poie-n4-pv-battery.fmu 3600 10800 72000 audit/phase4/negative-controls/N4-01-failure-delayed.csv
+          external/fmu-n4-pv-battery/build/harness external/fmu-n4-pv-battery/poie-n4-pv-battery.fmu 3600 -1 72000 audit/phase4/negative-controls/N4-01-failure-ignored.csv
+          external/fmu-n4-pv-battery/build/harness external/fmu-n4-pv-battery/poie-n4-pv-battery-regen-tampered.fmu 3600 7200 72000 audit/phase4/negative-controls/N4-01-regen-tampered.csv
+          external/fmu-n4-pv-battery/build/harness external/fmu-n4-pv-battery/poie-n4-pv-battery-duration-tampered.fmu 3600 7200 72000 audit/phase4/negative-controls/N4-01-duration-tampered.csv
+          external/fmu-n4-pv-battery/build/harness external/fmu-n4-pv-battery/poie-n4-pv-battery-order-tampered.fmu 900 10800 72000 audit/phase4/negative-controls/N4-03-order-tampered.csv
+          python3 audit/phase4/negative_controls.py
+          python3 audit/phase4/manifest.py
+          python3 audit/phase4/check.py
+      - name: Save current-run evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n4/evidence"
+          cp -R audit/phase4/canonical audit/phase4/results audit/phase4/differences audit/phase4/negative-controls "$RUNNER_TEMP/s5v-n4/evidence/"
+          cp -R audit/phase4/external "$RUNNER_TEMP/s5v-n4/evidence/"
+          cp audit/phase4/{PREREG.md,SEMANTICS.md,REPORT.zh-CN.md,config.json,manifest.json} "$RUNNER_TEMP/s5v-n4/evidence/"
+          cp external/fmu-n4-pv-battery/poie-n4-pv-battery.fmu "$RUNNER_TEMP/s5v-n4/evidence/"
+          ( cd "$RUNNER_TEMP/s5v-n4/evidence" && sha256sum * > SHA256SUMS.txt 2>/dev/null || true )
+          cat "$RUNNER_TEMP/s5v-n4/evidence/SHA256SUMS.txt" | head
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n4-linux-evidence
+          path: ${{ runner.temp }}/s5v-n4/evidence
+          if-no-files-found: error
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest

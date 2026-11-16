@@ -1,0 +1,59 @@
+{
+  "baseline": "33583f53ac046a435b6756b4a448bdc9b3ff23d9",
+  "scenario": "scenarios/base-08/model.toml",
+  "horizon_s": 72000,
+  "load_kw": 3.0,
+  "battery": {
+    "capacity_kwh": 200.0,
+    "charge_kw": 10.0,
+    "initial_kwh": 40.0
+  },
+  "repair": {
+    "energy_kwh": 0.5,
+    "duration_s": 10800
+  },
+  "cases": [
+    {
+      "id": "N4-00",
+      "failure_s": null,
+      "expected_terminal_s": 72000
+    },
+    {
+      "id": "N4-01",
+      "failure_s": 7200,
+      "expected_terminal_s": 53400
+    },
+    {
+      "id": "N4-02",
+      "failure_s": 4500,
+      "expected_terminal_s": 51150
+    },
+    {
+      "id": "N4-03",
+      "failure_s": 10800,
+      "expected_terminal_s": 56400
+    }
+  ],
+  "samples_s": [
+    0,
+    3600,
+    7200,
+    10800,
+    14400
+  ],
+  "event_samples": [
+    4500,
+    7200,
+    10800
+  ],
+  "steps_s": [
+    3600,
+    900,
+    1000
+  ],
+  "tolerance": {
+    "energy_j": 1.0,
+    "event_time_s": 1e-06,
+    "conservation_j": 1.0
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "case": "N4-00",
+  "events": [
+    {
+      "event": "RepairCompleted",
+      "target": "pump-p1",
+      "before": {
+        "time_s": 9900.0,
+        "repair_J": 1650000.0,
+        "energy_J": 137400000.0
+      },
+      "after": {
+        "time_s": 10800.0,
+        "repair_J": 1800000.0,
+        "energy_J": 136800000.0
+      }
+    }
+  ]
+}

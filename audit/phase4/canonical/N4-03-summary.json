@@ -1,0 +1,6 @@
+{
+  "case": "N4-03",
+  "termination": "blocked:energy_depleted",
+  "survived_s": 56400.000000,
+  "final_energy_kwh": 0.000000000
+}

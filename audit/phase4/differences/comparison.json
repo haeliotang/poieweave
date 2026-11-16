@@ -1,0 +1,113 @@
+{
+  "schema": "poie.s5v-n4-comparison/1",
+  "cases": [
+    {
+      "case": "N4-00",
+      "canonical": {
+        "termination": "completed",
+        "survived_s": 72000.0,
+        "failure_s": null
+      },
+      "fmu": {
+        "terminal_s": 72000.0,
+        "failure_s": -1.0,
+        "pv_failed": false,
+        "generated_J": 180000000.0,
+        "repair_J": 1800000.0,
+        "repair_completed_s": 10800.0
+      },
+      "first_divergence": {
+        "at_s": 3600,
+        "class": "MODEL_ASSUMPTION_DIFFERENCE",
+        "fmu_minus_canonical_J": -600000.0,
+        "expected_J": -600000.0
+      },
+      "findings": [],
+      "max_unexplained_residual_J": 0.0,
+      "worst_conservation_residual_J": 0.0,
+      "fmu_sha256": "57dde92cb336eda208be960097bbed6c5286952510519727c83d569f10990f46",
+      "status": "EXPLAINED"
+    },
+    {
+      "case": "N4-01",
+      "canonical": {
+        "termination": "blocked:energy_depleted",
+        "survived_s": 53400.0,
+        "failure_s": 7200.0
+      },
+      "fmu": {
+        "terminal_s": 53400.0,
+        "failure_s": 7200.0,
+        "pv_failed": true,
+        "generated_J": 18000000.0,
+        "repair_J": 1800000.0,
+        "repair_completed_s": 10800.0
+      },
+      "first_divergence": {
+        "at_s": 3600,
+        "class": "MODEL_ASSUMPTION_DIFFERENCE",
+        "fmu_minus_canonical_J": -600000.0,
+        "expected_J": -600000.0
+      },
+      "findings": [],
+      "max_unexplained_residual_J": 0.0,
+      "worst_conservation_residual_J": 0.0,
+      "fmu_sha256": "87a9d6820dda082d0de52f92da21a506e62e5ef5b0dd13fbc771d6939a95bc34",
+      "status": "EXPLAINED"
+    },
+    {
+      "case": "N4-02",
+      "canonical": {
+        "termination": "blocked:energy_depleted",
+        "survived_s": 51150.0,
+        "failure_s": 4500.0
+      },
+      "fmu": {
+        "terminal_s": 51150.0,
+        "failure_s": 4500.0,
+        "pv_failed": true,
+        "generated_J": 11250000.0,
+        "repair_J": 1800000.0,
+        "repair_completed_s": 10800.0
+      },
+      "first_divergence": {
+        "at_s": 3600,
+        "class": "MODEL_ASSUMPTION_DIFFERENCE",
+        "fmu_minus_canonical_J": -600000.0,
+        "expected_J": -600000.0
+      },
+      "findings": [],
+      "max_unexplained_residual_J": 0.0,
+      "worst_conservation_residual_J": 0.0,
+      "fmu_sha256": "acc7e7165e4b38b086ca7635c5bdb23eb829b885628e1197754896b906c63623",
+      "status": "EXPLAINED"
+    },
+    {
+      "case": "N4-03",
+      "canonical": {
+        "termination": "blocked:energy_depleted",
+        "survived_s": 56400.0,
+        "failure_s": 10800.0
+      },
+      "fmu": {
+        "terminal_s": 56400.0,
+        "failure_s": 10800.0,
+        "pv_failed": true,
+        "generated_J": 27000000.0,
+        "repair_J": 1800000.0,
+        "repair_completed_s": 10800.0
+      },
+      "first_divergence": {
+        "at_s": 3600,
+        "class": "MODEL_ASSUMPTION_DIFFERENCE",
+        "fmu_minus_canonical_J": -600000.0,
+        "expected_J": -600000.0
+      },
+      "findings": [],
+      "max_unexplained_residual_J": 0.0,
+      "worst_conservation_residual_J": 0.0,
+      "fmu_sha256": "02d78d0a69070252da051ef887dab21952a54410ceda119eec8af422cb1911fb",
+      "status": "EXPLAINED"
+    }
+  ]
+}
