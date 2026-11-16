@@ -29,17 +29,22 @@ fn main() -> ExitCode {
     };
     let times = [0.0, 3600.0, 7200.0, 10800.0, 79.0 * 3600.0];
     let observed = observe_states(&model, &options, &times).unwrap();
-    println!("at_s\tenergy_kwh\tgenerated_kwh\tload_kwh\trepair_kwh\tcurtailed_kwh\trepair_active\trepair_detail\trepair_state_source\ttermination");
+    println!("at_s\tstatus\tenergy_kwh\tgenerated_kwh\tload_kwh\trepair_kwh\tcurtailed_kwh\trepair_active\trepair_detail\trepair_state_source\ttermination");
     for row in observed {
         println!(
-            "{:.0}\t{:.6}\t{:.6}\t{:.6}\t{:.6}\t{:.6}\t{}\t{}\t{}\t{}",
+            "{:.0}\t{}\t{:.6}\t{:.6}\t{:.6}\t{:.6}\t{:.6}\t{}\t{}\t{}\t{}",
             row.at_s,
+            row.status.label(),
             row.energy_j / 3_600_000.0,
             row.energy_generated_j / 3_600_000.0,
             row.energy_load_j / 3_600_000.0,
             row.energy_repair_j / 3_600_000.0,
             row.energy_curtailed_j / 3_600_000.0,
-            row.repair_active,
+            match row.repair_active {
+                Some(true) => "true",
+                Some(false) => "false",
+                None => "UNKNOWN",
+            },
             row.repair_detail.as_deref().unwrap_or("NOT_EXPORTED"),
             row.repair_state_source,
             row.termination,

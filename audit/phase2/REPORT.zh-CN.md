@@ -64,6 +64,19 @@ rather than treated as numerical error:
 }
 ```
 
+## Observation noninterference
+
+The observatory keeps the requested horizon and returns the underlying
+`EngineOutcome`. Tests compare direct and observed runs for: energy
+depletion exactly at horizon, early termination, same-timestamp multiple
+failures, repair interruption, and repair completion at horizon. The tests
+assert identical termination, survived time, final inventory, semantic
+event sequence (kind/inventory/plans/resources) and cumulative energy flows.
+
+Unavailable samples are explicitly labelled `UNOBSERVABLE_AFTER_TERMINATION`
+or `UNOBSERVABLE_NOT_MATERIALIZED`; they are never filled with a later state.
+Repair identity remains derived or `UNKNOWN` until the native engine API exists.
+
 ## Difference decomposition
 
 | category | value |

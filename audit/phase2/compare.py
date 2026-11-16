@@ -117,12 +117,13 @@ def parse_canonical_trajectory(expected_sha256: str) -> dict[float, dict]:
     for line in CANONICAL_TRAJECTORY.read_text().strip().splitlines()[1:]:
         fields = line.split("\t")
         result[float(fields[0])] = {
-            "energy_J": float(fields[1]) * 3_600_000.0,
-            "generated_J": float(fields[2]) * 3_600_000.0,
-            "load_J": float(fields[3]) * 3_600_000.0,
-            "repair_J": float(fields[4]) * 3_600_000.0,
-            "repair_active": fields[6] == "true",
-            "repair_detail": None if fields[7] == "NOT_EXPORTED" else fields[7],
+            "status": fields[1],
+            "energy_J": float(fields[2]) * 3_600_000.0,
+            "generated_J": float(fields[3]) * 3_600_000.0,
+            "load_J": float(fields[4]) * 3_600_000.0,
+            "repair_J": float(fields[5]) * 3_600_000.0,
+            "repair_active": None if fields[7] == "UNKNOWN" else fields[7] == "true",
+            "repair_detail": None if fields[8] == "NOT_EXPORTED" else fields[8],
         }
     return result
 
@@ -239,6 +240,8 @@ def main() -> int:
             expected_delta = 0.0
         assumption_error = abs(delta - expected_delta)
         assumption_errors.append(assumption_error)
+        if obs["status"] != "OBSERVED":
+            problems.append(f"canonical trajectory status {obs['status']} at {at_s}")
         if assumption_error > max(tol["energy_absolute_J"], 1e-9 * max(abs(expected_delta), 1.0)):
             problems.append(f"trajectory delta not explained at {at_s}: delta={delta} expected={expected_delta}")
         trajectory_rows.append({
