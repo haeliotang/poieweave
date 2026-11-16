@@ -78,9 +78,9 @@
         "C8",
         "C13"
       ],
-      "disposition": "PARTIAL",
+      "disposition": "MIGRATED_WITH_SEMANTIC_CORRECTION",
       "group": "energy_interventions",
-      "reason": "load rows agree; recharge intervention rows not canonicalised",
+      "reason": "12/12 day-level rows agree; energy-limited rows shift 16 -> 16.25 d",
       "values": {
         "capacity_charge_days": 16,
         "load_kw": 2.6,
@@ -233,9 +233,9 @@
   "summary": {
     "groups": 13,
     "migrated": 7,
-    "migrated_with_semantic_correction": 3,
+    "migrated_with_semantic_correction": 4,
     "not_migrated": 0,
-    "partial": 2,
+    "partial": 1,
     "reissued": 0,
     "superseded_baseline": 1
   }

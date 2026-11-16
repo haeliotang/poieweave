@@ -8,7 +8,7 @@ This splits the aggregate metrics certificate into metric groups. It does not re
 | `adversarial_resupply` | C11 | s2-canonical-c11 | `MIGRATED_WITH_SEMANTIC_CORRECTION` |
 | `base05` | C5 | s2-canonical-c5, s2-canonical-c6 | `MIGRATED` |
 | `base08` | C7 | s2-canonical-c7 | `MIGRATED` |
-| `energy_interventions` | C8, C13 | s2-canonical-c8, s2-canonical-c13 | `PARTIAL` |
+| `energy_interventions` | C8, C13 | s2-canonical-c8, s2-canonical-c13 | `MIGRATED_WITH_SEMANTIC_CORRECTION` |
 | `insert_sharpening` | C7 | s2-canonical-c7 | `MIGRATED` |
 | `recharge_boundary` | C71 | s2-canonical-metrics-groups | `MIGRATED` |
 | `recovery_coverage` | C71 | s2-canonical-metrics-groups | `MIGRATED_WITH_SEMANTIC_CORRECTION` |
@@ -22,8 +22,8 @@ This splits the aggregate metrics certificate into metric groups. It does not re
 
 - groups: 13
 - migrated: 7
-- migrated with semantic correction: 3
-- partial: 2
+- migrated with semantic correction: 4
+- partial: 1
 - superseded baseline: 1
 - not migrated: 0
 - reissued: 0
@@ -48,7 +48,7 @@ Base-08 regeneration 40->60 and 50% yield validated
 
 ### `energy_interventions`
 
-load rows agree; recharge intervention rows not canonicalised
+12/12 day-level rows agree; energy-limited rows shift 16 -> 16.25 d
 
 ### `insert_sharpening`
 

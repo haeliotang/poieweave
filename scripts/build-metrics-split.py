@@ -41,8 +41,8 @@ GROUPS = {
     "energy_interventions": {
         "claims": ["C8", "C13"],
         "canonical": ["s2-canonical-c8", "s2-canonical-c13"],
-        "disposition": "PARTIAL",
-        "reason": "load rows agree; recharge intervention rows not canonicalised",
+        "disposition": "MIGRATED_WITH_SEMANTIC_CORRECTION",
+        "reason": "12/12 day-level rows agree; energy-limited rows shift 16 -> 16.25 d",
     },
     "insert_sharpening": {
         "claims": ["C7"],
