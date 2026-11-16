@@ -3,7 +3,7 @@
   "claims": [
     "C71"
   ],
-  "claims_sha256": "7b4d3440bbeac30deb96ca4d606cddd2d5675670d9c6a312f0b1ba5ed300e9e6",
+  "claims_sha256": "309de05a80de5bf51c659c50b90bfb9103e8b419f4c1b227f8b7ef299fb89e2b",
   "coverage_definition": {
     "canonical_value": "9/10 service-impact",
     "differing_cases": [

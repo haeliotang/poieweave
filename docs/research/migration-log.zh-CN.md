@@ -50,6 +50,7 @@
 | E-C86 | aux batch10 | 抽样通过 | joint-three 6 + worn 6 + yield 6，18/18 一致 |
 | E-C87 | aux batch11 | 抽样通过 | worn-bound 4 + sharpen-yield 3 + regen-cost-load 6，13/13 一致 |
 | E-C88 | aux batch12 | 抽样通过 | forced-cost 4 + capacity 4，8/8 一致 |
+| E-C89 | aux batch13 | 语义修正 | adversarial failures 15/16 日级；subsets filter-1 |
 | D | canonical 证书重签 | 完成 5 个 | joint/load/regeneration/order/metrics-v2；历史证书保留 |
 
 | A | 状态页数值归一化 | 完成 | 12/12 映射；C68 Monte Carlo 为 legacy-only |
