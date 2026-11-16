@@ -1,0 +1,6 @@
+experiment	row	legacy	canonical	classification
+recycle-residue	bar=1.2,residue=0.0	60	60.000	EXPECTED_AGREEMENT
+recycle-residue	bar=1.0,residue=0.2	60	60.000	EXPECTED_AGREEMENT
+recycle-residue	bar=0.9,residue=0.3	60	60.000	EXPECTED_AGREEMENT
+recycle-residue	bar=0.6,residue=0.6	50	50.000	EXPECTED_AGREEMENT
+adversarial-rand	stats	zero=2,under30=103,under60=215,mean=60.3,min=0.0	zero=0,under30=109,under60=233,mean=57.7,min=0.1	SEMANTIC_CORRECTION_TIME_DISTRIBUTION

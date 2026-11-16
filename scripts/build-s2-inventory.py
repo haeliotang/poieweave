@@ -108,6 +108,7 @@ def experiment_record(path: Path, all_claims: list[dict[str, object]]) -> dict[s
             else CLASSIFICATION.get(path.name, ("UNCLASSIFIED", "not yet reviewed"))[0]
         ),
         "covered_by_claims": COVERED_BY.get(path.name, []),
+        "excluded_from_canonical_migration": EXCLUDED_FROM_NUMERIC_MIGRATION.get(path.name),
         "classification_reason": (
             "cited by a formal claim"
             if any(path.name in claim["evidence"] or path.name in claim.get("certificates", []) for claim in all_claims)
@@ -191,9 +192,18 @@ COVERED_BY = {
     "s2-two-restorers": ["C93"],
     "s2-adversarial-timing": ["C94"],
     "s2-regeneration": ["C95"], "s2-resupply": ["C95"],
+    "s2-recycle-residue": ["C96"], "s2-adversarial-random": ["C96"],
     "s2-time-horizon": ["C74"], "s2-time-insert": ["C74"], "s2-time-repair-sweep": ["C74"],
     "s2-time-energy-sweep": ["C64"],
 }
+
+# Non-numeric records: definitional metric prose or an explicit negative result.
+# They are excluded by design, not treated as un-migrated survival claims.
+EXCLUDED_FROM_NUMERIC_MIGRATION = {
+    "s2-metrics": "DEFINITIONAL",
+    "s2-order-sensitivity": "EXPLORATORY_NEGATIVE",
+}
+
 
 def main(argv: list[str] | None = None) -> int:
     check = bool(argv and "--check" in argv)
@@ -277,7 +287,14 @@ def main(argv: list[str] | None = None) -> int:
                 1 for record in records if not record["claim_ids"] and record["covered_by_claims"]
             ),
             "aux_experiments_without_canonical_evidence": sum(
-                1 for record in records if not record["claim_ids"] and not record["covered_by_claims"]
+                1
+                for record in records
+                if not record["claim_ids"]
+                and not record["covered_by_claims"]
+                and record["excluded_from_canonical_migration"] is None
+            ),
+            "aux_excluded_definitional_or_negative": sum(
+                1 for record in records if record["excluded_from_canonical_migration"] is not None
             ),
             "unclassified_experiments": sum(
                 1 for record in records if record["classification"] == "UNCLASSIFIED"
@@ -312,6 +329,7 @@ def main(argv: list[str] | None = None) -> int:
         f"- Unclassified experiments: {inventory['summary']['unclassified_experiments']}",
         f"- Aux experiments with canonical evidence: {inventory['summary']['aux_experiments_with_canonical_evidence']}",
         f"- Aux experiments without canonical evidence: {inventory['summary']['aux_experiments_without_canonical_evidence']}",
+        f"- Aux records excluded as definitional/negative: {inventory['summary']['aux_excluded_definitional_or_negative']}",
         "",
         "## Claim crosswalk",
         "",
@@ -354,6 +372,7 @@ def main(argv: list[str] | None = None) -> int:
                     if record["claim_ids"] or not record["covered_by_claims"]
                     else "COVERED_BY_CANONICAL"
                 ),
+                # excluded records keep their FORMAL_AUXILIARY classification.
             )
         )
     rendered_md = "\n".join(lines) + "\n"

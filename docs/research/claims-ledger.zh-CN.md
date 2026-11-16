@@ -102,6 +102,7 @@
 | C93 | aux batch17：two-restorers 4/4 一致 | `experiments/s2-canonical-aux-batch17` | 辅助抽样 |
 | C94 | aux batch18：adversarial-timing 30/32 日级一致 + 2 executor 修正 | `experiments/s2-canonical-aux-batch18` | 辅助抽样 |
 | C95 | aux batch19：regeneration/resupply 3/4 一致 + Base-07 joint 修正 | `experiments/s2-canonical-aux-batch19` | 辅助抽样 |
+| C96 | aux batch20：recycle 一致；adversarial-rand 时间分布修正 | `experiments/s2-canonical-aux-batch20` | 辅助抽样 |
 
 ## 不应出现的声明
 

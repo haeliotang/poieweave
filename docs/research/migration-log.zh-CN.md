@@ -57,6 +57,8 @@
 | E-C93 | aux batch17 | 抽样通过 | two-restorers 4/4 一致 |
 | E-C94 | aux batch18 | 语义修正 | adversarial-timing 32 行；2 行为 executor |
 | E-C95 | aux batch19 | 语义修正 | regeneration 2 + resupply 2；Base-07 joint 25→24 |
+| E-C96 | aux batch20 | 语义修正 | recycle-residue 4 行；adversarial-rand 分布修正 |
+| F | aux 覆盖闭合 | 完成 | 59 = 57 canonical + 2 定义型/负结果排除 |
 | D | canonical 证书重签 | 完成 5 个 | joint/load/regeneration/order/metrics-v2；历史证书保留 |
 
 | A | 状态页数值归一化 | 完成 | 12/12 映射；C68 Monte Carlo 为 legacy-only |

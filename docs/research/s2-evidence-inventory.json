@@ -471,6 +471,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C96",
+      "statement": "aux batch20：recycle 一致；adversarial-rand 时间分布修正",
+      "evidence": [
+        "s2-canonical-aux-batch20"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -499,6 +508,7 @@
       "covered_by_claims": [
         "C89"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -525,7 +535,10 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "EXPLORATORY_NEGATIVE",
-      "covered_by_claims": [],
+      "covered_by_claims": [
+        "C96"
+      ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "random/negative result with no formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -555,6 +568,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -584,6 +598,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -613,6 +628,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -642,6 +658,7 @@
       "covered_by_claims": [
         "C89"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -671,6 +688,7 @@
       "covered_by_claims": [
         "C90"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -700,6 +718,7 @@
       "covered_by_claims": [
         "C94"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -730,6 +749,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -759,6 +779,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -788,6 +809,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -817,6 +839,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -846,6 +869,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -875,6 +899,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -905,6 +930,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -934,6 +960,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -963,6 +990,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -992,6 +1020,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1022,6 +1051,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1051,8 +1081,39 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch20",
+      "report": "experiments/s2-canonical-aux-batch20/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch20/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch20"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 6,
+      "expected_output": "experiment\trow\tlegacy\tcanonical\tclassification\nrecycle-residue\tbar=1.2,residue=0.0\t60\t60.000\tEXPECTED_AGREEMENT\nrecycle-residue\tbar=1.0,residue=0.2\t60\t60.000\tEXPECTED_AGREEMENT\nrecycle-residue\tbar=0.9,residue=0.3\t60\t60.000\tEXPECTED_AGREEMENT\nrecycle-residue\tbar=0.6,residue=0.6\t50\t50.000\tEXPECTED_AGREEMENT\nadversarial-rand\tstats\tzero=2,under30=103,under60=215,mean=60.3,min=0.0\tzero=0,under30=109,under60=233,mean=57.7,min=0.1\tSEMANTIC_CORRECTION_TIME_DISTRIBUTION\n",
+      "expected_head": [
+        "experiment\trow\tlegacy\tcanonical\tclassification",
+        "recycle-residue\tbar=1.2,residue=0.0\t60\t60.000\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": true,
+      "seed": "0x9e37_79b9_7f4a_7c15",
+      "claim_ids": [
+        "C96"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
     },
     {
@@ -1080,6 +1141,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1109,6 +1171,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1139,6 +1202,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1169,6 +1233,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1199,6 +1264,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1230,6 +1296,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1259,6 +1326,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1288,6 +1356,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1317,6 +1386,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1346,6 +1416,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1375,6 +1446,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1404,6 +1476,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1433,6 +1506,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1462,6 +1536,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1491,6 +1566,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1520,6 +1596,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1549,6 +1626,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1578,6 +1656,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1607,6 +1686,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1636,6 +1716,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1665,6 +1746,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1694,6 +1776,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1723,6 +1806,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1753,6 +1837,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1782,6 +1867,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1811,6 +1897,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1841,6 +1928,7 @@
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1870,6 +1958,7 @@
       "covered_by_claims": [
         "C77"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1899,6 +1988,7 @@
       "covered_by_claims": [
         "C75"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1928,6 +2018,7 @@
       "covered_by_claims": [
         "C80"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1959,6 +2050,7 @@
       "covered_by_claims": [
         "C81"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1988,6 +2080,7 @@
       "covered_by_claims": [
         "C81"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2017,6 +2110,7 @@
       "covered_by_claims": [
         "C76"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2046,6 +2140,7 @@
       "covered_by_claims": [
         "C92"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2075,6 +2170,7 @@
       "covered_by_claims": [
         "C77"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2104,6 +2200,7 @@
       "covered_by_claims": [
         "C85"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2133,6 +2230,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -2162,6 +2260,7 @@
       "covered_by_claims": [
         "C79"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2191,6 +2290,7 @@
       "covered_by_claims": [
         "C79"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2220,6 +2320,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -2250,6 +2351,7 @@
       "covered_by_claims": [
         "C84"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2279,6 +2381,7 @@
       "covered_by_claims": [
         "C85"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2308,6 +2411,7 @@
       "covered_by_claims": [
         "C86"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2337,6 +2441,7 @@
       "covered_by_claims": [
         "C86"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2366,6 +2471,7 @@
       "covered_by_claims": [
         "C86"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2395,6 +2501,7 @@
       "covered_by_claims": [
         "C91"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2424,6 +2531,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -2453,6 +2561,7 @@
       "covered_by_claims": [
         "C91"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2482,6 +2591,7 @@
       "covered_by_claims": [
         "C91"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2511,6 +2621,7 @@
       "covered_by_claims": [
         "C82"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2539,6 +2650,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "DEFINITIONAL",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": "DEFINITIONAL",
       "classification_reason": "metric definitions, not a numeric survival claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2568,6 +2680,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -2595,6 +2708,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "EXPLORATORY_NEGATIVE",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": "EXPLORATORY_NEGATIVE",
       "classification_reason": "random/negative result with no formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2624,6 +2738,7 @@
       "covered_by_claims": [
         "C80"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2653,6 +2768,7 @@
       "covered_by_claims": [
         "C82"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2683,6 +2799,7 @@
       "covered_by_claims": [
         "C82"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2709,7 +2826,10 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
-      "covered_by_claims": [],
+      "covered_by_claims": [
+        "C96"
+      ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2739,6 +2859,7 @@
       "covered_by_claims": [
         "C82"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2768,6 +2889,7 @@
       "covered_by_claims": [
         "C76"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2797,6 +2919,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -2826,6 +2949,7 @@
       "covered_by_claims": [
         "C76"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2855,6 +2979,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -2884,6 +3009,7 @@
       "covered_by_claims": [
         "C88"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2913,6 +3039,7 @@
       "covered_by_claims": [
         "C80"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2942,6 +3069,7 @@
       "covered_by_claims": [
         "C87"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2971,6 +3099,7 @@
       "covered_by_claims": [
         "C78"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3001,6 +3130,7 @@
       "covered_by_claims": [
         "C83"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3030,6 +3160,7 @@
       "covered_by_claims": [
         "C88"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3060,6 +3191,7 @@
       "covered_by_claims": [
         "C84"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3089,6 +3221,7 @@
       "covered_by_claims": [
         "C83"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3118,6 +3251,7 @@
       "covered_by_claims": [
         "C83"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "deterministic multiplier/capacity scan; no RNG or seed is involved",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3147,6 +3281,7 @@
       "covered_by_claims": [
         "C83"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "deterministic multiplier/capacity scan; no RNG or seed is involved",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3177,6 +3312,7 @@
       "covered_by_claims": [
         "C95"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3208,6 +3344,7 @@
         "C70",
         "C90"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3238,6 +3375,7 @@
         "C71",
         "C90"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3267,6 +3405,7 @@
       "covered_by_claims": [
         "C95"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3296,6 +3435,7 @@
       "covered_by_claims": [
         "C78"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3325,6 +3465,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -3354,6 +3495,7 @@
       "covered_by_claims": [
         "C78"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3383,6 +3525,7 @@
       "covered_by_claims": [
         "C76"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3412,6 +3555,7 @@
       "covered_by_claims": [
         "C87"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3441,6 +3585,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -3470,6 +3615,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -3499,6 +3645,7 @@
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
       "covered_by_claims": [],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -3528,6 +3675,7 @@
       "covered_by_claims": [
         "C64"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3557,6 +3705,7 @@
       "covered_by_claims": [
         "C74"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3586,6 +3735,7 @@
       "covered_by_claims": [
         "C74"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3615,6 +3765,7 @@
       "covered_by_claims": [
         "C74"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3644,6 +3795,7 @@
       "covered_by_claims": [
         "C93"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3673,6 +3825,7 @@
       "covered_by_claims": [
         "C87"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3702,6 +3855,7 @@
       "covered_by_claims": [
         "C92"
       ],
+      "excluded_from_canonical_migration": null,
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -4199,20 +4353,21 @@
     }
   ],
   "summary": {
-    "s2_claims": 52,
-    "s2_experiments": 111,
-    "claimed_experiments": 52,
+    "s2_claims": 53,
+    "s2_experiments": 112,
+    "claimed_experiments": 53,
     "unmapped_experiments": 59,
     "formal_s2_experiments_migrated_to_canonical": 22,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 17,
+    "canonical_semantic_corrections": 18,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 52,
+    "claims_with_experiment_evidence": 53,
     "status_s2_result_lines": 12,
-    "aux_experiments_with_canonical_evidence": 55,
-    "aux_experiments_without_canonical_evidence": 4,
+    "aux_experiments_with_canonical_evidence": 57,
+    "aux_experiments_without_canonical_evidence": 0,
+    "aux_excluded_definitional_or_negative": 2,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
   }
