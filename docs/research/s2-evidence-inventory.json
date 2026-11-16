@@ -156,6 +156,15 @@
       ],
       "certificates": [],
       "boundary": "单一冗余布局"
+    },
+    {
+      "id": "C61",
+      "statement": "canonical C10 补货间隔 60/50/40/30 一致",
+      "evidence": [
+        "s2-canonical-c10"
+      ],
+      "certificates": [],
+      "boundary": "单一 consumable"
     }
   ],
   "experiments": [
@@ -356,6 +365,32 @@
       "canonical_adapter": "NOT_MIGRATED",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-canonical-c10",
+      "report": "experiments/s2-canonical-c10/REPORT.md",
+      "prereg": "experiments/s2-canonical-c10/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c10"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "interval_days\tlegacy_days\tcanonical_days\tdelta_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification\n10\t60\t60\t0.0\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT\n20\t50\t50\t0.0\t200.0\t200.0\tblocked:[MissingResource { resource: \"cutting-insert\", needed: 1.0, available: 0.0 }]\tEXPECTED_AGREEMENT\n30\t40\t40\t0.0\t200.0\t200.0\tblocked:[MissingResource { resource: \"cutting-insert\", needed: 1.0, available: 0.0 }]\tEXPECTED_AGREEMENT\n60\t30\t30\t0.0\t200.0\t200.0\tblocked:[MissingResource { resource: \"cutting-insert\", needed: 1.0, available: 0.0 }]\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "interval_days\tlegacy_days\tcanonical_days\tdelta_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification",
+        "10\t60\t60\t0.0\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C61"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
     },
     {
       "experiment": "s2-canonical-c5",
@@ -2290,14 +2325,14 @@
     }
   ],
   "summary": {
-    "s2_claims": 17,
-    "s2_experiments": 77,
-    "claimed_experiments": 17,
+    "s2_claims": 18,
+    "s2_experiments": 78,
+    "claimed_experiments": 18,
     "unmapped_experiments": 60,
-    "formal_s2_experiments_migrated_to_canonical": 5,
+    "formal_s2_experiments_migrated_to_canonical": 6,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 17,
+    "claims_with_experiment_evidence": 18,
     "status_s2_result_lines": 13,
     "unmapped_status_results": 13
   }
