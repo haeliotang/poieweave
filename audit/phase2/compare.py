@@ -296,6 +296,17 @@ def main() -> int:
             "tampered": {"max_abs_error_J": tampered_error, "detected": detected},
         },
         "platform": _platform(fmpy_log),
+        "difference_decomposition": {
+            "numerical_error_J": max(analytic_errors) if analytic_errors else None,
+            "importer_disagreement_J": fmpy_max_error,
+            "event_boundary_delta_s": {
+                "repair_completion": abs((at_repair["time_s"] if at_repair else canonical["repair_completion_s"]) - canonical["repair_completion_s"]),
+                "depletion": abs(terminal["time_s"] - canonical["survived_s"]),
+            },
+            "model_assumption_J": max((abs(row["delta_J"]) for row in trajectory_rows), default=0.0),
+            "unexplained_J": max(assumption_errors) if assumption_errors else None,
+            "status": "SINGLE_CASE_DECOMPOSITION",
+        },
         "trajectory": {
             "canonical_trajectory": str(CANONICAL_TRAJECTORY.relative_to(ROOT)),
             "canonical_trajectory_sha256": sha(CANONICAL_TRAJECTORY),

@@ -62,6 +62,19 @@ rather than treated as numerical error:
 }
 ```
 
+## Difference decomposition
+
+| category | value |
+| --- | --- |
+| numerical error (analytic ref) | 0.0 J |
+| importer disagreement (C vs fmpy) | 0.0 J |
+| repair-completion boundary delta | 0.0 s |
+| depletion boundary delta | 0.0 s |
+| model-assumption delta | 1200000.0 J |
+| unexplained residual | 0.0 J |
+
+This is a single-case decomposition, not a general trajectory-validity claim.
+
 ## Standard packaging
 
 The frozen canonical reference is `audit/phase2/canonical-reference.txt` with
