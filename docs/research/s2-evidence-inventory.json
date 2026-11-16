@@ -417,6 +417,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C90",
+      "statement": "aux batch14：adversarial-time + regeneration horizon/yield",
+      "evidence": [
+        "s2-canonical-aux-batch14"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -767,6 +776,34 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C89"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch14",
+      "report": "experiments/s2-canonical-aux-batch14/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch14/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch14"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 14,
+      "expected_output": "experiment\trow\tlegacy_instant\tlegacy_event\tcanonical\tclassification\nadversarial-time\tday=0,min_set=filter-1\t0\t5\t5.000\tEXPECTED_AGREEMENT\nadversarial-time\tday=10,min_set=pump-p1\t0\t5\t2.000\tSEMANTIC_CORRECTION_LEGACY_IGNORED_AT_DAY\nregeneration-horizon\tbase-05,interval=10\t40\t-\t40.000\tEXPECTED_AGREEMENT\nregeneration-horizon\tbase-05,interval=15\t60\t-\t60.000\tEXPECTED_AGREEMENT\nregeneration-horizon\tbase-05,interval=20\t80\t-\t80.000\tEXPECTED_AGREEMENT\nregeneration-horizon\tbase-05,interval=30\t90\t-\t90.000\tEXPECTED_AGREEMENT\nregeneration-horizon\tbase-08,interval=10\t60\t-\t60.000\tEXPECTED_AGREEMENT\nregeneration-horizon\tbase-08,interval=15\t90\t-\t90.000\tEXPECTED_AGREEMENT\nregeneration-horizon\tbase-08,interval=20\t90\t-\t90.000\tEXPECTED_AGREEMENT\nregeneration-horizon\tbase-08,interval=30\t90\t-\t90.000\tEXPECTED_AGREEMENT\nregeneration-yield\tyield=1.00\t60\t-\t60.000\tEXPECTED_AGREEMENT\nregeneration-yield\tyield=0.75\t60\t-\t60.000\tEXPECTED_AGREEMENT\nregeneration-yield\tyield=0.50\t50\t-\t50.000\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\trow\tlegacy_instant\tlegacy_event\tcanonical\tclassification",
+        "adversarial-time\tday=0,min_set=filter-1\t0\t5\t5.000\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C90"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -3752,17 +3789,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 46,
-    "s2_experiments": 105,
-    "claimed_experiments": 46,
+    "s2_claims": 47,
+    "s2_experiments": 106,
+    "claimed_experiments": 47,
     "unmapped_experiments": 59,
     "formal_s2_experiments_migrated_to_canonical": 19,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 14,
+    "canonical_semantic_corrections": 15,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 46,
+    "claims_with_experiment_evidence": 47,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0

@@ -1,0 +1,14 @@
+experiment	row	legacy_instant	legacy_event	canonical	classification
+adversarial-time	day=0,min_set=filter-1	0	5	5.000	EXPECTED_AGREEMENT
+adversarial-time	day=10,min_set=pump-p1	0	5	2.000	SEMANTIC_CORRECTION_LEGACY_IGNORED_AT_DAY
+regeneration-horizon	base-05,interval=10	40	-	40.000	EXPECTED_AGREEMENT
+regeneration-horizon	base-05,interval=15	60	-	60.000	EXPECTED_AGREEMENT
+regeneration-horizon	base-05,interval=20	80	-	80.000	EXPECTED_AGREEMENT
+regeneration-horizon	base-05,interval=30	90	-	90.000	EXPECTED_AGREEMENT
+regeneration-horizon	base-08,interval=10	60	-	60.000	EXPECTED_AGREEMENT
+regeneration-horizon	base-08,interval=15	90	-	90.000	EXPECTED_AGREEMENT
+regeneration-horizon	base-08,interval=20	90	-	90.000	EXPECTED_AGREEMENT
+regeneration-horizon	base-08,interval=30	90	-	90.000	EXPECTED_AGREEMENT
+regeneration-yield	yield=1.00	60	-	60.000	EXPECTED_AGREEMENT
+regeneration-yield	yield=0.75	60	-	60.000	EXPECTED_AGREEMENT
+regeneration-yield	yield=0.50	50	-	50.000	EXPECTED_AGREEMENT

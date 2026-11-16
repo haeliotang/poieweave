@@ -51,6 +51,7 @@
 | E-C87 | aux batch11 | 抽样通过 | worn-bound 4 + sharpen-yield 3 + regen-cost-load 6，13/13 一致 |
 | E-C88 | aux batch12 | 抽样通过 | forced-cost 4 + capacity 4，8/8 一致 |
 | E-C89 | aux batch13 | 语义修正 | adversarial failures 15/16 日级；subsets filter-1 |
+| E-C90 | aux batch14 | 语义修正 | adversarial-time 2 + regen horizon 8 + yield 3；day10 legacy bug |
 | D | canonical 证书重签 | 完成 5 个 | joint/load/regeneration/order/metrics-v2；历史证书保留 |
 
 | A | 状态页数值归一化 | 完成 | 12/12 映射；C68 Monte Carlo 为 legacy-only |
