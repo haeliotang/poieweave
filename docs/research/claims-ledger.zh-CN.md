@@ -99,6 +99,7 @@
 | C90 | aux batch14：adversarial-time + regeneration horizon/yield | `experiments/s2-canonical-aux-batch14` | 辅助抽样 |
 | C91 | aux batch15：load + capacity/charge thresholds 11/11 一致 | `experiments/s2-canonical-aux-batch15` | 辅助抽样 |
 | C92 | aux batch16：grease-cost + yield-accumulation 10/10 一致 | `experiments/s2-canonical-aux-batch16` | 辅助抽样 |
+| C93 | aux batch17：two-restorers 4/4 一致 | `experiments/s2-canonical-aux-batch17` | 辅助抽样 |
 
 ## 不应出现的声明
 
