@@ -48,6 +48,7 @@ consume canonical planning results.
 | N4-01 | 7200 s | failure during repair, exact event boundary |
 | N4-02 | 4500 s | non-grid-aligned failure time |
 | N4-03 | 10800 s | failure at repair completion; event order |
+| N4-05 | robot-m1 at 7200 s | repair execution dependency failure / interruption |
 
 Expected canonical depletion:
 
@@ -67,6 +68,20 @@ FMU - canonical = 0                    for t >= 3 h
 
 This expression applies only while the initial repair is not interrupted and
 the repair draw is unchanged. It does not apply to repair interruption cases.
+
+## N4-05 repair-interruption assumption
+
+N4-05 uses the base-08 initial pump repair (fixed 0–10800 s task requiring
+`robot-m1`). The external FMU independently implements the same fixed schedule
+and terminates at the robot failure time if the repair is still running. It does
+not consume canonical resource-selection output.
+
+- canonical: interruption at 7200 s, no repair energy committed, final 39.0 kWh
+- FMU: uniform partial repair draw until 7200 s = 0.3333 kWh, terminal 38.6667 kWh
+- registered difference: -0.5 kWh * 7200 / 10800 = -0.3333 kWh
+- no repair completion may be submitted after interruption
+- the external repair schedule is fixed, so this is execution-timing agreement,
+  not independent repair-planning validity
 
 ## Samples
 

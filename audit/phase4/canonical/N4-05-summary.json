@@ -1,0 +1,6 @@
+{
+  "case": "N4-05",
+  "termination": "blocked:repair interrupted at 7200s: robot-m1 failed",
+  "survived_s": 7200.000000,
+  "final_energy_kwh": 39.000000000
+}

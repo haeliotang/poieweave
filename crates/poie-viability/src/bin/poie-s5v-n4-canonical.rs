@@ -38,12 +38,18 @@ fn options(failures: Vec<FailureEvent>) -> EngineOptions<'static> {
 
 fn main() {
     let model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
-    let cases = [("N4-00", None), ("N4-01", Some(7200.0)), ("N4-02", Some(4500.0)), ("N4-03", Some(10800.0))];
+    let cases = [
+        ("N4-00", None, "pv-1"),
+        ("N4-01", Some(7200.0), "pv-1"),
+        ("N4-02", Some(4500.0), "pv-1"),
+        ("N4-03", Some(10800.0), "pv-1"),
+        ("N4-05", Some(7200.0), "robot-m1"),
+    ];
     let out = root().join("audit/phase4/canonical");
     std::fs::create_dir_all(&out).unwrap();
-    for (case, failure_s) in cases {
+    for (case, failure_s, failure_asset) in cases {
         let failures =
-            failure_s.into_iter().map(|at_s| FailureEvent { at_s, asset: "pv-1".into() }).collect::<Vec<_>>();
+            failure_s.into_iter().map(|at_s| FailureEvent { at_s, asset: failure_asset.into() }).collect::<Vec<_>>();
         let options = options(failures);
         let mut requests = Vec::new();
         for at_s in [0.0, 3600.0, 7200.0, 10800.0, 14400.0] {

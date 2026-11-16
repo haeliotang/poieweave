@@ -31,6 +31,9 @@ def main() -> int:
         "external_fmu_sha256": sha(ROOT / "external/fmu-n4-pv-battery/poie-n4-pv-battery.fmu"),
         "harness_source_sha256": sha(ROOT / "external/fmu-n4-pv-battery/src/harness.c"),
         "model_source_sha256": sha(ROOT / "external/fmu-n4-pv-battery/src/model.c"),
+        "repair_fmu": "external/fmu-n4-repair/poie-n4-repair.fmu",
+        "repair_fmu_sha256": sha(ROOT / "external/fmu-n4-repair/poie-n4-repair.fmu"),
+        "repair_model_source_sha256": sha(ROOT / "external/fmu-n4-repair/src/model.c"),
     }
     manifest = {"schema": "poie.s5v-n4-evidence/1", "baseline": "33583f53ac046a435b6756b4a448bdc9b3ff23d9",
                 "files": files, "tools": tools}

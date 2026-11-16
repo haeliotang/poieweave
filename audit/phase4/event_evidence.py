@@ -21,7 +21,7 @@ def rows(path: Path) -> list[dict[str, float]]:
 def main() -> int:
     out = PHASE / "external"
     out.mkdir(parents=True, exist_ok=True)
-    for case in CONFIG["cases"]:
+    for case in [entry for entry in CONFIG["cases"] if entry.get("failure_asset", "pv-1") == "pv-1"]:
         cid = case["id"]
         data = rows(PHASE / "results" / f"{cid}-fmpy-900.csv")
         events = []

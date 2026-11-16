@@ -4,13 +4,13 @@
   "files": [
     {
       "path": "audit/phase4/PREREG.md",
-      "sha256": "ee8db4bae74097cacc7f687280227bdb3cc7f3e200120c11c72dcfd2d1345a40",
-      "bytes": 3600
+      "sha256": "4665f78e8f50a598671307284eb75c5da07179bc32a04b0dc2fee1b72a02fbec",
+      "bytes": 4421
     },
     {
       "path": "audit/phase4/REPORT.zh-CN.md",
-      "sha256": "ed328aed04f93cec062a7b7c1b8f685d0eaf87fcfa21e30084bda6a209825e4a",
-      "bytes": 3028
+      "sha256": "4a50e2f55fd2f24bf8b13d9e76d5d1f10bec88947fdf1916e3add6d6fa4973eb",
+      "bytes": 4006
     },
     {
       "path": "audit/phase4/SEMANTICS.md",
@@ -21,6 +21,11 @@
       "path": "audit/phase4/__pycache__/compare.cpython-314.pyc",
       "sha256": "eb1d6ca0925369064071e36af49a21c7e883925087144df312319bd1a2c910df",
       "bytes": 16816
+    },
+    {
+      "path": "audit/phase4/__pycache__/compare_repair.cpython-314.pyc",
+      "sha256": "01259eb2f56822654c8eb3f79e405702034e6254de5a4b50502e63c7efa469bd",
+      "bytes": 5892
     },
     {
       "path": "audit/phase4/canonical/N4-00-events.csv",
@@ -83,24 +88,49 @@
       "bytes": 131
     },
     {
+      "path": "audit/phase4/canonical/N4-05-events.csv",
+      "sha256": "255e9d2260eb964e0c28f848d924dec763b426fd0f0ff5ef56fbd977012c0c4b",
+      "bytes": 154
+    },
+    {
+      "path": "audit/phase4/canonical/N4-05-observations.csv",
+      "sha256": "e467522c0f48a4db3a4fd6155ea7094f5602c4ad78b4b23392b3e3029222d73c",
+      "bytes": 1348
+    },
+    {
+      "path": "audit/phase4/canonical/N4-05-summary.json",
+      "sha256": "31830c391838d02e4e6517fe30b07e7f92be8f9dc1ed3109dc097b521704e30a",
+      "bytes": 160
+    },
+    {
       "path": "audit/phase4/check.py",
-      "sha256": "8376a58d62a5feebb32e1cfe66394fe0df597f8b746e70079e016d9ef7193ccf",
-      "bytes": 3145
+      "sha256": "f7bbb79c6953a43d8fbff5f8506f94615490e3a1b16029df18ccc2b03c17e25b",
+      "bytes": 4332
     },
     {
       "path": "audit/phase4/compare.py",
-      "sha256": "9de8b1d5e73087942be9ef448882fde5b97e70351c4935eab58435c5e97be79e",
-      "bytes": 11157
+      "sha256": "688eec5bebf354cdfcbb306e6110009bbead5a301c0d942818712b52f2ecf7b8",
+      "bytes": 11205
+    },
+    {
+      "path": "audit/phase4/compare_repair.py",
+      "sha256": "efe5c3eb036b3b1e93506e16e1c124abf5855af6ca618689522be114c545563f",
+      "bytes": 3610
     },
     {
       "path": "audit/phase4/config.json",
-      "sha256": "5bda49955f8cf25fbbe56d8ae4c5f146498ce807908b719ad96fde5633038987",
-      "bytes": 971
+      "sha256": "ca08b3e128302dd5801d447ec0df73f4411fbc0fb531825fd0b211a211d86397",
+      "bytes": 1309
     },
     {
       "path": "audit/phase4/cross_importer.py",
-      "sha256": "a4f643437f07a3e99f20143ebfb3390d25d4961d8ad90436019e16b5fd18ce95",
-      "bytes": 2350
+      "sha256": "ccf138ebf29bd6a9a454ddea4988741540640730bc13605f197cf9bb30a207b2",
+      "bytes": 2419
+    },
+    {
+      "path": "audit/phase4/cross_repair.py",
+      "sha256": "244731cf5d060ceeea8e3763e8846e949918ce26bd1eef9911485e11cd053c89",
+      "bytes": 1375
     },
     {
       "path": "audit/phase4/differences/comparison.json",
@@ -109,8 +139,8 @@
     },
     {
       "path": "audit/phase4/event_evidence.py",
-      "sha256": "00a42348e784f163eaf25ca033f5dfabb9ca899b32dbe6d4afc4401626352bb2",
-      "bytes": 2482
+      "sha256": "901388b7fb4345d98d354eae17977620b36c8204d6bc6e65c0629d136a5f958e",
+      "bytes": 2551
     },
     {
       "path": "audit/phase4/external/N4-00-events.json",
@@ -213,9 +243,14 @@
       "bytes": 3169
     },
     {
+      "path": "audit/phase4/fmpy_repair.py",
+      "sha256": "fd96127022587e874cdb5eb0cda9afc394cf891e7d28b698a0a03494af41ad63",
+      "bytes": 3165
+    },
+    {
       "path": "audit/phase4/manifest.py",
-      "sha256": "cadfca362e6549e4119f9a3358bcba6ef666e340b815eef104a611f7ef4da28e",
-      "bytes": 1697
+      "sha256": "5aa0f48a5f7f044998b659c72aa0de2908f09e0f311e70f4332ee3ec020196c6",
+      "bytes": 1938
     },
     {
       "path": "audit/phase4/negative-controls/N4-01-duration-tampered.csv",
@@ -251,6 +286,61 @@
       "path": "audit/phase4/negative_controls.py",
       "sha256": "99c692062bac66a0e927ef45c43ea2fdc16995d667e30befa449670192d15542",
       "bytes": 1728
+    },
+    {
+      "path": "audit/phase4/negative_repair.py",
+      "sha256": "0c329ba40c4ddc1c143029e2bf3dda41ea194ce592a9e61a7222ad0599e8d263",
+      "bytes": 1341
+    },
+    {
+      "path": "audit/phase4/repair/N4-05-failure-delayed.csv",
+      "sha256": "fb5a42cea24c44406a46b3e66e618b374c7e62edc37bfce2446057a494847d45",
+      "bytes": 3372
+    },
+    {
+      "path": "audit/phase4/repair/N4-05-failure-delayed.log",
+      "sha256": "ad34afa6cf36ca1bb6e5ddd04fc9b1e87d55f01fb9c45fcc27896c3d750ee5ca",
+      "bytes": 227
+    },
+    {
+      "path": "audit/phase4/repair/N4-05-failure-ignored.csv",
+      "sha256": "1f55ded5a3c66f31288a77e57d07757ca919657273bde24c24a0203846dbd267",
+      "bytes": 19126
+    },
+    {
+      "path": "audit/phase4/repair/N4-05-failure-ignored.log",
+      "sha256": "767102ad9ce2ee4c297c4d1ee620cae61182ad9c78eca9ea431d9a045332c38b",
+      "bytes": 224
+    },
+    {
+      "path": "audit/phase4/repair/N4-05-fmpy-900.csv",
+      "sha256": "e5709187a75a9311de3293021175e0a56e4f41fd8e2d94fa2ef9770bf912c801",
+      "bytes": 2224
+    },
+    {
+      "path": "audit/phase4/repair/N4-05-fmpy.log",
+      "sha256": "5085981f19d788d0b15c0dfd24cb49214941071b3523e393b47b95f64e02b5ff",
+      "bytes": 224
+    },
+    {
+      "path": "audit/phase4/repair/N4-05-harness-900.csv",
+      "sha256": "4d0ea3bba00a6d65bd279bcb0b2cde2fcbe438d155497ed028de7ac67183e866",
+      "bytes": 2134
+    },
+    {
+      "path": "audit/phase4/repair/comparison.json",
+      "sha256": "2c17e024408e85f5148d34117c1c14168635af5f53850cca0cc486ce794e69cb",
+      "bytes": 759
+    },
+    {
+      "path": "audit/phase4/repair/importer-agreement.json",
+      "sha256": "8ef479129b836cfa9a2d9c89edbd487a42e8a9bd51276386caf7604361646940",
+      "bytes": 132
+    },
+    {
+      "path": "audit/phase4/repair/negative-results.json",
+      "sha256": "834a60a38b275ab1177d487a52ec12c017451cd637bfcc6f9a545cf78e723eb1",
+      "bytes": 878
     },
     {
       "path": "audit/phase4/results/N4-00-fmpy-1000.csv",
@@ -384,8 +474,8 @@
     },
     {
       "path": "audit/phase4/step_sensitivity.py",
-      "sha256": "4f91e1d56c22036199f54b23fe5732b3b48826ea269bc19280f24d2f7a6db45a",
-      "bytes": 2057
+      "sha256": "39c59caefb22332e827b358b55a0f246d2795ec6d1ab44d101cac8275a3d2bcd",
+      "bytes": 2126
     }
   ],
   "tools": {
@@ -394,6 +484,9 @@
     "external_fmu": "external/fmu-n4-pv-battery/poie-n4-pv-battery.fmu",
     "external_fmu_sha256": "d6bdaba0f8a1fde804c8ba35ce2b7a072b425455a5dfc4df107cc87f876480de",
     "harness_source_sha256": "2fa64b6d73d3fe4639a2565902d1323bb4ea9f23979c8921886f7e4223ce8ce5",
-    "model_source_sha256": "9513d400b213b452313af659707d9d693dd7e1989ff28f444f5bb39f1990b952"
+    "model_source_sha256": "9513d400b213b452313af659707d9d693dd7e1989ff28f444f5bb39f1990b952",
+    "repair_fmu": "external/fmu-n4-repair/poie-n4-repair.fmu",
+    "repair_fmu_sha256": "0b7d1c11a409faf4091ad5440344ef45746b0d72e48c3c1a68d4d2991f27cfae",
+    "repair_model_source_sha256": "d402cf927220e0688ac5dfba4d0a409bc19de0a529a7101fa5504ae37de1a38a"
   }
 }

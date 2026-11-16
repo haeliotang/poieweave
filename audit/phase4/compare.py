@@ -193,7 +193,7 @@ def main() -> int:
     parser.add_argument("--output", default=str(PHASE / "differences" / "comparison.json"))
     args = parser.parse_args()
     results = []
-    for case in [entry["id"] for entry in CONFIG["cases"]]:
+    for case in [entry["id"] for entry in CONFIG["cases"] if entry.get("failure_asset", "pv-1") == "pv-1"]:
         path = Path(args.fmu_dir) / f"{case}-fmpy-900.csv"
         if not path.is_file():
             print(f"missing {path}", file=__import__("sys").stderr)

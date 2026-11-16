@@ -1,0 +1,36 @@
+{
+  "schema": "poie.s5v-n4c-negative-controls/1",
+  "results": [
+    {
+      "control": "N4-05-failure-delayed",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT",
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "UNEXPLAINED"
+      ],
+      "first_divergence": {
+        "class": "EVENT_TIME_DISPLACEMENT",
+        "canonical_s": 7200.0,
+        "fmu_s": 10800.0
+      }
+    },
+    {
+      "control": "N4-05-failure-ignored",
+      "expected": "STATE_TRANSITION_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT",
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "STATE_TRANSITION_MISMATCH",
+        "UNEXPLAINED"
+      ],
+      "first_divergence": {
+        "class": "EVENT_TIME_DISPLACEMENT",
+        "canonical_s": 7200.0,
+        "fmu_s": -1.0
+      }
+    }
+  ]
+}

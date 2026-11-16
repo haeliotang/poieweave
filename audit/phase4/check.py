@@ -29,11 +29,14 @@ def main() -> int:
     tools = manifest["tools"]
     for path, key in ((tools["external_fmu"], "external_fmu_sha256"),
                       ("external/fmu-n4-pv-battery/src/model.c", "model_source_sha256"),
-                      ("external/fmu-n4-pv-battery/src/harness.c", "harness_source_sha256")):
+                      ("external/fmu-n4-pv-battery/src/harness.c", "harness_source_sha256"),
+                      (tools["repair_fmu"], "repair_fmu_sha256"),
+                      ("external/fmu-n4-repair/src/model.c", "repair_model_source_sha256")):
         if sha(ROOT / path) != tools[key]:
             problems.append(f"tool hash: {path}")
     comparison = json.loads((PHASE / "differences/comparison.json").read_text())
-    expected_cases = {entry["id"] for entry in json.loads((PHASE / "config.json").read_text())["cases"]}
+    expected_cases = {entry["id"] for entry in json.loads((PHASE / "config.json").read_text())["cases"]
+                      if entry.get("failure_asset", "pv-1") == "pv-1"}
     if {entry["case"] for entry in comparison["cases"]} != expected_cases:
         problems.append("case set")
     for entry in comparison["cases"]:
@@ -43,6 +46,20 @@ def main() -> int:
             problems.append(f"{entry['case']}: unexplained residual")
         if entry["worst_conservation_residual_J"] > 1.0:
             problems.append(f"{entry['case']}: conservation")
+    repair = json.loads((PHASE / "repair/comparison.json").read_text())
+    if repair["status"] != "EXPLAINED":
+        problems.append("repair comparison")
+    repair_importer = json.loads((PHASE / "repair/importer-agreement.json").read_text())
+    if not repair_importer["ok"]:
+        problems.append("repair importer agreement")
+    repair_negatives = json.loads((PHASE / "repair/negative-results.json").read_text())
+    if not all(entry["detected"] for entry in repair_negatives["results"]):
+        problems.append("repair negative controls")
+    repair_summary = json.loads((PHASE / "canonical/N4-05-summary.json").read_text())
+    if abs(repair_summary["survived_s"] - 7200.0) > 1e-6 or "repair interrupted" not in repair_summary["termination"]:
+        problems.append("N4-05 canonical termination")
+    if repair["fmu"]["repair_completed"]:
+        problems.append("N4-05 FMU committed repair")
     negatives = json.loads((PHASE / "negative-controls/results.json").read_text())
     if not negatives["results"] or not all(entry["detected"] for entry in negatives["results"]):
         problems.append("negative controls")
@@ -60,7 +77,7 @@ def main() -> int:
     if problems:
         print("N4 evidence FAIL: " + ", ".join(problems), file=sys.stderr)
         return 1
-    print(f"ok N4 evidence: {len(expected_cases)} cases, {len(negatives['results'])} negative controls")
+    print(f"ok N4 evidence: {len(expected_cases)} PV cases + repair case, {len(negatives['results'])} + {len(repair_negatives['results'])} negative controls")
     return 0
 
 
