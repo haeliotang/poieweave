@@ -95,6 +95,7 @@
 | C86 | aux batch10：joint-three/worn/yield 18/18 一致 | `experiments/s2-canonical-aux-batch10` | 辅助抽样 |
 | C87 | aux batch11：worn-bound/sharpen-yield/regen-cost-load 13/13 一致 | `experiments/s2-canonical-aux-batch11` | 辅助抽样 |
 | C88 | aux batch12：regen forced-cost/capacity 8/8 一致 | `experiments/s2-canonical-aux-batch12` | 辅助抽样 |
+| C89 | aux batch13：adversarial failures/subsets 日级一致 + executor 修正 | `experiments/s2-canonical-aux-batch13` | 辅助抽样 |
 
 ## 不应出现的声明
 
