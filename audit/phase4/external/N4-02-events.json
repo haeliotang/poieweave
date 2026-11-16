@@ -1,0 +1,35 @@
+{
+  "case": "N4-02",
+  "events": [
+    {
+      "event": "AssetFailure",
+      "target": "pv-1",
+      "scheduled_s": 4500.0,
+      "before": {
+        "time_s": 3600.0,
+        "pvAvailable": 1.0,
+        "energy_J": 141600000.0
+      },
+      "after": {
+        "time_s": 4500.0,
+        "pvAvailable": 0.0,
+        "energy_J": 141000000.0,
+        "failureAppliedTime_s": 4500.0
+      }
+    },
+    {
+      "event": "RepairCompleted",
+      "target": "pump-p1",
+      "before": {
+        "time_s": 9900.0,
+        "repair_J": 1650000.0,
+        "energy_J": 123900000.0
+      },
+      "after": {
+        "time_s": 10800.0,
+        "repair_J": 1800000.0,
+        "energy_J": 121050000.0
+      }
+    }
+  ]
+}

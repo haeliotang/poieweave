@@ -1,0 +1,269 @@
+{
+  "schema": "poie.s5v-n4-step-sensitivity/1",
+  "rows": [
+    {
+      "case": "N4-00",
+      "step_s": 3600,
+      "tool": "harness",
+      "terminal_s": 72000.0,
+      "expected_terminal_s": 72000,
+      "terminal_ok": true,
+      "failure_s": -1.0,
+      "expected_failure_s": -1.0,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-00",
+      "step_s": 3600,
+      "tool": "fmpy",
+      "terminal_s": 72000.0,
+      "expected_terminal_s": 72000,
+      "terminal_ok": true,
+      "failure_s": -1.0,
+      "expected_failure_s": -1.0,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-00",
+      "step_s": 900,
+      "tool": "harness",
+      "terminal_s": 72000.0,
+      "expected_terminal_s": 72000,
+      "terminal_ok": true,
+      "failure_s": -1.0,
+      "expected_failure_s": -1.0,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-00",
+      "step_s": 900,
+      "tool": "fmpy",
+      "terminal_s": 72000.0,
+      "expected_terminal_s": 72000,
+      "terminal_ok": true,
+      "failure_s": -1.0,
+      "expected_failure_s": -1.0,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-00",
+      "step_s": 1000,
+      "tool": "harness",
+      "terminal_s": 72000.0,
+      "expected_terminal_s": 72000,
+      "terminal_ok": true,
+      "failure_s": -1.0,
+      "expected_failure_s": -1.0,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-00",
+      "step_s": 1000,
+      "tool": "fmpy",
+      "terminal_s": 72000.0,
+      "expected_terminal_s": 72000,
+      "terminal_ok": true,
+      "failure_s": -1.0,
+      "expected_failure_s": -1.0,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-01",
+      "step_s": 3600,
+      "tool": "harness",
+      "terminal_s": 53400.0,
+      "expected_terminal_s": 53400,
+      "terminal_ok": true,
+      "failure_s": 7200.0,
+      "expected_failure_s": 7200,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-01",
+      "step_s": 3600,
+      "tool": "fmpy",
+      "terminal_s": 53400.0,
+      "expected_terminal_s": 53400,
+      "terminal_ok": true,
+      "failure_s": 7200.0,
+      "expected_failure_s": 7200,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-01",
+      "step_s": 900,
+      "tool": "harness",
+      "terminal_s": 53400.0,
+      "expected_terminal_s": 53400,
+      "terminal_ok": true,
+      "failure_s": 7200.0,
+      "expected_failure_s": 7200,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-01",
+      "step_s": 900,
+      "tool": "fmpy",
+      "terminal_s": 53400.0,
+      "expected_terminal_s": 53400,
+      "terminal_ok": true,
+      "failure_s": 7200.0,
+      "expected_failure_s": 7200,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-01",
+      "step_s": 1000,
+      "tool": "harness",
+      "terminal_s": 53400.0,
+      "expected_terminal_s": 53400,
+      "terminal_ok": true,
+      "failure_s": 7200.0,
+      "expected_failure_s": 7200,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-01",
+      "step_s": 1000,
+      "tool": "fmpy",
+      "terminal_s": 53400.0,
+      "expected_terminal_s": 53400,
+      "terminal_ok": true,
+      "failure_s": 7200.0,
+      "expected_failure_s": 7200,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-02",
+      "step_s": 3600,
+      "tool": "harness",
+      "terminal_s": 51150.0,
+      "expected_terminal_s": 51150,
+      "terminal_ok": true,
+      "failure_s": 4500.0,
+      "expected_failure_s": 4500,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-02",
+      "step_s": 3600,
+      "tool": "fmpy",
+      "terminal_s": 51150.0,
+      "expected_terminal_s": 51150,
+      "terminal_ok": true,
+      "failure_s": 4500.0,
+      "expected_failure_s": 4500,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-02",
+      "step_s": 900,
+      "tool": "harness",
+      "terminal_s": 51150.0,
+      "expected_terminal_s": 51150,
+      "terminal_ok": true,
+      "failure_s": 4500.0,
+      "expected_failure_s": 4500,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-02",
+      "step_s": 900,
+      "tool": "fmpy",
+      "terminal_s": 51150.0,
+      "expected_terminal_s": 51150,
+      "terminal_ok": true,
+      "failure_s": 4500.0,
+      "expected_failure_s": 4500,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-02",
+      "step_s": 1000,
+      "tool": "harness",
+      "terminal_s": 51150.0,
+      "expected_terminal_s": 51150,
+      "terminal_ok": true,
+      "failure_s": 4500.0,
+      "expected_failure_s": 4500,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-02",
+      "step_s": 1000,
+      "tool": "fmpy",
+      "terminal_s": 51150.0,
+      "expected_terminal_s": 51150,
+      "terminal_ok": true,
+      "failure_s": 4500.0,
+      "expected_failure_s": 4500,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-03",
+      "step_s": 3600,
+      "tool": "harness",
+      "terminal_s": 56400.0,
+      "expected_terminal_s": 56400,
+      "terminal_ok": true,
+      "failure_s": 10800.0,
+      "expected_failure_s": 10800,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-03",
+      "step_s": 3600,
+      "tool": "fmpy",
+      "terminal_s": 56400.0,
+      "expected_terminal_s": 56400,
+      "terminal_ok": true,
+      "failure_s": 10800.0,
+      "expected_failure_s": 10800,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-03",
+      "step_s": 900,
+      "tool": "harness",
+      "terminal_s": 56400.0,
+      "expected_terminal_s": 56400,
+      "terminal_ok": true,
+      "failure_s": 10800.0,
+      "expected_failure_s": 10800,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-03",
+      "step_s": 900,
+      "tool": "fmpy",
+      "terminal_s": 56400.0,
+      "expected_terminal_s": 56400,
+      "terminal_ok": true,
+      "failure_s": 10800.0,
+      "expected_failure_s": 10800,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-03",
+      "step_s": 1000,
+      "tool": "harness",
+      "terminal_s": 56400.0,
+      "expected_terminal_s": 56400,
+      "terminal_ok": true,
+      "failure_s": 10800.0,
+      "expected_failure_s": 10800,
+      "failure_ok": true
+    },
+    {
+      "case": "N4-03",
+      "step_s": 1000,
+      "tool": "fmpy",
+      "terminal_s": 56400.0,
+      "expected_terminal_s": 56400,
+      "terminal_ok": true,
+      "failure_s": 10800.0,
+      "expected_failure_s": 10800,
+      "failure_ok": true
+    }
+  ]
+}

@@ -1,0 +1,221 @@
+{
+  "schema": "poie.s5v-n4-importer-agreement/1",
+  "results": [
+    {
+      "case": "N4-00",
+      "step_s": 3600,
+      "rows": 21,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    },
+    {
+      "case": "N4-00",
+      "step_s": 900,
+      "rows": 81,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    },
+    {
+      "case": "N4-00",
+      "step_s": 1000,
+      "rows": 73,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    },
+    {
+      "case": "N4-01",
+      "step_s": 3600,
+      "rows": 16,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    },
+    {
+      "case": "N4-01",
+      "step_s": 900,
+      "rows": 61,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    },
+    {
+      "case": "N4-01",
+      "step_s": 1000,
+      "rows": 55,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    },
+    {
+      "case": "N4-02",
+      "step_s": 3600,
+      "rows": 16,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    },
+    {
+      "case": "N4-02",
+      "step_s": 900,
+      "rows": 58,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    },
+    {
+      "case": "N4-02",
+      "step_s": 1000,
+      "rows": 53,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    },
+    {
+      "case": "N4-03",
+      "step_s": 3600,
+      "rows": 17,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    },
+    {
+      "case": "N4-03",
+      "step_s": 900,
+      "rows": 64,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    },
+    {
+      "case": "N4-03",
+      "step_s": 1000,
+      "rows": 58,
+      "terminal_match": true,
+      "row_count_match": true,
+      "max_abs_difference": {
+        "energy_J": 0.0,
+        "generated_J": 0.0,
+        "load_J": 0.0,
+        "repair_J": 0.0,
+        "curtailed_J": 0.0,
+        "depleted": 0.0,
+        "pvAvailable": 0.0,
+        "failureAppliedTime_s": 0.0
+      },
+      "ok": true
+    }
+  ]
+}

@@ -18,3 +18,6 @@ external/fmu-pv-battery/build/
 external/fmu-pv-battery/build-tampered/
 
 external/fmu-pv-battery/build-tampered-duration/
+
+external/fmu-n4-pv-battery/build/
+external/fmu-n4-pv-battery/build-*/

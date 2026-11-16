@@ -1,0 +1,88 @@
+{
+  "schema": "poie.s5v-n4-negative-controls/1",
+  "results": [
+    {
+      "control": "N4-01-failure-delayed",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_ORDER_MISMATCH",
+        "EVENT_TIME_DISPLACEMENT",
+        "UNEXPLAINED"
+      ],
+      "first_divergence": {
+        "at_s": 10800,
+        "class": "UNEXPLAINED",
+        "actual_J": 9000000.0,
+        "expected_J": 0.0,
+        "residual_J": 9000000.0
+      }
+    },
+    {
+      "control": "N4-01-failure-ignored",
+      "expected": "STATE_TRANSITION_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT",
+        "RESOURCE_LEDGER_DIVERGENCE",
+        "STATE_TRANSITION_MISMATCH",
+        "UNEXPLAINED"
+      ],
+      "first_divergence": {
+        "at_s": 10800,
+        "class": "UNEXPLAINED",
+        "actual_J": 9000000.0,
+        "expected_J": 0.0,
+        "residual_J": 9000000.0
+      }
+    },
+    {
+      "control": "N4-01-regen-tampered",
+      "expected": "RESOURCE_LEDGER_DIVERGENCE",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT",
+        "RESOURCE_LEDGER_DIVERGENCE",
+        "UNEXPLAINED"
+      ],
+      "first_divergence": {
+        "at_s": 10800,
+        "class": "UNEXPLAINED",
+        "actual_J": 9000000.0,
+        "expected_J": 0.0,
+        "residual_J": 9000000.0
+      }
+    },
+    {
+      "control": "N4-01-duration-tampered",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT",
+        "UNEXPLAINED"
+      ],
+      "first_divergence": {
+        "at_s": 3600,
+        "class": "UNEXPLAINED",
+        "actual_J": -450000.0,
+        "expected_J": -600000.0,
+        "residual_J": 150000.0
+      }
+    },
+    {
+      "control": "N4-03-order-tampered",
+      "expected": "EVENT_ORDER_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EVENT_ORDER_MISMATCH"
+      ],
+      "first_divergence": {
+        "at_s": 10800.0,
+        "class": "EVENT_ORDER_MISMATCH",
+        "canonical_last_event": "failure:pv-1",
+        "canonical_code": 1.0,
+        "fmu_code": 2.0
+      }
+    }
+  ]
+}
