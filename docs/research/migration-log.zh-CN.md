@@ -42,6 +42,7 @@
 | E-C78 | aux batch2 | 抽样通过 | resupply-time 4 + delivery 3 + regen-cross 12，19/19 一致 |
 | E-C79 | aux batch3 | 抽样通过 | joint-boundary 6 + joint-consumables 8，14/14 一致 |
 | E-C80 | aux batch4 | 抽样通过 | regen-cost 9 + energy-recharge 3 + recharge-bound 1，13/13 一致 |
+| E-C81 | aux batch5 | 定义修正 | coverage 5→9、11→33；threshold 60/61 一致 |
 | D | canonical 证书重签 | 完成 5 个 | joint/load/regeneration/order/metrics-v2；历史证书保留 |
 
 | A | 状态页数值归一化 | 完成 | 12/12 映射；C68 Monte Carlo 为 legacy-only |
