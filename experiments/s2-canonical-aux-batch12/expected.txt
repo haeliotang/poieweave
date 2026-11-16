@@ -1,0 +1,9 @@
+experiment	row	legacy	canonical	classification
+regen-forced-cost	energy_x=1	10	10.000	EXPECTED_AGREEMENT
+regen-forced-cost	energy_x=10	10	10.000	EXPECTED_AGREEMENT
+regen-forced-cost	energy_x=50	10	10.000	EXPECTED_AGREEMENT
+regen-forced-cost	energy_x=100	0	0.000	EXPECTED_AGREEMENT
+regen-capacity-semantics	capacity=200	rejected	rejected	EXPECTED_AGREEMENT
+regen-capacity-semantics	capacity=400	rejected	rejected	EXPECTED_AGREEMENT
+regen-capacity-semantics	capacity=500	521	521	EXPECTED_AGREEMENT
+regen-capacity-semantics	capacity=600	521	521	EXPECTED_AGREEMENT

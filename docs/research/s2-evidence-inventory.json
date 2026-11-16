@@ -399,6 +399,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C88",
+      "statement": "aux batch12：regen forced-cost/capacity 8/8 一致",
+      "evidence": [
+        "s2-canonical-aux-batch12"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -693,6 +702,34 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C87"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch12",
+      "report": "experiments/s2-canonical-aux-batch12/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch12/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch12"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 9,
+      "expected_output": "experiment\trow\tlegacy\tcanonical\tclassification\nregen-forced-cost\tenergy_x=1\t10\t10.000\tEXPECTED_AGREEMENT\nregen-forced-cost\tenergy_x=10\t10\t10.000\tEXPECTED_AGREEMENT\nregen-forced-cost\tenergy_x=50\t10\t10.000\tEXPECTED_AGREEMENT\nregen-forced-cost\tenergy_x=100\t0\t0.000\tEXPECTED_AGREEMENT\nregen-capacity-semantics\tcapacity=200\trejected\trejected\tEXPECTED_AGREEMENT\nregen-capacity-semantics\tcapacity=400\trejected\trejected\tEXPECTED_AGREEMENT\nregen-capacity-semantics\tcapacity=500\t521\t521\tEXPECTED_AGREEMENT\nregen-capacity-semantics\tcapacity=600\t521\t521\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\trow\tlegacy\tcanonical\tclassification",
+        "regen-forced-cost\tenergy_x=1\t10\t10.000\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C88"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -3678,17 +3715,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 44,
-    "s2_experiments": 103,
-    "claimed_experiments": 44,
+    "s2_claims": 45,
+    "s2_experiments": 104,
+    "claimed_experiments": 45,
     "unmapped_experiments": 59,
-    "formal_s2_experiments_migrated_to_canonical": 18,
+    "formal_s2_experiments_migrated_to_canonical": 19,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 13,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 44,
+    "claims_with_experiment_evidence": 45,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
