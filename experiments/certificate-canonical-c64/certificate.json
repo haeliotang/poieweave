@@ -1,0 +1,48 @@
+{
+  "canonical_classification": "SEMANTIC_CORRECTION",
+  "certificate_id": "poie-s2-canonical-c64-v1",
+  "claim_statement": "C13 \u80fd\u91cf\u8fb9\u754c\u65e5\u7ea7\u4e0d\u53d8\uff1b\u7cbe\u786e\u8017\u5c3d\u6700\u591a\u79fb 1 h",
+  "claims": [
+    "C64"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_sources": [
+    {
+      "path": "experiments/s2-canonical-c13/expected.txt",
+      "sha256": "c86c0bdde218b65f9f5cd7173a56d6976782444c7d76ef3f4b3a57ef22d42d92"
+    },
+    {
+      "path": "experiments/s2-canonical-c13/REPORT.md",
+      "sha256": "0615702ec3e9b046f52913b8ad286a663386a7a4c037a07cb5b1694d6ecba36a"
+    },
+    {
+      "path": "experiments/s2-canonical-c13/PREREG.md",
+      "sha256": "40dc0c42dbf235dd722a9fd0c283530567eeab6f328f17998ee35735d8cd712b"
+    }
+  ],
+  "experiment": {
+    "expected": "experiments/s2-canonical-c13/expected.txt",
+    "expected_sha256": "c86c0bdde218b65f9f5cd7173a56d6976782444c7d76ef3f4b3a57ef22d42d92",
+    "path": "experiments/s2-canonical-c13"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "runner": {
+    "binary": "poie-migration-c13",
+    "sha256": "29473ab11355b25b7b11810e545d0a01fc99d4eccc303930e5f6b5b7cbd20015",
+    "source": "crates/poie-viability/src/bin/poie-migration-c13.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/2",
+  "scope": "model/simulation evidence only; canonical claim C64",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "status": "CANONICAL_ISSUED",
+  "verifier": "poie-canonical-s2-certificate/2"
+}

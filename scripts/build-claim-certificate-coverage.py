@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 INVENTORY = ROOT / "docs/research/s2-evidence-inventory.json"
 MATRIX = ROOT / "docs/research/certificate-impact-matrix.json"
+CANONICAL_INDEX = ROOT / "docs/research/canonical-claim-certificate-index.json"
 OUT_JSON = ROOT / "docs/research/s2-claim-certificate-coverage.json"
 OUT_MD = ROOT / "docs/research/s2-claim-certificate-coverage.zh-CN.md"
 
@@ -39,7 +40,21 @@ def build() -> dict:
     by_claim: dict[str, dict] = {}
     for cert in matrix["certificates"]:
         for claim in cert["claims"]:
-            by_claim[claim] = cert
+            by_claim[claim] = {
+                "certificate_status": cert["certificate_status"],
+                "id": cert["id"],
+                "canonical_certificate": cert["canonical_certificate"],
+                "scope": cert.get("scope"),
+            }
+    if CANONICAL_INDEX.is_file():
+        canonical_index = json.loads(CANONICAL_INDEX.read_text())
+        for entry in canonical_index["certificates"]:
+            by_claim[entry["claim"]] = {
+                "certificate_status": entry["status"],
+                "id": f"canonical-{entry['claim'].lower()}",
+                "canonical_certificate": entry["certificate"],
+                "scope": entry["classification"],
+            }
     rows = []
     for claim in inventory["claims"]:
         cid = claim["id"]
@@ -60,7 +75,7 @@ def build() -> dict:
             status = cert["certificate_status"]
             certificate_id = cert["id"]
             canonical_certificate = cert["canonical_certificate"]
-            scope = cert["certificate_scope"] if "certificate_scope" in cert else cert.get("scope")
+            scope = cert.get("scope")
         if cert is None and replacement is not None:
             status = "SUPERSEDED_BY_CLAIM"
             certificate_id = None

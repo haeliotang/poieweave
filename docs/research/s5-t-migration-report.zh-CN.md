@@ -140,6 +140,26 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 
 完整矩阵：[certificate-impact-matrix.zh-CN.md](certificate-impact-matrix.zh-CN.md)
 
+### 7.1 claim 级证书覆盖
+
+53 个 claim 的机器生成覆盖见
+[s2-claim-certificate-coverage.zh-CN.md](s2-claim-certificate-coverage.zh-CN.md)：
+
+```text
+REISSUED              5
+CANONICAL_ISSUED     13
+SUPERSEDED            4
+SUPERSEDED_BY_CLAIM   8
+NOT_CERTIFIED        23
+```
+
+13 个新证书位于 `experiments/certificate-canonical-c56..c67,c73`，
+由 `scripts/build-canonical-claim-certificates.py` 生成，绑定 claim、实验输出、
+runner、engine、模型、证据源文件与 claims ledger 哈希，并由
+`scripts/verify-canonical-claim-certificates.py` 校验。
+
+**其余 23 个 claim 仍为 `NOT_CERTIFIED`，证书迁移未完成。**
+
 ## 8. 当前模型能力与科学边界
 
 已建立：

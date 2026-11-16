@@ -1,0 +1,48 @@
+{
+  "canonical_classification": "SEMANTIC_CORRECTION",
+  "certificate_id": "poie-s2-canonical-c73-v1",
+  "claim_statement": "canonical C68 Monte Carlo\uff1a\u4e2d\u4f4d 72\u219268\u3001\u5747\u503c 64.8\u219264.0",
+  "claims": [
+    "C73"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_sources": [
+    {
+      "path": "experiments/s2-canonical-c68-monte-carlo/expected.txt",
+      "sha256": "ea3ee7665a203715616ea96fd293729243656f2d4ab9e4607286455bd73b7437"
+    },
+    {
+      "path": "experiments/s2-canonical-c68-monte-carlo/REPORT.md",
+      "sha256": "c98dbd7c297d8c94eab44059b831d6123ef23ec0a4a9550df62a4cd8bc6c88e6"
+    },
+    {
+      "path": "experiments/s2-canonical-c68-monte-carlo/PREREG.md",
+      "sha256": "dbba8965b10de0aa437ae3b82bb25ac61bc0cbf1371d9e0c4541a53ae689d6dd"
+    }
+  ],
+  "experiment": {
+    "expected": "experiments/s2-canonical-c68-monte-carlo/expected.txt",
+    "expected_sha256": "ea3ee7665a203715616ea96fd293729243656f2d4ab9e4607286455bd73b7437",
+    "path": "experiments/s2-canonical-c68-monte-carlo"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-05/model.toml",
+      "sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150"
+    }
+  ],
+  "runner": {
+    "binary": "poie-migration-c68",
+    "sha256": "4a7e71abc3fda1b3aef4462fb20a0ffdcc8d3e55a2e9a3523e5bb754c079285d",
+    "source": "crates/poie-viability/src/bin/poie-migration-c68.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/2",
+  "scope": "model/simulation evidence only; canonical claim C73",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "status": "CANONICAL_ISSUED",
+  "verifier": "poie-canonical-s2-certificate/2"
+}
