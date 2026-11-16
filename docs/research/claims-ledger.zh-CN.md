@@ -68,7 +68,7 @@
 | C59 | canonical C8 11 行负载制度与能源一致 | `experiments/s2-canonical-c8` | 恒定负载 |
 | C60 | canonical C9 冗余泵 60→90、17 天一致 | `experiments/s2-canonical-c9` | 单一冗余布局 |
 | C61 | canonical C10 补货间隔 60/50/40/30 一致 | `experiments/s2-canonical-c10` | 单一 consumable |
-| C62 | C11 canonical 迁移被 t=0 初始维修顺序阻塞 | `experiments/s2-canonical-c11` | BLOCKED；不得重签 |
+| C62 | C11 canonical 迁移按日粒度成立；t=0 顺序已定义 | `experiments/s2-canonical-c11` | 精确值 0→0.125 d；day-10 legacy 行无效 |
 
 ## 不应出现的声明
 

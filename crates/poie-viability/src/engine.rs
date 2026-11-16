@@ -344,6 +344,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
     });
 
     let mut index = 0usize;
+    let mut initial_phase = running.is_some();
     loop {
         if running.is_none() && !pending.is_empty() {
             match start_repair(
@@ -377,7 +378,18 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                 }
             }
         }
-        let next_event = timeline.get(index).map(|(at_s, _)| (*at_s).max(clock.now_s()));
+        let raw_next_event = timeline.get(index).map(|(at_s, _)| (*at_s).max(clock.now_s()));
+        let next_event = if initial_phase {
+            raw_next_event.map(|at_s| {
+                if at_s <= clock.now_s() + 1e-9 {
+                    running.as_ref().map(|repair| repair.end_s).unwrap_or(at_s)
+                } else {
+                    at_s
+                }
+            })
+        } else {
+            raw_next_event
+        };
         let next_completion = running.as_ref().map(|repair| repair.end_s);
         let next_s =
             [next_event, next_completion, Some(options.horizon_s)].into_iter().flatten().fold(f64::INFINITY, f64::min);
@@ -403,6 +415,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
         if let Some(repair) = running.as_ref() {
             if repair.end_s <= clock.now_s() + 1e-9 {
                 let repair = running.take().expect("running repair");
+                initial_phase = false;
                 let before = inventory.clone();
                 if let Err(reason) = apply_plans(&mut current, &mut inventory, &repair.plans, &repair.planning_base) {
                     return Ok(EngineOutcome {
@@ -979,6 +992,17 @@ mod tests {
         .unwrap();
         assert_eq!(outcome.termination, EngineTermination::CompletedHorizon);
         assert!(!outcome.trace.iter().any(|event| event.kind.starts_with("repair_completed")));
+    }
+
+    #[test]
+    fn zero_time_failure_is_processed_after_initial_repair() {
+        let mut model = base08();
+        model.assets.get_mut("pump-p1").unwrap().status = AssetStatus::Failed;
+        let outcome =
+            run_engine(&model, &options(vec![FailureEvent { at_s: 0.0, asset: "filter-1".into() }], 24.0 * 3600.0))
+                .unwrap();
+        assert!((outcome.survived_s - 3.0 * 3600.0).abs() < 1.0, "{:?}", outcome.termination);
+        assert!(matches!(outcome.termination, EngineTermination::Blocked(ref reason) if reason.contains("filter-1")));
     }
 
     #[test]

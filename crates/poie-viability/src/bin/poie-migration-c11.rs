@@ -103,17 +103,19 @@ fn main() -> ExitCode {
         let legacy_set = pick(&legacy_rows, legacy_yes);
         let canonical_set = pick(&canonical_rows, canonical_yes);
         let minima_agree = (legacy_no - canonical_no).abs() < 1e-9 && (legacy_yes - canonical_yes).abs() < 1e-9;
+        let day_agree = (legacy_no.round() - canonical_no.round()).abs() < 1e-9
+            && (legacy_yes.round() - canonical_yes.round()).abs() < 1e-9;
         let classification = if minima_agree && legacy_set == canonical_set {
             "EXPECTED_AGREEMENT"
-        } else if minima_agree {
-            "EXPECTED_MINIMA_ONLY"
-        } else if at_day > 0.0 {
+        } else if day_agree && legacy_set == canonical_set && at_day == 0.0 {
+            "SEMANTIC_CORRECTION_REPAIR_TIME_AT_ZERO"
+        } else if legacy_set == canonical_set && at_day > 0.0 {
             "SEMANTIC_CORRECTION_LEGACY_IGNORED_AT_DAY"
         } else {
             "UNEXPLAINED"
         };
         println!(
-            "{at_day:.0}\t{legacy_no:.0}\t{legacy_yes:.0}\t{canonical_no:.0}\t{canonical_yes:.0}\t{legacy_set}\t{canonical_set}\t{classification}"
+            "{at_day:.0}\t{legacy_no:.3}\t{legacy_yes:.3}\t{canonical_no:.3}\t{canonical_yes:.3}\t{legacy_set}\t{canonical_set}\t{classification}"
         );
     }
     ExitCode::SUCCESS
