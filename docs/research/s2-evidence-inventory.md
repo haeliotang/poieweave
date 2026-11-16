@@ -8,21 +8,21 @@ currently produces the formal result; it is not a claim of equivalence.
 
 ## Summary
 
-- S2 claims: 50
-- S2 experiment directories: 109
-- Experiments referenced by claims: 50
+- S2 claims: 51
+- S2 experiment directories: 110
+- Experiments referenced by claims: 51
 - Unmapped experiments: 59
 - Formal S2 experiments migrated to canonical: 22
 - Canonical migrations blocked: 0
-- Canonical semantic corrections: 15
+- Canonical semantic corrections: 16
 - Stochastic experiments missing a recorded seed: 0
 - S2 certificates: 11
 - Canonical S2 certificates reissued: 5
 - Status-page S2 result lines: 12
 - Status result lines without an explicit claim: 0
 - Unclassified experiments: 0
-- Aux experiments with canonical evidence: 52
-- Aux experiments without canonical evidence: 7
+- Aux experiments with canonical evidence: 53
+- Aux experiments without canonical evidence: 6
 
 ## Claim crosswalk
 
@@ -78,6 +78,7 @@ currently produces the formal result; it is not a claim of equivalence.
 | C91 | s2-canonical-aux-batch15 | engine::run_engine | MIGRATED |
 | C92 | s2-canonical-aux-batch16 | engine::run_engine | MIGRATED |
 | C93 | s2-canonical-aux-batch17 | engine::run_engine | MIGRATED |
+| C94 | s2-canonical-aux-batch18 | engine::run_engine | MIGRATED |
 
 ## Status-page S2 results
 
@@ -110,7 +111,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-adversarial-resupply | poie-adversarial-resupply | base-08 | C11 | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-adversarial-subsets | poie-adversarial-subsets | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-adversarial-time | poie-adversarial-time | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
-| s2-adversarial-timing | poie-adversarial-timing | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-adversarial-timing | poie-adversarial-timing | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-canonical-aux-batch1 | poie-migration-aux-batch1 | base-05, base-08 | C77 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch10 | poie-migration-aux-batch10 | base-08 | C86 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch11 | poie-migration-aux-batch11 | base-08 | C87 | NOT_APPLICABLE | CANONICAL_MIGRATED |
@@ -120,6 +121,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-canonical-aux-batch15 | poie-migration-aux-batch15 | base-05, base-08 | C91 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch16 | poie-migration-aux-batch16 | base-08 | C92 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch17 | poie-migration-aux-batch17 | base-08 | C93 | NOT_APPLICABLE | CANONICAL_MIGRATED |
+| s2-canonical-aux-batch18 | poie-migration-aux-batch18 | base-08 | C94 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
 | s2-canonical-aux-batch2 | poie-migration-aux-batch2 | base-08 | C78 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch3 | poie-migration-aux-batch3 | base-08 | C79 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch4 | poie-migration-aux-batch4 | base-08 | C80 | NOT_APPLICABLE | CANONICAL_MIGRATED |

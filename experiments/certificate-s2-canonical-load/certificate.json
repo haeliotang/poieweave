@@ -4,7 +4,7 @@
   "claims": [
     "C69"
   ],
-  "claims_sha256": "932b7c6e0ae123c208f5c6ed4ae92a531cd08eda74a029af4a03bb6f8a6d841c",
+  "claims_sha256": "14fad4e2f5889e1d574b07512969b912ca7c23c4d76cc4b8d2cbfd5c24b378c3",
   "engine": {
     "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
     "source": "crates/poie-viability/src/engine.rs"
