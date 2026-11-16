@@ -67,6 +67,7 @@
 | C58 | canonical C7 六行 40/60、50/60 一致 | `experiments/s2-canonical-c7` | 模型内 |
 | C59 | canonical C8 11 行负载制度与能源一致 | `experiments/s2-canonical-c8` | 恒定负载 |
 | C60 | canonical C9 冗余泵 60→90、17 天一致 | `experiments/s2-canonical-c9` | 单一冗余布局 |
+| C61 | canonical C10 补货间隔 60/50/40/30 一致 | `experiments/s2-canonical-c10` | 单一 consumable |
 
 ## 不应出现的声明
 

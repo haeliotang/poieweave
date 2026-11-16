@@ -1,0 +1,5 @@
+interval_days	legacy_days	canonical_days	delta_days	legacy_energy_kwh	canonical_energy_kwh	canonical_termination	classification
+10	60	60	0.0	200.0	200.0	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	EXPECTED_AGREEMENT
+20	50	50	0.0	200.0	200.0	blocked:[MissingResource { resource: "cutting-insert", needed: 1.0, available: 0.0 }]	EXPECTED_AGREEMENT
+30	40	40	0.0	200.0	200.0	blocked:[MissingResource { resource: "cutting-insert", needed: 1.0, available: 0.0 }]	EXPECTED_AGREEMENT
+60	30	30	0.0	200.0	200.0	blocked:[MissingResource { resource: "cutting-insert", needed: 1.0, available: 0.0 }]	EXPECTED_AGREEMENT
