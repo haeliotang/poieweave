@@ -632,6 +632,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-migration-aux-batch6 > /tmp/s2-canonical-aux-batch6.out
           diff experiments/s2-canonical-aux-batch6/expected.txt /tmp/s2-canonical-aux-batch6.out
           test -f experiments/s2-canonical-aux-batch6/REPORT.md
+      - name: S2 canonical aux batch 7
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-migration-aux-batch7 > /tmp/s2-canonical-aux-batch7.out
+          diff experiments/s2-canonical-aux-batch7/expected.txt /tmp/s2-canonical-aux-batch7.out
+          test -f experiments/s2-canonical-aux-batch7/REPORT.md
       - name: S3 repair deadline (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-repair-deadline > /tmp/s3-repair-deadline.out
