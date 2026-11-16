@@ -90,6 +90,7 @@
 | C81 | aux batch5：coverage 定义修正；regen threshold 60/61 一致 | `experiments/s2-canonical-aux-batch5` | 辅助抽样 |
 | C82 | aux batch6：redundancy/long-horizon/recharge-rule 9/9 一致 | `experiments/s2-canonical-aux-batch6` | 辅助抽样 |
 | C83 | aux batch7：regen threshold battery/initial + regen-event 17/17 一致 | `experiments/s2-canonical-aux-batch7` | 辅助抽样 |
+| C84 | aux batch8：regen-long 语义修正；joint double-failure 10→10.25 | `experiments/s2-canonical-aux-batch8` | 辅助抽样 |
 
 ## 不应出现的声明
 
