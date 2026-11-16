@@ -1,0 +1,81 @@
+# S2 claim → canonical experiment → certificate 覆盖
+
+> 机器生成。`NOT_CERTIFIED` 是显式缺口，不是已认证声明。
+
+## 汇总
+
+```text
+claims              53
+有 canonical 实验   53
+旧 claim 被新 claim 取代 13
+NOT_CERTIFIED       36
+REISSUED            5
+SUPERSEDED          4
+SUPERSEDED_BY_CLAIM 8
+```
+
+## 逐项
+
+| claim | canonical experiment | certificate | status |
+| --- | --- | --- | --- |
+| C5 → C56 | s2-canonical-c5 | — | SUPERSEDED_BY_CLAIM |
+| C6 → C57 | s2-canonical-c6 | certificate-s2-joint | REISSUED |
+| C7 → C58 | s2-canonical-c7 | — | SUPERSEDED_BY_CLAIM |
+| C8 → C59 | s2-canonical-c8 | — | SUPERSEDED_BY_CLAIM |
+| C9 → C60 | s2-canonical-c9 | — | SUPERSEDED_BY_CLAIM |
+| C10 → C61 | s2-canonical-c10 | — | SUPERSEDED_BY_CLAIM |
+| C11 → C62 | s2-canonical-c11 | — | SUPERSEDED_BY_CLAIM |
+| C12 → C63 | s2-canonical-c12 | certificate-s2-time | SUPERSEDED |
+| C13 → C64 | s2-canonical-c13 | certificate-s2-time | SUPERSEDED |
+| C14 → C65 | s2-canonical-c14 | — | SUPERSEDED_BY_CLAIM |
+| C18 → C66 | s2-canonical-c18 | certificate-s2-time | SUPERSEDED |
+| C19 → C67 | s2-canonical-c19 | certificate-s2-time | SUPERSEDED |
+| C56 | s2-canonical-c5 | — | NOT_CERTIFIED |
+| C57 | s2-canonical-c6 | — | NOT_CERTIFIED |
+| C58 | s2-canonical-c7 | — | NOT_CERTIFIED |
+| C59 | s2-canonical-c8 | — | NOT_CERTIFIED |
+| C60 | s2-canonical-c9 | — | NOT_CERTIFIED |
+| C61 | s2-canonical-c10 | — | NOT_CERTIFIED |
+| C62 | s2-canonical-c11 | — | NOT_CERTIFIED |
+| C63 | s2-canonical-c12 | — | NOT_CERTIFIED |
+| C64 | s2-canonical-c13 | — | NOT_CERTIFIED |
+| C65 | s2-canonical-c14 | — | NOT_CERTIFIED |
+| C66 | s2-canonical-c18 | — | NOT_CERTIFIED |
+| C67 | s2-canonical-c19 | — | NOT_CERTIFIED |
+| C68 → C73 | s2-canonical-c68-monte-carlo | — | SUPERSEDED_BY_CLAIM |
+| C69 | s2-canonical-load-base05 | certificate-s2-load | REISSUED |
+| C70 | s2-canonical-regen-horizon | certificate-s2-regeneration | REISSUED |
+| C71 | s2-canonical-metrics-groups | certificate-s2-metrics | REISSUED |
+| C72 | s2-canonical-order | certificate-s2-order | REISSUED |
+| C73 | s2-canonical-c68-monte-carlo | — | NOT_CERTIFIED |
+| C74 | s2-canonical-c12-components | — | NOT_CERTIFIED |
+| C75 | s2-canonical-energy-interventions | — | NOT_CERTIFIED |
+| C76 | s2-canonical-redundancy-restorers | — | NOT_CERTIFIED |
+| C77 | s2-canonical-aux-batch1 | — | NOT_CERTIFIED |
+| C78 | s2-canonical-aux-batch2 | — | NOT_CERTIFIED |
+| C79 | s2-canonical-aux-batch3 | — | NOT_CERTIFIED |
+| C80 | s2-canonical-aux-batch4 | — | NOT_CERTIFIED |
+| C81 | s2-canonical-aux-batch5 | — | NOT_CERTIFIED |
+| C82 | s2-canonical-aux-batch6 | — | NOT_CERTIFIED |
+| C83 | s2-canonical-aux-batch7 | — | NOT_CERTIFIED |
+| C84 | s2-canonical-aux-batch8 | — | NOT_CERTIFIED |
+| C85 | s2-canonical-aux-batch9 | — | NOT_CERTIFIED |
+| C86 | s2-canonical-aux-batch10 | — | NOT_CERTIFIED |
+| C87 | s2-canonical-aux-batch11 | — | NOT_CERTIFIED |
+| C88 | s2-canonical-aux-batch12 | — | NOT_CERTIFIED |
+| C89 | s2-canonical-aux-batch13 | — | NOT_CERTIFIED |
+| C90 | s2-canonical-aux-batch14 | — | NOT_CERTIFIED |
+| C91 | s2-canonical-aux-batch15 | — | NOT_CERTIFIED |
+| C92 | s2-canonical-aux-batch16 | — | NOT_CERTIFIED |
+| C93 | s2-canonical-aux-batch17 | — | NOT_CERTIFIED |
+| C94 | s2-canonical-aux-batch18 | — | NOT_CERTIFIED |
+| C95 | s2-canonical-aux-batch19 | — | NOT_CERTIFIED |
+| C96 | s2-canonical-aux-batch20 | — | NOT_CERTIFIED |
+
+## 解释
+
+- `REISSUED`：已有 canonical 证书。
+- `SUPERSEDED`：历史证书有效于原始语义，但已被 canonical 语义取代。
+- `NOT_CERTIFIED`：有 canonical 实验，但尚未签发新证书；不得当作已认证。
+- `SUPERSEDED_BY_CLAIM`：历史 claim 已由带 canonical 实验的新 claim 取代；新 claim 的证书状态见对应行。
+- 本表不改变既有证书，也不把辅助覆盖自动升级为正式认证。
