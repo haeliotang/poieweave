@@ -183,6 +183,15 @@
       ],
       "certificates": [],
       "boundary": "旧 10/16/21 仅延迟故障模型"
+    },
+    {
+      "id": "C64",
+      "statement": "C13 能量边界日级不变；精确耗尽最多移 1 h",
+      "evidence": [
+        "s2-canonical-c13"
+      ],
+      "certificates": [],
+      "boundary": "三负载"
     }
   ],
   "experiments": [
@@ -433,7 +442,7 @@
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
-      "migration_status": "CANONICAL_MIGRATED",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
     },
     {
@@ -456,6 +465,32 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C63"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-c13",
+      "report": "experiments/s2-canonical-c13/REPORT.md",
+      "prereg": "experiments/s2-canonical-c13/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c13"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 4,
+      "expected_output": "load_kw\tinstant_days\tevent_days\tcanonical_days\tevent_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification\n2.6\t16\t16.250\t16.250\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\n3.0\t3\t3.292\t3.333\t0.0\t0.0\tblocked:energy_depleted\tSEMANTIC_CORRECTION_REPAIR_SCHEDULE\n4.0\t1\t1.097\t1.111\t0.0\t0.0\tblocked:energy_depleted\tSEMANTIC_CORRECTION_REPAIR_SCHEDULE\n",
+      "expected_head": [
+        "load_kw\tinstant_days\tevent_days\tcanonical_days\tevent_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification",
+        "2.6\t16\t16.250\t16.250\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C64"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -2395,16 +2430,16 @@
     }
   ],
   "summary": {
-    "s2_claims": 20,
-    "s2_experiments": 80,
-    "claimed_experiments": 20,
+    "s2_claims": 21,
+    "s2_experiments": 81,
+    "claimed_experiments": 21,
     "unmapped_experiments": 60,
-    "formal_s2_experiments_migrated_to_canonical": 7,
+    "formal_s2_experiments_migrated_to_canonical": 6,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 1,
+    "canonical_semantic_corrections": 3,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 20,
+    "claims_with_experiment_evidence": 21,
     "status_s2_result_lines": 13,
     "unmapped_status_results": 13
   }

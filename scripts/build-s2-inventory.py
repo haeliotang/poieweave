@@ -92,7 +92,8 @@ def experiment_record(path: Path, all_claims: list[dict[str, object]]) -> dict[s
             "CANONICAL_BLOCKED"
             if path.name.startswith("s2-canonical-") and "Status: BLOCKED" in report
             else "CANONICAL_SEMANTIC_CORRECTION"
-            if path.name.startswith("s2-canonical-") and "Status: SUPERSEDED" in report
+            if path.name.startswith("s2-canonical-")
+            and ("Status: SUPERSEDED" in report or "Status: MIGRATED_WITH_SEMANTIC_CORRECTION" in report)
             else "CANONICAL_MIGRATED"
             if path.name.startswith("s2-canonical-")
             else "NOT_MIGRATED"

@@ -24,11 +24,12 @@
 
 | 指标 | 数量 |
 | --- | --- |
-| S2 claims | 20 |
-| S2 experiment 目录 | 80 |
-| 被 claim 引用的 experiment | 20 |
+| S2 claims | 21 |
+| S2 experiment 目录 | 81 |
+| 被 claim 引用的 experiment | 21 |
 | 未被 claim 引用的 experiment | 60 |
-| 已迁移到 canonical 的正式 S2 experiment | **0** |
+| 已迁移到 canonical 的正式 S2 experiment | **6** |
+| canonical 语义修正 | **3**（C11/C12/C13） |
 | 缺少记录种子的随机 experiment | 2 |
 | S2 证书 | 6 |
 | 状态页 S2 数值结论行 | 13 |
@@ -36,7 +37,7 @@
 
 ## 3. 关键发现
 
-### F1：正式 claim 只覆盖 12/72 个 S2 实验
+### F1：正式 claim 只覆盖 21/81 个 S2 实验
 
 这不能自动解释为其余 60 个都是探索性实验。Phase B 必须先分类：
 
