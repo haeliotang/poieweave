@@ -300,6 +300,15 @@
       ],
       "certificates": [],
       "boundary": "repair-executor 事件时刻"
+    },
+    {
+      "id": "C77",
+      "statement": "aux batch1：energy-boundary 18 行 + heldout 2 行一致",
+      "evidence": [
+        "s2-canonical-aux-batch1"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样，不覆盖全部 59"
     }
   ],
   "experiments": [
@@ -516,6 +525,35 @@
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch1",
+      "report": "experiments/s2-canonical-aux-batch1/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch1/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch1"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 21,
+      "expected_output": "experiment\trow\tlegacy_days\tcanonical_days\tclassification\nenergy-boundary\tload=2,cap=100,charge=3\t60\t60.000\tEXPECTED_AGREEMENT\nenergy-boundary\tload=2,cap=100,charge=10\t60\t60.000\tEXPECTED_AGREEMENT\nenergy-boundary\tload=2,cap=100,charge=30\t60\t60.000\tEXPECTED_AGREEMENT\nenergy-boundary\tload=2,cap=200,charge=3\t60\t60.000\tEXPECTED_AGREEMENT\nenergy-boundary\tload=2,cap=200,charge=10\t60\t60.000\tEXPECTED_AGREEMENT\nenergy-boundary\tload=2,cap=200,charge=30\t60\t60.000\tEXPECTED_AGREEMENT\nenergy-boundary\tload=2,cap=300,charge=3\t60\t60.000\tEXPECTED_AGREEMENT\nenergy-boundary\tload=2,cap=300,charge=10\t60\t60.000\tEXPECTED_AGREEMENT\nenergy-boundary\tload=2,cap=300,charge=30\t60\t60.000\tEXPECTED_AGREEMENT\nenergy-boundary\tload=3,cap=100,charge=3\t3\t3.292\tEXPECTED_AGREEMENT\nenergy-boundary\tload=3,cap=100,charge=10\t3\t3.292\tEXPECTED_AGREEMENT\nenergy-boundary\tload=3,cap=100,charge=30\t3\t3.292\tEXPECTED_AGREEMENT\nenergy-boundary\tload=3,cap=200,charge=3\t3\t3.292\tEXPECTED_AGREEMENT\nenergy-boundary\tload=3,cap=200,charge=10\t3\t3.292\tEXPECTED_AGREEMENT\nenergy-boundary\tload=3,cap=200,charge=30\t3\t3.292\tEXPECTED_AGREEMENT\nenergy-boundary\tload=3,cap=300,charge=3\t3\t3.292\tEXPECTED_AGREEMENT\nenergy-boundary\tload=3,cap=300,charge=10\t3\t3.292\tEXPECTED_AGREEMENT\nenergy-boundary\tload=3,cap=300,charge=30\t3\t3.292\tEXPECTED_AGREEMENT\nheldout\tinterval=12\t48\t48.000\tEXPECTED_AGREEMENT\nheldout\tinterval=25\t90\t90.000\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\trow\tlegacy_days\tcanonical_days\tclassification",
+        "energy-boundary\tload=2,cap=100,charge=3\t60\t60.000\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C77"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
     },
     {
       "experiment": "s2-canonical-c10",
@@ -3265,17 +3303,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 33,
-    "s2_experiments": 92,
-    "claimed_experiments": 33,
+    "s2_claims": 34,
+    "s2_experiments": 93,
+    "claimed_experiments": 34,
     "unmapped_experiments": 59,
-    "formal_s2_experiments_migrated_to_canonical": 9,
+    "formal_s2_experiments_migrated_to_canonical": 10,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 11,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 33,
+    "claims_with_experiment_evidence": 34,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0

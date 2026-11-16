@@ -602,6 +602,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-migration-redundancy-restorers > /tmp/s2-canonical-redundancy-restorers.out
           diff experiments/s2-canonical-redundancy-restorers/expected.txt /tmp/s2-canonical-redundancy-restorers.out
           test -f experiments/s2-canonical-redundancy-restorers/REPORT.md
+      - name: S2 canonical aux batch 1
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-migration-aux-batch1 > /tmp/s2-canonical-aux-batch1.out
+          diff experiments/s2-canonical-aux-batch1/expected.txt /tmp/s2-canonical-aux-batch1.out
+          test -f experiments/s2-canonical-aux-batch1/REPORT.md
       - name: S3 repair deadline (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-repair-deadline > /tmp/s3-repair-deadline.out

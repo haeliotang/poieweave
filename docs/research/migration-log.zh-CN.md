@@ -38,6 +38,7 @@
 | B-C74 | C12 剩余分量 | 接受（语义修正） | horizon/insert/repair>=2d → 2 天；repair<=1d 6 天一致 |
 | B-C75 | energy interventions | 接受（语义修正） | 12 行日级一致；16→16.25 d |
 | B-C76 | redundancy restorers | 接受（语义修正） | 7/8 一致；共享机器人 baseline 30→20 |
+| E-C77 | aux batch1 | 抽样通过 | energy-boundary 18 + heldout 2，20/20 一致 |
 | D | canonical 证书重签 | 完成 5 个 | joint/load/regeneration/order/metrics-v2；历史证书保留 |
 
 | A | 状态页数值归一化 | 完成 | 12/12 映射；C68 Monte Carlo 为 legacy-only |
