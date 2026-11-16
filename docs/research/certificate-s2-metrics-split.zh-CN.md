@@ -12,7 +12,7 @@ This splits the aggregate metrics certificate into metric groups. It does not re
 | `insert_sharpening` | C7 | s2-canonical-c7 | `MIGRATED` |
 | `recharge_boundary` | C71 | s2-canonical-metrics-groups | `MIGRATED` |
 | `recovery_coverage` | C71 | s2-canonical-metrics-groups | `MIGRATED_WITH_SEMANTIC_CORRECTION` |
-| `redundancy` | C9, C14 | s2-canonical-c9, s2-canonical-c14 | `PARTIAL` |
+| `redundancy` | C9, C14 | s2-canonical-c9, s2-canonical-c14 | `MIGRATED_WITH_SEMANTIC_CORRECTION` |
 | `redundancy_time` | C14 | s2-canonical-c14 | `SUPERSEDED_BASELINE` |
 | `regenerative_capacity_days` | C71 | s2-canonical-metrics-groups | `MIGRATED` |
 | `resupply` | C10 | s2-canonical-c10 | `MIGRATED` |
@@ -22,8 +22,8 @@ This splits the aggregate metrics certificate into metric groups. It does not re
 
 - groups: 13
 - migrated: 7
-- migrated with semantic correction: 4
-- partial: 1
+- migrated with semantic correction: 5
+- partial: 0
 - superseded baseline: 1
 - not migrated: 0
 - reissued: 0
@@ -64,7 +64,7 @@ legacy 5/10 = asset restorability; canonical 9/10 = service impact; definition v
 
 ### `redundancy`
 
-redundant pump agrees; filter/robot restorer rows not canonicalised
+7/8 rows agree; shared repair robot baseline 30->20 d at event time
 
 ### `redundancy_time`
 

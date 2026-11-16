@@ -147,9 +147,9 @@
         "C9",
         "C14"
       ],
-      "disposition": "PARTIAL",
+      "disposition": "MIGRATED_WITH_SEMANTIC_CORRECTION",
       "group": "redundancy",
-      "reason": "redundant pump agrees; filter/robot restorer rows not canonicalised",
+      "reason": "7/8 rows agree; shared repair robot baseline 30->20 d at event time",
       "values": {
         "baseline_days": 60,
         "filter_restorer_days": 90,
@@ -233,9 +233,9 @@
   "summary": {
     "groups": 13,
     "migrated": 7,
-    "migrated_with_semantic_correction": 4,
+    "migrated_with_semantic_correction": 5,
     "not_migrated": 0,
-    "partial": 1,
+    "partial": 0,
     "reissued": 0,
     "superseded_baseline": 1
   }

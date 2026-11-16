@@ -65,8 +65,8 @@ GROUPS = {
     "redundancy": {
         "claims": ["C9", "C14"],
         "canonical": ["s2-canonical-c9", "s2-canonical-c14"],
-        "disposition": "PARTIAL",
-        "reason": "redundant pump agrees; filter/robot restorer rows not canonicalised",
+        "disposition": "MIGRATED_WITH_SEMANTIC_CORRECTION",
+        "reason": "7/8 rows agree; shared repair robot baseline 30->20 d at event time",
     },
     "redundancy_time": {
         "claims": ["C14"],

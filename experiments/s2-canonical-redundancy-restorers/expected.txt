@@ -1,0 +1,9 @@
+case	legacy_days	canonical_days	canonical_termination	classification
+filter-redundant-only	30	30.000	blocked:[NoRestorer("filter-1")]	EXPECTED_AGREEMENT
+filter-redundant+filter-restorer	90	90.000	completed	EXPECTED_AGREEMENT
+robot-redundant-only	35	35.000	blocked:[NoRestorer("robot-m1")]	EXPECTED_AGREEMENT
+robot-redundant+robot-restorer	90	90.000	completed	EXPECTED_AGREEMENT
+redundancy-filter-baseline	30	30.000	blocked:[NoRestorer("filter-1")]	EXPECTED_AGREEMENT
+redundancy-filter-redundant-pump	30	30.000	blocked:[NoRestorer("filter-1")]	EXPECTED_AGREEMENT
+redundancy-robot-baseline	30	20.000	blocked:[NoRestorer("robot-m1")]	SEMANTIC_CORRECTION_REPAIR_EXECUTOR_AT_EVENT_TIME
+redundancy-robot-redundant-pump	35	35.000	blocked:[NoRestorer("robot-m1")]	EXPECTED_AGREEMENT

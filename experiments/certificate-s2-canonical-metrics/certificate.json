@@ -3,7 +3,7 @@
   "claims": [
     "C71"
   ],
-  "claims_sha256": "bf5c5cbec3e1aa3fdefa75d720b7fa04392868d865896e4544d0ba9c54d4cb4d",
+  "claims_sha256": "57d4bad6c3a44999e48eb5adf122fdbb2987f5f1ace39aa9e3147d72fe2a217f",
   "coverage_definition": {
     "canonical_value": "9/10 service-impact",
     "differing_cases": [
@@ -27,11 +27,6 @@
   },
   "groups_excluded": [
     {
-      "disposition": "PARTIAL",
-      "group": "redundancy",
-      "reason": "redundant pump agrees; filter/robot restorer rows not canonicalised"
-    },
-    {
       "disposition": "SUPERSEDED_BASELINE",
       "group": "redundancy_time",
       "reason": "redundant 90 agrees; baseline 31->2 d under canonical in-repair failures"
@@ -46,6 +41,7 @@
     "insert_sharpening",
     "recharge_boundary",
     "recovery_coverage",
+    "redundancy",
     "regenerative_capacity_days",
     "resupply",
     "yield_sensitivity"

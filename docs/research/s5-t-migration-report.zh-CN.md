@@ -39,6 +39,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 | C71 | [s2-canonical-metrics-groups](../../experiments/s2-canonical-metrics-groups/REPORT.md) | coverage 5/10 资产可修复 → 9/10 服务影响 |
 | C74 | [s2-canonical-c12-components](../../experiments/s2-canonical-c12-components/REPORT.md) | C12 horizon/insert/repair-sweep 全部覆盖 |
 | C75 | [s2-canonical-energy-interventions](../../experiments/s2-canonical-energy-interventions/REPORT.md) | energy interventions 12 行日级一致 |
+| C76 | [s2-canonical-redundancy-restorers](../../experiments/s2-canonical-redundancy-restorers/REPORT.md) | filter/robot restorer 7/8 一致 |
 
 ## 2. 保持一致的历史结果
 
@@ -81,7 +82,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 
 ## 5. 仍然无法解释的差异
 
-在已迁移的 19 个 canonical 实验中：**无 `UNEXPLAINED`**。
+在已迁移的 20 个 canonical 实验中：**无 `UNEXPLAINED`**。
 
 已知但已解释的差异：
 
@@ -99,7 +100,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 | 59 个 `FORMAL_AUXILIARY` 实验 | 未 canonical 重算 | 只支持已有 claim，尚无可复用的迁移 runner |
 
 
-| metrics `redundancy` | PARTIAL | 冗余泵已迁移，共享过滤器/机器人 restorer 行未迁移 |
+
 | `certificate-s2-metrics` excluded groups | 明确排除 | partial/superseded，不进入 v2 声明范围 |
 | FMI 协同仿真 | 未执行 | 仅有 modelDescription/容器检查 |
 | 真实设备/物理安全 | 未验证 | 超出本 GOAL 范围 |
@@ -122,7 +123,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 已建立：
 
 - 单一 canonical event engine 的时钟、资源、能量、执行依赖语义。
-- 19 个 canonical S2 迁移实验与 expected 输出。
+- 20 个 canonical S2 迁移实验与 expected 输出。
 - 5 个绑定 engine/model/runner/output SHA 的 canonical 证书。
 - 独立 verifier、tamper 失败测试、clean-room 现有流程。
 - 可审计的 S2 inventory、claims 和证书影响矩阵。

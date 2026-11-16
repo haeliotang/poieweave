@@ -597,6 +597,11 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-migration-energy-interventions > /tmp/s2-canonical-energy-interventions.out
           diff experiments/s2-canonical-energy-interventions/expected.txt /tmp/s2-canonical-energy-interventions.out
           test -f experiments/s2-canonical-energy-interventions/REPORT.md
+      - name: S2 canonical redundancy restorers
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-migration-redundancy-restorers > /tmp/s2-canonical-redundancy-restorers.out
+          diff experiments/s2-canonical-redundancy-restorers/expected.txt /tmp/s2-canonical-redundancy-restorers.out
+          test -f experiments/s2-canonical-redundancy-restorers/REPORT.md
       - name: S3 repair deadline (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-repair-deadline > /tmp/s3-repair-deadline.out
