@@ -345,6 +345,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C82",
+      "statement": "aux batch6：redundancy/long-horizon/recharge-rule 9/9 一致",
+      "evidence": [
+        "s2-canonical-aux-batch6"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -702,6 +711,35 @@
       "classification": "FORMAL_CLAIMED",
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch6",
+      "report": "experiments/s2-canonical-aux-batch6/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch6/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch6"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 10,
+      "expected_output": "experiment\trow\tlegacy_days\tcanonical_days\tclassification\nredundancy\tbaseline\t60\t60.000\tEXPECTED_AGREEMENT\nredundancy\tredundant-pump\t90\t90.000\tEXPECTED_AGREEMENT\nlong-horizon\thorizon\t40\t40.000\tEXPECTED_AGREEMENT\nrecharge-rule-base08\tkwh=10\t1.3\t1.3\tEXPECTED_AGREEMENT\nrecharge-rule-base08\tkwh=20\t2.6\t2.6\tEXPECTED_AGREEMENT\nrecharge-rule-base08\tkwh=40\t5.1\t5.1\tEXPECTED_AGREEMENT\nrecharge-rule-base05\tkwh=10\t1.3\t1.3\tEXPECTED_AGREEMENT\nrecharge-rule-base05\tkwh=20\t2.6\t2.6\tEXPECTED_AGREEMENT\nrecharge-rule-base05\tkwh=40\t5.1\t5.1\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\trow\tlegacy_days\tcanonical_days\tclassification",
+        "redundancy\tbaseline\t60\t60.000\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C82"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
     },
     {
@@ -3452,17 +3490,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 38,
-    "s2_experiments": 97,
-    "claimed_experiments": 38,
+    "s2_claims": 39,
+    "s2_experiments": 98,
+    "claimed_experiments": 39,
     "unmapped_experiments": 59,
-    "formal_s2_experiments_migrated_to_canonical": 13,
+    "formal_s2_experiments_migrated_to_canonical": 14,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 12,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 38,
+    "claims_with_experiment_evidence": 39,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0

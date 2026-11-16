@@ -1,0 +1,10 @@
+experiment	row	legacy_days	canonical_days	classification
+redundancy	baseline	60	60.000	EXPECTED_AGREEMENT
+redundancy	redundant-pump	90	90.000	EXPECTED_AGREEMENT
+long-horizon	horizon	40	40.000	EXPECTED_AGREEMENT
+recharge-rule-base08	kwh=10	1.3	1.3	EXPECTED_AGREEMENT
+recharge-rule-base08	kwh=20	2.6	2.6	EXPECTED_AGREEMENT
+recharge-rule-base08	kwh=40	5.1	5.1	EXPECTED_AGREEMENT
+recharge-rule-base05	kwh=10	1.3	1.3	EXPECTED_AGREEMENT
+recharge-rule-base05	kwh=20	2.6	2.6	EXPECTED_AGREEMENT
+recharge-rule-base05	kwh=40	5.1	5.1	EXPECTED_AGREEMENT

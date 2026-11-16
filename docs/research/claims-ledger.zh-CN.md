@@ -88,6 +88,7 @@
 | C79 | aux batch3：joint-boundary 6 + joint-consumables 8 一致 | `experiments/s2-canonical-aux-batch3` | 辅助抽样 |
 | C80 | aux batch4：regen-cost 9 + energy-recharge 3 + recharge-bound 1 一致 | `experiments/s2-canonical-aux-batch4` | 辅助抽样 |
 | C81 | aux batch5：coverage 定义修正；regen threshold 60/61 一致 | `experiments/s2-canonical-aux-batch5` | 辅助抽样 |
+| C82 | aux batch6：redundancy/long-horizon/recharge-rule 9/9 一致 | `experiments/s2-canonical-aux-batch6` | 辅助抽样 |
 
 ## 不应出现的声明
 
