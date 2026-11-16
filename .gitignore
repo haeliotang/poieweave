@@ -21,3 +21,5 @@ external/fmu-pv-battery/build-tampered-duration/
 
 external/fmu-n4-pv-battery/build/
 external/fmu-n4-pv-battery/build-*/
+external/fmu-n4-repair/build/
+external/fmu-n4-repair/build-*/

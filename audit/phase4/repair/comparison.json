@@ -1,0 +1,30 @@
+{
+  "schema": "poie.s5v-n4c-repair/1",
+  "case": "N4-05",
+  "canonical": {
+    "termination": "blocked:repair interrupted at 7200s: robot-m1 failed",
+    "survived_s": 7200.0,
+    "final_energy_J": 140400000.0,
+    "repair_completed": false
+  },
+  "fmu": {
+    "terminal_s": 7200.0,
+    "robot_failure_s": 7200.0,
+    "repair_state": 2.0,
+    "robot_available": 0.0,
+    "repair_completed": false,
+    "final_energy_J": 139200000.0
+  },
+  "model_assumption": {
+    "expression": "FMU uniform partial draw until interruption",
+    "expected_delta_J": -1200000.0,
+    "actual_delta_J": -1200000.0,
+    "residual_J": 0.0
+  },
+  "findings": [],
+  "first_divergence": {
+    "class": "MODEL_ASSUMPTION_DIFFERENCE",
+    "at_s": 3600.0
+  },
+  "status": "EXPLAINED"
+}

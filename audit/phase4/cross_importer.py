@@ -23,7 +23,7 @@ def rows(path: Path) -> dict[float, dict[str, float]]:
 def main() -> int:
     results = []
     ok = True
-    for case in CONFIG["cases"]:
+    for case in [entry for entry in CONFIG["cases"] if entry.get("failure_asset", "pv-1") == "pv-1"]:
         cid = case["id"]
         for step in CONFIG["steps_s"]:
             harness_path = PHASE / "results" / f"{cid}-harness-{step}.csv"

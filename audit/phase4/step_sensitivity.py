@@ -21,7 +21,7 @@ def last_row(path: Path) -> dict[str, str]:
 def main() -> int:
     rows = []
     ok = True
-    for case in CONFIG["cases"]:
+    for case in [entry for entry in CONFIG["cases"] if entry.get("failure_asset", "pv-1") == "pv-1"]:
         cid = case["id"]
         expected_terminal = case["expected_terminal_s"]
         for step in CONFIG["steps_s"]:

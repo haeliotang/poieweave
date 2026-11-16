@@ -16,22 +16,33 @@
     {
       "id": "N4-00",
       "failure_s": null,
-      "expected_terminal_s": 72000
+      "expected_terminal_s": 72000,
+      "failure_asset": "pv-1"
     },
     {
       "id": "N4-01",
       "failure_s": 7200,
-      "expected_terminal_s": 53400
+      "expected_terminal_s": 53400,
+      "failure_asset": "pv-1"
     },
     {
       "id": "N4-02",
       "failure_s": 4500,
-      "expected_terminal_s": 51150
+      "expected_terminal_s": 51150,
+      "failure_asset": "pv-1"
     },
     {
       "id": "N4-03",
       "failure_s": 10800,
-      "expected_terminal_s": 56400
+      "expected_terminal_s": 56400,
+      "failure_asset": "pv-1"
+    },
+    {
+      "id": "N4-05",
+      "failure_asset": "robot-m1",
+      "failure_s": 7200,
+      "expected_terminal_s": 7200,
+      "expected_termination": "blocked:repair interrupted at 7200s: robot-m1 failed"
     }
   ],
   "samples_s": [

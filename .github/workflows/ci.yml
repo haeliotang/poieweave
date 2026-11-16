@@ -1425,6 +1425,8 @@ jobs:
           external/fmu-n4-pv-battery/build-negative.sh regen
           external/fmu-n4-pv-battery/build-negative.sh duration
           external/fmu-n4-pv-battery/build-negative.sh order
+          external/fmu-n4-repair/build.sh
+          external/fmu-n4-repair/build-harness.sh
       - name: Run canonical N4 events
         run: cargo run --locked -q -p poie-viability --bin poie-s5v-n4-canonical
       - name: Execute independent FMU cases
@@ -1446,6 +1448,10 @@ jobs:
           run_case N4-01
           run_case N4-02
           run_case N4-03
+          external/fmu-n4-repair/build/harness external/fmu-n4-repair/poie-n4-repair.fmu 900 -1 7200 72000 audit/phase4/repair/N4-05-harness-900.csv
+          python3 audit/phase4/fmpy_repair.py --step 900 --robot-failure 7200 --output audit/phase4/repair/N4-05-fmpy-900.csv --log audit/phase4/repair/N4-05-fmpy.log
+          python3 audit/phase4/fmpy_repair.py --step 900 --robot-failure 10800 --output audit/phase4/repair/N4-05-failure-delayed.csv --log audit/phase4/repair/N4-05-failure-delayed.log
+          python3 audit/phase4/fmpy_repair.py --step 900 --robot-failure -1 --output audit/phase4/repair/N4-05-failure-ignored.csv --log audit/phase4/repair/N4-05-failure-ignored.log
       - name: Run event comparator, steps and negative controls
         run: |
           python3 audit/phase4/compare.py
@@ -1458,13 +1464,16 @@ jobs:
           external/fmu-n4-pv-battery/build/harness external/fmu-n4-pv-battery/poie-n4-pv-battery-duration-tampered.fmu 3600 7200 72000 audit/phase4/negative-controls/N4-01-duration-tampered.csv
           external/fmu-n4-pv-battery/build/harness external/fmu-n4-pv-battery/poie-n4-pv-battery-order-tampered.fmu 900 10800 72000 audit/phase4/negative-controls/N4-03-order-tampered.csv
           python3 audit/phase4/negative_controls.py
+          python3 audit/phase4/compare_repair.py
+          python3 audit/phase4/cross_repair.py
+          python3 audit/phase4/negative_repair.py
           python3 audit/phase4/manifest.py
           python3 audit/phase4/check.py
       - name: Save current-run evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n4/evidence"
           cp -R audit/phase4/canonical audit/phase4/results audit/phase4/differences audit/phase4/negative-controls "$RUNNER_TEMP/s5v-n4/evidence/"
-          cp -R audit/phase4/external "$RUNNER_TEMP/s5v-n4/evidence/"
+          cp -R audit/phase4/external audit/phase4/repair "$RUNNER_TEMP/s5v-n4/evidence/"
           cp audit/phase4/{PREREG.md,SEMANTICS.md,REPORT.zh-CN.md,config.json,manifest.json} "$RUNNER_TEMP/s5v-n4/evidence/"
           cp external/fmu-n4-pv-battery/poie-n4-pv-battery.fmu "$RUNNER_TEMP/s5v-n4/evidence/"
           ( cd "$RUNNER_TEMP/s5v-n4/evidence" && sha256sum * > SHA256SUMS.txt 2>/dev/null || true )

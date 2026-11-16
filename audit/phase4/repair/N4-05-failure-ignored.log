@@ -1,0 +1,8 @@
+fmpy_version=0.3.32
+fmu_sha256=0b7d1c11a409faf4091ad5440344ef45746b0d72e48c3c1a68d4d2991f27cfae
+rows=81
+terminal_time_s=72000.0
+terminal_energy_J=106200000.0
+repair_state=1.0
+robot_available=1.0
+robot_failure_applied_s=-1.0

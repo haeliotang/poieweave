@@ -1,15 +1,20 @@
 # S5-V N4 — Independent Discrete-Event Cross-Model Challenge
 
 基线：`33583f53ac046a435b6756b4a448bdc9b3ff23d9`（PR #573）
-范围：N4-00/01/02/03，PV 故障 + 初始泵维修完成。
+范围：N4-00/01/02/03 PV 故障 + N4-05 初始泵维修中断。
 
 ## 状态
 
 ```text
 N4-A EXTERNAL DISCRETE-EVENT EXECUTION — ESTABLISHED (SCOPED: PV failure)
 N4-B CAUSAL EVENT AGREEMENT — ESTABLISHED (SCOPED: N4-00/01/02/03)
-N4-C REPAIR / RECOVERY CHALLENGE — NOT ESTABLISHED
+N4-C REPAIR INTERRUPTION — ESTABLISHED (SCOPED: fixed initial repair, robot-m1 dependency)
+N4-C REPAIR / RECOVERY CROSS-MODEL VALIDITY — NOT ESTABLISHED (no recovery test)
+N4-C INDEPENDENT REPAIR PLANNING — NOT ESTABLISHED (fixed schedule only)
 N4-D EVIDENCE PACKAGE — ESTABLISHED (local + Linux CI)
+
+S5-V N4 INDEPENDENT DISCRETE-EVENT CHALLENGE
+  ESTABLISHED (SCOPED: tested PV failure + repair interruption)
 ```
 
 保留：
@@ -86,6 +91,42 @@ run_engine_observed(...)
 
 并要求完整 `EngineOutcome` 相等；四个 case 均通过。N1 的 thread-local 收集器
 不改变故障时间、维修完成、资源选择或能量状态。
+
+## N4-05 repair interruption
+
+canonical：
+
+```text
+failure:robot-m1 at 7200 s
+termination: blocked:repair interrupted at 7200s: robot-m1 failed
+survived_s: 7200
+final_energy: 39.000 kWh
+repair completion: none
+```
+
+FMU：
+
+```text
+robotFailureAppliedTime_s: 7200
+repairState: 2 (interrupted)
+robotAvailable: 0
+repairCompletedTime_s: -1
+terminal: 7200
+final_energy: 38.6667 kWh
+```
+
+差额：
+
+```text
+FMU - canonical = -0.5 kWh * 7200 / 10800 = -0.3333 kWh
+unexplained residual = 0 J
+```
+
+外部维修调度是固定 0–10800 s 任务，不是独立规划器；因此该结果只证明
+“共同固定维修计划下的执行时序一致”，不证明调度决策独立一致。
+没有发生恢复提交，也没有把执行资源失效与恢复目标混淆。
+
+负例：故障推迟、故障忽略均被检测为事件时间或状态/依赖差异。
 
 ## 未建立 / 下一步
 
