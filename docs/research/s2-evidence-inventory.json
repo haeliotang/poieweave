@@ -354,6 +354,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C83",
+      "statement": "aux batch7：regen threshold battery/initial + regen-event 17/17 一致",
+      "evidence": [
+        "s2-canonical-aux-batch7"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -734,6 +743,35 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C82"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch7",
+      "report": "experiments/s2-canonical-aux-batch7/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch7/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch7"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 18,
+      "expected_output": "experiment\trow\tlegacy\tevent\tcanonical\tclassification\nregen-threshold-battery\tcapacity=100\t60/61\t-\t60/61\tEXPECTED_AGREEMENT\nregen-threshold-battery\tcapacity=200\t60/61\t-\t60/61\tEXPECTED_AGREEMENT\nregen-threshold-battery\tcapacity=300\t60/61\t-\t60/61\tEXPECTED_AGREEMENT\nregen-threshold-battery\tcapacity=400\t60/61\t-\t60/61\tEXPECTED_AGREEMENT\nregen-threshold-initial\tinitial=20\t41\t-\t41\tEXPECTED_AGREEMENT\nregen-threshold-initial\tinitial=40\t61\t-\t61\tEXPECTED_AGREEMENT\nregen-threshold-initial\tinitial=60\t81\t-\t81\tEXPECTED_AGREEMENT\nregen-threshold-initial\tinitial=80\t101\t-\t101\tEXPECTED_AGREEMENT\nregen-threshold-initial\tinitial=120\t141\t-\t141\tEXPECTED_AGREEMENT\nregen-event\tbase-05,interval=10\t40\t40\t40.000\tEXPECTED_AGREEMENT\nregen-event\tbase-05,interval=15\t60\t60\t60.000\tEXPECTED_AGREEMENT\nregen-event\tbase-05,interval=20\t80\t80\t80.000\tEXPECTED_AGREEMENT\nregen-event\tbase-05,interval=30\t90\t90\t90.000\tEXPECTED_AGREEMENT\nregen-event\tbase-08,interval=10\t60\t60\t60.000\tEXPECTED_AGREEMENT\nregen-event\tbase-08,interval=15\t90\t90\t90.000\tEXPECTED_AGREEMENT\nregen-event\tbase-08,interval=20\t90\t90\t90.000\tEXPECTED_AGREEMENT\nregen-event\tbase-08,interval=30\t90\t90\t90.000\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\trow\tlegacy\tevent\tcanonical\tclassification",
+        "regen-threshold-battery\tcapacity=100\t60/61\t-\t60/61\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C83"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -3490,17 +3528,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 39,
-    "s2_experiments": 98,
-    "claimed_experiments": 39,
+    "s2_claims": 40,
+    "s2_experiments": 99,
+    "claimed_experiments": 40,
     "unmapped_experiments": 59,
-    "formal_s2_experiments_migrated_to_canonical": 14,
+    "formal_s2_experiments_migrated_to_canonical": 15,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 12,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 39,
+    "claims_with_experiment_evidence": 40,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0

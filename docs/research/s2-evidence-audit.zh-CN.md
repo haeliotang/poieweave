@@ -24,15 +24,15 @@
 
 | 指标 | 数量 |
 | --- | --- |
-| S2 claims | 39 |
-| S2 experiment 目录 | 98 |
-| 被 claim 引用的 experiment | 39 |
+| S2 claims | 40 |
+| S2 experiment 目录 | 99 |
+| 被 claim 引用的 experiment | 40 |
 | 未被 claim 引用的 experiment | 59 |
 | 未分类 experiment | **0** |
-| FORMAL_CLAIMED / FORMAL_AUXILIARY | 39 / 48 |
+| FORMAL_CLAIMED / FORMAL_AUXILIARY | 40 / 48 |
 | SUPERSEDED_BY_CANONICAL / EXPLORATORY_NEGATIVE | 6 / 2 |
 | DEFINITIONAL / DETERMINISTIC_SWEEP | 1 / 2 |
-| 已迁移到 canonical 的正式 S2 experiment | **14** |
+| 已迁移到 canonical 的正式 S2 experiment | **15** |
 | canonical 语义修正 | **12**（C11–C14、C18、C19、C71、C73–C76、C81） |
 | 缺少记录种子的随机 experiment | **0** |
 | S2 证书 | 11（6 历史 + 5 canonical 重签） |
