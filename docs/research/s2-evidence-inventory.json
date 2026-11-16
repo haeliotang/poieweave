@@ -372,6 +372,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C85",
+      "statement": "aux batch9：insert-bound + joint-load 10/10 一致",
+      "evidence": [
+        "s2-canonical-aux-batch9"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -817,6 +826,34 @@
       "classification": "FORMAL_CLAIMED",
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch9",
+      "report": "experiments/s2-canonical-aux-batch9/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch9/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch9"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 11,
+      "expected_output": "experiment\trow\tlegacy_days\tcanonical_days\tclassification\ninsert-bound\tcount=2\t40\t40.000\tEXPECTED_AGREEMENT\ninsert-bound\tcount=3\t50\t50.000\tEXPECTED_AGREEMENT\ninsert-bound\tcount=4\t60\t60.000\tEXPECTED_AGREEMENT\ninsert-bound\tcount=6\t60\t60.000\tEXPECTED_AGREEMENT\ninsert-bound\tcount=8\t60\t60.000\tEXPECTED_AGREEMENT\ninsert-bound\tcount=12\t60\t60.000\tEXPECTED_AGREEMENT\njoint-load\tload=2,bronze=3.0\t60\t60.000\tEXPECTED_AGREEMENT\njoint-load\tload=2,bronze=6.0\t90\t90.000\tEXPECTED_AGREEMENT\njoint-load\tload=3,bronze=3.0\t3\t3.292\tEXPECTED_AGREEMENT\njoint-load\tload=3,bronze=6.0\t3\t3.292\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\trow\tlegacy_days\tcanonical_days\tclassification",
+        "insert-bound\tcount=2\t40\t40.000\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C85"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
     },
     {
@@ -3567,17 +3604,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 41,
-    "s2_experiments": 100,
-    "claimed_experiments": 41,
+    "s2_claims": 42,
+    "s2_experiments": 101,
+    "claimed_experiments": 42,
     "unmapped_experiments": 59,
-    "formal_s2_experiments_migrated_to_canonical": 15,
+    "formal_s2_experiments_migrated_to_canonical": 16,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 13,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 41,
+    "claims_with_experiment_evidence": 42,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
