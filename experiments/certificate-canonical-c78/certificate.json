@@ -1,0 +1,48 @@
+{
+  "canonical_classification": "EXPECTED_AGREEMENT",
+  "certificate_id": "poie-s2-canonical-c78-v1",
+  "claim_statement": "aux batch2\uff1aresupply-time 4 + delivery 3 + regen-cross 12 \u4e00\u81f4",
+  "claims": [
+    "C78"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_sources": [
+    {
+      "path": "experiments/s2-canonical-aux-batch2/expected.txt",
+      "sha256": "1c35520471b741d0b6403277d703f570f470fb5f5de966c0c22ca760728b77f4"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch2/REPORT.md",
+      "sha256": "3442cdd960fe92aba469a6812b55f8913b0dce482b5a6f442004012707ddab66"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch2/PREREG.md",
+      "sha256": "710002821c0adac2d6d0461792507153e16041b39ee4fa898f604c359cde75dc"
+    }
+  ],
+  "experiment": {
+    "expected": "experiments/s2-canonical-aux-batch2/expected.txt",
+    "expected_sha256": "1c35520471b741d0b6403277d703f570f470fb5f5de966c0c22ca760728b77f4",
+    "path": "experiments/s2-canonical-aux-batch2"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "runner": {
+    "binary": "poie-migration-aux-batch2",
+    "sha256": "ae31d2004370ad50ad46020bb271c8f7455c157054041e25c06fffc254eb4ac6",
+    "source": "crates/poie-viability/src/bin/poie-migration-aux-batch2.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/2",
+  "scope": "model/simulation evidence only; canonical claim C78",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "status": "CANONICAL_ISSUED",
+  "verifier": "poie-canonical-s2-certificate/2"
+}

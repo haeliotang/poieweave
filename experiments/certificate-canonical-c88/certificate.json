@@ -1,0 +1,48 @@
+{
+  "canonical_classification": "EXPECTED_AGREEMENT",
+  "certificate_id": "poie-s2-canonical-c88-v1",
+  "claim_statement": "aux batch12\uff1aregen forced-cost/capacity 8/8 \u4e00\u81f4",
+  "claims": [
+    "C88"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_sources": [
+    {
+      "path": "experiments/s2-canonical-aux-batch12/expected.txt",
+      "sha256": "17ce0a9a8f0d9fa9e22e5fdee4701740df7aa9b7241021ff2c90155465a14ab3"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch12/REPORT.md",
+      "sha256": "3658bf54b4319cfea31b303dc27508fb5ded7823710372c983065fa41bf4246d"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch12/PREREG.md",
+      "sha256": "526744436c7ccb42805d3d6c6421f1b104b3f200125253a75ec201bee2c2c488"
+    }
+  ],
+  "experiment": {
+    "expected": "experiments/s2-canonical-aux-batch12/expected.txt",
+    "expected_sha256": "17ce0a9a8f0d9fa9e22e5fdee4701740df7aa9b7241021ff2c90155465a14ab3",
+    "path": "experiments/s2-canonical-aux-batch12"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "runner": {
+    "binary": "poie-migration-aux-batch12",
+    "sha256": "945e7d9f136f0d0be3f9a63d4a4bf77fe65a9bf8cdf69720a231678fd5bce2d9",
+    "source": "crates/poie-viability/src/bin/poie-migration-aux-batch12.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/2",
+  "scope": "model/simulation evidence only; canonical claim C88",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "status": "CANONICAL_ISSUED",
+  "verifier": "poie-canonical-s2-certificate/2"
+}

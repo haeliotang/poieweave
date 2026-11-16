@@ -21,7 +21,7 @@ INVENTORY = ROOT / "docs/research/s2-evidence-inventory.json"
 INDEX = ROOT / "docs/research/canonical-claim-certificate-index.json"
 CLAIMS = [
     "C56", "C57", "C58", "C59", "C60", "C61", "C62", "C63", "C64", "C65", "C66", "C67", "C73",
-]
+] + [f"C{i}" for i in range(74, 97)]
 CLASSIFICATION = {
     "CANONICAL_MIGRATED": "EXPECTED_AGREEMENT",
     "CANONICAL_SEMANTIC_CORRECTION": "SEMANTIC_CORRECTION",

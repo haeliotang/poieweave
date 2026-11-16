@@ -1,0 +1,48 @@
+{
+  "canonical_classification": "EXPECTED_AGREEMENT",
+  "certificate_id": "poie-s2-canonical-c85-v1",
+  "claim_statement": "aux batch9\uff1ainsert-bound + joint-load 10/10 \u4e00\u81f4",
+  "claims": [
+    "C85"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_sources": [
+    {
+      "path": "experiments/s2-canonical-aux-batch9/expected.txt",
+      "sha256": "1520df5fbd60adcffb9419dce02fa3d99a92eafeeb961d3df60783603cc736f2"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch9/REPORT.md",
+      "sha256": "1ffb340215e2e667a97542a9fa9543bed11f074aa25914adf56ba60698562464"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch9/PREREG.md",
+      "sha256": "a56d21810ff032b5aff2401ddc8fbff6f6fb4cf9a744ef8023ac840e15fa726c"
+    }
+  ],
+  "experiment": {
+    "expected": "experiments/s2-canonical-aux-batch9/expected.txt",
+    "expected_sha256": "1520df5fbd60adcffb9419dce02fa3d99a92eafeeb961d3df60783603cc736f2",
+    "path": "experiments/s2-canonical-aux-batch9"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "runner": {
+    "binary": "poie-migration-aux-batch9",
+    "sha256": "3dc6fe750219718b4c05a114b1fa2d657b3328ab86342a858e1b04b0f19b9cf4",
+    "source": "crates/poie-viability/src/bin/poie-migration-aux-batch9.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/2",
+  "scope": "model/simulation evidence only; canonical claim C85",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "status": "CANONICAL_ISSUED",
+  "verifier": "poie-canonical-s2-certificate/2"
+}

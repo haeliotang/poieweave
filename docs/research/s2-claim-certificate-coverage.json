@@ -368,10 +368,10 @@
       "canonical_experiments": [
         "s2-canonical-c12-components"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c74",
+      "canonical_certificate": "experiments/certificate-canonical-c74/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C75",
@@ -380,10 +380,10 @@
       "canonical_experiments": [
         "s2-canonical-energy-interventions"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c75",
+      "canonical_certificate": "experiments/certificate-canonical-c75/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C76",
@@ -392,10 +392,10 @@
       "canonical_experiments": [
         "s2-canonical-redundancy-restorers"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c76",
+      "canonical_certificate": "experiments/certificate-canonical-c76/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C77",
@@ -404,10 +404,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch1"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c77",
+      "canonical_certificate": "experiments/certificate-canonical-c77/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C78",
@@ -416,10 +416,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch2"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c78",
+      "canonical_certificate": "experiments/certificate-canonical-c78/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C79",
@@ -428,10 +428,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch3"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c79",
+      "canonical_certificate": "experiments/certificate-canonical-c79/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C80",
@@ -440,10 +440,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch4"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c80",
+      "canonical_certificate": "experiments/certificate-canonical-c80/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C81",
@@ -452,10 +452,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch5"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c81",
+      "canonical_certificate": "experiments/certificate-canonical-c81/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C82",
@@ -464,10 +464,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch6"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c82",
+      "canonical_certificate": "experiments/certificate-canonical-c82/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C83",
@@ -476,10 +476,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch7"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c83",
+      "canonical_certificate": "experiments/certificate-canonical-c83/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C84",
@@ -488,10 +488,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch8"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c84",
+      "canonical_certificate": "experiments/certificate-canonical-c84/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C85",
@@ -500,10 +500,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch9"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c85",
+      "canonical_certificate": "experiments/certificate-canonical-c85/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C86",
@@ -512,10 +512,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch10"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c86",
+      "canonical_certificate": "experiments/certificate-canonical-c86/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C87",
@@ -524,10 +524,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch11"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c87",
+      "canonical_certificate": "experiments/certificate-canonical-c87/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C88",
@@ -536,10 +536,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch12"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c88",
+      "canonical_certificate": "experiments/certificate-canonical-c88/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C89",
@@ -548,10 +548,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch13"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c89",
+      "canonical_certificate": "experiments/certificate-canonical-c89/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C90",
@@ -560,10 +560,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch14"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c90",
+      "canonical_certificate": "experiments/certificate-canonical-c90/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C91",
@@ -572,10 +572,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch15"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c91",
+      "canonical_certificate": "experiments/certificate-canonical-c91/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C92",
@@ -584,10 +584,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch16"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c92",
+      "canonical_certificate": "experiments/certificate-canonical-c92/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C93",
@@ -596,10 +596,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch17"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c93",
+      "canonical_certificate": "experiments/certificate-canonical-c93/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C94",
@@ -608,10 +608,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch18"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c94",
+      "canonical_certificate": "experiments/certificate-canonical-c94/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C95",
@@ -620,10 +620,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch19"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c95",
+      "canonical_certificate": "experiments/certificate-canonical-c95/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C96",
@@ -632,10 +632,10 @@
       "canonical_experiments": [
         "s2-canonical-aux-batch20"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c96",
+      "canonical_certificate": "experiments/certificate-canonical-c96/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     }
   ],
   "summary": {
@@ -643,8 +643,7 @@
     "claims_superseded_by_claim": 13,
     "canonical_experiments": 53,
     "certificate_statuses": {
-      "CANONICAL_ISSUED": 13,
-      "NOT_CERTIFIED": 23,
+      "CANONICAL_ISSUED": 36,
       "REISSUED": 5,
       "SUPERSEDED": 4,
       "SUPERSEDED_BY_CLAIM": 8

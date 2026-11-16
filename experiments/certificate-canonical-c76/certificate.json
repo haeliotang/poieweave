@@ -1,0 +1,48 @@
+{
+  "canonical_classification": "SEMANTIC_CORRECTION",
+  "certificate_id": "poie-s2-canonical-c76-v1",
+  "claim_statement": "redundancy restorers 7/8 \u4e00\u81f4\uff1b\u5171\u4eab\u673a\u5668\u4eba baseline 30\u219220",
+  "claims": [
+    "C76"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_sources": [
+    {
+      "path": "experiments/s2-canonical-redundancy-restorers/expected.txt",
+      "sha256": "9eb6f040c4a0bff21809ff5753c7daf23d44a8581a6b8449c47e9dc2c9c36a8d"
+    },
+    {
+      "path": "experiments/s2-canonical-redundancy-restorers/REPORT.md",
+      "sha256": "3935e4666bcae661693b32d6c6bf0a0686feeb847f08005b95817442108ca45b"
+    },
+    {
+      "path": "experiments/s2-canonical-redundancy-restorers/PREREG.md",
+      "sha256": "c0d7e041d4663f26049470c22979afbb585f251c7b9d4b09a3762bb2a10e1720"
+    }
+  ],
+  "experiment": {
+    "expected": "experiments/s2-canonical-redundancy-restorers/expected.txt",
+    "expected_sha256": "9eb6f040c4a0bff21809ff5753c7daf23d44a8581a6b8449c47e9dc2c9c36a8d",
+    "path": "experiments/s2-canonical-redundancy-restorers"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "runner": {
+    "binary": "poie-migration-redundancy-restorers",
+    "sha256": "cc66d782851d7a8cbb0855a90da46ea3cd205234b7f9c026512b3972ad0cfe44",
+    "source": "crates/poie-viability/src/bin/poie-migration-redundancy-restorers.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/2",
+  "scope": "model/simulation evidence only; canonical claim C76",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "status": "CANONICAL_ISSUED",
+  "verifier": "poie-canonical-s2-certificate/2"
+}
