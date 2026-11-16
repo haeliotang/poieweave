@@ -59,6 +59,44 @@ step sensitivity            pass
 
 详见 [audit/phase2/REPORT.zh-CN.md](../../audit/phase2/REPORT.zh-CN.md)。
 
+## Canonical trajectory observatory（初始版）
+
+新增只读观测 runner `poie-s5v-canonical-observatory`：
+
+- 不修改 engine、repair 事务、资源扣减或能源结算规则
+- 通过零数量 neutral sample probes 暴露 0/1/2/3 h 与耗尽边界
+- 报告 inventory、累计 generated/load/repair/curtailed、终止状态
+- repair-active 从 canonical trace 派生，并显式标记 `DERIVED_FROM_CANONICAL_TRACE`
+- 原生 engine API 仍不直接导出 active repair 标识
+
+观测结果：
+
+```text
+t=0       canonical 40.000 kWh   repair active pump-p1
+t=1 h     canonical 39.500 kWh   repair active pump-p1
+t=2 h     canonical 39.000 kWh   repair active pump-p1
+t=3 h     canonical 38.000 kWh   repair completed
+t=79 h    canonical  0.000 kWh   depleted
+```
+
+与 FMU 的差异：
+
+```text
+t=1 h   -0.1667 kWh
+t=2 h   -0.3333 kWh
+t=3 h    0
+t=79 h   0
+```
+
+这些差异精确等于预登记的维修结算假设：
+
+```text
+FMU - canonical = -repair_energy * t / repair_duration   (0 < t < repair_duration)
+```
+
+最大假设残差为 0 J。该结果支持“差异可分解为模型假设差异”，但不支持
+trajectory-level cross-model validity 已建立。
+
 ## 明确范围
 
 已建立的是：

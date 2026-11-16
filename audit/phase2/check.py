@@ -37,6 +37,10 @@ def main() -> int:
         problems.append("terminal constraint error")
     if result["runs"]["fmpy"]["available"] is not True:
         problems.append("fmpy importer")
+    if result["trajectory"]["max_assumption_error_J"] > 1.0:
+        problems.append("trajectory assumption error")
+    if len(result["trajectory"]["rows"]) != 5:
+        problems.append("trajectory sample count")
     for entry in manifest["files"]:
         path = ROOT / entry["path"]
         if not path.is_file() or sha(path) != entry["sha256"]:

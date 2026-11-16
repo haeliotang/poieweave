@@ -28,6 +28,7 @@ TAMPERED = ROOT / "external/fmu-pv-battery/poie-pv-battery-tampered.fmu"
 HARNESS = ROOT / "external/fmu-pv-battery/build/run_fmu"
 CONFIG = HERE / "config.json"
 CANONICAL = HERE / "canonical-reference.txt"
+CANONICAL_TRAJECTORY = HERE / "canonical-trajectory.csv"
 
 
 def sha(path: Path) -> str:
@@ -107,6 +108,24 @@ def parse_canonical(expected_sha256: str) -> dict:
     }
 
 
+def parse_canonical_trajectory(expected_sha256: str) -> dict[float, dict]:
+    actual = sha(CANONICAL_TRAJECTORY)
+    if actual != expected_sha256:
+        raise SystemExit(f"canonical trajectory hash mismatch: actual={actual} expected={expected_sha256}")
+    result = {}
+    for line in CANONICAL_TRAJECTORY.read_text().strip().splitlines()[1:]:
+        fields = line.split("\t")
+        result[float(fields[0])] = {
+            "energy_J": float(fields[1]) * 3_600_000.0,
+            "generated_J": float(fields[2]) * 3_600_000.0,
+            "load_J": float(fields[3]) * 3_600_000.0,
+            "repair_J": float(fields[4]) * 3_600_000.0,
+            "repair_active": fields[6] == "true",
+            "repair_detail": None if fields[7] == "NOT_EXPORTED" else fields[7],
+        }
+    return result
+
+
 def close(actual: float, expected: float, tol: dict, label: str, problems: list[str]) -> float:
     error = abs(actual - expected)
     limit = max(tol["energy_absolute_J"], tol["energy_relative"] * max(abs(expected), 1.0))
@@ -122,6 +141,7 @@ def main() -> int:
     args = parser.parse_args()
     cfg = json.loads(CONFIG.read_text())
     canonical = parse_canonical(cfg["canonical_reference"]["sha256"])
+    trajectory = parse_canonical_trajectory(cfg["canonical_trajectory"]["sha256"])
     coarse = parse(run_harness(FMU, cfg["time_grid"]["coarse_step_s"], "fmu-coarse-3600"))
     fine = parse(run_harness(FMU, cfg["time_grid"]["fine_step_s"], "fmu-fine-900"))
     tampered = parse(run_harness(TAMPERED, cfg["time_grid"]["coarse_step_s"], "fmu-tampered-3600"))
@@ -197,13 +217,46 @@ def main() -> int:
     detected = tampered_error > max(tol["energy_absolute_J"], tol["energy_relative"] * 1e6)
     if not detected:
         problems.append("tampered FMU not detected")
-    # 6) Known model-assumption difference: uniform repair vs completion settlement.
+    # 6) Trajectory-level sample comparison. The only expected differences are
+    #    caused by the registered repair-settlement assumption, not numerical error.
+    trajectory_rows = []
+    assumption_errors = []
+    coarse_by_time = {round(row["time_s"], 6): row for row in coarse}
+    repair_energy = cfg["inputs"]["initial_repair_energy_J"]
+    repair_duration = cfg["inputs"]["initial_repair_duration_s"]
+    for at_s, obs in sorted(trajectory.items()):
+        row = coarse_by_time.get(round(at_s, 6))
+        if row is None:
+            problems.append(f"no FMU sample at canonical trajectory time {at_s}")
+            continue
+        delta = row["energy_J"] - obs["energy_J"]
+        if at_s < repair_duration:
+            expected_delta = -repair_energy * at_s / repair_duration
+        else:
+            expected_delta = 0.0
+        assumption_error = abs(delta - expected_delta)
+        assumption_errors.append(assumption_error)
+        if assumption_error > max(tol["energy_absolute_J"], 1e-9 * max(abs(expected_delta), 1.0)):
+            problems.append(f"trajectory delta not explained at {at_s}: delta={delta} expected={expected_delta}")
+        trajectory_rows.append({
+            "at_s": at_s,
+            "fmu_energy_J": row["energy_J"],
+            "canonical_energy_J": obs["energy_J"],
+            "delta_J": delta,
+            "expected_model_assumption_delta_J": expected_delta,
+            "assumption_error_J": assumption_error,
+            "fmu_repair_active": None,
+            "canonical_repair_active": obs["repair_active"],
+            "canonical_repair_detail": obs["repair_detail"],
+        })
+    # 7) Known model-assumption difference: uniform repair vs completion settlement.
     # Canonical does not export interior repair-window states, so no numeric claim is made.
     repair_assumption = {
-        "status": "MODEL_ASSUMPTION_DIFFERENCE_NOT_COMPARED_AS_TRAJECTORY",
+        "status": "MODEL_ASSUMPTION_DIFFERENCE_QUANTIFIED",
         "fmu": "repair energy spread uniformly over 0..10800 s",
-        "canonical": "repair energy committed at repair completion; interior repair states not exported",
-        "action": "comparison restricted to t=0, repair completion boundary and depletion; no threshold inflation",
+        "canonical": "repair energy committed at completion; interior samples obtained via neutral zero-quantity probes and trace-derived repair state",
+        "expected_delta": "FMU minus canonical = -repair_energy * t / repair_duration for 0 < t < repair_duration; 0 afterwards",
+        "action": "observed deltas checked against this pre-registered expression; no threshold inflation",
     }
     report = {
         "schema": "poie.s5v-phase2-result/2",
@@ -243,6 +296,14 @@ def main() -> int:
             "tampered": {"max_abs_error_J": tampered_error, "detected": detected},
         },
         "platform": _platform(fmpy_log),
+        "trajectory": {
+            "canonical_trajectory": str(CANONICAL_TRAJECTORY.relative_to(ROOT)),
+            "canonical_trajectory_sha256": sha(CANONICAL_TRAJECTORY),
+            "runner": cfg["canonical_trajectory"]["runner"],
+            "rows": trajectory_rows,
+            "max_assumption_error_J": max(assumption_errors) if assumption_errors else None,
+            "status": "DIFFERENCES_EXPLAINED_BY_REGISTERED_MODEL_ASSUMPTION",
+        },
         "repair_settlement_model_difference": repair_assumption,
         "problems": problems,
         "gate2": "PASS_SCOPED_EXECUTION_AND_ENDPOINTS" if not problems else "FAIL",

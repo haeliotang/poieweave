@@ -13,6 +13,7 @@
 - initial-condition max error: `0.0` J
 - terminal-energy constraint max error: `0.0` J
 - tampered FMU max error: `28440000.0` J, detected=True
+- canonical trajectory samples: 5, max assumption error: `0.0` J
 
 ## What is compared
 
@@ -24,20 +25,40 @@ exports: the repair-completion record and the depletion time. Initial
 energy is a configured initial condition, and terminal energy zero is a
 constraint; neither is presented as a canonical runtime export.
 
+## Canonical trajectory samples
+
+The canonical observatory exports 0/1/2/3 h and depletion states through
+neutral zero-quantity sample probes. It does not add inventory and does not
+change plans or energy-settlement rules. Repair-active state is derived from
+the canonical trace and is labelled as derived.
+
+| t (s) | FMU energy (J) | canonical energy (J) | delta (J) | expected assumption delta (J) |
+| --- | --- | --- | --- | --- |
+| 0 | 144000000 | 144000000 | 0 | -0 |
+| 3600 | 141600000 | 142200000 | -600000 | -600000 |
+| 7200 | 139200000 | 140400000 | -1200000 | -1200000 |
+| 10800 | 136800000 | 136800000 | 0 | 0 |
+| 284400 | 0 | 0 | 0 | 0 |
+
+All observed deltas match the registered repair-settlement assumption within
+the declared tolerance; no numerical or event-timing residual is hidden.
+
 ## Repair-window model difference
 
 The canonical engine commits repair energy when the repair completes; the
-external FMU spreads the same energy over the repair window. Canonical
-interior repair-window states are not exported, so no trajectory error is
-claimed there. This is registered as a model-assumption difference, not
-hidden by tolerance changes:
+external FMU spreads the same energy over the repair window. The canonical
+observatory samples the interior through neutral zero-quantity probes,
+while the native engine API still does not expose repair identity directly.
+Observed deltas are checked against the pre-registered settlement expression
+rather than treated as numerical error:
 
 ```text
 {
-  "status": "MODEL_ASSUMPTION_DIFFERENCE_NOT_COMPARED_AS_TRAJECTORY",
+  "status": "MODEL_ASSUMPTION_DIFFERENCE_QUANTIFIED",
   "fmu": "repair energy spread uniformly over 0..10800 s",
-  "canonical": "repair energy committed at repair completion; interior repair states not exported",
-  "action": "comparison restricted to t=0, repair completion boundary and depletion; no threshold inflation"
+  "canonical": "repair energy committed at completion; interior samples obtained via neutral zero-quantity probes and trace-derived repair state",
+  "expected_delta": "FMU minus canonical = -repair_energy * t / repair_duration for 0 < t < repair_duration; 0 afterwards",
+  "action": "observed deltas checked against this pre-registered expression; no threshold inflation"
 }
 ```
 

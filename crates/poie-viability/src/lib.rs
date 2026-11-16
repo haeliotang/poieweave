@@ -19,6 +19,7 @@ pub mod closure;
 pub mod engine;
 pub mod method;
 pub mod metrics;
+pub mod observer;
 pub mod query;
 pub mod report;
 pub mod scheduler;

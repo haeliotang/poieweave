@@ -59,5 +59,18 @@
     "source_commit": "7d198d90e729f40faafbe21e4de77311c361dc22",
     "runner": "poie-s5v-energy-reference",
     "note": "Frozen canonical export; CI verifies this SHA instead of rebuilding Rust in the FMU job."
+  },
+  "canonical_trajectory": {
+    "path": "audit/phase2/canonical-trajectory.csv",
+    "sha256": "7c7da30ed5d1e7ccd06ac166469c1c60535d36bb89c5c5af881743aeb791fa2c",
+    "runner": "poie-s5v-canonical-observatory",
+    "method": "neutral zero-quantity sample probes; no inventory change",
+    "samples_s": [
+      0,
+      3600,
+      7200,
+      10800,
+      284400
+    ]
   }
 }
