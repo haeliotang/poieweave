@@ -1,0 +1,12 @@
+load_kw	legacy_days	canonical_days	delta_days	legacy_energy_kwh	canonical_energy_kwh	canonical_termination	classification
+2.0	60	60	0.0	200.0	200.0	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	EXPECTED_AGREEMENT
+2.1	60	60	0.0	200.0	200.0	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	EXPECTED_AGREEMENT
+2.2	60	60	0.0	200.0	200.0	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	EXPECTED_AGREEMENT
+2.3	60	60	0.0	200.0	200.0	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	EXPECTED_AGREEMENT
+2.4	60	60	0.0	170.3	170.3	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	EXPECTED_AGREEMENT
+2.5	60	60	0.0	26.3	26.3	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	EXPECTED_AGREEMENT
+2.6	16	16	0.0	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT
+2.7	8	8	0.0	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT
+2.8	5	5	0.0	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT
+2.9	4	4	0.0	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT
+3.0	3	3	0.0	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT

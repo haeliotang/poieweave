@@ -1,0 +1,173 @@
+{
+  "schema": "poie.s5v-phase1-matrix/1",
+  "baseline": "acdef3ffb52fd255c5c33567ee6cb94a3e0a60c1",
+  "gate1": "PASS_FOR_EXTERNAL_MODEL_PHASE",
+  "rows": [
+    {
+      "claim": "C56",
+      "certificate": "experiments/certificate-canonical-c56/certificate.json",
+      "experiment": "experiments/s2-canonical-c5",
+      "runner": "poie-migration-c5",
+      "classification": "EXPECTED_AGREEMENT",
+      "status": "VERIFIED",
+      "limitations": null,
+      "first_divergence": "none: legacy/canonical days, energy and failure times agree in all 4 rows",
+      "evidence": "audit/phase1/evidence/C56.out",
+      "evidence_sha256": "4b6df5d33c48fb899c13ea96ebd6eefa57a7fbee6c1ecc6bbad3b1bda4fdcd98"
+    },
+    {
+      "claim": "C59",
+      "certificate": "experiments/certificate-canonical-c59/certificate.json",
+      "experiment": "experiments/s2-canonical-c8",
+      "runner": "poie-migration-c8",
+      "classification": "EXPECTED_AGREEMENT",
+      "status": "VERIFIED",
+      "limitations": null,
+      "first_divergence": "none: legacy/canonical days and energy agree in all 11 rows",
+      "evidence": "audit/phase1/evidence/C59.out",
+      "evidence_sha256": "8e40c6257cc2ec407a2624c8793b951c8a0cf201604ac2aa9f633fab496d9422"
+    },
+    {
+      "claim": "C62",
+      "certificate": "experiments/certificate-canonical-c62/certificate.json",
+      "experiment": "experiments/s2-canonical-c11",
+      "runner": "poie-migration-c11",
+      "classification": "SEMANTIC_CORRECTION",
+      "status": "VERIFIED",
+      "limitations": null,
+      "first_divergence": "t=0 canonical minimum 0.125 d vs legacy 0; day 10 legacy ignores at_day and reports 0 vs canonical 10 d",
+      "evidence": "audit/phase1/evidence/C62.out",
+      "evidence_sha256": "adc541ccf6b029a0f5f72ce80dbf1bd6b6ae10f2b1a6bd39d60f6a8330f08fbd"
+    },
+    {
+      "claim": "C63",
+      "certificate": "experiments/certificate-canonical-c63/certificate.json",
+      "experiment": "experiments/s2-canonical-c12",
+      "runner": "poie-migration-c12",
+      "classification": "SEMANTIC_CORRECTION",
+      "status": "VERIFIED",
+      "limitations": null,
+      "first_divergence": "grease 0.10: instant 4 d, event-driven 10 d, canonical 2 d; canonical terminates as repair interrupted at 172800 s",
+      "evidence": "audit/phase1/evidence/C63.out",
+      "evidence_sha256": "615dcb2b677977f310710f45fdc0ab7ad3e544c77046c01044a5a7f7be4e4205"
+    },
+    {
+      "claim": "C64",
+      "certificate": "experiments/certificate-canonical-c64/certificate.json",
+      "experiment": "experiments/s2-canonical-c13",
+      "runner": "poie-migration-c13",
+      "classification": "SEMANTIC_CORRECTION",
+      "status": "VERIFIED",
+      "limitations": null,
+      "first_divergence": "load 3.0: event-driven 3.292 d vs canonical 3.333 d (repair schedule); day granularity unchanged",
+      "evidence": "audit/phase1/evidence/C64.out",
+      "evidence_sha256": "c86c0bdde218b65f9f5cd7173a56d6976782444c7d76ef3f4b3a57ef22d42d92"
+    },
+    {
+      "claim": "C65",
+      "certificate": "experiments/certificate-canonical-c65/certificate.json",
+      "experiment": "experiments/s2-canonical-c14",
+      "runner": "poie-migration-c14",
+      "classification": "SEMANTIC_CORRECTION",
+      "status": "VERIFIED",
+      "limitations": null,
+      "first_divergence": "baseline: instant 12 d, event-driven 31 d, canonical 2 d; redundant pump 90 d in all time semantics",
+      "evidence": "audit/phase1/evidence/C65.out",
+      "evidence_sha256": "04c77b821f1ca332a66631def2ea091dcff0bb0f9485e05c186174dcc291a817"
+    },
+    {
+      "claim": "C66",
+      "certificate": "experiments/certificate-canonical-c66/certificate.json",
+      "experiment": "experiments/s2-canonical-c18",
+      "runner": "poie-migration-c18",
+      "classification": "SEMANTIC_CORRECTION",
+      "status": "VERIFIED_WITH_LIMITATIONS",
+      "limitations": "random aggregate only: per-trial samples are not exported, so the mean/zero counts are reproduced but cannot be recomputed from a raw sample stream",
+      "first_divergence": "aggregate: legacy zero 129 -> canonical 0; mean 1.4 -> 9.9 (event) -> 5.4 (canonical); raw trial stream not exported",
+      "evidence": "audit/phase1/evidence/C66.out",
+      "evidence_sha256": "a74743ee970e173c827ff6da6f8cc15747caeff37ed8865dc40579c9df3c38cf"
+    },
+    {
+      "claim": "C67",
+      "certificate": "experiments/certificate-canonical-c67/certificate.json",
+      "experiment": "experiments/s2-canonical-c19",
+      "runner": "poie-migration-c19",
+      "classification": "SEMANTIC_CORRECTION",
+      "status": "VERIFIED_WITH_LIMITATIONS",
+      "limitations": "random aggregate only: per-trial samples are not exported, so the mean/zero counts are reproduced but cannot be recomputed from a raw sample stream",
+      "first_divergence": "aggregate: legacy zero 13 -> canonical 0; mean 4.4 -> 14.0 (event) -> 2.2 (canonical); raw trial stream not exported",
+      "evidence": "audit/phase1/evidence/C67.out",
+      "evidence_sha256": "9a076433213f3f9e3d9c7b142fafdfcc31bd992f821647e2ee7ca4bf4e5c405a"
+    },
+    {
+      "claim": "C73",
+      "certificate": "experiments/certificate-canonical-c73/certificate.json",
+      "experiment": "experiments/s2-canonical-c68-monte-carlo",
+      "runner": "poie-migration-c68",
+      "classification": "SEMANTIC_CORRECTION",
+      "status": "VERIFIED_WITH_LIMITATIONS",
+      "limitations": "Monte Carlo aggregate only: quantiles/mean/buckets are reproduced; the 2000 individual schedules are not exported for independent recomputation",
+      "first_divergence": "aggregate: median 72 -> 68, mean 64.8 -> 64.0, 90-day survivors 622 -> 611; raw 2000 schedules not exported",
+      "evidence": "audit/phase1/evidence/C73.out",
+      "evidence_sha256": "ea3ee7665a203715616ea96fd293729243656f2d4ab9e4607286455bd73b7437"
+    },
+    {
+      "claim": "C81",
+      "certificate": "experiments/certificate-canonical-c81/certificate.json",
+      "experiment": "experiments/s2-canonical-aux-batch5",
+      "runner": "poie-migration-aux-batch5",
+      "classification": "SEMANTIC_CORRECTION",
+      "status": "VERIFIED",
+      "limitations": null,
+      "first_divergence": "coverage definition: envelope 5 -> 9 and pairs 11 -> 33; regeneration threshold 60/61 unchanged",
+      "evidence": "audit/phase1/evidence/C81.out",
+      "evidence_sha256": "54c6332870e6789ed2f2d024f15aecf6b174923695881fd3485464a7987ecff6"
+    },
+    {
+      "claim": "C94",
+      "certificate": "experiments/certificate-canonical-c94/certificate.json",
+      "experiment": "experiments/s2-canonical-aux-batch18",
+      "runner": "poie-migration-aux-batch18",
+      "classification": "SEMANTIC_CORRECTION",
+      "status": "VERIFIED",
+      "limitations": null,
+      "first_divergence": "pump-p1+robot-m1: day 0 legacy 60 -> canonical 0.125; day 10 legacy 60 -> canonical 10; repair executor failed at event time",
+      "evidence": "audit/phase1/evidence/C94.out",
+      "evidence_sha256": "9332664dba14a01e81e3110a8e0ba1bac439c1901fc818da2220c3037c3c9b5a"
+    },
+    {
+      "claim": "C95",
+      "certificate": "experiments/certificate-canonical-c95/certificate.json",
+      "experiment": "experiments/s2-canonical-aux-batch19",
+      "runner": "poie-migration-aux-batch19",
+      "classification": "SEMANTIC_CORRECTION",
+      "status": "VERIFIED",
+      "limitations": null,
+      "first_divergence": "Base-07 joint coverage 25 -> 24 under canonical t=0 repair ordering; independent coverage unchanged",
+      "evidence": "audit/phase1/evidence/C95.out",
+      "evidence_sha256": "0b41f65b3087fc04402f71808b2d7ea5778bbc09eb42151c3c632e360183df11"
+    }
+  ],
+  "all_certificate_hash_checks": {
+    "certificates": 36,
+    "failures": []
+  },
+  "negative_tests": [
+    {
+      "mutation": "expected hash",
+      "rejected": true
+    },
+    {
+      "mutation": "engine hash",
+      "rejected": true
+    },
+    {
+      "mutation": "claim presence",
+      "rejected": true
+    },
+    {
+      "mutation": "model hash",
+      "rejected": true
+    }
+  ]
+}

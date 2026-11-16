@@ -1,0 +1,6 @@
+grease_kg	instant_days	event_days	canonical_days	event_energy_kwh	canonical_energy_kwh	canonical_termination	classification
+0.10	4	10	2	200.0	160.0	blocked:repair interrupted at 172800s: pump-p1 failed	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+0.15	6	16	2	200.0	160.0	blocked:repair interrupted at 172800s: pump-p1 failed	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+0.20	8	21	2	200.0	160.0	blocked:repair interrupted at 172800s: pump-p1 failed	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+0.30	8	21	2	200.0	160.0	blocked:repair interrupted at 172800s: pump-p1 failed	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+0.50	8	21	2	200.0	160.0	blocked:repair interrupted at 172800s: pump-p1 failed	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
