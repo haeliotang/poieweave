@@ -1382,9 +1382,28 @@ jobs:
           external/fmu-pv-battery/build.sh
           external/fmu-pv-battery/build-tampered.sh
       - name: Independent fmpy importer
-        run: python3 audit/phase2/fmpy_import.py --fmu external/fmu-pv-battery/poie-pv-battery.fmu --output /tmp/fmpy-linux.csv --log /tmp/fmpy-linux.log
-      - name: Execute and compare
-        run: python3 audit/phase2/compare.py
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-linux"
+          python3 audit/phase2/fmpy_import.py --fmu external/fmu-pv-battery/poie-pv-battery.fmu --output "$RUNNER_TEMP/s5v-linux/fmpy-linux.csv" --log "$RUNNER_TEMP/s5v-linux/fmpy-linux.log"
+      - name: Execute and compare current Linux run
+        run: |
+          python3 audit/phase2/compare.py             --fmpy-csv "$RUNNER_TEMP/s5v-linux/fmpy-linux.csv"             --fmpy-log "$RUNNER_TEMP/s5v-linux/fmpy-linux.log"
+      - name: Save Linux evidence bindings
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-linux/evidence"
+          cp audit/phase2/result.json "$RUNNER_TEMP/s5v-linux/evidence/result.json"
+          cp external/fmu-pv-battery/poie-pv-battery.fmu "$RUNNER_TEMP/s5v-linux/evidence/poie-pv-battery-linux.fmu"
+          cp audit/phase2/results/fmu-coarse-3600.csv "$RUNNER_TEMP/s5v-linux/evidence/harness-coarse.csv"
+          cp "$RUNNER_TEMP/s5v-linux/fmpy-linux.csv" "$RUNNER_TEMP/s5v-linux/evidence/fmpy-coarse.csv"
+          cp "$RUNNER_TEMP/s5v-linux/fmpy-linux.log" "$RUNNER_TEMP/s5v-linux/evidence/fmpy.log"
+          cp audit/phase2/canonical-reference.txt "$RUNNER_TEMP/s5v-linux/evidence/canonical-reference.txt"
+          ( cd "$RUNNER_TEMP/s5v-linux/evidence" && sha256sum * > SHA256SUMS.txt )
+          cat "$RUNNER_TEMP/s5v-linux/evidence/SHA256SUMS.txt"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-linux-evidence
+          path: ${{ runner.temp }}/s5v-linux/evidence
+          if-no-files-found: error
 
   deny:
     name: cargo-deny (${{ matrix.checks }})

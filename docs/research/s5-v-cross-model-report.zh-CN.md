@@ -17,8 +17,8 @@ S5 CROSS-MODEL VALIDITY — NOT ESTABLISHED (full S2)
 ```
 
 此前把 `max_abs_error = 0 J` 解释为 canonical 引擎逐时刻误差是不正确的。
-该 0 J 是 FMU 与独立解析参考的误差；canonical 只在 t=0、维修完成边界和
-能源耗尽时刻被比较。
+该 0 J 是 FMU 与独立解析参考的误差；canonical 真正作为运行时记录导出的只有维修完成记录和
+耗尽时刻；t=0 是配置初值，终点电量零是约束，二者不冒充 canonical 运行时导出。
 
 ## Phase 1 — Independent Certificate Audit
 
@@ -90,7 +90,8 @@ cargo run -q -p poie-viability --bin poie-s5v-energy-reference > audit/phase2/ca
 python3 audit/phase2/compare.py
 ```
 
-在 macOS arm64 上已实际执行并通过 fmpy 0.3.32 独立导入器。CI 增加了
-`S5-V external FMU Linux conformance` job，在 Ubuntu 上重新构建 FMU、
-运行 fmpy importer 和比较器；该 job 的首次结果以 CI 为准，不在本地冒充。
+在 macOS arm64 上已实际执行并通过 fmpy 0.3.32 独立导入器。CI 的 `S5-V external FMU Linux conformance` job 在 Ubuntu 上重新构建 FMU、
+运行 fmpy importer，并把当次 fmpy CSV/log 显式传给比较器；比较器缺失该输入
+会直接失败。该 job 将 Linux 当次 FMU、harness CSV、fmpy CSV/log、canonical
+参考和 result 保存为 `s5v-linux-evidence` artifact，并用 SHA256SUMS 绑定。
 当前提交的 FMU 二进制是 macOS arm64，Linux 上重新构建后哈希会不同。
