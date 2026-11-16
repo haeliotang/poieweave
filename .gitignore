@@ -13,3 +13,6 @@ apps/desktop/src-tauri/gen/
 .pnpm-store/
 apps/desktop/test-results/
 apps/desktop/playwright-report/
+
+external/fmu-pv-battery/build/
+external/fmu-pv-battery/build-tampered/

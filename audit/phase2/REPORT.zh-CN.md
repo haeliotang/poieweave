@@ -1,54 +1,67 @@
-# S5-V Phase 2 — Executable External Model Challenge
+# S5-V Phase 2 — Conformance and Comparator Closure
 
-- Gate 2: `PASS`
+- Gate 2: `PASS_SCOPED_EXECUTION_AND_ENDPOINTS`
+- external execution: `ESTABLISHED (SCOPED)`
+- endpoint agreement: `ESTABLISHED (SINGLE ENERGY CASE)`
+- trajectory-level cross-model validity: `NOT ESTABLISHED`
 - external FMU: `external/fmu-pv-battery/poie-pv-battery.fmu` (FMI 3.0)
-- FMU SHA-256: `d12072af690746dfabed67b26c6c01b03988bc2ed52aead53a086fe9ec7da24d`
-- independent model: C99 PV + battery + load + initial repair draw
-- depletion time: `284400.0` s
-- coarse and fine max absolute error: `0.0` J
-- tampered FMU max absolute error: `35550000.0` J
-- tampered detector: `True`
+- FMU SHA-256: `78032dbf275bfd08cf761fbb17006cbc55d3cb47ba4036cd854f26015c919797`
+- packaging: FMI 3.0 platform tuple directories with modelIdentifier filename
+- independent importer: fmpy 0.3.32, rows=80, max error vs C harness=0.0 J
+- analytic-reference max error: `0.0` J
+- canonical-boundary max error: `0.0` J
+- tampered FMU max error: `28440000.0` J, detected=True
 
-## Scope
+## What is compared
 
-This is a single reduced energy-subsystem challenge. It is not a physical
-validation and not a full S2 cross-model validation.
+The FMU is executed through the C harness and through the independent
+fmpy 0.3.32 importer. The C-harness trajectory is compared with an
+independent analytic reference that uses the same uniform repair-draw
+assumption as the FMU. The canonical engine is compared only at its
+exported boundaries: t=0, repair completion and energy depletion.
 
-## Pre-registered case
+## Repair-window model difference
 
-- PV 2500 W, load 3000 W, battery 200 kWh / 10 kW charge
-- initial energy 40 kWh, initial repair draw 0.5 kWh over 3 h
-- expected depletion 284400 s (79 h)
-- coarse step 3600 s, fine step 900 s
-- energy relative tolerance 1e-9, absolute 1 J, conservation 1e-3 J
+The canonical engine commits repair energy when the repair completes; the
+external FMU spreads the same energy over the repair window. Canonical
+interior repair-window states are not exported, so no trajectory error is
+claimed there. This is registered as a model-assumption difference, not
+hidden by tolerance changes:
 
-## Independent implementation
+```text
+{
+  "status": "MODEL_ASSUMPTION_DIFFERENCE_NOT_COMPARED_AS_TRAJECTORY",
+  "fmu": "repair energy spread uniformly over 0..10800 s",
+  "canonical": "repair energy committed at repair completion; interior repair states not exported",
+  "action": "comparison restricted to t=0, repair completion boundary and depletion; no threshold inflation"
+}
+```
 
-The FMU is hand-written C99, packaged as FMI 3.0 Co-Simulation, and does not
-link or call the Poieweave Rust engine. The harness unpacks the FMU, dlopens
-the native model, calls `fmi3InstantiateCoSimulation`, initialization, variable
-exchange and `fmi3DoStep`, then terminates the instance.
+## Standard packaging
 
-## Comparison result
+The FMU now uses FMI 3.0 platform-tuple directories and modelIdentifier
+filenames, e.g. `binaries/aarch64-darwin/poie_pv_battery.dylib` and
+`binaries/x86_64-linux/poie_pv_battery.so`. Generic FMI 3.0 importers
+require unsupported-interface symbols to be present; the FMU includes
+explicit fail-closed stubs for non-Co-Simulation APIs.
 
-The FMU output is compared every communication step against an independent
-closed-form reference. Energy conservation, battery capacity, depletion time,
-cumulative generated/load/repair energy and step sensitivity all pass.
-The tampered FMU (+100 W PV) is detected by the same comparator.
+## Claims
+
+```text
+S5-V EXTERNAL EXECUTION — ESTABLISHED (SCOPED)
+S5-V ENDPOINT AGREEMENT — ESTABLISHED (SINGLE ENERGY CASE)
+S5-V TRAJECTORY-LEVEL CROSS-MODEL VALIDITY — NOT ESTABLISHED
+S5 CROSS-MODEL VALIDITY — NOT ESTABLISHED (full S2)
+```
 
 ## Limitations
 
 - one parameter set and one energy-only scenario
 - no failures beyond the initial repair, no curtailment/capacity saturation
 - step sizes 3600/900 s only
-- executed on the local macOS arm64 host; source and build script support Linux
+- local execution on macOS arm64; committed FMU binary is macOS arm64
+- canonical interior repair-window states are not exported
 - this does not establish physical-world correctness
-
-## Claim status
-
-`S5 CROSS-MODEL VALIDITY — ESTABLISHED (SCOPED: PV/battery/load energy boundary)`
-
-The broader S2/model-wide cross-model validity remains NOT ESTABLISHED.
 
 ## Evidence
 

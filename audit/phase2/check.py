@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Inceptless <support@inceptless.com>
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Check Phase 2 challenge artifacts are internally consistent."""
+"""Check Phase 2 closure artifacts are internally consistent."""
 
 from __future__ import annotations
 
@@ -21,14 +21,18 @@ def main() -> int:
     result = json.loads((HERE / "result.json").read_text())
     manifest = json.loads((HERE / "manifest.json").read_text())
     problems = []
-    if result["gate2"] != "PASS" or result["problems"]:
+    if result["gate2"] != "PASS_SCOPED_EXECUTION_AND_ENDPOINTS" or result["problems"]:
         problems.append("gate2")
+    if result["trajectory_level_cross_model"] != "NOT_ESTABLISHED":
+        problems.append("trajectory claim")
     if result["runs"]["tampered"]["detected"] is not True:
         problems.append("tamper detection")
-    if result["runs"]["coarse"]["max_abs_error_J"] > 1.0:
-        problems.append("coarse error")
-    if result["runs"]["fine"]["max_abs_error_J"] > 1.0:
-        problems.append("fine error")
+    if result["runs"]["coarse"]["analytic_max_abs_error_J"] > 1.0:
+        problems.append("analytic error")
+    if result["runs"]["coarse"]["canonical_boundary_max_abs_error_J"] > 1.0:
+        problems.append("canonical boundary error")
+    if result["runs"]["fmpy"]["available"] is not True:
+        problems.append("fmpy importer")
     for entry in manifest["files"]:
         path = ROOT / entry["path"]
         if not path.is_file() or sha(path) != entry["sha256"]:

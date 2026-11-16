@@ -1367,6 +1367,25 @@ jobs:
           diff /tmp/h2-holdout/holdout-report.md experiments/h2-joint-planning/holdout-report.md
           diff /tmp/h2-holdout/raw/holdout-raw.txt experiments/h2-joint-planning/raw/holdout-raw.txt
 
+  s5v-fmu-linux:
+    name: S5-V external FMU Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install independent FMI importer
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Build standard FMU
+        run: |
+          external/fmu-pv-battery/build.sh
+          external/fmu-pv-battery/build-tampered.sh
+      - name: Independent fmpy importer
+        run: python3 audit/phase2/fmpy_import.py --fmu external/fmu-pv-battery/poie-pv-battery.fmu --output /tmp/fmpy-linux.csv --log /tmp/fmpy-linux.log
+      - name: Execute and compare
+        run: python3 audit/phase2/compare.py
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest

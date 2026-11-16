@@ -49,11 +49,11 @@ int main(int argc, char **argv) {
     if (system(command) != 0) { fprintf(stderr, "unzip failed\n"); return 2; }
     char library[4096];
 #if defined(__APPLE__)
-    const char *platform = "Darwin";
-    const char *library_name = "model.dylib";
+    const char *platform = "darwin";
+    const char *library_name = "poie_pv_battery.dylib";
 #elif defined(__linux__)
-    const char *platform = "Linux";
-    const char *library_name = "model.so";
+    const char *platform = "linux";
+    const char *library_name = "poie_pv_battery.so";
 #else
 #error "unsupported platform"
 #endif
@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
 #else
 #error "unsupported architecture"
 #endif
-    snprintf(library, sizeof(library), "%s/binaries/%s/%s/%s", unpacked, architecture, platform, library_name);
+    snprintf(library, sizeof(library), "%s/binaries/%s-%s/%s", unpacked, architecture, platform, library_name);
     void *handle = dlopen(library, RTLD_NOW | RTLD_LOCAL);
     if (handle == NULL) { fprintf(stderr, "dlopen: %s\n", dlerror()); return 2; }
     get_version_t get_version = (get_version_t)dlsym(handle, "fmi3GetVersion");

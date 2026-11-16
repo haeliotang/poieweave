@@ -3,11 +3,11 @@
   "files": [
     {
       "path": "external/fmu-pv-battery/poie-pv-battery.fmu",
-      "sha256": "d12072af690746dfabed67b26c6c01b03988bc2ed52aead53a086fe9ec7da24d"
+      "sha256": "78032dbf275bfd08cf761fbb17006cbc55d3cb47ba4036cd854f26015c919797"
     },
     {
       "path": "external/fmu-pv-battery/poie-pv-battery-tampered.fmu",
-      "sha256": "fc97801a91a993875322b9c808f2737fa0dd31c8a8d6537b544172eb74b64f4a"
+      "sha256": "3cb2e9fc0b4d8785c0023042d8a4cf45221d84f8954a84846b9163d34ab817c3"
     },
     {
       "path": "external/fmu-pv-battery/modelDescription.xml",
@@ -19,19 +19,31 @@
     },
     {
       "path": "external/fmu-pv-battery/src/harness.c",
-      "sha256": "9a2cfcbc3ef99604d3554f235810328fae7932c4683a56911ffa98e93e7663b0"
+      "sha256": "a87c6e37970210e4491638cc1706d0fa4adce78227c22bf9c1d146dce9657c89"
+    },
+    {
+      "path": "external/fmu-pv-battery/src/stubs.c",
+      "sha256": "759abd6d4b10fcc0d3f9234b1cc740400084171ee1945842fa1ad069543e6af8"
     },
     {
       "path": "audit/phase2/config.json",
-      "sha256": "8956262295ff76d577e8bee0761c266ab8adbd72cf82f3158481de98917e9f05"
+      "sha256": "b726f943d1bdca0e90ebbe3fd556612e7f9992ee611938523ef468e775fb193e"
     },
     {
       "path": "audit/phase2/canonical-reference.txt",
-      "sha256": "52bbe76b4243b0d52ff3e3f60ddb89eebb93d90aa2e101d1130cabb560486326"
+      "sha256": "e4675ad7611341844bcc72066df34dc92c88aef15ac61ac787cbb3ef53b87b5c"
     },
     {
       "path": "audit/phase2/result.json",
-      "sha256": "1b12c06c1dfd264a8b894621965339ccd2d24c3c7672479f921986de62474c55"
+      "sha256": "92a06e7814ac9f668955827dc9d8bfa1f37e2bcfa003efa715354c330e4d0133"
+    },
+    {
+      "path": "audit/phase2/fmpy_import.py",
+      "sha256": "1c5f2c9522ac209be7c36cbaebf2367fa6bab953dafa7a7e4b0f1b0fb82c5906"
+    },
+    {
+      "path": "audit/phase2/results/fmpy-3600.csv",
+      "sha256": "1ed5ce31ee805744f60dc7c76d4134005c6f299b2d186a9cdf97375d29dc6cfe"
     },
     {
       "path": "audit/phase2/results/fmu-coarse-3600.csv",
@@ -44,6 +56,10 @@
     {
       "path": "audit/phase2/results/fmu-tampered-3600.csv",
       "sha256": "4e59ddfbd7f26ff4dfd553a6307f0ac60ad6bd52cbc3abe6e23d6805fb3be5c3"
+    },
+    {
+      "path": "audit/phase2/logs/fmpy.log",
+      "sha256": "c54d0b1a6184e0a0a13f455d7e086e97e016543417015a7c1227097455d79ecd"
     },
     {
       "path": "audit/phase2/logs/fmu-coarse-3600.log",
