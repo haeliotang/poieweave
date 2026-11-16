@@ -1040,6 +1040,8 @@ jobs:
           test -f experiments/certificate-bundle-tamper/REPORT.md
       - name: S2 certificate impact matrix
         run: python3 scripts/build-certificate-impact.py --check
+      - name: S2 claim certificate coverage
+        run: python3 scripts/build-claim-certificate-coverage.py --check
       - name: S2 metrics certificate split
         run: python3 scripts/build-metrics-split.py --check
       - name: Canonical S2 certificates

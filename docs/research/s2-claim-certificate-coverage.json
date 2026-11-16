@@ -1,0 +1,652 @@
+{
+  "schema": "poie.claim-certificate-coverage/1",
+  "claims": [
+    {
+      "claim": "C5",
+      "superseded_by": "C56",
+      "statement": "Base-05 故障间隔 10/15/20/30 天 → 40/60/80/≥90 天",
+      "canonical_experiments": [
+        "s2-canonical-c5"
+      ],
+      "certificate_status": "SUPERSEDED_BY_CLAIM",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C6",
+      "superseded_by": "C57",
+      "statement": "Base-06 独立覆盖 25/56、联合 24/56",
+      "canonical_experiments": [
+        "s2-canonical-c6"
+      ],
+      "certificate_status": "REISSUED",
+      "certificate_id": "certificate-s2-joint",
+      "canonical_certificate": "experiments/certificate-s2-canonical-joint/certificate.json",
+      "scope": "Base-06 joint coverage"
+    },
+    {
+      "claim": "C7",
+      "superseded_by": "C58",
+      "statement": "再生能力使 horizon 40→60 天",
+      "canonical_experiments": [
+        "s2-canonical-c7"
+      ],
+      "certificate_status": "SUPERSEDED_BY_CLAIM",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C8",
+      "superseded_by": "C59",
+      "statement": "负载 3/4 kW 时能量成为 binding constraint",
+      "canonical_experiments": [
+        "s2-canonical-c8"
+      ],
+      "certificate_status": "SUPERSEDED_BY_CLAIM",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C9",
+      "superseded_by": "C60",
+      "statement": "冗余泵 60→90 天",
+      "canonical_experiments": [
+        "s2-canonical-c9"
+      ],
+      "certificate_status": "SUPERSEDED_BY_CLAIM",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C10",
+      "superseded_by": "C61",
+      "statement": "补货间隔 10/20/30/60 天 → 60/50/40/30 天",
+      "canonical_experiments": [
+        "s2-canonical-c10"
+      ],
+      "certificate_status": "SUPERSEDED_BY_CLAIM",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C11",
+      "superseded_by": "C62",
+      "statement": "补货不能修复能力缺口（filter-1 仍 0 天）",
+      "canonical_experiments": [
+        "s2-canonical-c11"
+      ],
+      "certificate_status": "SUPERSEDED_BY_CLAIM",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C12",
+      "superseded_by": "C63",
+      "statement": "时间语义改变 grease/insert 边界与 deadline",
+      "canonical_experiments": [
+        "s2-canonical-c12"
+      ],
+      "certificate_status": "SUPERSEDED",
+      "certificate_id": "certificate-s2-time",
+      "canonical_certificate": null,
+      "scope": "time semantics and boundaries"
+    },
+    {
+      "claim": "C13",
+      "superseded_by": "C64",
+      "statement": "时间语义在能量/sparse/标称再生下不变",
+      "canonical_experiments": [
+        "s2-canonical-c13"
+      ],
+      "certificate_status": "SUPERSEDED",
+      "certificate_id": "certificate-s2-time",
+      "canonical_certificate": null,
+      "scope": "time semantics and boundaries"
+    },
+    {
+      "claim": "C14",
+      "superseded_by": "C65",
+      "statement": "冗余效应大于时间语义效应",
+      "canonical_experiments": [
+        "s2-canonical-c14"
+      ],
+      "certificate_status": "SUPERSEDED_BY_CLAIM",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C18",
+      "superseded_by": "C66",
+      "statement": "随机对抗中 0 天 collapse 是瞬时语义假象",
+      "canonical_experiments": [
+        "s2-canonical-c18"
+      ],
+      "certificate_status": "SUPERSEDED",
+      "certificate_id": "certificate-s2-time",
+      "canonical_certificate": null,
+      "scope": "time semantics and boundaries"
+    },
+    {
+      "claim": "C19",
+      "superseded_by": "C67",
+      "statement": "延迟故障只减少、不消除瞬时 0 天质量",
+      "canonical_experiments": [
+        "s2-canonical-c19"
+      ],
+      "certificate_status": "SUPERSEDED",
+      "certificate_id": "certificate-s2-time",
+      "canonical_certificate": null,
+      "scope": "time semantics and boundaries"
+    },
+    {
+      "claim": "C56",
+      "superseded_by": null,
+      "statement": "canonical C5 四区间 horizon/energy/失败时刻一致",
+      "canonical_experiments": [
+        "s2-canonical-c5"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C57",
+      "superseded_by": null,
+      "statement": "canonical C6 独立 25/56、联合 24/56 一致",
+      "canonical_experiments": [
+        "s2-canonical-c6"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C58",
+      "superseded_by": null,
+      "statement": "canonical C7 六行 40/60、50/60 一致",
+      "canonical_experiments": [
+        "s2-canonical-c7"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C59",
+      "superseded_by": null,
+      "statement": "canonical C8 11 行负载制度与能源一致",
+      "canonical_experiments": [
+        "s2-canonical-c8"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C60",
+      "superseded_by": null,
+      "statement": "canonical C9 冗余泵 60→90、17 天一致",
+      "canonical_experiments": [
+        "s2-canonical-c9"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C61",
+      "superseded_by": null,
+      "statement": "canonical C10 补货间隔 60/50/40/30 一致",
+      "canonical_experiments": [
+        "s2-canonical-c10"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C62",
+      "superseded_by": null,
+      "statement": "C11 canonical 迁移按日粒度成立；t=0 顺序已定义",
+      "canonical_experiments": [
+        "s2-canonical-c11"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C63",
+      "superseded_by": null,
+      "statement": "C12 grease 边界被 canonical 维修期故障语义取代",
+      "canonical_experiments": [
+        "s2-canonical-c12"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C64",
+      "superseded_by": null,
+      "statement": "C13 能量边界日级不变；精确耗尽最多移 1 h",
+      "canonical_experiments": [
+        "s2-canonical-c13"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C65",
+      "superseded_by": null,
+      "statement": "C14 冗余泵 90 天一致；baseline 31→2 天",
+      "canonical_experiments": [
+        "s2-canonical-c14"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C66",
+      "superseded_by": null,
+      "statement": "C18 随机对抗：零天 0/200 不变，均值 9.9→5.4",
+      "canonical_experiments": [
+        "s2-canonical-c18"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C67",
+      "superseded_by": null,
+      "statement": "C19 延迟窗口：零天 0/200 不变，均值 14.0→2.2",
+      "canonical_experiments": [
+        "s2-canonical-c19"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C68",
+      "superseded_by": "C73",
+      "statement": "2000 次 Monte Carlo 排程分布：中位 72、p10 28、p90 90",
+      "canonical_experiments": [
+        "s2-canonical-c68-monte-carlo"
+      ],
+      "certificate_status": "SUPERSEDED_BY_CLAIM",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C69",
+      "superseded_by": null,
+      "statement": "Base-05 负载 0–4 kW 五行 canonical 一致",
+      "canonical_experiments": [
+        "s2-canonical-load-base05"
+      ],
+      "certificate_status": "REISSUED",
+      "certificate_id": "certificate-s2-load",
+      "canonical_certificate": "experiments/certificate-s2-canonical-load/certificate.json",
+      "scope": "Base-05 load 0-4 kW"
+    },
+    {
+      "claim": "C70",
+      "superseded_by": null,
+      "statement": "Base-05/08 再生间隔八行 canonical 一致",
+      "canonical_experiments": [
+        "s2-canonical-regen-horizon"
+      ],
+      "certificate_status": "REISSUED",
+      "certificate_id": "certificate-s2-regeneration",
+      "canonical_certificate": "experiments/certificate-s2-canonical-regeneration/certificate.json",
+      "scope": "Base-05/08 regeneration intervals"
+    },
+    {
+      "claim": "C71",
+      "superseded_by": null,
+      "statement": "metrics 四组：3 组一致，coverage 定义改为服务影响 9/10",
+      "canonical_experiments": [
+        "s2-canonical-metrics-groups"
+      ],
+      "certificate_status": "REISSUED",
+      "certificate_id": "certificate-s2-metrics",
+      "canonical_certificate": "experiments/certificate-s2-canonical-metrics/certificate.json",
+      "scope": "cross-model metric definitions and values"
+    },
+    {
+      "claim": "C72",
+      "superseded_by": null,
+      "statement": "canonical order：24/25、40/44，order_sensitive=0",
+      "canonical_experiments": [
+        "s2-canonical-order"
+      ],
+      "certificate_status": "REISSUED",
+      "certificate_id": "certificate-s2-order",
+      "canonical_certificate": "experiments/certificate-s2-canonical-order/certificate.json",
+      "scope": "Base-06 repair-order sensitivity"
+    },
+    {
+      "claim": "C73",
+      "superseded_by": null,
+      "statement": "canonical C68 Monte Carlo：中位 72→68、均值 64.8→64.0",
+      "canonical_experiments": [
+        "s2-canonical-c68-monte-carlo"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C74",
+      "superseded_by": null,
+      "statement": "C12 horizon/insert/repair-sweep 全部分量由 canonical 语义覆盖",
+      "canonical_experiments": [
+        "s2-canonical-c12-components"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C75",
+      "superseded_by": null,
+      "statement": "energy interventions 12 行日级一致；16→16.25 d",
+      "canonical_experiments": [
+        "s2-canonical-energy-interventions"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C76",
+      "superseded_by": null,
+      "statement": "redundancy restorers 7/8 一致；共享机器人 baseline 30→20",
+      "canonical_experiments": [
+        "s2-canonical-redundancy-restorers"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C77",
+      "superseded_by": null,
+      "statement": "aux batch1：energy-boundary 18 行 + heldout 2 行一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch1"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C78",
+      "superseded_by": null,
+      "statement": "aux batch2：resupply-time 4 + delivery 3 + regen-cross 12 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch2"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C79",
+      "superseded_by": null,
+      "statement": "aux batch3：joint-boundary 6 + joint-consumables 8 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch3"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C80",
+      "superseded_by": null,
+      "statement": "aux batch4：regen-cost 9 + energy-recharge 3 + recharge-bound 1 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch4"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C81",
+      "superseded_by": null,
+      "statement": "aux batch5：coverage 定义修正；regen threshold 60/61 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch5"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C82",
+      "superseded_by": null,
+      "statement": "aux batch6：redundancy/long-horizon/recharge-rule 9/9 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch6"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C83",
+      "superseded_by": null,
+      "statement": "aux batch7：regen threshold battery/initial + regen-event 17/17 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch7"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C84",
+      "superseded_by": null,
+      "statement": "aux batch8：regen-long 语义修正；joint double-failure 10→10.25",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch8"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C85",
+      "superseded_by": null,
+      "statement": "aux batch9：insert-bound + joint-load 10/10 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch9"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C86",
+      "superseded_by": null,
+      "statement": "aux batch10：joint-three/worn/yield 18/18 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch10"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C87",
+      "superseded_by": null,
+      "statement": "aux batch11：worn-bound/sharpen-yield/regen-cost-load 13/13 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch11"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C88",
+      "superseded_by": null,
+      "statement": "aux batch12：regen forced-cost/capacity 8/8 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch12"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C89",
+      "superseded_by": null,
+      "statement": "aux batch13：adversarial failures/subsets 日级一致 + executor 修正",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch13"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C90",
+      "superseded_by": null,
+      "statement": "aux batch14：adversarial-time + regeneration horizon/yield",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch14"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C91",
+      "superseded_by": null,
+      "statement": "aux batch15：load + capacity/charge thresholds 11/11 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch15"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C92",
+      "superseded_by": null,
+      "statement": "aux batch16：grease-cost + yield-accumulation 10/10 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch16"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C93",
+      "superseded_by": null,
+      "statement": "aux batch17：two-restorers 4/4 一致",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch17"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C94",
+      "superseded_by": null,
+      "statement": "aux batch18：adversarial-timing 30/32 日级一致 + 2 executor 修正",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch18"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C95",
+      "superseded_by": null,
+      "statement": "aux batch19：regeneration/resupply 3/4 一致 + Base-07 joint 修正",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch19"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    },
+    {
+      "claim": "C96",
+      "superseded_by": null,
+      "statement": "aux batch20：recycle 一致；adversarial-rand 时间分布修正",
+      "canonical_experiments": [
+        "s2-canonical-aux-batch20"
+      ],
+      "certificate_status": "NOT_CERTIFIED",
+      "certificate_id": null,
+      "canonical_certificate": null,
+      "scope": null
+    }
+  ],
+  "summary": {
+    "claims": 53,
+    "claims_superseded_by_claim": 13,
+    "canonical_experiments": 53,
+    "certificate_statuses": {
+      "NOT_CERTIFIED": 36,
+      "REISSUED": 5,
+      "SUPERSEDED": 4,
+      "SUPERSEDED_BY_CLAIM": 8
+    }
+  }
+}
