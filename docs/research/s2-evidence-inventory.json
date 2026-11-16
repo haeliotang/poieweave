@@ -381,6 +381,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C86",
+      "statement": "aux batch10：joint-three/worn/yield 18/18 一致",
+      "evidence": [
+        "s2-canonical-aux-batch10"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -619,6 +628,34 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C77"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch10",
+      "report": "experiments/s2-canonical-aux-batch10/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch10/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch10"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 19,
+      "expected_output": "experiment\trow\tlegacy_days\tcanonical_days\tclassification\njoint-three\tbronze=3.0,energy=20\t60\t60.000\tEXPECTED_AGREEMENT\njoint-three\tbronze=3.0,energy=40\t60\t60.000\tEXPECTED_AGREEMENT\njoint-three\tbronze=3.0,energy=80\t60\t60.000\tEXPECTED_AGREEMENT\njoint-three\tbronze=6.0,energy=20\t90\t90.000\tEXPECTED_AGREEMENT\njoint-three\tbronze=6.0,energy=40\t90\t90.000\tEXPECTED_AGREEMENT\njoint-three\tbronze=6.0,energy=80\t90\t90.000\tEXPECTED_AGREEMENT\njoint-worn\tworn=0,bronze=3.0\t50\t50.000\tEXPECTED_AGREEMENT\njoint-worn\tworn=0,bronze=6.0\t50\t50.000\tEXPECTED_AGREEMENT\njoint-worn\tworn=2,bronze=3.0\t60\t60.000\tEXPECTED_AGREEMENT\njoint-worn\tworn=2,bronze=6.0\t70\t70.000\tEXPECTED_AGREEMENT\njoint-worn\tworn=4,bronze=3.0\t60\t60.000\tEXPECTED_AGREEMENT\njoint-worn\tworn=4,bronze=6.0\t90\t90.000\tEXPECTED_AGREEMENT\njoint-yield\tyield=1.0,bronze=3.0\t60\t60.000\tEXPECTED_AGREEMENT\njoint-yield\tyield=1.0,bronze=6.0\t90\t90.000\tEXPECTED_AGREEMENT\njoint-yield\tyield=0.8,bronze=3.0\t60\t60.000\tEXPECTED_AGREEMENT\njoint-yield\tyield=0.8,bronze=6.0\t80\t80.000\tEXPECTED_AGREEMENT\njoint-yield\tyield=0.5,bronze=3.0\t50\t50.000\tEXPECTED_AGREEMENT\njoint-yield\tyield=0.5,bronze=6.0\t50\t50.000\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\trow\tlegacy_days\tcanonical_days\tclassification",
+        "joint-three\tbronze=3.0,energy=20\t60\t60.000\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C86"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -3604,17 +3641,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 42,
-    "s2_experiments": 101,
-    "claimed_experiments": 42,
+    "s2_claims": 43,
+    "s2_experiments": 102,
+    "claimed_experiments": 43,
     "unmapped_experiments": 59,
-    "formal_s2_experiments_migrated_to_canonical": 16,
+    "formal_s2_experiments_migrated_to_canonical": 17,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 13,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 42,
+    "claims_with_experiment_evidence": 43,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
