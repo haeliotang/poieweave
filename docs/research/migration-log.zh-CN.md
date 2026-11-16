@@ -54,6 +54,7 @@
 | E-C90 | aux batch14 | 语义修正 | adversarial-time 2 + regen horizon 8 + yield 3；day10 legacy bug |
 | E-C91 | aux batch15 | 抽样通过 | load 5 + capacity 3 + charge 3，11/11 一致 |
 | E-C92 | aux batch16 | 抽样通过 | grease-cost 6 + yield-accumulation 4，10/10 一致 |
+| E-C93 | aux batch17 | 抽样通过 | two-restorers 4/4 一致 |
 | D | canonical 证书重签 | 完成 5 个 | joint/load/regeneration/order/metrics-v2；历史证书保留 |
 
 | A | 状态页数值归一化 | 完成 | 12/12 映射；C68 Monte Carlo 为 legacy-only |

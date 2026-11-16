@@ -130,7 +130,7 @@
   "schema": "poie.s2-certificate-impact-matrix/1",
   "summary": {
     "blocked": 0,
-    "canonical_migrations": 21,
+    "canonical_migrations": 22,
     "canonical_semantic_corrections": 15,
     "certificates": 6,
     "historical_valid": 0,

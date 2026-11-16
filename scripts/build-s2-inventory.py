@@ -188,6 +188,7 @@ COVERED_BY = {
     "s2-load": ["C91"], "s2-load-threshold-capacity": ["C91"],
     "s2-load-threshold-charge": ["C91"],
     "s2-grease-cost": ["C92"], "s2-yield-accumulation": ["C92"],
+    "s2-two-restorers": ["C93"],
     "s2-time-horizon": ["C74"], "s2-time-insert": ["C74"], "s2-time-repair-sweep": ["C74"],
     "s2-time-energy-sweep": ["C64"],
 }

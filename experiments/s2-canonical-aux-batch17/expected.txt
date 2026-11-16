@@ -1,0 +1,5 @@
+experiment	mode	legacy_days	canonical_days	classification
+two-restorers	redundant-only	30	30.000	EXPECTED_AGREEMENT
+two-restorers	filter-only	30	30.000	EXPECTED_AGREEMENT
+two-restorers	robot-only	30	30.000	EXPECTED_AGREEMENT
+two-restorers	filter+robot	90	90.000	EXPECTED_AGREEMENT
