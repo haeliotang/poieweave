@@ -69,6 +69,7 @@
 | C60 | canonical C9 冗余泵 60→90、17 天一致 | `experiments/s2-canonical-c9` | 单一冗余布局 |
 | C61 | canonical C10 补货间隔 60/50/40/30 一致 | `experiments/s2-canonical-c10` | 单一 consumable |
 | C62 | C11 canonical 迁移按日粒度成立；t=0 顺序已定义 | `experiments/s2-canonical-c11` | 精确值 0→0.125 d；day-10 legacy 行无效 |
+| C63 | C12 grease 边界被 canonical 维修期故障语义取代 | `experiments/s2-canonical-c12` | 旧 10/16/21 仅延迟故障模型 |
 
 ## 不应出现的声明
 

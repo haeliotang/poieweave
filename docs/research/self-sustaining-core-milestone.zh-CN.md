@@ -78,7 +78,7 @@
 ## 6. 证据包
 
 - 491 tests
-- 221 generated artifacts；399 CI paths
+- 222 generated artifacts；401 CI paths
 - 13 层证书 bundle，绑定 12 个模型 SHA-256
 - 正检：certificate/bundle/summary ok；负检：tamper detected；clean-room ok
 - 17 项证书不变量一键检查

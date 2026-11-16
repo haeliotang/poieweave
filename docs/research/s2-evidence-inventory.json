@@ -174,6 +174,15 @@
       ],
       "certificates": [],
       "boundary": "精确值 0→0.125 d；day-10 legacy 行无效"
+    },
+    {
+      "id": "C63",
+      "statement": "C12 grease 边界被 canonical 维修期故障语义取代",
+      "evidence": [
+        "s2-canonical-c12"
+      ],
+      "certificates": [],
+      "boundary": "旧 10/16/21 仅延迟故障模型"
     }
   ],
   "experiments": [
@@ -425,6 +434,32 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-c12",
+      "report": "experiments/s2-canonical-c12/REPORT.md",
+      "prereg": "experiments/s2-canonical-c12/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c12"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 6,
+      "expected_output": "grease_kg\tinstant_days\tevent_days\tcanonical_days\tevent_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification\n0.10\t4\t10\t2\t200.0\t160.0\tblocked:repair interrupted at 172800s: pump-p1 failed\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n0.15\t6\t16\t2\t200.0\t160.0\tblocked:repair interrupted at 172800s: pump-p1 failed\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n0.20\t8\t21\t2\t200.0\t160.0\tblocked:repair interrupted at 172800s: pump-p1 failed\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n0.30\t8\t21\t2\t200.0\t160.0\tblocked:repair interrupted at 172800s: pump-p1 failed\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n0.50\t8\t21\t2\t200.0\t160.0\tblocked:repair interrupted at 172800s: pump-p1 failed\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n",
+      "expected_head": [
+        "grease_kg\tinstant_days\tevent_days\tcanonical_days\tevent_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification",
+        "0.10\t4\t10\t2\t200.0\t160.0\tblocked:repair interrupted at 172800s: pump-p1 failed\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C63"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
     },
     {
@@ -2360,15 +2395,16 @@
     }
   ],
   "summary": {
-    "s2_claims": 19,
-    "s2_experiments": 79,
-    "claimed_experiments": 19,
+    "s2_claims": 20,
+    "s2_experiments": 80,
+    "claimed_experiments": 20,
     "unmapped_experiments": 60,
     "formal_s2_experiments_migrated_to_canonical": 7,
     "canonical_migrations_blocked": 0,
+    "canonical_semantic_corrections": 1,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 19,
+    "claims_with_experiment_evidence": 20,
     "status_s2_result_lines": 13,
     "unmapped_status_results": 13
   }

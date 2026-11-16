@@ -91,6 +91,8 @@ def experiment_record(path: Path, all_claims: list[dict[str, object]]) -> dict[s
         "migration_status": (
             "CANONICAL_BLOCKED"
             if path.name.startswith("s2-canonical-") and "Status: BLOCKED" in report
+            else "CANONICAL_SEMANTIC_CORRECTION"
+            if path.name.startswith("s2-canonical-") and "Status: SUPERSEDED" in report
             else "CANONICAL_MIGRATED"
             if path.name.startswith("s2-canonical-")
             else "NOT_MIGRATED"
@@ -154,6 +156,9 @@ def main(argv: list[str] | None = None) -> int:
             "canonical_migrations_blocked": sum(
                 1 for record in records if record["migration_status"] == "CANONICAL_BLOCKED"
             ),
+            "canonical_semantic_corrections": sum(
+                1 for record in records if record["migration_status"] == "CANONICAL_SEMANTIC_CORRECTION"
+            ),
             "stochastic_experiments_missing_seed": sum(
                 1 for record in records if record["stochastic"] and str(record["seed"]).startswith("NOT_RECORDED")
             ),
@@ -181,6 +186,7 @@ def main(argv: list[str] | None = None) -> int:
         f"- Unmapped experiments: {inventory['summary']['unmapped_experiments']}",
         f"- Formal S2 experiments migrated to canonical: {inventory['summary']['formal_s2_experiments_migrated_to_canonical']}",
         f"- Canonical migrations blocked: {inventory['summary']['canonical_migrations_blocked']}",
+        f"- Canonical semantic corrections: {inventory['summary']['canonical_semantic_corrections']}",
         f"- Stochastic experiments missing a recorded seed: {inventory['summary']['stochastic_experiments_missing_seed']}",
         f"- S2 certificates: {inventory['summary']['s2_certificates']}",
         f"- Status-page S2 result lines: {inventory['summary']['status_s2_result_lines']}",
