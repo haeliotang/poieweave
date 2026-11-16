@@ -1,0 +1,11 @@
+coverage_case	bat-1	legacy=false	canonical=true
+coverage_case	bus-1	legacy=false	canonical=true
+coverage_case	charger-1	legacy=false	canonical=true
+coverage_case	robot-m1	legacy=false	canonical=true
+coverage	legacy=5	canonical=9	total=10
+regenerative_capacity_days	legacy=20	canonical=20.0
+yield	legacy_days	canonical_days
+1.0	60	60
+0.8	60	60
+0.5	50	50
+recharge	average_kw=2.50	legacy_threshold=2.6	canonical_threshold=2.6

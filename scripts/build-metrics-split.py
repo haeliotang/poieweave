@@ -51,16 +51,16 @@ GROUPS = {
         "reason": "2/3 inserts 40/50->60, 4 already 60",
     },
     "recharge_boundary": {
-        "claims": [],
-        "canonical": [],
-        "disposition": "NOT_MIGRATED",
-        "reason": "average-recharge threshold not yet canonicalised",
+        "claims": ["C71"],
+        "canonical": ["s2-canonical-metrics-groups"],
+        "disposition": "MIGRATED",
+        "reason": "average recharge 2.50 kW and first energy-limited load 2.6 kW agree",
     },
     "recovery_coverage": {
-        "claims": [],
-        "canonical": [],
-        "disposition": "NOT_MIGRATED",
-        "reason": "Base-05 5/10 independent coverage lacks a canonical coverage adapter",
+        "claims": ["C71"],
+        "canonical": ["s2-canonical-metrics-groups"],
+        "disposition": "MIGRATED_WITH_SEMANTIC_CORRECTION",
+        "reason": "legacy 5/10 = asset restorability; canonical 9/10 = service impact; definition versioned",
     },
     "redundancy": {
         "claims": ["C9", "C14"],
@@ -75,10 +75,10 @@ GROUPS = {
         "reason": "redundant 90 agrees; baseline 31->2 d under canonical in-repair failures",
     },
     "regenerative_capacity_days": {
-        "claims": [],
-        "canonical": [],
-        "disposition": "NOT_MIGRATED",
-        "reason": "single scalar without scenario binding",
+        "claims": ["C71"],
+        "canonical": ["s2-canonical-metrics-groups"],
+        "disposition": "MIGRATED",
+        "reason": "canonical Base-08 minus Base-05 horizon = 20 days",
     },
     "resupply": {
         "claims": ["C10"],
@@ -87,10 +87,10 @@ GROUPS = {
         "reason": "interval->horizon mapping agrees 4/4",
     },
     "yield_sensitivity": {
-        "claims": [],
-        "canonical": [],
-        "disposition": "NOT_MIGRATED",
-        "reason": "yield rows not canonicalised",
+        "claims": ["C71"],
+        "canonical": ["s2-canonical-metrics-groups"],
+        "disposition": "MIGRATED",
+        "reason": "yield 1.0/0.8/0.5 -> 60/60/50 days in both paths",
     },
 }
 

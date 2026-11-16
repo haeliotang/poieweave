@@ -246,6 +246,15 @@
       ],
       "certificates": [],
       "boundary": "certificate-s2-regeneration 绑定"
+    },
+    {
+      "id": "C71",
+      "statement": "metrics 四组：3 组一致，coverage 定义改为服务影响 9/10",
+      "evidence": [
+        "s2-canonical-metrics-groups"
+      ],
+      "certificates": [],
+      "boundary": "定义已版本化，不覆盖旧 5/10"
     }
   ],
   "experiments": [
@@ -825,6 +834,35 @@
       "classification": "FORMAL_CLAIMED",
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-metrics-groups",
+      "report": "experiments/s2-canonical-metrics-groups/REPORT.md",
+      "prereg": "experiments/s2-canonical-metrics-groups/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-metrics-groups"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 11,
+      "expected_output": "coverage_case\tbat-1\tlegacy=false\tcanonical=true\ncoverage_case\tbus-1\tlegacy=false\tcanonical=true\ncoverage_case\tcharger-1\tlegacy=false\tcanonical=true\ncoverage_case\trobot-m1\tlegacy=false\tcanonical=true\ncoverage\tlegacy=5\tcanonical=9\ttotal=10\nregenerative_capacity_days\tlegacy=20\tcanonical=20.0\nyield\tlegacy_days\tcanonical_days\n1.0\t60\t60\n0.8\t60\t60\n0.5\t50\t50\nrecharge\taverage_kw=2.50\tlegacy_threshold=2.6\tcanonical_threshold=2.6\n",
+      "expected_head": [
+        "coverage_case\tbat-1\tlegacy=false\tcanonical=true",
+        "coverage_case\tbus-1\tlegacy=false\tcanonical=true"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C71"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
     },
     {
@@ -2950,17 +2988,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 27,
-    "s2_experiments": 86,
-    "claimed_experiments": 27,
+    "s2_claims": 28,
+    "s2_experiments": 87,
+    "claimed_experiments": 28,
     "unmapped_experiments": 59,
     "formal_s2_experiments_migrated_to_canonical": 8,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 6,
+    "canonical_semantic_corrections": 7,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 9,
     "canonical_certificates_reissued": 3,
-    "claims_with_experiment_evidence": 27,
+    "claims_with_experiment_evidence": 28,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0

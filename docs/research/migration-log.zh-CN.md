@@ -31,7 +31,8 @@
 | B-C69 | load 证书行 | 接受 | Base-05 0–4 kW 5/5 一致 |
 | B-C70 | regeneration 证书行 | 接受 | Base-05/08 8/8 一致 |
 | D | Certificate Impact Matrix | 初版 | 6 证书：3 historical、1 superseded、2 blocked、0 reissued |
-| D | metrics 证书拆分 | 初版 | 13 组：4 migrated、2 semantic、2 partial、1 superseded、4 not migrated；0 reissued |
+| D | metrics 证书拆分 | 更新 | 13 组：7 migrated、3 semantic、2 partial、1 superseded、0 not migrated；聚合证书仍 BLOCKED |
+| B-C71 | metrics 四组 | 接受（含定义修正） | regenerative/yield/recharge 一致；coverage 5/10→9/10 服务影响 |
 | D | canonical 证书重签 | 完成 3 个 | joint/load/regeneration 绑定 engine/model/runner/output SHA；历史证书保留 |
 | A | 状态页数值归一化 | 完成 | 12/12 映射；C68 Monte Carlo 为 legacy-only |
 | A | 84 实验分类 | 完成 | 25 claimed + 48 aux + 2 deterministic-sweep + 6 superseded + 2 exploratory + 1 definitional；0 unclassified、0 missing seed |
