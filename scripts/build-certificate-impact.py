@@ -33,7 +33,7 @@ MAPPING = {
         "classification": "EXPECTED_AGREEMENT",
         "scope": "Base-06 joint coverage",
         "rationale": "canonical reproduces 25/56 independent and 24/56 joint after the non-service repair fix; canonical certificate issued",
-        "canonical_certificate": "experiments/certificate-s2-canonical-joint/certificate.json",
+        "canonical_certificate": "experiments/certificate-canonical-c6-v2/certificate.json",
     },
     "certificate-s2-load": {
         "claims": ["C69"],
@@ -42,7 +42,7 @@ MAPPING = {
         "classification": "EXPECTED_AGREEMENT",
         "scope": "Base-05 load 0-4 kW",
         "rationale": "canonical reproduces all five Base-05 load rows with final energy and termination; canonical certificate issued",
-        "canonical_certificate": "experiments/certificate-s2-canonical-load/certificate.json",
+        "canonical_certificate": "experiments/certificate-canonical-c69-v2/certificate.json",
     },
     "certificate-s2-regeneration": {
         "claims": ["C70"],
@@ -51,7 +51,7 @@ MAPPING = {
         "classification": "EXPECTED_AGREEMENT",
         "scope": "Base-05/08 regeneration intervals",
         "rationale": "canonical reproduces 8/8 rows including final energy and termination; canonical certificate issued",
-        "canonical_certificate": "experiments/certificate-s2-canonical-regeneration/certificate.json",
+        "canonical_certificate": "experiments/certificate-canonical-c70-v2/certificate.json",
     },
     "certificate-s2-metrics": {
         "claims": ["C71"],
@@ -60,7 +60,7 @@ MAPPING = {
         "classification": "MIXED_AGREEMENT_AND_DEFINITION_CHANGE",
         "scope": "cross-model metric definitions and values",
         "rationale": "scoped v2 certificate: 10 canonical groups, coverage definition service-impact-v1, 2 partial and 1 superseded group explicitly excluded; historical certificate preserved",
-        "canonical_certificate": "experiments/certificate-s2-canonical-metrics/certificate.json",
+        "canonical_certificate": "experiments/certificate-canonical-c71-v2/certificate.json",
     },
     "certificate-s2-order": {
         "claims": ["C72"],
@@ -69,7 +69,7 @@ MAPPING = {
         "classification": "EXPECTED_AGREEMENT",
         "scope": "Base-06 repair-order sensitivity",
         "rationale": "canonical permutation search reproduces 24/25 and 40/44 with order_sensitive=0; canonical certificate issued",
-        "canonical_certificate": "experiments/certificate-s2-canonical-order/certificate.json",
+        "canonical_certificate": "experiments/certificate-canonical-c72-v2/certificate.json",
     },
 }
 

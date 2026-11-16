@@ -1,0 +1,9 @@
+termination	survived_s	samples
+blocked:energy_depleted	284400.000	6
+at_s	status	energy_kwh	generated_kwh	load_kwh	repair_kwh	curtailed_kwh	resupply_kwh	repair_active	repair_label	phase
+0	OBSERVED	40.000000	0.000000	0.000000	0.000000	0.000000	0.000000	true	pump-p1	After
+3600	OBSERVED	39.500000	2.500000	3.000000	0.000000	0.000000	0.000000	true	pump-p1	After
+7200	OBSERVED	39.000000	5.000000	6.000000	0.000000	0.000000	0.000000	true	pump-p1	After
+10800	OBSERVED	38.500000	7.500000	9.000000	0.000000	0.000000	0.000000	true	pump-p1	Before
+10800	OBSERVED	38.000000	7.500000	9.000000	0.500000	0.000000	0.000000	false	NONE	After
+284400	OBSERVED	0.000000	197.500000	237.000000	0.500000	0.000000	0.000000	false	NONE	After

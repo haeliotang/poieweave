@@ -51,7 +51,7 @@
     },
     {
       "path": "crates/poie-viability/src/observer.rs",
-      "sha256": "15d34156db892a0cf45330692bfe3601e19f6bd817834c94a18a7047f8f3cac0"
+      "sha256": "77a469102450d9fd151f8acbee18c0c159ca303b9e3c0a048050dc4d60f22968"
     },
     {
       "path": "crates/poie-viability/src/bin/poie-s5v-canonical-observatory.rs",

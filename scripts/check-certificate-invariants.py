@@ -21,6 +21,10 @@ def main() -> int:
     checked = 0
     for verifier in sorted((ROOT / "experiments").glob("certificate-*/verify.py")):
         certificate = verifier.parent / "certificate.json"
+        # v1 canonical S2 certificates are frozen at audit/certificates/v1-frozen.json.
+        # They are not re-run against the current engine; v2 is verified separately.
+        if verifier.parent.name.startswith("certificate-s2-canonical-"):
+            continue
         if not certificate.is_file():
             continue
         result = run(sys.executable, str(verifier), str(certificate))

@@ -18,7 +18,7 @@ use crate::closure::{analyze, ClosureOutcome, Plan};
 use crate::scheduler::schedule_plans_with_alternatives;
 use crate::survival::{
     apply_energy_interval_ledger, apply_plans, energy, initial_inventory, model_with_inventory, BatteryLimits,
-    FailureEvent, Resupply,
+    EnergyFlow, FailureEvent, Resupply,
 };
 
 /// Explicit terminal state; never inferred from log text.
@@ -61,6 +61,180 @@ pub struct EngineOutcome {
     pub survived_s: f64,
     pub trace: Vec<EngineTrace>,
     pub final_inventory: BTreeMap<String, f64>,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub enum ObservationPhase {
+    Before,
+    After,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct ObservationRequest {
+    pub at_s: f64,
+    pub phase: ObservationPhase,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct RepairObservation {
+    pub label: String,
+    pub end_s: f64,
+    pub plans: Vec<String>,
+    pub resources: Vec<String>,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ObservationStatus {
+    Observed,
+    UnobservableAfterTermination,
+    UnobservableNotMaterialized,
+}
+
+impl ObservationStatus {
+    pub fn label(self) -> &'static str {
+        match self {
+            ObservationStatus::Observed => "OBSERVED",
+            ObservationStatus::UnobservableAfterTermination => "UNOBSERVABLE_AFTER_TERMINATION",
+            ObservationStatus::UnobservableNotMaterialized => "UNOBSERVABLE_NOT_MATERIALIZED",
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct EngineObservation {
+    pub at_s: f64,
+    pub phase: ObservationPhase,
+    pub status: ObservationStatus,
+    pub inventory: BTreeMap<String, f64>,
+    pub energy_generated_j: f64,
+    pub energy_load_j: f64,
+    pub energy_repair_j: f64,
+    pub energy_curtailed_j: f64,
+    pub energy_resupply_j: f64,
+    pub running_repair: Option<RepairObservation>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct ObservedEngineOutcome {
+    pub outcome: EngineOutcome,
+    pub observations: Vec<EngineObservation>,
+}
+
+#[derive(Default)]
+struct ObservationCollector {
+    requests: Vec<ObservationRequest>,
+    index: usize,
+    observations: Vec<EngineObservation>,
+}
+
+thread_local! {
+    static OBSERVATION_COLLECTOR: std::cell::RefCell<Option<ObservationCollector>> =
+        const { std::cell::RefCell::new(None) };
+}
+
+fn with_observations(mut f: impl FnMut(&mut ObservationCollector)) {
+    OBSERVATION_COLLECTOR.with(|cell| {
+        if let Some(collector) = cell.borrow_mut().as_mut() {
+            f(collector);
+        }
+    });
+}
+
+fn next_request_time() -> Option<f64> {
+    let mut value = None;
+    with_observations(|collector| {
+        value = collector.requests.get(collector.index).map(|request| request.at_s);
+    });
+    value
+}
+
+fn observe_due(
+    at_s: f64,
+    phase: ObservationPhase,
+    inventory: &BTreeMap<String, f64>,
+    running: Option<&RunningRepair>,
+    trace: &[EngineTrace],
+    interval: &EnergyFlow,
+) {
+    with_observations(|collector| {
+        while let Some(request) = collector.requests.get(collector.index).copied() {
+            if (request.at_s - at_s).abs() > 1e-6 {
+                break;
+            }
+            if request.phase != phase {
+                break;
+            }
+            let (generated, load, repair, curtailed, resupply) = trace.iter().fold(
+                (interval.generated_j, interval.load_j, 0.0, interval.curtailed_j, 0.0),
+                |mut acc, entry| {
+                    acc.0 += entry.energy_generated_j;
+                    acc.1 += entry.energy_load_j;
+                    acc.2 += entry.energy_repair_j;
+                    acc.3 += entry.energy_curtailed_j;
+                    acc.4 += entry.energy_resupply_j;
+                    acc
+                },
+            );
+            collector.observations.push(EngineObservation {
+                at_s,
+                phase,
+                status: ObservationStatus::Observed,
+                inventory: inventory.clone(),
+                energy_generated_j: generated,
+                energy_load_j: load,
+                energy_repair_j: repair,
+                energy_curtailed_j: curtailed,
+                energy_resupply_j: resupply,
+                running_repair: running.map(|repair| RepairObservation {
+                    label: repair.label.clone(),
+                    end_s: repair.end_s,
+                    plans: plan_summary(&repair.plans),
+                    resources: repair.resources.clone(),
+                }),
+            });
+            collector.index += 1;
+        }
+    });
+}
+
+/// Runs the canonical kernel with native, read-only observations.
+pub fn run_engine_observed(
+    model: &Model,
+    options: &EngineOptions<'_>,
+    requests: &[ObservationRequest],
+) -> Result<ObservedEngineOutcome, EngineError> {
+    let mut sorted = requests.to_vec();
+    sorted.sort_by(|left, right| left.at_s.total_cmp(&right.at_s).then_with(|| left.phase.cmp(&right.phase)));
+    OBSERVATION_COLLECTOR.with(|cell| {
+        *cell.borrow_mut() =
+            Some(ObservationCollector { requests: sorted.clone(), index: 0, observations: Vec::new() });
+    });
+    let outcome = run_engine(model, options);
+    let collected = OBSERVATION_COLLECTOR.with(|cell| cell.borrow_mut().take());
+    let result = outcome.map(|outcome| {
+        let mut observations = collected.map(|collector| collector.observations).unwrap_or_default();
+        for request in sorted {
+            if !observations.iter().any(|observation| {
+                (observation.at_s - request.at_s).abs() <= 1e-6 && observation.phase == request.phase
+            }) {
+                observations.push(EngineObservation {
+                    at_s: request.at_s,
+                    phase: request.phase,
+                    status: ObservationStatus::UnobservableAfterTermination,
+                    inventory: BTreeMap::new(),
+                    energy_generated_j: 0.0,
+                    energy_load_j: 0.0,
+                    energy_repair_j: 0.0,
+                    energy_curtailed_j: 0.0,
+                    energy_resupply_j: 0.0,
+                    running_repair: None,
+                });
+            }
+        }
+        observations.sort_by(|left, right| left.at_s.total_cmp(&right.at_s).then_with(|| left.phase.cmp(&right.phase)));
+        ObservedEngineOutcome { outcome, observations }
+    });
+    result
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -330,6 +504,8 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
         }
     }
 
+    observe_due(clock.now_s(), ObservationPhase::After, &inventory, running.as_ref(), &trace, &interval_flow);
+
     let mut timeline: Vec<(f64, TimelineItem)> = Vec::new();
     for failure in &options.failures {
         timeline.push((failure.at_s, TimelineItem::Failure(failure.clone())));
@@ -391,8 +567,15 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
             raw_next_event
         };
         let next_completion = running.as_ref().map(|repair| repair.end_s);
-        let next_s =
+        let mut next_s =
             [next_event, next_completion, Some(options.horizon_s)].into_iter().flatten().fold(f64::INFINITY, f64::min);
+        let mut sample_only = false;
+        if let Some(request_s) = next_request_time() {
+            if request_s >= clock.now_s() - 1e-9 && request_s <= next_s + 1e-9 {
+                sample_only = request_s < next_s - 1e-9;
+                next_s = request_s;
+            }
+        }
         if next_s > clock.horizon_s() + 1e-9 {
             break;
         }
@@ -411,6 +594,11 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     final_inventory: inventory,
                 });
             }
+        }
+        observe_due(clock.now_s(), ObservationPhase::Before, &inventory, running.as_ref(), &trace, &interval_flow);
+        if sample_only {
+            observe_due(clock.now_s(), ObservationPhase::After, &inventory, running.as_ref(), &trace, &interval_flow);
+            continue;
         }
         if let Some(repair) = running.as_ref() {
             if repair.end_s <= clock.now_s() + 1e-9 {
@@ -449,10 +637,19 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     energy_repair_j: repair_j,
                     energy_curtailed_j: flow.curtailed_j,
                 });
+                observe_due(
+                    clock.now_s(),
+                    ObservationPhase::After,
+                    &inventory,
+                    running.as_ref(),
+                    &trace,
+                    &interval_flow,
+                );
                 continue;
             }
         }
         if clock.now_s() >= options.horizon_s - 1e-9 {
+            observe_due(clock.now_s(), ObservationPhase::After, &inventory, running.as_ref(), &trace, &interval_flow);
             if running.is_some() {
                 return Ok(EngineOutcome {
                     termination: EngineTermination::IncompleteAtHorizon("repair at horizon".into()),
@@ -573,6 +770,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
             }
         }
         pending.extend(repairable);
+        observe_due(clock.now_s(), ObservationPhase::After, &inventory, running.as_ref(), &trace, &interval_flow);
     }
 
     let tail = clock.advance_to(options.horizon_s);
@@ -606,6 +804,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
         energy_repair_j: 0.0,
         energy_curtailed_j: flow.curtailed_j,
     });
+    observe_due(clock.now_s(), ObservationPhase::After, &inventory, running.as_ref(), &trace, &interval_flow);
     Ok(EngineOutcome {
         termination: EngineTermination::CompletedHorizon,
         survived_s: clock.now_s(),

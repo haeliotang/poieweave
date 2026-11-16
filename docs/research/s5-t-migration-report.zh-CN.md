@@ -148,16 +148,19 @@ S2 evidence inventory 共记录 53 条 S2 claims、112 个 S2 实验、12 条已
 
 ```text
 REISSUED              5
-CANONICAL_ISSUED     36
+CANONICAL_ISSUED_V2  41
 SUPERSEDED            4
 SUPERSEDED_BY_CLAIM   8
 NOT_CERTIFIED         0
 ```
 
-36 个新证书位于 `experiments/certificate-canonical-c56..c67,c73,c74..c96`，
-由 `scripts/build-canonical-claim-certificates.py` 生成，绑定 claim、实验输出、
-runner、engine、模型、证据源文件与 claims ledger 哈希，并由
-`scripts/verify-canonical-claim-certificates.py` 校验。
+v2 证书共 41 个，位于 `experiments/certificate-canonical-*-v2`，
+由 `scripts/build-canonical-claim-certificates-v2.py` 生成，绑定 claim、实验输出、
+runner、engine、survival/clock/closure/scheduler、Cargo.lock、模型、证据源文件、
+claims ledger 与 v1 predecessor 哈希，并由
+`scripts/verify-canonical-claim-certificates-v2.py` 校验。
+v1 的 87 个证书文件冻结在 `audit/certificates/v1-frozen.json`，
+并在 baseline `9f343b55` 上独立重验。
 
 全部 53 个 claim 均已有证书或明确的 superseded 关系；`NOT_CERTIFIED=0`。
 
@@ -167,7 +170,7 @@ runner、engine、模型、证据源文件与 claims ledger 哈希，并由
 
 - 单一 canonical event engine 的时钟、资源、能量、执行依赖语义。
 - 40 个 canonical S2 迁移实验与 expected 输出（22 精确 + 18 语义修正）。
-- 53 个 claim 的证书覆盖：36 个 `CANONICAL_ISSUED`、5 个 `REISSUED`、
+- 53 个 claim 的证书覆盖：41 个 `CANONICAL_ISSUED_V2`、5 个 `REISSUED`、
   4 个 `SUPERSEDED`、8 个 `SUPERSEDED_BY_CLAIM`、0 个 `NOT_CERTIFIED`。
 - 57 个辅助实验有 canonical 证据；2 个定义型/负结果记录按设计排除；0 个未覆盖。
 - 独立 verifier、tamper 失败测试、clean-room 现有流程。

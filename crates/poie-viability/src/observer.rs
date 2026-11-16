@@ -160,6 +160,7 @@ pub fn observe_states(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::engine::{run_engine_observed, ObservationPhase, ObservationRequest};
     use crate::survival::BatteryLimits;
     use poie_ontology::model::Model;
     use std::path::{Path, PathBuf};
@@ -283,5 +284,58 @@ mod tests {
         let mut completion = options(3.0 * 3600.0);
         completion.failures = Vec::new();
         assert_noninterference(&model, &completion, &[0.0, 3600.0, 3.0 * 3600.0]);
+    }
+    fn native_noninterference(model: &Model, options: &EngineOptions<'_>, requests: &[ObservationRequest]) {
+        let direct = run_engine(model, options).unwrap();
+        let observed = run_engine_observed(model, options, requests).unwrap();
+        assert_eq!(direct, observed.outcome);
+    }
+
+    #[test]
+    fn native_observation_noninterference_cases() {
+        let model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
+        let all = |times: &[f64]| {
+            times
+                .iter()
+                .map(|at_s| ObservationRequest { at_s: *at_s, phase: ObservationPhase::After })
+                .collect::<Vec<_>>()
+        };
+        native_noninterference(&model, &options(200.0 * 3600.0), &all(&[0.0, 3600.0, 284400.0]));
+        native_noninterference(&model, &options(79.0 * 3600.0), &all(&[0.0, 3600.0, 79.0 * 3600.0]));
+        let mut early = options(3600.0);
+        early.failures = vec![
+            crate::survival::FailureEvent { at_s: 1800.0, asset: "pump-p1".into() },
+            crate::survival::FailureEvent { at_s: 1800.0, asset: "filter-1".into() },
+        ];
+        native_noninterference(&model, &early, &all(&[0.0, 900.0, 1800.0]));
+        let mut interrupted = options(90.0 * 86_400.0);
+        interrupted.failures = vec![crate::survival::FailureEvent { at_s: 2.0 * 86_400.0, asset: "pump-p1".into() }];
+        native_noninterference(&model, &interrupted, &all(&[0.0, 2.0 * 86_400.0]));
+        native_noninterference(&model, &options(3.0 * 3600.0), &all(&[0.0, 3.0 * 3600.0]));
+    }
+
+    #[test]
+    fn native_observation_event_before_after() {
+        let model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
+        let observed = run_engine_observed(
+            &model,
+            &options(200.0 * 3600.0),
+            &[
+                ObservationRequest { at_s: 10800.0, phase: ObservationPhase::Before },
+                ObservationRequest { at_s: 10800.0, phase: ObservationPhase::After },
+            ],
+        )
+        .unwrap();
+        assert_eq!(observed.observations.len(), 2);
+        let before = &observed.observations[0];
+        let after = &observed.observations[1];
+        assert_eq!(before.phase, ObservationPhase::Before);
+        assert_eq!(after.phase, ObservationPhase::After);
+        assert_eq!(before.inventory["electric-energy"], 138_600_000.0);
+        assert_eq!(after.inventory["electric-energy"], 136_800_000.0);
+        assert_eq!(before.energy_repair_j, 0.0);
+        assert_eq!(after.energy_repair_j, 1_800_000.0);
+        assert!(before.running_repair.is_some());
+        assert!(after.running_repair.is_none());
     }
 }
