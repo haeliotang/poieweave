@@ -1,15 +1,16 @@
 # S5-T Canonical Evidence Convergence — Migration Report
 
 日期：2026-11-16
-基线：`main` at `28d514a`（PR #532）；起点 `a73c459`（PR #507）
-状态：**S5-T SEMANTIC CONVERGENCE — NOT ESTABLISHED**
+基线：`main` at `4c98b82`（PR #561）；起点 `a73c459`（PR #507）
+状态：**S5-T SEMANTIC CONVERGENCE — ESTABLISHED (SCOPED)**
 状态：**S5 CROSS-MODEL VALIDITY — NOT ESTABLISHED**
 
-本报告记录当前可核查的迁移状态。它不是完成声明；剩余边界见第 8 节。
+本报告记录当前可核查的迁移状态。`ESTABLISHED (SCOPED)` 仅覆盖第 8 节列出的
+模型/仿真级范围；不是物理安全、真实设备或跨模型有效性声明。
 
 ## 1. 迁移的全部正式 S2 声明
 
-S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已归一化的状态页数值结论。
+S2 evidence inventory 共记录 53 条 S2 claims、112 个 S2 实验、12 条已归一化的状态页数值结论。40 个 claim-bearing canonical 实验完成迁移：22 个精确一致、18 个语义修正。
 
 ### 1.1 精确一致（9 个 canonical 实验）
 
@@ -165,14 +166,20 @@ runner、engine、模型、证据源文件与 claims ledger 哈希，并由
 已建立：
 
 - 单一 canonical event engine 的时钟、资源、能量、执行依赖语义。
-- 40 个 canonical S2 迁移实验与 expected 输出。
-- 5 个绑定 engine/model/runner/output SHA 的 canonical 证书。
+- 40 个 canonical S2 迁移实验与 expected 输出（22 精确 + 18 语义修正）。
+- 53 个 claim 的证书覆盖：36 个 `CANONICAL_ISSUED`、5 个 `REISSUED`、
+  4 个 `SUPERSEDED`、8 个 `SUPERSEDED_BY_CLAIM`、0 个 `NOT_CERTIFIED`。
+- 57 个辅助实验有 canonical 证据；2 个定义型/负结果记录按设计排除；0 个未覆盖。
 - 独立 verifier、tamper 失败测试、clean-room 现有流程。
-- 可审计的 S2 inventory、claims 和证书影响矩阵。
+- 可审计的 S2 inventory、claims、claim→certificate 覆盖和证书影响矩阵。
+
+范围声明：
+
+- `S5-T SEMANTIC CONVERGENCE — ESTABLISHED (SCOPED)`：仅覆盖上述模型/仿真级
+  canonical 证据和证书；不覆盖外部模型、物理设备或安全认证。
 
 未建立：
 
-- `S5-T SEMANTIC CONVERGENCE — ESTABLISHED`：仍有 59 个辅助实验未 canonical 化；当前收敛声明只覆盖 40 个 claim-bearing canonical 实验与相应证书。
 - `S5 CROSS-MODEL VALIDITY`：尚未执行外部 FMU/FMI 协同仿真或独立数值比较。
 - 物理安全、真实工业设备自主运行：未验证。
 - 持久信任锚、多写者/分区/时钟偏移：未建立。
