@@ -1,0 +1,48 @@
+{
+  "canonical_classification": "SEMANTIC_CORRECTION",
+  "certificate_id": "poie-s2-canonical-c75-v1",
+  "claim_statement": "energy interventions 12 \u884c\u65e5\u7ea7\u4e00\u81f4\uff1b16\u219216.25 d",
+  "claims": [
+    "C75"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_sources": [
+    {
+      "path": "experiments/s2-canonical-energy-interventions/expected.txt",
+      "sha256": "35c8a021a7b0fd891ab2606826218902dd5224e8cdc350958e06606860982c9f"
+    },
+    {
+      "path": "experiments/s2-canonical-energy-interventions/REPORT.md",
+      "sha256": "03dcfe67a41525b6b2b021313870c8894d8ae969082177553322f0617a651436"
+    },
+    {
+      "path": "experiments/s2-canonical-energy-interventions/PREREG.md",
+      "sha256": "fd8fb6c0e55e2b357873cc887d856b7204ffab068d824189edb30e1ee7f696ab"
+    }
+  ],
+  "experiment": {
+    "expected": "experiments/s2-canonical-energy-interventions/expected.txt",
+    "expected_sha256": "35c8a021a7b0fd891ab2606826218902dd5224e8cdc350958e06606860982c9f",
+    "path": "experiments/s2-canonical-energy-interventions"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "runner": {
+    "binary": "poie-migration-energy-interventions",
+    "sha256": "4969423954f8f4a5b7939173a77df7992c3d9162ec705af3363a5a819fc9f0ee",
+    "source": "crates/poie-viability/src/bin/poie-migration-energy-interventions.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/2",
+  "scope": "model/simulation evidence only; canonical claim C75",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "status": "CANONICAL_ISSUED",
+  "verifier": "poie-canonical-s2-certificate/2"
+}

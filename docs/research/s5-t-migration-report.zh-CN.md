@@ -147,18 +147,18 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 
 ```text
 REISSUED              5
-CANONICAL_ISSUED     13
+CANONICAL_ISSUED     36
 SUPERSEDED            4
 SUPERSEDED_BY_CLAIM   8
-NOT_CERTIFIED        23
+NOT_CERTIFIED         0
 ```
 
-13 个新证书位于 `experiments/certificate-canonical-c56..c67,c73`，
+36 个新证书位于 `experiments/certificate-canonical-c56..c67,c73,c74..c96`，
 由 `scripts/build-canonical-claim-certificates.py` 生成，绑定 claim、实验输出、
 runner、engine、模型、证据源文件与 claims ledger 哈希，并由
 `scripts/verify-canonical-claim-certificates.py` 校验。
 
-**其余 23 个 claim 仍为 `NOT_CERTIFIED`，证书迁移未完成。**
+全部 53 个 claim 均已有证书或明确的 superseded 关系；`NOT_CERTIFIED=0`。
 
 ## 8. 当前模型能力与科学边界
 

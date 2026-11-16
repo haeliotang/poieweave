@@ -1,0 +1,48 @@
+{
+  "canonical_classification": "EXPECTED_AGREEMENT",
+  "certificate_id": "poie-s2-canonical-c80-v1",
+  "claim_statement": "aux batch4\uff1aregen-cost 9 + energy-recharge 3 + recharge-bound 1 \u4e00\u81f4",
+  "claims": [
+    "C80"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_sources": [
+    {
+      "path": "experiments/s2-canonical-aux-batch4/expected.txt",
+      "sha256": "eaf6096488e4364207c9fd0aaaaad00b72e132b33e742ff99d8ad22d3fd063bd"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch4/REPORT.md",
+      "sha256": "511cc63eed53040ce443d204326727294ccaa0d871621d1d2e78ec07bb83e9cb"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch4/PREREG.md",
+      "sha256": "bcfc240fa85a91ddb0006fbcfb4c3f68fb4163faaef8ce048e5e2fb2b6565920"
+    }
+  ],
+  "experiment": {
+    "expected": "experiments/s2-canonical-aux-batch4/expected.txt",
+    "expected_sha256": "eaf6096488e4364207c9fd0aaaaad00b72e132b33e742ff99d8ad22d3fd063bd",
+    "path": "experiments/s2-canonical-aux-batch4"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "runner": {
+    "binary": "poie-migration-aux-batch4",
+    "sha256": "12731b115825658412268e51883dba881c8fd56b94be7aac007f2c0673937b04",
+    "source": "crates/poie-viability/src/bin/poie-migration-aux-batch4.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/2",
+  "scope": "model/simulation evidence only; canonical claim C80",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "status": "CANONICAL_ISSUED",
+  "verifier": "poie-canonical-s2-certificate/2"
+}

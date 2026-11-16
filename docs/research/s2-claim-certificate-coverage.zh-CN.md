@@ -8,8 +8,7 @@
 claims              53
 有 canonical 实验   53
 旧 claim 被新 claim 取代 13
-CANONICAL_ISSUED    13
-NOT_CERTIFIED       23
+CANONICAL_ISSUED    36
 REISSUED            5
 SUPERSEDED          4
 SUPERSEDED_BY_CLAIM 8
@@ -49,29 +48,29 @@ SUPERSEDED_BY_CLAIM 8
 | C71 | s2-canonical-metrics-groups | certificate-s2-metrics | REISSUED |
 | C72 | s2-canonical-order | certificate-s2-order | REISSUED |
 | C73 | s2-canonical-c68-monte-carlo | canonical-c73 | CANONICAL_ISSUED |
-| C74 | s2-canonical-c12-components | — | NOT_CERTIFIED |
-| C75 | s2-canonical-energy-interventions | — | NOT_CERTIFIED |
-| C76 | s2-canonical-redundancy-restorers | — | NOT_CERTIFIED |
-| C77 | s2-canonical-aux-batch1 | — | NOT_CERTIFIED |
-| C78 | s2-canonical-aux-batch2 | — | NOT_CERTIFIED |
-| C79 | s2-canonical-aux-batch3 | — | NOT_CERTIFIED |
-| C80 | s2-canonical-aux-batch4 | — | NOT_CERTIFIED |
-| C81 | s2-canonical-aux-batch5 | — | NOT_CERTIFIED |
-| C82 | s2-canonical-aux-batch6 | — | NOT_CERTIFIED |
-| C83 | s2-canonical-aux-batch7 | — | NOT_CERTIFIED |
-| C84 | s2-canonical-aux-batch8 | — | NOT_CERTIFIED |
-| C85 | s2-canonical-aux-batch9 | — | NOT_CERTIFIED |
-| C86 | s2-canonical-aux-batch10 | — | NOT_CERTIFIED |
-| C87 | s2-canonical-aux-batch11 | — | NOT_CERTIFIED |
-| C88 | s2-canonical-aux-batch12 | — | NOT_CERTIFIED |
-| C89 | s2-canonical-aux-batch13 | — | NOT_CERTIFIED |
-| C90 | s2-canonical-aux-batch14 | — | NOT_CERTIFIED |
-| C91 | s2-canonical-aux-batch15 | — | NOT_CERTIFIED |
-| C92 | s2-canonical-aux-batch16 | — | NOT_CERTIFIED |
-| C93 | s2-canonical-aux-batch17 | — | NOT_CERTIFIED |
-| C94 | s2-canonical-aux-batch18 | — | NOT_CERTIFIED |
-| C95 | s2-canonical-aux-batch19 | — | NOT_CERTIFIED |
-| C96 | s2-canonical-aux-batch20 | — | NOT_CERTIFIED |
+| C74 | s2-canonical-c12-components | canonical-c74 | CANONICAL_ISSUED |
+| C75 | s2-canonical-energy-interventions | canonical-c75 | CANONICAL_ISSUED |
+| C76 | s2-canonical-redundancy-restorers | canonical-c76 | CANONICAL_ISSUED |
+| C77 | s2-canonical-aux-batch1 | canonical-c77 | CANONICAL_ISSUED |
+| C78 | s2-canonical-aux-batch2 | canonical-c78 | CANONICAL_ISSUED |
+| C79 | s2-canonical-aux-batch3 | canonical-c79 | CANONICAL_ISSUED |
+| C80 | s2-canonical-aux-batch4 | canonical-c80 | CANONICAL_ISSUED |
+| C81 | s2-canonical-aux-batch5 | canonical-c81 | CANONICAL_ISSUED |
+| C82 | s2-canonical-aux-batch6 | canonical-c82 | CANONICAL_ISSUED |
+| C83 | s2-canonical-aux-batch7 | canonical-c83 | CANONICAL_ISSUED |
+| C84 | s2-canonical-aux-batch8 | canonical-c84 | CANONICAL_ISSUED |
+| C85 | s2-canonical-aux-batch9 | canonical-c85 | CANONICAL_ISSUED |
+| C86 | s2-canonical-aux-batch10 | canonical-c86 | CANONICAL_ISSUED |
+| C87 | s2-canonical-aux-batch11 | canonical-c87 | CANONICAL_ISSUED |
+| C88 | s2-canonical-aux-batch12 | canonical-c88 | CANONICAL_ISSUED |
+| C89 | s2-canonical-aux-batch13 | canonical-c89 | CANONICAL_ISSUED |
+| C90 | s2-canonical-aux-batch14 | canonical-c90 | CANONICAL_ISSUED |
+| C91 | s2-canonical-aux-batch15 | canonical-c91 | CANONICAL_ISSUED |
+| C92 | s2-canonical-aux-batch16 | canonical-c92 | CANONICAL_ISSUED |
+| C93 | s2-canonical-aux-batch17 | canonical-c93 | CANONICAL_ISSUED |
+| C94 | s2-canonical-aux-batch18 | canonical-c94 | CANONICAL_ISSUED |
+| C95 | s2-canonical-aux-batch19 | canonical-c95 | CANONICAL_ISSUED |
+| C96 | s2-canonical-aux-batch20 | canonical-c96 | CANONICAL_ISSUED |
 
 ## 解释
 

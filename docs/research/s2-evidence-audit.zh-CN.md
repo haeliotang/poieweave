@@ -99,13 +99,13 @@ claim 级覆盖由 `scripts/build-claim-certificate-coverage.py` 生成：
 
 ```text
 REISSUED              5
-CANONICAL_ISSUED     13
+CANONICAL_ISSUED     36
 SUPERSEDED            4
 SUPERSEDED_BY_CLAIM   8
-NOT_CERTIFIED        23
+NOT_CERTIFIED         0
 ```
 
-新增 13 个 canonical claim 证书（C56–C67、C73）；其余 23 个明确未认证。
+新增 36 个 canonical claim 证书（C56–C67、C73、C74–C96）；NOT_CERTIFIED=0。
 
 ### F5：状态页 12 条 S2 数值结论已全部归一化
 

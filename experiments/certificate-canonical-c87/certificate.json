@@ -1,0 +1,48 @@
+{
+  "canonical_classification": "EXPECTED_AGREEMENT",
+  "certificate_id": "poie-s2-canonical-c87-v1",
+  "claim_statement": "aux batch11\uff1aworn-bound/sharpen-yield/regen-cost-load 13/13 \u4e00\u81f4",
+  "claims": [
+    "C87"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_sources": [
+    {
+      "path": "experiments/s2-canonical-aux-batch11/expected.txt",
+      "sha256": "6c5733b824401f4f2b98a981ab7267dffe98f68028ea6c47b45ba9d5c0be5e6e"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch11/REPORT.md",
+      "sha256": "aad583755e67f108bbc01824fcc5135deb82910747b269c012899c163c03ddd7"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch11/PREREG.md",
+      "sha256": "65cf65203bc8b942b86367167091de06b5481bb8bd2891276b51253014149bb8"
+    }
+  ],
+  "experiment": {
+    "expected": "experiments/s2-canonical-aux-batch11/expected.txt",
+    "expected_sha256": "6c5733b824401f4f2b98a981ab7267dffe98f68028ea6c47b45ba9d5c0be5e6e",
+    "path": "experiments/s2-canonical-aux-batch11"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "runner": {
+    "binary": "poie-migration-aux-batch11",
+    "sha256": "8b380e5f68252a4448b9755c127fde0b686b360dc530ae8230e71605b8ee6c49",
+    "source": "crates/poie-viability/src/bin/poie-migration-aux-batch11.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/2",
+  "scope": "model/simulation evidence only; canonical claim C87",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "status": "CANONICAL_ISSUED",
+  "verifier": "poie-canonical-s2-certificate/2"
+}

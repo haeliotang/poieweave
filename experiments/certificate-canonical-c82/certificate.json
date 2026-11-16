@@ -1,0 +1,52 @@
+{
+  "canonical_classification": "EXPECTED_AGREEMENT",
+  "certificate_id": "poie-s2-canonical-c82-v1",
+  "claim_statement": "aux batch6\uff1aredundancy/long-horizon/recharge-rule 9/9 \u4e00\u81f4",
+  "claims": [
+    "C82"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_sources": [
+    {
+      "path": "experiments/s2-canonical-aux-batch6/expected.txt",
+      "sha256": "38f7fccee1c0f0c8e6926c90aa45bc1821308c8d4c3f64d6c7e373ee05cd2464"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch6/REPORT.md",
+      "sha256": "cfcac7e3d86c6cc37f7a0534aa45cd13b3f3254037d48f6987ea1d4aec57e907"
+    },
+    {
+      "path": "experiments/s2-canonical-aux-batch6/PREREG.md",
+      "sha256": "a44af726748967e8da79d249760f9d6c8730226cae3549171c88debb33382a9e"
+    }
+  ],
+  "experiment": {
+    "expected": "experiments/s2-canonical-aux-batch6/expected.txt",
+    "expected_sha256": "38f7fccee1c0f0c8e6926c90aa45bc1821308c8d4c3f64d6c7e373ee05cd2464",
+    "path": "experiments/s2-canonical-aux-batch6"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-05/model.toml",
+      "sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150"
+    },
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "runner": {
+    "binary": "poie-migration-aux-batch6",
+    "sha256": "ffe056b1ede81f57d77878764e0ebae95318f0123cca4ab9febf1d1ae97ed58d",
+    "source": "crates/poie-viability/src/bin/poie-migration-aux-batch6.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/2",
+  "scope": "model/simulation evidence only; canonical claim C82",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "status": "CANONICAL_ISSUED",
+  "verifier": "poie-canonical-s2-certificate/2"
+}
