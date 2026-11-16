@@ -28,6 +28,10 @@
 | S2 experiment 目录 | 84 |
 | 被 claim 引用的 experiment | 25 |
 | 未被 claim 引用的 experiment | 59 |
+| 未分类 experiment | **0** |
+| FORMAL_CLAIMED / FORMAL_AUXILIARY | 25 / 48 |
+| SUPERSEDED_BY_CANONICAL / EXPLORATORY_NEGATIVE | 6 / 2 |
+| DEFINITIONAL / AUXILIARY_MISSING_SEED | 1 / 2 |
 | 已迁移到 canonical 的正式 S2 experiment | **6** |
 | canonical 语义修正 | **6**（C11–C14、C18、C19） |
 | 缺少记录种子的随机 experiment | 2 |
@@ -37,15 +41,19 @@
 
 ## 3. 关键发现
 
-### F1：正式 claim 覆盖 25/84 个 S2 实验
+### F1：25/84 为 claim 主证据，59 个未映射实验已全部分类
 
-这不能自动解释为其余 60 个都是探索性实验。Phase B 必须先分类：
+分类结果（审计标签，不是证书）：
 
-- 正式结论（必须迁移）
-- 辅助/诊断实验（保留但不进入正式证书）
-- 已被取代的旧实验
+- `FORMAL_CLAIMED` 25
+- `FORMAL_AUXILIARY` 48：支持已有 claim 的敏感性/对照
+- `FORMAL_AUXILIARY_MISSING_SEED` 2
+- `SUPERSEDED_BY_CANONICAL` 6：旧时间语义值被 canonical 取代
+- `EXPLORATORY_NEGATIVE` 2
+- `DEFINITIONAL` 1
+- `UNCLASSIFIED` **0**
 
-在分类完成前，不得把 60 个未映射实验视为“不需要迁移”。
+分类不等于迁移；48 个辅助实验仍可能包含需要单独 canonical 重算的正式数值。
 
 ### F2：正式 S2 迁移数为 0
 
@@ -57,12 +65,13 @@ Batch 1–3 是 kernel/migration probe，不是正式 S2 实验的 canonical 重
 
 没有任何一个 `s2-*` 正式实验已经由 `engine.rs` 产生正式结果。因此 S5-T 不能声称收敛。
 
-### F3：2 个随机实验缺少记录种子
+### F3：2 个辅助再生阈值实验缺少记录种子
 
 - `s2-regen-threshold-battery`
 - `s2-regen-threshold-initial`
 
-它们被标记为 stochastic，但 REPR/报告和 runner 中未找到可审计种子。Phase B 前必须补种子或降级为确定性实验。
+二者被分类为 `FORMAL_AUXILIARY_MISSING_SEED`；runner 是确定性扫描时也不得声称
+随机可复现。补种子或明确为 deterministic sweep 后才能升级。
 
 ### F4：6 个 S2 证书中只有 time 证书被 claim 显式引用
 

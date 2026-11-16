@@ -102,6 +102,16 @@ def experiment_record(path: Path, all_claims: list[dict[str, object]]) -> dict[s
         "claim_ids": linked_claims,
         "legacy_entry": "legacy survival.rs runner(s) from REPORT" if runners else "UNKNOWN",
         "canonical_adapter": "engine::run_engine" if path.name.startswith("s2-canonical-") else "NOT_MIGRATED",
+        "classification": (
+            "FORMAL_CLAIMED"
+            if any(path.name in claim["evidence"] or path.name in claim.get("certificates", []) for claim in all_claims)
+            else CLASSIFICATION.get(path.name, ("UNCLASSIFIED", "not yet reviewed"))[0]
+        ),
+        "classification_reason": (
+            "cited by a formal claim"
+            if any(path.name in claim["evidence"] or path.name in claim.get("certificates", []) for claim in all_claims)
+            else CLASSIFICATION.get(path.name, ("UNCLASSIFIED", "not yet reviewed"))[1]
+        ),
         "migration_status": (
             "CANONICAL_BLOCKED"
             if path.name.startswith("s2-canonical-") and "Status: BLOCKED" in report
@@ -115,6 +125,35 @@ def experiment_record(path: Path, all_claims: list[dict[str, object]]) -> dict[s
         "risk": "HIGH" if linked_claims else "MEDIUM",
     }
 
+
+# Phase A classification of experiments not cited by a claim. Claimed
+# experiments are FORMAL_CLAIMED. Audit labels only, not certificates.
+CLASSIFICATION = {}
+for _name in [
+    "adversarial-failures", "adversarial-subsets", "adversarial-timing",
+    "energy-boundary", "energy-interventions", "energy-recharge",
+    "failure-envelope", "failure-pairs", "filter-restorer", "grease-cost",
+    "heldout", "insert-bound", "joint-boundary", "joint-consumables",
+    "joint-double-failure", "joint-load", "joint-three", "joint-worn",
+    "joint-yield", "load", "load-threshold-capacity", "load-threshold-charge",
+    "long-horizon", "recharge-bound", "recharge-rule", "recharge-rule-base05",
+    "recycle-residue", "redundancy", "redundancy-filter", "redundancy-robot",
+    "regen-capacity-semantics", "regen-cost", "regen-cost-load", "regen-cross",
+    "regen-forced-cost", "regen-threshold", "regen-threshold-battery",
+    "regen-threshold-initial", "regeneration", "regeneration-horizon",
+    "regeneration-yield", "resupply", "resupply-delivery", "resupply-time",
+    "robot-restorer", "sharpen-yield", "two-restorers", "worn-bound",
+    "yield-accumulation", "time-energy-sweep",
+]:
+    CLASSIFICATION[_name] = ("FORMAL_AUXILIARY", "corroborates a claimed S2 dimension but is not the primary claim evidence")
+for _name in ["adversarial-time", "time-horizon", "time-insert", "time-repair-sweep", "regen-event", "regen-long"]:
+    CLASSIFICATION[_name] = ("SUPERSEDED_BY_CANONICAL", "legacy instant/event-driven time value replaced by canonical event-time semantics")
+for _name in ["adversarial-random", "order-sensitivity"]:
+    CLASSIFICATION[_name] = ("EXPLORATORY_NEGATIVE", "random/negative result with no formal claim")
+for _name in ["regen-threshold-battery", "regen-threshold-initial"]:
+    CLASSIFICATION[_name] = ("FORMAL_AUXILIARY_MISSING_SEED", "corroborates regeneration threshold but has no recorded seed")
+CLASSIFICATION["metrics"] = ("DEFINITIONAL", "metric definitions, not a numeric survival claim")
+CLASSIFICATION = {f"s2-{key}": value for key, value in CLASSIFICATION.items()}
 
 def main(argv: list[str] | None = None) -> int:
     check = bool(argv and "--check" in argv)
@@ -187,6 +226,9 @@ def main(argv: list[str] | None = None) -> int:
             "s2_certificates": len(certs),
             "claims_with_experiment_evidence": len(mapped),
             "status_s2_result_lines": len(status_results),
+            "unclassified_experiments": sum(
+                1 for record in records if record["classification"] == "UNCLASSIFIED"
+            ),
             "unmapped_status_results": sum(1 for result in status_results if not result["claim_ids"]),
         },
     }
@@ -213,6 +255,7 @@ def main(argv: list[str] | None = None) -> int:
         f"- S2 certificates: {inventory['summary']['s2_certificates']}",
         f"- Status-page S2 result lines: {inventory['summary']['status_s2_result_lines']}",
         f"- Status result lines without an explicit claim: {inventory['summary']['unmapped_status_results']}",
+        f"- Unclassified experiments: {inventory['summary']['unclassified_experiments']}",
         "",
         "## Claim crosswalk",
         "",

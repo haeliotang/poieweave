@@ -19,6 +19,7 @@ currently produces the formal result; it is not a claim of equivalence.
 - S2 certificates: 6
 - Status-page S2 result lines: 12
 - Status result lines without an explicit claim: 0
+- Unclassified experiments: 0
 
 ## Claim crosswalk
 
