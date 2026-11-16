@@ -8,21 +8,21 @@ currently produces the formal result; it is not a claim of equivalence.
 
 ## Summary
 
-- S2 claims: 51
-- S2 experiment directories: 110
-- Experiments referenced by claims: 51
+- S2 claims: 52
+- S2 experiment directories: 111
+- Experiments referenced by claims: 52
 - Unmapped experiments: 59
 - Formal S2 experiments migrated to canonical: 22
 - Canonical migrations blocked: 0
-- Canonical semantic corrections: 16
+- Canonical semantic corrections: 17
 - Stochastic experiments missing a recorded seed: 0
 - S2 certificates: 11
 - Canonical S2 certificates reissued: 5
 - Status-page S2 result lines: 12
 - Status result lines without an explicit claim: 0
 - Unclassified experiments: 0
-- Aux experiments with canonical evidence: 53
-- Aux experiments without canonical evidence: 6
+- Aux experiments with canonical evidence: 55
+- Aux experiments without canonical evidence: 4
 
 ## Claim crosswalk
 
@@ -79,6 +79,7 @@ currently produces the formal result; it is not a claim of equivalence.
 | C92 | s2-canonical-aux-batch16 | engine::run_engine | MIGRATED |
 | C93 | s2-canonical-aux-batch17 | engine::run_engine | MIGRATED |
 | C94 | s2-canonical-aux-batch18 | engine::run_engine | MIGRATED |
+| C95 | s2-canonical-aux-batch19 | engine::run_engine | MIGRATED |
 
 ## Status-page S2 results
 
@@ -122,6 +123,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-canonical-aux-batch16 | poie-migration-aux-batch16 | base-08 | C92 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch17 | poie-migration-aux-batch17 | base-08 | C93 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch18 | poie-migration-aux-batch18 | base-08 | C94 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
+| s2-canonical-aux-batch19 | poie-migration-aux-batch19 | base-06, base-07 | C95 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
 | s2-canonical-aux-batch2 | poie-migration-aux-batch2 | base-08 | C78 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch3 | poie-migration-aux-batch3 | base-08 | C79 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch4 | poie-migration-aux-batch4 | base-08 | C80 | NOT_APPLICABLE | CANONICAL_MIGRATED |
@@ -195,10 +197,10 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-regen-threshold | poie-regen-threshold | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-regen-threshold-battery | poie-regen-threshold-battery | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-regen-threshold-initial | poie-regen-threshold-initial | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
-| s2-regeneration | poie-regeneration | base-06, base-07 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regeneration | poie-regeneration | base-06, base-07 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-regeneration-horizon | poie-regen-horizon | base-05, base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-regeneration-yield | poie-regen-yield | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
-| s2-resupply | poie-resupply | base-06 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-resupply | poie-resupply | base-06 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-resupply-delivery | poie-resupply-delivery | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-resupply-frequency | poie-resupply-frequency | base-08 | C10 | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-resupply-time | poie-resupply-time | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |

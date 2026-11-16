@@ -101,6 +101,7 @@
 | C92 | aux batch16：grease-cost + yield-accumulation 10/10 一致 | `experiments/s2-canonical-aux-batch16` | 辅助抽样 |
 | C93 | aux batch17：two-restorers 4/4 一致 | `experiments/s2-canonical-aux-batch17` | 辅助抽样 |
 | C94 | aux batch18：adversarial-timing 30/32 日级一致 + 2 executor 修正 | `experiments/s2-canonical-aux-batch18` | 辅助抽样 |
+| C95 | aux batch19：regeneration/resupply 3/4 一致 + Base-07 joint 修正 | `experiments/s2-canonical-aux-batch19` | 辅助抽样 |
 
 ## 不应出现的声明
 
