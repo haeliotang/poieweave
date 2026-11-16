@@ -15,7 +15,7 @@ currently produces the formal result; it is not a claim of equivalence.
 - Formal S2 experiments migrated to canonical: 6
 - Canonical migrations blocked: 0
 - Canonical semantic corrections: 6
-- Stochastic experiments missing a recorded seed: 2
+- Stochastic experiments missing a recorded seed: 0
 - S2 certificates: 6
 - Status-page S2 result lines: 12
 - Status result lines without an explicit claim: 0
@@ -138,8 +138,8 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-regen-forced-cost | poie-regen-forced-cost | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-regen-long | poie-regen-long | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-regen-threshold | poie-regen-threshold | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regen-threshold-battery | poie-regen-threshold-battery | base-08 | NONE | NOT_RECORDED | NOT_MIGRATED |
-| s2-regen-threshold-initial | poie-regen-threshold-initial | base-08 | NONE | NOT_RECORDED | NOT_MIGRATED |
+| s2-regen-threshold-battery | poie-regen-threshold-battery | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regen-threshold-initial | poie-regen-threshold-initial | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-regeneration | poie-regeneration | base-06, base-07 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-regeneration-horizon | poie-regen-horizon | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-regeneration-yield | poie-regen-yield | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
