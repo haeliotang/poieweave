@@ -82,6 +82,7 @@
 | C73 | canonical C68 Monte Carlo：中位 72→68、均值 64.8→64.0 | `experiments/s2-canonical-c68-monte-carlo` | 同种子 2000 runs |
 | C74 | C12 horizon/insert/repair-sweep 全部分量由 canonical 语义覆盖 | `experiments/s2-canonical-c12-components` | 长维修值被 2 天中断取代 |
 | C75 | energy interventions 12 行日级一致；16→16.25 d | `experiments/s2-canonical-energy-interventions` | energy-limited 精确时间移 0.25 d |
+| C76 | redundancy restorers 7/8 一致；共享机器人 baseline 30→20 | `experiments/s2-canonical-redundancy-restorers` | repair-executor 事件时刻 |
 
 ## 不应出现的声明
 

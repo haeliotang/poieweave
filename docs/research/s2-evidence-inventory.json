@@ -291,6 +291,15 @@
       ],
       "certificates": [],
       "boundary": "energy-limited 精确时间移 0.25 d"
+    },
+    {
+      "id": "C76",
+      "statement": "redundancy restorers 7/8 一致；共享机器人 baseline 30→20",
+      "evidence": [
+        "s2-canonical-redundancy-restorers"
+      ],
+      "certificates": [],
+      "boundary": "repair-executor 事件时刻"
     }
   ],
   "experiments": [
@@ -1011,6 +1020,34 @@
       "classification": "FORMAL_CLAIMED",
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-redundancy-restorers",
+      "report": "experiments/s2-canonical-redundancy-restorers/REPORT.md",
+      "prereg": "experiments/s2-canonical-redundancy-restorers/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-redundancy-restorers"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 9,
+      "expected_output": "case\tlegacy_days\tcanonical_days\tcanonical_termination\tclassification\nfilter-redundant-only\t30\t30.000\tblocked:[NoRestorer(\"filter-1\")]\tEXPECTED_AGREEMENT\nfilter-redundant+filter-restorer\t90\t90.000\tcompleted\tEXPECTED_AGREEMENT\nrobot-redundant-only\t35\t35.000\tblocked:[NoRestorer(\"robot-m1\")]\tEXPECTED_AGREEMENT\nrobot-redundant+robot-restorer\t90\t90.000\tcompleted\tEXPECTED_AGREEMENT\nredundancy-filter-baseline\t30\t30.000\tblocked:[NoRestorer(\"filter-1\")]\tEXPECTED_AGREEMENT\nredundancy-filter-redundant-pump\t30\t30.000\tblocked:[NoRestorer(\"filter-1\")]\tEXPECTED_AGREEMENT\nredundancy-robot-baseline\t30\t20.000\tblocked:[NoRestorer(\"robot-m1\")]\tSEMANTIC_CORRECTION_REPAIR_EXECUTOR_AT_EVENT_TIME\nredundancy-robot-redundant-pump\t35\t35.000\tblocked:[NoRestorer(\"robot-m1\")]\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "case\tlegacy_days\tcanonical_days\tcanonical_termination\tclassification",
+        "filter-redundant-only\t30\t30.000\tblocked:[NoRestorer(\"filter-1\")]\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C76"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
     },
     {
@@ -3228,17 +3265,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 32,
-    "s2_experiments": 91,
-    "claimed_experiments": 32,
+    "s2_claims": 33,
+    "s2_experiments": 92,
+    "claimed_experiments": 33,
     "unmapped_experiments": 59,
     "formal_s2_experiments_migrated_to_canonical": 9,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 10,
+    "canonical_semantic_corrections": 11,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 32,
+    "claims_with_experiment_evidence": 33,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
