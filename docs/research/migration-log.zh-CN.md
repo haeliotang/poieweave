@@ -30,6 +30,7 @@
 | B-C19 | 随机延迟窗口 | 接受（语义修正） | 零天 0/200 不变；均值 14.0→2.2、p90 15.6→2.0 |
 | D | Certificate Impact Matrix | 初版 | 6 证书：3 historical、1 superseded、2 blocked、0 reissued |
 | A | 状态页数值归一化 | 完成 | 12/12 映射；C68 Monte Carlo 为 legacy-only |
+| A | 84 实验分类 | 完成 | 25 claimed + 48 aux + 2 missing-seed + 6 superseded + 2 exploratory + 1 definitional；0 unclassified |
 
 ## 差异记录规则
 
