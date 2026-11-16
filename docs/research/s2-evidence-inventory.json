@@ -201,6 +201,15 @@
       ],
       "certificates": [],
       "boundary": "单一冗余布局"
+    },
+    {
+      "id": "C66",
+      "statement": "C18 随机对抗：零天 0/200 不变，均值 9.9→5.4",
+      "evidence": [
+        "s2-canonical-c18"
+      ],
+      "certificates": [],
+      "boundary": "单一种子"
     }
   ],
   "experiments": [
@@ -526,6 +535,32 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C65"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-c18",
+      "report": "experiments/s2-canonical-c18/REPORT.md",
+      "prereg": "experiments/s2-canonical-c18/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c18"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 7,
+      "expected_output": "seed_chosen\t200\t200\t200\ntrials\told_zero\tnew_zero\tcanonical_zero\told_mean\tnew_mean\tcanonical_mean\n200\t129\t0\t0\t1.4\t9.9\t5.4\nseries\tp10\tp50\tp90\nold\t0.0\t0.0\t4.0\nnew\t5.2\t10.4\t15.7\ncanonical\t5.2\t5.2\t6.0\n",
+      "expected_head": [
+        "seed_chosen\t200\t200\t200",
+        "trials\told_zero\tnew_zero\tcanonical_zero\told_mean\tnew_mean\tcanonical_mean"
+      ],
+      "stochastic": true,
+      "seed": "0x9e3779b97f4a7c15, 0x9e37_79b9_7f4a_7c15",
+      "claim_ids": [
+        "C66"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -2465,16 +2500,16 @@
     }
   ],
   "summary": {
-    "s2_claims": 22,
-    "s2_experiments": 82,
-    "claimed_experiments": 22,
+    "s2_claims": 23,
+    "s2_experiments": 83,
+    "claimed_experiments": 23,
     "unmapped_experiments": 60,
     "formal_s2_experiments_migrated_to_canonical": 6,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 4,
+    "canonical_semantic_corrections": 5,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 22,
+    "claims_with_experiment_evidence": 23,
     "status_s2_result_lines": 13,
     "unmapped_status_results": 13
   }
