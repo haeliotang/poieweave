@@ -1,0 +1,6 @@
+trials	old_zero	new_zero	canonical_zero	old_mean	new_mean	canonical_mean
+200	13	0	0	4.4	14.0	2.2
+series	p10	p50	p90
+old	1.0	6.0	6.0
+new	10.4	15.6	15.6
+canonical	2.0	2.0	2.0

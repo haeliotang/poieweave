@@ -73,6 +73,7 @@
 | C64 | C13 能量边界日级不变；精确耗尽最多移 1 h | `experiments/s2-canonical-c13` | 三负载 |
 | C65 | C14 冗余泵 90 天一致；baseline 31→2 天 | `experiments/s2-canonical-c14` | 单一冗余布局 |
 | C66 | C18 随机对抗：零天 0/200 不变，均值 9.9→5.4 | `experiments/s2-canonical-c18` | 单一种子 |
+| C67 | C19 延迟窗口：零天 0/200 不变，均值 14.0→2.2 | `experiments/s2-canonical-c19` | 单一种子 |
 
 ## 不应出现的声明
 
