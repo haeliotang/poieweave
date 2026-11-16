@@ -85,6 +85,7 @@
 | C76 | redundancy restorers 7/8 一致；共享机器人 baseline 30→20 | `experiments/s2-canonical-redundancy-restorers` | repair-executor 事件时刻 |
 | C77 | aux batch1：energy-boundary 18 行 + heldout 2 行一致 | `experiments/s2-canonical-aux-batch1` | 辅助抽样，不覆盖全部 59 |
 | C78 | aux batch2：resupply-time 4 + delivery 3 + regen-cross 12 一致 | `experiments/s2-canonical-aux-batch2` | 辅助抽样 |
+| C79 | aux batch3：joint-boundary 6 + joint-consumables 8 一致 | `experiments/s2-canonical-aux-batch3` | 辅助抽样 |
 
 ## 不应出现的声明
 
