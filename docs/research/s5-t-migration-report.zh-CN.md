@@ -107,13 +107,13 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 - C71 coverage 差异是定义变化。
 - legacy 的若干延迟故障行为已被明确取代。
 
-未迁移的 59 个辅助实验不在此声明内，不能据此推断无差异；它们被明确排除在 S5-T scoped 收敛声明之外。
+59 个辅助实验不在此声明内：其中 46 个已有 canonical batch 证据，13 个仍无；全部排除在 S5-T scoped 收敛声明之外。
 
 ## 6. 未能迁移的执行入口及原因
 
 | 范围 | 状态 | 原因 |
 | --- | --- | --- |
-| 59 个 `FORMAL_AUXILIARY` 实验 | 抽样 37 个，其余未重算 | 已建立 batch1–14 抽样 |
+| 59 个 `FORMAL_AUXILIARY` 实验 | 46 个已有 canonical 证据，13 个没有 | 已建立 batch1–14；未覆盖清单见 audit |
 
 
 

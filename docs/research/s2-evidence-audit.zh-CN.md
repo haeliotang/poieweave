@@ -29,6 +29,8 @@
 | 被 claim 引用的 experiment | 47 |
 | 未被 claim 引用的 experiment | 59 |
 | 未分类 experiment | **0** |
+| aux 已有 canonical 证据 | **46** |
+| aux 尚无 canonical 证据 | **13** |
 | FORMAL_CLAIMED / FORMAL_AUXILIARY | 47 / 48 |
 | SUPERSEDED_BY_CANONICAL / EXPLORATORY_NEGATIVE | 6 / 2 |
 | DEFINITIONAL / DETERMINISTIC_SWEEP | 1 / 2 |
@@ -53,7 +55,24 @@
 - `DEFINITIONAL` 1
 - `UNCLASSIFIED` **0**
 
-分类不等于迁移；48 个辅助实验仍可能包含需要单独 canonical 重算的正式数值。
+分类不等于迁移。后续 canonical batch 已覆盖 46 个辅助实验；仍有 13 个没有
+canonical 证据：
+
+- `s2-adversarial-random`
+- `s2-adversarial-timing`
+- `s2-grease-cost`
+- `s2-load`
+- `s2-load-threshold-capacity`
+- `s2-load-threshold-charge`
+- `s2-metrics`（定义型）
+- `s2-order-sensitivity`（负结果）
+- `s2-recycle-residue`
+- `s2-regeneration`（Base-06/07 coverage）
+- `s2-resupply`
+- `s2-two-restorers`
+- `s2-yield-accumulation`
+
+这些不能视为已收敛。
 
 ### F2：正式 S2 迁移数为 0
 

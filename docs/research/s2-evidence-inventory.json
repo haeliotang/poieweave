@@ -451,6 +451,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C89"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -477,6 +480,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "EXPLORATORY_NEGATIVE",
+      "covered_by_claims": [],
       "classification_reason": "random/negative result with no formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -505,6 +509,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -533,6 +538,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -561,6 +567,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -587,6 +594,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C89"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -613,6 +623,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "SUPERSEDED_BY_CANONICAL",
+      "covered_by_claims": [
+        "C90"
+      ],
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -639,6 +652,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -668,6 +682,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -696,6 +711,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -724,6 +740,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -752,6 +769,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -780,6 +798,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -808,6 +827,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -836,6 +856,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -864,6 +885,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -892,6 +914,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -921,6 +944,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -950,6 +974,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -979,6 +1004,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1009,6 +1035,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1037,6 +1064,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1065,6 +1093,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1093,6 +1122,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1121,6 +1151,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1149,6 +1180,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1177,6 +1209,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1205,6 +1238,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1233,6 +1267,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1261,6 +1296,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1289,6 +1325,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1317,6 +1354,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1345,6 +1383,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1373,6 +1412,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1401,6 +1441,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1429,6 +1470,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1457,6 +1499,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1485,6 +1528,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1514,6 +1558,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1542,6 +1587,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1570,6 +1616,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
@@ -1599,6 +1646,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
@@ -1625,6 +1673,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C77"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1651,6 +1702,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C75"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1677,6 +1731,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C80"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1705,6 +1762,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C81"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1731,6 +1791,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C81"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1757,6 +1820,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C76"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1783,6 +1849,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1809,6 +1876,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C77"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1835,6 +1905,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C85"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1863,6 +1936,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -1889,6 +1963,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C79"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1915,6 +1992,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C79"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1943,6 +2023,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -1970,6 +2051,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C84"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -1996,6 +2080,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C85"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2022,6 +2109,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C86"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2048,6 +2138,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C86"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2074,6 +2167,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C86"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2100,6 +2196,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2128,6 +2225,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -2154,6 +2252,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2180,6 +2279,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2206,6 +2306,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C82"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2233,6 +2336,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "DEFINITIONAL",
+      "covered_by_claims": [],
       "classification_reason": "metric definitions, not a numeric survival claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2261,6 +2365,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -2287,6 +2392,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "EXPLORATORY_NEGATIVE",
+      "covered_by_claims": [],
       "classification_reason": "random/negative result with no formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2313,6 +2419,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C80"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2339,6 +2448,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C82"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2366,6 +2478,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C82"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2392,6 +2507,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2418,6 +2534,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C82"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2444,6 +2563,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C76"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2472,6 +2594,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -2498,6 +2621,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C76"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2526,6 +2652,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -2552,6 +2679,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C88"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2578,6 +2708,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C80"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2604,6 +2737,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C87"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2630,6 +2766,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C78"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2657,6 +2796,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "SUPERSEDED_BY_CANONICAL",
+      "covered_by_claims": [
+        "C83"
+      ],
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2683,6 +2825,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C88"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2710,6 +2855,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "SUPERSEDED_BY_CANONICAL",
+      "covered_by_claims": [
+        "C84"
+      ],
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2736,6 +2884,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C83"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2762,6 +2913,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "DETERMINISTIC_SWEEP",
+      "covered_by_claims": [
+        "C83"
+      ],
       "classification_reason": "deterministic multiplier/capacity scan; no RNG or seed is involved",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2788,6 +2942,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "DETERMINISTIC_SWEEP",
+      "covered_by_claims": [
+        "C83"
+      ],
       "classification_reason": "deterministic multiplier/capacity scan; no RNG or seed is involved",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2815,6 +2972,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2842,6 +3000,10 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C70",
+        "C90"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2868,6 +3030,10 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C71",
+        "C90"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2894,6 +3060,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2920,6 +3087,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C78"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2948,6 +3118,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -2974,6 +3145,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C78"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3000,6 +3174,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C76"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3026,6 +3203,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C87"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3054,6 +3234,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -3082,6 +3263,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -3110,6 +3292,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "NOT_MIGRATED",
       "risk": "HIGH"
@@ -3136,6 +3319,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C64"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3162,6 +3348,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "SUPERSEDED_BY_CANONICAL",
+      "covered_by_claims": [
+        "C74"
+      ],
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3188,6 +3377,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "SUPERSEDED_BY_CANONICAL",
+      "covered_by_claims": [
+        "C74"
+      ],
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3214,6 +3406,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "SUPERSEDED_BY_CANONICAL",
+      "covered_by_claims": [
+        "C74"
+      ],
       "classification_reason": "legacy instant/event-driven time value replaced by canonical event-time semantics",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3240,6 +3435,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3266,6 +3462,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [
+        "C87"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3292,6 +3491,7 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
+      "covered_by_claims": [],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3801,6 +4001,8 @@
     "canonical_certificates_reissued": 5,
     "claims_with_experiment_evidence": 47,
     "status_s2_result_lines": 12,
+    "aux_experiments_with_canonical_evidence": 46,
+    "aux_experiments_without_canonical_evidence": 13,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
   }

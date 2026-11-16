@@ -79,3 +79,5 @@
   因此 batch 2c 接受的是事件时序语义，不是历史数值保持。
 
 | E | S5-T Migration Report | 初版 | 明确 NOT ESTABLISHED；列出 9 精确 + 8 语义修正 + 剩余边界 |
+
+| A | aux canonical 覆盖映射 | 完成 | 46 个 aux 有 canonical 证据，13 个仍无 |
