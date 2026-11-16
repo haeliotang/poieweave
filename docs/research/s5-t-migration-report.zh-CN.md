@@ -3,7 +3,7 @@
 日期：2026-11-16
 基线：`main` at `4c98b82`（PR #561）；起点 `a73c459`（PR #507）
 状态：**S5-T SEMANTIC CONVERGENCE — ESTABLISHED (SCOPED)**
-状态：**S5 CROSS-MODEL VALIDITY — NOT ESTABLISHED（完整 S2；能量子系统 scoped challenge 见 S5-V 报告）**
+状态：**S5 CROSS-MODEL VALIDITY — NOT ESTABLISHED（完整 S2；S5-V 仅 external execution + endpoint scoped）**
 
 本报告记录当前可核查的迁移状态。`ESTABLISHED (SCOPED)` 仅覆盖第 8 节列出的
 模型/仿真级范围；不是物理安全、真实设备或跨模型有效性声明。

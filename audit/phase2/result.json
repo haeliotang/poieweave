@@ -1,10 +1,10 @@
 {
-  "schema": "poie.s5v-phase2-result/1",
+  "schema": "poie.s5v-phase2-result/2",
   "config": {
     "schema": "poie.s5v-phase2-challenge/1",
     "name": "pv-battery-load-energy-challenge",
     "purpose": "Compare an independent executable FMI 3.0 co-simulation model with canonical energy semantics for PV generation, battery energy, load, initial repair draw and energy depletion.",
-    "status_claim": "S5 CROSS-MODEL VALIDITY — NOT ESTABLISHED until this challenge is reviewed",
+    "status_claim": "S5-V EXTERNAL EXECUTION — ESTABLISHED (SCOPED); S5-V ENDPOINT AGREEMENT — ESTABLISHED (SINGLE ENERGY CASE); S5-V TRAJECTORY-LEVEL CROSS-MODEL VALIDITY — NOT ESTABLISHED",
     "inputs": {
       "pv_power_W": 2500.0,
       "load_power_W": 3000.0,
@@ -42,30 +42,45 @@
       "tampered_fmu": "external/fmu-pv-battery/poie-pv-battery-tampered.fmu",
       "mutation": "PV parameter forced +100 W in the native model",
       "must_detect": true
+    },
+    "canonical_boundary": {
+      "note": "canonical exports only t=0, repair completion and depletion; interior repair states are not exported",
+      "repair_completion_s": 10800,
+      "repair_energy_J": 1800000,
+      "energy_after_repair_J": 136800000,
+      "depletion_s": 284400
+    },
+    "fmpy_importer": {
+      "package": "fmpy",
+      "version": "0.3.32",
+      "role": "independent FMI 3.0 importer"
     }
   },
   "fm": {
     "fmu": "external/fmu-pv-battery/poie-pv-battery.fmu",
-    "fmu_sha256": "d12072af690746dfabed67b26c6c01b03988bc2ed52aead53a086fe9ec7da24d",
+    "fmu_sha256": "78032dbf275bfd08cf761fbb17006cbc55d3cb47ba4036cd854f26015c919797",
     "tampered_fmu": "external/fmu-pv-battery/poie-pv-battery-tampered.fmu",
-    "tampered_fmu_sha256": "fc97801a91a993875322b9c808f2737fa0dd31c8a8d6537b544172eb74b64f4a",
-    "model_source": "external/fmu-pv-battery/src/model.c",
+    "tampered_fmu_sha256": "3cb2e9fc0b4d8785c0023042d8a4cf45221d84f8954a84846b9163d34ab817c3",
     "model_source_sha256": "709e85ff39f7608a49269a7015d4d1d72361ff6a535a9498038d641f578dde5a",
+    "stubs_source_sha256": "759abd6d4b10fcc0d3f9234b1cc740400084171ee1945842fa1ad069543e6af8",
     "model_description_sha256": "6746783a953806a1654885c18e2581e3ed48f08f5166958abb6a3ef569c8fccd",
-    "harness_source_sha256": "9a2cfcbc3ef99604d3554f235810328fae7932c4683a56911ffa98e93e7663b0",
-    "fmi_version": "3.0"
+    "harness_source_sha256": "a87c6e37970210e4491638cc1706d0fa4adce78227c22bf9c1d146dce9657c89",
+    "fmi_version": "3.0",
+    "packaging": "FMI 3.0 platform tuple directories with modelIdentifier filename"
   },
   "canonical": {
     "reference": "audit/phase2/canonical-reference.txt",
-    "reference_sha256": "52bbe76b4243b0d52ff3e3f60ddb89eebb93d90aa2e101d1130cabb560486326",
+    "reference_sha256": "e4675ad7611341844bcc72066df34dc92c88aef15ac61ac787cbb3ef53b87b5c",
     "runner": "poie-s5v-energy-reference",
-    "depletion_s": 284400.0
+    "survived_s": 284400.0,
+    "repair_completion_s": 10800.0
   },
   "runs": {
     "coarse": {
       "step_s": 3600,
       "rows": 80,
-      "max_abs_error_J": 0.0,
+      "analytic_max_abs_error_J": 0.0,
+      "canonical_boundary_max_abs_error_J": 0.0,
       "terminal": {
         "time_s": 284400.0,
         "energy_J": 0.0,
@@ -80,7 +95,6 @@
     "fine": {
       "step_s": 900,
       "rows": 317,
-      "max_abs_error_J": 0.0,
       "terminal": {
         "time_s": 284400.0,
         "energy_J": 0.0,
@@ -92,12 +106,24 @@
         "terminated": 1
       }
     },
+    "fmpy": {
+      "available": true,
+      "rows": 80,
+      "max_abs_error_vs_harness_J": 0.0,
+      "log": "audit/phase2/logs/fmpy.log"
+    },
     "tampered": {
-      "step_s": 3600,
-      "max_abs_error_J": 35550000.0,
+      "max_abs_error_J": 28440000.0,
       "detected": true
     }
   },
+  "repair_settlement_model_difference": {
+    "status": "MODEL_ASSUMPTION_DIFFERENCE_NOT_COMPARED_AS_TRAJECTORY",
+    "fmu": "repair energy spread uniformly over 0..10800 s",
+    "canonical": "repair energy committed at repair completion; interior repair states not exported",
+    "action": "comparison restricted to t=0, repair completion boundary and depletion; no threshold inflation"
+  },
   "problems": [],
-  "gate2": "PASS"
+  "gate2": "PASS_SCOPED_EXECUTION_AND_ENDPOINTS",
+  "trajectory_level_cross_model": "NOT_ESTABLISHED"
 }

@@ -1,0 +1,9 @@
+fmpy_version=0.3.32
+platform_tuple=aarch64-darwin
+fmu=external/fmu-pv-battery/poie-pv-battery.fmu
+fmu_sha256=78032dbf275bfd08cf761fbb17006cbc55d3cb47ba4036cd854f26015c919797
+rows=80
+terminal_time_s=284400.0
+terminal_energy_J=0.0
+terminated=1
+output=audit/phase2/results/fmpy-3600.csv

@@ -2,7 +2,7 @@
   "schema": "poie.s5v-phase2-challenge/1",
   "name": "pv-battery-load-energy-challenge",
   "purpose": "Compare an independent executable FMI 3.0 co-simulation model with canonical energy semantics for PV generation, battery energy, load, initial repair draw and energy depletion.",
-  "status_claim": "S5 CROSS-MODEL VALIDITY — NOT ESTABLISHED until this challenge is reviewed",
+  "status_claim": "S5-V EXTERNAL EXECUTION — ESTABLISHED (SCOPED); S5-V ENDPOINT AGREEMENT — ESTABLISHED (SINGLE ENERGY CASE); S5-V TRAJECTORY-LEVEL CROSS-MODEL VALIDITY — NOT ESTABLISHED",
   "inputs": {
     "pv_power_W": 2500.0,
     "load_power_W": 3000.0,
@@ -24,10 +24,10 @@
     "horizon_s": 324000
   },
   "tolerances": {
-    "energy_relative": 1e-9,
+    "energy_relative": 1e-09,
     "energy_absolute_J": 1.0,
-    "time_absolute_s": 1e-6,
-    "conservation_absolute_J": 1e-3
+    "time_absolute_s": 1e-06,
+    "conservation_absolute_J": 0.001
   },
   "reference": {
     "model": "canonical energy ledger semantics with no failure events, initial repair 0.5 kWh over 3 h, PV 2.5 kW, load 3.0 kW, battery 200 kWh / 10 kW charge limit",
@@ -40,5 +40,17 @@
     "tampered_fmu": "external/fmu-pv-battery/poie-pv-battery-tampered.fmu",
     "mutation": "PV parameter forced +100 W in the native model",
     "must_detect": true
+  },
+  "canonical_boundary": {
+    "note": "canonical exports only t=0, repair completion and depletion; interior repair states are not exported",
+    "repair_completion_s": 10800,
+    "repair_energy_J": 1800000,
+    "energy_after_repair_J": 136800000,
+    "depletion_s": 284400
+  },
+  "fmpy_importer": {
+    "package": "fmpy",
+    "version": "0.3.32",
+    "role": "independent FMI 3.0 importer"
   }
 }

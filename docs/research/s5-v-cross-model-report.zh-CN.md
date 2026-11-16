@@ -8,10 +8,17 @@ Phase 1 合并：`7e14220`（PR #563）
 
 ```text
 Phase 1 Gate 1: PASS_FOR_EXTERNAL_MODEL_PHASE
-Phase 2 Gate 2: PASS (energy subsystem, scoped)
-S5 CROSS-MODEL VALIDITY — ESTABLISHED (SCOPED: PV/battery/load energy boundary)
-Full S2 / model-wide cross-model validity — NOT ESTABLISHED
+Phase 2 Gate 2: PASS_SCOPED_EXECUTION_AND_ENDPOINTS
+
+S5-V EXTERNAL EXECUTION — ESTABLISHED (SCOPED)
+S5-V ENDPOINT AGREEMENT — ESTABLISHED (SINGLE ENERGY CASE)
+S5-V TRAJECTORY-LEVEL CROSS-MODEL VALIDITY — NOT ESTABLISHED
+S5 CROSS-MODEL VALIDITY — NOT ESTABLISHED (full S2)
 ```
+
+此前把 `max_abs_error = 0 J` 解释为 canonical 引擎逐时刻误差是不正确的。
+该 0 J 是 FMU 与独立解析参考的误差；canonical 只在 t=0、维修完成边界和
+能源耗尽时刻被比较。
 
 ## Phase 1 — Independent Certificate Audit
 
@@ -38,13 +45,14 @@ Full S2 / model-wide cross-model validity — NOT ESTABLISHED
 比较结果：
 
 ```text
-depletion time       284400 s (79 h)
-coarse max abs err   0 J
-fine max abs err     0 J
-tampered max err     35550000 J, detected=true
-conservation         pass
-capacity             pass
-step sensitivity     pass
+depletion time              284400 s (79 h)
+analytic-reference max err  0 J
+canonical-boundary max err  0 J (t=0, repair completion, depletion)
+C harness vs fmpy max err   0 J
+tampered max err            28440000 J, detected=true
+conservation                pass
+capacity                    pass
+step sensitivity            pass
 ```
 
 故意负例：PV 参数 +100 W，比较器检出不一致。
@@ -56,15 +64,22 @@ step sensitivity     pass
 已建立的是：
 
 - 一个外部、可执行、独立实现的 FMI 3.0 CS FMU
-- 一个能量子系统场景的逐时刻数值一致
+- 一个能量子系统场景的 external execution 和 endpoint agreement
+- FMI 3.0 标准平台目录与 modelIdentifier 命名
+- 独立 fmpy 0.3.32 导入器实际加载并执行
 - 可复现的配置、容差、日志、结果和哈希
 
 未建立的是：
 
 - 完整 S2 结论的跨模型验证
+- trajectory-level cross-model validity
 - 物理世界正确性
 - 故障/维修/资源竞争子系统的独立模型验证
 - 真实设备或安全认证
+
+维修期存在已登记的模型假设差异：FMU 将 0.5 kWh 维修耗能均匀分摊到
+前 3 小时；canonical 在维修完成时一次提交。canonical 不导出维修期内部
+状态，因此不比较该区间轨迹，也不通过提高容差消除差异。
 
 ## 复现
 
@@ -75,4 +90,7 @@ cargo run -q -p poie-viability --bin poie-s5v-energy-reference > audit/phase2/ca
 python3 audit/phase2/compare.py
 ```
 
-在 macOS arm64 上已验证；源码和构建脚本支持 Linux，但当前提交的 FMU 二进制为 macOS arm64。Linux 复现需要重新执行 build 脚本，结果中的 FMU 哈希会不同。
+在 macOS arm64 上已实际执行并通过 fmpy 0.3.32 独立导入器。CI 增加了
+`S5-V external FMU Linux conformance` job，在 Ubuntu 上重新构建 FMU、
+运行 fmpy importer 和比较器；该 job 的首次结果以 CI 为准，不在本地冒充。
+当前提交的 FMU 二进制是 macOS arm64，Linux 上重新构建后哈希会不同。

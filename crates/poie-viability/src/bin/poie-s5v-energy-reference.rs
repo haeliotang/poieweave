@@ -38,13 +38,14 @@ fn main() -> ExitCode {
     };
     println!("termination\tsurvived_h\tsurvived_s");
     println!("{terminal}\t{:.6}\t{:.3}", outcome.survived_s / 3600.0, outcome.survived_s);
-    println!("at_s\tenergy_generated_kwh\tenergy_load_kwh\tenergy_curtailed_kwh\tenergy_before_j\tenergy_after_j");
+    println!("at_s\tenergy_generated_kwh\tenergy_load_kwh\tenergy_repair_kwh\tenergy_curtailed_kwh\tenergy_before_j\tenergy_after_j");
     for entry in &outcome.trace {
         println!(
-            "{:.3}\t{:.6}\t{:.6}\t{:.6}\t{:.3}\t{:.3}",
+            "{:.3}\t{:.6}\t{:.6}\t{:.6}\t{:.6}\t{:.3}\t{:.3}",
             entry.at_s,
             entry.energy_generated_j / 3_600_000.0,
             entry.energy_load_j / 3_600_000.0,
+            entry.energy_repair_j / 3_600_000.0,
             entry.energy_curtailed_j / 3_600_000.0,
             entry.inventory_before.get("electric-energy").copied().unwrap_or(0.0),
             entry.inventory_after.get("electric-energy").copied().unwrap_or(0.0),
