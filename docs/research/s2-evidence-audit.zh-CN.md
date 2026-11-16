@@ -35,7 +35,7 @@
 | 已迁移到 canonical 的正式 S2 experiment | **9** |
 | canonical 语义修正 | **8**（C11–C14、C18、C19、C71、C73） |
 | 缺少记录种子的随机 experiment | **0** |
-| S2 证书 | 10（6 历史 + 4 canonical 重签） |
+| S2 证书 | 11（6 历史 + 5 canonical 重签） |
 | 状态页 S2 数值结论行 | 12 |
 | 其中未显式登记为 claim | **0** |
 
@@ -77,9 +77,9 @@ Batch 1–3 是 kernel/migration probe，不是正式 S2 实验的 canonical 重
 
 ### F4：证书状态已按影响矩阵和 canonical 重签区分
 
-- `certificate-s2-canonical-joint/load/regeneration/order`：REISSUED，绑定 engine/model/runner/output SHA
+- `certificate-s2-canonical-joint/load/regeneration/order/metrics-v2`：REISSUED，绑定 engine/model/runner/output SHA
 - `certificate-s2-time`：SUPERSEDED
-- `certificate-s2-metrics`：BLOCKED，已拆 13 组；4 组原 not-migrated 已处理（3 迁移 + 1 定义修正），聚合证书仍因定义版本化未重签
+- `certificate-s2-metrics`：REISSUED 为 scoped v2；coverage 定义 `service-impact-v1`，10 组纳入，2 partial + 1 superseded 明确排除
 - `certificate-s2-order`：REISSUED（canonical order 适配器）
 
 历史证书原样保留；重签是新目录，不覆盖旧文件。

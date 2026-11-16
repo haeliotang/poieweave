@@ -1,0 +1,83 @@
+{
+  "certificate_id": "poie-s2-canonical-metrics-v2",
+  "claims": [
+    "C71"
+  ],
+  "claims_sha256": "b77c36223fa582917bb1db0ac8d58c389834961050569044039332cdf0a78d1e",
+  "coverage_definition": {
+    "canonical_value": "9/10 service-impact",
+    "differing_cases": [
+      "bat-1",
+      "bus-1",
+      "charger-1",
+      "robot-m1"
+    ],
+    "id": "service-impact-v1",
+    "legacy_value": "5/10 asset-restorability",
+    "rule": "count a case recoverable when the service continues to the horizon, not when the failed asset can be restored"
+  },
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "experiment": {
+    "expected": "experiments/s2-canonical-metrics-groups/expected.txt",
+    "expected_sha256": "4490e853bed84dbeabf600129a0a61566dbe404b80f8f6f5a353f886e05f2ec8",
+    "path": "experiments/s2-canonical-metrics-groups"
+  },
+  "groups_excluded": [
+    {
+      "disposition": "PARTIAL",
+      "group": "energy_interventions",
+      "reason": "load rows agree; recharge intervention rows not canonicalised"
+    },
+    {
+      "disposition": "PARTIAL",
+      "group": "redundancy",
+      "reason": "redundant pump agrees; filter/robot restorer rows not canonicalised"
+    },
+    {
+      "disposition": "SUPERSEDED_BASELINE",
+      "group": "redundancy_time",
+      "reason": "redundant 90 agrees; baseline 31->2 d under canonical in-repair failures"
+    }
+  ],
+  "groups_included": [
+    "adversarial",
+    "adversarial_resupply",
+    "base05",
+    "base08",
+    "insert_sharpening",
+    "recharge_boundary",
+    "recovery_coverage",
+    "regenerative_capacity_days",
+    "resupply",
+    "yield_sensitivity"
+  ],
+  "models": [
+    {
+      "path": "scenarios/base-05/model.toml",
+      "sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150"
+    },
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "result_markers": [
+    "coverage\tlegacy=5\tcanonical=9\ttotal=10",
+    "regenerative_capacity_days\tlegacy=20\tcanonical=20.0"
+  ],
+  "runner": {
+    "binary": "poie-migration-metrics-groups",
+    "sha256": "589930da3f18094b7d9ee45be99a5d1dcfbddf491aacc8efd68240bb132e1297",
+    "source": "crates/poie-viability/src/bin/poie-migration-metrics-groups.rs"
+  },
+  "schema": "poie.canonical-s2-metrics-certificate/1",
+  "scope": "10 canonical metrics groups; 2 partial and 1 superseded group are explicitly excluded; coverage uses service-impact-v1",
+  "semantics": "canonical event engine; coverage counts service continuation, not asset restorability",
+  "source_certificate": "experiments/certificate-s2-metrics/certificate.json",
+  "source_certificate_sha256": "d4c2c063d4ac95ade0e1e0680797b94c0a902c3f31bcc28ad4479c9283c656b8",
+  "status": "REISSUED",
+  "verifier": "poie-canonical-metrics-certificate/1"
+}

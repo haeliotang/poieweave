@@ -8,7 +8,7 @@ This matrix records certificate impact only. No certificate is reissued by this 
 | `certificate-s2-joint` | `scenarios/base-06/model.toml` | C6 | s2-canonical-c6 | `EXPECTED_AGREEMENT` | `REISSUED` | yes |
 | `certificate-s2-load` | `scenarios/base-05/model.toml` | C69 | s2-canonical-load-base05 | `EXPECTED_AGREEMENT` | `REISSUED` | yes |
 | `certificate-s2-regeneration` | `multi-model` | C70 | s2-canonical-regen-horizon | `EXPECTED_AGREEMENT` | `REISSUED` | yes |
-| `certificate-s2-metrics` | `multi-model` | NONE | NONE | `NOT_MIGRATED` | `BLOCKED` | no |
+| `certificate-s2-metrics` | `multi-model` | C71 | s2-canonical-metrics-groups | `MIXED_AGREEMENT_AND_DEFINITION_CHANGE` | `REISSUED` | yes |
 | `certificate-s2-order` | `scenarios/base-06/model.toml` | C72 | s2-canonical-order | `EXPECTED_AGREEMENT` | `REISSUED` | yes |
 
 ## Summary
@@ -17,8 +17,8 @@ This matrix records certificate impact only. No certificate is reissued by this 
 - historical valid with original semantics: 0
 - superseded: 1
 - invalidated: 0
-- reissued: 4
-- blocked: 1
+- reissued: 5
+- blocked: 0
 
 ## Rationale
 
@@ -53,9 +53,10 @@ canonical reproduces 8/8 rows including final energy and termination; canonical 
 
 ### `certificate-s2-metrics`
 
-split into 13 metric groups: 7 migrated, 3 semantic, 2 partial, 1 superseded baseline, 0 not migrated; aggregate still blocked on versioning the coverage definition; no reissue
+scoped v2 certificate: 10 canonical groups, coverage definition service-impact-v1, 2 partial and 1 superseded group explicitly excluded; historical certificate preserved
 
 - scope: cross-model metric definitions and values
+- canonical certificate: `experiments/certificate-s2-canonical-metrics/certificate.json`
 
 ### `certificate-s2-order`
 

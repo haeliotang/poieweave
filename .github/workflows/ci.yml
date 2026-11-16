@@ -930,6 +930,7 @@ jobs:
       - name: Canonical S2 certificates
         run: |
           python3 scripts/build-canonical-s2-certificates.py --check
+          python3 scripts/build-canonical-metrics-certificate.py --check
           python3 scripts/check-canonical-certificate-tamper.py
       - name: Certificate bundle summary (Python)
         run: |
