@@ -3,7 +3,7 @@
   "claims": [
     "C71"
   ],
-  "claims_sha256": "3a102396155a028ca38896a565e3d63ffa7b240f991bcfe32b5712f172d62408",
+  "claims_sha256": "bf5c5cbec3e1aa3fdefa75d720b7fa04392868d865896e4544d0ba9c54d4cb4d",
   "coverage_definition": {
     "canonical_value": "9/10 service-impact",
     "differing_cases": [
@@ -28,11 +28,6 @@
   "groups_excluded": [
     {
       "disposition": "PARTIAL",
-      "group": "energy_interventions",
-      "reason": "load rows agree; recharge intervention rows not canonicalised"
-    },
-    {
-      "disposition": "PARTIAL",
       "group": "redundancy",
       "reason": "redundant pump agrees; filter/robot restorer rows not canonicalised"
     },
@@ -47,6 +42,7 @@
     "adversarial_resupply",
     "base05",
     "base08",
+    "energy_interventions",
     "insert_sharpening",
     "recharge_boundary",
     "recovery_coverage",
