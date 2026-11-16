@@ -168,12 +168,12 @@
     },
     {
       "id": "C62",
-      "statement": "C11 canonical 迁移被 t=0 初始维修顺序阻塞",
+      "statement": "C11 canonical 迁移按日粒度成立；t=0 顺序已定义",
       "evidence": [
         "s2-canonical-c11"
       ],
       "certificates": [],
-      "boundary": "BLOCKED；不得重签"
+      "boundary": "精确值 0→0.125 d；day-10 legacy 行无效"
     }
   ],
   "experiments": [
@@ -412,10 +412,10 @@
         "base-08"
       ],
       "expected_output_lines": 3,
-      "expected_output": "at_day\tlegacy_no_min\tlegacy_yes_min\tcanonical_no_min\tcanonical_yes_min\tlegacy_minimal\tcanonical_minimal\tclassification\n0\t0\t0\t0\t0\tfilter-1\tpump-p1\tEXPECTED_MINIMA_ONLY\n10\t0\t0\t10\t10\tfilter-1\tfilter-1\tSEMANTIC_CORRECTION_LEGACY_IGNORED_AT_DAY\n",
+      "expected_output": "at_day\tlegacy_no_min\tlegacy_yes_min\tcanonical_no_min\tcanonical_yes_min\tlegacy_minimal\tcanonical_minimal\tclassification\n0\t0.000\t0.000\t0.125\t0.125\tfilter-1\tfilter-1\tSEMANTIC_CORRECTION_REPAIR_TIME_AT_ZERO\n10\t0.000\t0.000\t10.000\t10.000\tfilter-1\tfilter-1\tSEMANTIC_CORRECTION_LEGACY_IGNORED_AT_DAY\n",
       "expected_head": [
         "at_day\tlegacy_no_min\tlegacy_yes_min\tcanonical_no_min\tcanonical_yes_min\tlegacy_minimal\tcanonical_minimal\tclassification",
-        "0\t0\t0\t0\t0\tfilter-1\tpump-p1\tEXPECTED_MINIMA_ONLY"
+        "0\t0.000\t0.000\t0.125\t0.125\tfilter-1\tfilter-1\tSEMANTIC_CORRECTION_REPAIR_TIME_AT_ZERO"
       ],
       "stochastic": false,
       "seed": "NOT_APPLICABLE",
@@ -424,7 +424,7 @@
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
-      "migration_status": "CANONICAL_BLOCKED",
+      "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
     },
     {
@@ -2364,8 +2364,8 @@
     "s2_experiments": 79,
     "claimed_experiments": 19,
     "unmapped_experiments": 60,
-    "formal_s2_experiments_migrated_to_canonical": 6,
-    "canonical_migrations_blocked": 1,
+    "formal_s2_experiments_migrated_to_canonical": 7,
+    "canonical_migrations_blocked": 0,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
     "claims_with_experiment_evidence": 19,

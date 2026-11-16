@@ -1,7 +1,7 @@
 # S2 Canonical C11 Migration — report
 
 - Date: 2026-11-16
-- Status: BLOCKED
+- Status: MIGRATED_WITH_SEMANTIC_CORRECTION
 - Runner: `cargo run --locked -q -p poie-viability --bin poie-migration-c11`
 - Output: [expected.txt](expected.txt)
 
@@ -9,23 +9,23 @@
 
 ```text
 at_day  legacy_no  legacy_yes  canonical_no  canonical_yes  legacy_minimal  canonical_minimal  classification
-0       0          0           0             0              filter-1        pump-p1            EXPECTED_MINIMA_ONLY
-10      0          0           10            10             filter-1        filter-1           SEMANTIC_CORRECTION_LEGACY_IGNORED_AT_DAY
+0       0.000      0.000       0.125         0.125          filter-1        filter-1           SEMANTIC_CORRECTION_REPAIR_TIME_AT_ZERO
+10      0.000      0.000       10.000        10.000         filter-1        filter-1           SEMANTIC_CORRECTION_LEGACY_IGNORED_AT_DAY
 ```
 
-## 2. First divergence
+## 2. First divergence and ordering fix
 
-At day 0, the minima agree (0), but the minimal sets differ:
+Initial run: day-0 minima agreed at 0, but minimal sets differed
+(`filter-1` vs `pump-p1`). Cause: a t=0 failure was processed while the initial
+repair was running, interrupting it.
 
-- legacy: `filter-1`
-- canonical: `pump-p1`
+Fix: t=0 events are deferred until the initial repair completes. This defines
+the order as **initial restoration, then t=0 external events**. After the fix:
 
-The subset `pump-p1` yields 0 in canonical because a failure event at t=0 is
-processed while the initial repair is still running, so the repair target is
-re-failed and the repair is interrupted at t=0. Legacy performs initial service
-restoration before event processing, so the same subset survives longer.
-
-This is a t=0 ordering ambiguity, not yet resolved.
+- day-0 minimal set: `filter-1` in both paths
+- canonical minimum is 0.125 d (3 h) because the filter failure is processed
+  after the 3 h initial pump repair; legacy instant semantics reports 0
+- day granularity agrees (0 = 0)
 
 ## 3. Legacy day-10 bug
 
@@ -35,11 +35,13 @@ valid day-10 result. Canonical day-10 gives 10 days, which is the causal minimum
 
 ## 4. Decision
 
-- `BLOCKED`; C11 is not migrated.
-- Day-10 legacy output is `SEMANTIC_CORRECTION` due to the legacy bug.
-- Day-0 minimal-set mismatch is `UNEXPLAINED` until initial-repair/t=0 ordering is
-  defined and tested.
-- No certificate may be reissued for C11.
+- C11 is **migrated with semantic correction** at day granularity.
+- Day-0 exact minimum changes 0 → 0.125 d because repair time is now causal;
+  minimal set is unchanged (`filter-1`).
+- Day-10 legacy row is invalid (`SEMANTIC_CORRECTION_LEGACY_IGNORED_AT_DAY`);
+  canonical gives 10 d.
+- A certificate for C11 must bind the day-granularity claim and the canonical
+  ordering, not the old 0-day day-10 row.
 
 ## 5. Limits
 

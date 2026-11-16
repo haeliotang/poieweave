@@ -12,8 +12,8 @@ currently produces the formal result; it is not a claim of equivalence.
 - S2 experiment directories: 79
 - Experiments referenced by claims: 19
 - Unmapped experiments: 60
-- Formal S2 experiments migrated to canonical: 6
-- Canonical migrations blocked: 1
+- Formal S2 experiments migrated to canonical: 7
+- Canonical migrations blocked: 0
 - Stochastic experiments missing a recorded seed: 2
 - S2 certificates: 6
 - Status-page S2 result lines: 13
@@ -77,7 +77,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-adversarial-time | poie-adversarial-time | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-adversarial-timing | poie-adversarial-timing | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-canonical-c10 | poie-migration-c10 | base-08 | C61 | NOT_APPLICABLE | CANONICAL_MIGRATED |
-| s2-canonical-c11 | poie-migration-c11 | base-08 | C62 | NOT_APPLICABLE | CANONICAL_BLOCKED |
+| s2-canonical-c11 | poie-migration-c11 | base-08 | C62 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-c5 | poie-migration-c5 | base-05 | C56 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-c6 | poie-migration-c6 | base-06 | C57 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-c7 | poie-migration-c7 | base-08 | C58 | NOT_APPLICABLE | CANONICAL_MIGRATED |

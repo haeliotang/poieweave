@@ -2,7 +2,7 @@
 
 - Experiment ID: `s2-canonical-c11`
 - Date: 2026-11-16
-- Status: BLOCKED; minima agree at day 0 but minimal sets differ; day-10 legacy input is defective
+- Status: MIGRATED_WITH_SEMANTIC_CORRECTION
 - Scope: 31 adversarial subsets, with/without insert resupply.
 
 ## Question
