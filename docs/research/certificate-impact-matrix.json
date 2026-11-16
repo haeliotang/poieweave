@@ -103,31 +103,35 @@
       "scope": "cross-model metric definitions and values"
     },
     {
-      "canonical_certificate": null,
-      "canonical_classification": "NOT_MIGRATED",
-      "canonical_experiments": [],
-      "certificate_status": "BLOCKED",
+      "canonical_certificate": "experiments/certificate-s2-canonical-order/certificate.json",
+      "canonical_classification": "EXPECTED_AGREEMENT",
+      "canonical_experiments": [
+        "s2-canonical-order"
+      ],
+      "certificate_status": "REISSUED",
       "claim_scope": "model-level ordering result only; not a scheduling optimality claim",
-      "claims": [],
+      "claims": [
+        "C72"
+      ],
       "expected_sha256": "708987bd04cc4f055e539389957ea9375c79ab5ee04c91ad1861bafbdc2b74b5",
       "id": "certificate-s2-order",
       "model": "scenarios/base-06/model.toml",
       "model_sha256": "09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c",
-      "rationale": "no formal claim in the claims ledger and no canonical order adapter; do not reissue",
-      "reissued": false,
+      "rationale": "canonical permutation search reproduces 24/25 and 40/44 with order_sensitive=0; canonical certificate issued",
+      "reissued": true,
       "schema": "poie.order-certificate/1",
       "scope": "Base-06 repair-order sensitivity"
     }
   ],
   "schema": "poie.s2-certificate-impact-matrix/1",
   "summary": {
-    "blocked": 2,
-    "canonical_migrations": 8,
+    "blocked": 1,
+    "canonical_migrations": 9,
     "canonical_semantic_corrections": 7,
     "certificates": 6,
     "historical_valid": 0,
     "invalidated": 0,
-    "reissued": 3,
+    "reissued": 4,
     "superseded": 1
   }
 }

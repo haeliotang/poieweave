@@ -8,16 +8,16 @@ currently produces the formal result; it is not a claim of equivalence.
 
 ## Summary
 
-- S2 claims: 28
-- S2 experiment directories: 87
-- Experiments referenced by claims: 28
+- S2 claims: 29
+- S2 experiment directories: 88
+- Experiments referenced by claims: 29
 - Unmapped experiments: 59
-- Formal S2 experiments migrated to canonical: 8
+- Formal S2 experiments migrated to canonical: 9
 - Canonical migrations blocked: 0
 - Canonical semantic corrections: 7
 - Stochastic experiments missing a recorded seed: 0
-- S2 certificates: 9
-- Canonical S2 certificates reissued: 3
+- S2 certificates: 10
+- Canonical S2 certificates reissued: 4
 - Status-page S2 result lines: 12
 - Status result lines without an explicit claim: 0
 - Unclassified experiments: 0
@@ -54,6 +54,7 @@ currently produces the formal result; it is not a claim of equivalence.
 | C69 | s2-canonical-load-base05 | engine::run_engine | MIGRATED |
 | C70 | s2-canonical-regen-horizon | engine::run_engine | MIGRATED |
 | C71 | s2-canonical-metrics-groups | engine::run_engine | MIGRATED |
+| C72 | s2-canonical-order | engine::run_engine | MIGRATED |
 
 ## Status-page S2 results
 
@@ -101,6 +102,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-canonical-c9 | poie-migration-c9 | base-08 | C60 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-load-base05 | poie-migration-s2-load-base05 | base-05 | C69 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-metrics-groups | poie-migration-metrics-groups | base-05, base-08 | C71 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
+| s2-canonical-order | poie-migration-order | base-06 | C72 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-regen-horizon | poie-migration-s2-regen-horizon | base-05, base-08 | C70 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-energy-boundary | poie-energy-boundary | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-energy-interventions | poie-energy-interventions | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |

@@ -255,6 +255,15 @@
       ],
       "certificates": [],
       "boundary": "定义已版本化，不覆盖旧 5/10"
+    },
+    {
+      "id": "C72",
+      "statement": "canonical order：24/25、40/44，order_sensitive=0",
+      "evidence": [
+        "s2-canonical-order"
+      ],
+      "certificates": [],
+      "boundary": "负结果保持"
     }
   ],
   "experiments": [
@@ -863,6 +872,34 @@
       "classification": "FORMAL_CLAIMED",
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-order",
+      "report": "experiments/s2-canonical-order/REPORT.md",
+      "prereg": "experiments/s2-canonical-order/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-order"
+      ],
+      "models": [
+        "base-06"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "max_failures\trecoverable_cases\tlegacy_standard\tcanonical_standard\tlegacy_best\tcanonical_best\torder_sensitive\tclassification\n2\t25\t24\t24\t24\t24\t0\tEXPECTED_AGREEMENT\n3\t44\t40\t40\t40\t40\t0\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "max_failures\trecoverable_cases\tlegacy_standard\tcanonical_standard\tlegacy_best\tcanonical_best\torder_sensitive\tclassification",
+        "2\t25\t24\t24\t24\t24\t0\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C72"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
     },
     {
@@ -2680,6 +2717,51 @@
       "status": "REISSUED_CANONICAL"
     },
     {
+      "certificate": "certificate-s2-canonical-order",
+      "report": "experiments/certificate-s2-canonical-order/README.md",
+      "keys": [
+        "canonical_classification",
+        "certificate_id",
+        "claims",
+        "claims_sha256",
+        "engine",
+        "evidence_commit",
+        "experiment",
+        "models",
+        "result_marker",
+        "runner",
+        "schema",
+        "scope",
+        "semantics",
+        "source_certificate",
+        "source_certificate_sha256",
+        "status",
+        "verifier"
+      ],
+      "claims": [],
+      "certificate_keys": [
+        "canonical_classification",
+        "certificate_id",
+        "claims",
+        "claims_sha256",
+        "engine",
+        "evidence_commit",
+        "experiment",
+        "models",
+        "result_marker",
+        "runner",
+        "schema",
+        "scope",
+        "semantics",
+        "source_certificate",
+        "source_certificate_sha256",
+        "status",
+        "verifier"
+      ],
+      "source_certificate": "experiments/certificate-s2-order/certificate.json",
+      "status": "REISSUED_CANONICAL"
+    },
+    {
       "certificate": "certificate-s2-canonical-regeneration",
       "report": "experiments/certificate-s2-canonical-regeneration/README.md",
       "keys": [
@@ -2988,17 +3070,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 28,
-    "s2_experiments": 87,
-    "claimed_experiments": 28,
+    "s2_claims": 29,
+    "s2_experiments": 88,
+    "claimed_experiments": 29,
     "unmapped_experiments": 59,
-    "formal_s2_experiments_migrated_to_canonical": 8,
+    "formal_s2_experiments_migrated_to_canonical": 9,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 7,
     "stochastic_experiments_missing_seed": 0,
-    "s2_certificates": 9,
-    "canonical_certificates_reissued": 3,
-    "claims_with_experiment_evidence": 28,
+    "s2_certificates": 10,
+    "canonical_certificates_reissued": 4,
+    "claims_with_experiment_evidence": 29,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
