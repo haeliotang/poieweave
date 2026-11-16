@@ -39,7 +39,7 @@
     },
     {
       "path": "audit/phase2/result.json",
-      "sha256": "4e761d0c13682ff92db9c4d9d0bcc2f045c9c80da799773b0f0950105e7c4c42"
+      "sha256": "9bc1671ea00ed1ea77eb3d4f5103342d3ec236edad079f1b96344f88b78e9ead"
     },
     {
       "path": "audit/phase2/fmpy_import.py",

@@ -41,6 +41,8 @@ def main() -> int:
         problems.append("trajectory assumption error")
     if len(result["trajectory"]["rows"]) != 5:
         problems.append("trajectory sample count")
+    if result["difference_decomposition"]["unexplained_J"] > 1.0:
+        problems.append("unexplained trajectory residual")
     for entry in manifest["files"]:
         path = ROOT / entry["path"]
         if not path.is_file() or sha(path) != entry["sha256"]:

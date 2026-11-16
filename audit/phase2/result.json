@@ -155,6 +155,17 @@
     }
   },
   "platform": "aarch64-darwin",
+  "difference_decomposition": {
+    "numerical_error_J": 0.0,
+    "importer_disagreement_J": 0.0,
+    "event_boundary_delta_s": {
+      "repair_completion": 0.0,
+      "depletion": 0.0
+    },
+    "model_assumption_J": 1200000.0,
+    "unexplained_J": 0.0,
+    "status": "SINGLE_CASE_DECOMPOSITION"
+  },
   "trajectory": {
     "canonical_trajectory": "audit/phase2/canonical-trajectory.csv",
     "canonical_trajectory_sha256": "7c7da30ed5d1e7ccd06ac166469c1c60535d36bb89c5c5af881743aeb791fa2c",

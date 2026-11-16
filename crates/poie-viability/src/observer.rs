@@ -125,3 +125,61 @@ pub fn observe_states(
     }
     Ok(observations)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::engine::run_engine;
+    use crate::survival::BatteryLimits;
+    use poie_ontology::model::Model;
+    use std::path::{Path, PathBuf};
+
+    fn root() -> PathBuf {
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("../..")
+    }
+
+    fn options<'a>() -> EngineOptions<'a> {
+        EngineOptions {
+            services: vec!["potable-water", "workshop-operability"],
+            horizon_s: 200.0 * 3600.0,
+            failures: Vec::new(),
+            resupplies: Vec::new(),
+            resources: vec!["robot-m1".into(), "lathe-1".into()],
+            alternative_pool: vec!["robot-m1".into()],
+            battery: Some(BatteryLimits { capacity_kwh: 200.0, charge_kw: 10.0 }),
+            load_kw: 3.0,
+        }
+    }
+
+    #[test]
+    fn observer_samples_energy_and_repair_state() {
+        let model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
+        let observed = observe_states(&model, &options(), &[0.0, 3600.0, 7200.0, 10800.0, 284400.0]).unwrap();
+        let energy_kwh: Vec<f64> = observed.iter().map(|row| row.energy_j / 3_600_000.0).collect();
+        assert_eq!(energy_kwh, vec![40.0, 39.5, 39.0, 38.0, 0.0]);
+        assert!(observed[0].repair_active);
+        assert!(observed[1].repair_active);
+        assert!(observed[2].repair_active);
+        assert_eq!(observed[1].repair_detail.as_deref(), Some("pump-p1"));
+        assert!(!observed[3].repair_active);
+        assert!(!observed[4].repair_active);
+        assert_eq!(observed[4].energy_generated_j, 197.5 * 3_600_000.0);
+        assert_eq!(observed[4].energy_load_j, 237.0 * 3_600_000.0);
+        assert_eq!(observed[4].energy_repair_j, 0.5 * 3_600_000.0);
+    }
+
+    #[test]
+    fn neutral_probes_preserve_final_canonical_state() {
+        let model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
+        let mut direct_options = options();
+        direct_options.horizon_s = 79.0 * 3600.0;
+        let direct = run_engine(&model, &direct_options).unwrap();
+        let observed = observe_states(&model, &options(), &[0.0, 3600.0, 7200.0, 10800.0, 79.0 * 3600.0]).unwrap();
+        let last = observed.last().unwrap();
+        assert_eq!(last.energy_j, direct.final_inventory["electric-energy"]);
+        assert_eq!(last.energy_generated_j, 197.5 * 3_600_000.0);
+        assert_eq!(last.energy_load_j, 237.0 * 3_600_000.0);
+        assert_eq!(last.energy_repair_j, 0.5 * 3_600_000.0);
+        assert_eq!(last.termination, "completed");
+    }
+}
