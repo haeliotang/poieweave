@@ -190,6 +190,7 @@ COVERED_BY = {
     "s2-grease-cost": ["C92"], "s2-yield-accumulation": ["C92"],
     "s2-two-restorers": ["C93"],
     "s2-adversarial-timing": ["C94"],
+    "s2-regeneration": ["C95"], "s2-resupply": ["C95"],
     "s2-time-horizon": ["C74"], "s2-time-insert": ["C74"], "s2-time-repair-sweep": ["C74"],
     "s2-time-energy-sweep": ["C64"],
 }

@@ -462,6 +462,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C95",
+      "statement": "aux batch19：regeneration/resupply 3/4 一致 + Base-07 joint 修正",
+      "evidence": [
+        "s2-canonical-aux-batch19"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -978,6 +987,36 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C94"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch19",
+      "report": "experiments/s2-canonical-aux-batch19/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch19/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch19"
+      ],
+      "models": [
+        "base-06",
+        "base-07"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "experiment\trow\tlegacy_independent\tlegacy_joint\tcanonical_independent\tcanonical_joint\tclassification\nregeneration\tbase-06\t25\t24\t25\t24\tEXPECTED_AGREEMENT\nregeneration\tbase-07\t25\t25\t25\t24\tSEMANTIC_CORRECTION_JOINT_COVERAGE\nresupply\tbefore\t25\t24\t25\t24\tEXPECTED_AGREEMENT\nresupply\tafter_resupply\t25\t25\t25\t25\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\trow\tlegacy_independent\tlegacy_joint\tcanonical_independent\tcanonical_joint\tclassification",
+        "regeneration\tbase-06\t25\t24\t25\t24\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C95"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -3135,7 +3174,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
-      "covered_by_claims": [],
+      "covered_by_claims": [
+        "C95"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3223,7 +3264,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
-      "covered_by_claims": [],
+      "covered_by_claims": [
+        "C95"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -4156,20 +4199,20 @@
     }
   ],
   "summary": {
-    "s2_claims": 51,
-    "s2_experiments": 110,
-    "claimed_experiments": 51,
+    "s2_claims": 52,
+    "s2_experiments": 111,
+    "claimed_experiments": 52,
     "unmapped_experiments": 59,
     "formal_s2_experiments_migrated_to_canonical": 22,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 16,
+    "canonical_semantic_corrections": 17,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 51,
+    "claims_with_experiment_evidence": 52,
     "status_s2_result_lines": 12,
-    "aux_experiments_with_canonical_evidence": 53,
-    "aux_experiments_without_canonical_evidence": 6,
+    "aux_experiments_with_canonical_evidence": 55,
+    "aux_experiments_without_canonical_evidence": 4,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
   }

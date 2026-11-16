@@ -1,0 +1,5 @@
+experiment	row	legacy_independent	legacy_joint	canonical_independent	canonical_joint	classification
+regeneration	base-06	25	24	25	24	EXPECTED_AGREEMENT
+regeneration	base-07	25	25	25	24	SEMANTIC_CORRECTION_JOINT_COVERAGE
+resupply	before	25	24	25	24	EXPECTED_AGREEMENT
+resupply	after_resupply	25	25	25	25	EXPECTED_AGREEMENT

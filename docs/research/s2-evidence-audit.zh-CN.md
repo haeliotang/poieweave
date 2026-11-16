@@ -24,18 +24,18 @@
 
 | 指标 | 数量 |
 | --- | --- |
-| S2 claims | 51 |
-| S2 experiment 目录 | 110 |
-| 被 claim 引用的 experiment | 51 |
+| S2 claims | 52 |
+| S2 experiment 目录 | 111 |
+| 被 claim 引用的 experiment | 52 |
 | 未被 claim 引用的 experiment | 59 |
 | 未分类 experiment | **0** |
-| aux 已有 canonical 证据 | **53** |
-| aux 尚无 canonical 证据 | **6** |
+| aux 已有 canonical 证据 | **55** |
+| aux 尚无 canonical 证据 | **4** |
 | FORMAL_CLAIMED / FORMAL_AUXILIARY | 48 / 48 |
 | SUPERSEDED_BY_CANONICAL / EXPLORATORY_NEGATIVE | 6 / 2 |
 | DEFINITIONAL / DETERMINISTIC_SWEEP | 1 / 2 |
-| 已迁移到 canonical 的正式 S2 experiment | **23** |
-| canonical 语义修正 | **16**（C11–C14、C18、C19、C71、C73–C76、C81、C84、C89、C90、C94） |
+| 已迁移到 canonical 的正式 S2 experiment | **24** |
+| canonical 语义修正 | **17**（C11–C14、C18、C19、C71、C73–C76、C81、C84、C89、C90、C94、C95） |
 | 缺少记录种子的随机 experiment | **0** |
 | S2 证书 | 11（6 历史 + 5 canonical 重签） |
 | 状态页 S2 数值结论行 | 12 |
@@ -62,8 +62,6 @@ canonical 证据：
 - `s2-metrics`（定义型）
 - `s2-order-sensitivity`（负结果）
 - `s2-recycle-residue`
-- `s2-regeneration`（Base-06/07 coverage）
-- `s2-resupply`
 
 这些不能视为已收敛。
 
