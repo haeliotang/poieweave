@@ -69,7 +69,7 @@
   },
   "canonical_trajectory": {
     "path": "audit/phase2/canonical-trajectory.csv",
-    "sha256": "7c7da30ed5d1e7ccd06ac166469c1c60535d36bb89c5c5af881743aeb791fa2c",
+    "sha256": "d3a174867399ffb97866d2ca22b1e17f83400efdaae0990eb8d2c05740efd1b4",
     "runner": "poie-s5v-canonical-observatory",
     "method": "neutral zero-quantity sample probes; no inventory change",
     "samples_s": [

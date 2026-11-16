@@ -31,7 +31,7 @@
     },
     {
       "path": "audit/phase2/config.json",
-      "sha256": "2dee2df01aaeaf9b31aa36a3f68d7cde91df8cfe4ed2a14356d9ead04bbcf632"
+      "sha256": "3afc57154c434f5f5daf006ed104dea5839c743d4b2d3c258dc617039f5bb33d"
     },
     {
       "path": "audit/phase2/canonical-reference.txt",
@@ -39,15 +39,27 @@
     },
     {
       "path": "audit/phase2/canonical-trajectory.csv",
-      "sha256": "7c7da30ed5d1e7ccd06ac166469c1c60535d36bb89c5c5af881743aeb791fa2c"
+      "sha256": "d3a174867399ffb97866d2ca22b1e17f83400efdaae0990eb8d2c05740efd1b4"
     },
     {
       "path": "audit/phase2/result.json",
-      "sha256": "5d48a0b6b3615c3814d6fb60df1fd8bb1a18c764a49db461b8b0a380ce222b5d"
+      "sha256": "b1dec68c5e2dae0d4e6d22c185daa473e90e0dc4569f58c038f450ecc771a191"
     },
     {
       "path": "audit/phase2/fmpy_import.py",
       "sha256": "1c5f2c9522ac209be7c36cbaebf2367fa6bab953dafa7a7e4b0f1b0fb82c5906"
+    },
+    {
+      "path": "crates/poie-viability/src/observer.rs",
+      "sha256": "15d34156db892a0cf45330692bfe3601e19f6bd817834c94a18a7047f8f3cac0"
+    },
+    {
+      "path": "crates/poie-viability/src/bin/poie-s5v-canonical-observatory.rs",
+      "sha256": "1a1b4c94c1d368c9201789c874ca7524c2e6c32f4d51059c794d63b92a501f28"
+    },
+    {
+      "path": "audit/phase2/check_observatory.py",
+      "sha256": "a61e602fc08797ffbd0210023ab0f48cd06e956b5e0367c4aa7430360b2303e5"
     },
     {
       "path": "audit/phase2/results/fmpy-3600.csv",

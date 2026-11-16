@@ -66,8 +66,11 @@ step sensitivity            pass
 - 不修改 engine、repair 事务、资源扣减或能源结算规则
 - 通过零数量 neutral sample probes 暴露 0/1/2/3 h 与耗尽边界
 - 报告 inventory、累计 generated/load/repair/curtailed、终止状态
-- repair-active 从 canonical trace 派生，并显式标记 `DERIVED_FROM_CANONICAL_TRACE`
-- 原生 engine API 仍不直接导出 active repair 标识
+- 保持原始 horizon，不再把观测 horizon 改写为最后一个采样点
+- 终止分类因此保持原始 `blocked:energy_depleted`，79 h 反例已修复
+- 不可观测时刻显式返回 `UNOBSERVABLE_AFTER_TERMINATION` / `UNOBSERVABLE_NOT_MATERIALIZED`
+- repair-active 从 canonical trace 派生或返回 `UNKNOWN`；原生 engine API 仍不直接导出
+- 新增观测非干扰测试：提前终止、同刻多事件、维修中断、维修完成等于 horizon、能源恰好在 horizon 耗尽
 
 观测结果：
 
