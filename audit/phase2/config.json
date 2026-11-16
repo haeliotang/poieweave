@@ -21,7 +21,8 @@
   "time_grid": {
     "coarse_step_s": 3600,
     "fine_step_s": 900,
-    "horizon_s": 324000
+    "horizon_s": 324000,
+    "extra_step_s": 1000
   },
   "tolerances": {
     "energy_relative": 1e-09,
@@ -39,7 +40,13 @@
   "negative_test": {
     "tampered_fmu": "external/fmu-pv-battery/poie-pv-battery-tampered.fmu",
     "mutation": "PV parameter forced +100 W in the native model",
-    "must_detect": true
+    "must_detect": true,
+    "event_boundary": {
+      "tampered_fmu": "external/fmu-pv-battery/poie-pv-battery-duration-tampered.fmu",
+      "mutation": "repair duration +3600 s",
+      "must_detect": true,
+      "category": "EVENT_BOUNDARY_MISMATCH"
+    }
   },
   "canonical_boundary": {
     "note": "canonical exports only t=0, repair completion and depletion; interior repair states are not exported",

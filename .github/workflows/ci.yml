@@ -1381,6 +1381,7 @@ jobs:
         run: |
           external/fmu-pv-battery/build.sh
           external/fmu-pv-battery/build-tampered.sh
+          external/fmu-pv-battery/build-tampered-duration.sh
       - name: Independent fmpy importer
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-linux"
