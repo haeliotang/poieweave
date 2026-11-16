@@ -90,3 +90,6 @@
 | A | aux canonical 覆盖映射 | 完成 | 46 个 aux 有 canonical 证据，13 个仍无 |
 
 | G | 最终 DoD 审计 | 完成 | 53/53 claim 证书覆盖；57/59 aux 有证据 + 2 排除；0 UNEXPLAINED；clean-target check |
+
+| H | S5-V Phase 1 | Gate 1 通过 | 12 claim 审计：9 VERIFIED + 3 限制；36 证书哈希 0 失败 |
+| I | S5-V Phase 2 | Gate 2 通过（scoped） | 独立 FMI 3.0 CS：79 h、误差 0 J、tamper 检出 |
