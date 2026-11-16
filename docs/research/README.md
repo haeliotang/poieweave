@@ -14,6 +14,7 @@
 - [Migration Log](migration-log.zh-CN.md)
 - [S2 Evidence Audit](s2-evidence-audit.zh-CN.md)
 - [S2 Certificate Impact Matrix](certificate-impact-matrix.zh-CN.md)
+- [S5-T Migration Report](s5-t-migration-report.zh-CN.md)
 - [certificate-s2-metrics Split](certificate-s2-metrics-split.zh-CN.md)
 - [Canonical S2 Certificates](../../experiments/certificate-s2-canonical-joint/README.md)
 - [Canonical Metrics Certificate v2](../../experiments/certificate-s2-canonical-metrics/README.md)
