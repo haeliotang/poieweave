@@ -1,7 +1,7 @@
 # S5-V N4 — Independent Discrete-Event Cross-Model Challenge
 
 基线：`33583f53ac046a435b6756b4a448bdc9b3ff23d9`（PR #573）
-范围：N4-00/01/02/03，PV 故障 + 初始泵维修完成。
+范围：N4-00/01/02/03 PV 故障 + N4-05 初始泵维修中断。
 
 ## 状态
 
@@ -10,7 +10,11 @@ N4-A EXTERNAL DISCRETE-EVENT EXECUTION — ESTABLISHED (SCOPED: PV failure)
 N4-B CAUSAL EVENT AGREEMENT — ESTABLISHED (SCOPED: N4-00/01/02/03)
 N4-C REPAIR INTERRUPTION — ESTABLISHED (SCOPED: fixed initial repair, robot-m1 dependency)
 N4-C REPAIR / RECOVERY CROSS-MODEL VALIDITY — NOT ESTABLISHED (no recovery test)
+N4-C INDEPENDENT REPAIR PLANNING — NOT ESTABLISHED (fixed schedule only)
 N4-D EVIDENCE PACKAGE — ESTABLISHED (local + Linux CI)
+
+S5-V N4 INDEPENDENT DISCRETE-EVENT CHALLENGE
+  ESTABLISHED (SCOPED: tested PV failure + repair interruption)
 ```
 
 保留：

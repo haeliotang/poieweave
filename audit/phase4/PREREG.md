@@ -110,7 +110,7 @@ Event samples: failure-time Before/After; 10800 s Before/After.
 ## Scope
 
 This preregistration does not claim trajectory-level or full S2 cross-model
-validity. It covers only the listed PV-failure events, initial pump repair,
-energy trajectory, terminal state and first-divergence classification.
-Restoration, repair interruption, shared-resource scheduling and load steps are
-outside this minimal set.
+validity. It covers the listed PV-failure events, the fixed initial pump repair,
+the N4-05 robot-dependency interruption, energy trajectory, terminal state and
+first-divergence classification. Recovery, independent repair planning,
+shared-resource scheduling and load steps are outside this minimal set.
