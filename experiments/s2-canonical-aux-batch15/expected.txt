@@ -1,0 +1,12 @@
+experiment	row	legacy_days	canonical_days	classification
+load	load=0.0	40	40.000	EXPECTED_AGREEMENT
+load	load=1.0	40	40.000	EXPECTED_AGREEMENT
+load	load=2.0	40	40.000	EXPECTED_AGREEMENT
+load	load=3.0	3	3.292	EXPECTED_AGREEMENT
+load	load=4.0	1	1.097	EXPECTED_AGREEMENT
+load-threshold-capacity	capacity=100	2.6	2.6	EXPECTED_AGREEMENT
+load-threshold-capacity	capacity=200	2.6	2.6	EXPECTED_AGREEMENT
+load-threshold-capacity	capacity=300	2.6	2.6	EXPECTED_AGREEMENT
+load-threshold-charge	charge=3	2.6	2.6	EXPECTED_AGREEMENT
+load-threshold-charge	charge=10	2.6	2.6	EXPECTED_AGREEMENT
+load-threshold-charge	charge=30	2.6	2.6	EXPECTED_AGREEMENT
