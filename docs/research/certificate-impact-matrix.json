@@ -27,7 +27,7 @@
       "scope": "time semantics and boundaries"
     },
     {
-      "canonical_certificate": "experiments/certificate-s2-canonical-joint/certificate.json",
+      "canonical_certificate": "experiments/certificate-canonical-c6-v2/certificate.json",
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
         "s2-canonical-c6"
@@ -47,7 +47,7 @@
       "scope": "Base-06 joint coverage"
     },
     {
-      "canonical_certificate": "experiments/certificate-s2-canonical-load/certificate.json",
+      "canonical_certificate": "experiments/certificate-canonical-c69-v2/certificate.json",
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
         "s2-canonical-load-base05"
@@ -67,7 +67,7 @@
       "scope": "Base-05 load 0-4 kW"
     },
     {
-      "canonical_certificate": "experiments/certificate-s2-canonical-regeneration/certificate.json",
+      "canonical_certificate": "experiments/certificate-canonical-c70-v2/certificate.json",
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
         "s2-canonical-regen-horizon"
@@ -87,7 +87,7 @@
       "scope": "Base-05/08 regeneration intervals"
     },
     {
-      "canonical_certificate": "experiments/certificate-s2-canonical-metrics/certificate.json",
+      "canonical_certificate": "experiments/certificate-canonical-c71-v2/certificate.json",
       "canonical_classification": "MIXED_AGREEMENT_AND_DEFINITION_CHANGE",
       "canonical_experiments": [
         "s2-canonical-metrics-groups"
@@ -107,7 +107,7 @@
       "scope": "cross-model metric definitions and values"
     },
     {
-      "canonical_certificate": "experiments/certificate-s2-canonical-order/certificate.json",
+      "canonical_certificate": "experiments/certificate-canonical-c72-v2/certificate.json",
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
         "s2-canonical-order"

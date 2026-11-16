@@ -1,0 +1,92 @@
+{
+  "canonical_classification": "SEMANTIC_CORRECTION",
+  "certificate_id": "poie-s2-canonical-c74-v2",
+  "claim_statement": "C12 horizon/insert/repair-sweep \u5168\u90e8\u5206\u91cf\u7531 canonical \u8bed\u4e49\u8986\u76d6",
+  "claims": [
+    "C74"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "7371365f89c2813e1fc41004ca0232ef7f458d9a34591696bd9cfdfc150d6aa4",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "experiment": {
+    "expected": "experiments/s2-canonical-c12-components/expected.txt",
+    "expected_sha256": "fdad38ec68b0d22740f688ee1628479bfd3b29f40f80718ad2fb402055b1a22c",
+    "path": "experiments/s2-canonical-c12-components"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "predecessor": {
+    "path": "experiments/certificate-canonical-c74/certificate.json",
+    "relation": "v1 certificate superseded by v2 runtime-environment binding",
+    "sha256": "b1deab5427818dfe2914aa2ff7d31e67896e30931c1c5d4a9d9535519274b098"
+  },
+  "runner": {
+    "binary": "poie-migration-c12-components",
+    "sha256": "b9e0145174e00e31c73917cbf790b0bc40ec3034d41a4751d859eddeaf3522f4",
+    "source": "crates/poie-viability/src/bin/poie-migration-c12-components.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/3",
+  "scope": "model/simulation evidence only; canonical claim C74; native observation does not change execution",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation; native read-only observation does not alter execution",
+  "source_environment": {
+    "files": [
+      {
+        "path": "crates/poie-viability/src/engine.rs",
+        "sha256": "7371365f89c2813e1fc41004ca0232ef7f458d9a34591696bd9cfdfc150d6aa4"
+      },
+      {
+        "path": "crates/poie-viability/src/survival.rs",
+        "sha256": "ddad0fbd5b6e31b5ac88eca29435588454723810d96207c2d4e29d3be673fced"
+      },
+      {
+        "path": "crates/poie-viability/src/clock.rs",
+        "sha256": "4b8f2394da2feab5aeb9601f7fa8bd209bc436bfa3554b3338de62519ed05212"
+      },
+      {
+        "path": "crates/poie-viability/src/closure.rs",
+        "sha256": "f8ccb5f5596382f357f7cc12a6441e66b35b5dc3644e00026dace661ae513179"
+      },
+      {
+        "path": "crates/poie-viability/src/scheduler.rs",
+        "sha256": "c6c5618b78f20f1a1a18b3d594ac4ab4c8bf4dcbcf44fe99b7051835d6ef85f7"
+      },
+      {
+        "path": "Cargo.toml",
+        "sha256": "e50b40a6b80c3c45f851ac3fdeb5267c78eb21efd63dc91fea0eaea86e1a9957"
+      },
+      {
+        "path": "Cargo.lock",
+        "sha256": "b0abd0572bc06734d0b3253a27308d6013d3a4859c36cf8c818b50426cc9a5d1"
+      },
+      {
+        "path": "crates/poie-viability/src/bin/poie-migration-c12-components.rs",
+        "sha256": "b9e0145174e00e31c73917cbf790b0bc40ec3034d41a4751d859eddeaf3522f4"
+      },
+      {
+        "path": "scenarios/base-08/model.toml",
+        "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+      },
+      {
+        "path": "experiments/s2-canonical-c12-components/expected.txt",
+        "sha256": "fdad38ec68b0d22740f688ee1628479bfd3b29f40f80718ad2fb402055b1a22c"
+      },
+      {
+        "path": "experiments/s2-canonical-c12-components/REPORT.md",
+        "sha256": "6479311a8f784e2c8e15da6a1fb9c2ad90c38442a5728679257ec87393ec4413"
+      },
+      {
+        "path": "experiments/s2-canonical-c12-components/PREREG.md",
+        "sha256": "6158b0c797459ac1587901e4b5049dc6be007e753d377de7885a6f0665d3c777"
+      }
+    ]
+  },
+  "status": "CANONICAL_ISSUED_V2",
+  "verifier": "poie-canonical-s2-certificate/3",
+  "version": 2
+}

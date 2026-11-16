@@ -12,6 +12,9 @@ Phase 2 Gate 2: PASS_SCOPED_EXECUTION_AND_ENDPOINTS
 
 S5-V EXTERNAL EXECUTION — ESTABLISHED (SCOPED)
 S5-V ENDPOINT AGREEMENT — ESTABLISHED (SINGLE ENERGY CASE)
+Native Observatory — ESTABLISHED (SCOPED, energy case)
+Observation Noninterference — ESTABLISHED (five required cases)
+Certificate v2 — ESTABLISHED (41 claim certificates; v1 frozen and historically verified)
 S5-V TRAJECTORY-LEVEL CROSS-MODEL VALIDITY — NOT ESTABLISHED
 S5 CROSS-MODEL VALIDITY — NOT ESTABLISHED (full S2)
 ```
@@ -59,28 +62,55 @@ step sensitivity            pass
 
 详见 [audit/phase2/REPORT.zh-CN.md](../../audit/phase2/REPORT.zh-CN.md)。
 
-## Canonical trajectory observatory（初始版）
+## Native Observatory and Observation Noninterference
 
-新增只读观测 runner `poie-s5v-canonical-observatory`：
+Native observer 已从事件内核直接产生只读快照，不再通过零数量补货插入采样边界。
 
-- 不修改 engine、repair 事务、资源扣减或能源结算规则
-- 通过零数量 neutral sample probes 暴露 0/1/2/3 h 与耗尽边界
-- 报告 inventory、累计 generated/load/repair/curtailed、终止状态
-- 保持原始 horizon，不再把观测 horizon 改写为最后一个采样点
-- 终止分类因此保持原始 `blocked:energy_depleted`，79 h 反例已修复
-- 不可观测时刻显式返回 `UNOBSERVABLE_AFTER_TERMINATION` / `UNOBSERVABLE_NOT_MATERIALIZED`
-- repair-active 从 canonical trace 派生或返回 `UNKNOWN`；原生 engine API 仍不直接导出
-- 新增观测非干扰测试：提前终止、同刻多事件、维修中断、维修完成等于 horizon、能源恰好在 horizon 耗尽
+实现：
 
-观测结果：
+- `run_engine_observed` 在 `engine.rs` 内部按请求时刻切分 ledger，不插入 resupply 事件
+- 保持调用者原始 horizon
+- 支持 `Before` / `After` 事件前后观测
+- 原生导出 `RunningRepair`（label、end、plans、resources）
+- 终止、存活时间、最终库存与无观测运行一致
+- 不可观测请求显式标记，不回填最终状态
+
+证据：
+
+- [audit/phase3/native-trajectory.csv](../../audit/phase3/native-trajectory.csv)
+- [audit/phase3/README.zh-CN.md](../../audit/phase3/README.zh-CN.md)
+
+0/1/2/3/79 h 能量：
 
 ```text
-t=0       canonical 40.000 kWh   repair active pump-p1
-t=1 h     canonical 39.500 kWh   repair active pump-p1
-t=2 h     canonical 39.000 kWh   repair active pump-p1
-t=3 h     canonical 38.000 kWh   repair completed
-t=79 h    canonical  0.000 kWh   depleted
+t=0      40.000 kWh
+t=1 h    39.500 kWh
+t=2 h    39.000 kWh
+t=3 h    38.000 kWh
+t=79 h    0.000 kWh
 ```
+
+3 h 维修完成事件 Before/After：
+
+```text
+Before  38.500 kWh  repair active
+After   38.000 kWh  repair committed 0.5 kWh
+```
+
+终止保持：
+
+```text
+blocked:energy_depleted, survived_s=284400
+```
+
+N2 非干扰测试覆盖提前终止、能源恰好耗尽于 horizon、同刻多事件、维修中断、
+维修完成恰好等于 horizon，以及事件前/后观测；比较 termination、survived_s、
+final_inventory、完整 trace 与累计能量。
+
+旧的 neutral-probe `poie-s5v-canonical-observatory` 保留为受限交叉检查，
+不再作为 N1 证据。
+
+## Trajectory discrepancy
 
 与 FMU 的差异：
 
@@ -106,12 +136,24 @@ FMU - canonical = -repair_energy * t / repair_duration   (0 < t < repair_duratio
 该结果支持“差异可分解为模型假设差异”，但不支持
 trajectory-level cross-model validity 已建立。
 
+## Certificate v2
+
+- 36 个既有 claim + C6/C69/C70/C71/C72 共 41 个 v2 证书
+- v2 绑定完整运行时环境：engine、survival、clock、closure、scheduler、
+  Cargo.toml、Cargo.lock、runner、models、expected、REPORT、PREREG
+- v2 记录 v1 predecessor 与 SHA
+- v1 87 个证书文件保持冻结：`audit/certificates/v1-frozen.json`
+- v1 在 baseline `9f343b55` 上独立重验
+- v2 tamper 测试覆盖 expected/engine/environment/claim/predecessor 五类变异
+
 ## 明确范围
 
 已建立的是：
 
 - 一个外部、可执行、独立实现的 FMI 3.0 CS FMU
 - 一个能量子系统场景的 external execution 和 endpoint agreement
+- Native Observatory 与五类非干扰反例
+- v2 证书完整环境绑定，v1 冻结并在历史 baseline 独立验证
 - FMI 3.0 标准平台目录与 modelIdentifier 命名
 - 独立 fmpy 0.3.32 导入器实际加载并执行
 - 可复现的配置、容差、日志、结果和哈希
