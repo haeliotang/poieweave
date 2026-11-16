@@ -80,6 +80,7 @@
 | C71 | metrics 四组：3 组一致，coverage 定义改为服务影响 9/10 | `experiments/s2-canonical-metrics-groups` | 定义已版本化，不覆盖旧 5/10 |
 | C72 | canonical order：24/25、40/44，order_sensitive=0 | `experiments/s2-canonical-order` | 负结果保持 |
 | C73 | canonical C68 Monte Carlo：中位 72→68、均值 64.8→64.0 | `experiments/s2-canonical-c68-monte-carlo` | 同种子 2000 runs |
+| C74 | C12 horizon/insert/repair-sweep 全部分量由 canonical 语义覆盖 | `experiments/s2-canonical-c12-components` | 长维修值被 2 天中断取代 |
 
 ## 不应出现的声明
 

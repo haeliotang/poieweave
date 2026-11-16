@@ -273,6 +273,15 @@
       ],
       "certificates": [],
       "boundary": "同种子 2000 runs"
+    },
+    {
+      "id": "C74",
+      "statement": "C12 horizon/insert/repair-sweep 全部分量由 canonical 语义覆盖",
+      "evidence": [
+        "s2-canonical-c12-components"
+      ],
+      "certificates": [],
+      "boundary": "长维修值被 2 天中断取代"
     }
   ],
   "experiments": [
@@ -566,6 +575,34 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C63"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-c12-components",
+      "report": "experiments/s2-canonical-c12-components/REPORT.md",
+      "prereg": "experiments/s2-canonical-c12-components/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c12-components"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 15,
+      "expected_output": "component\tlegacy_instant\tlegacy_event\tcanonical\tclassification\nhorizon\t6\t16\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\tblocked:repair interrupted at 172800s: pump-p1 failed\ninserts\tlegacy_instant\tlegacy_event\tcanonical\tclassification\n1\t6\t15\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n2\t8\t20\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n3\t10\t26\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n4\t12\t31\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n6\t12\t31\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\nrepair_days\tlegacy_instant\tlegacy_event\tcanonical\tclassification\n0.125\t6\t6\t6.000\tEXPECTED_AGREEMENT\n0.5\t6\t6\t6.000\tEXPECTED_AGREEMENT\n1\t6\t6\t6.000\tEXPECTED_AGREEMENT\n2\t6\t7\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n3\t6\t10\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n5\t6\t16\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n",
+      "expected_head": [
+        "component\tlegacy_instant\tlegacy_event\tcanonical\tclassification",
+        "horizon\t6\t16\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\tblocked:repair interrupted at 172800s: pump-p1 failed"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C74"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -3154,17 +3191,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 30,
-    "s2_experiments": 89,
-    "claimed_experiments": 30,
+    "s2_claims": 31,
+    "s2_experiments": 90,
+    "claimed_experiments": 31,
     "unmapped_experiments": 59,
     "formal_s2_experiments_migrated_to_canonical": 9,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 8,
+    "canonical_semantic_corrections": 9,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 30,
+    "claims_with_experiment_evidence": 31,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0

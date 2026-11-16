@@ -37,6 +37,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 | C19/C67 | [s2-canonical-c19](../../experiments/s2-canonical-c19/REPORT.md) | 均值 14.0→2.2，p90 15.6→2.0 |
 | C68/C73 | [s2-canonical-c68-monte-carlo](../../experiments/s2-canonical-c68-monte-carlo/REPORT.md) | 中位 72→68，均值 64.8→64.0 |
 | C71 | [s2-canonical-metrics-groups](../../experiments/s2-canonical-metrics-groups/REPORT.md) | coverage 5/10 资产可修复 → 9/10 服务影响 |
+| C74 | [s2-canonical-c12-components](../../experiments/s2-canonical-c12-components/REPORT.md) | C12 horizon/insert/repair-sweep 全部覆盖 |
 
 ## 2. 保持一致的历史结果
 
@@ -72,14 +73,14 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 
 ## 4. 被证据撤销或取代的声明
 
-- C12 grease 边界的原数值被 C63 取代。
+- C12 grease 边界的原数值被 C63 取代；horizon/insert/repair-sweep 由 C74 覆盖。
 - `certificate-s2-time` 状态为 `SUPERSEDED`。
 - `certificate-s2-metrics` 原聚合值被 scoped v2 取代；历史证书保留。
 - C68 的 legacy-only 标记被 C73 取代。
 
 ## 5. 仍然无法解释的差异
 
-在已迁移的 17 个 canonical 实验中：**无 `UNEXPLAINED`**。
+在已迁移的 18 个 canonical 实验中：**无 `UNEXPLAINED`**。
 
 已知但已解释的差异：
 
@@ -95,7 +96,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 | 范围 | 状态 | 原因 |
 | --- | --- | --- |
 | 59 个 `FORMAL_AUXILIARY` 实验 | 未 canonical 重算 | 只支持已有 claim，尚无可复用的迁移 runner |
-| C12 insert/horizon/repair-sweep 分量 | 部分 | 仅 grease 分量已记录，其余被同一时间语义取代但未逐项输出 |
+
 | metrics `energy_interventions` | PARTIAL | 负载行已迁移，补货能量干预行未迁移 |
 | metrics `redundancy` | PARTIAL | 冗余泵已迁移，共享过滤器/机器人 restorer 行未迁移 |
 | `certificate-s2-metrics` excluded groups | 明确排除 | partial/superseded，不进入 v2 声明范围 |
@@ -120,7 +121,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 已建立：
 
 - 单一 canonical event engine 的时钟、资源、能量、执行依赖语义。
-- 17 个 canonical S2 迁移实验与 expected 输出。
+- 18 个 canonical S2 迁移实验与 expected 输出。
 - 5 个绑定 engine/model/runner/output SHA 的 canonical 证书。
 - 独立 verifier、tamper 失败测试、clean-room 现有流程。
 - 可审计的 S2 inventory、claims 和证书影响矩阵。
