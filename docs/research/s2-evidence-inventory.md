@@ -21,6 +21,8 @@ currently produces the formal result; it is not a claim of equivalence.
 - Status-page S2 result lines: 12
 - Status result lines without an explicit claim: 0
 - Unclassified experiments: 0
+- Aux experiments with canonical evidence: 46
+- Aux experiments without canonical evidence: 13
 
 ## Claim crosswalk
 
@@ -98,13 +100,13 @@ claim list means the result has not yet been normalized into the claims ledger.
 
 | experiment | runner | model | claims | seed | status |
 | --- | --- | --- | --- | --- | --- |
-| s2-adversarial-failures | poie-adversarial-failures | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-adversarial-failures | poie-adversarial-failures | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-adversarial-random | poie-adversarial-random | base-08 | NONE | 0x9e37_79b9_7f4a_7c15 | NOT_MIGRATED |
 | s2-adversarial-random-time | poie-adversarial-random-time | base-08 | C18 | 0x9e37_79b9_7f4a_7c15 | NOT_MIGRATED |
 | s2-adversarial-random-window | poie-adversarial-random-window | base-08 | C19 | 0x9e37_79b9_7f4a_7c15 | NOT_MIGRATED |
 | s2-adversarial-resupply | poie-adversarial-resupply | base-08 | C11 | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-adversarial-subsets | poie-adversarial-subsets | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-adversarial-time | poie-adversarial-time | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-adversarial-subsets | poie-adversarial-subsets | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-adversarial-time | poie-adversarial-time | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-adversarial-timing | poie-adversarial-timing | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-canonical-aux-batch1 | poie-migration-aux-batch1 | base-05, base-08 | C77 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch10 | poie-migration-aux-batch10 | base-08 | C86 | NOT_APPLICABLE | CANONICAL_MIGRATED |
@@ -140,67 +142,67 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-canonical-order | poie-migration-order | base-06 | C72 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-redundancy-restorers | poie-migration-redundancy-restorers | base-08 | C76 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
 | s2-canonical-regen-horizon | poie-migration-s2-regen-horizon | base-05, base-08 | C70 | NOT_APPLICABLE | CANONICAL_MIGRATED |
-| s2-energy-boundary | poie-energy-boundary | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-energy-interventions | poie-energy-interventions | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-energy-recharge | poie-energy-recharge | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-failure-envelope | poie-survival | base-01, base-04, base-05 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-failure-pairs | poie-pairs | base-05 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-filter-restorer | poie-filter-restorer | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-energy-boundary | poie-energy-boundary | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-energy-interventions | poie-energy-interventions | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-energy-recharge | poie-energy-recharge | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-failure-envelope | poie-survival | base-01, base-04, base-05 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-failure-pairs | poie-pairs | base-05 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-filter-restorer | poie-filter-restorer | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-grease-cost | poie-grease-cost | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-heldout | poie-heldout | base-05 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-insert-bound | poie-insert-bound | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-heldout | poie-heldout | base-05 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-insert-bound | poie-insert-bound | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-insert-regeneration | poie-insert-regeneration | base-08 | C7 | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-joint-boundary | poie-joint-boundary | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-joint-consumables | poie-joint-consumables | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-joint-boundary | poie-joint-boundary | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-joint-consumables | poie-joint-consumables | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-joint-coverage | poie-joint-coverage | base-06 | C6 | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-joint-double-failure | poie-joint | base-05, base-06 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-joint-load | poie-joint-load | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-joint-three | poie-joint-three | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-joint-worn | poie-joint-worn | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-joint-yield | poie-joint-yield | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-joint-double-failure | poie-joint | base-05, base-06 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-joint-load | poie-joint-load | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-joint-three | poie-joint-three | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-joint-worn | poie-joint-worn | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-joint-yield | poie-joint-yield | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-load | poie-load | base-05 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-load-threshold | poie-load-threshold | base-08 | C8 | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-load-threshold-capacity | poie-load-threshold-capacity | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-load-threshold-charge | poie-load-threshold-charge | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-long-horizon | poie-longevity | base-05 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-long-horizon | poie-longevity | base-05 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-metrics | poie-metrics | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-monte-carlo | poie-monte-carlo | base-05 | C68 | 0x9E37_79B9_7F4A_7C15 | NOT_MIGRATED |
 | s2-order-sensitivity | poie-order | base-06 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-recharge-bound | poie-recharge-bound | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-recharge-rule | poie-recharge-rule | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-recharge-rule-base05 | poie-recharge-rule-base05 | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-recharge-bound | poie-recharge-bound | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-recharge-rule | poie-recharge-rule | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-recharge-rule-base05 | poie-recharge-rule-base05 | base-05, base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-recycle-residue | poie-recycle-residue | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-redundancy | poie-redundancy | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-redundancy-filter | poie-redundancy-filter | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-redundancy | poie-redundancy | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-redundancy-filter | poie-redundancy-filter | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-redundancy-load | poie-redundancy-load | base-08 | C9 | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-redundancy-robot | poie-redundancy-robot | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-redundancy-robot | poie-redundancy-robot | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-redundancy-time | poie-redundancy-time | base-08 | C14 | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regen-capacity-semantics | poie-regen-capacity-semantics | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regen-cost | poie-regen-cost | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regen-cost-load | poie-regen-cost-load | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regen-cross | poie-regen-cross | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regen-event | poie-regen-event | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regen-forced-cost | poie-regen-forced-cost | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regen-long | poie-regen-long | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regen-threshold | poie-regen-threshold | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regen-threshold-battery | poie-regen-threshold-battery | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regen-threshold-initial | poie-regen-threshold-initial | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regen-capacity-semantics | poie-regen-capacity-semantics | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-regen-cost | poie-regen-cost | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-regen-cost-load | poie-regen-cost-load | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-regen-cross | poie-regen-cross | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-regen-event | poie-regen-event | base-05, base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-regen-forced-cost | poie-regen-forced-cost | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-regen-long | poie-regen-long | base-05, base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-regen-threshold | poie-regen-threshold | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-regen-threshold-battery | poie-regen-threshold-battery | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-regen-threshold-initial | poie-regen-threshold-initial | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-regeneration | poie-regeneration | base-06, base-07 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regeneration-horizon | poie-regen-horizon | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-regeneration-yield | poie-regen-yield | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-regeneration-horizon | poie-regen-horizon | base-05, base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-regeneration-yield | poie-regen-yield | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-resupply | poie-resupply | base-06 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-resupply-delivery | poie-resupply-delivery | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-resupply-delivery | poie-resupply-delivery | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-resupply-frequency | poie-resupply-frequency | base-08 | C10 | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-resupply-time | poie-resupply-time | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-robot-restorer | poie-robot-restorer | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-sharpen-yield | poie-sharpen-yield | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-resupply-time | poie-resupply-time | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-robot-restorer | poie-robot-restorer | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-sharpen-yield | poie-sharpen-yield | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-survival-horizon | poie-horizon | base-05 | C5 | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-time-boundary | poie-time-boundary | base-08 | C12 | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-time-energy | poie-time-energy | base-08 | C13 | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-time-energy-sweep | poie-time-energy-sweep | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-time-horizon | poie-time-horizon | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-time-insert | poie-time-insert | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-time-repair-sweep | poie-time-repair-sweep | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-time-energy-sweep | poie-time-energy-sweep | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-time-horizon | poie-time-horizon | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-time-insert | poie-time-insert | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
+| s2-time-repair-sweep | poie-time-repair-sweep | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-two-restorers | poie-two-restorers | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-worn-bound | poie-worn-bound | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-worn-bound | poie-worn-bound | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-yield-accumulation | poie-yield-accumulation | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |

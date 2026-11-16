@@ -107,6 +107,7 @@ def experiment_record(path: Path, all_claims: list[dict[str, object]]) -> dict[s
             if any(path.name in claim["evidence"] or path.name in claim.get("certificates", []) for claim in all_claims)
             else CLASSIFICATION.get(path.name, ("UNCLASSIFIED", "not yet reviewed"))[0]
         ),
+        "covered_by_claims": COVERED_BY.get(path.name, []),
         "classification_reason": (
             "cited by a formal claim"
             if any(path.name in claim["evidence"] or path.name in claim.get("certificates", []) for claim in all_claims)
@@ -154,6 +155,35 @@ for _name in ["regen-threshold-battery", "regen-threshold-initial"]:
     CLASSIFICATION[_name] = ("DETERMINISTIC_SWEEP", "deterministic multiplier/capacity scan; no RNG or seed is involved")
 CLASSIFICATION["metrics"] = ("DEFINITIONAL", "metric definitions, not a numeric survival claim")
 CLASSIFICATION = {f"s2-{key}": value for key, value in CLASSIFICATION.items()}
+
+
+# Original auxiliary experiments whose legacy result was re-run by a later
+# canonical batch. The legacy record is not itself migrated; it is traceably
+# covered by the canonical claim/experiment named here.
+COVERED_BY = {
+    "s2-energy-boundary": ["C77"], "s2-heldout": ["C77"],
+    "s2-resupply-time": ["C78"], "s2-resupply-delivery": ["C78"], "s2-regen-cross": ["C78"],
+    "s2-joint-boundary": ["C79"], "s2-joint-consumables": ["C79"],
+    "s2-regen-cost": ["C80"], "s2-energy-recharge": ["C80"], "s2-recharge-bound": ["C80"],
+    "s2-failure-envelope": ["C81"], "s2-failure-pairs": ["C81"], "s2-regen-threshold": ["C83"],
+    "s2-redundancy": ["C82"], "s2-long-horizon": ["C82"], "s2-recharge-rule": ["C82"],
+    "s2-recharge-rule-base05": ["C82"],
+    "s2-regen-threshold-battery": ["C83"], "s2-regen-threshold-initial": ["C83"],
+    "s2-regen-event": ["C83"],
+    "s2-regen-long": ["C84"], "s2-joint-double-failure": ["C84"],
+    "s2-insert-bound": ["C85"], "s2-joint-load": ["C85"],
+    "s2-joint-three": ["C86"], "s2-joint-worn": ["C86"], "s2-joint-yield": ["C86"],
+    "s2-worn-bound": ["C87"], "s2-sharpen-yield": ["C87"], "s2-regen-cost-load": ["C87"],
+    "s2-regen-forced-cost": ["C88"], "s2-regen-capacity-semantics": ["C88"],
+    "s2-adversarial-failures": ["C89"], "s2-adversarial-subsets": ["C89"],
+    "s2-adversarial-time": ["C90"], "s2-regeneration-horizon": ["C70", "C90"],
+    "s2-regeneration-yield": ["C71", "C90"],
+    "s2-energy-interventions": ["C75"], "s2-filter-restorer": ["C76"],
+    "s2-robot-restorer": ["C76"], "s2-redundancy-filter": ["C76"],
+    "s2-redundancy-robot": ["C76"],
+    "s2-time-horizon": ["C74"], "s2-time-insert": ["C74"], "s2-time-repair-sweep": ["C74"],
+    "s2-time-energy-sweep": ["C64"],
+}
 
 def main(argv: list[str] | None = None) -> int:
     check = bool(argv and "--check" in argv)
@@ -233,6 +263,12 @@ def main(argv: list[str] | None = None) -> int:
             ),
             "claims_with_experiment_evidence": len(mapped),
             "status_s2_result_lines": len(status_results),
+            "aux_experiments_with_canonical_evidence": sum(
+                1 for record in records if not record["claim_ids"] and record["covered_by_claims"]
+            ),
+            "aux_experiments_without_canonical_evidence": sum(
+                1 for record in records if not record["claim_ids"] and not record["covered_by_claims"]
+            ),
             "unclassified_experiments": sum(
                 1 for record in records if record["classification"] == "UNCLASSIFIED"
             ),
@@ -264,6 +300,8 @@ def main(argv: list[str] | None = None) -> int:
         f"- Status-page S2 result lines: {inventory['summary']['status_s2_result_lines']}",
         f"- Status result lines without an explicit claim: {inventory['summary']['unmapped_status_results']}",
         f"- Unclassified experiments: {inventory['summary']['unclassified_experiments']}",
+        f"- Aux experiments with canonical evidence: {inventory['summary']['aux_experiments_with_canonical_evidence']}",
+        f"- Aux experiments without canonical evidence: {inventory['summary']['aux_experiments_without_canonical_evidence']}",
         "",
         "## Claim crosswalk",
         "",
@@ -301,7 +339,11 @@ def main(argv: list[str] | None = None) -> int:
                 model=", ".join(record["models"]),
                 claims=", ".join(record["claim_ids"]) or "NONE",
                 seed=record["seed"],
-                status=record["migration_status"],
+                status=(
+                    record["migration_status"]
+                    if record["claim_ids"] or not record["covered_by_claims"]
+                    else "COVERED_BY_CANONICAL"
+                ),
             )
         )
     rendered_md = "\n".join(lines) + "\n"
