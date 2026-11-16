@@ -8,7 +8,8 @@
 claims              53
 有 canonical 实验   53
 旧 claim 被新 claim 取代 13
-NOT_CERTIFIED       36
+CANONICAL_ISSUED    13
+NOT_CERTIFIED       23
 REISSUED            5
 SUPERSEDED          4
 SUPERSEDED_BY_CLAIM 8
@@ -30,24 +31,24 @@ SUPERSEDED_BY_CLAIM 8
 | C14 → C65 | s2-canonical-c14 | — | SUPERSEDED_BY_CLAIM |
 | C18 → C66 | s2-canonical-c18 | certificate-s2-time | SUPERSEDED |
 | C19 → C67 | s2-canonical-c19 | certificate-s2-time | SUPERSEDED |
-| C56 | s2-canonical-c5 | — | NOT_CERTIFIED |
-| C57 | s2-canonical-c6 | — | NOT_CERTIFIED |
-| C58 | s2-canonical-c7 | — | NOT_CERTIFIED |
-| C59 | s2-canonical-c8 | — | NOT_CERTIFIED |
-| C60 | s2-canonical-c9 | — | NOT_CERTIFIED |
-| C61 | s2-canonical-c10 | — | NOT_CERTIFIED |
-| C62 | s2-canonical-c11 | — | NOT_CERTIFIED |
-| C63 | s2-canonical-c12 | — | NOT_CERTIFIED |
-| C64 | s2-canonical-c13 | — | NOT_CERTIFIED |
-| C65 | s2-canonical-c14 | — | NOT_CERTIFIED |
-| C66 | s2-canonical-c18 | — | NOT_CERTIFIED |
-| C67 | s2-canonical-c19 | — | NOT_CERTIFIED |
+| C56 | s2-canonical-c5 | canonical-c56 | CANONICAL_ISSUED |
+| C57 | s2-canonical-c6 | canonical-c57 | CANONICAL_ISSUED |
+| C58 | s2-canonical-c7 | canonical-c58 | CANONICAL_ISSUED |
+| C59 | s2-canonical-c8 | canonical-c59 | CANONICAL_ISSUED |
+| C60 | s2-canonical-c9 | canonical-c60 | CANONICAL_ISSUED |
+| C61 | s2-canonical-c10 | canonical-c61 | CANONICAL_ISSUED |
+| C62 | s2-canonical-c11 | canonical-c62 | CANONICAL_ISSUED |
+| C63 | s2-canonical-c12 | canonical-c63 | CANONICAL_ISSUED |
+| C64 | s2-canonical-c13 | canonical-c64 | CANONICAL_ISSUED |
+| C65 | s2-canonical-c14 | canonical-c65 | CANONICAL_ISSUED |
+| C66 | s2-canonical-c18 | canonical-c66 | CANONICAL_ISSUED |
+| C67 | s2-canonical-c19 | canonical-c67 | CANONICAL_ISSUED |
 | C68 → C73 | s2-canonical-c68-monte-carlo | — | SUPERSEDED_BY_CLAIM |
 | C69 | s2-canonical-load-base05 | certificate-s2-load | REISSUED |
 | C70 | s2-canonical-regen-horizon | certificate-s2-regeneration | REISSUED |
 | C71 | s2-canonical-metrics-groups | certificate-s2-metrics | REISSUED |
 | C72 | s2-canonical-order | certificate-s2-order | REISSUED |
-| C73 | s2-canonical-c68-monte-carlo | — | NOT_CERTIFIED |
+| C73 | s2-canonical-c68-monte-carlo | canonical-c73 | CANONICAL_ISSUED |
 | C74 | s2-canonical-c12-components | — | NOT_CERTIFIED |
 | C75 | s2-canonical-energy-interventions | — | NOT_CERTIFIED |
 | C76 | s2-canonical-redundancy-restorers | — | NOT_CERTIFIED |

@@ -152,10 +152,10 @@
       "canonical_experiments": [
         "s2-canonical-c5"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c56",
+      "canonical_certificate": "experiments/certificate-canonical-c56/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C57",
@@ -164,10 +164,10 @@
       "canonical_experiments": [
         "s2-canonical-c6"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c57",
+      "canonical_certificate": "experiments/certificate-canonical-c57/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C58",
@@ -176,10 +176,10 @@
       "canonical_experiments": [
         "s2-canonical-c7"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c58",
+      "canonical_certificate": "experiments/certificate-canonical-c58/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C59",
@@ -188,10 +188,10 @@
       "canonical_experiments": [
         "s2-canonical-c8"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c59",
+      "canonical_certificate": "experiments/certificate-canonical-c59/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C60",
@@ -200,10 +200,10 @@
       "canonical_experiments": [
         "s2-canonical-c9"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c60",
+      "canonical_certificate": "experiments/certificate-canonical-c60/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C61",
@@ -212,10 +212,10 @@
       "canonical_experiments": [
         "s2-canonical-c10"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c61",
+      "canonical_certificate": "experiments/certificate-canonical-c61/certificate.json",
+      "scope": "EXPECTED_AGREEMENT"
     },
     {
       "claim": "C62",
@@ -224,10 +224,10 @@
       "canonical_experiments": [
         "s2-canonical-c11"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c62",
+      "canonical_certificate": "experiments/certificate-canonical-c62/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C63",
@@ -236,10 +236,10 @@
       "canonical_experiments": [
         "s2-canonical-c12"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c63",
+      "canonical_certificate": "experiments/certificate-canonical-c63/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C64",
@@ -248,10 +248,10 @@
       "canonical_experiments": [
         "s2-canonical-c13"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c64",
+      "canonical_certificate": "experiments/certificate-canonical-c64/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C65",
@@ -260,10 +260,10 @@
       "canonical_experiments": [
         "s2-canonical-c14"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c65",
+      "canonical_certificate": "experiments/certificate-canonical-c65/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C66",
@@ -272,10 +272,10 @@
       "canonical_experiments": [
         "s2-canonical-c18"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c66",
+      "canonical_certificate": "experiments/certificate-canonical-c66/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C67",
@@ -284,10 +284,10 @@
       "canonical_experiments": [
         "s2-canonical-c19"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c67",
+      "canonical_certificate": "experiments/certificate-canonical-c67/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C68",
@@ -356,10 +356,10 @@
       "canonical_experiments": [
         "s2-canonical-c68-monte-carlo"
       ],
-      "certificate_status": "NOT_CERTIFIED",
-      "certificate_id": null,
-      "canonical_certificate": null,
-      "scope": null
+      "certificate_status": "CANONICAL_ISSUED",
+      "certificate_id": "canonical-c73",
+      "canonical_certificate": "experiments/certificate-canonical-c73/certificate.json",
+      "scope": "SEMANTIC_CORRECTION"
     },
     {
       "claim": "C74",
@@ -643,7 +643,8 @@
     "claims_superseded_by_claim": 13,
     "canonical_experiments": 53,
     "certificate_statuses": {
-      "NOT_CERTIFIED": 36,
+      "CANONICAL_ISSUED": 13,
+      "NOT_CERTIFIED": 23,
       "REISSUED": 5,
       "SUPERSEDED": 4,
       "SUPERSEDED_BY_CLAIM": 8

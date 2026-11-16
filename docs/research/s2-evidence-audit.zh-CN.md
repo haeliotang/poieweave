@@ -95,6 +95,18 @@ Batch 1–3 是 kernel/migration probe，不是正式 S2 实验的 canonical 重
 
 历史证书原样保留；重签是新目录，不覆盖旧文件。
 
+claim 级覆盖由 `scripts/build-claim-certificate-coverage.py` 生成：
+
+```text
+REISSUED              5
+CANONICAL_ISSUED     13
+SUPERSEDED            4
+SUPERSEDED_BY_CLAIM   8
+NOT_CERTIFIED        23
+```
+
+新增 13 个 canonical claim 证书（C56–C67、C73）；其余 23 个明确未认证。
+
 ### F5：状态页 12 条 S2 数值结论已全部归一化
 
 状态页 S2 小节原有 13 条 bullet，其中 1 条是 S1 工具循环，已排除。其余 12 条

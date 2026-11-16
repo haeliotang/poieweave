@@ -1042,6 +1042,10 @@ jobs:
         run: python3 scripts/build-certificate-impact.py --check
       - name: S2 claim certificate coverage
         run: python3 scripts/build-claim-certificate-coverage.py --check
+      - name: S2 canonical claim certificates
+        run: python3 scripts/build-canonical-claim-certificates.py --check
+      - name: S2 canonical claim certificate verification
+        run: python3 scripts/verify-canonical-claim-certificates.py
       - name: S2 metrics certificate split
         run: python3 scripts/build-metrics-split.py --check
       - name: Canonical S2 certificates
