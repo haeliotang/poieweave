@@ -1,0 +1,14 @@
+experiment	row	legacy_days	canonical_days	classification
+regen-cost	duration=1.0,energy=1.0	60	60.000	EXPECTED_AGREEMENT
+regen-cost	duration=1.0,energy=2.0	60	60.000	EXPECTED_AGREEMENT
+regen-cost	duration=1.0,energy=100.0	60	60.000	EXPECTED_AGREEMENT
+regen-cost	duration=2.0,energy=1.0	60	60.000	EXPECTED_AGREEMENT
+regen-cost	duration=2.0,energy=2.0	60	60.000	EXPECTED_AGREEMENT
+regen-cost	duration=2.0,energy=100.0	60	60.000	EXPECTED_AGREEMENT
+regen-cost	duration=4.0,energy=1.0	60	60.000	EXPECTED_AGREEMENT
+regen-cost	duration=4.0,energy=2.0	60	60.000	EXPECTED_AGREEMENT
+regen-cost	duration=4.0,energy=100.0	60	60.000	EXPECTED_AGREEMENT
+energy-recharge	kwh=20	16	16.250	EXPECTED_AGREEMENT
+energy-recharge	kwh=30	60	60.000	EXPECTED_AGREEMENT
+energy-recharge	kwh=40	60	60.000	EXPECTED_AGREEMENT
+recharge-bound	average=2.50	legacy=2.6	canonical=2.6	EXPECTED_AGREEMENT

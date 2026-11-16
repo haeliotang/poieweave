@@ -327,6 +327,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C80",
+      "statement": "aux batch4：regen-cost 9 + energy-recharge 3 + recharge-bound 1 一致",
+      "evidence": [
+        "s2-canonical-aux-batch4"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -621,6 +630,34 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C79"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch4",
+      "report": "experiments/s2-canonical-aux-batch4/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch4/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch4"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 14,
+      "expected_output": "experiment\trow\tlegacy_days\tcanonical_days\tclassification\nregen-cost\tduration=1.0,energy=1.0\t60\t60.000\tEXPECTED_AGREEMENT\nregen-cost\tduration=1.0,energy=2.0\t60\t60.000\tEXPECTED_AGREEMENT\nregen-cost\tduration=1.0,energy=100.0\t60\t60.000\tEXPECTED_AGREEMENT\nregen-cost\tduration=2.0,energy=1.0\t60\t60.000\tEXPECTED_AGREEMENT\nregen-cost\tduration=2.0,energy=2.0\t60\t60.000\tEXPECTED_AGREEMENT\nregen-cost\tduration=2.0,energy=100.0\t60\t60.000\tEXPECTED_AGREEMENT\nregen-cost\tduration=4.0,energy=1.0\t60\t60.000\tEXPECTED_AGREEMENT\nregen-cost\tduration=4.0,energy=2.0\t60\t60.000\tEXPECTED_AGREEMENT\nregen-cost\tduration=4.0,energy=100.0\t60\t60.000\tEXPECTED_AGREEMENT\nenergy-recharge\tkwh=20\t16\t16.250\tEXPECTED_AGREEMENT\nenergy-recharge\tkwh=30\t60\t60.000\tEXPECTED_AGREEMENT\nenergy-recharge\tkwh=40\t60\t60.000\tEXPECTED_AGREEMENT\nrecharge-bound\taverage=2.50\tlegacy=2.6\tcanonical=2.6\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\trow\tlegacy_days\tcanonical_days\tclassification",
+        "regen-cost\tduration=1.0,energy=1.0\t60\t60.000\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C80"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -3377,17 +3414,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 36,
-    "s2_experiments": 95,
-    "claimed_experiments": 36,
+    "s2_claims": 37,
+    "s2_experiments": 96,
+    "claimed_experiments": 37,
     "unmapped_experiments": 59,
-    "formal_s2_experiments_migrated_to_canonical": 12,
+    "formal_s2_experiments_migrated_to_canonical": 13,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 11,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 36,
+    "claims_with_experiment_evidence": 37,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
