@@ -228,6 +228,24 @@
       ],
       "certificates": [],
       "boundary": "legacy LCG；尚未 canonical 重算"
+    },
+    {
+      "id": "C69",
+      "statement": "Base-05 负载 0–4 kW 五行 canonical 一致",
+      "evidence": [
+        "s2-canonical-load-base05"
+      ],
+      "certificates": [],
+      "boundary": "certificate-s2-load 绑定"
+    },
+    {
+      "id": "C70",
+      "statement": "Base-05/08 再生间隔八行 canonical 一致",
+      "evidence": [
+        "s2-canonical-regen-horizon"
+      ],
+      "certificates": [],
+      "boundary": "certificate-s2-regeneration 绑定"
     }
   ],
   "experiments": [
@@ -773,6 +791,63 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C60"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-load-base05",
+      "report": "experiments/s2-canonical-load-base05/REPORT.md",
+      "prereg": "experiments/s2-canonical-load-base05/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-s2-load-base05"
+      ],
+      "models": [
+        "base-05"
+      ],
+      "expected_output_lines": 6,
+      "expected_output": "load_kw\tlegacy_days\tcanonical_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification\n0.0\t40.000\t40.000\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\tEXPECTED_AGREEMENT\n1.0\t40.000\t40.000\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\tEXPECTED_AGREEMENT\n2.0\t40.000\t40.000\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\tEXPECTED_AGREEMENT\n3.0\t3.292\t3.292\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\n4.0\t1.097\t1.097\t0.0\t0.0\tblocked:energy_depleted\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "load_kw\tlegacy_days\tcanonical_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification",
+        "0.0\t40.000\t40.000\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C69"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-regen-horizon",
+      "report": "experiments/s2-canonical-regen-horizon/REPORT.md",
+      "prereg": "experiments/s2-canonical-regen-horizon/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-s2-regen-horizon"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 9,
+      "expected_output": "model\tinterval_days\tlegacy_days\tcanonical_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification\nbase-05\t10\t40.000\t40.000\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\tEXPECTED_AGREEMENT\nbase-05\t15\t60.000\t60.000\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\tEXPECTED_AGREEMENT\nbase-05\t20\t80.000\t80.000\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\tEXPECTED_AGREEMENT\nbase-05\t30\t90.000\t90.000\t200.0\t200.0\tcompleted\tEXPECTED_AGREEMENT\nbase-08\t10\t60.000\t60.000\t200.0\t200.0\tblocked:[Cycle { kind: \"process\", id: \"turn-sleeve-p1\" }]\tEXPECTED_AGREEMENT\nbase-08\t15\t90.000\t90.000\t200.0\t200.0\tcompleted\tEXPECTED_AGREEMENT\nbase-08\t20\t90.000\t90.000\t200.0\t200.0\tcompleted\tEXPECTED_AGREEMENT\nbase-08\t30\t90.000\t90.000\t200.0\t200.0\tcompleted\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "model\tinterval_days\tlegacy_days\tcanonical_days\tlegacy_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification",
+        "base-05\t10\t40.000\t40.000\t200.0\t200.0\tblocked:[MissingResource { resource: \"bronze-bar\", needed: 1.2, available: 0.6000000000000001 }]\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C70"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -2734,16 +2809,16 @@
     }
   ],
   "summary": {
-    "s2_claims": 25,
-    "s2_experiments": 84,
-    "claimed_experiments": 25,
+    "s2_claims": 27,
+    "s2_experiments": 86,
+    "claimed_experiments": 27,
     "unmapped_experiments": 59,
-    "formal_s2_experiments_migrated_to_canonical": 6,
+    "formal_s2_experiments_migrated_to_canonical": 8,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 6,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 25,
+    "claims_with_experiment_evidence": 27,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0

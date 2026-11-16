@@ -6,8 +6,8 @@ This matrix records certificate impact only. No certificate is reissued by this 
 | --- | --- | --- | --- | --- | --- | --- |
 | `certificate-s2-time` | `multi-model` | C12, C13, C18, C19 | s2-canonical-c12, s2-canonical-c13, s2-canonical-c18, s2-canonical-c19 | `SEMANTIC_CORRECTION` | `SUPERSEDED` | no |
 | `certificate-s2-joint` | `scenarios/base-06/model.toml` | C6 | s2-canonical-c6 | `EXPECTED_AGREEMENT` | `HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS` | no |
-| `certificate-s2-load` | `scenarios/base-05/model.toml` | C8 | s2-canonical-c8 | `EXPECTED_AGREEMENT` | `HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS` | no |
-| `certificate-s2-regeneration` | `multi-model` | C7 | s2-canonical-c7 | `EXPECTED_AGREEMENT` | `HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS` | no |
+| `certificate-s2-load` | `scenarios/base-05/model.toml` | C69 | s2-canonical-load-base05 | `EXPECTED_AGREEMENT` | `HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS` | no |
+| `certificate-s2-regeneration` | `multi-model` | C70 | s2-canonical-regen-horizon | `EXPECTED_AGREEMENT` | `HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS` | no |
 | `certificate-s2-metrics` | `multi-model` | NONE | NONE | `NOT_MIGRATED` | `BLOCKED` | no |
 | `certificate-s2-order` | `scenarios/base-06/model.toml` | NONE | NONE | `NOT_MIGRATED` | `BLOCKED` | no |
 
@@ -37,16 +37,16 @@ canonical reproduces 25/56 independent and 24/56 joint after the non-service rep
 
 ### `certificate-s2-load`
 
-canonical reproduces all 11 load rows including 2.6 kW switch and final energy
+canonical reproduces all five Base-05 load rows with final energy and termination
 
-- scope: Base-08 load threshold
+- scope: Base-05 load 0-4 kW
 - model sha256: `83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150`
 
 ### `certificate-s2-regeneration`
 
-canonical reproduces 6/6 rows including energy and failure times
+canonical reproduces 8/8 rows including final energy and termination
 
-- scope: insert sharpening 40/50->60
+- scope: Base-05/08 regeneration intervals
 
 ### `certificate-s2-metrics`
 

@@ -47,40 +47,40 @@
     {
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
-        "s2-canonical-c8"
+        "s2-canonical-load-base05"
       ],
       "certificate_status": "HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS",
       "claim_scope": "model/simulation only; not a physical safety or lifetime claim",
       "claims": [
-        "C8"
+        "C69"
       ],
       "expected_sha256": "708987bd04cc4f055e539389957ea9375c79ab5ee04c91ad1861bafbdc2b74b5",
       "id": "certificate-s2-load",
       "model": "scenarios/base-05/model.toml",
       "model_sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150",
-      "rationale": "canonical reproduces all 11 load rows including 2.6 kW switch and final energy",
+      "rationale": "canonical reproduces all five Base-05 load rows with final energy and termination",
       "reissued": false,
       "schema": "poie.viability-certificate/1",
-      "scope": "Base-08 load threshold"
+      "scope": "Base-05 load 0-4 kW"
     },
     {
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
-        "s2-canonical-c7"
+        "s2-canonical-regen-horizon"
       ],
       "certificate_status": "HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS",
       "claim_scope": "model-level regeneration result only; not a physical yield claim",
       "claims": [
-        "C7"
+        "C70"
       ],
       "expected_sha256": "708987bd04cc4f055e539389957ea9375c79ab5ee04c91ad1861bafbdc2b74b5",
       "id": "certificate-s2-regeneration",
       "model": "multi-model",
       "model_sha256": null,
-      "rationale": "canonical reproduces 6/6 rows including energy and failure times",
+      "rationale": "canonical reproduces 8/8 rows including final energy and termination",
       "reissued": false,
       "schema": "poie.regeneration-certificate/1",
-      "scope": "insert sharpening 40/50->60"
+      "scope": "Base-05/08 regeneration intervals"
     },
     {
       "canonical_classification": "NOT_MIGRATED",
@@ -116,7 +116,7 @@
   "schema": "poie.s2-certificate-impact-matrix/1",
   "summary": {
     "blocked": 2,
-    "canonical_migrations": 6,
+    "canonical_migrations": 8,
     "canonical_semantic_corrections": 6,
     "certificates": 6,
     "historical_valid": 3,

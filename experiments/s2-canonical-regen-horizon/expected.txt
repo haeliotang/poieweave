@@ -1,0 +1,9 @@
+model	interval_days	legacy_days	canonical_days	legacy_energy_kwh	canonical_energy_kwh	canonical_termination	classification
+base-05	10	40.000	40.000	200.0	200.0	blocked:[MissingResource { resource: "bronze-bar", needed: 1.2, available: 0.6000000000000001 }]	EXPECTED_AGREEMENT
+base-05	15	60.000	60.000	200.0	200.0	blocked:[MissingResource { resource: "bronze-bar", needed: 1.2, available: 0.6000000000000001 }]	EXPECTED_AGREEMENT
+base-05	20	80.000	80.000	200.0	200.0	blocked:[MissingResource { resource: "bronze-bar", needed: 1.2, available: 0.6000000000000001 }]	EXPECTED_AGREEMENT
+base-05	30	90.000	90.000	200.0	200.0	completed	EXPECTED_AGREEMENT
+base-08	10	60.000	60.000	200.0	200.0	blocked:[Cycle { kind: "process", id: "turn-sleeve-p1" }]	EXPECTED_AGREEMENT
+base-08	15	90.000	90.000	200.0	200.0	completed	EXPECTED_AGREEMENT
+base-08	20	90.000	90.000	200.0	200.0	completed	EXPECTED_AGREEMENT
+base-08	30	90.000	90.000	200.0	200.0	completed	EXPECTED_AGREEMENT

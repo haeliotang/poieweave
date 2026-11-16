@@ -75,6 +75,8 @@
 | C66 | C18 随机对抗：零天 0/200 不变，均值 9.9→5.4 | `experiments/s2-canonical-c18` | 单一种子 |
 | C67 | C19 延迟窗口：零天 0/200 不变，均值 14.0→2.2 | `experiments/s2-canonical-c19` | 单一种子 |
 | C68 | 2000 次 Monte Carlo 排程分布：中位 72、p10 28、p90 90 | `experiments/s2-monte-carlo` | legacy LCG；尚未 canonical 重算 |
+| C69 | Base-05 负载 0–4 kW 五行 canonical 一致 | `experiments/s2-canonical-load-base05` | certificate-s2-load 绑定 |
+| C70 | Base-05/08 再生间隔八行 canonical 一致 | `experiments/s2-canonical-regen-horizon` | certificate-s2-regeneration 绑定 |
 
 ## 不应出现的声明
 
