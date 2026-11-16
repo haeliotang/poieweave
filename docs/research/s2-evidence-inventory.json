@@ -165,6 +165,15 @@
       ],
       "certificates": [],
       "boundary": "单一 consumable"
+    },
+    {
+      "id": "C62",
+      "statement": "C11 canonical 迁移被 t=0 初始维修顺序阻塞",
+      "evidence": [
+        "s2-canonical-c11"
+      ],
+      "certificates": [],
+      "boundary": "BLOCKED；不得重签"
     }
   ],
   "experiments": [
@@ -390,6 +399,32 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
       "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-c11",
+      "report": "experiments/s2-canonical-c11/REPORT.md",
+      "prereg": "experiments/s2-canonical-c11/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c11"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "at_day\tlegacy_no_min\tlegacy_yes_min\tcanonical_no_min\tcanonical_yes_min\tlegacy_minimal\tcanonical_minimal\tclassification\n0\t0\t0\t0\t0\tfilter-1\tpump-p1\tEXPECTED_MINIMA_ONLY\n10\t0\t0\t10\t10\tfilter-1\tfilter-1\tSEMANTIC_CORRECTION_LEGACY_IGNORED_AT_DAY\n",
+      "expected_head": [
+        "at_day\tlegacy_no_min\tlegacy_yes_min\tcanonical_no_min\tcanonical_yes_min\tlegacy_minimal\tcanonical_minimal\tclassification",
+        "0\t0\t0\t0\t0\tfilter-1\tpump-p1\tEXPECTED_MINIMA_ONLY"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C62"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "migration_status": "CANONICAL_BLOCKED",
       "risk": "HIGH"
     },
     {
@@ -2325,14 +2360,15 @@
     }
   ],
   "summary": {
-    "s2_claims": 18,
-    "s2_experiments": 78,
-    "claimed_experiments": 18,
+    "s2_claims": 19,
+    "s2_experiments": 79,
+    "claimed_experiments": 19,
     "unmapped_experiments": 60,
     "formal_s2_experiments_migrated_to_canonical": 6,
+    "canonical_migrations_blocked": 1,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 18,
+    "claims_with_experiment_evidence": 19,
     "status_s2_result_lines": 13,
     "unmapped_status_results": 13
   }

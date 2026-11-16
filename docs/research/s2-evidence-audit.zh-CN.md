@@ -24,9 +24,9 @@
 
 | 指标 | 数量 |
 | --- | --- |
-| S2 claims | 18 |
-| S2 experiment 目录 | 78 |
-| 被 claim 引用的 experiment | 18 |
+| S2 claims | 19 |
+| S2 experiment 目录 | 79 |
+| 被 claim 引用的 experiment | 19 |
 | 未被 claim 引用的 experiment | 60 |
 | 已迁移到 canonical 的正式 S2 experiment | **0** |
 | 缺少记录种子的随机 experiment | 2 |
