@@ -92,7 +92,7 @@
       "id": "certificate-s2-metrics",
       "model": "multi-model",
       "model_sha256": null,
-      "rationale": "contains multiple numeric metrics with no single canonical migration; must be split before reissue",
+      "rationale": "split into 13 metric groups: 4 migrated, 2 semantic, 2 partial, 1 superseded baseline, 4 not migrated; no reissue",
       "reissued": false,
       "schema": "poie.metrics-certificate/1",
       "scope": "cross-model metric definitions and values"

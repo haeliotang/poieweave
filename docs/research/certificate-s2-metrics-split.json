@@ -1,0 +1,226 @@
+{
+  "groups": [
+    {
+      "canonical": [
+        "s2-canonical-c11"
+      ],
+      "claims": [
+        "C11"
+      ],
+      "disposition": "MIGRATED_WITH_SEMANTIC_CORRECTION",
+      "group": "adversarial",
+      "reason": "minimal set filter-1; day-0 exact 0.125 d and day-10 legacy row invalid",
+      "values": {
+        "day0_days": 0,
+        "day10_days": 10,
+        "min_days": 0,
+        "minimal_set": "filter-1",
+        "minimal_size": 1,
+        "subsets": 31
+      }
+    },
+    {
+      "canonical": [
+        "s2-canonical-c11"
+      ],
+      "claims": [
+        "C11"
+      ],
+      "disposition": "MIGRATED_WITH_SEMANTIC_CORRECTION",
+      "group": "adversarial_resupply",
+      "reason": "same C11 adapter; resupply does not close the capability gap",
+      "values": {
+        "minimal_set": "filter-1",
+        "no_supply_min_days": 0,
+        "subsets": 31,
+        "with_supply_min_days": 0
+      }
+    },
+    {
+      "canonical": [
+        "s2-canonical-c5",
+        "s2-canonical-c6"
+      ],
+      "claims": [
+        "C5"
+      ],
+      "disposition": "MIGRATED",
+      "group": "base05",
+      "reason": "Base-05 pump intervals and coverage agree",
+      "values": {
+        "model": "scenarios/base-05/model.toml",
+        "model_sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150",
+        "survival_horizon_days": 40.0
+      }
+    },
+    {
+      "canonical": [
+        "s2-canonical-c7"
+      ],
+      "claims": [
+        "C7"
+      ],
+      "disposition": "MIGRATED",
+      "group": "base08",
+      "reason": "Base-08 regeneration 40->60 and 50% yield validated",
+      "values": {
+        "model": "scenarios/base-08/model.toml",
+        "model_sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c",
+        "survival_horizon_days": 60.0
+      }
+    },
+    {
+      "canonical": [
+        "s2-canonical-c8",
+        "s2-canonical-c13"
+      ],
+      "claims": [
+        "C8",
+        "C13"
+      ],
+      "disposition": "PARTIAL",
+      "group": "energy_interventions",
+      "reason": "load rows agree; recharge intervention rows not canonicalised",
+      "values": {
+        "capacity_charge_days": 16,
+        "load_kw": 2.6,
+        "recharge_20_days": 16,
+        "recharge_30_days": 60,
+        "recharge_40_days": 60
+      }
+    },
+    {
+      "canonical": [
+        "s2-canonical-c7"
+      ],
+      "claims": [
+        "C7"
+      ],
+      "disposition": "MIGRATED",
+      "group": "insert_sharpening",
+      "reason": "2/3 inserts 40/50->60, 4 already 60",
+      "values": {
+        "baseline_days": 40,
+        "gain_days": 20,
+        "inserts": 2,
+        "with_sharpening_days": 60
+      }
+    },
+    {
+      "canonical": [],
+      "claims": [],
+      "disposition": "NOT_MIGRATED",
+      "group": "recharge_boundary",
+      "reason": "average-recharge threshold not yet canonicalised",
+      "values": {
+        "average_recharge_kw": 2.5,
+        "margin_kw": 0.1,
+        "threshold_load_kw": 2.6
+      }
+    },
+    {
+      "canonical": [],
+      "claims": [],
+      "disposition": "NOT_MIGRATED",
+      "group": "recovery_coverage",
+      "reason": "Base-05 5/10 independent coverage lacks a canonical coverage adapter",
+      "values": {
+        "ratio": 0.5,
+        "recoverable": 5,
+        "total": 10
+      }
+    },
+    {
+      "canonical": [
+        "s2-canonical-c9",
+        "s2-canonical-c14"
+      ],
+      "claims": [
+        "C9",
+        "C14"
+      ],
+      "disposition": "PARTIAL",
+      "group": "redundancy",
+      "reason": "redundant pump agrees; filter/robot restorer rows not canonicalised",
+      "values": {
+        "baseline_days": 60,
+        "filter_restorer_days": 90,
+        "redundant_pump_days": 90,
+        "robot_restorer_days": 90,
+        "shared_filter_days": 30,
+        "shared_robot_days": 35
+      }
+    },
+    {
+      "canonical": [
+        "s2-canonical-c14"
+      ],
+      "claims": [
+        "C14"
+      ],
+      "disposition": "SUPERSEDED_BASELINE",
+      "group": "redundancy_time",
+      "reason": "redundant 90 agrees; baseline 31->2 d under canonical in-repair failures",
+      "values": {
+        "baseline_advanced_days": 31,
+        "baseline_instant_days": 12,
+        "redundant_days": 90
+      }
+    },
+    {
+      "canonical": [],
+      "claims": [],
+      "disposition": "NOT_MIGRATED",
+      "group": "regenerative_capacity_days",
+      "reason": "single scalar without scenario binding",
+      "values": 20.0
+    },
+    {
+      "canonical": [
+        "s2-canonical-c10"
+      ],
+      "claims": [
+        "C10"
+      ],
+      "disposition": "MIGRATED",
+      "group": "resupply",
+      "reason": "interval->horizon mapping agrees 4/4",
+      "values": {
+        "interval_days": [
+          10,
+          20,
+          30,
+          60
+        ],
+        "survived_days": [
+          60,
+          50,
+          40,
+          30
+        ]
+      }
+    },
+    {
+      "canonical": [],
+      "claims": [],
+      "disposition": "NOT_MIGRATED",
+      "group": "yield_sensitivity",
+      "reason": "yield rows not canonicalised",
+      "values": {
+        "yield_0_5_days": 50,
+        "yield_0_8_days": 60,
+        "yield_1_0_days": 60
+      }
+    }
+  ],
+  "schema": "poie.metrics-certificate-split/1",
+  "summary": {
+    "groups": 13,
+    "migrated": 4,
+    "migrated_with_semantic_correction": 2,
+    "not_migrated": 4,
+    "partial": 2,
+    "reissued": 0,
+    "superseded_baseline": 1
+  }
+}

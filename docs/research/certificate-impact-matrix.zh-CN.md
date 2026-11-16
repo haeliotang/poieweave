@@ -50,7 +50,7 @@ canonical reproduces 6/6 rows including energy and failure times
 
 ### `certificate-s2-metrics`
 
-contains multiple numeric metrics with no single canonical migration; must be split before reissue
+split into 13 metric groups: 4 migrated, 2 semantic, 2 partial, 1 superseded baseline, 4 not migrated; no reissue
 
 - scope: cross-model metric definitions and values
 

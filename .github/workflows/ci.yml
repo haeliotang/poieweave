@@ -900,6 +900,8 @@ jobs:
           test -f experiments/certificate-bundle-tamper/REPORT.md
       - name: S2 certificate impact matrix
         run: python3 scripts/build-certificate-impact.py --check
+      - name: S2 metrics certificate split
+        run: python3 scripts/build-metrics-split.py --check
       - name: Certificate bundle summary (Python)
         run: |
           python3 experiments/certificate-bundle/render.py experiments/certificate-bundle/bundle.json > /tmp/SUMMARY.md
