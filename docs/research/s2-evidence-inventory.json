@@ -363,6 +363,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C84",
+      "statement": "aux batch8：regen-long 语义修正；joint double-failure 10→10.25",
+      "evidence": [
+        "s2-canonical-aux-batch8"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -778,6 +787,36 @@
       "classification": "FORMAL_CLAIMED",
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch8",
+      "report": "experiments/s2-canonical-aux-batch8/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch8/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch8"
+      ],
+      "models": [
+        "base-05",
+        "base-06",
+        "base-08"
+      ],
+      "expected_output_lines": 10,
+      "expected_output": "experiment\trow\tlegacy_instant\tlegacy_event\tcanonical\tclassification\nregen-long\tbase-05,interval=2\t8\t20\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\nregen-long\tbase-05,interval=3\t12\t20\t3.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\nregen-long\tbase-05,interval=5\t20\t20\t15.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\nregen-long\tbase-05,interval=10\t40\t40\t35.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\nregen-long\tbase-08,interval=2\t12\t31\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\nregen-long\tbase-08,interval=3\t18\t31\t3.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\nregen-long\tbase-08,interval=5\t30\t31\t15.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\nregen-long\tbase-08,interval=10\t60\t60\t35.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\njoint-double-failure\tpump-p1,pump-p2\t10\t-\t10.250\tSEMANTIC_CORRECTION_REPAIR_SCHEDULE\n",
+      "expected_head": [
+        "experiment\trow\tlegacy_instant\tlegacy_event\tcanonical\tclassification",
+        "regen-long\tbase-05,interval=2\t8\t20\t2.000\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C84"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
     },
     {
@@ -3528,17 +3567,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 40,
-    "s2_experiments": 99,
-    "claimed_experiments": 40,
+    "s2_claims": 41,
+    "s2_experiments": 100,
+    "claimed_experiments": 41,
     "unmapped_experiments": 59,
     "formal_s2_experiments_migrated_to_canonical": 15,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 12,
+    "canonical_semantic_corrections": 13,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 40,
+    "claims_with_experiment_evidence": 41,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0

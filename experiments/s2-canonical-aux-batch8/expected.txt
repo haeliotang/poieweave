@@ -1,0 +1,10 @@
+experiment	row	legacy_instant	legacy_event	canonical	classification
+regen-long	base-05,interval=2	8	20	2.000	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+regen-long	base-05,interval=3	12	20	3.000	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+regen-long	base-05,interval=5	20	20	15.000	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+regen-long	base-05,interval=10	40	40	35.000	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+regen-long	base-08,interval=2	12	31	2.000	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+regen-long	base-08,interval=3	18	31	3.000	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+regen-long	base-08,interval=5	30	31	15.000	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+regen-long	base-08,interval=10	60	60	35.000	SEMANTIC_CORRECTION_IN_REPAIR_FAILURE
+joint-double-failure	pump-p1,pump-p2	10	-	10.250	SEMANTIC_CORRECTION_REPAIR_SCHEDULE
