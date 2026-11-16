@@ -453,6 +453,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C94",
+      "statement": "aux batch18：adversarial-timing 30/32 日级一致 + 2 executor 修正",
+      "evidence": [
+        "s2-canonical-aux-batch18"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -679,7 +688,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
-      "covered_by_claims": [],
+      "covered_by_claims": [
+        "C94"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -945,6 +956,35 @@
       "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch18",
+      "report": "experiments/s2-canonical-aux-batch18/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch18/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch18"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 33,
+      "expected_output": "experiment\tat_day\tset\tsize\tlegacy_days\tcanonical_days\tclassification\nadversarial-timing\t0\tbaseline\t0\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t0\tpump-p1\t1\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t0\tpump-p1+filter-1\t2\t0\t0.125\tEXPECTED_AGREEMENT\nadversarial-timing\t0\tpump-p1+robot-m1\t2\t60\t0.125\tSEMANTIC_CORRECTION_REPAIR_EXECUTOR_AT_EVENT_TIME\nadversarial-timing\t0\tpump-p1+pv-1\t2\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t0\tpump-p1+lathe-1\t2\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t0\tfilter-1\t1\t0\t0.125\tEXPECTED_AGREEMENT\nadversarial-timing\t0\tfilter-1+robot-m1\t2\t0\t0.125\tEXPECTED_AGREEMENT\nadversarial-timing\t0\tfilter-1+pv-1\t2\t0\t0.125\tEXPECTED_AGREEMENT\nadversarial-timing\t0\tfilter-1+lathe-1\t2\t0\t0.125\tEXPECTED_AGREEMENT\nadversarial-timing\t0\trobot-m1\t1\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t0\trobot-m1+pv-1\t2\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t0\trobot-m1+lathe-1\t2\t0\t0.125\tEXPECTED_AGREEMENT\nadversarial-timing\t0\tpv-1\t1\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t0\tpv-1+lathe-1\t2\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t0\tlathe-1\t1\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tbaseline\t0\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tpump-p1\t1\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tpump-p1+filter-1\t2\t10\t10.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tpump-p1+robot-m1\t2\t60\t10.000\tSEMANTIC_CORRECTION_REPAIR_EXECUTOR_AT_EVENT_TIME\nadversarial-timing\t10\tpump-p1+pv-1\t2\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tpump-p1+lathe-1\t2\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tfilter-1\t1\t10\t10.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tfilter-1+robot-m1\t2\t10\t10.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tfilter-1+pv-1\t2\t10\t10.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tfilter-1+lathe-1\t2\t10\t10.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\trobot-m1\t1\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\trobot-m1+pv-1\t2\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\trobot-m1+lathe-1\t2\t10\t10.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tpv-1\t1\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tpv-1+lathe-1\t2\t60\t60.000\tEXPECTED_AGREEMENT\nadversarial-timing\t10\tlathe-1\t1\t60\t60.000\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\tat_day\tset\tsize\tlegacy_days\tcanonical_days\tclassification",
+        "adversarial-timing\t0\tbaseline\t0\t60\t60.000\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C94"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
     },
     {
@@ -4116,20 +4156,20 @@
     }
   ],
   "summary": {
-    "s2_claims": 50,
-    "s2_experiments": 109,
-    "claimed_experiments": 50,
+    "s2_claims": 51,
+    "s2_experiments": 110,
+    "claimed_experiments": 51,
     "unmapped_experiments": 59,
     "formal_s2_experiments_migrated_to_canonical": 22,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 15,
+    "canonical_semantic_corrections": 16,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 50,
+    "claims_with_experiment_evidence": 51,
     "status_s2_result_lines": 12,
-    "aux_experiments_with_canonical_evidence": 52,
-    "aux_experiments_without_canonical_evidence": 7,
+    "aux_experiments_with_canonical_evidence": 53,
+    "aux_experiments_without_canonical_evidence": 6,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
   }
