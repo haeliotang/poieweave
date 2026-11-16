@@ -18,7 +18,10 @@ python3 scripts/build-certificate-impact.py --check
 python3 scripts/build-metrics-split.py --check
 python3 scripts/build-canonical-s2-certificates.py --check
 python3 scripts/build-canonical-metrics-certificate.py --check
-python3 scripts/check-canonical-certificate-tamper.py
+python3 scripts/build-canonical-claim-certificates.py --check
+python3 scripts/verify-canonical-claim-certificates.py
+python3 scripts/check-canonical-claim-certificate-tamper.py
+python3 scripts/build-claim-certificate-coverage.py --check
 python3 scripts/check-docs.py
 
 echo "ok all checks"
