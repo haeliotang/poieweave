@@ -1,0 +1,4 @@
+termination	survived_h	survived_s
+blocked:energy_depleted	79.000000	284400.000
+at_s	energy_generated_kwh	energy_load_kwh	energy_curtailed_kwh	energy_before_j	energy_after_j
+10800.000	7.500000	9.000000	0.000000	138600000.000	136800000.000

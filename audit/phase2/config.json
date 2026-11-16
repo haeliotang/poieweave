@@ -1,0 +1,44 @@
+{
+  "schema": "poie.s5v-phase2-challenge/1",
+  "name": "pv-battery-load-energy-challenge",
+  "purpose": "Compare an independent executable FMI 3.0 co-simulation model with canonical energy semantics for PV generation, battery energy, load, initial repair draw and energy depletion.",
+  "status_claim": "S5 CROSS-MODEL VALIDITY — NOT ESTABLISHED until this challenge is reviewed",
+  "inputs": {
+    "pv_power_W": 2500.0,
+    "load_power_W": 3000.0,
+    "battery_capacity_J": 720000000.0,
+    "max_charge_power_W": 10000.0,
+    "initial_energy_J": 144000000.0,
+    "initial_repair_energy_J": 1800000.0,
+    "initial_repair_duration_s": 10800.0
+  },
+  "units": {
+    "power": "W",
+    "energy": "J",
+    "time": "s",
+    "capacity": "J"
+  },
+  "time_grid": {
+    "coarse_step_s": 3600,
+    "fine_step_s": 900,
+    "horizon_s": 324000
+  },
+  "tolerances": {
+    "energy_relative": 1e-9,
+    "energy_absolute_J": 1.0,
+    "time_absolute_s": 1e-6,
+    "conservation_absolute_J": 1e-3
+  },
+  "reference": {
+    "model": "canonical energy ledger semantics with no failure events, initial repair 0.5 kWh over 3 h, PV 2.5 kW, load 3.0 kW, battery 200 kWh / 10 kW charge limit",
+    "expected_depletion_s": 284400.0,
+    "expected_generated_J": 711000000.0,
+    "expected_load_J": 853200000.0,
+    "expected_repair_J": 1800000.0
+  },
+  "negative_test": {
+    "tampered_fmu": "external/fmu-pv-battery/poie-pv-battery-tampered.fmu",
+    "mutation": "PV parameter forced +100 W in the native model",
+    "must_detect": true
+  }
+}

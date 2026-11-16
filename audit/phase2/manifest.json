@@ -1,0 +1,61 @@
+{
+  "schema": "poie.s5v-phase2-manifest/1",
+  "files": [
+    {
+      "path": "external/fmu-pv-battery/poie-pv-battery.fmu",
+      "sha256": "d12072af690746dfabed67b26c6c01b03988bc2ed52aead53a086fe9ec7da24d"
+    },
+    {
+      "path": "external/fmu-pv-battery/poie-pv-battery-tampered.fmu",
+      "sha256": "fc97801a91a993875322b9c808f2737fa0dd31c8a8d6537b544172eb74b64f4a"
+    },
+    {
+      "path": "external/fmu-pv-battery/modelDescription.xml",
+      "sha256": "6746783a953806a1654885c18e2581e3ed48f08f5166958abb6a3ef569c8fccd"
+    },
+    {
+      "path": "external/fmu-pv-battery/src/model.c",
+      "sha256": "709e85ff39f7608a49269a7015d4d1d72361ff6a535a9498038d641f578dde5a"
+    },
+    {
+      "path": "external/fmu-pv-battery/src/harness.c",
+      "sha256": "9a2cfcbc3ef99604d3554f235810328fae7932c4683a56911ffa98e93e7663b0"
+    },
+    {
+      "path": "audit/phase2/config.json",
+      "sha256": "8956262295ff76d577e8bee0761c266ab8adbd72cf82f3158481de98917e9f05"
+    },
+    {
+      "path": "audit/phase2/canonical-reference.txt",
+      "sha256": "52bbe76b4243b0d52ff3e3f60ddb89eebb93d90aa2e101d1130cabb560486326"
+    },
+    {
+      "path": "audit/phase2/result.json",
+      "sha256": "1b12c06c1dfd264a8b894621965339ccd2d24c3c7672479f921986de62474c55"
+    },
+    {
+      "path": "audit/phase2/results/fmu-coarse-3600.csv",
+      "sha256": "cd423e22c83c7df97e1e6563026dfd01ee6e95263c0849789907fbde6843ea6d"
+    },
+    {
+      "path": "audit/phase2/results/fmu-fine-900.csv",
+      "sha256": "3e4a171dca116c52e789daabc9890053cdb64b37b04deaee06823c56a5d3e99f"
+    },
+    {
+      "path": "audit/phase2/results/fmu-tampered-3600.csv",
+      "sha256": "4e59ddfbd7f26ff4dfd553a6307f0ac60ad6bd52cbc3abe6e23d6805fb3be5c3"
+    },
+    {
+      "path": "audit/phase2/logs/fmu-coarse-3600.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "audit/phase2/logs/fmu-fine-900.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "audit/phase2/logs/fmu-tampered-3600.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
