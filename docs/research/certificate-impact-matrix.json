@@ -87,18 +87,22 @@
       "scope": "Base-05/08 regeneration intervals"
     },
     {
-      "canonical_certificate": null,
-      "canonical_classification": "NOT_MIGRATED",
-      "canonical_experiments": [],
-      "certificate_status": "BLOCKED",
+      "canonical_certificate": "experiments/certificate-s2-canonical-metrics/certificate.json",
+      "canonical_classification": "MIXED_AGREEMENT_AND_DEFINITION_CHANGE",
+      "canonical_experiments": [
+        "s2-canonical-metrics-groups"
+      ],
+      "certificate_status": "REISSUED",
       "claim_scope": "model-level metric definitions only; not a physical forecast",
-      "claims": [],
+      "claims": [
+        "C71"
+      ],
       "expected_sha256": "708987bd04cc4f055e539389957ea9375c79ab5ee04c91ad1861bafbdc2b74b5",
       "id": "certificate-s2-metrics",
       "model": "multi-model",
       "model_sha256": null,
-      "rationale": "split into 13 metric groups: 7 migrated, 3 semantic, 2 partial, 1 superseded baseline, 0 not migrated; aggregate still blocked on versioning the coverage definition; no reissue",
-      "reissued": false,
+      "rationale": "scoped v2 certificate: 10 canonical groups, coverage definition service-impact-v1, 2 partial and 1 superseded group explicitly excluded; historical certificate preserved",
+      "reissued": true,
       "schema": "poie.metrics-certificate/1",
       "scope": "cross-model metric definitions and values"
     },
@@ -125,13 +129,13 @@
   ],
   "schema": "poie.s2-certificate-impact-matrix/1",
   "summary": {
-    "blocked": 1,
+    "blocked": 0,
     "canonical_migrations": 9,
     "canonical_semantic_corrections": 8,
     "certificates": 6,
     "historical_valid": 0,
     "invalidated": 0,
-    "reissued": 4,
+    "reissued": 5,
     "superseded": 1
   }
 }

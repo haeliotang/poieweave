@@ -54,12 +54,13 @@ MAPPING = {
         "canonical_certificate": "experiments/certificate-s2-canonical-regeneration/certificate.json",
     },
     "certificate-s2-metrics": {
-        "claims": [],
-        "canonical": [],
-        "status": "BLOCKED",
-        "classification": "NOT_MIGRATED",
+        "claims": ["C71"],
+        "canonical": ["s2-canonical-metrics-groups"],
+        "status": "REISSUED",
+        "classification": "MIXED_AGREEMENT_AND_DEFINITION_CHANGE",
         "scope": "cross-model metric definitions and values",
-        "rationale": "split into 13 metric groups: 7 migrated, 3 semantic, 2 partial, 1 superseded baseline, 0 not migrated; aggregate still blocked on versioning the coverage definition; no reissue",
+        "rationale": "scoped v2 certificate: 10 canonical groups, coverage definition service-impact-v1, 2 partial and 1 superseded group explicitly excluded; historical certificate preserved",
+        "canonical_certificate": "experiments/certificate-s2-canonical-metrics/certificate.json",
     },
     "certificate-s2-order": {
         "claims": ["C72"],
