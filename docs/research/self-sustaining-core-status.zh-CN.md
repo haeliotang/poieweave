@@ -81,6 +81,8 @@ S2 盘点与证据映射缺口：[s2-evidence-audit.zh-CN.md](s2-evidence-audit.
 
 S2 证书影响矩阵（未重签）：[certificate-impact-matrix.zh-CN.md](certificate-impact-matrix.zh-CN.md)
 
+metrics 证书拆分（未重签）：[certificate-s2-metrics-split.zh-CN.md](certificate-s2-metrics-split.zh-CN.md)
+
 发布签名与信任锚设计：[release-signing.zh-CN.md](../design/release-signing.zh-CN.md)（未实现）
 
 软件级故障隔离测试计划：[software-fault-isolation.zh-CN.md](../design/software-fault-isolation.zh-CN.md)（部分未执行）
