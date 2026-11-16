@@ -8,11 +8,13 @@
 - FMU SHA-256: `78032dbf275bfd08cf761fbb17006cbc55d3cb47ba4036cd854f26015c919797`
 - packaging: FMI 3.0 platform tuple directories with modelIdentifier filename
 - independent importer: fmpy 0.3.32, rows=80, max error vs C harness=0.0 J, CSV SHA=1ed5ce31ee805744f60dc7c76d4134005c6f299b2d186a9cdf97375d29dc6cfe
-- analytic-reference max error: `0.0` J
+- analytic-reference max error: `5.960464477539062e-07` J
 - canonical-exported boundary max error: `0.0` J
 - initial-condition max error: `0.0` J
 - terminal-energy constraint max error: `0.0` J
 - tampered FMU max error: `28440000.0` J, detected=True
+- extra 1000 s step max error: `5.960464477539062e-07` J
+- event-boundary tamper: detected=True, max error=450000.0 J
 - canonical trajectory samples: 5, max assumption error: `0.0` J
 
 ## What is compared
@@ -66,7 +68,7 @@ rather than treated as numerical error:
 
 | category | value |
 | --- | --- |
-| numerical error (analytic ref) | 0.0 J |
+| numerical error (analytic ref) | 5.960464477539062e-07 J |
 | importer disagreement (C vs fmpy) | 0.0 J |
 | repair-completion boundary delta | 0.0 s |
 | depletion boundary delta | 0.0 s |

@@ -37,6 +37,10 @@ def main() -> int:
         problems.append("terminal constraint error")
     if result["runs"]["fmpy"]["available"] is not True:
         problems.append("fmpy importer")
+    if result["runs"]["event_boundary_tampered"]["detected"] is not True:
+        problems.append("event-boundary tamper detection")
+    if result["runs"]["extra"]["analytic_max_abs_error_J"] > 1.0:
+        problems.append("extra step numerical error")
     if result["trajectory"]["max_assumption_error_J"] > 1.0:
         problems.append("trajectory assumption error")
     if len(result["trajectory"]["rows"]) != 5:

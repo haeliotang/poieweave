@@ -22,6 +22,7 @@ def main() -> int:
     files = [
         ROOT / "external/fmu-pv-battery/poie-pv-battery.fmu",
         ROOT / "external/fmu-pv-battery/poie-pv-battery-tampered.fmu",
+        ROOT / "external/fmu-pv-battery/poie-pv-battery-duration-tampered.fmu",
         ROOT / "external/fmu-pv-battery/modelDescription.xml",
         ROOT / "external/fmu-pv-battery/src/model.c",
         ROOT / "external/fmu-pv-battery/src/harness.c",
@@ -60,6 +61,9 @@ def main() -> int:
         f"- terminal-energy constraint max error: `{result['runs']['coarse']['terminal_constraint_max_abs_error_J']}` J",
         f"- tampered FMU max error: `{result['runs']['tampered']['max_abs_error_J']}` J, "
         f"detected={result['runs']['tampered']['detected']}",
+        f"- extra 1000 s step max error: `{result['runs']['extra']['analytic_max_abs_error_J']}` J",
+        f"- event-boundary tamper: detected={result['runs']['event_boundary_tampered']['detected']}, "
+        f"max error={result['runs']['event_boundary_tampered']['max_abs_error_J']} J",
         f"- canonical trajectory samples: {len(result['trajectory']['rows'])}, "
         f"max assumption error: `{result['trajectory']['max_assumption_error_J']}` J",
         "",

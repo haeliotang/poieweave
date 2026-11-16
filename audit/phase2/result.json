@@ -23,7 +23,8 @@
     "time_grid": {
       "coarse_step_s": 3600,
       "fine_step_s": 900,
-      "horizon_s": 324000
+      "horizon_s": 324000,
+      "extra_step_s": 1000
     },
     "tolerances": {
       "energy_relative": 1e-09,
@@ -41,7 +42,13 @@
     "negative_test": {
       "tampered_fmu": "external/fmu-pv-battery/poie-pv-battery-tampered.fmu",
       "mutation": "PV parameter forced +100 W in the native model",
-      "must_detect": true
+      "must_detect": true,
+      "event_boundary": {
+        "tampered_fmu": "external/fmu-pv-battery/poie-pv-battery-duration-tampered.fmu",
+        "mutation": "repair duration +3600 s",
+        "must_detect": true,
+        "category": "EVENT_BOUNDARY_MISMATCH"
+      }
     },
     "canonical_boundary": {
       "note": "canonical exports only t=0, repair completion and depletion; interior repair states are not exported",
@@ -111,7 +118,7 @@
     "coarse": {
       "step_s": 3600,
       "rows": 80,
-      "analytic_max_abs_error_J": 0.0,
+      "analytic_max_abs_error_J": 5.960464477539062e-07,
       "canonical_exported_max_abs_error_J": 0.0,
       "initial_condition_max_abs_error_J": 0.0,
       "terminal_constraint_max_abs_error_J": 0.0,
@@ -140,6 +147,21 @@
         "terminated": 1
       }
     },
+    "extra": {
+      "step_s": 1000,
+      "rows": 286,
+      "terminal": {
+        "time_s": 284400.0,
+        "energy_J": 0.0,
+        "generated_J": 711000000.0000005,
+        "load_J": 853200000.0000006,
+        "repair_J": 1800000.0,
+        "curtailed_J": 0.0,
+        "depleted": 1,
+        "terminated": 1
+      },
+      "analytic_max_abs_error_J": 5.960464477539062e-07
+    },
     "fmpy": {
       "available": true,
       "rows": 80,
@@ -152,11 +174,16 @@
     "tampered": {
       "max_abs_error_J": 28440000.0,
       "detected": true
+    },
+    "event_boundary_tampered": {
+      "max_abs_error_J": 450000.0,
+      "detected": true,
+      "category": "EVENT_BOUNDARY_MISMATCH"
     }
   },
   "platform": "aarch64-darwin",
   "difference_decomposition": {
-    "numerical_error_J": 0.0,
+    "numerical_error_J": 5.960464477539062e-07,
     "importer_disagreement_J": 0.0,
     "event_boundary_delta_s": {
       "repair_completion": 0.0,

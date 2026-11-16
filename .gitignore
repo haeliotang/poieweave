@@ -16,3 +16,5 @@ apps/desktop/playwright-report/
 
 external/fmu-pv-battery/build/
 external/fmu-pv-battery/build-tampered/
+
+external/fmu-pv-battery/build-tampered-duration/

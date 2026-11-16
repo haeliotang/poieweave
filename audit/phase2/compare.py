@@ -25,6 +25,7 @@ ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 FMU = ROOT / "external/fmu-pv-battery/poie-pv-battery.fmu"
 TAMPERED = ROOT / "external/fmu-pv-battery/poie-pv-battery-tampered.fmu"
+DURATION_TAMPERED = ROOT / "external/fmu-pv-battery/poie-pv-battery-duration-tampered.fmu"
 HARNESS = ROOT / "external/fmu-pv-battery/build/run_fmu"
 CONFIG = HERE / "config.json"
 CANONICAL = HERE / "canonical-reference.txt"
@@ -144,7 +145,9 @@ def main() -> int:
     trajectory = parse_canonical_trajectory(cfg["canonical_trajectory"]["sha256"])
     coarse = parse(run_harness(FMU, cfg["time_grid"]["coarse_step_s"], "fmu-coarse-3600"))
     fine = parse(run_harness(FMU, cfg["time_grid"]["fine_step_s"], "fmu-fine-900"))
+    extra = parse(run_harness(FMU, cfg["time_grid"]["extra_step_s"], "fmu-extra-1000"))
     tampered = parse(run_harness(TAMPERED, cfg["time_grid"]["coarse_step_s"], "fmu-tampered-3600"))
+    duration_tampered = parse(run_harness(DURATION_TAMPERED, cfg["time_grid"]["coarse_step_s"], "fmu-duration-tampered-3600"))
     fmpy_csv = Path(args.fmpy_csv)
     fmpy_log = Path(args.fmpy_log)
     if not fmpy_csv.is_file():
@@ -155,7 +158,7 @@ def main() -> int:
     tol = cfg["tolerances"]
     # 1) FMU vs independent analytic reference (uniform repair draw).
     analytic_errors = []
-    for rows, label in ((coarse, "coarse"), (fine, "fine")):
+    for rows, label in ((coarse, "coarse"), (fine, "fine"), (extra, "extra")):
         for row in rows:
             ref = analytic(row["time_s"], cfg)
             for key in ("energy_J", "generated_J", "load_J", "repair_J"):
@@ -249,7 +252,21 @@ def main() -> int:
             "canonical_repair_active": obs["repair_active"],
             "canonical_repair_detail": obs["repair_detail"],
         })
-    # 7) Known model-assumption difference: uniform repair vs completion settlement.
+    # 7) Event-boundary negative test: repair-time tampering must be detected.
+    duration_events = [row for row in duration_tampered if abs(row["time_s"] - canonical["repair_completion_s"]) < 1e-9]
+    event_problems: list[str] = []
+    event_detected = False
+    event_error = 0.0
+    if duration_events:
+        event = duration_events[-1]
+        for key, expected_key in (("energy_J", "energy_after_J"), ("repair_J", "repair_J")):
+            event_error = max(event_error, abs(event[key] - canonical[expected_key]))
+        event_detected = event_error > max(tol["energy_absolute_J"], tol["energy_relative"] * 1e6)
+    if not event_detected:
+        event_problems.append("repair-duration boundary mutation not detected")
+    problems.extend(event_problems)
+
+    # 8) Known model-assumption difference: uniform repair vs completion settlement.
     # Canonical does not export interior repair-window states, so no numeric claim is made.
     repair_assumption = {
         "status": "MODEL_ASSUMPTION_DIFFERENCE_QUANTIFIED",
@@ -289,11 +306,18 @@ def main() -> int:
                     "terminal_constraint_max_abs_error_J": max(terminal_errors),
                     "terminal": coarse[-1]},
             "fine": {"step_s": cfg["time_grid"]["fine_step_s"], "rows": len(fine), "terminal": fine[-1]},
+            "extra": {"step_s": cfg["time_grid"]["extra_step_s"], "rows": len(extra), "terminal": extra[-1],
+                      "analytic_max_abs_error_J": max(
+                          abs(row[key] - analytic(row["time_s"], cfg)[key])
+                          for row in extra for key in ("energy_J", "generated_J", "load_J", "repair_J")
+                      )},
             "fmpy": {"available": True, "rows": len(fmpy_rows),
                       "max_abs_error_vs_harness_J": fmpy_max_error,
                       "csv": str(fmpy_csv), "csv_sha256": sha(fmpy_csv),
                       "log": str(fmpy_log), "log_sha256": sha(fmpy_log) if fmpy_log.is_file() else None},
             "tampered": {"max_abs_error_J": tampered_error, "detected": detected},
+            "event_boundary_tampered": {"max_abs_error_J": event_error, "detected": event_detected,
+                                         "category": cfg["negative_test"]["event_boundary"]["category"]},
         },
         "platform": _platform(fmpy_log),
         "difference_decomposition": {

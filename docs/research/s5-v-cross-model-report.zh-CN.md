@@ -94,7 +94,13 @@ t=79 h   0
 FMU - canonical = -repair_energy * t / repair_duration   (0 < t < repair_duration)
 ```
 
-最大假设残差为 0 J。该结果支持“差异可分解为模型假设差异”，但不支持
+最大假设残差为 0 J。另增加：
+
+- 1000 s 非整除步长：最大解析参考误差 5.96e-7 J
+- 故意篡改维修持续时间 +1 h：事件边界差异 450 kJ，成功检出
+- 分类：`EVENT_BOUNDARY_MISMATCH`
+
+该结果支持“差异可分解为模型假设差异”，但不支持
 trajectory-level cross-model validity 已建立。
 
 ## 明确范围

@@ -10,6 +10,10 @@
       "sha256": "3cb2e9fc0b4d8785c0023042d8a4cf45221d84f8954a84846b9163d34ab817c3"
     },
     {
+      "path": "external/fmu-pv-battery/poie-pv-battery-duration-tampered.fmu",
+      "sha256": "7558bb3472d858d816c66e9d0921cb4d14411b6d7f84e1939cb05b765f5d14e4"
+    },
+    {
       "path": "external/fmu-pv-battery/modelDescription.xml",
       "sha256": "6746783a953806a1654885c18e2581e3ed48f08f5166958abb6a3ef569c8fccd"
     },
@@ -27,7 +31,7 @@
     },
     {
       "path": "audit/phase2/config.json",
-      "sha256": "59f3e4801dfc042acee77fb5a65ab6cca8e750a35b917da464ba6a44e5fdd703"
+      "sha256": "2dee2df01aaeaf9b31aa36a3f68d7cde91df8cfe4ed2a14356d9ead04bbcf632"
     },
     {
       "path": "audit/phase2/canonical-reference.txt",
@@ -39,7 +43,7 @@
     },
     {
       "path": "audit/phase2/result.json",
-      "sha256": "9bc1671ea00ed1ea77eb3d4f5103342d3ec236edad079f1b96344f88b78e9ead"
+      "sha256": "5d48a0b6b3615c3814d6fb60df1fd8bb1a18c764a49db461b8b0a380ce222b5d"
     },
     {
       "path": "audit/phase2/fmpy_import.py",
@@ -52,6 +56,14 @@
     {
       "path": "audit/phase2/results/fmu-coarse-3600.csv",
       "sha256": "cd423e22c83c7df97e1e6563026dfd01ee6e95263c0849789907fbde6843ea6d"
+    },
+    {
+      "path": "audit/phase2/results/fmu-duration-tampered-3600.csv",
+      "sha256": "66f4fbf4561a4dc7d3ab108a73db0c331cac9d5e2bbd0bd5a84c7b0a8628864f"
+    },
+    {
+      "path": "audit/phase2/results/fmu-extra-1000.csv",
+      "sha256": "ba08cb8682c3709b29e7df23ca4e54dae4ade7de5aaaeb003472bd1a48ea333f"
     },
     {
       "path": "audit/phase2/results/fmu-fine-900.csv",
@@ -67,6 +79,14 @@
     },
     {
       "path": "audit/phase2/logs/fmu-coarse-3600.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "audit/phase2/logs/fmu-duration-tampered-3600.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "audit/phase2/logs/fmu-extra-1000.log",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
