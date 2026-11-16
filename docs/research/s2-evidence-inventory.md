@@ -8,13 +8,13 @@ currently produces the formal result; it is not a claim of equivalence.
 
 ## Summary
 
-- S2 claims: 22
-- S2 experiment directories: 82
-- Experiments referenced by claims: 22
+- S2 claims: 23
+- S2 experiment directories: 83
+- Experiments referenced by claims: 23
 - Unmapped experiments: 60
 - Formal S2 experiments migrated to canonical: 6
 - Canonical migrations blocked: 0
-- Canonical semantic corrections: 4
+- Canonical semantic corrections: 5
 - Stochastic experiments missing a recorded seed: 2
 - S2 certificates: 6
 - Status-page S2 result lines: 13
@@ -46,6 +46,7 @@ currently produces the formal result; it is not a claim of equivalence.
 | C63 | s2-canonical-c12 | engine::run_engine | MIGRATED |
 | C64 | s2-canonical-c13 | engine::run_engine | MIGRATED |
 | C65 | s2-canonical-c14 | engine::run_engine | MIGRATED |
+| C66 | s2-canonical-c18 | engine::run_engine | MIGRATED |
 
 ## Status-page S2 results
 
@@ -85,6 +86,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-canonical-c12 | poie-migration-c12 | base-08 | C63 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
 | s2-canonical-c13 | poie-migration-c13 | base-08 | C64 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
 | s2-canonical-c14 | poie-migration-c14 | base-08 | C65 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
+| s2-canonical-c18 | poie-migration-c18 | base-08 | C66 | 0x9e3779b97f4a7c15, 0x9e37_79b9_7f4a_7c15 | CANONICAL_SEMANTIC_CORRECTION |
 | s2-canonical-c5 | poie-migration-c5 | base-05 | C56 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-c6 | poie-migration-c6 | base-06 | C57 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-c7 | poie-migration-c7 | base-08 | C58 | NOT_APPLICABLE | CANONICAL_MIGRATED |

@@ -1,0 +1,7 @@
+seed_chosen	200	200	200
+trials	old_zero	new_zero	canonical_zero	old_mean	new_mean	canonical_mean
+200	129	0	0	1.4	9.9	5.4
+series	p10	p50	p90
+old	0.0	0.0	4.0
+new	5.2	10.4	15.7
+canonical	5.2	5.2	6.0

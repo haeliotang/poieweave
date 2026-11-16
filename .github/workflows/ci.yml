@@ -550,6 +550,12 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-migration-c14 > /tmp/s2-canonical-c14.out
           diff experiments/s2-canonical-c14/expected.txt /tmp/s2-canonical-c14.out
           test -f experiments/s2-canonical-c14/REPORT.md
+      - name: S2 canonical C18 migration
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-migration-c18 > /tmp/s2-canonical-c18.out
+          diff experiments/s2-canonical-c18/expected.txt /tmp/s2-canonical-c18.out
+          test -f experiments/s2-canonical-c18/REPORT.md
+          test -f experiments/s2-canonical-c18/SEED.md
       - name: S3 repair deadline (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-repair-deadline > /tmp/s3-repair-deadline.out
