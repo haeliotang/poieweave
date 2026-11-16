@@ -27,15 +27,19 @@
     },
     {
       "path": "audit/phase2/config.json",
-      "sha256": "65e80c4f6d3b60a1489ed6ff9799947c5b6ff10778f1127d41eae5d912eeb3e6"
+      "sha256": "59f3e4801dfc042acee77fb5a65ab6cca8e750a35b917da464ba6a44e5fdd703"
     },
     {
       "path": "audit/phase2/canonical-reference.txt",
       "sha256": "e4675ad7611341844bcc72066df34dc92c88aef15ac61ac787cbb3ef53b87b5c"
     },
     {
+      "path": "audit/phase2/canonical-trajectory.csv",
+      "sha256": "7c7da30ed5d1e7ccd06ac166469c1c60535d36bb89c5c5af881743aeb791fa2c"
+    },
+    {
       "path": "audit/phase2/result.json",
-      "sha256": "13c8c2d436a60f293d19ed773dab231ba39083dcdb05de57b9211f0276673666"
+      "sha256": "4e761d0c13682ff92db9c4d9d0bcc2f045c9c80da799773b0f0950105e7c4c42"
     },
     {
       "path": "audit/phase2/fmpy_import.py",

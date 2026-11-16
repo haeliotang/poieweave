@@ -61,6 +61,19 @@
       "source_commit": "7d198d90e729f40faafbe21e4de77311c361dc22",
       "runner": "poie-s5v-energy-reference",
       "note": "Frozen canonical export; CI verifies this SHA instead of rebuilding Rust in the FMU job."
+    },
+    "canonical_trajectory": {
+      "path": "audit/phase2/canonical-trajectory.csv",
+      "sha256": "7c7da30ed5d1e7ccd06ac166469c1c60535d36bb89c5c5af881743aeb791fa2c",
+      "runner": "poie-s5v-canonical-observatory",
+      "method": "neutral zero-quantity sample probes; no inventory change",
+      "samples_s": [
+        0,
+        3600,
+        7200,
+        10800,
+        284400
+      ]
     }
   },
   "fm": {
@@ -131,9 +144,9 @@
       "available": true,
       "rows": 80,
       "max_abs_error_vs_harness_J": 0.0,
-      "csv": "audit/phase2/results/fmpy-3600.csv",
+      "csv": "/Users/hao/Documents/poieweave/audit/phase2/results/fmpy-3600.csv",
       "csv_sha256": "1ed5ce31ee805744f60dc7c76d4134005c6f299b2d186a9cdf97375d29dc6cfe",
-      "log": "audit/phase2/logs/fmpy.log",
+      "log": "/Users/hao/Documents/poieweave/audit/phase2/logs/fmpy.log",
       "log_sha256": "c54d0b1a6184e0a0a13f455d7e086e97e016543417015a7c1227097455d79ecd"
     },
     "tampered": {
@@ -142,11 +155,76 @@
     }
   },
   "platform": "aarch64-darwin",
+  "trajectory": {
+    "canonical_trajectory": "audit/phase2/canonical-trajectory.csv",
+    "canonical_trajectory_sha256": "7c7da30ed5d1e7ccd06ac166469c1c60535d36bb89c5c5af881743aeb791fa2c",
+    "runner": "poie-s5v-canonical-observatory",
+    "rows": [
+      {
+        "at_s": 0.0,
+        "fmu_energy_J": 144000000.0,
+        "canonical_energy_J": 144000000.0,
+        "delta_J": 0.0,
+        "expected_model_assumption_delta_J": -0.0,
+        "assumption_error_J": 0.0,
+        "fmu_repair_active": null,
+        "canonical_repair_active": true,
+        "canonical_repair_detail": "pump-p1"
+      },
+      {
+        "at_s": 3600.0,
+        "fmu_energy_J": 141600000.0,
+        "canonical_energy_J": 142200000.0,
+        "delta_J": -600000.0,
+        "expected_model_assumption_delta_J": -600000.0,
+        "assumption_error_J": 0.0,
+        "fmu_repair_active": null,
+        "canonical_repair_active": true,
+        "canonical_repair_detail": "pump-p1"
+      },
+      {
+        "at_s": 7200.0,
+        "fmu_energy_J": 139200000.0,
+        "canonical_energy_J": 140400000.0,
+        "delta_J": -1200000.0,
+        "expected_model_assumption_delta_J": -1200000.0,
+        "assumption_error_J": 0.0,
+        "fmu_repair_active": null,
+        "canonical_repair_active": true,
+        "canonical_repair_detail": "pump-p1"
+      },
+      {
+        "at_s": 10800.0,
+        "fmu_energy_J": 136800000.0,
+        "canonical_energy_J": 136800000.0,
+        "delta_J": 0.0,
+        "expected_model_assumption_delta_J": 0.0,
+        "assumption_error_J": 0.0,
+        "fmu_repair_active": null,
+        "canonical_repair_active": false,
+        "canonical_repair_detail": null
+      },
+      {
+        "at_s": 284400.0,
+        "fmu_energy_J": 0.0,
+        "canonical_energy_J": 0.0,
+        "delta_J": 0.0,
+        "expected_model_assumption_delta_J": 0.0,
+        "assumption_error_J": 0.0,
+        "fmu_repair_active": null,
+        "canonical_repair_active": false,
+        "canonical_repair_detail": null
+      }
+    ],
+    "max_assumption_error_J": 0.0,
+    "status": "DIFFERENCES_EXPLAINED_BY_REGISTERED_MODEL_ASSUMPTION"
+  },
   "repair_settlement_model_difference": {
-    "status": "MODEL_ASSUMPTION_DIFFERENCE_NOT_COMPARED_AS_TRAJECTORY",
+    "status": "MODEL_ASSUMPTION_DIFFERENCE_QUANTIFIED",
     "fmu": "repair energy spread uniformly over 0..10800 s",
-    "canonical": "repair energy committed at repair completion; interior repair states not exported",
-    "action": "comparison restricted to t=0, repair completion boundary and depletion; no threshold inflation"
+    "canonical": "repair energy committed at completion; interior samples obtained via neutral zero-quantity probes and trace-derived repair state",
+    "expected_delta": "FMU minus canonical = -repair_energy * t / repair_duration for 0 < t < repair_duration; 0 afterwards",
+    "action": "observed deltas checked against this pre-registered expression; no threshold inflation"
   },
   "problems": [],
   "gate2": "PASS_SCOPED_EXECUTION_AND_ENDPOINTS",

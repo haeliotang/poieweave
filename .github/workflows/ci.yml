@@ -1397,6 +1397,7 @@ jobs:
           cp "$RUNNER_TEMP/s5v-linux/fmpy-linux.csv" "$RUNNER_TEMP/s5v-linux/evidence/fmpy-coarse.csv"
           cp "$RUNNER_TEMP/s5v-linux/fmpy-linux.log" "$RUNNER_TEMP/s5v-linux/evidence/fmpy.log"
           cp audit/phase2/canonical-reference.txt "$RUNNER_TEMP/s5v-linux/evidence/canonical-reference.txt"
+          cp audit/phase2/canonical-trajectory.csv "$RUNNER_TEMP/s5v-linux/evidence/canonical-trajectory.csv"
           ( cd "$RUNNER_TEMP/s5v-linux/evidence" && sha256sum * > SHA256SUMS.txt )
           cat "$RUNNER_TEMP/s5v-linux/evidence/SHA256SUMS.txt"
       - uses: actions/upload-artifact@v4

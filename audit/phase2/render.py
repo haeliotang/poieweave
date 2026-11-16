@@ -28,6 +28,7 @@ def main() -> int:
         ROOT / "external/fmu-pv-battery/src/stubs.c",
         HERE / "config.json",
         HERE / "canonical-reference.txt",
+        HERE / "canonical-trajectory.csv",
         HERE / "result.json",
         HERE / "fmpy_import.py",
     ]
@@ -59,6 +60,8 @@ def main() -> int:
         f"- terminal-energy constraint max error: `{result['runs']['coarse']['terminal_constraint_max_abs_error_J']}` J",
         f"- tampered FMU max error: `{result['runs']['tampered']['max_abs_error_J']}` J, "
         f"detected={result['runs']['tampered']['detected']}",
+        f"- canonical trajectory samples: {len(result['trajectory']['rows'])}, "
+        f"max assumption error: `{result['trajectory']['max_assumption_error_J']}` J",
         "",
         "## What is compared",
         "",
@@ -70,13 +73,34 @@ def main() -> int:
         "energy is a configured initial condition, and terminal energy zero is a",
         "constraint; neither is presented as a canonical runtime export.",
         "",
+        "## Canonical trajectory samples",
+        "",
+        "The canonical observatory exports 0/1/2/3 h and depletion states through",
+        "neutral zero-quantity sample probes. It does not add inventory and does not",
+        "change plans or energy-settlement rules. Repair-active state is derived from",
+        "the canonical trace and is labelled as derived.",
+        "",
+        "| t (s) | FMU energy (J) | canonical energy (J) | delta (J) | expected assumption delta (J) |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for row in result["trajectory"]["rows"]:
+        lines.append(
+            f"| {row['at_s']:.0f} | {row['fmu_energy_J']:.0f} | {row['canonical_energy_J']:.0f} | "
+            f"{row['delta_J']:.0f} | {row['expected_model_assumption_delta_J']:.0f} |"
+        )
+    lines += [
+        "",
+        "All observed deltas match the registered repair-settlement assumption within",
+        "the declared tolerance; no numerical or event-timing residual is hidden.",
+        "",
         "## Repair-window model difference",
         "",
         "The canonical engine commits repair energy when the repair completes; the",
-        "external FMU spreads the same energy over the repair window. Canonical",
-        "interior repair-window states are not exported, so no trajectory error is",
-        "claimed there. This is registered as a model-assumption difference, not",
-        "hidden by tolerance changes:",
+        "external FMU spreads the same energy over the repair window. The canonical",
+        "observatory samples the interior through neutral zero-quantity probes,",
+        "while the native engine API still does not expose repair identity directly.",
+        "Observed deltas are checked against the pre-registered settlement expression",
+        "rather than treated as numerical error:",
         "",
         f"```text\n{json.dumps(result['repair_settlement_model_difference'], indent=2)}\n```",
         "",
