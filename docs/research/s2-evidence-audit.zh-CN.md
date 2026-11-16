@@ -31,10 +31,10 @@
 | 未分类 experiment | **0** |
 | FORMAL_CLAIMED / FORMAL_AUXILIARY | 25 / 48 |
 | SUPERSEDED_BY_CANONICAL / EXPLORATORY_NEGATIVE | 6 / 2 |
-| DEFINITIONAL / AUXILIARY_MISSING_SEED | 1 / 2 |
+| DEFINITIONAL / DETERMINISTIC_SWEEP | 1 / 2 |
 | 已迁移到 canonical 的正式 S2 experiment | **6** |
 | canonical 语义修正 | **6**（C11–C14、C18、C19） |
-| 缺少记录种子的随机 experiment | 2 |
+| 缺少记录种子的随机 experiment | **0** |
 | S2 证书 | 6 |
 | 状态页 S2 数值结论行 | 12 |
 | 其中未显式登记为 claim | **0** |
@@ -65,13 +65,15 @@ Batch 1–3 是 kernel/migration probe，不是正式 S2 实验的 canonical 重
 
 没有任何一个 `s2-*` 正式实验已经由 `engine.rs` 产生正式结果。因此 S5-T 不能声称收敛。
 
-### F3：2 个辅助再生阈值实验缺少记录种子
+### F3：2 个再生阈值实验是确定性扫描，不是随机实验
 
 - `s2-regen-threshold-battery`
 - `s2-regen-threshold-initial`
 
-二者被分类为 `FORMAL_AUXILIARY_MISSING_SEED`；runner 是确定性扫描时也不得声称
-随机可复现。补种子或明确为 deterministic sweep 后才能升级。
+它们的 runner 对 multiplier/capacity 做确定性枚举，没有 RNG。此前因报告正文出现
+“seed”一词被误判为 stochastic；已修正扫描规则并分类为 `DETERMINISTIC_SWEEP`。
+`stochastic_experiments_missing_seed` 从 2 降为 **0**。这不是补造种子，而是纠正
+错误分类。
 
 ### F4：6 个 S2 证书中只有 time 证书被 claim 显式引用
 

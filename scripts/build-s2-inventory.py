@@ -84,7 +84,7 @@ def experiment_record(path: Path, all_claims: list[dict[str, object]]) -> dict[s
             models.add(model_id)
         seed_constants.extend(SEED.findall(source))
     seed_constants = sorted(set(seed_constants))
-    stochastic = any(word in text.lower() for word in ("random", "monte carlo", "seed", "抽样"))
+    stochastic = any(word in text.lower() for word in ("random", "monte carlo", "抽样"))
     linked_claims = [
         str(claim["id"]) for claim in all_claims if path.name in claim["evidence"]  # type: ignore[operator]
     ]
@@ -151,7 +151,7 @@ for _name in ["adversarial-time", "time-horizon", "time-insert", "time-repair-sw
 for _name in ["adversarial-random", "order-sensitivity"]:
     CLASSIFICATION[_name] = ("EXPLORATORY_NEGATIVE", "random/negative result with no formal claim")
 for _name in ["regen-threshold-battery", "regen-threshold-initial"]:
-    CLASSIFICATION[_name] = ("FORMAL_AUXILIARY_MISSING_SEED", "corroborates regeneration threshold but has no recorded seed")
+    CLASSIFICATION[_name] = ("DETERMINISTIC_SWEEP", "deterministic multiplier/capacity scan; no RNG or seed is involved")
 CLASSIFICATION["metrics"] = ("DEFINITIONAL", "metric definitions, not a numeric survival claim")
 CLASSIFICATION = {f"s2-{key}": value for key, value in CLASSIFICATION.items()}
 
