@@ -43,6 +43,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 | C75 | [s2-canonical-energy-interventions](../../experiments/s2-canonical-energy-interventions/REPORT.md) | energy interventions 12 行日级一致 |
 | C76 | [s2-canonical-redundancy-restorers](../../experiments/s2-canonical-redundancy-restorers/REPORT.md) | filter/robot restorer 7/8 一致 |
 | C77 | [s2-canonical-aux-batch1](../../experiments/s2-canonical-aux-batch1/REPORT.md) | 辅助抽样 20/20 一致 |
+| C78 | [s2-canonical-aux-batch2](../../experiments/s2-canonical-aux-batch2/REPORT.md) | 辅助抽样 19/19 一致 |
 
 ## 2. 保持一致的历史结果
 
@@ -85,7 +86,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 
 ## 5. 仍然无法解释的差异
 
-在已迁移的 21 个 canonical 实验中：**无 `UNEXPLAINED`**。
+在已迁移的 22 个 canonical 实验中：**无 `UNEXPLAINED`**。
 
 已知但已解释的差异：
 
@@ -100,7 +101,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 
 | 范围 | 状态 | 原因 |
 | --- | --- | --- |
-| 59 个 `FORMAL_AUXILIARY` 实验 | 抽样 2 个（20/20 行一致），其余未重算 | 只支持已有 claim；已建立 batch1 抽样 |
+| 59 个 `FORMAL_AUXILIARY` 实验 | 抽样 5 个（39/39 行一致），其余未重算 | 已建立 batch1/batch2 抽样 |
 
 
 
@@ -126,14 +127,14 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 已建立：
 
 - 单一 canonical event engine 的时钟、资源、能量、执行依赖语义。
-- 21 个 canonical S2 迁移实验与 expected 输出。
+- 22 个 canonical S2 迁移实验与 expected 输出。
 - 5 个绑定 engine/model/runner/output SHA 的 canonical 证书。
 - 独立 verifier、tamper 失败测试、clean-room 现有流程。
 - 可审计的 S2 inventory、claims 和证书影响矩阵。
 
 未建立：
 
-- `S5-T SEMANTIC CONVERGENCE — ESTABLISHED`：仍有 59 个辅助实验未 canonical 化；当前收敛声明只覆盖 21 个 claim-bearing canonical 实验与相应证书。
+- `S5-T SEMANTIC CONVERGENCE — ESTABLISHED`：仍有 59 个辅助实验未 canonical 化；当前收敛声明只覆盖 22 个 claim-bearing canonical 实验与相应证书。
 - `S5 CROSS-MODEL VALIDITY`：尚未执行外部 FMU/FMI 协同仿真或独立数值比较。
 - 物理安全、真实工业设备自主运行：未验证。
 - 持久信任锚、多写者/分区/时钟偏移：未建立。
