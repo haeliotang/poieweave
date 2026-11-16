@@ -8,17 +8,17 @@ currently produces the formal result; it is not a claim of equivalence.
 
 ## Summary
 
-- S2 claims: 24
+- S2 claims: 25
 - S2 experiment directories: 84
-- Experiments referenced by claims: 24
-- Unmapped experiments: 60
+- Experiments referenced by claims: 25
+- Unmapped experiments: 59
 - Formal S2 experiments migrated to canonical: 6
 - Canonical migrations blocked: 0
 - Canonical semantic corrections: 6
 - Stochastic experiments missing a recorded seed: 2
 - S2 certificates: 6
-- Status-page S2 result lines: 13
-- Status result lines without an explicit claim: 13
+- Status-page S2 result lines: 12
+- Status result lines without an explicit claim: 0
 
 ## Claim crosswalk
 
@@ -48,6 +48,7 @@ currently produces the formal result; it is not a claim of equivalence.
 | C65 | s2-canonical-c14 | engine::run_engine | MIGRATED |
 | C66 | s2-canonical-c18 | engine::run_engine | MIGRATED |
 | C67 | s2-canonical-c19 | engine::run_engine | MIGRATED |
+| C68 | s2-monte-carlo | engine::run_engine | MIGRATED |
 
 ## Status-page S2 results
 
@@ -56,19 +57,18 @@ claim list means the result has not yet been normalized into the claims ledger.
 
 | result | claims |
 | --- | --- |
-| Base-05：10/15/20/30 天泵故障间隔 → 40/60/80/≥90 天。 | NONE |
-| Base-06：56 个双故障案例，独立覆盖 25/56，联合覆盖 24/56，唯一缺口 `pump-p1,pump-p2`。 | NONE |
-| Base-08 再生：40→60 天；50% 产出率 → 50 天。 | NONE |
-| 2000 个 Monte Carlo 排程：中位 72 天，p10 28，p90 90。 | NONE |
-| 负载边界：0–2 kW 材料受限（40 天）；3/4 kW 能量受限（3/1 天）。 | NONE |
-| 冗余：泵 60→90；共享过滤器 30 `no restorer`；过滤器修复器 90；共享机器人 35；机器人修复器 90。 | NONE |
-| 补货频率：10/20/30/60 天 → 60/50/40/30 天。 | NONE |
-| 对抗子集：31 个子集，最小 0 天，最小集合 `filter-1`。 | NONE |
-| 时间语义：grease 边界 4/6/8 vs 10/16/21 天；insert 边界 6/8/10/12 vs 15/20/26/31 天；能量边界不变；补货到位时 horizon 不变。 | NONE |
-| 随机对抗 × 时间：瞬时 129/200 零天（均值 1.4），完成时间 0/200（均值 9.9）。 | NONE |
-| 延迟随机窗口（day0–10）：瞬时 13/200 零天（均值 4.4），完成时间 0/200（均值 14.0）。 | NONE |
-| 长修复再生（5 天修复、2–5 天故障）：Base-05 8/12/20→20/20/20；Base-08 12/18/30→31/31/31；10 天故障时间语义再次一致。 | NONE |
-| S1 工具循环：无备件 `cycle:asset:lathe-1`；1 备件 2 h 解锁；外部件替代 restorer 4 h 旁路；两者都有时选 2 h。 | NONE |
+| Base-05：10/15/20/30 天泵故障间隔 → 40/60/80/≥90 天。 | C5 |
+| Base-06：56 个双故障案例，独立覆盖 25/56，联合覆盖 24/56，唯一缺口 `pump-p1,pump-p2`。 | C6 |
+| Base-08 再生：40→60 天；50% 产出率 → 50 天。 | C7 |
+| 2000 个 Monte Carlo 排程：中位 72 天，p10 28，p90 90。 | C68 |
+| 负载边界：0–2 kW 材料受限（40 天）；3/4 kW 能量受限（3/1 天）。 | C8 |
+| 冗余：泵 60→90；共享过滤器 30 `no restorer`；过滤器修复器 90；共享机器人 35；机器人修复器 90。 | C9 |
+| 补货频率：10/20/30/60 天 → 60/50/40/30 天。 | C10 |
+| 对抗子集：31 个子集，最小 0 天，最小集合 `filter-1`。 | C11 |
+| 时间语义：grease 边界 4/6/8 vs 10/16/21 天；insert 边界 6/8/10/12 vs 15/20/26/31 天；能量边界不变；补货到位时 horizon 不变。 | C12 |
+| 随机对抗 × 时间：瞬时 129/200 零天（均值 1.4），完成时间 0/200（均值 9.9）。 | C18 |
+| 延迟随机窗口（day0–10）：瞬时 13/200 零天（均值 4.4），完成时间 0/200（均值 14.0）。 | C19 |
+| 长修复再生（5 天修复、2–5 天故障）：Base-05 8/12/20→20/20/20；Base-08 12/18/30→31/31/31；10 天故障时间语义再次一致。 | C63 |
 
 ## Experiment status
 
@@ -118,7 +118,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-load-threshold-charge | poie-load-threshold-charge | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-long-horizon | poie-longevity | base-05 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-metrics | poie-metrics | base-05, base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
-| s2-monte-carlo | poie-monte-carlo | base-05 | NONE | 0x9E37_79B9_7F4A_7C15 | NOT_MIGRATED |
+| s2-monte-carlo | poie-monte-carlo | base-05 | C68 | 0x9E37_79B9_7F4A_7C15 | NOT_MIGRATED |
 | s2-order-sensitivity | poie-order | base-06 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-recharge-bound | poie-recharge-bound | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-recharge-rule | poie-recharge-rule | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |

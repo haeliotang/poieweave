@@ -219,6 +219,15 @@
       ],
       "certificates": [],
       "boundary": "单一种子"
+    },
+    {
+      "id": "C68",
+      "statement": "2000 次 Monte Carlo 排程分布：中位 72、p10 28、p90 90",
+      "evidence": [
+        "s2-monte-carlo"
+      ],
+      "certificates": [],
+      "boundary": "legacy LCG；尚未 canonical 重算"
     }
   ],
   "experiments": [
@@ -1336,11 +1345,13 @@
       ],
       "stochastic": true,
       "seed": "0x9E37_79B9_7F4A_7C15",
-      "claim_ids": [],
+      "claim_ids": [
+        "C68"
+      ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "migration_status": "NOT_MIGRATED",
-      "risk": "MEDIUM"
+      "risk": "HIGH"
     },
     {
       "experiment": "s2-order-sensitivity",
@@ -2483,69 +2494,89 @@
   "status_results": [
     {
       "text": "Base-05：10/15/20/30 天泵故障间隔 → 40/60/80/≥90 天。",
-      "claim_ids": []
+      "claim_ids": [
+        "C5"
+      ]
     },
     {
       "text": "Base-06：56 个双故障案例，独立覆盖 25/56，联合覆盖 24/56，唯一缺口 `pump-p1,pump-p2`。",
-      "claim_ids": []
+      "claim_ids": [
+        "C6"
+      ]
     },
     {
       "text": "Base-08 再生：40→60 天；50% 产出率 → 50 天。",
-      "claim_ids": []
+      "claim_ids": [
+        "C7"
+      ]
     },
     {
       "text": "2000 个 Monte Carlo 排程：中位 72 天，p10 28，p90 90。",
-      "claim_ids": []
+      "claim_ids": [
+        "C68"
+      ]
     },
     {
       "text": "负载边界：0–2 kW 材料受限（40 天）；3/4 kW 能量受限（3/1 天）。",
-      "claim_ids": []
+      "claim_ids": [
+        "C8"
+      ]
     },
     {
       "text": "冗余：泵 60→90；共享过滤器 30 `no restorer`；过滤器修复器 90；共享机器人 35；机器人修复器 90。",
-      "claim_ids": []
+      "claim_ids": [
+        "C9"
+      ]
     },
     {
       "text": "补货频率：10/20/30/60 天 → 60/50/40/30 天。",
-      "claim_ids": []
+      "claim_ids": [
+        "C10"
+      ]
     },
     {
       "text": "对抗子集：31 个子集，最小 0 天，最小集合 `filter-1`。",
-      "claim_ids": []
+      "claim_ids": [
+        "C11"
+      ]
     },
     {
       "text": "时间语义：grease 边界 4/6/8 vs 10/16/21 天；insert 边界 6/8/10/12 vs 15/20/26/31 天；能量边界不变；补货到位时 horizon 不变。",
-      "claim_ids": []
+      "claim_ids": [
+        "C12"
+      ]
     },
     {
       "text": "随机对抗 × 时间：瞬时 129/200 零天（均值 1.4），完成时间 0/200（均值 9.9）。",
-      "claim_ids": []
+      "claim_ids": [
+        "C18"
+      ]
     },
     {
       "text": "延迟随机窗口（day0–10）：瞬时 13/200 零天（均值 4.4），完成时间 0/200（均值 14.0）。",
-      "claim_ids": []
+      "claim_ids": [
+        "C19"
+      ]
     },
     {
       "text": "长修复再生（5 天修复、2–5 天故障）：Base-05 8/12/20→20/20/20；Base-08 12/18/30→31/31/31；10 天故障时间语义再次一致。",
-      "claim_ids": []
-    },
-    {
-      "text": "S1 工具循环：无备件 `cycle:asset:lathe-1`；1 备件 2 h 解锁；外部件替代 restorer 4 h 旁路；两者都有时选 2 h。",
-      "claim_ids": []
+      "claim_ids": [
+        "C63"
+      ]
     }
   ],
   "summary": {
-    "s2_claims": 24,
+    "s2_claims": 25,
     "s2_experiments": 84,
-    "claimed_experiments": 24,
-    "unmapped_experiments": 60,
+    "claimed_experiments": 25,
+    "unmapped_experiments": 59,
     "formal_s2_experiments_migrated_to_canonical": 6,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 6,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 24,
-    "status_s2_result_lines": 13,
-    "unmapped_status_results": 13
+    "claims_with_experiment_evidence": 25,
+    "status_s2_result_lines": 12,
+    "unmapped_status_results": 0
   }
 }
