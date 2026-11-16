@@ -336,6 +336,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C81",
+      "statement": "aux batch5：coverage 定义修正；regen threshold 60/61 一致",
+      "evidence": [
+        "s2-canonical-aux-batch5"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -664,6 +673,35 @@
       "classification": "FORMAL_CLAIMED",
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch5",
+      "report": "experiments/s2-canonical-aux-batch5/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch5/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch5"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 5,
+      "expected_output": "experiment\tmetric\tlegacy\tcanonical\ttotal\tclassification\nfailure-envelope\trecoverable\t5\t9\t10\tSEMANTIC_CORRECTION_COVERAGE_DEFINITION\nfailure-pairs\trecoverable\t11\t33\t46\tSEMANTIC_CORRECTION_COVERAGE_DEFINITION\nregen-threshold\tmax_safe\t60\t60\t-\tEXPECTED_AGREEMENT\nregen-threshold\tfirst_blocked\t61\t61\t-\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\tmetric\tlegacy\tcanonical\ttotal\tclassification",
+        "failure-envelope\trecoverable\t5\t9\t10\tSEMANTIC_CORRECTION_COVERAGE_DEFINITION"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C81"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
     },
     {
@@ -3414,17 +3452,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 37,
-    "s2_experiments": 96,
-    "claimed_experiments": 37,
+    "s2_claims": 38,
+    "s2_experiments": 97,
+    "claimed_experiments": 38,
     "unmapped_experiments": 59,
     "formal_s2_experiments_migrated_to_canonical": 13,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 11,
+    "canonical_semantic_corrections": 12,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 37,
+    "claims_with_experiment_evidence": 38,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0

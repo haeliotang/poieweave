@@ -1,0 +1,5 @@
+experiment	metric	legacy	canonical	total	classification
+failure-envelope	recoverable	5	9	10	SEMANTIC_CORRECTION_COVERAGE_DEFINITION
+failure-pairs	recoverable	11	33	46	SEMANTIC_CORRECTION_COVERAGE_DEFINITION
+regen-threshold	max_safe	60	60	-	EXPECTED_AGREEMENT
+regen-threshold	first_blocked	61	61	-	EXPECTED_AGREEMENT
