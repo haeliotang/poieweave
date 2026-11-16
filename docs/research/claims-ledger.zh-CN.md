@@ -93,6 +93,7 @@
 | C84 | aux batch8：regen-long 语义修正；joint double-failure 10→10.25 | `experiments/s2-canonical-aux-batch8` | 辅助抽样 |
 | C85 | aux batch9：insert-bound + joint-load 10/10 一致 | `experiments/s2-canonical-aux-batch9` | 辅助抽样 |
 | C86 | aux batch10：joint-three/worn/yield 18/18 一致 | `experiments/s2-canonical-aux-batch10` | 辅助抽样 |
+| C87 | aux batch11：worn-bound/sharpen-yield/regen-cost-load 13/13 一致 | `experiments/s2-canonical-aux-batch11` | 辅助抽样 |
 
 ## 不应出现的声明
 

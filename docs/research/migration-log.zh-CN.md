@@ -48,6 +48,7 @@
 | E-C84 | aux batch8 | 语义修正 | regen-long 8 行；joint double-failure 10→10.25 |
 | E-C85 | aux batch9 | 抽样通过 | insert-bound 6 + joint-load 4，10/10 一致 |
 | E-C86 | aux batch10 | 抽样通过 | joint-three 6 + worn 6 + yield 6，18/18 一致 |
+| E-C87 | aux batch11 | 抽样通过 | worn-bound 4 + sharpen-yield 3 + regen-cost-load 6，13/13 一致 |
 | D | canonical 证书重签 | 完成 5 个 | joint/load/regeneration/order/metrics-v2；历史证书保留 |
 
 | A | 状态页数值归一化 | 完成 | 12/12 映射；C68 Monte Carlo 为 legacy-only |
