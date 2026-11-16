@@ -562,6 +562,16 @@ jobs:
           diff experiments/s2-canonical-c19/expected.txt /tmp/s2-canonical-c19.out
           test -f experiments/s2-canonical-c19/REPORT.md
           test -f experiments/s2-canonical-c19/SEED.md
+      - name: S2 canonical load Base-05
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-migration-s2-load-base05 > /tmp/s2-canonical-load-base05.out
+          diff experiments/s2-canonical-load-base05/expected.txt /tmp/s2-canonical-load-base05.out
+          test -f experiments/s2-canonical-load-base05/REPORT.md
+      - name: S2 canonical regeneration horizon
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-migration-s2-regen-horizon > /tmp/s2-canonical-regen-horizon.out
+          diff experiments/s2-canonical-regen-horizon/expected.txt /tmp/s2-canonical-regen-horizon.out
+          test -f experiments/s2-canonical-regen-horizon/REPORT.md
       - name: S3 repair deadline (Base-08)
         run: |
           cargo run --locked -q -p poie-viability --bin poie-repair-deadline > /tmp/s3-repair-deadline.out

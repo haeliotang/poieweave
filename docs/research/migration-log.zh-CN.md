@@ -28,6 +28,8 @@
 | B-C14 | 冗余与密集故障 | 接受（语义修正） | 冗余泵 90 天一致；baseline 31→2 天 |
 | B-C18 | 随机对抗（时间） | 接受（语义修正） | 零天 0/200 不变；均值 9.9→5.4、p90 15.7→6.0 |
 | B-C19 | 随机延迟窗口 | 接受（语义修正） | 零天 0/200 不变；均值 14.0→2.2、p90 15.6→2.0 |
+| B-C69 | load 证书行 | 接受 | Base-05 0–4 kW 5/5 一致 |
+| B-C70 | regeneration 证书行 | 接受 | Base-05/08 8/8 一致 |
 | D | Certificate Impact Matrix | 初版 | 6 证书：3 historical、1 superseded、2 blocked、0 reissued |
 | D | metrics 证书拆分 | 初版 | 13 组：4 migrated、2 semantic、2 partial、1 superseded、4 not migrated；0 reissued |
 | A | 状态页数值归一化 | 完成 | 12/12 映射；C68 Monte Carlo 为 legacy-only |

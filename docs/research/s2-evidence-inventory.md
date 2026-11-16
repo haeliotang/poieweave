@@ -8,11 +8,11 @@ currently produces the formal result; it is not a claim of equivalence.
 
 ## Summary
 
-- S2 claims: 25
-- S2 experiment directories: 84
-- Experiments referenced by claims: 25
+- S2 claims: 27
+- S2 experiment directories: 86
+- Experiments referenced by claims: 27
 - Unmapped experiments: 59
-- Formal S2 experiments migrated to canonical: 6
+- Formal S2 experiments migrated to canonical: 8
 - Canonical migrations blocked: 0
 - Canonical semantic corrections: 6
 - Stochastic experiments missing a recorded seed: 0
@@ -50,6 +50,8 @@ currently produces the formal result; it is not a claim of equivalence.
 | C66 | s2-canonical-c18 | engine::run_engine | MIGRATED |
 | C67 | s2-canonical-c19 | engine::run_engine | MIGRATED |
 | C68 | s2-monte-carlo | engine::run_engine | MIGRATED |
+| C69 | s2-canonical-load-base05 | engine::run_engine | MIGRATED |
+| C70 | s2-canonical-regen-horizon | engine::run_engine | MIGRATED |
 
 ## Status-page S2 results
 
@@ -95,6 +97,8 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-canonical-c7 | poie-migration-c7 | base-08 | C58 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-c8 | poie-migration-c8 | base-08 | C59 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-c9 | poie-migration-c9 | base-08 | C60 | NOT_APPLICABLE | CANONICAL_MIGRATED |
+| s2-canonical-load-base05 | poie-migration-s2-load-base05 | base-05 | C69 | NOT_APPLICABLE | CANONICAL_MIGRATED |
+| s2-canonical-regen-horizon | poie-migration-s2-regen-horizon | base-05, base-08 | C70 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-energy-boundary | poie-energy-boundary | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-energy-interventions | poie-energy-interventions | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-energy-recharge | poie-energy-recharge | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |

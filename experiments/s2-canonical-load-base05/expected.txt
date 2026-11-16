@@ -1,0 +1,6 @@
+load_kw	legacy_days	canonical_days	legacy_energy_kwh	canonical_energy_kwh	canonical_termination	classification
+0.0	40.000	40.000	200.0	200.0	blocked:[MissingResource { resource: "bronze-bar", needed: 1.2, available: 0.6000000000000001 }]	EXPECTED_AGREEMENT
+1.0	40.000	40.000	200.0	200.0	blocked:[MissingResource { resource: "bronze-bar", needed: 1.2, available: 0.6000000000000001 }]	EXPECTED_AGREEMENT
+2.0	40.000	40.000	200.0	200.0	blocked:[MissingResource { resource: "bronze-bar", needed: 1.2, available: 0.6000000000000001 }]	EXPECTED_AGREEMENT
+3.0	3.292	3.292	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT
+4.0	1.097	1.097	0.0	0.0	blocked:energy_depleted	EXPECTED_AGREEMENT
