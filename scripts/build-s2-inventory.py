@@ -153,6 +153,10 @@ for _name in ["adversarial-random", "order-sensitivity"]:
     CLASSIFICATION[_name] = ("EXPLORATORY_NEGATIVE", "random/negative result with no formal claim")
 for _name in ["regen-threshold-battery", "regen-threshold-initial"]:
     CLASSIFICATION[_name] = ("DETERMINISTIC_SWEEP", "deterministic multiplier/capacity scan; no RNG or seed is involved")
+    CLASSIFICATION["canonical-aux-batch15"] = (
+        "DETERMINISTIC_SWEEP",
+        "deterministic load scan; the report merely names the remaining exploratory experiment",
+    )
 CLASSIFICATION["metrics"] = ("DEFINITIONAL", "metric definitions, not a numeric survival claim")
 CLASSIFICATION = {f"s2-{key}": value for key, value in CLASSIFICATION.items()}
 
@@ -181,6 +185,8 @@ COVERED_BY = {
     "s2-energy-interventions": ["C75"], "s2-filter-restorer": ["C76"],
     "s2-robot-restorer": ["C76"], "s2-redundancy-filter": ["C76"],
     "s2-redundancy-robot": ["C76"],
+    "s2-load": ["C91"], "s2-load-threshold-capacity": ["C91"],
+    "s2-load-threshold-charge": ["C91"],
     "s2-time-horizon": ["C74"], "s2-time-insert": ["C74"], "s2-time-repair-sweep": ["C74"],
     "s2-time-energy-sweep": ["C64"],
 }

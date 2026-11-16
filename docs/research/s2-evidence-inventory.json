@@ -426,6 +426,15 @@
       ],
       "certificates": [],
       "boundary": "辅助抽样"
+    },
+    {
+      "id": "C91",
+      "statement": "aux batch15：load + capacity/charge thresholds 11/11 一致",
+      "evidence": [
+        "s2-canonical-aux-batch15"
+      ],
+      "certificates": [],
+      "boundary": "辅助抽样"
     }
   ],
   "experiments": [
@@ -830,6 +839,36 @@
       "covered_by_claims": [],
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-aux-batch15",
+      "report": "experiments/s2-canonical-aux-batch15/REPORT.md",
+      "prereg": "experiments/s2-canonical-aux-batch15/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-aux-batch15"
+      ],
+      "models": [
+        "base-05",
+        "base-08"
+      ],
+      "expected_output_lines": 12,
+      "expected_output": "experiment\trow\tlegacy_days\tcanonical_days\tclassification\nload\tload=0.0\t40\t40.000\tEXPECTED_AGREEMENT\nload\tload=1.0\t40\t40.000\tEXPECTED_AGREEMENT\nload\tload=2.0\t40\t40.000\tEXPECTED_AGREEMENT\nload\tload=3.0\t3\t3.292\tEXPECTED_AGREEMENT\nload\tload=4.0\t1\t1.097\tEXPECTED_AGREEMENT\nload-threshold-capacity\tcapacity=100\t2.6\t2.6\tEXPECTED_AGREEMENT\nload-threshold-capacity\tcapacity=200\t2.6\t2.6\tEXPECTED_AGREEMENT\nload-threshold-capacity\tcapacity=300\t2.6\t2.6\tEXPECTED_AGREEMENT\nload-threshold-charge\tcharge=3\t2.6\t2.6\tEXPECTED_AGREEMENT\nload-threshold-charge\tcharge=10\t2.6\t2.6\tEXPECTED_AGREEMENT\nload-threshold-charge\tcharge=30\t2.6\t2.6\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "experiment\trow\tlegacy_days\tcanonical_days\tclassification",
+        "load\tload=0.0\t40\t40.000\tEXPECTED_AGREEMENT"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C91"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "covered_by_claims": [],
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_MIGRATED",
       "risk": "HIGH"
     },
     {
@@ -2196,7 +2235,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
-      "covered_by_claims": [],
+      "covered_by_claims": [
+        "C91"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2252,7 +2293,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
-      "covered_by_claims": [],
+      "covered_by_claims": [
+        "C91"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -2279,7 +2322,9 @@
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "NOT_MIGRATED",
       "classification": "FORMAL_AUXILIARY",
-      "covered_by_claims": [],
+      "covered_by_claims": [
+        "C91"
+      ],
       "classification_reason": "corroborates a claimed S2 dimension but is not the primary claim evidence",
       "migration_status": "NOT_MIGRATED",
       "risk": "MEDIUM"
@@ -3989,20 +4034,20 @@
     }
   ],
   "summary": {
-    "s2_claims": 47,
-    "s2_experiments": 106,
-    "claimed_experiments": 47,
+    "s2_claims": 48,
+    "s2_experiments": 107,
+    "claimed_experiments": 48,
     "unmapped_experiments": 59,
-    "formal_s2_experiments_migrated_to_canonical": 19,
+    "formal_s2_experiments_migrated_to_canonical": 20,
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 15,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 11,
     "canonical_certificates_reissued": 5,
-    "claims_with_experiment_evidence": 47,
+    "claims_with_experiment_evidence": 48,
     "status_s2_result_lines": 12,
-    "aux_experiments_with_canonical_evidence": 46,
-    "aux_experiments_without_canonical_evidence": 13,
+    "aux_experiments_with_canonical_evidence": 49,
+    "aux_experiments_without_canonical_evidence": 10,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0
   }

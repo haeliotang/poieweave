@@ -97,6 +97,7 @@
 | C88 | aux batch12：regen forced-cost/capacity 8/8 一致 | `experiments/s2-canonical-aux-batch12` | 辅助抽样 |
 | C89 | aux batch13：adversarial failures/subsets 日级一致 + executor 修正 | `experiments/s2-canonical-aux-batch13` | 辅助抽样 |
 | C90 | aux batch14：adversarial-time + regeneration horizon/yield | `experiments/s2-canonical-aux-batch14` | 辅助抽样 |
+| C91 | aux batch15：load + capacity/charge thresholds 11/11 一致 | `experiments/s2-canonical-aux-batch15` | 辅助抽样 |
 
 ## 不应出现的声明
 
