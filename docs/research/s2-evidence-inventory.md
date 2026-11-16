@@ -8,21 +8,22 @@ currently produces the formal result; it is not a claim of equivalence.
 
 ## Summary
 
-- S2 claims: 52
-- S2 experiment directories: 111
-- Experiments referenced by claims: 52
+- S2 claims: 53
+- S2 experiment directories: 112
+- Experiments referenced by claims: 53
 - Unmapped experiments: 59
 - Formal S2 experiments migrated to canonical: 22
 - Canonical migrations blocked: 0
-- Canonical semantic corrections: 17
+- Canonical semantic corrections: 18
 - Stochastic experiments missing a recorded seed: 0
 - S2 certificates: 11
 - Canonical S2 certificates reissued: 5
 - Status-page S2 result lines: 12
 - Status result lines without an explicit claim: 0
 - Unclassified experiments: 0
-- Aux experiments with canonical evidence: 55
-- Aux experiments without canonical evidence: 4
+- Aux experiments with canonical evidence: 57
+- Aux experiments without canonical evidence: 0
+- Aux records excluded as definitional/negative: 2
 
 ## Claim crosswalk
 
@@ -80,6 +81,7 @@ currently produces the formal result; it is not a claim of equivalence.
 | C93 | s2-canonical-aux-batch17 | engine::run_engine | MIGRATED |
 | C94 | s2-canonical-aux-batch18 | engine::run_engine | MIGRATED |
 | C95 | s2-canonical-aux-batch19 | engine::run_engine | MIGRATED |
+| C96 | s2-canonical-aux-batch20 | engine::run_engine | MIGRATED |
 
 ## Status-page S2 results
 
@@ -106,7 +108,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | experiment | runner | model | claims | seed | status |
 | --- | --- | --- | --- | --- | --- |
 | s2-adversarial-failures | poie-adversarial-failures | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
-| s2-adversarial-random | poie-adversarial-random | base-08 | NONE | 0x9e37_79b9_7f4a_7c15 | NOT_MIGRATED |
+| s2-adversarial-random | poie-adversarial-random | base-08 | NONE | 0x9e37_79b9_7f4a_7c15 | COVERED_BY_CANONICAL |
 | s2-adversarial-random-time | poie-adversarial-random-time | base-08 | C18 | 0x9e37_79b9_7f4a_7c15 | NOT_MIGRATED |
 | s2-adversarial-random-window | poie-adversarial-random-window | base-08 | C19 | 0x9e37_79b9_7f4a_7c15 | NOT_MIGRATED |
 | s2-adversarial-resupply | poie-adversarial-resupply | base-08 | C11 | NOT_APPLICABLE | NOT_MIGRATED |
@@ -125,6 +127,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-canonical-aux-batch18 | poie-migration-aux-batch18 | base-08 | C94 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
 | s2-canonical-aux-batch19 | poie-migration-aux-batch19 | base-06, base-07 | C95 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
 | s2-canonical-aux-batch2 | poie-migration-aux-batch2 | base-08 | C78 | NOT_APPLICABLE | CANONICAL_MIGRATED |
+| s2-canonical-aux-batch20 | poie-migration-aux-batch20 | base-08 | C96 | 0x9e37_79b9_7f4a_7c15 | CANONICAL_SEMANTIC_CORRECTION |
 | s2-canonical-aux-batch3 | poie-migration-aux-batch3 | base-08 | C79 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch4 | poie-migration-aux-batch4 | base-08 | C80 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch5 | poie-migration-aux-batch5 | base-05, base-08 | C81 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
@@ -181,7 +184,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-recharge-bound | poie-recharge-bound | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-recharge-rule | poie-recharge-rule | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-recharge-rule-base05 | poie-recharge-rule-base05 | base-05, base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
-| s2-recycle-residue | poie-recycle-residue | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-recycle-residue | poie-recycle-residue | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-redundancy | poie-redundancy | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-redundancy-filter | poie-redundancy-filter | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-redundancy-load | poie-redundancy-load | base-08 | C9 | NOT_APPLICABLE | NOT_MIGRATED |

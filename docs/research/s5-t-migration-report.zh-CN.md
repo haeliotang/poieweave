@@ -61,6 +61,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 | C93 | [s2-canonical-aux-batch17](../../experiments/s2-canonical-aux-batch17/REPORT.md) | two-restorers 4/4 |
 | C94 | [s2-canonical-aux-batch18](../../experiments/s2-canonical-aux-batch18/REPORT.md) | adversarial-timing 30/32 + 2 executor |
 | C95 | [s2-canonical-aux-batch19](../../experiments/s2-canonical-aux-batch19/REPORT.md) | regeneration/resupply Base-07 joint |
+| C96 | [s2-canonical-aux-batch20](../../experiments/s2-canonical-aux-batch20/REPORT.md) | recycle + random distribution |
 
 ## 2. 保持一致的历史结果
 
@@ -103,7 +104,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 
 ## 5. 仍然无法解释的差异
 
-在已迁移的 39 个 canonical 实验中：**无 `UNEXPLAINED`**。
+在已迁移的 40 个 canonical 实验中：**无 `UNEXPLAINED`**。
 
 已知但已解释的差异：
 
@@ -112,13 +113,13 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 - C71 coverage 差异是定义变化。
 - legacy 的若干延迟故障行为已被明确取代。
 
-59 个辅助实验不在此声明内：其中 55 个已有 canonical batch 证据，4 个仍无；全部排除在 S5-T scoped 收敛声明之外。
+59 个辅助实验不在此声明内：57 个已有 canonical batch 证据，2 个定义型/负结果记录排除，0 个未覆盖；全部排除在 S5-T scoped 收敛声明之外。
 
 ## 6. 未能迁移的执行入口及原因
 
 | 范围 | 状态 | 原因 |
 | --- | --- | --- |
-| 59 个 `FORMAL_AUXILIARY` 实验 | 55 个已有 canonical 证据，4 个没有 | 已建立 batch1–19；未覆盖清单见 audit |
+| 59 个 `FORMAL_AUXILIARY` 实验 | 57 个已有 canonical 证据，2 个定义型/负结果排除，0 个未覆盖 | 已建立 batch1–20 |
 
 
 
@@ -144,14 +145,14 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 已建立：
 
 - 单一 canonical event engine 的时钟、资源、能量、执行依赖语义。
-- 39 个 canonical S2 迁移实验与 expected 输出。
+- 40 个 canonical S2 迁移实验与 expected 输出。
 - 5 个绑定 engine/model/runner/output SHA 的 canonical 证书。
 - 独立 verifier、tamper 失败测试、clean-room 现有流程。
 - 可审计的 S2 inventory、claims 和证书影响矩阵。
 
 未建立：
 
-- `S5-T SEMANTIC CONVERGENCE — ESTABLISHED`：仍有 59 个辅助实验未 canonical 化；当前收敛声明只覆盖 39 个 claim-bearing canonical 实验与相应证书。
+- `S5-T SEMANTIC CONVERGENCE — ESTABLISHED`：仍有 59 个辅助实验未 canonical 化；当前收敛声明只覆盖 40 个 claim-bearing canonical 实验与相应证书。
 - `S5 CROSS-MODEL VALIDITY`：尚未执行外部 FMU/FMI 协同仿真或独立数值比较。
 - 物理安全、真实工业设备自主运行：未验证。
 - 持久信任锚、多写者/分区/时钟偏移：未建立。
