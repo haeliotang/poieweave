@@ -1,0 +1,37 @@
+{
+  "canonical_classification": "EXPECTED_AGREEMENT",
+  "certificate_id": "poie-s2-canonical-load-v1",
+  "claims": [
+    "C69"
+  ],
+  "claims_sha256": "663f72f01b2c266ffab496112f04b8ff4d7dcae65616d721d1fdf9de4e74ac1b",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_commit": "fdd619c",
+  "experiment": {
+    "expected": "experiments/s2-canonical-load-base05/expected.txt",
+    "expected_sha256": "efd07629a3442b6ac1e71ab667b5ef1afb780d3ca08c6af05a6adaea2ee56d22",
+    "path": "experiments/s2-canonical-load-base05"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-05/model.toml",
+      "sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150"
+    }
+  ],
+  "result_marker": "3.0\t3.292\t3.292\t0.0\t0.0",
+  "runner": {
+    "binary": "poie-migration-s2-load-base05",
+    "sha256": "c61ae6a707e6b79b246968d1e3862a82ec475880f973861d1e68fd3bf4954ebf",
+    "source": "crates/poie-viability/src/bin/poie-migration-s2-load-base05.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/1",
+  "scope": "Base-05 load 0-4 kW: 0-2 kW material-limited 40 d; 3/4 kW energy-limited 3.292/1.097 d.",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "source_certificate": "experiments/certificate-s2-load/certificate.json",
+  "source_certificate_sha256": "7608e4f828cac7604eaff99b561c5bdf7b00faf3b9a0c242159a2bf4498ba463",
+  "status": "REISSUED",
+  "verifier": "poie-canonical-s2-certificate/1"
+}

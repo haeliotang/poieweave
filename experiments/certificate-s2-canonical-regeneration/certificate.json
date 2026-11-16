@@ -1,0 +1,41 @@
+{
+  "canonical_classification": "EXPECTED_AGREEMENT",
+  "certificate_id": "poie-s2-canonical-regeneration-v1",
+  "claims": [
+    "C70"
+  ],
+  "claims_sha256": "663f72f01b2c266ffab496112f04b8ff4d7dcae65616d721d1fdf9de4e74ac1b",
+  "engine": {
+    "sha256": "333200633eb5a3217aff69ac21f6935f5bd937d3653c65cbac48fceba6f76e52",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "evidence_commit": "fdd619c",
+  "experiment": {
+    "expected": "experiments/s2-canonical-regen-horizon/expected.txt",
+    "expected_sha256": "e9a787b1d9d4705c5aaf3e9ef0158ea76c826faddc5ae41f392b06cfc2e227c9",
+    "path": "experiments/s2-canonical-regen-horizon"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-05/model.toml",
+      "sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150"
+    },
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "result_marker": "base-08\t15\t90.000\t90.000",
+  "runner": {
+    "binary": "poie-migration-s2-regen-horizon",
+    "sha256": "854da73439ec4ee77df934f74d192a5d8277408a604e2b158e965f9d1257a6a6",
+    "source": "crates/poie-viability/src/bin/poie-migration-s2-regen-horizon.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/1",
+  "scope": "Base-05/08 regeneration intervals: Base-05 40/60/80/90 d; Base-08 60/90/90/90 d.",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation",
+  "source_certificate": "experiments/certificate-s2-regeneration/certificate.json",
+  "source_certificate_sha256": "c0aed8992e7dea7a58ea8dcac3b2591c713306c1ce5a577b659ec4e1e4e2779a",
+  "status": "REISSUED",
+  "verifier": "poie-canonical-s2-certificate/1"
+}

@@ -29,26 +29,29 @@ MAPPING = {
     "certificate-s2-joint": {
         "claims": ["C6"],
         "canonical": ["s2-canonical-c6"],
-        "status": "HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS",
+        "status": "REISSUED",
         "classification": "EXPECTED_AGREEMENT",
         "scope": "Base-06 joint coverage",
-        "rationale": "canonical reproduces 25/56 independent and 24/56 joint after the non-service repair fix",
+        "rationale": "canonical reproduces 25/56 independent and 24/56 joint after the non-service repair fix; canonical certificate issued",
+        "canonical_certificate": "experiments/certificate-s2-canonical-joint/certificate.json",
     },
     "certificate-s2-load": {
         "claims": ["C69"],
         "canonical": ["s2-canonical-load-base05"],
-        "status": "HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS",
+        "status": "REISSUED",
         "classification": "EXPECTED_AGREEMENT",
         "scope": "Base-05 load 0-4 kW",
-        "rationale": "canonical reproduces all five Base-05 load rows with final energy and termination",
+        "rationale": "canonical reproduces all five Base-05 load rows with final energy and termination; canonical certificate issued",
+        "canonical_certificate": "experiments/certificate-s2-canonical-load/certificate.json",
     },
     "certificate-s2-regeneration": {
         "claims": ["C70"],
         "canonical": ["s2-canonical-regen-horizon"],
-        "status": "HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS",
+        "status": "REISSUED",
         "classification": "EXPECTED_AGREEMENT",
         "scope": "Base-05/08 regeneration intervals",
-        "rationale": "canonical reproduces 8/8 rows including final energy and termination",
+        "rationale": "canonical reproduces 8/8 rows including final energy and termination; canonical certificate issued",
+        "canonical_certificate": "experiments/certificate-s2-canonical-regeneration/certificate.json",
     },
     "certificate-s2-metrics": {
         "claims": [],
@@ -93,7 +96,8 @@ def main(argv: list[str]) -> int:
             "scope": entry["scope"],
             "rationale": entry["rationale"],
             "expected_sha256": hashlib.sha256(expected.encode("utf-8")).hexdigest() if expected else None,
-            "reissued": False,
+            "canonical_certificate": entry.get("canonical_certificate"),
+            "reissued": bool(entry.get("canonical_certificate")),
         }
         certs.append(rows)
     inventory = json.loads(INVENTORY.read_text(encoding="utf-8"))
@@ -121,7 +125,7 @@ def main(argv: list[str]) -> int:
         lines.append(
             f"| `{cert['id']}` | `{cert['model']}` | {', '.join(cert['claims']) or 'NONE'} | "
             f"{', '.join(cert['canonical_experiments']) or 'NONE'} | `{cert['canonical_classification']}` | "
-            f"`{cert['certificate_status']}` | no |"
+            f"`{cert['certificate_status']}` | {'yes' if cert['reissued'] else 'no'} |"
         )
     lines += [
         "",
@@ -141,6 +145,8 @@ def main(argv: list[str]) -> int:
         lines += [f"### `{cert['id']}`", "", cert["rationale"], "", f"- scope: {cert['scope']}"]
         if cert["model_sha256"]:
             lines += [f"- model sha256: `{cert['model_sha256']}`"]
+        if cert["canonical_certificate"]:
+            lines += [f"- canonical certificate: `{cert['canonical_certificate']}`"]
         lines += [""]
     rendered_md = "\n".join(lines) + "\n"
     if check:

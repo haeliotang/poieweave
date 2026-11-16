@@ -83,6 +83,8 @@ S2 证书影响矩阵（未重签）：[certificate-impact-matrix.zh-CN.md](cert
 
 metrics 证书拆分（未重签）：[certificate-s2-metrics-split.zh-CN.md](certificate-s2-metrics-split.zh-CN.md)
 
+canonical 证书（joint/load/regeneration）：[certificate-s2-canonical-joint](../../experiments/certificate-s2-canonical-joint/README.md)
+
 发布签名与信任锚设计：[release-signing.zh-CN.md](../design/release-signing.zh-CN.md)（未实现）
 
 软件级故障隔离测试计划：[software-fault-isolation.zh-CN.md](../design/software-fault-isolation.zh-CN.md)（部分未执行）

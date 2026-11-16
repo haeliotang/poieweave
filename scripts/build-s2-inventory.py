@@ -178,10 +178,13 @@ def main(argv: list[str] | None = None) -> int:
     certs = []
     for path in cert_dirs():
         certificate = json.loads(read(path / "certificate.json") or "{}")
+        report = path / "REPORT.md"
+        if not report.exists():
+            report = path / "README.md"
         certs.append(
             {
                 "certificate": path.name,
-                "report": str((path / "REPORT.md").relative_to(ROOT)),
+                "report": str(report.relative_to(ROOT)),
                 "keys": sorted(certificate.keys()),
                 "claims": [
                     claim["id"]
@@ -189,7 +192,8 @@ def main(argv: list[str] | None = None) -> int:
                     if path.name in claim["evidence"] or path.name in claim.get("certificates", [])  # type: ignore[arg-type]
                 ],
                 "certificate_keys": sorted(certificate.keys()),
-                "status": "LEGACY_ONLY",
+                "source_certificate": certificate.get("source_certificate"),
+                "status": "REISSUED_CANONICAL" if path.name.startswith("certificate-s2-canonical-") else "LEGACY_ONLY",
             }
         )
     s2_claims = [
@@ -224,6 +228,9 @@ def main(argv: list[str] | None = None) -> int:
                 1 for record in records if record["stochastic"] and str(record["seed"]).startswith("NOT_RECORDED")
             ),
             "s2_certificates": len(certs),
+            "canonical_certificates_reissued": sum(
+                1 for cert in certs if cert["status"] == "REISSUED_CANONICAL"
+            ),
             "claims_with_experiment_evidence": len(mapped),
             "status_s2_result_lines": len(status_results),
             "unclassified_experiments": sum(
@@ -253,6 +260,7 @@ def main(argv: list[str] | None = None) -> int:
         f"- Canonical semantic corrections: {inventory['summary']['canonical_semantic_corrections']}",
         f"- Stochastic experiments missing a recorded seed: {inventory['summary']['stochastic_experiments_missing_seed']}",
         f"- S2 certificates: {inventory['summary']['s2_certificates']}",
+        f"- Canonical S2 certificates reissued: {inventory['summary']['canonical_certificates_reissued']}",
         f"- Status-page S2 result lines: {inventory['summary']['status_s2_result_lines']}",
         f"- Status result lines without an explicit claim: {inventory['summary']['unmapped_status_results']}",
         f"- Unclassified experiments: {inventory['summary']['unclassified_experiments']}",

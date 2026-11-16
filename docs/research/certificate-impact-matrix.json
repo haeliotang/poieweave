@@ -1,6 +1,7 @@
 {
   "certificates": [
     {
+      "canonical_certificate": null,
       "canonical_classification": "SEMANTIC_CORRECTION",
       "canonical_experiments": [
         "s2-canonical-c12",
@@ -26,11 +27,12 @@
       "scope": "time semantics and boundaries"
     },
     {
+      "canonical_certificate": "experiments/certificate-s2-canonical-joint/certificate.json",
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
         "s2-canonical-c6"
       ],
-      "certificate_status": "HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS",
+      "certificate_status": "REISSUED",
       "claim_scope": "model-level coverage only; not a joint survival certificate",
       "claims": [
         "C6"
@@ -39,17 +41,18 @@
       "id": "certificate-s2-joint",
       "model": "scenarios/base-06/model.toml",
       "model_sha256": "09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c",
-      "rationale": "canonical reproduces 25/56 independent and 24/56 joint after the non-service repair fix",
-      "reissued": false,
+      "rationale": "canonical reproduces 25/56 independent and 24/56 joint after the non-service repair fix; canonical certificate issued",
+      "reissued": true,
       "schema": "poie.coverage-certificate/1",
       "scope": "Base-06 joint coverage"
     },
     {
+      "canonical_certificate": "experiments/certificate-s2-canonical-load/certificate.json",
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
         "s2-canonical-load-base05"
       ],
-      "certificate_status": "HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS",
+      "certificate_status": "REISSUED",
       "claim_scope": "model/simulation only; not a physical safety or lifetime claim",
       "claims": [
         "C69"
@@ -58,17 +61,18 @@
       "id": "certificate-s2-load",
       "model": "scenarios/base-05/model.toml",
       "model_sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150",
-      "rationale": "canonical reproduces all five Base-05 load rows with final energy and termination",
-      "reissued": false,
+      "rationale": "canonical reproduces all five Base-05 load rows with final energy and termination; canonical certificate issued",
+      "reissued": true,
       "schema": "poie.viability-certificate/1",
       "scope": "Base-05 load 0-4 kW"
     },
     {
+      "canonical_certificate": "experiments/certificate-s2-canonical-regeneration/certificate.json",
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
         "s2-canonical-regen-horizon"
       ],
-      "certificate_status": "HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS",
+      "certificate_status": "REISSUED",
       "claim_scope": "model-level regeneration result only; not a physical yield claim",
       "claims": [
         "C70"
@@ -77,12 +81,13 @@
       "id": "certificate-s2-regeneration",
       "model": "multi-model",
       "model_sha256": null,
-      "rationale": "canonical reproduces 8/8 rows including final energy and termination",
-      "reissued": false,
+      "rationale": "canonical reproduces 8/8 rows including final energy and termination; canonical certificate issued",
+      "reissued": true,
       "schema": "poie.regeneration-certificate/1",
       "scope": "Base-05/08 regeneration intervals"
     },
     {
+      "canonical_certificate": null,
       "canonical_classification": "NOT_MIGRATED",
       "canonical_experiments": [],
       "certificate_status": "BLOCKED",
@@ -98,6 +103,7 @@
       "scope": "cross-model metric definitions and values"
     },
     {
+      "canonical_certificate": null,
       "canonical_classification": "NOT_MIGRATED",
       "canonical_experiments": [],
       "certificate_status": "BLOCKED",
@@ -119,9 +125,9 @@
     "canonical_migrations": 8,
     "canonical_semantic_corrections": 6,
     "certificates": 6,
-    "historical_valid": 3,
+    "historical_valid": 0,
     "invalidated": 0,
-    "reissued": 0,
+    "reissued": 3,
     "superseded": 1
   }
 }

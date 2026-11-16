@@ -2552,6 +2552,141 @@
   ],
   "certificates": [
     {
+      "certificate": "certificate-s2-canonical-joint",
+      "report": "experiments/certificate-s2-canonical-joint/README.md",
+      "keys": [
+        "canonical_classification",
+        "certificate_id",
+        "claims",
+        "claims_sha256",
+        "engine",
+        "evidence_commit",
+        "experiment",
+        "models",
+        "result_marker",
+        "runner",
+        "schema",
+        "scope",
+        "semantics",
+        "source_certificate",
+        "source_certificate_sha256",
+        "status",
+        "verifier"
+      ],
+      "claims": [],
+      "certificate_keys": [
+        "canonical_classification",
+        "certificate_id",
+        "claims",
+        "claims_sha256",
+        "engine",
+        "evidence_commit",
+        "experiment",
+        "models",
+        "result_marker",
+        "runner",
+        "schema",
+        "scope",
+        "semantics",
+        "source_certificate",
+        "source_certificate_sha256",
+        "status",
+        "verifier"
+      ],
+      "source_certificate": "experiments/certificate-s2-joint/certificate.json",
+      "status": "REISSUED_CANONICAL"
+    },
+    {
+      "certificate": "certificate-s2-canonical-load",
+      "report": "experiments/certificate-s2-canonical-load/README.md",
+      "keys": [
+        "canonical_classification",
+        "certificate_id",
+        "claims",
+        "claims_sha256",
+        "engine",
+        "evidence_commit",
+        "experiment",
+        "models",
+        "result_marker",
+        "runner",
+        "schema",
+        "scope",
+        "semantics",
+        "source_certificate",
+        "source_certificate_sha256",
+        "status",
+        "verifier"
+      ],
+      "claims": [],
+      "certificate_keys": [
+        "canonical_classification",
+        "certificate_id",
+        "claims",
+        "claims_sha256",
+        "engine",
+        "evidence_commit",
+        "experiment",
+        "models",
+        "result_marker",
+        "runner",
+        "schema",
+        "scope",
+        "semantics",
+        "source_certificate",
+        "source_certificate_sha256",
+        "status",
+        "verifier"
+      ],
+      "source_certificate": "experiments/certificate-s2-load/certificate.json",
+      "status": "REISSUED_CANONICAL"
+    },
+    {
+      "certificate": "certificate-s2-canonical-regeneration",
+      "report": "experiments/certificate-s2-canonical-regeneration/README.md",
+      "keys": [
+        "canonical_classification",
+        "certificate_id",
+        "claims",
+        "claims_sha256",
+        "engine",
+        "evidence_commit",
+        "experiment",
+        "models",
+        "result_marker",
+        "runner",
+        "schema",
+        "scope",
+        "semantics",
+        "source_certificate",
+        "source_certificate_sha256",
+        "status",
+        "verifier"
+      ],
+      "claims": [],
+      "certificate_keys": [
+        "canonical_classification",
+        "certificate_id",
+        "claims",
+        "claims_sha256",
+        "engine",
+        "evidence_commit",
+        "experiment",
+        "models",
+        "result_marker",
+        "runner",
+        "schema",
+        "scope",
+        "semantics",
+        "source_certificate",
+        "source_certificate_sha256",
+        "status",
+        "verifier"
+      ],
+      "source_certificate": "experiments/certificate-s2-regeneration/certificate.json",
+      "status": "REISSUED_CANONICAL"
+    },
+    {
       "certificate": "certificate-s2-joint",
       "report": "experiments/certificate-s2-joint/REPORT.md",
       "keys": [
@@ -2583,6 +2718,7 @@
         "service",
         "total"
       ],
+      "source_certificate": null,
       "status": "LEGACY_ONLY"
     },
     {
@@ -2611,6 +2747,7 @@
         "rows",
         "schema"
       ],
+      "source_certificate": null,
       "status": "LEGACY_ONLY"
     },
     {
@@ -2651,6 +2788,7 @@
         "schema",
         "yield_sensitivity"
       ],
+      "source_certificate": null,
       "status": "LEGACY_ONLY"
     },
     {
@@ -2673,6 +2811,7 @@
         "rows",
         "schema"
       ],
+      "source_certificate": null,
       "status": "LEGACY_ONLY"
     },
     {
@@ -2693,6 +2832,7 @@
         "rows",
         "schema"
       ],
+      "source_certificate": null,
       "status": "LEGACY_ONLY"
     },
     {
@@ -2731,6 +2871,7 @@
         "schema",
         "sparse"
       ],
+      "source_certificate": null,
       "status": "LEGACY_ONLY"
     }
   ],
@@ -2817,7 +2958,8 @@
     "canonical_migrations_blocked": 0,
     "canonical_semantic_corrections": 6,
     "stochastic_experiments_missing_seed": 0,
-    "s2_certificates": 6,
+    "s2_certificates": 9,
+    "canonical_certificates_reissued": 3,
     "claims_with_experiment_evidence": 27,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,

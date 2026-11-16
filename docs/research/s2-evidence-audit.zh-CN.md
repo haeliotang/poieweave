@@ -35,7 +35,7 @@
 | 已迁移到 canonical 的正式 S2 experiment | **8** |
 | canonical 语义修正 | **6**（C11–C14、C18、C19） |
 | 缺少记录种子的随机 experiment | **0** |
-| S2 证书 | 6 |
+| S2 证书 | 9（6 历史 + 3 canonical 重签） |
 | 状态页 S2 数值结论行 | 12 |
 | 其中未显式登记为 claim | **0** |
 
@@ -75,9 +75,14 @@ Batch 1–3 是 kernel/migration probe，不是正式 S2 实验的 canonical 重
 `stochastic_experiments_missing_seed` 从 2 降为 **0**。这不是补造种子，而是纠正
 错误分类。
 
-### F4：6 个 S2 证书中只有 time 证书被 claim 显式引用
+### F4：证书状态已按影响矩阵和 canonical 重签区分
 
-`certificate-s2-joint/load/metrics/order/regeneration` 没有被 claims ledger 显式引用。Phase D 需要 Certificate Impact Matrix，不能假设它们自动有效。
+- `certificate-s2-canonical-joint/load/regeneration`：REISSUED，绑定 engine/model/runner/output SHA
+- `certificate-s2-time`：SUPERSEDED
+- `certificate-s2-metrics`：BLOCKED，已拆 13 组
+- `certificate-s2-order`：BLOCKED
+
+历史证书原样保留；重签是新目录，不覆盖旧文件。
 
 ### F5：状态页 12 条 S2 数值结论已全部归一化
 
