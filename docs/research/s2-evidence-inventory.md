@@ -8,11 +8,11 @@ currently produces the formal result; it is not a claim of equivalence.
 
 ## Summary
 
-- S2 claims: 48
-- S2 experiment directories: 107
-- Experiments referenced by claims: 48
+- S2 claims: 49
+- S2 experiment directories: 108
+- Experiments referenced by claims: 49
 - Unmapped experiments: 59
-- Formal S2 experiments migrated to canonical: 20
+- Formal S2 experiments migrated to canonical: 21
 - Canonical migrations blocked: 0
 - Canonical semantic corrections: 15
 - Stochastic experiments missing a recorded seed: 0
@@ -21,8 +21,8 @@ currently produces the formal result; it is not a claim of equivalence.
 - Status-page S2 result lines: 12
 - Status result lines without an explicit claim: 0
 - Unclassified experiments: 0
-- Aux experiments with canonical evidence: 49
-- Aux experiments without canonical evidence: 10
+- Aux experiments with canonical evidence: 51
+- Aux experiments without canonical evidence: 8
 
 ## Claim crosswalk
 
@@ -76,6 +76,7 @@ currently produces the formal result; it is not a claim of equivalence.
 | C89 | s2-canonical-aux-batch13 | engine::run_engine | MIGRATED |
 | C90 | s2-canonical-aux-batch14 | engine::run_engine | MIGRATED |
 | C91 | s2-canonical-aux-batch15 | engine::run_engine | MIGRATED |
+| C92 | s2-canonical-aux-batch16 | engine::run_engine | MIGRATED |
 
 ## Status-page S2 results
 
@@ -116,6 +117,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-canonical-aux-batch13 | poie-migration-aux-batch13 | base-08 | C89 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
 | s2-canonical-aux-batch14 | poie-migration-aux-batch14 | base-08 | C90 | NOT_APPLICABLE | CANONICAL_SEMANTIC_CORRECTION |
 | s2-canonical-aux-batch15 | poie-migration-aux-batch15 | base-05, base-08 | C91 | NOT_APPLICABLE | CANONICAL_MIGRATED |
+| s2-canonical-aux-batch16 | poie-migration-aux-batch16 | base-08 | C92 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch2 | poie-migration-aux-batch2 | base-08 | C78 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch3 | poie-migration-aux-batch3 | base-08 | C79 | NOT_APPLICABLE | CANONICAL_MIGRATED |
 | s2-canonical-aux-batch4 | poie-migration-aux-batch4 | base-08 | C80 | NOT_APPLICABLE | CANONICAL_MIGRATED |
@@ -150,7 +152,7 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-failure-envelope | poie-survival | base-01, base-04, base-05 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-failure-pairs | poie-pairs | base-05 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-filter-restorer | poie-filter-restorer | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
-| s2-grease-cost | poie-grease-cost | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-grease-cost | poie-grease-cost | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-heldout | poie-heldout | base-05 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-insert-bound | poie-insert-bound | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-insert-regeneration | poie-insert-regeneration | base-08 | C7 | NOT_APPLICABLE | NOT_MIGRATED |
@@ -207,4 +209,4 @@ claim list means the result has not yet been normalized into the claims ledger.
 | s2-time-repair-sweep | poie-time-repair-sweep | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
 | s2-two-restorers | poie-two-restorers | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
 | s2-worn-bound | poie-worn-bound | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |
-| s2-yield-accumulation | poie-yield-accumulation | base-08 | NONE | NOT_APPLICABLE | NOT_MIGRATED |
+| s2-yield-accumulation | poie-yield-accumulation | base-08 | NONE | NOT_APPLICABLE | COVERED_BY_CANONICAL |

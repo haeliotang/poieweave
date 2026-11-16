@@ -24,17 +24,17 @@
 
 | 指标 | 数量 |
 | --- | --- |
-| S2 claims | 48 |
-| S2 experiment 目录 | 107 |
-| 被 claim 引用的 experiment | 48 |
+| S2 claims | 49 |
+| S2 experiment 目录 | 108 |
+| 被 claim 引用的 experiment | 49 |
 | 未被 claim 引用的 experiment | 59 |
 | 未分类 experiment | **0** |
-| aux 已有 canonical 证据 | **49** |
-| aux 尚无 canonical 证据 | **10** |
+| aux 已有 canonical 证据 | **51** |
+| aux 尚无 canonical 证据 | **8** |
 | FORMAL_CLAIMED / FORMAL_AUXILIARY | 48 / 48 |
 | SUPERSEDED_BY_CANONICAL / EXPLORATORY_NEGATIVE | 6 / 2 |
 | DEFINITIONAL / DETERMINISTIC_SWEEP | 1 / 2 |
-| 已迁移到 canonical 的正式 S2 experiment | **20** |
+| 已迁移到 canonical 的正式 S2 experiment | **21** |
 | canonical 语义修正 | **15**（C11–C14、C18、C19、C71、C73–C76、C81、C84、C89、C90） |
 | 缺少记录种子的随机 experiment | **0** |
 | S2 证书 | 11（6 历史 + 5 canonical 重签） |
@@ -60,14 +60,12 @@ canonical 证据：
 
 - `s2-adversarial-random`
 - `s2-adversarial-timing`
-- `s2-grease-cost`
 - `s2-metrics`（定义型）
 - `s2-order-sensitivity`（负结果）
 - `s2-recycle-residue`
 - `s2-regeneration`（Base-06/07 coverage）
 - `s2-resupply`
 - `s2-two-restorers`
-- `s2-yield-accumulation`
 
 这些不能视为已收敛。
 
