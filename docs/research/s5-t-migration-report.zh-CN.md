@@ -37,6 +37,8 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 | C19/C67 | [s2-canonical-c19](../../experiments/s2-canonical-c19/REPORT.md) | 均值 14.0→2.2，p90 15.6→2.0 |
 | C68/C73 | [s2-canonical-c68-monte-carlo](../../experiments/s2-canonical-c68-monte-carlo/REPORT.md) | 中位 72→68，均值 64.8→64.0 |
 | C71 | [s2-canonical-metrics-groups](../../experiments/s2-canonical-metrics-groups/REPORT.md) | coverage 5/10 资产可修复 → 9/10 服务影响 |
+| C75 | [s2-canonical-energy-interventions](../../experiments/s2-canonical-energy-interventions/REPORT.md) | energy interventions 12 行日级一致；16→16.25 d |
+| C76 | [s2-canonical-redundancy-restorers](../../experiments/s2-canonical-redundancy-restorers/REPORT.md) | filter/robot restorer 7/8 一致；共享机器人 baseline 30→20 |
 | C74 | [s2-canonical-c12-components](../../experiments/s2-canonical-c12-components/REPORT.md) | C12 horizon/insert/repair-sweep 全部覆盖 |
 | C75 | [s2-canonical-energy-interventions](../../experiments/s2-canonical-energy-interventions/REPORT.md) | energy interventions 12 行日级一致 |
 | C76 | [s2-canonical-redundancy-restorers](../../experiments/s2-canonical-redundancy-restorers/REPORT.md) | filter/robot restorer 7/8 一致 |
@@ -91,7 +93,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 - C71 coverage 差异是定义变化。
 - legacy 的若干延迟故障行为已被明确取代。
 
-未迁移的 59 个辅助实验不在此声明内，不能据此推断无差异。
+未迁移的 59 个辅助实验不在此声明内，不能据此推断无差异；它们被明确排除在 S5-T scoped 收敛声明之外。
 
 ## 6. 未能迁移的执行入口及原因
 
@@ -101,7 +103,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 
 
 
-| `certificate-s2-metrics` excluded groups | 明确排除 | partial/superseded，不进入 v2 声明范围 |
+| `certificate-s2-metrics` excluded group | 明确排除 | `redundancy_time` superseded baseline，不进入 v2 声明范围 |
 | FMI 协同仿真 | 未执行 | 仅有 modelDescription/容器检查 |
 | 真实设备/物理安全 | 未验证 | 超出本 GOAL 范围 |
 
@@ -130,7 +132,7 @@ S2 evidence inventory 共记录 30 条 S2 claims、89 个 S2 实验、12 条已�
 
 未建立：
 
-- `S5-T SEMANTIC CONVERGENCE — ESTABLISHED`：仍有 59 个辅助实验与 C12 分量未 canonical 化。
+- `S5-T SEMANTIC CONVERGENCE — ESTABLISHED`：仍有 59 个辅助实验未 canonical 化；当前收敛声明只覆盖 20 个 claim-bearing canonical 实验与相应证书。
 - `S5 CROSS-MODEL VALIDITY`：尚未执行外部 FMU/FMI 协同仿真或独立数值比较。
 - 物理安全、真实工业设备自主运行：未验证。
 - 持久信任锚、多写者/分区/时钟偏移：未建立。
@@ -148,5 +150,7 @@ cargo run --locked -q -p poie-viability --bin poie-migration-c9
 cargo run --locked -q -p poie-viability --bin poie-migration-c10
 ./scripts/check-all.sh
 ```
+
+干净 target 复现：`CARGO_TARGET_DIR=/tmp/poie-s5t-clean-target ./scripts/check-all.sh` 于 2026-11-16 通过，`ok all checks`。
 
 机器可读证据：[s2-evidence-inventory.json](s2-evidence-inventory.json)、[certificate-impact-matrix.json](certificate-impact-matrix.json)、[certificate-s2-metrics-split.json](certificate-s2-metrics-split.json)。
