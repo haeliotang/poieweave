@@ -54,3 +54,8 @@ SPDX-License-Identifier = "Apache-2.0"
 path = ["Cargo.lock", "apps/desktop/pnpm-lock.yaml", "apps/desktop/src-tauri/Cargo.lock", ".gitignore"]
 SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
 SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = ["audit/**"]
+SPDX-FileCopyrightText = "2026 Inceptless <support@inceptless.com>"
+SPDX-License-Identifier = "Apache-2.0"
