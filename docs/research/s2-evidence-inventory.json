@@ -264,6 +264,15 @@
       ],
       "certificates": [],
       "boundary": "负结果保持"
+    },
+    {
+      "id": "C73",
+      "statement": "canonical C68 Monte Carlo：中位 72→68、均值 64.8→64.0",
+      "evidence": [
+        "s2-canonical-c68-monte-carlo"
+      ],
+      "certificates": [],
+      "boundary": "同种子 2000 runs"
     }
   ],
   "experiments": [
@@ -731,6 +740,34 @@
       "classification": "FORMAL_CLAIMED",
       "classification_reason": "cited by a formal claim",
       "migration_status": "CANONICAL_MIGRATED",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-c68-monte-carlo",
+      "report": "experiments/s2-canonical-c68-monte-carlo/REPORT.md",
+      "prereg": "experiments/s2-canonical-c68-monte-carlo/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c68"
+      ],
+      "models": [
+        "base-05"
+      ],
+      "expected_output_lines": 16,
+      "expected_output": "series\tmin\tp10\tmedian\tmean\tp90\tmax\tsurvived_90\nlegacy\t20\t28\t72\t64.8\t90\t90\t622\ncanonical\t20\t28\t68\t64.0\t90\t90\t611\nbucket\tlegacy\t[0,40)\t403\nbucket\tlegacy\t[40,60)\t380\nbucket\tlegacy\t[60,80)\t358\nbucket\tlegacy\t[80,90)\t237\nbucket\tlegacy\t[90,91)\t622\nseries_name\tlegacy\nbucket\tcanonical\t[0,40)\t434\nbucket\tcanonical\t[40,60)\t381\nbucket\tcanonical\t[60,80)\t348\nbucket\tcanonical\t[80,90)\t226\nbucket\tcanonical\t[90,91)\t611\nseries_name\tcanonical\nclassification\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\n",
+      "expected_head": [
+        "series\tmin\tp10\tmedian\tmean\tp90\tmax\tsurvived_90",
+        "legacy\t20\t28\t72\t64.8\t90\t90\t622"
+      ],
+      "stochastic": true,
+      "seed": "0x9E37_79B9_7F4A_7C15",
+      "claim_ids": [
+        "C73"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "classification": "FORMAL_CLAIMED",
+      "classification_reason": "cited by a formal claim",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
       "risk": "HIGH"
     },
     {
@@ -3070,17 +3107,17 @@
     }
   ],
   "summary": {
-    "s2_claims": 29,
-    "s2_experiments": 88,
-    "claimed_experiments": 29,
+    "s2_claims": 30,
+    "s2_experiments": 89,
+    "claimed_experiments": 30,
     "unmapped_experiments": 59,
     "formal_s2_experiments_migrated_to_canonical": 9,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 7,
+    "canonical_semantic_corrections": 8,
     "stochastic_experiments_missing_seed": 0,
     "s2_certificates": 10,
     "canonical_certificates_reissued": 4,
-    "claims_with_experiment_evidence": 29,
+    "claims_with_experiment_evidence": 30,
     "status_s2_result_lines": 12,
     "unclassified_experiments": 0,
     "unmapped_status_results": 0

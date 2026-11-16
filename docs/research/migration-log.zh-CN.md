@@ -34,6 +34,7 @@
 | D | metrics 证书拆分 | 更新 | 13 组：7 migrated、3 semantic、2 partial、1 superseded、0 not migrated；聚合证书仍 BLOCKED |
 | B-C71 | metrics 四组 | 接受（含定义修正） | regenerative/yield/recharge 一致；coverage 5/10→9/10 服务影响 |
 | B-C72 | order 证书 | 接受 | 24/25、40/44，order_sensitive=0 |
+| B-C73 | C68 Monte Carlo | 接受（语义修正） | 中位 72→68、均值 64.8→64.0、survived 622→611 |
 | D | canonical 证书重签 | 完成 4 个 | joint/load/regeneration/order；历史证书保留 |
 
 | A | 状态页数值归一化 | 完成 | 12/12 映射；C68 Monte Carlo 为 legacy-only |

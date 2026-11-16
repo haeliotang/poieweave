@@ -79,6 +79,7 @@
 | C70 | Base-05/08 再生间隔八行 canonical 一致 | `experiments/s2-canonical-regen-horizon` | certificate-s2-regeneration 绑定 |
 | C71 | metrics 四组：3 组一致，coverage 定义改为服务影响 9/10 | `experiments/s2-canonical-metrics-groups` | 定义已版本化，不覆盖旧 5/10 |
 | C72 | canonical order：24/25、40/44，order_sensitive=0 | `experiments/s2-canonical-order` | 负结果保持 |
+| C73 | canonical C68 Monte Carlo：中位 72→68、均值 64.8→64.0 | `experiments/s2-canonical-c68-monte-carlo` | 同种子 2000 runs |
 
 ## 不应出现的声明
 
