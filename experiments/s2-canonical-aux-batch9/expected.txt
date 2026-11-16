@@ -1,0 +1,11 @@
+experiment	row	legacy_days	canonical_days	classification
+insert-bound	count=2	40	40.000	EXPECTED_AGREEMENT
+insert-bound	count=3	50	50.000	EXPECTED_AGREEMENT
+insert-bound	count=4	60	60.000	EXPECTED_AGREEMENT
+insert-bound	count=6	60	60.000	EXPECTED_AGREEMENT
+insert-bound	count=8	60	60.000	EXPECTED_AGREEMENT
+insert-bound	count=12	60	60.000	EXPECTED_AGREEMENT
+joint-load	load=2,bronze=3.0	60	60.000	EXPECTED_AGREEMENT
+joint-load	load=2,bronze=6.0	90	90.000	EXPECTED_AGREEMENT
+joint-load	load=3,bronze=3.0	3	3.292	EXPECTED_AGREEMENT
+joint-load	load=3,bronze=6.0	3	3.292	EXPECTED_AGREEMENT
