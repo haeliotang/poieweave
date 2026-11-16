@@ -1,0 +1,127 @@
+{
+  "certificates": [
+    {
+      "canonical_classification": "SEMANTIC_CORRECTION",
+      "canonical_experiments": [
+        "s2-canonical-c12",
+        "s2-canonical-c13",
+        "s2-canonical-c18",
+        "s2-canonical-c19"
+      ],
+      "certificate_status": "SUPERSEDED",
+      "claim_scope": "model/simulation time semantics only; no physical timing claim",
+      "claims": [
+        "C12",
+        "C13",
+        "C18",
+        "C19"
+      ],
+      "expected_sha256": "708987bd04cc4f055e539389957ea9375c79ab5ee04c91ad1861bafbdc2b74b5",
+      "id": "certificate-s2-time",
+      "model": "multi-model",
+      "model_sha256": null,
+      "rationale": "canonical t=0 ordering and in-repair failure timing change grease/random-window values",
+      "reissued": false,
+      "schema": "poie.time-certificate/1",
+      "scope": "time semantics and boundaries"
+    },
+    {
+      "canonical_classification": "EXPECTED_AGREEMENT",
+      "canonical_experiments": [
+        "s2-canonical-c6"
+      ],
+      "certificate_status": "HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS",
+      "claim_scope": "model-level coverage only; not a joint survival certificate",
+      "claims": [
+        "C6"
+      ],
+      "expected_sha256": "708987bd04cc4f055e539389957ea9375c79ab5ee04c91ad1861bafbdc2b74b5",
+      "id": "certificate-s2-joint",
+      "model": "scenarios/base-06/model.toml",
+      "model_sha256": "09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c",
+      "rationale": "canonical reproduces 25/56 independent and 24/56 joint after the non-service repair fix",
+      "reissued": false,
+      "schema": "poie.coverage-certificate/1",
+      "scope": "Base-06 joint coverage"
+    },
+    {
+      "canonical_classification": "EXPECTED_AGREEMENT",
+      "canonical_experiments": [
+        "s2-canonical-c8"
+      ],
+      "certificate_status": "HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS",
+      "claim_scope": "model/simulation only; not a physical safety or lifetime claim",
+      "claims": [
+        "C8"
+      ],
+      "expected_sha256": "708987bd04cc4f055e539389957ea9375c79ab5ee04c91ad1861bafbdc2b74b5",
+      "id": "certificate-s2-load",
+      "model": "scenarios/base-05/model.toml",
+      "model_sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150",
+      "rationale": "canonical reproduces all 11 load rows including 2.6 kW switch and final energy",
+      "reissued": false,
+      "schema": "poie.viability-certificate/1",
+      "scope": "Base-08 load threshold"
+    },
+    {
+      "canonical_classification": "EXPECTED_AGREEMENT",
+      "canonical_experiments": [
+        "s2-canonical-c7"
+      ],
+      "certificate_status": "HISTORICAL_VALID_WITH_ORIGINAL_SEMANTICS",
+      "claim_scope": "model-level regeneration result only; not a physical yield claim",
+      "claims": [
+        "C7"
+      ],
+      "expected_sha256": "708987bd04cc4f055e539389957ea9375c79ab5ee04c91ad1861bafbdc2b74b5",
+      "id": "certificate-s2-regeneration",
+      "model": "multi-model",
+      "model_sha256": null,
+      "rationale": "canonical reproduces 6/6 rows including energy and failure times",
+      "reissued": false,
+      "schema": "poie.regeneration-certificate/1",
+      "scope": "insert sharpening 40/50->60"
+    },
+    {
+      "canonical_classification": "NOT_MIGRATED",
+      "canonical_experiments": [],
+      "certificate_status": "BLOCKED",
+      "claim_scope": "model-level metric definitions only; not a physical forecast",
+      "claims": [],
+      "expected_sha256": "708987bd04cc4f055e539389957ea9375c79ab5ee04c91ad1861bafbdc2b74b5",
+      "id": "certificate-s2-metrics",
+      "model": "multi-model",
+      "model_sha256": null,
+      "rationale": "contains multiple numeric metrics with no single canonical migration; must be split before reissue",
+      "reissued": false,
+      "schema": "poie.metrics-certificate/1",
+      "scope": "cross-model metric definitions and values"
+    },
+    {
+      "canonical_classification": "NOT_MIGRATED",
+      "canonical_experiments": [],
+      "certificate_status": "BLOCKED",
+      "claim_scope": "model-level ordering result only; not a scheduling optimality claim",
+      "claims": [],
+      "expected_sha256": "708987bd04cc4f055e539389957ea9375c79ab5ee04c91ad1861bafbdc2b74b5",
+      "id": "certificate-s2-order",
+      "model": "scenarios/base-06/model.toml",
+      "model_sha256": "09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c",
+      "rationale": "no formal claim in the claims ledger and no canonical order adapter; do not reissue",
+      "reissued": false,
+      "schema": "poie.order-certificate/1",
+      "scope": "Base-06 repair-order sensitivity"
+    }
+  ],
+  "schema": "poie.s2-certificate-impact-matrix/1",
+  "summary": {
+    "blocked": 2,
+    "canonical_migrations": 6,
+    "canonical_semantic_corrections": 6,
+    "certificates": 6,
+    "historical_valid": 3,
+    "invalidated": 0,
+    "reissued": 0,
+    "superseded": 1
+  }
+}

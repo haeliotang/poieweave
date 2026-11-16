@@ -894,9 +894,12 @@ jobs:
           diff experiments/certificate-clean-room/expected.txt /tmp/certificate-clean-room.out
           test -f experiments/certificate-clean-room/REPORT.md
       - name: All certificate invariants
-        run: python3 scripts/check-certificate-invariants.py
+        run: |
+          python3 scripts/check-certificate-invariants.py
           diff experiments/certificate-bundle-tamper/expected.txt /tmp/certificate-bundle-tamper.out
           test -f experiments/certificate-bundle-tamper/REPORT.md
+      - name: S2 certificate impact matrix
+        run: python3 scripts/build-certificate-impact.py --check
       - name: Certificate bundle summary (Python)
         run: |
           python3 experiments/certificate-bundle/render.py experiments/certificate-bundle/bundle.json > /tmp/SUMMARY.md

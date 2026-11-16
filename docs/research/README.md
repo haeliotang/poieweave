@@ -13,6 +13,7 @@
 - [Canonical Engine](canonical-engine.zh-CN.md)
 - [Migration Log](migration-log.zh-CN.md)
 - [S2 Evidence Audit](s2-evidence-audit.zh-CN.md)
+- [S2 Certificate Impact Matrix](certificate-impact-matrix.zh-CN.md)
 
 ## 设计与外部依赖
 
