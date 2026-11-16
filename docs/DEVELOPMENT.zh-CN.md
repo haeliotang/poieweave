@@ -972,3 +972,4 @@ flowchart LR
 | 0.1.476 | 2026-11-16 | order 证书 canonical 一致；230/419 |
 | 0.1.477 | 2026-11-16 | C68 Monte Carlo canonical 分布；231/421 |
 | 0.1.478 | 2026-11-16 | metrics v2 重签，coverage service-impact-v1；5 certs reissued |
+| 0.1.479 | 2026-11-16 | 建立 S5-T Migration Report 初版（NOT ESTABLISHED） |
