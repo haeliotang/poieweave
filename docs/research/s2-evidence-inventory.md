@@ -16,7 +16,8 @@ currently produces the formal result; it is not a claim of equivalence.
 - Canonical migrations blocked: 0
 - Canonical semantic corrections: 6
 - Stochastic experiments missing a recorded seed: 0
-- S2 certificates: 6
+- S2 certificates: 9
+- Canonical S2 certificates reissued: 3
 - Status-page S2 result lines: 12
 - Status result lines without an explicit claim: 0
 - Unclassified experiments: 0

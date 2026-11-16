@@ -16,6 +16,8 @@ python3 scripts/build-s2-inventory.py --check
 python3 scripts/check-certificate-invariants.py
 python3 scripts/build-certificate-impact.py --check
 python3 scripts/build-metrics-split.py --check
+python3 scripts/build-canonical-s2-certificates.py --check
+python3 scripts/check-canonical-certificate-tamper.py
 python3 scripts/check-docs.py
 
 echo "ok all checks"
