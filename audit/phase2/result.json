@@ -54,6 +54,13 @@
       "package": "fmpy",
       "version": "0.3.32",
       "role": "independent FMI 3.0 importer"
+    },
+    "canonical_reference": {
+      "path": "audit/phase2/canonical-reference.txt",
+      "sha256": "e4675ad7611341844bcc72066df34dc92c88aef15ac61ac787cbb3ef53b87b5c",
+      "source_commit": "7d198d90e729f40faafbe21e4de77311c361dc22",
+      "runner": "poie-s5v-energy-reference",
+      "note": "Frozen canonical export; CI verifies this SHA instead of rebuilding Rust in the FMU job."
     }
   },
   "fm": {
@@ -72,15 +79,29 @@
     "reference": "audit/phase2/canonical-reference.txt",
     "reference_sha256": "e4675ad7611341844bcc72066df34dc92c88aef15ac61ac787cbb3ef53b87b5c",
     "runner": "poie-s5v-energy-reference",
+    "source_commit": "7d198d90e729f40faafbe21e4de77311c361dc22",
     "survived_s": 284400.0,
-    "repair_completion_s": 10800.0
+    "repair_completion_s": 10800.0,
+    "exported_fields": [
+      "repair completion time",
+      "repair completion generated/load/repair energy",
+      "repair completion energy before/after",
+      "depletion time"
+    ],
+    "not_exported": [
+      "repair-window interior states",
+      "t=0 as a runtime record",
+      "terminal energy as a runtime record"
+    ]
   },
   "runs": {
     "coarse": {
       "step_s": 3600,
       "rows": 80,
       "analytic_max_abs_error_J": 0.0,
-      "canonical_boundary_max_abs_error_J": 0.0,
+      "canonical_exported_max_abs_error_J": 0.0,
+      "initial_condition_max_abs_error_J": 0.0,
+      "terminal_constraint_max_abs_error_J": 0.0,
       "terminal": {
         "time_s": 284400.0,
         "energy_J": 0.0,
@@ -110,13 +131,17 @@
       "available": true,
       "rows": 80,
       "max_abs_error_vs_harness_J": 0.0,
-      "log": "audit/phase2/logs/fmpy.log"
+      "csv": "audit/phase2/results/fmpy-3600.csv",
+      "csv_sha256": "1ed5ce31ee805744f60dc7c76d4134005c6f299b2d186a9cdf97375d29dc6cfe",
+      "log": "audit/phase2/logs/fmpy.log",
+      "log_sha256": "c54d0b1a6184e0a0a13f455d7e086e97e016543417015a7c1227097455d79ecd"
     },
     "tampered": {
       "max_abs_error_J": 28440000.0,
       "detected": true
     }
   },
+  "platform": "aarch64-darwin",
   "repair_settlement_model_difference": {
     "status": "MODEL_ASSUMPTION_DIFFERENCE_NOT_COMPARED_AS_TRAJECTORY",
     "fmu": "repair energy spread uniformly over 0..10800 s",

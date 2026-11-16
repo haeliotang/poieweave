@@ -27,7 +27,7 @@
     },
     {
       "path": "audit/phase2/config.json",
-      "sha256": "b726f943d1bdca0e90ebbe3fd556612e7f9992ee611938523ef468e775fb193e"
+      "sha256": "65e80c4f6d3b60a1489ed6ff9799947c5b6ff10778f1127d41eae5d912eeb3e6"
     },
     {
       "path": "audit/phase2/canonical-reference.txt",
@@ -35,7 +35,7 @@
     },
     {
       "path": "audit/phase2/result.json",
-      "sha256": "92a06e7814ac9f668955827dc9d8bfa1f37e2bcfa003efa715354c330e4d0133"
+      "sha256": "13c8c2d436a60f293d19ed773dab231ba39083dcdb05de57b9211f0276673666"
     },
     {
       "path": "audit/phase2/fmpy_import.py",

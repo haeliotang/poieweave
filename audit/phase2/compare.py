@@ -15,6 +15,7 @@ during the repair window. It compares:
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import subprocess
@@ -78,7 +79,19 @@ def analytic(t: float, cfg: dict) -> dict:
     }
 
 
-def parse_canonical() -> dict:
+def _platform(log: Path) -> str | None:
+    if not log.is_file():
+        return None
+    for line in log.read_text().splitlines():
+        if line.startswith("platform_tuple="):
+            return line.split("=", 1)[1]
+    return None
+
+
+def parse_canonical(expected_sha256: str) -> dict:
+    actual = sha(CANONICAL)
+    if actual != expected_sha256:
+        raise SystemExit(f"canonical reference hash mismatch: actual={actual} expected={expected_sha256}")
     text = CANONICAL.read_text().splitlines()
     survived = float(text[1].split("\t")[2])
     trace = text[3].split("\t")
@@ -103,13 +116,20 @@ def close(actual: float, expected: float, tol: dict, label: str, problems: list[
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--fmpy-csv", default=str(HERE / "results" / "fmpy-3600.csv"))
+    parser.add_argument("--fmpy-log", default=str(HERE / "logs" / "fmpy.log"))
+    args = parser.parse_args()
     cfg = json.loads(CONFIG.read_text())
-    canonical = parse_canonical()
+    canonical = parse_canonical(cfg["canonical_reference"]["sha256"])
     coarse = parse(run_harness(FMU, cfg["time_grid"]["coarse_step_s"], "fmu-coarse-3600"))
     fine = parse(run_harness(FMU, cfg["time_grid"]["fine_step_s"], "fmu-fine-900"))
     tampered = parse(run_harness(TAMPERED, cfg["time_grid"]["coarse_step_s"], "fmu-tampered-3600"))
-    fmpy_csv = HERE / "results" / "fmpy-3600.csv"
-    fmpy_rows = parse(fmpy_csv) if fmpy_csv.is_file() else None
+    fmpy_csv = Path(args.fmpy_csv)
+    fmpy_log = Path(args.fmpy_log)
+    if not fmpy_csv.is_file():
+        raise SystemExit(f"fmpy CSV missing: {fmpy_csv}")
+    fmpy_rows = parse(fmpy_csv)
 
     problems: list[str] = []
     tol = cfg["tolerances"]
@@ -124,11 +144,18 @@ def main() -> int:
                             - row["repair_J"] - row["curtailed_J"] - row["energy_J"])
             if abs(conservation) > tol["conservation_absolute_J"]:
                 problems.append(f"conservation {conservation} at {row['time_s']}")
-    # 2) FMU vs canonical at exported boundaries only.
+    # 2) Canonical checks split by evidence authority.
+    #    - repair completion and depletion time are canonical-exported
+    #    - t=0 energy is the configured initial condition, not a canonical export
+    #    - terminal energy 0 is a constraint, not a canonical export
     boundary_problems: list[str] = []
     boundary_errors: list[float] = []
+    initial_problems: list[str] = []
+    initial_errors: list[float] = []
+    terminal_problems: list[str] = []
+    terminal_errors: list[float] = []
     start = coarse[0]
-    boundary_errors.append(close(start["energy_J"], cfg["inputs"]["initial_energy_J"], tol, "canonical t=0 energy", boundary_problems))
+    initial_errors.append(close(start["energy_J"], cfg["inputs"]["initial_energy_J"], tol, "initial-condition energy", initial_problems))
     at_repair = next((row for row in coarse if abs(row["time_s"] - canonical["repair_completion_s"]) < 1e-9), None)
     if at_repair is None:
         boundary_problems.append("canonical repair boundary missing in FMU output")
@@ -139,25 +166,21 @@ def main() -> int:
                                          f"canonical repair boundary {key}", boundary_problems))
     terminal = coarse[-1]
     boundary_errors.append(close(terminal["time_s"], canonical["survived_s"], tol, "canonical depletion time", boundary_problems))
-    boundary_errors.append(close(terminal["energy_J"], 0.0, tol, "canonical terminal energy", boundary_problems))
+    terminal_errors.append(close(terminal["energy_J"], 0.0, tol, "terminal-energy constraint", terminal_problems))
     if abs(terminal["time_s"] - cfg["reference"]["expected_depletion_s"]) > tol["time_absolute_s"]:
         boundary_problems.append("terminal time differs from registered reference")
-    problems.extend(boundary_problems)
+    problems.extend(boundary_problems + initial_problems + terminal_problems)
     # 3) C harness vs fmpy importer.
     fmpy_problems: list[str] = []
-    fmpy_max_error = None
-    if fmpy_rows is not None:
-        if len(fmpy_rows) != len(coarse):
-            fmpy_problems.append(f"fmpy row count {len(fmpy_rows)} != {len(coarse)}")
-        else:
-            fmpy_max_error = 0.0
-            for left, right in zip(coarse, fmpy_rows):
-                for key in ("time_s", "energy_J", "generated_J", "load_J", "repair_J", "curtailed_J"):
-                    fmpy_max_error = max(fmpy_max_error, abs(left[key] - right[key]))
-            if fmpy_max_error > tol["energy_absolute_J"]:
-                fmpy_problems.append(f"fmpy/harness max error {fmpy_max_error}")
+    fmpy_max_error = 0.0
+    if len(fmpy_rows) != len(coarse):
+        fmpy_problems.append(f"fmpy row count {len(fmpy_rows)} != {len(coarse)}")
     else:
-        fmpy_problems.append("fmpy result missing")
+        for left, right in zip(coarse, fmpy_rows):
+            for key in ("time_s", "energy_J", "generated_J", "load_J", "repair_J", "curtailed_J"):
+                fmpy_max_error = max(fmpy_max_error, abs(left[key] - right[key]))
+        if fmpy_max_error > tol["energy_absolute_J"]:
+            fmpy_problems.append(f"fmpy/harness max error {fmpy_max_error}")
     problems.extend(fmpy_problems)
     # 4) Step sensitivity at common coarse-grid times.
     fine_by_time = {round(row["time_s"], 6): row for row in fine}
@@ -197,18 +220,29 @@ def main() -> int:
         },
         "canonical": {
             "reference": "audit/phase2/canonical-reference.txt", "reference_sha256": sha(CANONICAL),
-            "runner": "poie-s5v-energy-reference", "survived_s": canonical["survived_s"],
+            "runner": cfg["canonical_reference"]["runner"],
+            "source_commit": cfg["canonical_reference"]["source_commit"],
+            "survived_s": canonical["survived_s"],
             "repair_completion_s": canonical["repair_completion_s"],
+            "exported_fields": ["repair completion time", "repair completion generated/load/repair energy",
+                                 "repair completion energy before/after", "depletion time"],
+            "not_exported": ["repair-window interior states", "t=0 as a runtime record", "terminal energy as a runtime record"],
         },
         "runs": {
             "coarse": {"step_s": cfg["time_grid"]["coarse_step_s"], "rows": len(coarse),
-                        "analytic_max_abs_error_J": max(analytic_errors), "canonical_boundary_max_abs_error_J": max(boundary_errors),
-                        "terminal": coarse[-1]},
+                        "analytic_max_abs_error_J": max(analytic_errors),
+                    "canonical_exported_max_abs_error_J": max(boundary_errors),
+                    "initial_condition_max_abs_error_J": max(initial_errors),
+                    "terminal_constraint_max_abs_error_J": max(terminal_errors),
+                    "terminal": coarse[-1]},
             "fine": {"step_s": cfg["time_grid"]["fine_step_s"], "rows": len(fine), "terminal": fine[-1]},
-            "fmpy": {"available": fmpy_rows is not None, "rows": len(fmpy_rows) if fmpy_rows else 0,
-                      "max_abs_error_vs_harness_J": fmpy_max_error, "log": "audit/phase2/logs/fmpy.log"},
+            "fmpy": {"available": True, "rows": len(fmpy_rows),
+                      "max_abs_error_vs_harness_J": fmpy_max_error,
+                      "csv": str(fmpy_csv), "csv_sha256": sha(fmpy_csv),
+                      "log": str(fmpy_log), "log_sha256": sha(fmpy_log) if fmpy_log.is_file() else None},
             "tampered": {"max_abs_error_J": tampered_error, "detected": detected},
         },
+        "platform": _platform(fmpy_log),
         "repair_settlement_model_difference": repair_assumption,
         "problems": problems,
         "gate2": "PASS_SCOPED_EXECUTION_AND_ENDPOINTS" if not problems else "FAIL",
@@ -218,7 +252,9 @@ def main() -> int:
     print(json.dumps({
         "gate2": report["gate2"], "problems": problems,
         "analytic_max_error": report["runs"]["coarse"]["analytic_max_abs_error_J"],
-        "canonical_boundary_max_error": report["runs"]["coarse"]["canonical_boundary_max_abs_error_J"],
+        "canonical_exported_max_error": report["runs"]["coarse"]["canonical_exported_max_abs_error_J"],
+        "initial_condition_max_error": report["runs"]["coarse"]["initial_condition_max_abs_error_J"],
+        "terminal_constraint_max_error": report["runs"]["coarse"]["terminal_constraint_max_abs_error_J"],
         "fmpy_max_error": fmpy_max_error, "tampered_detected": detected,
     }, indent=2))
     return 0 if not problems else 1

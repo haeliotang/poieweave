@@ -52,5 +52,12 @@
     "package": "fmpy",
     "version": "0.3.32",
     "role": "independent FMI 3.0 importer"
+  },
+  "canonical_reference": {
+    "path": "audit/phase2/canonical-reference.txt",
+    "sha256": "e4675ad7611341844bcc72066df34dc92c88aef15ac61ac787cbb3ef53b87b5c",
+    "source_commit": "7d198d90e729f40faafbe21e4de77311c361dc22",
+    "runner": "poie-s5v-energy-reference",
+    "note": "Frozen canonical export; CI verifies this SHA instead of rebuilding Rust in the FMU job."
   }
 }

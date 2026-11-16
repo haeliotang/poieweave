@@ -29,8 +29,12 @@ def main() -> int:
         problems.append("tamper detection")
     if result["runs"]["coarse"]["analytic_max_abs_error_J"] > 1.0:
         problems.append("analytic error")
-    if result["runs"]["coarse"]["canonical_boundary_max_abs_error_J"] > 1.0:
-        problems.append("canonical boundary error")
+    if result["runs"]["coarse"]["canonical_exported_max_abs_error_J"] > 1.0:
+        problems.append("canonical exported boundary error")
+    if result["runs"]["coarse"]["initial_condition_max_abs_error_J"] > 1.0:
+        problems.append("initial condition error")
+    if result["runs"]["coarse"]["terminal_constraint_max_abs_error_J"] > 1.0:
+        problems.append("terminal constraint error")
     if result["runs"]["fmpy"]["available"] is not True:
         problems.append("fmpy importer")
     for entry in manifest["files"]:
