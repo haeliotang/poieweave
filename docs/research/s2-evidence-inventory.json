@@ -192,6 +192,15 @@
       ],
       "certificates": [],
       "boundary": "三负载"
+    },
+    {
+      "id": "C65",
+      "statement": "C14 冗余泵 90 天一致；baseline 31→2 天",
+      "evidence": [
+        "s2-canonical-c14"
+      ],
+      "certificates": [],
+      "boundary": "单一冗余布局"
     }
   ],
   "experiments": [
@@ -491,6 +500,32 @@
       "seed": "NOT_APPLICABLE",
       "claim_ids": [
         "C64"
+      ],
+      "legacy_entry": "legacy survival.rs runner(s) from REPORT",
+      "canonical_adapter": "engine::run_engine",
+      "migration_status": "CANONICAL_SEMANTIC_CORRECTION",
+      "risk": "HIGH"
+    },
+    {
+      "experiment": "s2-canonical-c14",
+      "report": "experiments/s2-canonical-c14/REPORT.md",
+      "prereg": "experiments/s2-canonical-c14/PREREG.md",
+      "runner_binaries": [
+        "poie-migration-c14"
+      ],
+      "models": [
+        "base-08"
+      ],
+      "expected_output_lines": 3,
+      "expected_output": "mode\tload_kw\tinstant_days\tevent_days\tcanonical_days\tevent_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification\nbaseline\t0.0\t12\t31\t2\t200.0\t160.0\tblocked:repair interrupted at 172800s: pump-p1 failed\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE\nredundant-pump\t0.0\t90\t90\t90\t200.0\t200.0\tcompleted\tEXPECTED_AGREEMENT\n",
+      "expected_head": [
+        "mode\tload_kw\tinstant_days\tevent_days\tcanonical_days\tevent_energy_kwh\tcanonical_energy_kwh\tcanonical_termination\tclassification",
+        "baseline\t0.0\t12\t31\t2\t200.0\t160.0\tblocked:repair interrupted at 172800s: pump-p1 failed\tSEMANTIC_CORRECTION_IN_REPAIR_FAILURE"
+      ],
+      "stochastic": false,
+      "seed": "NOT_APPLICABLE",
+      "claim_ids": [
+        "C65"
       ],
       "legacy_entry": "legacy survival.rs runner(s) from REPORT",
       "canonical_adapter": "engine::run_engine",
@@ -2430,16 +2465,16 @@
     }
   ],
   "summary": {
-    "s2_claims": 21,
-    "s2_experiments": 81,
-    "claimed_experiments": 21,
+    "s2_claims": 22,
+    "s2_experiments": 82,
+    "claimed_experiments": 22,
     "unmapped_experiments": 60,
     "formal_s2_experiments_migrated_to_canonical": 6,
     "canonical_migrations_blocked": 0,
-    "canonical_semantic_corrections": 3,
+    "canonical_semantic_corrections": 4,
     "stochastic_experiments_missing_seed": 2,
     "s2_certificates": 6,
-    "claims_with_experiment_evidence": 21,
+    "claims_with_experiment_evidence": 22,
     "status_s2_result_lines": 13,
     "unmapped_status_results": 13
   }

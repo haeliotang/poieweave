@@ -24,12 +24,12 @@
 
 | 指标 | 数量 |
 | --- | --- |
-| S2 claims | 21 |
-| S2 experiment 目录 | 81 |
-| 被 claim 引用的 experiment | 21 |
+| S2 claims | 22 |
+| S2 experiment 目录 | 82 |
+| 被 claim 引用的 experiment | 22 |
 | 未被 claim 引用的 experiment | 60 |
 | 已迁移到 canonical 的正式 S2 experiment | **6** |
-| canonical 语义修正 | **3**（C11/C12/C13） |
+| canonical 语义修正 | **4**（C11/C12/C13/C14） |
 | 缺少记录种子的随机 experiment | 2 |
 | S2 证书 | 6 |
 | 状态页 S2 数值结论行 | 13 |
