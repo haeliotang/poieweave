@@ -18,6 +18,20 @@ ROOT = Path(__file__).resolve().parents[1]
 EXPERIMENTS = ROOT / "experiments"
 CLAIMS = ROOT / "docs/research/claims-ledger.zh-CN.md"
 STATUS = ROOT / "docs/research/self-sustaining-core-status.zh-CN.md"
+STATUS_CLAIMS = [
+    ("Base-05：", ["C5"]),
+    ("Base-06：56", ["C6"]),
+    ("Base-08 再生", ["C7"]),
+    ("2000 个 Monte Carlo", ["C68"]),
+    ("负载边界", ["C8"]),
+    ("冗余：泵 60", ["C9"]),
+    ("补货频率", ["C10"]),
+    ("对抗子集", ["C11"]),
+    ("长修复再生", ["C63"]),
+    ("时间语义", ["C12"]),
+    ("随机对抗 × 时间", ["C18"]),
+    ("延迟随机窗口", ["C19"]),
+]
 OUT_JSON = ROOT / "docs/research/s2-evidence-inventory.json"
 OUT_MD = ROOT / "docs/research/s2-evidence-inventory.md"
 
@@ -113,8 +127,15 @@ def main(argv: list[str] | None = None) -> int:
         section = status_text.split("### S2", 1)[1].split("### S3", 1)[0]
         for line in section.splitlines():
             stripped = line.strip()
-            if stripped.startswith("- "):
-                status_results.append({"text": stripped[2:], "claim_ids": []})
+            if not stripped.startswith("- ") or "S1 工具循环" in stripped:
+                continue
+            text = stripped[2:]
+            claim_ids = []
+            for marker, mapped in STATUS_CLAIMS:
+                if marker in text:
+                    claim_ids = mapped
+                    break
+            status_results.append({"text": text, "claim_ids": claim_ids})
     certs = []
     for path in cert_dirs():
         certificate = json.loads(read(path / "certificate.json") or "{}")

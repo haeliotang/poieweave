@@ -24,20 +24,20 @@
 
 | 指标 | 数量 |
 | --- | --- |
-| S2 claims | 24 |
+| S2 claims | 25 |
 | S2 experiment 目录 | 84 |
-| 被 claim 引用的 experiment | 24 |
-| 未被 claim 引用的 experiment | 60 |
+| 被 claim 引用的 experiment | 25 |
+| 未被 claim 引用的 experiment | 59 |
 | 已迁移到 canonical 的正式 S2 experiment | **6** |
 | canonical 语义修正 | **6**（C11–C14、C18、C19） |
 | 缺少记录种子的随机 experiment | 2 |
 | S2 证书 | 6 |
-| 状态页 S2 数值结论行 | 13 |
-| 其中未显式登记为 claim | 13 |
+| 状态页 S2 数值结论行 | 12 |
+| 其中未显式登记为 claim | **0** |
 
 ## 3. 关键发现
 
-### F1：正式 claim 只覆盖 21/81 个 S2 实验
+### F1：正式 claim 覆盖 25/84 个 S2 实验
 
 这不能自动解释为其余 60 个都是探索性实验。Phase B 必须先分类：
 
@@ -68,16 +68,16 @@ Batch 1–3 是 kernel/migration probe，不是正式 S2 实验的 canonical 重
 
 `certificate-s2-joint/load/metrics/order/regeneration` 没有被 claims ledger 显式引用。Phase D 需要 Certificate Impact Matrix，不能假设它们自动有效。
 
-### F5：状态页有 13 条 S2 数值结论未归一化为 claim
+### F5：状态页 12 条 S2 数值结论已全部归一化
 
-盘点把状态页 S2 小节的 13 条数值结论逐条纳入 `status_results`。它们目前没有
-claim ID，也没有显式证书绑定。Phase A 的下一步必须决定每一条：
+状态页 S2 小节原有 13 条 bullet，其中 1 条是 S1 工具循环，已排除。其余 12 条
+全部映射到 claim：
 
-- 归并为已有 claim
-- 新建 claim
-- 降级为诊断性观察
+- 11 条归并到 C5–C19 / C63
+- 1 条 Monte Carlo 新建为 C68，但仍是 legacy LCG 结果，尚未 canonical 重算
+- `unmapped_status_results` 从 13 降为 0
 
-不能把“已写入状态页”等同于“已被正式 claim 和证书覆盖”。
+这不等于 Monte Carlo 已获 canonical 证书；C68 明确标注 legacy-only。
 
 ### F8：C7 的 claim 证据映射错误已修正
 
