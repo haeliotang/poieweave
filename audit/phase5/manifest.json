@@ -1,0 +1,264 @@
+{
+  "schema": "poie.s5v-n5-evidence/1",
+  "baseline": "41728951ef7e2f1e5beb6482f2e402b725bd29cb",
+  "files": [
+    {
+      "path": "audit/phase5/PREREG.md",
+      "sha256": "b6117f61311fd8171a96b36ea616733c0885ad20536d29863e2dfdcbcb2b46d6",
+      "bytes": 3073
+    },
+    {
+      "path": "audit/phase5/REPORT.zh-CN.md",
+      "sha256": "50499446932aea72d98184580b81ff943ec6ddecb0071b38ea355f1d117ff22b",
+      "bytes": 4166
+    },
+    {
+      "path": "audit/phase5/SEMANTICS.md",
+      "sha256": "c5f739ebcb85501d270aa4b3570804aa8a69a7ac3c1cbf370746c75626cd0344",
+      "bytes": 2655
+    },
+    {
+      "path": "audit/phase5/__pycache__/compare.cpython-314.pyc",
+      "sha256": "fc587410e3dfaf57eebfb12c9cb8846ed20f3704134f3a9b40c8299ac2d57af1",
+      "bytes": 13562
+    },
+    {
+      "path": "audit/phase5/canonical/N5-00-events.csv",
+      "sha256": "66d604afcea5f6ba10859e427f8726037df7d493c34020b08887b78729f5eaac",
+      "bytes": 114
+    },
+    {
+      "path": "audit/phase5/canonical/N5-00-schedule.csv",
+      "sha256": "b99933d7fb5134ee1866961b3b93e194c4257d748ed3ddc4298baaf0bf346265",
+      "bytes": 109
+    },
+    {
+      "path": "audit/phase5/canonical/N5-00-summary.json",
+      "sha256": "702552d830e03a45989f8a9e448599db3c6d8d74ef73328b059b25b85c179dc1",
+      "bytes": 279
+    },
+    {
+      "path": "audit/phase5/canonical/N5-01-events.csv",
+      "sha256": "fca8d9792e6b7f00ad79de1d834ed1740db4dd2e7e07cdfeb625ca995889ec92",
+      "bytes": 149
+    },
+    {
+      "path": "audit/phase5/canonical/N5-01-schedule.csv",
+      "sha256": "6af6de77a778dababad4ff666157ccc42bb64eb996abe953864c3f7876fdd0d7",
+      "bytes": 170
+    },
+    {
+      "path": "audit/phase5/canonical/N5-01-summary.json",
+      "sha256": "bcd93a0ed9c50da8fcb2dc6cc3dde0f9dce0c2f56d37af2e6aea3e356bd6b117",
+      "bytes": 382
+    },
+    {
+      "path": "audit/phase5/canonical/N5-02-events.csv",
+      "sha256": "e39b3f523be0edaa5fa7dea6f82c108531dccbf75241c02c6ab2e640b703aa50",
+      "bytes": 149
+    },
+    {
+      "path": "audit/phase5/canonical/N5-02-schedule.csv",
+      "sha256": "45da7790a4bec6a314a3fb9a8f7ba7a8eaa0c757356972599d327f1627fad156",
+      "bytes": 167
+    },
+    {
+      "path": "audit/phase5/canonical/N5-02-summary.json",
+      "sha256": "584b5730697032fe6ded76ab02727837a986f86415c28bc21721eb9d1a2ea2e0",
+      "bytes": 379
+    },
+    {
+      "path": "audit/phase5/canonical/N5-03-events.csv",
+      "sha256": "21cf523d8786da944cacb8d37e0279f3c15d5caedc4e0d925a818180f2ccffa1",
+      "bytes": 57
+    },
+    {
+      "path": "audit/phase5/canonical/N5-03-schedule.csv",
+      "sha256": "45da7790a4bec6a314a3fb9a8f7ba7a8eaa0c757356972599d327f1627fad156",
+      "bytes": 167
+    },
+    {
+      "path": "audit/phase5/canonical/N5-03-summary.json",
+      "sha256": "30683a183d9ba565ab05d60807e194903a32a874e77211b90a891fcea1ea80b1",
+      "bytes": 401
+    },
+    {
+      "path": "audit/phase5/canonical/N5-04-events.csv",
+      "sha256": "ee2bec86b6257f483e5a35ad07b45fa724a758309804135d1b17c55f06e61e5e",
+      "bytes": 145
+    },
+    {
+      "path": "audit/phase5/canonical/N5-04-schedule.csv",
+      "sha256": "b99933d7fb5134ee1866961b3b93e194c4257d748ed3ddc4298baaf0bf346265",
+      "bytes": 109
+    },
+    {
+      "path": "audit/phase5/canonical/N5-04-summary.json",
+      "sha256": "5f436adb5bb9be56d62d71cfb858e9640c3a844f7b5ec4f50c0d0bb00de67db2",
+      "bytes": 279
+    },
+    {
+      "path": "audit/phase5/check.py",
+      "sha256": "6104794ede69a24140918f4b7ca2764d189291918e5d449bd005f1daa1f6ad7d",
+      "bytes": 3138
+    },
+    {
+      "path": "audit/phase5/compare.py",
+      "sha256": "4322d168faf0f143e357f295d471dc80fb9a531db49c09cfcdc3deec335e0938",
+      "bytes": 7962
+    },
+    {
+      "path": "audit/phase5/config.json",
+      "sha256": "179705949553a2cf4f864273cf8a1dee98c831c708f3b3abb6d8d0dac8bf9a71",
+      "bytes": 972
+    },
+    {
+      "path": "audit/phase5/cross_importer.py",
+      "sha256": "9e7f00a8eea0ecf6e1809912ca4b42f066738313ce97cbeae7c2f628a00bb643",
+      "bytes": 1939
+    },
+    {
+      "path": "audit/phase5/differences/comparison.json",
+      "sha256": "8be9964839fbf322d4b3b1025643f262f34df8223719f47e100b5f7f5f166ceb",
+      "bytes": 10043
+    },
+    {
+      "path": "audit/phase5/external/N5-00-fmpy-900.csv",
+      "sha256": "2ae28c660cb561919a1bc2a97f4f29eed8822d7cc247b703566cf5c7179ef5c5",
+      "bytes": 15949
+    },
+    {
+      "path": "audit/phase5/external/N5-00-fmpy.log",
+      "sha256": "7e73058cc4064630029225a93dfce1e2ab843c8dbbeb45cb4577c61c237ed5b1",
+      "bytes": 200
+    },
+    {
+      "path": "audit/phase5/external/N5-00-harness-900.csv",
+      "sha256": "5798e73d3f56fdce957780a22a58a34645b190efbf02e70d6105b68011f9be3b",
+      "bytes": 15139
+    },
+    {
+      "path": "audit/phase5/external/N5-01-fmpy-900.csv",
+      "sha256": "ae71e7459b2c4c3eb90add0dcd17bd2e90dc95cf3315c6a990feeafe931183bf",
+      "bytes": 16273
+    },
+    {
+      "path": "audit/phase5/external/N5-01-fmpy.log",
+      "sha256": "d6a1936db459f2fe6987c13ed154c491451eb4d795216f37bc882fdfc3f49061",
+      "bytes": 200
+    },
+    {
+      "path": "audit/phase5/external/N5-01-harness-900.csv",
+      "sha256": "91ca39b357ea6a62c5ade8f7f5c47e50bc7a952e7c693371585f09579ba470fd",
+      "bytes": 15463
+    },
+    {
+      "path": "audit/phase5/external/N5-02-fmpy-900.csv",
+      "sha256": "60276be911d19f4d97fb864e1ddb2d04c41324f43a32039a8ce57041e16fd5e6",
+      "bytes": 16030
+    },
+    {
+      "path": "audit/phase5/external/N5-02-fmpy.log",
+      "sha256": "ddade7258a0ec64641b223218eeffc225390c6eb4bf9dcd7d6d4df6d6060487e",
+      "bytes": 200
+    },
+    {
+      "path": "audit/phase5/external/N5-02-harness-900.csv",
+      "sha256": "a9ace714ebf0fa181c753b973cdfcba3ed94686d798052872a5c19d1891708f6",
+      "bytes": 15220
+    },
+    {
+      "path": "audit/phase5/external/N5-03-fmpy-900.csv",
+      "sha256": "5bff3b9194ee133959ae4f3af7068683ca70de957c0a36fc9930d5ad4c6a6e44",
+      "bytes": 1923
+    },
+    {
+      "path": "audit/phase5/external/N5-03-fmpy.log",
+      "sha256": "5fd4a59c34453b021fd58fd0c82ea97c87845eb4d5cd65700c473b28aa5495a1",
+      "bytes": 200
+    },
+    {
+      "path": "audit/phase5/external/N5-03-harness-900.csv",
+      "sha256": "0fcb85a9eb6342d5a2e1a04484610225179230f0cd6a02c0f80492f5697f479c",
+      "bytes": 1833
+    },
+    {
+      "path": "audit/phase5/external/N5-04-fmpy-900.csv",
+      "sha256": "7ccd01dbcef9d6dd2cfe7781b49b4d2e72f8f7fab540e27a60a055d8e9a6198e",
+      "bytes": 16095
+    },
+    {
+      "path": "audit/phase5/external/N5-04-fmpy.log",
+      "sha256": "3c6fdd9b48d1ff2464005dada129551477c4f725d4ae697fb5e655baa0061d60",
+      "bytes": 202
+    },
+    {
+      "path": "audit/phase5/external/N5-04-harness-900.csv",
+      "sha256": "d81641c61086ee7fb46edb3f8c684e8ba8c9548ef68819b80697c0e25edde71f",
+      "bytes": 15285
+    },
+    {
+      "path": "audit/phase5/fmpy_import.py",
+      "sha256": "29eb66a7a36fad7c782e67b92431b92ece41ff33abbb64dd9143071311a60f25",
+      "bytes": 3226
+    },
+    {
+      "path": "audit/phase5/manifest.py",
+      "sha256": "674a82e22fa46e4989beb75df5991ce0c991faaa0c707ad160b5a868330d1cba",
+      "bytes": 1662
+    },
+    {
+      "path": "audit/phase5/negative-controls/N5-00-no-restoration.csv",
+      "sha256": "445e6ded42bae6050979ee5ce9debdbedacfef321fdf62c97ba09239109683ff",
+      "bytes": 16023
+    },
+    {
+      "path": "audit/phase5/negative-controls/N5-00-restoration-before-completion.csv",
+      "sha256": "cfe6b5082df769a82c3a006d97a4c828534f44417eb29b2b971e2981c89b9ac5",
+      "bytes": 16015
+    },
+    {
+      "path": "audit/phase5/negative-controls/N5-01-overlap.csv",
+      "sha256": "52bac2fbf0cea513451fe185121c30ad188fb6d13cf3a5cf905dfac15e691e49",
+      "bytes": 16344
+    },
+    {
+      "path": "audit/phase5/negative-controls/N5-02-duration-tamper.csv",
+      "sha256": "b88d22d43b028c2c4c01565e27fc9e86b3363383e223a077a3f2f9553ea2db33",
+      "bytes": 16096
+    },
+    {
+      "path": "audit/phase5/negative-controls/N5-03-selected-completes.csv",
+      "sha256": "72e72733c2e0c212512a2f9538600e6dd1b0a1ab14082bf787a9c3b8679ae27c",
+      "bytes": 1894
+    },
+    {
+      "path": "audit/phase5/negative-controls/N5-04-unselected-interrupts.csv",
+      "sha256": "3813f9009417a07009a135c1d5246f0365bb8d5f8494f2531ab5b2dfb523fefe",
+      "bytes": 16136
+    },
+    {
+      "path": "audit/phase5/negative-controls/results.json",
+      "sha256": "189ddf6bc7d6d7b2ea1980807b73c9bb3ccd015694b2cbd94ff7df69dbcee49d",
+      "bytes": 1918
+    },
+    {
+      "path": "audit/phase5/negative_controls.py",
+      "sha256": "6e38750a0bac08e8a3e625ecb8e45854486ce87ca879c1dca469bddfde0cb0fe",
+      "bytes": 4330
+    },
+    {
+      "path": "audit/phase5/scheduling/importer-agreement.json",
+      "sha256": "c90c9541a8c0aedc6d9140fb756e458ea27b8509eead6df67265ab3936d7260c",
+      "bytes": 733
+    }
+  ],
+  "tools": {
+    "external_fmu": "external/fmu-n5-scheduler/poie-n5-scheduler.fmu",
+    "external_fmu_sha256": "154b5a2c9f00ff684de9e496685f03f2fbdbc4b454b36f3a0c798d7b6fc6f9fd",
+    "model_source_sha256": "dd6926ffa3e9ed711d81ccdf073b7b389daeeeb58485e859641f90ea024b6d16",
+    "harness_source_sha256": "9a122ef17dfa4afe39f3bd0c330038a155a1dd58c2107a0ddca51313583d4ab2",
+    "fmpy": "0.3.32",
+    "canonical_runner": "poie-s5v-n5-canonical"
+  }
+}

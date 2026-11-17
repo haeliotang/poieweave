@@ -1,0 +1,18 @@
+{
+  "baseline": "41728951ef7e2f1e5beb6482f2e402b725bd29cb",
+  "horizon_s": 72000,
+  "task_contract": {
+    "pump": {"target": "pump-p1", "process": "replace-sleeve-p1", "duration_s": 10800, "priority": 2},
+    "lathe": {"target": "lathe-1", "process": "replace-lathe-nut", "duration_s": 7200, "priority": 1}
+  },
+  "robot_pool": ["robot-m1", "robot-m2"],
+  "cases": [
+    {"id": "N5-00", "tasks": ["pump"], "robots": 1, "failure": null, "expected_makespan_s": 10800},
+    {"id": "N5-01", "tasks": ["lathe", "pump"], "robots": 1, "failure": null, "expected_makespan_s": 18000},
+    {"id": "N5-02", "tasks": ["lathe", "pump"], "robots": 2, "failure": null, "expected_makespan_s": 10800},
+    {"id": "N5-03", "tasks": ["lathe", "pump"], "robots": 2,
+     "failure": {"robot": "robot-m1", "at_s": 7200}, "expected_interrupted": true},
+    {"id": "N5-04", "tasks": ["pump"], "robots": 2,
+     "failure": {"robot": "robot-m2", "at_s": 7200}, "expected_makespan_s": 10800}
+  ]
+}

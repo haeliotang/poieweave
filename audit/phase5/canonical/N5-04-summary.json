@@ -1,0 +1,9 @@
+{
+  "case": "N5-04",
+  "termination": "completed",
+  "survived_s": 72000.000000,
+  "makespan_s": 10800.000000,
+  "interrupted": false,
+  "restored_targets": ["pump-p1"],
+  "schedule": [{"process":"replace-sleeve-p1","start_s":0.000,"end_s":10800.000,"resources":["robot-m1"]}]
+}

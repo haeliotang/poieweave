@@ -1,0 +1,3 @@
+at_s	kind	plans	resources
+18000.000000	repair_completed:lathe-1,pump-p1	replace-lathe-nut+replace-sleeve-p1	robot-m1+robot-m1
+72000.000000	horizon		
