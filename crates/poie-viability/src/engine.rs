@@ -1738,4 +1738,30 @@ mod tests {
         assert_eq!(ids.len(), observed.events.len());
         assert_eq!(observed.events.last().unwrap().kind, EventKind::HorizonReached);
     }
+    #[test]
+    fn nested_event_observation_is_rejected_and_context_restored() {
+        let guard = EventGuard::install().expect("install outer event collector");
+        let model = base08();
+        let opts = options(Vec::new(), 20.0 * 3600.0);
+        assert!(run_engine_event_observed(&model, &opts).is_err());
+        drop(guard);
+        assert!(run_engine_event_observed(&model, &opts).is_ok());
+    }
+
+    #[test]
+    fn event_identity_is_stable_across_threads() {
+        let joined = std::thread::spawn(|| {
+            let model = base08();
+            let opts = options(vec![FailureEvent { at_s: 10800.0, asset: "robot-m1".into() }], 20.0 * 3600.0);
+            let observed = run_engine_event_observed(&model, &opts).unwrap();
+            observed.events.iter().map(|event| event.event_id.clone()).collect::<Vec<_>>()
+        })
+        .join()
+        .unwrap();
+        let model = base08();
+        let opts = options(vec![FailureEvent { at_s: 10800.0, asset: "robot-m1".into() }], 20.0 * 3600.0);
+        let observed = run_engine_event_observed(&model, &opts).unwrap();
+        let local = observed.events.iter().map(|event| event.event_id.clone()).collect::<Vec<_>>();
+        assert_eq!(joined, local);
+    }
 }

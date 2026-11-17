@@ -1661,6 +1661,8 @@ jobs:
           python-version: "3.12"
       - uses: dtolnay/rust-toolchain@1.94.0
       - uses: Swatinem/rust-cache@v2
+      - name: Install independent FMI importer
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
       - name: Verify frozen N8 evidence before re-execution
         run: python3 audit/phase8/check.py
       - name: Replay event observations and noninterference
@@ -1669,6 +1671,14 @@ jobs:
           cargo test --locked -q -p poie-viability --lib event_resolved
           python3 audit/phase8/check.py
           python3 audit/phase8/negative_controls.py
+      - name: Execute N4 external trajectories and cross-model comparator
+        run: |
+          external/fmu-n4-pv-battery/build.sh
+          python3 audit/phase4/fmpy_import.py --step 900 --failure 7200 --stop 72000 --output audit/phase8/external/N8-01-fmpy-900.csv --log audit/phase8/external/N8-01-fmpy.log
+          python3 audit/phase4/fmpy_import.py --step 1000 --failure 4500 --stop 72000 --output audit/phase8/external/N8-02-fmpy-1000.csv --log audit/phase8/external/N8-02-fmpy-1000.log
+          python3 audit/phase4/fmpy_repair.py --step 900 --robot-failure 7200 --output audit/phase8/external/N8-04-fmpy-900.csv --log audit/phase8/external/N8-04-fmpy.log
+          python3 audit/phase8/compare_trajectory.py
+          python3 audit/phase8/negative_trajectory.py
       - name: Verify v4 certificates and historical v1/v2/v3
         run: |
           python3 scripts/build-canonical-claim-certificates-v4.py --check
@@ -1681,7 +1691,7 @@ jobs:
       - name: Save N8 evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n8/evidence"
-          cp -R audit/phase8/event-observations audit/phase8/differences "$RUNNER_TEMP/s5v-n8/evidence/" 2>/dev/null || true
+          cp -R audit/phase8/event-observations audit/phase8/external audit/phase8/trajectory-comparisons audit/phase8/negative-controls audit/phase8/differences "$RUNNER_TEMP/s5v-n8/evidence/" 2>/dev/null || true
           cp audit/phase8/{PREREG.md,EVENT_CONTRACT.md,OBSERVATION_SEMANTICS.md,MODEL_MAPPING.md,CERTIFICATE_IMPACT.md,REPORT.zh-CN.md,EVIDENCE.md,manifest.json} "$RUNNER_TEMP/s5v-n8/evidence/"
           cp docs/research/canonical-claim-certificate-index-v4.json "$RUNNER_TEMP/s5v-n8/evidence/"
       - uses: actions/upload-artifact@v4

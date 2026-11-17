@@ -1,0 +1,11 @@
+fmpy_version=0.3.32
+platform_tuple=aarch64-darwin
+fmu_sha256=69e8a0ccd7dec8691a2cc13765f3cf97183c96378ab73a2db201ae28decf62ff
+failure_s=4500.0
+step_s=1000
+rows=53
+terminal_time_s=51150.00000000001
+terminal_energy_J=0.0
+generated_J=11250000.0
+failure_applied_s=4500.0
+terminated=1

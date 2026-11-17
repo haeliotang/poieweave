@@ -32,6 +32,8 @@ python3 audit/phase7/compare_derived.py
 python3 audit/phase7/check.py
 python3 audit/phase8/check.py
 python3 audit/phase8/negative_controls.py
+python3 audit/phase8/compare_trajectory.py
+python3 audit/phase8/negative_trajectory.py
 python3 audit/phase7/negative_controls.py
 python3 audit/certificates/verify_v1.py
 python3 audit/certificates/verify_v1_historical.py

@@ -1,0 +1,552 @@
+{
+  "schema": "poie.s5v-n8-trajectory-set/1",
+  "scenarios": [
+    {
+      "schema": "poie.s5v-n8-trajectory/1",
+      "scenario": "N8-01",
+      "canonical_contract_valid": true,
+      "external_contract_valid": true,
+      "cross_model_agreement": true,
+      "numerical_error": {
+        "max_abs_error_J": 1800000.0,
+        "max_rel_error": 0.013888888888888888,
+        "step_size_s": 900.0,
+        "comparison_interval_s": [
+          0.0,
+          14400.0
+        ],
+        "classification": "MODEL_ASSUMPTION_DIFFERENCE"
+      },
+      "energy_samples": [
+        {
+          "at_s": 0.0,
+          "canonical_energy_J": 144000000.0,
+          "external_energy_J": 144000000.0,
+          "abs_error_J": 0.0,
+          "rel_error": 0.0
+        },
+        {
+          "at_s": 3600.0,
+          "canonical_energy_J": 142200000.0,
+          "external_energy_J": 141600000.0,
+          "abs_error_J": 600000.0,
+          "rel_error": 0.004219409282700422
+        },
+        {
+          "at_s": 7200.0,
+          "canonical_energy_J": 140400000.0,
+          "external_energy_J": 139200000.0,
+          "abs_error_J": 1200000.0,
+          "rel_error": 0.008547008547008548
+        },
+        {
+          "at_s": 7200.0,
+          "canonical_energy_J": 140400000.0,
+          "external_energy_J": 139200000.0,
+          "abs_error_J": 1200000.0,
+          "rel_error": 0.008547008547008548
+        },
+        {
+          "at_s": 10800.0,
+          "canonical_energy_J": 129600000.0,
+          "external_energy_J": 127800000.0,
+          "abs_error_J": 1800000.0,
+          "rel_error": 0.013888888888888888
+        },
+        {
+          "at_s": 10800.0,
+          "canonical_energy_J": 127800000.0,
+          "external_energy_J": 127800000.0,
+          "abs_error_J": 0.0,
+          "rel_error": 0.0
+        },
+        {
+          "at_s": 14400.0,
+          "canonical_energy_J": 117000000.0,
+          "external_energy_J": 117000000.0,
+          "abs_error_J": 0.0,
+          "rel_error": 0.0
+        }
+      ],
+      "external_file": "N8-01-fmpy-900.csv",
+      "event_comparisons": [
+        {
+          "kind": "AssetFailure",
+          "sequence": 2,
+          "at_s": 7200.0,
+          "external_time_s": 7200.0,
+          "time_error_s": 0.0,
+          "state_match": true,
+          "canonical_assets": {
+            "bat-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "bus-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "charger-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "filter-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "gauge-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "lathe-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "pump-p1": {
+              "before": "Degraded",
+              "after": "Degraded"
+            },
+            "pv-1": {
+              "before": "Available",
+              "after": "Failed"
+            },
+            "robot-m1": {
+              "before": "Available",
+              "after": "Available"
+            }
+          }
+        },
+        {
+          "kind": "RepairCompleted",
+          "sequence": 3,
+          "at_s": 10800.0,
+          "external_time_s": 10800.0,
+          "time_error_s": 0.0,
+          "state_match": true,
+          "canonical_assets": {
+            "bat-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "bus-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "charger-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "filter-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "gauge-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "lathe-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "pump-p1": {
+              "before": "Degraded",
+              "after": "Available"
+            },
+            "pv-1": {
+              "before": "Failed",
+              "after": "Failed"
+            },
+            "robot-m1": {
+              "before": "Available",
+              "after": "Available"
+            }
+          }
+        }
+      ],
+      "energy_comparisons": [
+        {
+          "at_s": 7200.0,
+          "external_energy_J": 139200000.0,
+          "comparison": "MODEL_ASSUMPTION_BOUNDARY",
+          "note": "canonical repair energy commits at completion; external FMU draws uniformly"
+        },
+        {
+          "at_s": 10800.0,
+          "external_energy_J": 127800000.0,
+          "comparison": "MODEL_ASSUMPTION_BOUNDARY",
+          "note": "canonical repair energy commits at completion; external FMU draws uniformly"
+        }
+      ],
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "classification": "MATCH",
+      "contract_valid": true
+    },
+    {
+      "schema": "poie.s5v-n8-trajectory/1",
+      "scenario": "N8-02",
+      "canonical_contract_valid": true,
+      "external_contract_valid": true,
+      "cross_model_agreement": true,
+      "numerical_error": {
+        "max_abs_error_J": 2399999.999999985,
+        "max_rel_error": 0.019536019536019415,
+        "step_size_s": 900.0,
+        "comparison_interval_s": [
+          0.0,
+          14400.0
+        ],
+        "classification": "MODEL_ASSUMPTION_DIFFERENCE"
+      },
+      "energy_samples": [
+        {
+          "at_s": 0.0,
+          "canonical_energy_J": 144000000.0,
+          "external_energy_J": 144000000.0,
+          "abs_error_J": 0.0,
+          "rel_error": 0.0
+        },
+        {
+          "at_s": 3600.0,
+          "canonical_energy_J": 142200000.0,
+          "external_energy_J": 141333333.33333337,
+          "abs_error_J": 866666.6666666269,
+          "rel_error": 0.0060947022972336635
+        },
+        {
+          "at_s": 4500.0,
+          "canonical_energy_J": 141750000.0,
+          "external_energy_J": 141333333.33333337,
+          "abs_error_J": 416666.66666662693,
+          "rel_error": 0.002939447383891548
+        },
+        {
+          "at_s": 4500.0,
+          "canonical_energy_J": 141750000.0,
+          "external_energy_J": 141333333.33333337,
+          "abs_error_J": 416666.66666662693,
+          "rel_error": 0.002939447383891548
+        },
+        {
+          "at_s": 7200.0,
+          "canonical_energy_J": 133650000.0,
+          "external_energy_J": 133083333.33333336,
+          "abs_error_J": 566666.6666666418,
+          "rel_error": 0.004239930165855906
+        },
+        {
+          "at_s": 10800.0,
+          "canonical_energy_J": 122850000.0,
+          "external_energy_J": 120450000.00000001,
+          "abs_error_J": 2399999.999999985,
+          "rel_error": 0.019536019536019415
+        },
+        {
+          "at_s": 10800.0,
+          "canonical_energy_J": 121050000.0,
+          "external_energy_J": 120450000.00000001,
+          "abs_error_J": 599999.9999999851,
+          "rel_error": 0.004956629491945354
+        },
+        {
+          "at_s": 14400.0,
+          "canonical_energy_J": 110250000.0,
+          "external_energy_J": 111450000.00000001,
+          "abs_error_J": 1200000.000000015,
+          "rel_error": 0.010884353741496733
+        }
+      ],
+      "external_file": "N8-02-fmpy-1000.csv",
+      "event_comparisons": [
+        {
+          "kind": "AssetFailure",
+          "sequence": 2,
+          "at_s": 4500.0,
+          "external_time_s": 4500.0,
+          "time_error_s": 0.0,
+          "state_match": true,
+          "canonical_assets": {
+            "bat-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "bus-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "charger-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "filter-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "gauge-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "lathe-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "pump-p1": {
+              "before": "Degraded",
+              "after": "Degraded"
+            },
+            "pv-1": {
+              "before": "Available",
+              "after": "Failed"
+            },
+            "robot-m1": {
+              "before": "Available",
+              "after": "Available"
+            }
+          }
+        },
+        {
+          "kind": "RepairCompleted",
+          "sequence": 3,
+          "at_s": 10800.0,
+          "external_time_s": 10800.0,
+          "time_error_s": 0.0,
+          "state_match": true,
+          "canonical_assets": {
+            "bat-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "bus-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "charger-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "filter-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "gauge-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "lathe-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "pump-p1": {
+              "before": "Degraded",
+              "after": "Available"
+            },
+            "pv-1": {
+              "before": "Failed",
+              "after": "Failed"
+            },
+            "robot-m1": {
+              "before": "Available",
+              "after": "Available"
+            }
+          }
+        }
+      ],
+      "energy_comparisons": [
+        {
+          "at_s": 10800.0,
+          "external_energy_J": 120450000.00000001,
+          "comparison": "MODEL_ASSUMPTION_BOUNDARY",
+          "note": "canonical repair energy commits at completion; external FMU draws uniformly"
+        }
+      ],
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "classification": "MATCH",
+      "contract_valid": true
+    },
+    {
+      "schema": "poie.s5v-n8-trajectory/1",
+      "scenario": "N8-04",
+      "canonical_contract_valid": true,
+      "external_contract_valid": true,
+      "cross_model_agreement": true,
+      "numerical_error": {
+        "max_abs_error_J": 139200000.0,
+        "max_rel_error": 139200000.0,
+        "step_size_s": 900.0,
+        "comparison_interval_s": [
+          0.0,
+          14400.0
+        ],
+        "classification": "MODEL_ASSUMPTION_DIFFERENCE"
+      },
+      "energy_samples": [
+        {
+          "at_s": 0.0,
+          "canonical_energy_J": 144000000.0,
+          "external_energy_J": 144000000.0,
+          "abs_error_J": 0.0,
+          "rel_error": 0.0
+        },
+        {
+          "at_s": 3600.0,
+          "canonical_energy_J": 142200000.0,
+          "external_energy_J": 141600000.0,
+          "abs_error_J": 600000.0,
+          "rel_error": 0.004219409282700422
+        },
+        {
+          "at_s": 7200.0,
+          "canonical_energy_J": 140400000.0,
+          "external_energy_J": 139200000.0,
+          "abs_error_J": 1200000.0,
+          "rel_error": 0.008547008547008548
+        },
+        {
+          "at_s": 7200.0,
+          "canonical_energy_J": 0.0,
+          "external_energy_J": 139200000.0,
+          "abs_error_J": 139200000.0,
+          "rel_error": 139200000.0
+        },
+        {
+          "at_s": 10800.0,
+          "canonical_energy_J": 0.0,
+          "external_energy_J": 139200000.0,
+          "abs_error_J": 139200000.0,
+          "rel_error": 139200000.0
+        },
+        {
+          "at_s": 10800.0,
+          "canonical_energy_J": 0.0,
+          "external_energy_J": 139200000.0,
+          "abs_error_J": 139200000.0,
+          "rel_error": 139200000.0
+        },
+        {
+          "at_s": 14400.0,
+          "canonical_energy_J": 0.0,
+          "external_energy_J": 139200000.0,
+          "abs_error_J": 139200000.0,
+          "rel_error": 139200000.0
+        }
+      ],
+      "external_file": "N8-04-fmpy-900.csv",
+      "event_comparisons": [
+        {
+          "kind": "AssetFailure",
+          "sequence": 2,
+          "at_s": 7200.0,
+          "external_time_s": 7200.0,
+          "time_error_s": 0.0,
+          "state_match": true,
+          "canonical_assets": {
+            "bat-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "bus-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "charger-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "filter-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "gauge-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "lathe-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "pump-p1": {
+              "before": "Degraded",
+              "after": "Degraded"
+            },
+            "pv-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "robot-m1": {
+              "before": "Available",
+              "after": "Failed"
+            }
+          }
+        },
+        {
+          "kind": "RepairInterrupted",
+          "sequence": 3,
+          "at_s": 7200.0,
+          "external_time_s": 7200.0,
+          "time_error_s": 0.0,
+          "state_match": true,
+          "canonical_assets": {
+            "bat-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "bus-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "charger-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "filter-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "gauge-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "lathe-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "pump-p1": {
+              "before": "Degraded",
+              "after": "Degraded"
+            },
+            "pv-1": {
+              "before": "Available",
+              "after": "Available"
+            },
+            "robot-m1": {
+              "before": "Failed",
+              "after": "Failed"
+            }
+          }
+        }
+      ],
+      "energy_comparisons": [
+        {
+          "at_s": 7200.0,
+          "external_energy_J": 139200000.0,
+          "comparison": "MODEL_ASSUMPTION_BOUNDARY",
+          "note": "canonical repair energy commits at completion; external FMU draws uniformly"
+        }
+      ],
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "classification": "MATCH",
+      "contract_valid": true
+    }
+  ]
+}

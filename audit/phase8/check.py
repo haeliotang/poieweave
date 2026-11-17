@@ -52,6 +52,15 @@ def validate(rows: list[dict], summary: list[dict]) -> list[str]:
         problems.append("same-time event batch identity")
     if any(row["direct_event_equal"] != "true" or row["direct_time_equal"] != "true" for row in summary):
         problems.append("noninterference")
+    trajectories = json.loads((PHASE / "trajectory-comparisons/trajectories.json").read_text())["scenarios"]
+    if len(trajectories) != 3 or any(not scenario["cross_model_agreement"] for scenario in trajectories):
+        problems.append("cross-model trajectory agreement")
+    for scenario in trajectories:
+        if not scenario["canonical_contract_valid"] or not scenario["external_contract_valid"]:
+            problems.append("trajectory contract validity")
+    negatives = json.loads((PHASE / "negative-controls/trajectory-results.json").read_text())["results"]
+    if not all(entry["detected"] for entry in negatives):
+        problems.append("trajectory negative controls")
     return problems
 
 
