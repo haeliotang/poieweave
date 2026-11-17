@@ -14,8 +14,8 @@ N6-A STEP-LEVEL RESOURCE RELEASE
 
 N6-B CONTRACT-DRIVEN SCHEDULING — ESTABLISHED (SCOPED: durations, task count 1–3, robot pool; canonical priority input NOT REPRESENTABLE)
 N6-C CAUSAL DEPENDENCY AND EVENT BOUNDARIES — ESTABLISHED (SCOPED: tool-t1, bus-1, same-time, horizon)
-N6-D REPAIR-DRIVEN RESTORATION STATE VALIDITY — LIMITED (derived from completion trace; no native asset-status export)
-N6-E EVIDENCE INTEGRITY — PARTIAL (N6-A/B/C + derived D)
+N6-D REPAIR-DRIVEN RESTORATION STATE VALIDITY — ESTABLISHED (SCOPED: derived asset state from completion trace; native asset-status export unavailable)
+N6-E EVIDENCE INTEGRITY — ESTABLISHED (SCOPED: A/B/C + derived D)
 
 N5-03 GROUP-LEVEL INTERRUPTION CONSISTENCY
   ESTABLISHED
@@ -106,7 +106,9 @@ NATIVE ASSET STATUS EXPORT — NOT AVAILABLE
 status_source = DERIVED_FROM_TRACE_COMPLETION
 ```
 
-因此 N6-D 只标记 LIMITED，不宣称完整原生资产状态证据。
+因此 N6-D 标记为 **ESTABLISHED (SCOPED: derived)**：恢复目标、before/after、
+提交与释放时间可审计，但资产状态来源是 canonical completion trace 的确定性派生，
+不是原生资产状态字段。该限制在 EVIDENCE.md 中保留。
 
 ## 证据
 
@@ -117,6 +119,7 @@ status_source = DERIVED_FROM_TRACE_COMPLETION
 - [differences/resource-lifetime.json](differences/resource-lifetime.json)
 - [negative-controls/lifetime-results.json](negative-controls/lifetime-results.json)
 - [manifest.json](manifest.json)
+- [EVIDENCE.md](EVIDENCE.md)
 
 ## 验证
 

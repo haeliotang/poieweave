@@ -1582,11 +1582,12 @@ jobs:
           python3 audit/phase6/restoration_evidence.py
           python3 audit/phase6/manifest.py
           python3 audit/phase6/check.py
+          python3 audit/phase6/check_evidence.py
       - name: Save N6-A evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n6/evidence"
           cp -R audit/phase6/canonical audit/phase6/external audit/phase6/differences audit/phase6/negative-controls audit/phase6/contracts audit/phase6/restoration "$RUNNER_TEMP/s5v-n6/evidence/"
-          cp audit/phase6/{PREREG.md,SEMANTICS.md,RESOURCE_LIFETIME.md,REPORT.zh-CN.md,manifest.json} "$RUNNER_TEMP/s5v-n6/evidence/"
+          cp audit/phase6/{PREREG.md,SEMANTICS.md,RESOURCE_LIFETIME.md,REPORT.zh-CN.md,EVIDENCE.md,manifest.json} "$RUNNER_TEMP/s5v-n6/evidence/"
           ( cd "$RUNNER_TEMP/s5v-n6/evidence" && sha256sum * > SHA256SUMS.txt 2>/dev/null || true )
       - uses: actions/upload-artifact@v4
         with:
