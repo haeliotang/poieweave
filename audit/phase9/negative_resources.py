@@ -81,6 +81,26 @@ add("interrupted-but-restored", "RESTORATION_COMMIT_MISMATCH", "N9-03",
 add("failure-time-shift", "EVENT_TIME_DISPLACEMENT", "N9-03",
     lambda row: row.update(failureAppliedTime_s="8100.0"))
 
+# Event order mutation: swap failure and interruption sequences.
+events_path = PHASE / "canonical/N9-03-events.csv"
+original_events = events_path.read_text()
+rows = list(csv.DictReader(original_events.splitlines(), delimiter="\t"))
+for row in rows:
+    if row["event_sequence"] == "2":
+        row["event_sequence"] = "3"
+    elif row["event_sequence"] == "3":
+        row["event_sequence"] = "2"
+try:
+    fields = list(rows[0].keys())
+    with events_path.open("w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields, delimiter="\t")
+        writer.writeheader()
+        writer.writerows(rows)
+    result = n9.compare("N9-03")
+finally:
+    events_path.write_text(original_events)
+record("same-time-event-order-swap", "EVENT_ORDER_MISMATCH", result)
+
 # Both models violate the same mask: agreement is not correctness.
 summary_path = PHASE / "canonical/N9-02-summary.json"
 backup = summary_path.read_text()

@@ -73,6 +73,9 @@ def canonical_contract(case: str, spec: dict, summary: dict, events: list[dict])
             findings.append({"class": "EXECUTION_DEPENDENCY_MISMATCH", "reason": "interruption without causal dependency"})
         if interruption is None and hit:
             findings.append({"class": "EXECUTION_DEPENDENCY_MISMATCH", "reason": "active dependency failure did not interrupt"})
+    if failure is not None and interruption is not None:
+        if int(failure["event_sequence"]) >= int(interruption["event_sequence"]):
+            findings.append({"class": "EVENT_ORDER_MISMATCH", "reason": "failure must precede interruption"})
     if interruption is not None and summary["restoration_committed"]:
         findings.append({"class": "RESTORATION_COMMIT_MISMATCH", "reason": "restored after interruption"})
     if completion is not None and not summary["restoration_committed"]:
