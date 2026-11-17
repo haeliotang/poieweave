@@ -1,0 +1,35 @@
+{
+  "schema": "poie.s5v-n7-observation-controls/1",
+  "results": [
+    {
+      "control": "early-restoration",
+      "expected": "EARLY_RESTORATION",
+      "detected": true
+    },
+    {
+      "control": "missing-restoration",
+      "expected": "MISSING_RESTORATION",
+      "detected": true
+    },
+    {
+      "control": "post-termination-backfill",
+      "expected": "POST_TERMINATION_BACKFILL",
+      "detected": true
+    },
+    {
+      "control": "unknown-confusion",
+      "expected": "UNKNOWN_CONFUSED",
+      "detected": true
+    },
+    {
+      "control": "non-native-source",
+      "expected": "NON_NATIVE_SOURCE",
+      "detected": true
+    },
+    {
+      "control": "same-time-post-batch",
+      "expected": "SAME_TIME_POST_BATCH_LOST",
+      "detected": true
+    }
+  ]
+}

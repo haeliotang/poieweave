@@ -15,6 +15,43 @@ PHASE = Path(__file__).resolve().parent
 ROOT = PHASE.parents[1]
 
 
+def validate_observations(rows: list[dict]) -> list[str]:
+    problems = []
+    for row in rows:
+        if row["status"] == "OBSERVED" and row["status_source"] != "NATIVE_CANONICAL_RUNTIME":
+            problems.append("NON_NATIVE_SOURCE")
+    key = {(row["case"], row["at_s"], row["phase"], row["asset_id"]): row for row in rows}
+    before = key.get(("N7-00", "10800.000", "Before", "pump-p1"))
+    after = key.get(("N7-00", "10800.000", "After", "pump-p1"))
+    if not before or before["asset_status"] != "Degraded":
+        problems.append("EARLY_RESTORATION")
+    if not after or after["asset_status"] != "Available":
+        problems.append("MISSING_RESTORATION")
+    interrupted = key.get(("N7-03", "7200.000", "After", "robot-m1"))
+    if not interrupted or interrupted["asset_status"] != "Failed":
+        problems.append("MISSING_FAILURE_STATE")
+    pump_interrupted = key.get(("N7-03", "7200.000", "After", "pump-p1"))
+    if not pump_interrupted or pump_interrupted["asset_status"] != "Degraded":
+        problems.append("WRONG_TARGET_STATE")
+    post_batch = key.get(("N7-07", "10800.001", "After", "robot-m1"))
+    if not post_batch or post_batch["asset_status"] != "Failed":
+        problems.append("SAME_TIME_POST_BATCH_LOST")
+    horizon_failure = key.get(("N7-09", "10800.000", "After", "robot-m1"))
+    if not horizon_failure or horizon_failure["asset_status"] != "Available":
+        problems.append("HORIZON_FAILURE_PROCESSED")
+    unknown = key.get(("N7-12", "0.000", "After", "lathe-1"))
+    if not unknown or unknown["asset_status"] != "Unknown":
+        problems.append("UNKNOWN_CONFUSED")
+    bus = key.get(("N7-06", "3600.000", "After", "bus-1"))
+    if not bus or bus["asset_status"] != "Failed":
+        problems.append("UPSTREAM_STATE_LOST")
+    unobservable = [row for row in rows if row["case"] == "N7-03" and row["at_s"] == "20000.000"]
+    if not unobservable or any(row["status"] != "UNOBSERVABLE_AFTER_TERMINATION" or row["asset_id"] != "*"
+                               for row in unobservable):
+        problems.append("POST_TERMINATION_BACKFILL")
+    return problems
+
+
 def main() -> int:
     problems = []
     manifest = json.loads((PHASE / "manifest.json").read_text())
@@ -30,37 +67,7 @@ def main() -> int:
     rows = list(csv.DictReader((PHASE / "observations/asset-statuses.csv").open(), delimiter="\t"))
     if not rows:
         problems.append("empty observations")
-    for row in rows:
-        if row["status"] == "OBSERVED" and row["status_source"] != "NATIVE_CANONICAL_RUNTIME":
-            problems.append("non-native observed row")
-    key = {(row["case"], row["at_s"], row["phase"], row["asset_id"]): row for row in rows}
-    before = key.get(("N7-00", "10800.000", "Before", "pump-p1"))
-    after = key.get(("N7-00", "10800.000", "After", "pump-p1"))
-    if not before or before["asset_status"] != "Degraded":
-        problems.append("completion Before pump status")
-    if not after or after["asset_status"] != "Available":
-        problems.append("completion After pump status")
-    interrupted = key.get(("N7-03", "7200.000", "After", "robot-m1"))
-    if not interrupted or interrupted["asset_status"] != "Failed":
-        problems.append("interruption robot status")
-    pump_interrupted = key.get(("N7-03", "7200.000", "After", "pump-p1"))
-    if not pump_interrupted or pump_interrupted["asset_status"] != "Degraded":
-        problems.append("interruption target status")
-    post_batch = key.get(("N7-07", "10800.001", "After", "robot-m1"))
-    if not post_batch or post_batch["asset_status"] != "Failed":
-        problems.append("same-time post-batch failure state")
-    horizon_failure = key.get(("N7-09", "10800.000", "After", "robot-m1"))
-    if not horizon_failure or horizon_failure["asset_status"] != "Available":
-        problems.append("horizon failure must not be processed")
-    unknown = key.get(("N7-12", "0.000", "After", "lathe-1"))
-    if not unknown or unknown["asset_status"] != "Unknown":
-        problems.append("Unknown status")
-    bus = key.get(("N7-06", "3600.000", "After", "bus-1"))
-    if not bus or bus["asset_status"] != "Failed":
-        problems.append("upstream bus status")
-    unobservable = [row for row in rows if row["case"] == "N7-03" and row["at_s"] == "20000.000"]
-    if not unobservable or any(row["status"] != "UNOBSERVABLE_AFTER_TERMINATION" for row in unobservable):
-        problems.append("post-termination backfill")
+    problems.extend(validate_observations(rows))
     v3 = json.loads((ROOT / "docs/research/canonical-claim-certificate-index-v3.json").read_text())
     if len(v3["certificates"]) != 41:
         problems.append("v3 certificate count")
