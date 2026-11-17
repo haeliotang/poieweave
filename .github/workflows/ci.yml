@@ -1674,6 +1674,7 @@ jobs:
       - name: Execute N4 external trajectories and cross-model comparator
         run: |
           external/fmu-n4-pv-battery/build.sh
+          external/fmu-n4-repair/build.sh
           python3 audit/phase4/fmpy_import.py --step 900 --failure 7200 --stop 72000 --output audit/phase8/external/N8-01-fmpy-900.csv --log audit/phase8/external/N8-01-fmpy.log
           python3 audit/phase4/fmpy_import.py --step 1000 --failure 4500 --stop 72000 --output audit/phase8/external/N8-02-fmpy-1000.csv --log audit/phase8/external/N8-02-fmpy-1000.log
           python3 audit/phase4/fmpy_repair.py --step 900 --robot-failure 7200 --output audit/phase8/external/N8-04-fmpy-900.csv --log audit/phase8/external/N8-04-fmpy.log
