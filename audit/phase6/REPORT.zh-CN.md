@@ -13,9 +13,9 @@ N6-A STEP-LEVEL RESOURCE RELEASE
   NOT REPRESENTABLE / NOT ESTABLISHED
 
 N6-B CONTRACT-DRIVEN SCHEDULING — ESTABLISHED (SCOPED: durations, task count 1–3, robot pool; canonical priority input NOT REPRESENTABLE)
-N6-C CAUSAL DEPENDENCY AND EVENT BOUNDARIES — NOT ESTABLISHED
-N6-D REPAIR-DRIVEN RESTORATION STATE VALIDITY — NOT ESTABLISHED
-N6-E EVIDENCE INTEGRITY — PARTIAL (N6-A only)
+N6-C CAUSAL DEPENDENCY AND EVENT BOUNDARIES — ESTABLISHED (SCOPED: tool-t1, bus-1, same-time, horizon)
+N6-D REPAIR-DRIVEN RESTORATION STATE VALIDITY — LIMITED (derived from completion trace; no native asset-status export)
+N6-E EVIDENCE INTEGRITY — PARTIAL (N6-A/B/C + derived D)
 
 N5-03 GROUP-LEVEL INTERRUPTION CONSISTENCY
   ESTABLISHED
@@ -70,6 +70,43 @@ B06 是明确标记的调度策略差异：两种顺序都合法且 makespan 相
 因此“双方从同一 priority 字段独立调度”仍为 NOT REPRESENTABLE。
 
 负例覆盖资源重叠、任务时长篡改、越池资源、缺失恢复、makespan 移动。
+
+## N6-C/D 依赖与事件边界
+
+工具失效（tool-t1）：
+
+| case | failure | canonical | external |
+| --- | ---: | --- | --- |
+| C-tool-1 | 1 s | interrupted at 1 s | interrupted at 1 s |
+| C-tool-9000 | 9000 s | interrupted at 9000 s | interrupted at 9000 s |
+| C-tool-10800 | 10800 s | completed, failure after commit | completed, failure after commit |
+| C-tool-12000 | 12000 s | completed, failure after release | completed, failure after release |
+
+上游依赖（bus-1）：9000 s 失效中断，10800 s 在提交后失效。
+
+event boundaries：
+
+```text
+N6-D-same-10800: completion before same-time failure
+N6-D-horizon-completion: completion at horizon, failure at horizon NOT processed
+N6-D-horizon-failure: repair completes earlier; horizon failure NOT processed
+```
+
+外部 FMU 由 contract 驱动，并通过独立事件顺序处理；9 个 C/D 场景全部 EXPLAINED。
+负例覆盖工具失效被忽略、bus 失效被忽略、完成时错误中断、horizon 接纳故障、
+同刻顺序反转、恢复缺失。
+
+## 恢复状态（N6-D）
+
+`restoration/restoration-state.json` 记录目标资产 before/after、完成/提交/释放时间。
+当前限制：
+
+```text
+NATIVE ASSET STATUS EXPORT — NOT AVAILABLE
+status_source = DERIVED_FROM_TRACE_COMPLETION
+```
+
+因此 N6-D 只标记 LIMITED，不宣称完整原生资产状态证据。
 
 ## 证据
 

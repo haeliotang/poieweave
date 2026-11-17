@@ -1,0 +1,14 @@
+{
+ "case":"N6-C-tool-1",
+ "tasks":1,
+ "tool_required":true,
+ "upstream_required":false,
+ "horizon_s":72000,
+ "makespan_s":10800.000000,
+ "termination":"blocked:repair interrupted at 1s: tool-t1 failed",
+ "survived_s":1.000000,
+ "failure_applied_s":1.000,
+ "repair_completed_s":null,
+ "repair_interrupted":true,
+ "restored_targets":[]
+}

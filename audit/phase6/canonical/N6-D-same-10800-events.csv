@@ -1,0 +1,4 @@
+at_s	kind	plans	resources
+10800.000000	repair_completed:a-lathe,b-pump	repair-a-lathe+repair-b-pump	robot-m1+robot-m2
+10800.000000	failure:robot-m1		
+72000.000000	horizon		

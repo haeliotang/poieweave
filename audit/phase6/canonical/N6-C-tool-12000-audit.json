@@ -1,0 +1,14 @@
+{
+ "case":"N6-C-tool-12000",
+ "tasks":1,
+ "tool_required":true,
+ "upstream_required":false,
+ "horizon_s":72000,
+ "makespan_s":10800.000000,
+ "termination":"completed",
+ "survived_s":72000.000000,
+ "failure_applied_s":12000.000,
+ "repair_completed_s":10800.000,
+ "repair_interrupted":false,
+ "restored_targets":["a-lathe"]
+}

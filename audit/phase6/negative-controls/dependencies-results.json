@@ -1,0 +1,58 @@
+{
+  "schema": "poie.s5v-n6cd-negative-controls/1",
+  "results": [
+    {
+      "control": "N6-C-tool-9000-ignored",
+      "expected": "EXECUTION_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "RESTORATION_COMMIT_MISMATCH"
+      ]
+    },
+    {
+      "control": "N6-C-bus-9000-ignored",
+      "expected": "UPSTREAM_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "RESTORATION_COMMIT_MISMATCH",
+        "UPSTREAM_DEPENDENCY_MISMATCH"
+      ]
+    },
+    {
+      "control": "N6-C-tool-10800-interrupted",
+      "expected": "EXECUTION_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "RESTORATION_COMMIT_MISMATCH"
+      ]
+    },
+    {
+      "control": "N6-D-horizon-accepted-failure",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT"
+      ]
+    },
+    {
+      "control": "N6-D-same-order-reversed",
+      "expected": "EVENT_ORDER_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EVENT_ORDER_MISMATCH",
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "RESTORATION_COMMIT_MISMATCH"
+      ]
+    },
+    {
+      "control": "N6-C-tool-10800-missing-restoration",
+      "expected": "RESTORATION_COMMIT_MISMATCH",
+      "detected": true,
+      "classes": [
+        "RESTORATION_COMMIT_MISMATCH"
+      ]
+    }
+  ]
+}

@@ -1552,6 +1552,7 @@ jobs:
         run: |
           cargo run --locked -q -p poie-viability --bin poie-s5v-n6-canonical
           cargo run --locked -q -p poie-viability --bin poie-s5v-n6-contract
+          cargo run --locked -q -p poie-viability --bin poie-s5v-n6-boundaries
       - name: Execute external boundary cases
         run: |
           for t in 7199 7200 7201 9000 10800; do
@@ -1564,18 +1565,27 @@ jobs:
             external/fmu-n6-scheduler/build/harness external/fmu-n6-scheduler/poie-n6-scheduler.fmu 900 "audit/phase6/contracts/$c.contract" "audit/phase6/external/$c-harness-900.csv"
             python3 audit/phase6/fmpy_import.py --contract "audit/phase6/contracts/$c.contract" --step 900 --output "audit/phase6/external/$c-fmpy-900.csv" --log "audit/phase6/external/$c-fmpy.log"
           done
-      - name: Compare lifetime/scheduling and run negative controls
+      - name: Execute dependency and boundary cases
+        run: |
+          for c in N6-C-tool-1 N6-C-tool-9000 N6-C-tool-10800 N6-C-tool-12000 N6-C-bus-9000 N6-C-bus-10800 N6-D-same-10800 N6-D-horizon-completion N6-D-horizon-failure; do
+            external/fmu-n6-scheduler/build/harness external/fmu-n6-scheduler/poie-n6-scheduler.fmu 900 "audit/phase6/contracts/$c.contract" "audit/phase6/external/$c-harness-900.csv"
+            python3 audit/phase6/fmpy_import.py --contract "audit/phase6/contracts/$c.contract" --step 900 --output "audit/phase6/external/$c-fmpy-900.csv" --log "audit/phase6/external/$c-fmpy.log"
+          done
+      - name: Compare lifetime/scheduling/dependencies and run negative controls
         run: |
           python3 audit/phase6/compare_lifetime.py
           python3 audit/phase6/negative_lifetime.py
           python3 audit/phase6/compare_scheduling.py
           python3 audit/phase6/negative_scheduling.py
+          python3 audit/phase6/compare_dependencies.py
+          python3 audit/phase6/negative_dependencies.py
+          python3 audit/phase6/restoration_evidence.py
           python3 audit/phase6/manifest.py
           python3 audit/phase6/check.py
       - name: Save N6-A evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n6/evidence"
-          cp -R audit/phase6/canonical audit/phase6/external audit/phase6/differences audit/phase6/negative-controls audit/phase6/contracts "$RUNNER_TEMP/s5v-n6/evidence/"
+          cp -R audit/phase6/canonical audit/phase6/external audit/phase6/differences audit/phase6/negative-controls audit/phase6/contracts audit/phase6/restoration "$RUNNER_TEMP/s5v-n6/evidence/"
           cp audit/phase6/{PREREG.md,SEMANTICS.md,RESOURCE_LIFETIME.md,REPORT.zh-CN.md,manifest.json} "$RUNNER_TEMP/s5v-n6/evidence/"
           ( cd "$RUNNER_TEMP/s5v-n6/evidence" && sha256sum * > SHA256SUMS.txt 2>/dev/null || true )
       - uses: actions/upload-artifact@v4
