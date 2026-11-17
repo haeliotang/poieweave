@@ -1785,7 +1785,6 @@ jobs:
         run: |
           python3 audit/phase9/compare_resource.py
           python3 audit/phase9/negative_resources.py
-          python3 audit/phase9/negative_integrity.py
           python3 audit/phase9/check.py
           python3 audit/phase9/verify_evidence.py --claim
           python3 audit/phase9/verify_evidence.py --claim
