@@ -1,3 +1,3 @@
-task_index	start_s	end_s	resources
-0	0.000000	7200.000000	robot-m1
-1	0.000000	9000.000000	robot-m2
+task_index	priority	start_s	end_s	resources
+0	1	0.000000	7200.000000	robot-m1
+1	2	0.000000	9000.000000	robot-m2

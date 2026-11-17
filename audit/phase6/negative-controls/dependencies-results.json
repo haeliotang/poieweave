@@ -7,6 +7,7 @@
       "detected": true,
       "classes": [
         "EXECUTION_DEPENDENCY_MISMATCH",
+        "RESOURCE_LIFETIME_MISMATCH",
         "RESTORATION_COMMIT_MISMATCH"
       ]
     },

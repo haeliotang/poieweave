@@ -93,11 +93,11 @@ int main(int argc, char **argv) {
     if (!out) return 2;
     fprintf(out, "time_s,makespan_s,completedCount,interrupted,failureAppliedTime_s,t1Start_s,t1End_s,t1Robot,"
                  "t2Start_s,t2End_s,t2Robot,t3Start_s,t3End_s,t3Robot,restored1,restored2,restored3,lastEventCode,"
-                 "toolAvailable,toolFailureAppliedTime_s,release_s,terminated\n");
-    fmi3ValueReference ov[] = {1,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39};
-    fmi3Float64 ovv[21];
-    get(i, ov, 21, ovv, 21);
-    for (int k = 0; k < 21; ++k) fprintf(out, "%.9f,", ovv[k]);
+                 "toolAvailable,toolFailureAppliedTime_s,release_s,toolAcquired_s,toolReleased_s,toolTaskMask,terminated\n");
+    fmi3ValueReference ov[] = {1,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42};
+    fmi3Float64 ovv[24];
+    get(i, ov, 24, ovv, 24);
+    for (int k = 0; k < 24; ++k) fprintf(out, "%.9f,", ovv[k]);
     fprintf(out, "0\n");
     double current = 0.0;
     for (int s = 0; s < 4000 && current < stop - 1e-9; ++s) {
@@ -106,8 +106,8 @@ int main(int argc, char **argv) {
         double step_now = current + atof(argv[2]) > stop ? stop - current : atof(argv[2]);
         if (ds(i, current, step_now, true, &eh, &term_sim, &early, &last) != fmi3OK) return 2;
         current = term_sim ? last : current + step_now;
-        get(i, ov, 21, ovv, 21);
-        for (int k = 0; k < 21; ++k) fprintf(out, "%.9f,", ovv[k]);
+        get(i, ov, 24, ovv, 24);
+        for (int k = 0; k < 24; ++k) fprintf(out, "%.9f,", ovv[k]);
         fprintf(out, "%d\n", term_sim ? 1 : 0);
         if (term_sim) break;
     }

@@ -17,6 +17,11 @@ N6-C CAUSAL DEPENDENCY AND EVENT BOUNDARIES — ESTABLISHED (SCOPED: tool-t1, bu
 N6-D REPAIR-DRIVEN RESTORATION STATE VALIDITY — ESTABLISHED (SCOPED: derived asset state from completion trace; native asset-status export unavailable)
 N6-E EVIDENCE INTEGRITY — ESTABLISHED (SCOPED: A/B/C + derived D)
 
+S5-V N6 EVIDENCE HARDENING — ESTABLISHED (SCOPED)
+N6 FROZEN EVIDENCE REPRODUCIBILITY — VERIFIED
+N6 INDEPENDENT SCHEDULING CONTRACT VALIDATION — ESTABLISHED (SCOPED)
+N6 REPORT / EVIDENCE CONSISTENCY — VERIFIED
+
 N5-03 GROUP-LEVEL INTERRUPTION CONSISTENCY
   ESTABLISHED
 N5-03 STEP-LEVEL LIFETIME CORRECTNESS
@@ -68,7 +73,7 @@ robotCount, failure time/kind/index, horizon
 
 B06 现在由双方从同一 priority 契约独立计算，决策一致。
 B08 故意使用不同 priority 输入，两种顺序都合法且 makespan 相同，比较器分类为
-`DIFFERENT_BUT_VALID_DECISION`，而不是失败。
+`DIFFERENT_POLICY_VALID_DECISIONS`，而不是失败。
 
 边界：canonical scheduler 通过 `plans` 顺序接收 priority；canonical **event engine**
 的 `start_repair` 仍按固定初始资产顺序生成计划，因此“事件执行阶段的 priority
@@ -115,7 +120,20 @@ status_source = DERIVED_FROM_TRACE_COMPLETION
 提交与释放时间可审计，但资产状态来源是 canonical completion trace 的确定性派生，
 不是原生资产状态字段。该限制在 EVIDENCE.md 中保留。
 
-## 证据
+## Evidence hardening
+
+- 冻结 manifest 仅由 `git ls-files audit/phase6` 的 allowlist 文件生成，排除
+  `__pycache__`、`.pyc`、运行时与执行 manifest。
+- 冻结校验先于任何重算执行；当次运行使用独立 `execution-manifest.json`。
+- 调度契约逐任务校验 robot mask、必需工具、工具占用/释放与 priority。
+- 新增 mutation controls：mask 禁止机器人、无合法机器人、缺失工具、提前释放工具、
+  同 priority 顺序违规、契约输入变更、冻结证据篡改。
+- B06/B08 分类不再依赖 case ID，而由实际 priority 输入和资源竞争关系决定。
+- `selected_resources` 缺失时记录为 `null` + `selected_resources_observed=false`，
+  不把空数组解释为“无需资源”。
+- 冻结证据仅来自 Git-tracked allowlist；当次运行使用独立 execution manifest。
+- 干净 checkout 必须先通过冻结校验，再允许任何重算。
+
 
 - [PREREG.md](PREREG.md)
 - [SEMANTICS.md](SEMANTICS.md)

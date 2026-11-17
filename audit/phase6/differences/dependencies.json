@@ -40,6 +40,9 @@
         "toolAvailable": 0.0,
         "toolFailureAppliedTime_s": 1.0,
         "release_s": 1.0,
+        "toolAcquired_s": 0.0,
+        "toolReleased_s": 1.0,
+        "toolTaskMask": 1.0,
         "terminated": 1
       },
       "failure_expected_s": 1.0,
@@ -91,6 +94,9 @@
         "toolAvailable": 0.0,
         "toolFailureAppliedTime_s": 9000.0,
         "release_s": 9000.0,
+        "toolAcquired_s": 0.0,
+        "toolReleased_s": 9000.0,
+        "toolTaskMask": 1.0,
         "terminated": 1
       },
       "failure_expected_s": 9000.0,
@@ -144,6 +150,9 @@
         "toolAvailable": 0.0,
         "toolFailureAppliedTime_s": 10800.0,
         "release_s": 10800.0,
+        "toolAcquired_s": 0.0,
+        "toolReleased_s": 10800.0,
+        "toolTaskMask": 1.0,
         "terminated": 1
       },
       "failure_expected_s": 10800.0,
@@ -197,6 +206,9 @@
         "toolAvailable": 0.0,
         "toolFailureAppliedTime_s": 12000.0,
         "release_s": 10800.0,
+        "toolAcquired_s": 0.0,
+        "toolReleased_s": 10800.0,
+        "toolTaskMask": 1.0,
         "terminated": 1
       },
       "failure_expected_s": 12000.0,
@@ -248,6 +260,9 @@
         "toolAvailable": 1.0,
         "toolFailureAppliedTime_s": 0.0,
         "release_s": 9000.0,
+        "toolAcquired_s": -1.0,
+        "toolReleased_s": -1.0,
+        "toolTaskMask": 0.0,
         "terminated": 1
       },
       "failure_expected_s": 9000.0,
@@ -301,6 +316,9 @@
         "toolAvailable": 1.0,
         "toolFailureAppliedTime_s": 0.0,
         "release_s": 10800.0,
+        "toolAcquired_s": -1.0,
+        "toolReleased_s": -1.0,
+        "toolTaskMask": 0.0,
         "terminated": 1
       },
       "failure_expected_s": 10800.0,
@@ -355,6 +373,9 @@
         "toolAvailable": 1.0,
         "toolFailureAppliedTime_s": 0.0,
         "release_s": 10800.0,
+        "toolAcquired_s": -1.0,
+        "toolReleased_s": -1.0,
+        "toolTaskMask": 0.0,
         "terminated": 1
       },
       "failure_expected_s": 10800.0,
@@ -408,6 +429,9 @@
         "toolAvailable": 1.0,
         "toolFailureAppliedTime_s": 0.0,
         "release_s": 10800.0,
+        "toolAcquired_s": -1.0,
+        "toolReleased_s": -1.0,
+        "toolTaskMask": 0.0,
         "terminated": 1
       },
       "failure_expected_s": null,
@@ -461,6 +485,9 @@
         "toolAvailable": 1.0,
         "toolFailureAppliedTime_s": 0.0,
         "release_s": 7200.0,
+        "toolAcquired_s": -1.0,
+        "toolReleased_s": -1.0,
+        "toolTaskMask": 0.0,
         "terminated": 1
       },
       "failure_expected_s": null,

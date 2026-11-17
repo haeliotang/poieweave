@@ -14,7 +14,7 @@ KEYS = ["taskCount", "t1Duration_s", "t1Priority", "t1RobotMask", "t1RequiresToo
         "t2RobotMask", "t2RequiresTool", "t3Duration_s", "t3Priority", "t3RobotMask", "t3RequiresTool", "robotCount",
         "failureTime_s", "failureKind", "failureIndex", "horizon_s"]
 VRS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-OUT = [1, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]
+OUT = [1, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42]
 
 
 def contract(path: Path) -> dict[str, float]:
@@ -68,7 +68,7 @@ def main() -> int:
     with Path(args.output).open("w") as handle:
         handle.write("time_s,makespan_s,completedCount,interrupted,failureAppliedTime_s,t1Start_s,t1End_s,t1Robot,"
                      "t2Start_s,t2End_s,t2Robot,t3Start_s,t3End_s,t3Robot,restored1,restored2,restored3,lastEventCode,"
-                     "toolAvailable,toolFailureAppliedTime_s,release_s,terminated\n")
+                     "toolAvailable,toolFailureAppliedTime_s,release_s,toolAcquired_s,toolReleased_s,toolTaskMask,terminated\n")
         for row in rows:
             handle.write(",".join(f"{value:.9f}" for value in row) + "\n")
     last = rows[-1]

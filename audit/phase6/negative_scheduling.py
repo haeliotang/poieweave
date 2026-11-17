@@ -17,7 +17,8 @@ assert spec.loader is not None
 spec.loader.exec_module(compare)
 FIELDS = ["time_s", "makespan_s", "completedCount", "interrupted", "failureAppliedTime_s", "t1Start_s", "t1End_s",
           "t1Robot", "t2Start_s", "t2End_s", "t2Robot", "t3Start_s", "t3End_s", "t3Robot", "restored1", "restored2",
-          "restored3", "lastEventCode", "toolAvailable", "toolFailureAppliedTime_s", "release_s", "terminated"]
+          "restored3", "lastEventCode", "toolAvailable", "toolFailureAppliedTime_s", "release_s", "toolAcquired_s", "toolReleased_s", "toolTaskMask",
+          "terminated"]
 CONTROLS = [
     ("N6-B07", "N6-B07-overlap", {"t2Start_s": 0.0}, "RESOURCE_CONTRACT_VIOLATION"),
     ("N6-B01", "N6-B01-duration", {"t1End_s": 7200.0}, "RESOURCE_CONTRACT_VIOLATION"),

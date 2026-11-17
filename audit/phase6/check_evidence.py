@@ -28,7 +28,7 @@ def main() -> int:
             status = entry.get("status")
             if status in ("UNEXPLAINED", "FAIL"):
                 problems.append(f"{name}:{entry.get('case')}: {status}")
-    for name in ["lifetime-results", "scheduling-results", "dependencies-results"]:
+    for name in ["lifetime-results", "scheduling-results", "dependencies-results", "contract-results"]:
         data = json.loads((PHASE / "negative-controls" / f"{name}.json").read_text())
         if not data["results"] or not all(entry["detected"] for entry in data["results"]):
             problems.append(f"negative coverage {name}")
@@ -38,7 +38,8 @@ def main() -> int:
     if not (PHASE / "EVIDENCE.md").is_file():
         problems.append("evidence document")
     ci = CI.read_text()
-    for token in ["s5v-n6-linux", "audit/phase6/compare_dependencies.py", "audit/phase6/manifest.py"]:
+    for token in ["s5v-n6-linux", "audit/phase6/compare_dependencies.py",
+                  "audit/phase6/negative_contracts.py", "audit/phase6/execution_manifest.py"]:
         if token not in ci:
             problems.append(f"CI missing {token}")
     v2 = json.loads((ROOT / "docs/research/canonical-claim-certificate-index-v2.json").read_text())

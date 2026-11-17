@@ -1,0 +1,63 @@
+{
+  "schema": "poie.s5v-n6-contract-negative-controls/2",
+  "results": [
+    {
+      "control": "N6-B00-mask-forbidden-robot",
+      "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_ELIGIBILITY_VIOLATION"
+      ]
+    },
+    {
+      "control": "N6-B00-no-eligible-robot",
+      "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_ELIGIBILITY_VIOLATION"
+      ]
+    },
+    {
+      "control": "N6-B08-same-priority-order-violation",
+      "expected": "POLICY_CONTRACT_VIOLATION",
+      "detected": true,
+      "classes": [
+        "POLICY_CONTRACT_VIOLATION"
+      ]
+    },
+    {
+      "control": "N6-C-tool-9000-missing-tool",
+      "expected": "REQUIRED_TOOL_MISSING",
+      "detected": true,
+      "classes": [
+        "REQUIRED_TOOL_MISSING",
+        "RESOURCE_CONTRACT_VIOLATION",
+        "RESOURCE_LIFETIME_MISMATCH"
+      ]
+    },
+    {
+      "control": "N6-C-tool-9000-early-tool-release",
+      "expected": "RESOURCE_LIFETIME_MISMATCH",
+      "detected": true,
+      "classes": [
+        "RESOURCE_LIFETIME_MISMATCH"
+      ]
+    },
+    {
+      "control": "N6-B00-contract-duration-mismatch",
+      "expected": "RESOURCE_CONTRACT_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_CONTRACT_VIOLATION"
+      ]
+    },
+    {
+      "control": "N6-B00-frozen-evidence-mutation",
+      "expected": "EVIDENCE_INTEGRITY_FAILURE",
+      "detected": true,
+      "classes": [
+        "EVIDENCE_INTEGRITY_FAILURE"
+      ]
+    }
+  ]
+}

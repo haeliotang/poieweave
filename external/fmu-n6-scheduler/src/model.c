@@ -49,6 +49,9 @@
 #define VR_TOOL_AVAILABLE 37
 #define VR_TOOL_FAIL_APPLIED 38
 #define VR_RELEASE 39
+#define VR_TOOL_ACQUIRED 40
+#define VR_TOOL_RELEASED 41
+#define VR_TOOL_MASK 42
 
 typedef struct {
     fmi3Float64 time;
@@ -58,6 +61,7 @@ typedef struct {
     fmi3Float64 makespan, completed, interrupted, fail_applied, release;
     fmi3Float64 restored[MAXT];
     fmi3Float64 last_event, tool_available, tool_fail_applied;
+    fmi3Float64 tool_acquired, tool_released, tool_mask;
 } Component;
 
 const char *fmi3GetVersion(void) { return "3.0"; }
@@ -110,6 +114,14 @@ fmi3Status fmi3EnterInitializationMode(fmi3Instance i, fmi3Boolean a, fmi3Float6
     }
     x->completed = 0; x->interrupted = 0; x->fail_applied = -1; x->release = x->makespan;
     for (int t = 0; t < MAXT; ++t) x->restored[t] = 0;
+    x->tool_acquired = -1; x->tool_released = -1; x->tool_mask = 0;
+    for (int t = 0; t < n; ++t) {
+        if (x->tool[t] > 0.5) {
+            x->tool_mask += (fmi3Float64)(1 << t);
+            if (x->tool_acquired < 0 || x->start[t] < x->tool_acquired) x->tool_acquired = x->start[t];
+        }
+    }
+    if (x->tool_mask > 0) x->tool_released = x->makespan;
     return fmi3OK;
 }
 fmi3Status fmi3ExitInitializationMode(fmi3Instance i) { return i ? fmi3OK : fmi3Error; }
@@ -152,6 +164,9 @@ fmi3Status fmi3GetFloat64(fmi3Instance i, const fmi3ValueReference vr[], size_t 
         case VR_REST1: v[k] = x->restored[0]; break; case VR_REST2: v[k] = x->restored[1]; break; case VR_REST3: v[k] = x->restored[2]; break;
         case VR_LAST_EVENT: v[k] = x->last_event; break; case VR_TOOL_AVAILABLE: v[k] = x->tool_available; break;
         case VR_TOOL_FAIL_APPLIED: v[k] = x->tool_fail_applied; break; case VR_RELEASE: v[k] = x->release; break;
+        case VR_TOOL_ACQUIRED: v[k] = x->tool_acquired; break;
+        case VR_TOOL_RELEASED: v[k] = x->tool_released; break;
+        case VR_TOOL_MASK: v[k] = x->tool_mask; break;
         default: v[k] = 0; break;
         }
     }
@@ -206,6 +221,7 @@ fmi3Status fmi3DoStep(fmi3Instance i, fmi3Float64 current, fmi3Float64 step, fmi
                 x->interrupted = 1; x->completed = 0;
                 for (int t = 0; t < MAXT; ++t) x->restored[t] = 0;
                 x->release = x->fail_time;
+                if (x->tool_mask > 0) x->tool_released = x->fail_time;
                 if (term) *term = true; if (last) *last = x->fail_time;
                 return fmi3OK;
             }

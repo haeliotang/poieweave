@@ -21,6 +21,11 @@ def sha(path: Path) -> str:
 def main() -> int:
     problems = []
     manifest = json.loads((PHASE / "manifest.json").read_text())
+    if manifest.get("kind") != "FROZEN_TRACKED_EVIDENCE":
+        problems.append("manifest kind")
+    for entry in manifest["files"]:
+        if "__pycache__" in entry["path"] or entry["path"].endswith((".pyc", ".pyo")):
+            problems.append(f"cache in manifest: {entry['path']}")
     for entry in manifest["files"]:
         if sha(ROOT / entry["path"]) != entry["sha256"]:
             problems.append(f"hash: {entry['path']}")
@@ -55,12 +60,15 @@ def main() -> int:
             problems.append(f"{entry['case']}: scheduling status")
         if not entry["contract"]["canonical_valid"] or not entry["contract"]["external_valid"]:
             problems.append(f"{entry['case']}: scheduling contract")
-    policy = [entry for entry in scheduling["cases"] if entry["policy_difference"]]
-    if not policy or policy[0]["decision"] != "DIFFERENT_BUT_VALID_DECISION":
+    policy = [entry for entry in scheduling["cases"] if entry["policy_compatibility"] == "DIFFERENT_POLICY"]
+    if not policy or any(entry["decision"] != "DIFFERENT_POLICY_VALID_DECISIONS" for entry in policy):
         problems.append("policy difference classification")
     scheduling_negatives = json.loads((PHASE / "negative-controls/scheduling-results.json").read_text())
     if not all(entry["detected"] for entry in scheduling_negatives["results"]):
         problems.append("scheduling negative controls")
+    contract_negatives = json.loads((PHASE / "negative-controls/contract-results.json").read_text())
+    if not all(entry["detected"] for entry in contract_negatives["results"]):
+        problems.append("contract mutation controls")
     dependencies = json.loads((PHASE / "differences/dependencies.json").read_text())
     if len(dependencies["cases"]) != 9:
         problems.append("dependency case count")
@@ -78,7 +86,7 @@ def main() -> int:
         return 1
     print(f"ok N6-A/B/C/D: {len(comparison['cases'])} lifetime boundaries, {len(scheduling['cases'])} scheduling cases, "
           f"{len(dependencies['cases'])} dependency/boundary cases, "
-          f"{len(negatives['results']) + len(scheduling_negatives['results']) + len(dependency_negatives['results'])} negative controls")
+          f"{len(negatives['results']) + len(scheduling_negatives['results']) + len(dependency_negatives['results']) + len(contract_negatives['results'])} negative controls")
     return 0
 
 
