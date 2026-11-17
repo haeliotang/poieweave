@@ -22,14 +22,259 @@
       "sha256": "f601811dadc979580d912ddb0b066c984317425d8d0b1e7722765a09819b2050"
     },
     {
-      "bytes": 2567,
+      "bytes": 3812,
       "path": "audit/phase9/REPORT.zh-CN.md",
-      "sha256": "17a9f2e9cd6db746d7d33905f2f11262aaf1e7165cb3370e875ecbe948d03633"
+      "sha256": "45314f9eb46006502694b6fd9a632f167ecd76c948b498a01a292b3dcffeab6b"
     },
     {
       "bytes": 1274,
       "path": "audit/phase9/RESOURCE_CAUSAL_CONTRACT.md",
       "sha256": "d493ebf645d5e0534b37e7a7449928dc8cb8b968a927387d417bfadec078cd69"
+    },
+    {
+      "bytes": 946,
+      "path": "audit/phase9/canonical/N9-00-events.csv",
+      "sha256": "844dfb491c51c2f7c08351f0435594355faf82c7562e4aa1332088dab519d50a"
+    },
+    {
+      "bytes": 439,
+      "path": "audit/phase9/canonical/N9-00-summary.json",
+      "sha256": "96ae5c42a8395b47bcd5ffff1682efd4c2d346cda7c948c3ec5c592f03ebd69b"
+    },
+    {
+      "bytes": 735,
+      "path": "audit/phase9/canonical/N9-01-events.csv",
+      "sha256": "c60a19a909a77cf41c3580bfd08b198992fcdbe089dcc73f885934b50a7bdfec"
+    },
+    {
+      "bytes": 460,
+      "path": "audit/phase9/canonical/N9-01-summary.json",
+      "sha256": "bbf4db5dd1162897ddc9804172449805ac6378b9e221f73ad0c0b8e3b2c40a46"
+    },
+    {
+      "bytes": 1045,
+      "path": "audit/phase9/canonical/N9-02-events.csv",
+      "sha256": "d858e362018f6242694bc8a5ce448889f65bfd891462249e1249149edc213734"
+    },
+    {
+      "bytes": 471,
+      "path": "audit/phase9/canonical/N9-02-summary.json",
+      "sha256": "3a3e3ae015c35f694409e8663f60b2b6a863d2239d90075ed2ffa97bbaee80b1"
+    },
+    {
+      "bytes": 1486,
+      "path": "audit/phase9/canonical/N9-03-events.csv",
+      "sha256": "f36164c385b87e531d8e5974e1b49f82ac6a61b37ea18bf78dc1cd99a012cb8a"
+    },
+    {
+      "bytes": 478,
+      "path": "audit/phase9/canonical/N9-03-summary.json",
+      "sha256": "3f8c7141af829db8e5df916f5353d6f853c01198e8818c9a7f6cb8fb1fafb028"
+    },
+    {
+      "bytes": 1243,
+      "path": "audit/phase9/canonical/N9-04-events.csv",
+      "sha256": "f0ed8bca2d2297dc92deac9d0de817d0d1d7024e8fd9b80b25b33652ab608e90"
+    },
+    {
+      "bytes": 440,
+      "path": "audit/phase9/canonical/N9-04-summary.json",
+      "sha256": "b5c6c6fc95b8e963c3aed110b9d341b90afca58a15416eef0ad2076ceeb0fdf5"
+    },
+    {
+      "bytes": 1618,
+      "path": "audit/phase9/canonical/N9-05-events.csv",
+      "sha256": "0ee64384f222481d7e3b2f864022e50b20a5d920431f87af39b131df78082091"
+    },
+    {
+      "bytes": 497,
+      "path": "audit/phase9/canonical/N9-05-summary.json",
+      "sha256": "37515dc8b0c825a0269f4f58bdb9157c8b69b60a8c0c8578b3afc6eecf6166ae"
+    },
+    {
+      "bytes": 2089,
+      "path": "audit/phase9/canonical/N9-06-events.csv",
+      "sha256": "076fcd94423144c750372d4751e5bdf6299bb6c73afbabfaf22dda0d6ff94b5d"
+    },
+    {
+      "bytes": 554,
+      "path": "audit/phase9/canonical/N9-06-summary.json",
+      "sha256": "35624aca593924dfe6e2efeb0c1cd7020cf946e39a12d93ef9c9cdfb6f6e4f79"
+    },
+    {
+      "bytes": 1878,
+      "path": "audit/phase9/check.py",
+      "sha256": "a1416bee24d24cbf31d6fcb3deaa9c262d0da9913cd9d56c86a61d7830a602c0"
+    },
+    {
+      "bytes": 11255,
+      "path": "audit/phase9/compare_resource.py",
+      "sha256": "3a3b9a86a91d473384973f6eab7a53d436bfd45a35b358d7e4e6e87f24c7478d"
+    },
+    {
+      "bytes": 11726,
+      "path": "audit/phase9/comparisons/resource-trajectories.json",
+      "sha256": "418e7e8f4280ab348ae9eb137aec1de1ae0a28301e99fd39c1dd7900e877ddd8"
+    },
+    {
+      "bytes": 267,
+      "path": "audit/phase9/contracts/N9-00.contract",
+      "sha256": "9f77cd84e3e0ce7b9d998b7ef77e5ba81fc4d834df55256d30b08e2d79cc3d76"
+    },
+    {
+      "bytes": 271,
+      "path": "audit/phase9/contracts/N9-01.contract",
+      "sha256": "c6f60991f3b9c336b6fad03cfc675e07c1717ed1945ebeb5e702b8e0a5f88427"
+    },
+    {
+      "bytes": 271,
+      "path": "audit/phase9/contracts/N9-02.contract",
+      "sha256": "0a5f72f04e204f243302df6cdd111ed93744535dc6ed50d7cd9336a127cff9bd"
+    },
+    {
+      "bytes": 270,
+      "path": "audit/phase9/contracts/N9-03.contract",
+      "sha256": "71ddb3e10b9b3f7711fda98afc985c8e9eba27e5720cfee23cae6804ecb63ef2"
+    },
+    {
+      "bytes": 270,
+      "path": "audit/phase9/contracts/N9-04.contract",
+      "sha256": "5bc5aed43a56122c362c0ca94c2a913d69e7d566a70a74e14f8b8cecf23dc2ea"
+    },
+    {
+      "bytes": 270,
+      "path": "audit/phase9/contracts/N9-05.contract",
+      "sha256": "d7299f05857a0c311bd6cb617e5262f7cafae8f7fed539e043a074c777a2d409"
+    },
+    {
+      "bytes": 270,
+      "path": "audit/phase9/contracts/N9-06.contract",
+      "sha256": "4fc81542dc106853d01c242e1d6f75390c4f8ba0311c76714592030de580cab0"
+    },
+    {
+      "bytes": 25871,
+      "path": "audit/phase9/external/N9-00-fmpy-900.csv",
+      "sha256": "efbb20781b9608103b0179900a63dfbae2de02df3a942a6b8ab9dc0eacaf033d"
+    },
+    {
+      "bytes": 176,
+      "path": "audit/phase9/external/N9-00-fmpy.log",
+      "sha256": "b264bc77a58dd8935c96f159bf82504fa18d672cdc73f282dd6dc50980aaa1d0"
+    },
+    {
+      "bytes": 25061,
+      "path": "audit/phase9/external/N9-00-harness-900.csv",
+      "sha256": "0595fc78d849eb5621f6dfc989fea2957cfbdbed82433b3f0ba5b1428b16227a"
+    },
+    {
+      "bytes": 26600,
+      "path": "audit/phase9/external/N9-01-fmpy-900.csv",
+      "sha256": "f1ca09a4561662a6b65564a8c7b733b54df2fb8b85a6f9be422497fbab082345"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase9/external/N9-01-fmpy.log",
+      "sha256": "fd911e1517665252691a021947e68cacbe4cda0114fc731f26631641737741af"
+    },
+    {
+      "bytes": 25790,
+      "path": "audit/phase9/external/N9-01-harness-900.csv",
+      "sha256": "56753314fe27c051742d28ed08c3b73ef379c49bd09ae2a92522f04403e53466"
+    },
+    {
+      "bytes": 26357,
+      "path": "audit/phase9/external/N9-02-fmpy-900.csv",
+      "sha256": "e52d6c246d206dc8433581edf240d4ac1a4a95dad8116ede72e837b078831d3d"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase9/external/N9-02-fmpy.log",
+      "sha256": "33b1502ad50f46bac22c2118a8ee52eac50d4facede031e35dffabd64c1ff080"
+    },
+    {
+      "bytes": 25547,
+      "path": "audit/phase9/external/N9-02-harness-900.csv",
+      "sha256": "45e7ece4f89ebf5e39851513a95e7f7a91976015aff2abe0d7edcaff71514205"
+    },
+    {
+      "bytes": 3150,
+      "path": "audit/phase9/external/N9-03-fmpy-900.csv",
+      "sha256": "5595bffaca16f2d75327ac68e8d03831efea8e2d5af635cab5c29f23b3281f07"
+    },
+    {
+      "bytes": 175,
+      "path": "audit/phase9/external/N9-03-fmpy.log",
+      "sha256": "83ad1448ecb8ad96f2f9bb94f4c7747e729e186a8297047a2db5d8ae0dc44483"
+    },
+    {
+      "bytes": 3060,
+      "path": "audit/phase9/external/N9-03-harness-900.csv",
+      "sha256": "cd8b783975a27c93d550bbe38ffbfb1ffb95d1173b23523a6ce770f331d765aa"
+    },
+    {
+      "bytes": 26260,
+      "path": "audit/phase9/external/N9-04-fmpy-900.csv",
+      "sha256": "55d2156fce9293c87a3aee2b4d2cc7531ef9cd040675d251e95b11f947104532"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase9/external/N9-04-fmpy.log",
+      "sha256": "2e0313c8c360b3d327bbbaa9a376a184e30f9870e99696f2592501b12f3b0586"
+    },
+    {
+      "bytes": 25450,
+      "path": "audit/phase9/external/N9-04-harness-900.csv",
+      "sha256": "c7a262dd8b5167ef5ddcafa676615b0f2e32972e4fa92b25914af50ad34d58d3"
+    },
+    {
+      "bytes": 3810,
+      "path": "audit/phase9/external/N9-05-fmpy-900.csv",
+      "sha256": "45f8b0e8fa3a4a08f9e3c471548de8c0d6a4a98953e6e65ee14d5d84a4849171"
+    },
+    {
+      "bytes": 176,
+      "path": "audit/phase9/external/N9-05-fmpy.log",
+      "sha256": "454eb7b114ab3d1193c4bedb7b9c6b6f3d066aeceab78c564f40efab0032f099"
+    },
+    {
+      "bytes": 3700,
+      "path": "audit/phase9/external/N9-05-harness-900.csv",
+      "sha256": "ece22e52562b873845f14613ba47164e3b5b41a90fb9dc6c13cd4f1b54085f61"
+    },
+    {
+      "bytes": 3786,
+      "path": "audit/phase9/external/N9-06-fmpy-900.csv",
+      "sha256": "8f6aea11cc8984ee65e0329bba858073999efb4b1880e13ea5c6409195e43847"
+    },
+    {
+      "bytes": 176,
+      "path": "audit/phase9/external/N9-06-fmpy.log",
+      "sha256": "454eb7b114ab3d1193c4bedb7b9c6b6f3d066aeceab78c564f40efab0032f099"
+    },
+    {
+      "bytes": 3676,
+      "path": "audit/phase9/external/N9-06-harness-900.csv",
+      "sha256": "663be7f3395acea6231e3d004b29f7a3967bf63997e947fb457180119bf27c1f"
+    },
+    {
+      "bytes": 3505,
+      "path": "audit/phase9/negative-controls/resource-results.json",
+      "sha256": "8ac681af8d018c159e5b8443238566798016360e15aa36a0fc95812574917ad9"
+    },
+    {
+      "bytes": 4072,
+      "path": "audit/phase9/negative_resources.py",
+      "sha256": "e7d479e0983fbc8358f389f07425943f55bae6c11047ee9750b9afd19ef2198b"
+    },
+    {
+      "bytes": 855,
+      "path": "audit/phase9/old-evidence.json",
+      "sha256": "088d5e3adb62e0377c17b0f061819469929ce46ad7261617cfcd9f2f779440d9"
+    },
+    {
+      "bytes": 2837,
+      "path": "audit/phase9/verify_evidence.py",
+      "sha256": "262d3457d2591a194f53664ff13c8b1629283036e9811fc0449f3317fbd7f6f2"
     }
   ],
   "kind": "FROZEN_TRACKED_EVIDENCE",

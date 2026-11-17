@@ -1,0 +1,10 @@
+case	event_sequence	event_batch_sequence	at_s	event_kind	event_origin	target_asset	event_status	resources	execution_dependencies	restoration_targets	witness	termination
+N9-05	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	tool-t1+robot-m1	robot-m1+tool-t1	a-lathe		blocked:repair interrupted at 9000s: tool-t1 failed
+N9-05	2	2	9000.000	AssetFailure	Exogenous	tool-t1	Committed	tool-t1+robot-m1	robot-m1+tool-t1	a-lathe		blocked:repair interrupted at 9000s: tool-t1 failed
+N9-05	3	2	9000.000	RepairInterrupted	Endogenous	repair	Committed	tool-t1+robot-m1	robot-m1+tool-t1	a-lathe		blocked:repair interrupted at 9000s: tool-t1 failed
+N9-05	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	tool-t1+robot-m1	robot-m1+tool-t1	a-lathe		blocked:repair interrupted at 9000s: tool-t1 failed
+N9-05	2	2	9000.000	AssetFailure	Exogenous	tool-t1	Committed	tool-t1+robot-m1	robot-m1+tool-t1	a-lathe		blocked:repair interrupted at 9000s: tool-t1 failed
+N9-05	3	2	9000.000	RepairInterrupted	Endogenous	repair	Committed	tool-t1+robot-m1	robot-m1+tool-t1	a-lathe		blocked:repair interrupted at 9000s: tool-t1 failed
+N9-05	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	tool-t1+robot-m1	robot-m1+tool-t1	a-lathe		blocked:repair interrupted at 9000s: tool-t1 failed
+N9-05	2	2	9000.000	AssetFailure	Exogenous	tool-t1	Committed	tool-t1+robot-m1	robot-m1+tool-t1	a-lathe		blocked:repair interrupted at 9000s: tool-t1 failed
+N9-05	3	2	9000.000	RepairInterrupted	Endogenous	repair	Committed	tool-t1+robot-m1	robot-m1+tool-t1	a-lathe		blocked:repair interrupted at 9000s: tool-t1 failed

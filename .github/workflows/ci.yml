@@ -1751,6 +1751,61 @@ jobs:
           name: s5v-n8h-linux-evidence
           path: ${{ runner.temp }}/s5v-n8h/evidence
 
+  s5v-n9-linux:
+    name: S5-V N9 resource-causal trajectory Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install independent FMI importer
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Verify frozen N9 evidence before re-execution
+        run: |
+          python3 audit/phase9/check.py --frozen
+          python3 audit/phase9/verify_evidence.py --frozen --claim
+          python3 audit/phase9/negative_resources.py
+      - name: Build N6 FMU and run canonical resource trajectories
+        run: |
+          external/fmu-n6-scheduler/build.sh
+          cargo run --locked -q -p poie-viability --bin poie-s5v-n9-resources
+      - name: Execute independent N6 resource contracts
+        run: |
+          for c in N9-00 N9-01 N9-02 N9-03 N9-04 N9-05 N9-06; do
+            external/fmu-n6-scheduler/build/harness external/fmu-n6-scheduler/poie-n6-scheduler.fmu 900 "audit/phase9/contracts/$c.contract" "audit/phase9/external/$c-harness-900.csv"
+            python3 audit/phase6/fmpy_import.py --contract "audit/phase9/contracts/$c.contract" --step 900 --output "audit/phase9/external/$c-fmpy-900.csv" --log "audit/phase9/external/$c-fmpy.log"
+          done
+      - name: Resource comparator and adversarial controls
+        run: |
+          python3 audit/phase9/compare_resource.py
+          python3 audit/phase9/negative_resources.py
+          python3 audit/phase9/check.py
+          python3 audit/phase9/verify_evidence.py --claim
+      - name: Verify v5 and historical certificates
+        run: |
+          python3 scripts/build-canonical-claim-certificates-v5.py --check
+          python3 scripts/verify-canonical-claim-certificates-v5.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v5.py
+          python3 audit/certificates/verify_v4.py
+          python3 audit/certificates/verify_v3.py
+          python3 audit/certificates/verify_v2.py
+          python3 audit/certificates/verify_v1_historical.py
+      - name: Save N9 evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n9/evidence"
+          cp -R audit/phase9/contracts audit/phase9/canonical audit/phase9/external audit/phase9/comparisons audit/phase9/negative-controls "$RUNNER_TEMP/s5v-n9/evidence/"
+          cp audit/phase9/{PREREG.md,RESOURCE_CAUSAL_CONTRACT.md,CAPABILITY_MATRIX.md,CERTIFICATE_IMPACT.md,REPORT.zh-CN.md,EVIDENCE.md,old-evidence.json,manifest.json} "$RUNNER_TEMP/s5v-n9/evidence/"
+          python3 audit/phase9/execution_manifest.py --output "$RUNNER_TEMP/s5v-n9/evidence/execution-manifest.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n9-linux-evidence
+          path: ${{ runner.temp }}/s5v-n9/evidence
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest

@@ -1,0 +1,13 @@
+case	event_sequence	event_batch_sequence	at_s	event_kind	event_origin	target_asset	event_status	resources	execution_dependencies	restoration_targets	witness	termination
+N9-04	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	robot-m1	a-lathe		completed
+N9-04	2	2	7200.000	AssetFailure	Exogenous	robot-m2	Committed	robot-m1	robot-m1	a-lathe		completed
+N9-04	3	3	10800.000	RepairCompleted	Endogenous	a-lathe	Committed					completed
+N9-04	4	4	72000.000	HorizonReached	Endogenous		Committed					completed
+N9-04	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	robot-m1	a-lathe		completed
+N9-04	2	2	7200.000	AssetFailure	Exogenous	robot-m2	Committed	robot-m1	robot-m1	a-lathe		completed
+N9-04	3	3	10800.000	RepairCompleted	Endogenous	a-lathe	Committed					completed
+N9-04	4	4	72000.000	HorizonReached	Endogenous		Committed					completed
+N9-04	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	robot-m1	a-lathe		completed
+N9-04	2	2	7200.000	AssetFailure	Exogenous	robot-m2	Committed	robot-m1	robot-m1	a-lathe		completed
+N9-04	3	3	10800.000	RepairCompleted	Endogenous	a-lathe	Committed					completed
+N9-04	4	4	72000.000	HorizonReached	Endogenous		Committed					completed

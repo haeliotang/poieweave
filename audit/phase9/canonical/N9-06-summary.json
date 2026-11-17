@@ -1,0 +1,15 @@
+{
+ "case":"N9-06",
+ "restoration_committed":false,
+ "repair_completed_s":null,
+ "selected_resources":["robot-m1"],
+ "execution_dependencies":["bat-1","bus-1","charger-1","robot-m1"],
+ "restoration_targets":["a-lathe"],
+ "witness":["sleeve-replacement:robot-m1:bat-1|bus-1|charger-1"],
+ "termination":"blocked:repair interrupted at 9000s: bus-1 failed",
+ "survived_s":9000.000,
+ "event_count":3,
+ "resource_release_observed":false,
+ "release_note":"RunTerminated is not a native resource release event",
+ "observation_source":"NATIVE_CANONICAL_RUNTIME"
+}

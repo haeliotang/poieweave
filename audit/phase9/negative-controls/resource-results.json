@@ -1,0 +1,146 @@
+{
+  "schema": "poie.s5v-n9-resource-controls/1",
+  "results": [
+    {
+      "control": "selected-robot-failure-ignored",
+      "expected": "EXECUTION_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "RESOURCE_LIFETIME_MISMATCH",
+        "RESTORATION_COMMIT_MISMATCH"
+      ],
+      "contracts": {
+        "canonical": true,
+        "external": false
+      }
+    },
+    {
+      "control": "unselected-robot-failure-interrupts",
+      "expected": "EXECUTION_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "RESOURCE_LIFETIME_MISMATCH",
+        "RESTORATION_COMMIT_MISMATCH"
+      ],
+      "contracts": {
+        "canonical": true,
+        "external": false
+      }
+    },
+    {
+      "control": "required-tool-failure-ignored",
+      "expected": "EXECUTION_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "RESOURCE_LIFETIME_MISMATCH",
+        "RESTORATION_COMMIT_MISMATCH"
+      ],
+      "contracts": {
+        "canonical": true,
+        "external": false
+      }
+    },
+    {
+      "control": "required-tool-not-assigned",
+      "expected": "EXECUTION_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH"
+      ],
+      "contracts": {
+        "canonical": true,
+        "external": false
+      }
+    },
+    {
+      "control": "upstream-failure-ignored",
+      "expected": "UPSTREAM_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "RESOURCE_LIFETIME_MISMATCH",
+        "RESTORATION_COMMIT_MISMATCH",
+        "UPSTREAM_DEPENDENCY_MISMATCH"
+      ],
+      "contracts": {
+        "canonical": true,
+        "external": false
+      }
+    },
+    {
+      "control": "single-robot-overlap",
+      "expected": "RESOURCE_CONTENTION_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_CONTENTION_VIOLATION"
+      ],
+      "contracts": {
+        "canonical": true,
+        "external": false
+      }
+    },
+    {
+      "control": "wrong-robot-mask",
+      "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_ELIGIBILITY_VIOLATION"
+      ],
+      "contracts": {
+        "canonical": true,
+        "external": false
+      }
+    },
+    {
+      "control": "early-group-release",
+      "expected": "RESOURCE_LIFETIME_MISMATCH",
+      "detected": true,
+      "classes": [
+        "RESOURCE_LIFETIME_MISMATCH"
+      ],
+      "contracts": {
+        "canonical": true,
+        "external": false
+      }
+    },
+    {
+      "control": "interrupted-but-restored",
+      "expected": "RESTORATION_COMMIT_MISMATCH",
+      "detected": true,
+      "classes": [
+        "RESTORATION_COMMIT_MISMATCH"
+      ],
+      "contracts": {
+        "canonical": true,
+        "external": false
+      }
+    },
+    {
+      "control": "failure-time-shift",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT",
+        "RESOURCE_LIFETIME_MISMATCH"
+      ],
+      "contracts": {
+        "canonical": true,
+        "external": false
+      }
+    },
+    {
+      "control": "both-models-invalid",
+      "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_ELIGIBILITY_VIOLATION"
+      ],
+      "contracts": {
+        "canonical": false,
+        "external": false
+      }
+    }
+  ]
+}
