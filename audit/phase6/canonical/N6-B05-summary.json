@@ -1,0 +1,10 @@
+{
+  "case": "N6-B05",
+  "task_count": 3,
+  "durations": [7200.0, 10800.0, 6000.0],
+  "robots": 2,
+  "makespan_s": 13200.000000,
+  "termination": "completed",
+  "restored_targets": ["a-lathe","b-pump","c-filter"],
+  "schedule": [{"start_s":0.000,"end_s":7200.000,"resources":["robot-m1"]},{"start_s":0.000,"end_s":10800.000,"resources":["robot-m2"]},{"start_s":7200.000,"end_s":13200.000,"resources":["robot-m1"]}]
+}

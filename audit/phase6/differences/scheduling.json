@@ -1,0 +1,741 @@
+{
+  "schema": "poie.s5v-n6b-scheduling-set/1",
+  "cases": [
+    {
+      "schema": "poie.s5v-n6b-scheduling/1",
+      "case": "N6-B00",
+      "task_contract_sha256": "0a5f72f04e204f243302df6cdd111ed93744535dc6ed50d7cd9336a127cff9bd",
+      "canonical": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 7200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 0.0,
+            "end_s": 10800.0,
+            "resources": [
+              "robot-m2"
+            ]
+          }
+        ],
+        "summary": {
+          "case": "N6-B00",
+          "task_count": 2,
+          "durations": [
+            7200.0,
+            10800.0
+          ],
+          "robots": 2,
+          "makespan_s": 10800.0,
+          "termination": "completed",
+          "restored_targets": [
+            "a-lathe",
+            "b-pump"
+          ],
+          "schedule": [
+            {
+              "start_s": 0.0,
+              "end_s": 7200.0,
+              "resources": [
+                "robot-m1"
+              ]
+            },
+            {
+              "start_s": 0.0,
+              "end_s": 10800.0,
+              "resources": [
+                "robot-m2"
+              ]
+            }
+          ]
+        }
+      },
+      "external": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 7200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 0.0,
+            "end_s": 10800.0,
+            "resources": [
+              "robot-m2"
+            ]
+          }
+        ],
+        "makespan_s": 10800.0,
+        "completed": 2,
+        "restored": [
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "decision": "SAME_DECISION",
+      "policy_difference": false,
+      "contract": {
+        "canonical_valid": true,
+        "external_valid": true,
+        "problems": []
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n6b-scheduling/1",
+      "case": "N6-B01",
+      "task_contract_sha256": "f48391373d84fa724a323d7fe35aa552c7ebabca1e6c2b32af0419f932d959ed",
+      "canonical": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 5000.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 0.0,
+            "end_s": 10800.0,
+            "resources": [
+              "robot-m2"
+            ]
+          }
+        ],
+        "summary": {
+          "case": "N6-B01",
+          "task_count": 2,
+          "durations": [
+            5000.0,
+            10800.0
+          ],
+          "robots": 2,
+          "makespan_s": 10800.0,
+          "termination": "completed",
+          "restored_targets": [
+            "a-lathe",
+            "b-pump"
+          ],
+          "schedule": [
+            {
+              "start_s": 0.0,
+              "end_s": 5000.0,
+              "resources": [
+                "robot-m1"
+              ]
+            },
+            {
+              "start_s": 0.0,
+              "end_s": 10800.0,
+              "resources": [
+                "robot-m2"
+              ]
+            }
+          ]
+        }
+      },
+      "external": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 5000.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 0.0,
+            "end_s": 10800.0,
+            "resources": [
+              "robot-m2"
+            ]
+          }
+        ],
+        "makespan_s": 10800.0,
+        "completed": 2,
+        "restored": [
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "decision": "SAME_DECISION",
+      "policy_difference": false,
+      "contract": {
+        "canonical_valid": true,
+        "external_valid": true,
+        "problems": []
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n6b-scheduling/1",
+      "case": "N6-B02",
+      "task_contract_sha256": "ed06288aef0f45b53b7d2fd3e16a7fb9da3055cc93a34ef16b6fe1c1ad1340cf",
+      "canonical": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 7200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 0.0,
+            "end_s": 9000.0,
+            "resources": [
+              "robot-m2"
+            ]
+          }
+        ],
+        "summary": {
+          "case": "N6-B02",
+          "task_count": 2,
+          "durations": [
+            7200.0,
+            9000.0
+          ],
+          "robots": 2,
+          "makespan_s": 9000.0,
+          "termination": "completed",
+          "restored_targets": [
+            "a-lathe",
+            "b-pump"
+          ],
+          "schedule": [
+            {
+              "start_s": 0.0,
+              "end_s": 7200.0,
+              "resources": [
+                "robot-m1"
+              ]
+            },
+            {
+              "start_s": 0.0,
+              "end_s": 9000.0,
+              "resources": [
+                "robot-m2"
+              ]
+            }
+          ]
+        }
+      },
+      "external": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 7200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 0.0,
+            "end_s": 9000.0,
+            "resources": [
+              "robot-m2"
+            ]
+          }
+        ],
+        "makespan_s": 9000.0,
+        "completed": 2,
+        "restored": [
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "decision": "SAME_DECISION",
+      "policy_difference": false,
+      "contract": {
+        "canonical_valid": true,
+        "external_valid": true,
+        "problems": []
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n6b-scheduling/1",
+      "case": "N6-B03",
+      "task_contract_sha256": "dc62d9723c53f690c57cbf61659fa66e371cd3103d7a575fa40d33f896d9bf26",
+      "canonical": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 5000.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 0.0,
+            "end_s": 9000.0,
+            "resources": [
+              "robot-m2"
+            ]
+          }
+        ],
+        "summary": {
+          "case": "N6-B03",
+          "task_count": 2,
+          "durations": [
+            5000.0,
+            9000.0
+          ],
+          "robots": 2,
+          "makespan_s": 9000.0,
+          "termination": "completed",
+          "restored_targets": [
+            "a-lathe",
+            "b-pump"
+          ],
+          "schedule": [
+            {
+              "start_s": 0.0,
+              "end_s": 5000.0,
+              "resources": [
+                "robot-m1"
+              ]
+            },
+            {
+              "start_s": 0.0,
+              "end_s": 9000.0,
+              "resources": [
+                "robot-m2"
+              ]
+            }
+          ]
+        }
+      },
+      "external": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 5000.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 0.0,
+            "end_s": 9000.0,
+            "resources": [
+              "robot-m2"
+            ]
+          }
+        ],
+        "makespan_s": 9000.0,
+        "completed": 2,
+        "restored": [
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "decision": "SAME_DECISION",
+      "policy_difference": false,
+      "contract": {
+        "canonical_valid": true,
+        "external_valid": true,
+        "problems": []
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n6b-scheduling/1",
+      "case": "N6-B04",
+      "task_contract_sha256": "9f77cd84e3e0ce7b9d998b7ef77e5ba81fc4d834df55256d30b08e2d79cc3d76",
+      "canonical": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 7200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
+        "summary": {
+          "case": "N6-B04",
+          "task_count": 1,
+          "durations": [
+            7200.0
+          ],
+          "robots": 1,
+          "makespan_s": 7200.0,
+          "termination": "completed",
+          "restored_targets": [
+            "a-lathe"
+          ],
+          "schedule": [
+            {
+              "start_s": 0.0,
+              "end_s": 7200.0,
+              "resources": [
+                "robot-m1"
+              ]
+            }
+          ]
+        }
+      },
+      "external": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 7200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
+        "makespan_s": 7200.0,
+        "completed": 1,
+        "restored": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "decision": "SAME_DECISION",
+      "policy_difference": false,
+      "contract": {
+        "canonical_valid": true,
+        "external_valid": true,
+        "problems": []
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n6b-scheduling/1",
+      "case": "N6-B05",
+      "task_contract_sha256": "85979c1c0ce11a886c7d4b9da6ecb0810e1f38d695790a6075dce4565877aec5",
+      "canonical": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 7200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 0.0,
+            "end_s": 10800.0,
+            "resources": [
+              "robot-m2"
+            ]
+          },
+          {
+            "start_s": 7200.0,
+            "end_s": 13200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
+        "summary": {
+          "case": "N6-B05",
+          "task_count": 3,
+          "durations": [
+            7200.0,
+            10800.0,
+            6000.0
+          ],
+          "robots": 2,
+          "makespan_s": 13200.0,
+          "termination": "completed",
+          "restored_targets": [
+            "a-lathe",
+            "b-pump",
+            "c-filter"
+          ],
+          "schedule": [
+            {
+              "start_s": 0.0,
+              "end_s": 7200.0,
+              "resources": [
+                "robot-m1"
+              ]
+            },
+            {
+              "start_s": 0.0,
+              "end_s": 10800.0,
+              "resources": [
+                "robot-m2"
+              ]
+            },
+            {
+              "start_s": 7200.0,
+              "end_s": 13200.0,
+              "resources": [
+                "robot-m1"
+              ]
+            }
+          ]
+        }
+      },
+      "external": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 7200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 0.0,
+            "end_s": 10800.0,
+            "resources": [
+              "robot-m2"
+            ]
+          },
+          {
+            "start_s": 7200.0,
+            "end_s": 13200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
+        "makespan_s": 13200.0,
+        "completed": 3,
+        "restored": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "decision": "SAME_DECISION",
+      "policy_difference": false,
+      "contract": {
+        "canonical_valid": true,
+        "external_valid": true,
+        "problems": []
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n6b-scheduling/1",
+      "case": "N6-B06",
+      "task_contract_sha256": "927a4e193f53e1745d07c67450c645ed2d24308a98f172c345194b76a2286d26",
+      "canonical": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 7200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 7200.0,
+            "end_s": 18000.0,
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
+        "summary": {
+          "case": "N6-B06",
+          "task_count": 2,
+          "durations": [
+            7200.0,
+            10800.0
+          ],
+          "robots": 1,
+          "makespan_s": 18000.0,
+          "termination": "completed",
+          "restored_targets": [
+            "a-lathe",
+            "b-pump"
+          ],
+          "schedule": [
+            {
+              "start_s": 0.0,
+              "end_s": 7200.0,
+              "resources": [
+                "robot-m1"
+              ]
+            },
+            {
+              "start_s": 7200.0,
+              "end_s": 18000.0,
+              "resources": [
+                "robot-m1"
+              ]
+            }
+          ]
+        }
+      },
+      "external": {
+        "tasks": [
+          {
+            "start_s": 10800.0,
+            "end_s": 18000.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 0.0,
+            "end_s": 10800.0,
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
+        "makespan_s": 18000.0,
+        "completed": 2,
+        "restored": [
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "decision": "DIFFERENT_BUT_VALID_DECISION",
+      "policy_difference": true,
+      "contract": {
+        "canonical_valid": true,
+        "external_valid": true,
+        "problems": []
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "ACCEPTED_POLICY_DIFFERENCE"
+    },
+    {
+      "schema": "poie.s5v-n6b-scheduling/1",
+      "case": "N6-B07",
+      "task_contract_sha256": "c6f60991f3b9c336b6fad03cfc675e07c1717ed1945ebeb5e702b8e0a5f88427",
+      "canonical": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 7200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 7200.0,
+            "end_s": 18000.0,
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
+        "summary": {
+          "case": "N6-B07",
+          "task_count": 2,
+          "durations": [
+            7200.0,
+            10800.0
+          ],
+          "robots": 1,
+          "makespan_s": 18000.0,
+          "termination": "completed",
+          "restored_targets": [
+            "a-lathe",
+            "b-pump"
+          ],
+          "schedule": [
+            {
+              "start_s": 0.0,
+              "end_s": 7200.0,
+              "resources": [
+                "robot-m1"
+              ]
+            },
+            {
+              "start_s": 7200.0,
+              "end_s": 18000.0,
+              "resources": [
+                "robot-m1"
+              ]
+            }
+          ]
+        }
+      },
+      "external": {
+        "tasks": [
+          {
+            "start_s": 0.0,
+            "end_s": 7200.0,
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "start_s": 7200.0,
+            "end_s": 18000.0,
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
+        "makespan_s": 18000.0,
+        "completed": 2,
+        "restored": [
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "decision": "SAME_DECISION",
+      "policy_difference": false,
+      "contract": {
+        "canonical_valid": true,
+        "external_valid": true,
+        "problems": []
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "ACCEPTED"
+    }
+  ]
+}

@@ -12,7 +12,7 @@ N6-A RESOURCE LIFETIME SEMANTICS
 N6-A STEP-LEVEL RESOURCE RELEASE
   NOT REPRESENTABLE / NOT ESTABLISHED
 
-N6-B CONTRACT-DRIVEN SCHEDULING — NOT ESTABLISHED
+N6-B CONTRACT-DRIVEN SCHEDULING — ESTABLISHED (SCOPED: durations, task count 1–3, robot pool; canonical priority input NOT REPRESENTABLE)
 N6-C CAUSAL DEPENDENCY AND EVENT BOUNDARIES — NOT ESTABLISHED
 N6-D REPAIR-DRIVEN RESTORATION STATE VALIDITY — NOT ESTABLISHED
 N6-E EVIDENCE INTEGRITY — PARTIAL (N6-A only)
@@ -42,6 +42,34 @@ Canonical 将选中资源视为组级占用，直到整个维修组 makespan 提
 - 负例覆盖错误步骤级释放、提交后中断、移动步骤、延迟失效、缺失恢复。
 
 详细见 [RESOURCE_LIFETIME.md](RESOURCE_LIFETIME.md)。
+
+## N6-B 参数化调度
+
+新增独立参数化 C99 FMI 3.0 scheduler，从 contract 文件读取：
+
+```text
+taskCount, task durations, task priorities, robot masks, tool requirements,
+robotCount, failure time/kind/index, horizon
+```
+
+不再按固定实验编译最终安排。N6-B 案例：
+
+| case | 参数变化 | canonical | external | decision/status |
+| --- | --- | ---: | ---: | --- |
+| B00 | 默认两任务 | 10800 | 10800 | SAME |
+| B01 | lathe 5000 s | 10800 | 10800 | SAME |
+| B02 | pump 9000 s | 9000 | 9000 | SAME |
+| B03 | 5000/9000 | 9000 | 9000 | SAME |
+| B04 | 单任务 | 7200 | 7200 | SAME |
+| B05 | 三任务 | 13200 | 13200 | SAME |
+| B06 | 外部反转优先级、单机器人 | 18000（a→b） | 18000（b→a） | DIFFERENT_BUT_VALID_DECISION |
+| B07 | 单机器人串行对照 | 18000 | 18000 | SAME |
+
+B06 是明确标记的调度策略差异：两种顺序都合法且 makespan 相同，比较器分类为
+`DIFFERENT_BUT_VALID_DECISION`，而不是失败。canonical 不接收独立 priority 输入，
+因此“双方从同一 priority 字段独立调度”仍为 NOT REPRESENTABLE。
+
+负例覆盖资源重叠、任务时长篡改、越池资源、缺失恢复、makespan 移动。
 
 ## 证据
 
