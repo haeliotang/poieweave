@@ -1,0 +1,40 @@
+{
+  "schema": "poie.s5v-n5-importer-agreement/1",
+  "results": [
+    {
+      "case": "N5-00",
+      "rows": 81,
+      "terminal_s": 72000.0,
+      "max_abs_difference": 0.0,
+      "ok": true
+    },
+    {
+      "case": "N5-01",
+      "rows": 81,
+      "terminal_s": 72000.0,
+      "max_abs_difference": 0.0,
+      "ok": true
+    },
+    {
+      "case": "N5-02",
+      "rows": 81,
+      "terminal_s": 72000.0,
+      "max_abs_difference": 0.0,
+      "ok": true
+    },
+    {
+      "case": "N5-03",
+      "rows": 9,
+      "terminal_s": 7200.0,
+      "max_abs_difference": 0.0,
+      "ok": true
+    },
+    {
+      "case": "N5-04",
+      "rows": 81,
+      "terminal_s": 72000.0,
+      "max_abs_difference": 0.0,
+      "ok": true
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription fmiVersion="3.0" modelName="poie_n5_scheduler"
+    instantiationToken="{d8e3c0a4-5b6f-4c1d-8e4a-n5scheduler001}"
+    description="Independent deterministic task/resource scheduler, no Poieweave linkage"
+    generationTool="hand-written C99" generationDateAndTime="2026-11-17T00:00:00Z">
+  <CoSimulation modelIdentifier="poie_n5_scheduler" canHandleVariableCommunicationStepSize="true"
+      canReturnEarlyAfterIntermediateUpdate="false" hasEventMode="false"/>
+  <ModelVariables>
+    <Float64 name="time" valueReference="1" causality="independent" variability="continuous"/>
+    <Float64 name="taskMode" valueReference="2" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="robotCount" valueReference="3" causality="parameter" variability="fixed" start="1"/>
+    <Float64 name="failureTime_s" valueReference="4" causality="parameter" variability="fixed" start="-1"/>
+    <Float64 name="failureRobot" valueReference="5" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="horizon_s" valueReference="6" causality="parameter" variability="fixed" start="72000"/>
+    <Float64 name="makespan_s" valueReference="10" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="completedCount" valueReference="11" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="interrupted" valueReference="12" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="failureAppliedTime_s" valueReference="13" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="task1Start_s" valueReference="14" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="task1End_s" valueReference="15" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="task1Robot" valueReference="16" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="task2Start_s" valueReference="17" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="task2End_s" valueReference="18" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="task2Robot" valueReference="19" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="pumpRestored" valueReference="20" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="latheRestored" valueReference="21" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="lastEventCode" valueReference="22" causality="output" variability="discrete" initial="calculated"/>
+  </ModelVariables>
+  <ModelStructure>
+    <Output valueReference="10"/><Output valueReference="11"/><Output valueReference="12"/>
+    <Output valueReference="13"/><Output valueReference="14"/><Output valueReference="15"/>
+    <Output valueReference="16"/><Output valueReference="17"/><Output valueReference="18"/>
+    <Output valueReference="19"/><Output valueReference="20"/><Output valueReference="21"/>
+    <Output valueReference="22"/>
+  </ModelStructure>
+</fmiModelDescription>

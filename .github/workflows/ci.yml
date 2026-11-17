@@ -1484,6 +1484,54 @@ jobs:
           path: ${{ runner.temp }}/s5v-n4/evidence
           if-no-files-found: error
 
+  s5v-n5-linux:
+    name: S5-V N5 scheduling Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install independent FMI importer
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Build N5 scheduler FMU
+        run: external/fmu-n5-scheduler/build.sh
+      - name: Run canonical N5 scheduling
+        run: cargo run --locked -q -p poie-viability --bin poie-s5v-n5-canonical
+      - name: Execute independent scheduler cases
+        run: |
+          run_case() {
+            cid="$1"; mode="$2"; robots="$3"; failure="$4"; failure_robot="$5"
+            external/fmu-n5-scheduler/build/harness external/fmu-n5-scheduler/poie-n5-scheduler.fmu 900 "$mode" "$robots" "$failure" "$failure_robot" 72000 "audit/phase5/external/$cid-harness-900.csv"
+            python3 audit/phase5/fmpy_import.py --step 900 --task-mode "$mode" --robots "$robots" --failure-time "$failure" --failure-robot "$failure_robot" --stop 72000 --output "audit/phase5/external/$cid-fmpy-900.csv" --log "audit/phase5/external/$cid-fmpy.log"
+          }
+          run_case N5-00 0 1 -1 0
+          run_case N5-01 1 1 -1 0
+          run_case N5-02 1 2 -1 0
+          run_case N5-03 1 2 7200 1
+          run_case N5-04 0 2 7200 2
+      - name: Compare decisions, contracts and negative controls
+        run: |
+          python3 audit/phase5/compare.py
+          python3 audit/phase5/cross_importer.py
+          python3 audit/phase5/negative_controls.py
+          python3 audit/phase5/manifest.py
+          python3 audit/phase5/check.py
+      - name: Save N5 current-run evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n5/evidence"
+          cp -R audit/phase5/canonical audit/phase5/external audit/phase5/scheduling audit/phase5/differences audit/phase5/negative-controls "$RUNNER_TEMP/s5v-n5/evidence/"
+          cp audit/phase5/{PREREG.md,SEMANTICS.md,REPORT.zh-CN.md,config.json,manifest.json} "$RUNNER_TEMP/s5v-n5/evidence/"
+          cp external/fmu-n5-scheduler/poie-n5-scheduler.fmu "$RUNNER_TEMP/s5v-n5/evidence/"
+          ( cd "$RUNNER_TEMP/s5v-n5/evidence" && sha256sum * > SHA256SUMS.txt 2>/dev/null || true )
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n5-linux-evidence
+          path: ${{ runner.temp }}/s5v-n5/evidence
+          if-no-files-found: error
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest

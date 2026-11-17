@@ -1,0 +1,72 @@
+{
+  "schema": "poie.s5v-n5-negative-controls/1",
+  "results": [
+    {
+      "control": "N5-01-overlap",
+      "expected": "RESOURCE_CONTRACT_VIOLATION",
+      "detected": true,
+      "classes": [],
+      "decision": "RESOURCE_CONTRACT_VIOLATION",
+      "contract_problems": [
+        "external: duration",
+        "external: resource overlap robot-m1",
+        "external: task priority/order"
+      ]
+    },
+    {
+      "control": "N5-03-selected-completes",
+      "expected": "EXECUTION_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "RESTORATION_COMMIT_MISMATCH"
+      ],
+      "decision": "SAME_DECISION",
+      "contract_problems": []
+    },
+    {
+      "control": "N5-04-unselected-interrupts",
+      "expected": "EXECUTION_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "RESTORATION_COMMIT_MISMATCH",
+        "RESTORATION_PRECONDITION_VIOLATION"
+      ],
+      "decision": "SAME_DECISION",
+      "contract_problems": []
+    },
+    {
+      "control": "N5-00-no-restoration",
+      "expected": "RESTORATION_COMMIT_MISMATCH",
+      "detected": true,
+      "classes": [
+        "RESTORATION_COMMIT_MISMATCH"
+      ],
+      "decision": "SAME_DECISION",
+      "contract_problems": []
+    },
+    {
+      "control": "N5-00-restoration-before-completion",
+      "expected": "RESTORATION_PRECONDITION_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESTORATION_PRECONDITION_VIOLATION"
+      ],
+      "decision": "SAME_DECISION",
+      "contract_problems": []
+    },
+    {
+      "control": "N5-02-duration-tamper",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT"
+      ],
+      "decision": "RESOURCE_CONTRACT_VIOLATION",
+      "contract_problems": [
+        "external: duration"
+      ]
+    }
+  ]
+}
