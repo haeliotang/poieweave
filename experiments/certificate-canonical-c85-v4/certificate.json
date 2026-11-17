@@ -23,7 +23,7 @@
   ],
   "native_event_observatory": {
     "path": "audit/phase8/manifest.json",
-    "sha256": "93a04bc118e36379f59b1cf6df0306408ff2bc4a83e372e9e0f83200bcbe8160"
+    "sha256": "650a1361a147ab8bccbdf0abd262f56493146ad88807d862a05d072970cbb131"
   },
   "predecessor": {
     "path": "experiments/certificate-canonical-c85-v3/certificate.json",
