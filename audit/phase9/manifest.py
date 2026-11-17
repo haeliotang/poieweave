@@ -9,7 +9,7 @@ from pathlib import Path
 PHASE=Path(__file__).resolve().parent; ROOT=PHASE.parents[1]; PREFIX="audit/phase9/"
 FILES={"PREREG.md","RESOURCE_CAUSAL_CONTRACT.md","CAPABILITY_MATRIX.md","CERTIFICATE_IMPACT.md",
        "REPORT.zh-CN.md","EVIDENCE.md","old-evidence.json",
-       "compare_resource.py","negative_resources.py","check.py","verify_evidence.py"}
+       "compare_resource.py","negative_resources.py","negative_integrity.py","check.py","verify_evidence.py"}
 DIRS={"contracts/","canonical/","external/","resource-trajectories/","event-mappings/","comparisons/","negative-controls/","manifests/"}
 EXCLUDE={"manifest.json","manifest.sha256","execution-manifest.json"}
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()

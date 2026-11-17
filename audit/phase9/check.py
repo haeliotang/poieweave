@@ -7,7 +7,7 @@ from __future__ import annotations
 import json, sys
 from pathlib import Path
 PHASE=Path(__file__).resolve().parent
-CASES=["N9-00","N9-01","N9-02","N9-03","N9-04","N9-05","N9-06"]
+CASES=["N9-00","N9-01","N9-02","N9-03","N9-04","N9-05","N9-06","N9-11"]
 def main():
     problems=[]
     data=json.loads((PHASE/"comparisons/resource-trajectories.json").read_text())

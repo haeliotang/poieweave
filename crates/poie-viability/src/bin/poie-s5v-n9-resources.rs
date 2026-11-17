@@ -21,7 +21,14 @@ fn label(term: &EngineTermination) -> String {
     }
 }
 
-fn model_for(tasks: usize, durations: &[f64], robots: usize, tool: bool, capability: bool) -> Model {
+fn model_for(
+    tasks: usize,
+    durations: &[f64],
+    robots: usize,
+    tool: bool,
+    capability: bool,
+    preferred_robot: Option<usize>,
+) -> Model {
     let mut model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
     let robot = model.assets.get("robot-m1").unwrap().clone();
     if robots > 1 {
@@ -57,7 +64,8 @@ fn model_for(tasks: usize, durations: &[f64], robots: usize, tool: bool, capabil
         process.inputs.clear();
         process.outputs.clear();
         process.requires_capabilities.clear();
-        process.occupies = vec![if robots > 1 { format!("robot-m{}", index + 1) } else { "robot-m1".into() }];
+        let robot_index = preferred_robot.unwrap_or(if robots > 1 { index + 1 } else { 1 });
+        process.occupies = vec![format!("robot-m{robot_index}")];
         if tool {
             process.occupies.push("tool-t1".into());
         }
@@ -90,11 +98,13 @@ fn write_case(out: &Path, case: &str, model: &Model, options: &EngineOptions<'_>
     let mut selected = Vec::new();
     let mut dependencies = Vec::new();
     let mut targets = Vec::new();
+    let mut task_order: Vec<String> = Vec::new();
     let mut witness = Vec::new();
     if let Some(repair) = observed.events.first().and_then(|event| event.running_repair.as_ref()) {
         selected = repair.resources.clone();
         dependencies = repair.execution_dependencies.clone();
         targets = repair.restoration_targets.clone();
+        task_order = repair.plans.clone();
         witness = repair
             .witness
             .iter()
@@ -109,13 +119,14 @@ fn write_case(out: &Path, case: &str, model: &Model, options: &EngineOptions<'_>
         .find(|event| event.kind == poie_viability::engine::EventKind::RepairCompleted)
         .map(|event| event.at_s);
     let summary = format!(
-        "{{\n \"case\":\"{case}\",\n \"restoration_committed\":{},\n \"repair_completed_s\":{},\n \"selected_resources\":[{}],\n \"execution_dependencies\":[{}],\n \"restoration_targets\":[{}],\n \"witness\":[{}],\n \"termination\":\"{}\",\n \"survived_s\":{:.3},\n \"event_count\":{},\n \"resource_release_observed\":false,\n \"release_note\":\"RunTerminated is not a native resource release event\",\n \"observation_source\":\"NATIVE_CANONICAL_RUNTIME\"\n}}\n",
+        "{{\n \"case\":\"{case}\",\n \"restoration_committed\":{},\n \"repair_completed_s\":{},\n \"selected_resources\":[{}],\n \"execution_dependencies\":[{}],\n \"restoration_targets\":[{}],\n \"witness\":[{}],\n \"task_order\":[{}],\n \"termination\":\"{}\",\n \"survived_s\":{:.3},\n \"event_count\":{},\n \"resource_release_observed\":false,\n \"release_note\":\"RunTerminated is not a native resource release event\",\n \"observation_source\":\"NATIVE_CANONICAL_RUNTIME\"\n}}\n",
         restoration_committed,
         repair_completed_s.map(|value| format!("{value:.3}")).unwrap_or_else(|| "null".into()),
         selected.iter().map(|v| format!("\"{v}\"")).collect::<Vec<_>>().join(","),
         dependencies.iter().map(|v| format!("\"{v}\"")).collect::<Vec<_>>().join(","),
         targets.iter().map(|v| format!("\"{v}\"")).collect::<Vec<_>>().join(","),
         witness.iter().map(|v| format!("\"{v}\"")).collect::<Vec<_>>().join(","),
+        task_order.iter().map(|v| format!("\"{v}\"")).collect::<Vec<_>>().join(","),
         label(&observed.outcome.termination), observed.outcome.survived_s, observed.events.len()
     );
     std::fs::write(out.join("canonical").join(format!("{case}-summary.json")), summary).unwrap();
@@ -123,7 +134,7 @@ fn write_case(out: &Path, case: &str, model: &Model, options: &EngineOptions<'_>
 }
 
 fn write_events(out: &Path, case: &str, observed: &EventObservedOutcome) {
-    let mut rows = String::from("case\tevent_sequence\tevent_batch_sequence\tat_s\tevent_kind\tevent_origin\ttarget_asset\tevent_status\tresources\texecution_dependencies\trestoration_targets\twitness\ttermination\n");
+    let mut rows = String::from("case\tevent_sequence\tevent_batch_sequence\tat_s\tevent_kind\tevent_origin\ttarget_asset\tevent_status\tresources\texecution_dependencies\trestoration_targets\twitness\tterm\n");
     for event in &observed.events {
         let repair = event.running_repair.as_ref();
         rows.push_str(&format!(
@@ -149,14 +160,7 @@ fn write_events(out: &Path, case: &str, observed: &EventObservedOutcome) {
             label(&observed.outcome.termination)
         ));
     }
-    let path = out.join("canonical").join(format!("{case}-events.csv"));
-    if path.exists() {
-        let old = std::fs::read_to_string(&path).unwrap();
-        let body = rows.split_once('\n').map(|(_, body)| body).unwrap_or("");
-        std::fs::write(path, format!("{old}{body}")).unwrap();
-    } else {
-        std::fs::write(path, rows).unwrap();
-    }
+    std::fs::write(out.join("canonical").join(format!("{case}-events.csv")), rows).unwrap();
 }
 
 fn options(resources: Vec<String>, failures: Vec<FailureEvent>) -> EngineOptions<'static> {
@@ -185,9 +189,11 @@ fn main() {
         ("N9-04", 1, [10800.0, 0.0], 2, false, false, vec![FailureEvent { at_s: 7200.0, asset: "robot-m2".into() }]),
         ("N9-05", 1, [10800.0, 0.0], 1, true, false, vec![FailureEvent { at_s: 9000.0, asset: "tool-t1".into() }]),
         ("N9-06", 1, [10800.0, 0.0], 1, false, true, vec![FailureEvent { at_s: 9000.0, asset: "bus-1".into() }]),
+        ("N9-11", 2, [7200.0, 10800.0], 1, false, false, Vec::new()),
     ];
     for (case, tasks, durations, robots, tool, capability, failures) in cases {
-        let model = model_for(tasks, &durations, robots, tool, capability);
+        let preferred = None;
+        let model = model_for(tasks, &durations, robots, tool, capability, preferred);
         let pool = if robots > 1 { pools2.clone() } else { pools1.clone() };
         let opts = options(pool, failures);
         let (count, termination) = write_case(&out, case, &model, &opts);

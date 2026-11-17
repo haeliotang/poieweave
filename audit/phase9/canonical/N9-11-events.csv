@@ -1,0 +1,4 @@
+case	event_sequence	event_batch_sequence	at_s	event_kind	event_origin	target_asset	event_status	resources	execution_dependencies	restoration_targets	witness	term
+N9-11	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1+robot-m1	robot-m1	a-lathe+b-pump		completed
+N9-11	2	2	18000.000	RepairCompleted	Endogenous	a-lathe,b-pump	Committed					completed
+N9-11	3	3	72000.000	HorizonReached	Endogenous		Committed					completed

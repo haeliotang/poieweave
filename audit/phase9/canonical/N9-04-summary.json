@@ -6,6 +6,7 @@
  "execution_dependencies":["robot-m1"],
  "restoration_targets":["a-lathe"],
  "witness":[],
+ "task_order":["n9-repair-a-lathe"],
  "termination":"completed",
  "survived_s":72000.000,
  "event_count":4,
