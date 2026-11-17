@@ -1,0 +1,53 @@
+{
+  "schema": "poie.s5v-n8-trajectory-controls/1",
+  "results": [
+    {
+      "control": "pv-failure-delayed-1h",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT"
+      ]
+    },
+    {
+      "control": "pv-failure-missing",
+      "expected": "EVENT_MISSING",
+      "detected": true,
+      "classes": [
+        "EVENT_MISSING"
+      ]
+    },
+    {
+      "control": "pv-failure-state-wrong",
+      "expected": "STATE_TRANSITION_MISMATCH",
+      "detected": true,
+      "classes": [
+        "STATE_TRANSITION_MISMATCH"
+      ]
+    },
+    {
+      "control": "repair-completion-delayed",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT"
+      ]
+    },
+    {
+      "control": "terminal-event-delayed",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT"
+      ]
+    },
+    {
+      "control": "canonical-event-order-swapped",
+      "expected": "EVENT_ORDER_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EVENT_ORDER_MISMATCH"
+      ]
+    }
+  ]
+}

@@ -17,9 +17,9 @@
       "sha256": "fc437869ae5e7a92d4d0f67d346c92d37b97bccc8c64792cb737a459c49fe206"
     },
     {
-      "bytes": 555,
+      "bytes": 1233,
       "path": "audit/phase8/MODEL_MAPPING.md",
-      "sha256": "519311c6d445577d81187d8b6d244150fe3732e657b58ee2370faaeca502b6c2"
+      "sha256": "6fc4122fe7620f4f4d0e62b5aef21aa5f2dc9b04b547a3a1d0cc02207fb5a916"
     },
     {
       "bytes": 619,
@@ -32,9 +32,9 @@
       "sha256": "a3cfb6aacd540d23b5c3c3b04bfd1272d07326c7cb2aa4413c6aab8480cf8afc"
     },
     {
-      "bytes": 1281,
+      "bytes": 1857,
       "path": "audit/phase8/REPORT.zh-CN.md",
-      "sha256": "1f6fb2f994e939817e727c0b1ef62a823a5b5e4ab7f4d8ea7a75d6cf614027e5"
+      "sha256": "cf1bf0558b9f1661ab243ec1d77c41b7d160f3e8c8ac9a8ea62fe2bf45c51a1f"
     },
     {
       "bytes": 66522,
@@ -47,9 +47,59 @@
       "sha256": "fb4616609fc7cc1b0a563d7cbaa74b4a05cc0074222ca4917ce9e51b5d780eaf"
     },
     {
+      "bytes": 12144,
+      "path": "audit/phase8/external/N8-01-fmpy-900.csv",
+      "sha256": "87a9d6820dda082d0de52f92da21a506e62e5ef5b0dd13fbc771d6939a95bc34"
+    },
+    {
+      "bytes": 269,
+      "path": "audit/phase8/external/N8-01-fmpy.log",
+      "sha256": "13260b719b506e7246e112dc93dcdc433eb58fc79dcb343e61e8004408227d12"
+    },
+    {
+      "bytes": 10572,
+      "path": "audit/phase8/external/N8-02-fmpy-1000.csv",
+      "sha256": "7a854ffb105e2fe818b2cb5b9868bdd83075bbecfa22bae02581c3953db95f86"
+    },
+    {
+      "bytes": 280,
+      "path": "audit/phase8/external/N8-02-fmpy-1000.log",
+      "sha256": "3148f8fd82cd6c5fa02ff57978b480dcb21e9759332a3b3beaab91de0361a96c"
+    },
+    {
+      "bytes": 11558,
+      "path": "audit/phase8/external/N8-02-fmpy-900.csv",
+      "sha256": "acc7e7165e4b38b086ca7635c5bdb23eb829b885628e1197754896b906c63623"
+    },
+    {
+      "bytes": 269,
+      "path": "audit/phase8/external/N8-02-fmpy.log",
+      "sha256": "df9e1b5f1b61de557d9c497cfa9c1b8b0a468fe716ae921f77114d9342656069"
+    },
+    {
+      "bytes": 2224,
+      "path": "audit/phase8/external/N8-04-fmpy-900.csv",
+      "sha256": "e5709187a75a9311de3293021175e0a56e4f41fd8e2d94fa2ef9770bf912c801"
+    },
+    {
+      "bytes": 224,
+      "path": "audit/phase8/external/N8-04-fmpy.log",
+      "sha256": "5085981f19d788d0b15c0dfd24cb49214941071b3523e393b47b95f64e02b5ff"
+    },
+    {
       "bytes": 1059,
       "path": "audit/phase8/negative-controls/event-results.json",
       "sha256": "f6904e48409e0a6091039a70fb039751e1cd326cbae54ec2b5e74f6bed537eb8"
+    },
+    {
+      "bytes": 1170,
+      "path": "audit/phase8/negative-controls/trajectory-results.json",
+      "sha256": "b64761b34df686bb511cccbe8c194609547406a83104228df231ad776415cb71"
+    },
+    {
+      "bytes": 15666,
+      "path": "audit/phase8/trajectory-comparisons/trajectories.json",
+      "sha256": "7577bb59ae857276b64a71d155bf109bb8f48aa48539bc9fff95e0df211f989f"
     }
   ],
   "kind": "FROZEN_TRACKED_EVIDENCE",
