@@ -1716,7 +1716,7 @@ jobs:
       - name: Install independent FMI importer
         run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
       - name: Verify frozen N8-H evidence before re-execution
-        run: python3 audit/phase8h/check.py
+        run: python3 audit/phase8h/check.py --frozen
       - name: Reproduce false passes
         run: python3 audit/phase8h/reproduce_false_pass.py
       - name: Build N4 FMUs and run exact-schedule importer

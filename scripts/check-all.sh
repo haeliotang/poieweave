@@ -37,7 +37,7 @@ python3 audit/phase8/negative_trajectory.py
 python3 audit/phase8h/reproduce_false_pass.py
 python3 audit/phase8h/compare_strict.py
 python3 audit/phase8h/negative_controls.py
-python3 audit/phase8h/check.py
+python3 audit/phase8h/check.py --frozen
 python3 audit/phase7/negative_controls.py
 python3 audit/certificates/verify_v1.py
 python3 audit/certificates/verify_v1_historical.py

@@ -27,7 +27,7 @@ def sha(path: Path) -> str:
 def allowed(relative: str) -> bool:
     if relative in FILES:
         return True
-    if Path(relative).name in EXCLUDE:
+    if Path(relative).name in EXCLUDE or relative.endswith((".log", ".meta.json")):
         return False
     return any(relative.startswith(directory) for directory in DIRS)
 

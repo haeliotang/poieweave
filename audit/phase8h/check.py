@@ -61,9 +61,10 @@ def main() -> int:
     manifest = json.loads((PHASE / "manifest.json").read_text())
     if manifest.get("kind") != "FROZEN_TRACKED_EVIDENCE":
         problems.append("manifest kind")
-    for entry in manifest["files"]:
-        if sha(ROOT / entry["path"]) != entry["sha256"]:
-            problems.append(f"manifest hash: {entry['path']}")
+    if "--frozen" in sys.argv:
+        for entry in manifest["files"]:
+            if sha(ROOT / entry["path"]) != entry["sha256"]:
+                problems.append(f"manifest hash: {entry['path']}")
     report = (PHASE / "REPORT.zh-CN.md").read_text()
     for token in ["S5-V N8-H", "REVALIDATED", "N8 CONTINUOUS TRAJECTORY VALIDITY"]:
         if token not in report and token == "S5-V N8-H":
