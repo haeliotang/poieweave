@@ -48,7 +48,7 @@ def main() -> int:
     if not all(entry["detected"] for entry in negatives["results"]):
         problems.append("lifetime negative controls")
     scheduling = json.loads((PHASE / "differences/scheduling.json").read_text())
-    if len(scheduling["cases"]) != 8:
+    if len(scheduling["cases"]) != 9:
         problems.append("scheduling case count")
     for entry in scheduling["cases"]:
         if entry["status"] not in ("ACCEPTED", "ACCEPTED_POLICY_DIFFERENCE"):

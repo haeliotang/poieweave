@@ -20,6 +20,7 @@ struct Case {
     durations: [f64; 3],
     robots: usize,
     reversed_priority: bool,
+    contract_reversed: bool,
 }
 
 fn task_model(tasks: usize, durations: [f64; 3]) -> Model {
@@ -78,14 +79,78 @@ fn label(term: &EngineTermination) -> String {
 
 fn main() {
     let cases = [
-        Case { id: "N6-B00", tasks: 2, durations: [7200.0, 10800.0, 0.0], robots: 2, reversed_priority: false },
-        Case { id: "N6-B01", tasks: 2, durations: [5000.0, 10800.0, 0.0], robots: 2, reversed_priority: false },
-        Case { id: "N6-B02", tasks: 2, durations: [7200.0, 9000.0, 0.0], robots: 2, reversed_priority: false },
-        Case { id: "N6-B03", tasks: 2, durations: [5000.0, 9000.0, 0.0], robots: 2, reversed_priority: false },
-        Case { id: "N6-B04", tasks: 1, durations: [7200.0, 0.0, 0.0], robots: 1, reversed_priority: false },
-        Case { id: "N6-B05", tasks: 3, durations: [7200.0, 10800.0, 6000.0], robots: 2, reversed_priority: false },
-        Case { id: "N6-B06", tasks: 2, durations: [7200.0, 10800.0, 0.0], robots: 1, reversed_priority: true },
-        Case { id: "N6-B07", tasks: 2, durations: [7200.0, 10800.0, 0.0], robots: 1, reversed_priority: false },
+        Case {
+            id: "N6-B00",
+            tasks: 2,
+            durations: [7200.0, 10800.0, 0.0],
+            robots: 2,
+            reversed_priority: false,
+            contract_reversed: false,
+        },
+        Case {
+            id: "N6-B01",
+            tasks: 2,
+            durations: [5000.0, 10800.0, 0.0],
+            robots: 2,
+            reversed_priority: false,
+            contract_reversed: false,
+        },
+        Case {
+            id: "N6-B02",
+            tasks: 2,
+            durations: [7200.0, 9000.0, 0.0],
+            robots: 2,
+            reversed_priority: false,
+            contract_reversed: false,
+        },
+        Case {
+            id: "N6-B03",
+            tasks: 2,
+            durations: [5000.0, 9000.0, 0.0],
+            robots: 2,
+            reversed_priority: false,
+            contract_reversed: false,
+        },
+        Case {
+            id: "N6-B04",
+            tasks: 1,
+            durations: [7200.0, 0.0, 0.0],
+            robots: 1,
+            reversed_priority: false,
+            contract_reversed: false,
+        },
+        Case {
+            id: "N6-B05",
+            tasks: 3,
+            durations: [7200.0, 10800.0, 6000.0],
+            robots: 2,
+            reversed_priority: false,
+            contract_reversed: false,
+        },
+        Case {
+            id: "N6-B06",
+            tasks: 2,
+            durations: [7200.0, 10800.0, 0.0],
+            robots: 1,
+            reversed_priority: true,
+            contract_reversed: true,
+        },
+        Case {
+            id: "N6-B07",
+            tasks: 2,
+            durations: [7200.0, 10800.0, 0.0],
+            robots: 1,
+            reversed_priority: false,
+            contract_reversed: false,
+        },
+        Case {
+            id: "N6-B08",
+            tasks: 2,
+            durations: [7200.0, 10800.0, 0.0],
+            robots: 1,
+            reversed_priority: false,
+            contract_reversed: true,
+        },
     ];
     let out = root().join("audit/phase6");
     std::fs::create_dir_all(out.join("canonical")).unwrap();
@@ -94,7 +159,11 @@ fn main() {
         let horizon = 20.0 * 3600.0;
         let model = task_model(case.tasks, case.durations);
         let targets = ["a-lathe", "b-pump", "c-filter"];
-        let plans = (0..case.tasks).map(|index| plan_for(&model, targets[index], horizon)).collect::<Vec<_>>();
+        let mut plan_order: Vec<usize> = (0..case.tasks).collect();
+        if case.reversed_priority {
+            plan_order = (0..case.tasks).rev().collect();
+        }
+        let plans = plan_order.iter().map(|index| plan_for(&model, targets[*index], horizon)).collect::<Vec<_>>();
         let pool: Vec<String> = (1..=case.robots).map(|index| format!("robot-m{index}")).collect();
         let schedule =
             schedule_plans_with_alternatives(&model, &plans, &pool, &pool, std::slice::from_ref(&pool)).unwrap();
@@ -109,17 +178,23 @@ fn main() {
             load_kw: 0.0,
         };
         let outcome = run_engine(&model, &options).unwrap();
+        let mut rows: Vec<(usize, f64, f64, String)> = schedule
+            .steps
+            .iter()
+            .map(|step| (plan_order[step.plan_index], step.start_s, step.end_s, step.resources.join("+")))
+            .collect();
+        rows.sort_by_key(|row| row.0);
         let mut csv = String::from("task_index\tstart_s\tend_s\tresources\n");
-        for (index, step) in schedule.steps.iter().enumerate() {
-            csv.push_str(&format!("{}\t{:.6}\t{:.6}\t{}\n", index, step.start_s, step.end_s, step.resources.join("+")));
+        for (index, start, end, resources) in rows {
+            csv.push_str(&format!("{index}\t{start:.6}\t{end:.6}\t{resources}\n"));
         }
         std::fs::write(out.join("canonical").join(format!("{}-schedule.csv", case.id)), csv).unwrap();
         let mut contract = String::new();
         contract.push_str(&format!("taskCount={}\n", case.tasks));
         for index in 0..3 {
-            let priority = if case.reversed_priority && index == 0 {
+            let priority = if case.contract_reversed && index == 0 {
                 2
-            } else if case.reversed_priority && index == 1 {
+            } else if case.contract_reversed && index == 1 {
                 1
             } else {
                 index + 1
@@ -141,6 +216,12 @@ fn main() {
             case.robots
         ));
         std::fs::write(out.join("contracts").join(format!("{}.contract", case.id)), contract).unwrap();
+        let mut rows_for_summary: Vec<(usize, f64, f64, String)> = schedule
+            .steps
+            .iter()
+            .map(|step| (plan_order[step.plan_index], step.start_s, step.end_s, step.resources.join("+")))
+            .collect();
+        rows_for_summary.sort_by_key(|row| row.0);
         let completion = outcome.trace.iter().find(|row| row.kind.starts_with("repair_completed"));
         let restored = completion
             .map(|row| row.kind.split_once(':').map(|(_, targets)| targets.to_string()).unwrap_or_default())
@@ -154,12 +235,22 @@ fn main() {
             schedule.makespan_s,
             label(&outcome.termination),
             restored.split(',').filter(|v| !v.is_empty()).map(|v| format!("\"{v}\"")).collect::<Vec<_>>().join(","),
-            schedule.steps.iter().map(|step| format!(
-                "{{\"start_s\":{:.3},\"end_s\":{:.3},\"resources\":[{}]}}",
-                step.start_s,
-                step.end_s,
-                step.resources.iter().map(|r| format!("\"{r}\"")).collect::<Vec<_>>().join(",")
-            )).collect::<Vec<_>>().join(",")
+            rows_for_summary
+                .iter()
+                .map(|(index, start, end, resources)| format!(
+                    "{{\"task_index\":{},\"start_s\":{:.3},\"end_s\":{:.3},\"resources\":[{}]}}",
+                    index,
+                    start,
+                    end,
+                    resources
+                        .split('+')
+                        .filter(|value| !value.is_empty())
+                        .map(|value| format!("\"{value}\""))
+                        .collect::<Vec<_>>()
+                        .join(",")
+                ))
+                .collect::<Vec<_>>()
+                .join(",")
         );
         std::fs::write(out.join("canonical").join(format!("{}-summary.json", case.id)), summary).unwrap();
         println!("{}: makespan={:.1} tasks={}", case.id, schedule.makespan_s, case.tasks);

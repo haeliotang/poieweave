@@ -14,8 +14,8 @@
     },
     {
       "path": "audit/phase6/REPORT.zh-CN.md",
-      "sha256": "e73483c2bf56c6f2651bb11d27d437d8f53253c1a333417276f24a68e3ed07cd",
-      "bytes": 5239
+      "sha256": "d6c4a824305cc5fbe07fb1d847da641d8cf730282cd339eee10bb97181e52809",
+      "bytes": 5586
     },
     {
       "path": "audit/phase6/RESOURCE_LIFETIME.md",
@@ -124,8 +124,8 @@
     },
     {
       "path": "audit/phase6/canonical/N6-B00-summary.json",
-      "sha256": "b71be225531497f08d8a69fea7c8f5f2913824f6afa4e7ad289389dc61ff4bbf",
-      "bytes": 333
+      "sha256": "f5e372a8578de9da5c1c2f43342cb7153a508c635c3e27ddb8d31e53a7152852",
+      "bytes": 363
     },
     {
       "path": "audit/phase6/canonical/N6-B01-schedule.csv",
@@ -134,8 +134,8 @@
     },
     {
       "path": "audit/phase6/canonical/N6-B01-summary.json",
-      "sha256": "27aca68bb8c346d072c872d4fe6c000b57df82435a502a9065bc5744df59c804",
-      "bytes": 333
+      "sha256": "d454e141371ee0dd4600075769d65b2224ebe590e08fcec56df7e791e857a815",
+      "bytes": 363
     },
     {
       "path": "audit/phase6/canonical/N6-B02-schedule.csv",
@@ -144,8 +144,8 @@
     },
     {
       "path": "audit/phase6/canonical/N6-B02-summary.json",
-      "sha256": "c51349aa5ae9755ad4585b4066c6dcb0154a4bca233cc9636dd5ca5a808291c5",
-      "bytes": 330
+      "sha256": "33f1713a10d6c70d95e3b5db9470482f24933e376a3b53c4473a5adf7b4bb615",
+      "bytes": 360
     },
     {
       "path": "audit/phase6/canonical/N6-B03-schedule.csv",
@@ -154,8 +154,8 @@
     },
     {
       "path": "audit/phase6/canonical/N6-B03-summary.json",
-      "sha256": "5575656675521650c94559272bc2f3f64b50f1ff00725e0c349fd023e5557d87",
-      "bytes": 330
+      "sha256": "252f346878510ee599b3bccf172ebbee0bb35b16c699079a33cad5c21b26a50c",
+      "bytes": 360
     },
     {
       "path": "audit/phase6/canonical/N6-B04-schedule.csv",
@@ -164,8 +164,8 @@
     },
     {
       "path": "audit/phase6/canonical/N6-B04-summary.json",
-      "sha256": "4b2eaac39922008d3b4ce1ebbde810f2487695e90ea0f7404208029f70ca8255",
-      "bytes": 253
+      "sha256": "c4fe9aca479a6c9ca2051d33dc8b73f324c0ce366f08a6cc12515b07aff8a3b7",
+      "bytes": 268
     },
     {
       "path": "audit/phase6/canonical/N6-B05-schedule.csv",
@@ -174,18 +174,18 @@
     },
     {
       "path": "audit/phase6/canonical/N6-B05-summary.json",
-      "sha256": "a429e4b18facc453f262d016cfb6cbc5d19a3e35426fcece6ac7db48f67e8287",
-      "bytes": 416
+      "sha256": "e4672d04d70ebf5ddf18e91fe27e872cd9fa1e123206cee6a52cca405ad7a879",
+      "bytes": 461
     },
     {
       "path": "audit/phase6/canonical/N6-B06-schedule.csv",
-      "sha256": "9f667fdb53cbe34059bbc71b47ef231ae5ed633ae2cdaef51c6377059ee9573e",
-      "bytes": 103
+      "sha256": "b7ec36c48e413a29b038d44520370764bbb8d9353e368b5b647d3bcb99f733d2",
+      "bytes": 105
     },
     {
       "path": "audit/phase6/canonical/N6-B06-summary.json",
-      "sha256": "4d571b0304ad4cbba772aacca31a3f7bd92ccba6d9f495084cd603a955cb3e7e",
-      "bytes": 336
+      "sha256": "5c1d125ddc312e4ad69f7bc6fa7f7d9fc98a7ecb042ea29fdb0766be49856b61",
+      "bytes": 368
     },
     {
       "path": "audit/phase6/canonical/N6-B07-schedule.csv",
@@ -194,8 +194,18 @@
     },
     {
       "path": "audit/phase6/canonical/N6-B07-summary.json",
-      "sha256": "38dda51da01f6a20bf9db0b8500eda9d89725cdb987ec409b30ed83b2c721095",
-      "bytes": 336
+      "sha256": "b396b33bd2305ac617d2d121130314d15b9a96cacf25f6d136014bf2bf7ef82c",
+      "bytes": 366
+    },
+    {
+      "path": "audit/phase6/canonical/N6-B08-schedule.csv",
+      "sha256": "9f667fdb53cbe34059bbc71b47ef231ae5ed633ae2cdaef51c6377059ee9573e",
+      "bytes": 103
+    },
+    {
+      "path": "audit/phase6/canonical/N6-B08-summary.json",
+      "sha256": "cec9e4930f5409736e8c1530a2eeff6e971995b56389b186b290e03d9ff2e793",
+      "bytes": 366
     },
     {
       "path": "audit/phase6/canonical/N6-C-bus-10800-audit.json",
@@ -334,7 +344,7 @@
     },
     {
       "path": "audit/phase6/check.py",
-      "sha256": "73784bf6cbc6b655dd60dc884183b1140f139eb6089e815bef33dc1875253774",
+      "sha256": "cc73cb4c5f2e43ffa8f5c20a17ff705b6c4c622d798cbfb0b7f94608a9616cdd",
       "bytes": 4473
     },
     {
@@ -354,8 +364,8 @@
     },
     {
       "path": "audit/phase6/compare_scheduling.py",
-      "sha256": "63cedcc53d98be4080115f13468ddf934604f1fb94f2b585fb16d2b2ab0beb3e",
-      "bytes": 6120
+      "sha256": "9cbb8b116e1220d99c19579a228506e79786cbcaffae7b1c7e0f29daa79af6b6",
+      "bytes": 6130
     },
     {
       "path": "audit/phase6/contracts/N6-B00.contract",
@@ -395,6 +405,11 @@
     {
       "path": "audit/phase6/contracts/N6-B07.contract",
       "sha256": "c6f60991f3b9c336b6fad03cfc675e07c1717ed1945ebeb5e702b8e0a5f88427",
+      "bytes": 271
+    },
+    {
+      "path": "audit/phase6/contracts/N6-B08.contract",
+      "sha256": "927a4e193f53e1745d07c67450c645ed2d24308a98f172c345194b76a2286d26",
       "bytes": 271
     },
     {
@@ -459,8 +474,8 @@
     },
     {
       "path": "audit/phase6/differences/scheduling.json",
-      "sha256": "7a669c3223cf99edbbf5c6923ac80dc8c1e884448fc8c9f48987f2437c5640b3",
-      "bytes": 16561
+      "sha256": "d6db79d6651c745dad07c722a9a276fc9d3eed30a7e535266638202e258cfe51",
+      "bytes": 19190
     },
     {
       "path": "audit/phase6/external/N6-A-10800-fmpy-900.csv",
@@ -634,7 +649,7 @@
     },
     {
       "path": "audit/phase6/external/N6-B06-fmpy.log",
-      "sha256": "59380e5306995c2e7b4b8e23eacdc42c5db9f4b5600659fbc87a89f4bbc2e93f",
+      "sha256": "5cd7c4942277d930eba30164f34c882318687160ae9540c58351ec3db052f1d7",
       "bytes": 177
     },
     {
@@ -656,6 +671,21 @@
       "path": "audit/phase6/external/N6-B07-harness-900.csv",
       "sha256": "1aba12b4b9b2796088c5e1fe3f56894b3350871a5e94b9756e8206e73158e9a9",
       "bytes": 22669
+    },
+    {
+      "path": "audit/phase6/external/N6-B08-fmpy-900.csv",
+      "sha256": "5b9de75744bcf3ac7efd0568c50e445962a8248e1bf1a62fca3c272f326f2189",
+      "bytes": 23641
+    },
+    {
+      "path": "audit/phase6/external/N6-B08-fmpy.log",
+      "sha256": "5cd7c4942277d930eba30164f34c882318687160ae9540c58351ec3db052f1d7",
+      "bytes": 177
+    },
+    {
+      "path": "audit/phase6/external/N6-B08-harness-900.csv",
+      "sha256": "58f486730924cbc7656bf578ecf486af2909e3e58772a7cd5ccec8f44af5bee7",
+      "bytes": 22831
     },
     {
       "path": "audit/phase6/external/N6-C-bus-10800-fmpy-900.csv",

@@ -6,5 +6,5 @@
   "makespan_s": 10800.000000,
   "termination": "completed",
   "restored_targets": ["a-lathe","b-pump"],
-  "schedule": [{"start_s":0.000,"end_s":5000.000,"resources":["robot-m1"]},{"start_s":0.000,"end_s":10800.000,"resources":["robot-m2"]}]
+  "schedule": [{"task_index":0,"start_s":0.000,"end_s":5000.000,"resources":["robot-m1"]},{"task_index":1,"start_s":0.000,"end_s":10800.000,"resources":["robot-m2"]}]
 }
