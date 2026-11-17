@@ -21,8 +21,9 @@
 ## Explicit gaps
 
 - canonical does not export a native resource-release event.
-- canonical witness/execution_dependencies are not in `RepairObservation`; resource
-  causal path is derived unless read from a new read-only field.
+- canonical witness/execution_dependencies are now exported in `RepairObservation`
+  as read-only observation fields (v5 migration); resource hold/release events remain
+  contract-derived.
 - N5 has no tool/upstream resource outputs.
 - N6 upstream failure is generic (`failureKind=3`), not a named upstream asset.
 - No FMU has step-level release.

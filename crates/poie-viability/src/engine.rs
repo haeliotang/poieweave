@@ -81,6 +81,9 @@ pub struct RepairObservation {
     pub end_s: f64,
     pub plans: Vec<String>,
     pub resources: Vec<String>,
+    pub execution_dependencies: Vec<String>,
+    pub restoration_targets: Vec<String>,
+    pub witness: Vec<WitnessEntry>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -295,6 +298,9 @@ fn record_event(
             end_s: repair.end_s,
             plans: plan_summary(&repair.plans),
             resources: repair.resources.clone(),
+            execution_dependencies: repair.execution_dependencies.iter().cloned().collect(),
+            restoration_targets: repair.restoration_targets.iter().cloned().collect(),
+            witness: repair.witness.clone(),
         }),
     };
     EVENT_COLLECTOR.with(|cell| {
@@ -380,6 +386,9 @@ fn observe_due(
                     end_s: repair.end_s,
                     plans: plan_summary(&repair.plans),
                     resources: repair.resources.clone(),
+                    execution_dependencies: repair.execution_dependencies.iter().cloned().collect(),
+                    restoration_targets: repair.restoration_targets.iter().cloned().collect(),
+                    witness: repair.witness.clone(),
                 }),
                 asset_statuses: assets.clone(),
                 asset_status_source: "NATIVE_CANONICAL_RUNTIME",
@@ -1763,5 +1772,17 @@ mod tests {
         let observed = run_engine_event_observed(&model, &opts).unwrap();
         let local = observed.events.iter().map(|event| event.event_id.clone()).collect::<Vec<_>>();
         assert_eq!(joined, local);
+    }
+    #[test]
+    fn event_observation_exports_resource_witness_fields() {
+        let model = base08();
+        let opts = options(Vec::new(), 20.0 * 3600.0);
+        let observed = run_engine_event_observed(&model, &opts).unwrap();
+        let initial = observed.events.first().expect("initial event");
+        let repair = initial.running_repair.as_ref().expect("running repair");
+        assert!(!repair.resources.is_empty());
+        assert!(repair.restoration_targets.contains(&"pump-p1".to_string()));
+        assert!(!repair.execution_dependencies.is_empty());
+        assert!(!repair.witness.is_empty());
     }
 }
