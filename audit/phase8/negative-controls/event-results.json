@@ -1,0 +1,45 @@
+{
+  "schema": "poie.s5v-n8-event-controls/1",
+  "results": [
+    {
+      "control": "same-time-sequence-swap",
+      "expected": "same-time event order",
+      "detected": true
+    },
+    {
+      "control": "duplicate-event-id",
+      "expected": "conflicting event id for sequence",
+      "detected": true
+    },
+    {
+      "control": "skipped-event",
+      "expected": "N8-03: non-contiguous sequence",
+      "detected": true
+    },
+    {
+      "control": "unprocessed-committed",
+      "expected": "uncommitted event in accepted evidence",
+      "detected": true
+    },
+    {
+      "control": "wrong-before-state",
+      "expected": "completion state transition",
+      "detected": true
+    },
+    {
+      "control": "wrong-after-state",
+      "expected": "failure state transition",
+      "detected": true
+    },
+    {
+      "control": "batch-after-as-event",
+      "expected": "same-time event order",
+      "detected": true
+    },
+    {
+      "control": "event-time-shift",
+      "expected": "same-time event order",
+      "detected": true
+    }
+  ]
+}

@@ -12,3 +12,5 @@ N8-10	3	completed	10800.000	true	true	true
 N8-11	5	blocked:energy_depleted	56400.000	true	true	true
 N8-12	3	blocked:repair interrupted at 3600s: robot-m1 failed	3600.000	true	true	true
 N8-13	3	blocked:repair interrupted at 7200s: robot-m1 failed	7200.000	true	true	true
+N8-06	3	blocked:repair interrupted at 9000s: tool-t1 failed	9000.000	true	true	true
+N8-14	3	completed	72000.000	true	true	true
