@@ -1561,7 +1561,7 @@ jobs:
           done
       - name: Execute parameterized scheduling cases
         run: |
-          for c in N6-B00 N6-B01 N6-B02 N6-B03 N6-B04 N6-B05 N6-B06 N6-B07; do
+          for c in N6-B00 N6-B01 N6-B02 N6-B03 N6-B04 N6-B05 N6-B06 N6-B07 N6-B08; do
             external/fmu-n6-scheduler/build/harness external/fmu-n6-scheduler/poie-n6-scheduler.fmu 900 "audit/phase6/contracts/$c.contract" "audit/phase6/external/$c-harness-900.csv"
             python3 audit/phase6/fmpy_import.py --contract "audit/phase6/contracts/$c.contract" --step 900 --output "audit/phase6/external/$c-fmpy-900.csv" --log "audit/phase6/external/$c-fmpy.log"
           done

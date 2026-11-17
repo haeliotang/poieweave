@@ -12,7 +12,7 @@ N6-A RESOURCE LIFETIME SEMANTICS
 N6-A STEP-LEVEL RESOURCE RELEASE
   NOT REPRESENTABLE / NOT ESTABLISHED
 
-N6-B CONTRACT-DRIVEN SCHEDULING — ESTABLISHED (SCOPED: durations, task count 1–3, robot pool; canonical priority input NOT REPRESENTABLE)
+N6-B CONTRACT-DRIVEN SCHEDULING — ESTABLISHED (SCOPED: durations, task count 1–3, robot pool, scheduler-level priority contract)
 N6-C CAUSAL DEPENDENCY AND EVENT BOUNDARIES — ESTABLISHED (SCOPED: tool-t1, bus-1, same-time, horizon)
 N6-D REPAIR-DRIVEN RESTORATION STATE VALIDITY — ESTABLISHED (SCOPED: derived asset state from completion trace; native asset-status export unavailable)
 N6-E EVIDENCE INTEGRITY — ESTABLISHED (SCOPED: A/B/C + derived D)
@@ -62,12 +62,17 @@ robotCount, failure time/kind/index, horizon
 | B03 | 5000/9000 | 9000 | 9000 | SAME |
 | B04 | 单任务 | 7200 | 7200 | SAME |
 | B05 | 三任务 | 13200 | 13200 | SAME |
-| B06 | 外部反转优先级、单机器人 | 18000（a→b） | 18000（b→a） | DIFFERENT_BUT_VALID_DECISION |
+| B06 | 反转优先级、单机器人 | 18000（pump→lathe） | 18000（pump→lathe） | SAME |
 | B07 | 单机器人串行对照 | 18000 | 18000 | SAME |
+| B08 | 外部 priority 与 canonical 计划顺序不同 | 18000（a→b） | 18000（b→a） | DIFFERENT_BUT_VALID_DECISION |
 
-B06 是明确标记的调度策略差异：两种顺序都合法且 makespan 相同，比较器分类为
-`DIFFERENT_BUT_VALID_DECISION`，而不是失败。canonical 不接收独立 priority 输入，
-因此“双方从同一 priority 字段独立调度”仍为 NOT REPRESENTABLE。
+B06 现在由双方从同一 priority 契约独立计算，决策一致。
+B08 故意使用不同 priority 输入，两种顺序都合法且 makespan 相同，比较器分类为
+`DIFFERENT_BUT_VALID_DECISION`，而不是失败。
+
+边界：canonical scheduler 通过 `plans` 顺序接收 priority；canonical **event engine**
+的 `start_repair` 仍按固定初始资产顺序生成计划，因此“事件执行阶段的 priority
+输入”仍为 NOT REPRESENTABLE。N6-B 的 priority 声明只覆盖 scheduler-level contract。
 
 负例覆盖资源重叠、任务时长篡改、越池资源、缺失恢复、makespan 移动。
 

@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 
 PHASE = Path(__file__).resolve().parent
-CASES = ["N6-B00", "N6-B01", "N6-B02", "N6-B03", "N6-B04", "N6-B05", "N6-B06", "N6-B07"]
+CASES = ["N6-B00", "N6-B01", "N6-B02", "N6-B03", "N6-B04", "N6-B05", "N6-B06", "N6-B07", "N6-B08"]
 
 
 def sha(path: Path) -> str:
@@ -84,7 +84,7 @@ def compare(case: str) -> dict:
     problems = validate(left, spec, "canonical") + validate(right, spec, "external")
     # Canonical schedule does not take an external priority field; B06 deliberately
     # uses a different public priority policy and must be classified, not failed.
-    policy_difference = case == "N6-B06"
+    policy_difference = case == "N6-B08"
     left_sig = [(round(task["start_s"], 6), round(task["end_s"], 6), tuple(task["resources"])) for task in left["tasks"]]
     right_sig = [(round(task["start_s"], 6), round(task["end_s"], 6), tuple(task["resources"]))
                  for task in right["tasks"]]
