@@ -157,12 +157,21 @@ def compare(scenario: str) -> dict:
                              "external_s": f(external_last, "robotFailureAppliedTime_s"),
                              "error_s": abs(f(external_last, "robotFailureAppliedTime_s") - events["RepairInterrupted"]["at_s"]),
                              "repair_state": f(external_last, "repairState")})
+    phase_bad = [sample for sample in samples if sample["phase"] != "After"]
+    sign_bad = [sample for sample in samples
+                if abs(sample["explained_model_assumption_delta_J"]) > TOLERANCE_J
+                and abs(sample["raw_energy_difference_J"] + sample["explained_model_assumption_delta_J"]) <= TOLERANCE_J]
     unexplained = [sample for sample in samples if abs(sample["unexplained_residual_J"]) > TOLERANCE_J]
     conservation_bad = [entry for entry in conservation if abs(entry["residual_J"]) > TOLERANCE_J]
     event_bad = [check for check in event_checks if check["error_s"] > 1e-6]
     if abs(metadata["nominal_communication_step_s"] - config["step"]) > 1e-9:
         findings.append({"class": "EXECUTION_METADATA_MISMATCH",
                          "declared": config["step"], "actual": metadata["nominal_communication_step_s"]})
+    findings.extend({"class": "EVENT_PHASE_MISMATCH", "at_s": sample["requested_time_s"],
+                     "phase": sample["phase"]} for sample in phase_bad)
+    findings.extend({"class": "MODEL_ASSUMPTION_MISMATCH", "at_s": sample["requested_time_s"],
+                     "raw_J": sample["raw_energy_difference_J"],
+                     "explained_J": sample["explained_model_assumption_delta_J"]} for sample in sign_bad)
     findings.extend({"class": "UNEXPLAINED_RESIDUAL", "at_s": sample["requested_time_s"],
                      "residual_J": sample["unexplained_residual_J"]} for sample in unexplained)
     findings.extend({"class": "ENERGY_CONSERVATION", "side": entry["side"], "at_s": entry["at_s"]}

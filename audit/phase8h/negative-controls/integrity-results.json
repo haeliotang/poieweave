@@ -1,0 +1,29 @@
+{
+  "schema": "poie.s5v-n8h-integrity-controls/1",
+  "results": [
+    {
+      "control": "raw-csv-tamper",
+      "detected": true
+    },
+    {
+      "control": "manifest-content-tamper",
+      "detected": true
+    },
+    {
+      "control": "manifest-digest-tamper",
+      "detected": true
+    },
+    {
+      "control": "missing-evidence-file",
+      "detected": true
+    },
+    {
+      "control": "wrong-execution-batch",
+      "detected": true
+    },
+    {
+      "control": "claim-inconsistency",
+      "detected": true
+    }
+  ]
+}
