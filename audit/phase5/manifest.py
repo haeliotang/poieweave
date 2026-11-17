@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 PHASE = Path(__file__).resolve().parent
@@ -19,9 +20,15 @@ def sha(path: Path) -> str:
 
 def main() -> int:
     files = []
-    for path in sorted(PHASE.rglob("*")):
-        if path.is_file() and path.name != "manifest.json":
-            files.append({"path": str(path.relative_to(ROOT)), "sha256": sha(path), "bytes": path.stat().st_size})
+    tracked = subprocess.run(["git", "ls-files", "-z", "audit/phase5"], cwd=ROOT, check=True,
+                             capture_output=True).stdout.split(b"\0")
+    tracked_paths = {ROOT / entry.decode() for entry in tracked if entry}
+    for path in sorted(tracked_paths):
+        if not path.is_file() or path.name in ("manifest.json", "execution-manifest.json"):
+            continue
+        if "__pycache__" in path.parts or path.suffix in (".pyc", ".pyo"):
+            continue
+        files.append({"path": str(path.relative_to(ROOT)), "sha256": sha(path), "bytes": path.stat().st_size})
     tools = {
         "external_fmu": "external/fmu-n5-scheduler/poie-n5-scheduler.fmu",
         "external_fmu_sha256": sha(ROOT / "external/fmu-n5-scheduler/poie-n5-scheduler.fmu"),

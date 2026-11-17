@@ -18,16 +18,6 @@
       "bytes": 3052
     },
     {
-      "path": "audit/phase4/__pycache__/compare.cpython-314.pyc",
-      "sha256": "eb1d6ca0925369064071e36af49a21c7e883925087144df312319bd1a2c910df",
-      "bytes": 16816
-    },
-    {
-      "path": "audit/phase4/__pycache__/compare_repair.cpython-314.pyc",
-      "sha256": "01259eb2f56822654c8eb3f79e405702034e6254de5a4b50502e63c7efa469bd",
-      "bytes": 5892
-    },
-    {
       "path": "audit/phase4/canonical/N4-00-events.csv",
       "sha256": "9e1b884cb523f41b9737ad466cd9947bbf86a7f3745df38844f09f70f940a9b4",
       "bytes": 259
@@ -249,8 +239,8 @@
     },
     {
       "path": "audit/phase4/manifest.py",
-      "sha256": "5aa0f48a5f7f044998b659c72aa0de2908f09e0f311e70f4332ee3ec020196c6",
-      "bytes": 1938
+      "sha256": "980cfd0076f067ca50693e37b44da0971eb886eeee3b8967f38473f07ecc519d",
+      "bytes": 2257
     },
     {
       "path": "audit/phase4/negative-controls/N4-01-duration-tampered.csv",
