@@ -27,6 +27,7 @@ python3 audit/phase3/check_native.py
 python3 audit/phase4/check.py
 python3 audit/phase5/check.py
 python3 audit/phase6/check.py
+python3 audit/phase6/check_evidence.py
 python3 audit/certificates/verify_v1.py
 python3 audit/certificates/verify_v1_historical.py
 python3 scripts/check-docs.py

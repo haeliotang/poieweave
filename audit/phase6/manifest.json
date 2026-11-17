@@ -3,14 +3,19 @@
   "baseline": "c38ea8500426a5bc9ea9e4b521a9c4fcc0bf9423",
   "files": [
     {
+      "path": "audit/phase6/EVIDENCE.md",
+      "sha256": "b4f7b114d8d0e3e242ed5c987c9706d0cd613caad6fc7852d867c933796ad20b",
+      "bytes": 2522
+    },
+    {
       "path": "audit/phase6/PREREG.md",
       "sha256": "448456e4019856d9398ee4dc6bb70f257334d6238ad425f37178079b9ca9d060",
       "bytes": 1965
     },
     {
       "path": "audit/phase6/REPORT.zh-CN.md",
-      "sha256": "bfd4d09aee43a05a48d1d92c16b9171c3a7f2d9a703bfcee4bd768d68341e45a",
-      "bytes": 4976
+      "sha256": "e73483c2bf56c6f2651bb11d27d437d8f53253c1a333417276f24a68e3ed07cd",
+      "bytes": 5239
     },
     {
       "path": "audit/phase6/RESOURCE_LIFETIME.md",
@@ -331,6 +336,11 @@
       "path": "audit/phase6/check.py",
       "sha256": "73784bf6cbc6b655dd60dc884183b1140f139eb6089e815bef33dc1875253774",
       "bytes": 4473
+    },
+    {
+      "path": "audit/phase6/check_evidence.py",
+      "sha256": "8143e4cfe603bbb542d3de564accb62dedc9113592074b421dbb6aa89c2ab306",
+      "bytes": 2508
     },
     {
       "path": "audit/phase6/compare_dependencies.py",
