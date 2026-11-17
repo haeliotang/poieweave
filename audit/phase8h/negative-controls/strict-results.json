@@ -53,6 +53,24 @@
       ]
     },
     {
+      "control": "repair-energy-sign-reversed",
+      "expected": "MODEL_ASSUMPTION_MISMATCH",
+      "detected": true,
+      "classes": [
+        "ENERGY_CONSERVATION",
+        "MODEL_ASSUMPTION_MISMATCH",
+        "UNEXPLAINED_RESIDUAL"
+      ]
+    },
+    {
+      "control": "event-phase-swap",
+      "expected": "EVENT_PHASE_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EVENT_PHASE_MISMATCH"
+      ]
+    },
+    {
       "control": "same-time-event-order-swap",
       "expected": "EVENT_ORDER_MISMATCH",
       "detected": true,

@@ -15,7 +15,7 @@ ROOT = PHASE.parents[1]
 PREFIX = "audit/phase8h/"
 FILES = {"PREREG.md", "SEMANTICS.md", "REPORT.zh-CN.md", "EVIDENCE.md",
          "old-evidence.json", "false-pass.json", "fmpy_schedule.py", "compare_strict.py",
-         "negative_controls.py", "check.py"}
+         "negative_controls.py", "verify_evidence.py", "negative_integrity.py", "check.py"}
 DIRS = {"external/", "comparisons/", "negative-controls/"}
 EXCLUDE = {"manifest.json", "execution-manifest.json"}
 

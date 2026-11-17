@@ -1716,7 +1716,10 @@ jobs:
       - name: Install independent FMI importer
         run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
       - name: Verify frozen N8-H evidence before re-execution
-        run: python3 audit/phase8h/check.py --frozen
+        run: |
+          python3 audit/phase8h/check.py --frozen
+          python3 audit/phase8h/verify_evidence.py --frozen --claim
+          python3 audit/phase8h/negative_integrity.py
       - name: Reproduce false passes
         run: python3 audit/phase8h/reproduce_false_pass.py
       - name: Build N4 FMUs and run exact-schedule importer
@@ -1730,7 +1733,9 @@ jobs:
         run: |
           python3 audit/phase8h/compare_strict.py
           python3 audit/phase8h/negative_controls.py
+          python3 audit/phase8h/negative_integrity.py
           python3 audit/phase8h/check.py
+          python3 audit/phase8h/verify_evidence.py --claim
       - name: Save N8-H evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n8h/evidence"

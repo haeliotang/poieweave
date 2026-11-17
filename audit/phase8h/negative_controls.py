@@ -64,6 +64,7 @@ ext02 = PHASE / "external/N8H-N8-02.csv"
 meta02 = PHASE / "external/N8H-N8-02.meta.json"
 events = ROOT / "audit/phase8/event-observations/events.csv"
 n4_05 = ROOT / "audit/phase4/canonical/N4-05-observations.csv"
+n4_01 = ROOT / "audit/phase4/canonical/N4-01-observations.csv"
 
 
 def time_shift_14400():
@@ -140,6 +141,27 @@ def event_order_swap():
             row["event_sequence"] = "2"
     write_csv(events, fields, rows, delimiter="\t")
 
+
+def repair_sign_reversed():
+    fields, rows = read_csv(ext01)
+    for row in rows:
+        if abs(float(row["time_s"]) - 7200.0) < 1e-9:
+            row["energy_J"] = f"{float(row['energy_J']) + 2400000.0:.9f}"
+    write_csv(ext01, fields, rows)
+
+
+record("repair-energy-sign-reversed", "MODEL_ASSUMPTION_MISMATCH", with_mutation([ext01], repair_sign_reversed))
+
+
+def phase_swap():
+    fields, rows = read_csv(n4_01, delimiter="\t")
+    for row in rows:
+        if row["at_s"] == "7200.000" and row["phase"] == "After":
+            row["phase"] = "Before"
+    write_csv(n4_01, fields, rows, delimiter="\t")
+
+
+record("event-phase-swap", "EVENT_PHASE_MISMATCH", with_mutation([n4_01], phase_swap, "N8-01"))
 
 record("same-time-event-order-swap", "EVENT_ORDER_MISMATCH", with_mutation([events], event_order_swap, "N8-01"))
 
