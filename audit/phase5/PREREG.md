@@ -86,5 +86,7 @@ contract violations or unexplained completion/interruption differences fail.
 - Level 3 planning independence;
 - post-interruption autonomous replanning;
 - endogenous recovery after interruption;
+- post-interruption replanning;
 - autonomous recovery;
+- Level 3 planning independence;
 - full S2 or physical correctness.

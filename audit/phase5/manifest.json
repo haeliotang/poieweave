@@ -4,13 +4,13 @@
   "files": [
     {
       "path": "audit/phase5/PREREG.md",
-      "sha256": "b6117f61311fd8171a96b36ea616733c0885ad20536d29863e2dfdcbcb2b46d6",
-      "bytes": 3073
+      "sha256": "b76b6eff28ba851bff1a6ddc432ab4b431349f2aceb5a8f7ce52c925d63710f6",
+      "bytes": 3138
     },
     {
       "path": "audit/phase5/REPORT.zh-CN.md",
-      "sha256": "50499446932aea72d98184580b81ff943ec6ddecb0071b38ea355f1d117ff22b",
-      "bytes": 4166
+      "sha256": "116d969d256b4adb024042dfc22aab2069467cb3372dac908a839440086fd16a",
+      "bytes": 4300
     },
     {
       "path": "audit/phase5/SEMANTICS.md",
