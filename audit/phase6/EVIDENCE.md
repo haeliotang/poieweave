@@ -32,7 +32,9 @@ python3 audit/phase6/check.py
   via an explicit allowlist. No `__pycache__`, `.pyc`, editor files or runtime caches.
 - `execution-manifest.json`: CURRENT_RUN_EXECUTION_EVIDENCE, written outside the
   repository for each Linux CI run; it never replaces frozen evidence.
-- Frozen checks run before any re-execution. Clean-checkout commands:
+- Frozen checks run before any re-execution. The clean-checkout proof runs
+`check.py`, `check_evidence.py` and `check-all` from a detached Git worktree
+without first regenerating any evidence:
 
 ```bash
 git status --short
@@ -76,7 +78,7 @@ runtime source (`engine.rs`, `survival.rs`, `clock.rs`, `closure.rs`,
 ## Known limitations
 
 - N6-A is group-level only; step-level release is not represented.
-- N6-B does not represent an independent canonical priority input; B06 is a
-  classified scheduling-policy difference.
+- N6-B represents priority at the scheduler boundary; B08 is a classified
+  different-policy decision. Event-engine priority input remains NOT REPRESENTABLE.
 - N6-D asset status is derived from the canonical completion trace; no native
   asset-status field exists in the current observatory.

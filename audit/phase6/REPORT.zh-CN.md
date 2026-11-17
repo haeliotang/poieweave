@@ -1,7 +1,7 @@
 # S5-V N6 — Contract-Driven Coordination & Causal Boundary Challenge
 
 基线：`c38ea8500426a5bc9ea9e4b521a9c4fcc0bf9423`（PR #576）。
-本轮仅完成 N6-A 强制资源生命周期审计；N6-B..E 保持未完成。
+范围：N6-A group-level resource lifetime、N6-B parameterized scheduling、N6-C dependency/event boundaries、N6-D derived restoration state、N6-E evidence integrity，以及 N6 evidence hardening。所有声明均为 SCOPED。
 
 ## 状态
 
@@ -16,6 +16,10 @@ N6-B CONTRACT-DRIVEN SCHEDULING — ESTABLISHED (SCOPED: durations, task count 1
 N6-C CAUSAL DEPENDENCY AND EVENT BOUNDARIES — ESTABLISHED (SCOPED: tool-t1, bus-1, same-time, horizon)
 N6-D REPAIR-DRIVEN RESTORATION STATE VALIDITY — ESTABLISHED (SCOPED: derived asset state from completion trace; native asset-status export unavailable)
 N6-E EVIDENCE INTEGRITY — ESTABLISHED (SCOPED: A/B/C + derived D)
+
+S5-V N6 CONTRACT-DRIVEN COORDINATION
+AND CAUSAL BOUNDARY CHALLENGE
+  ESTABLISHED (SCOPED)
 
 S5-V N6 EVIDENCE HARDENING — ESTABLISHED (SCOPED)
 N6 FROZEN EVIDENCE REPRODUCIBILITY — VERIFIED
@@ -69,7 +73,7 @@ robotCount, failure time/kind/index, horizon
 | B05 | 三任务 | 13200 | 13200 | SAME |
 | B06 | 反转优先级、单机器人 | 18000（pump→lathe） | 18000（pump→lathe） | SAME |
 | B07 | 单机器人串行对照 | 18000 | 18000 | SAME |
-| B08 | 外部 priority 与 canonical 计划顺序不同 | 18000（a→b） | 18000（b→a） | DIFFERENT_BUT_VALID_DECISION |
+| B08 | 外部 priority 与 canonical 计划顺序不同 | 18000（a→b） | 18000（b→a） | DIFFERENT_POLICY_VALID_DECISIONS |
 
 B06 现在由双方从同一 priority 契约独立计算，决策一致。
 B08 故意使用不同 priority 输入，两种顺序都合法且 makespan 相同，比较器分类为
@@ -150,10 +154,13 @@ status_source = DERIVED_FROM_TRACE_COMPLETION
 python3 audit/phase6/check.py
 ```
 
-## 未覆盖
+## 未覆盖 / 范围限制
 
-- 参数化外部调度器（N6-B）
-- 工具与上游依赖失效（N6-C）
-- 同刻事件与 horizon 边界（N6-D）
-- 完整恢复前后资产状态（N6-D）
-- 完整 Linux CI 证据包（N6-E）尚未为本阶段单独建立；N6-A 使用本地验证
+- step-level resource release（canonical 仅组级）
+- event-engine priority input（仅 scheduler-level）
+- 原生 asset-status export（N6-D 为 completion trace 派生）
+- post-interruption replanning
+- autonomous recovery
+- Level 3 independent planning
+- trajectory-level / full S2 / physical-world correctness
+- 本阶段未修改 canonical 运行时，也未重签 S2 证书

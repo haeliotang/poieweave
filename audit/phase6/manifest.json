@@ -2,9 +2,9 @@
   "baseline": "c38ea8500426a5bc9ea9e4b521a9c4fcc0bf9423",
   "files": [
     {
-      "bytes": 3310,
+      "bytes": 3472,
       "path": "audit/phase6/EVIDENCE.md",
-      "sha256": "a6929752b67c1b50dfbe3b582209de6f3777ff524e207c337b61ee03fbf314b5"
+      "sha256": "a3c831b61b5ef87f23dab826fef8ea781c78fb56bd6a3e034fe3bc879a53c39d"
     },
     {
       "bytes": 1965,
@@ -12,9 +12,9 @@
       "sha256": "448456e4019856d9398ee4dc6bb70f257334d6238ad425f37178079b9ca9d060"
     },
     {
-      "bytes": 6744,
+      "bytes": 7133,
       "path": "audit/phase6/REPORT.zh-CN.md",
-      "sha256": "acbe81cc2d27ac866996b4900a2f8adfb65eac7a13dd6cacc78495a8bd5e7b21"
+      "sha256": "509698dc7349cddd5bb24667ad3c24a11f3bf4c4adff6357e743aefcc19200ff"
     },
     {
       "bytes": 1859,
