@@ -11,7 +11,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use poie_ontology::model::{AssetStatus, Model, Service};
+use poie_ontology::model::{Asset, AssetStatus, Model, Service};
 
 use crate::clock::EventClock;
 use crate::closure::{analyze, ClosureOutcome, Plan};
@@ -112,6 +112,9 @@ pub struct EngineObservation {
     pub energy_curtailed_j: f64,
     pub energy_resupply_j: f64,
     pub running_repair: Option<RepairObservation>,
+    /// Native snapshot of the canonical runtime model at the observation boundary.
+    pub asset_statuses: BTreeMap<String, AssetStatus>,
+    pub asset_status_source: &'static str,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -132,6 +135,32 @@ thread_local! {
         const { std::cell::RefCell::new(None) };
 }
 
+struct ObservationGuard {
+    previous: Option<ObservationCollector>,
+}
+
+impl ObservationGuard {
+    fn install(collector: ObservationCollector) -> Result<Self, EngineError> {
+        OBSERVATION_COLLECTOR.with(|cell| {
+            let mut slot = cell.borrow_mut();
+            if slot.is_some() {
+                return Err(EngineError("nested run_engine_observed is not supported".into()));
+            }
+            let previous = slot.take();
+            *slot = Some(collector);
+            Ok(ObservationGuard { previous })
+        })
+    }
+}
+
+impl Drop for ObservationGuard {
+    fn drop(&mut self) {
+        OBSERVATION_COLLECTOR.with(|cell| {
+            *cell.borrow_mut() = self.previous.take();
+        });
+    }
+}
+
 fn with_observations(mut f: impl FnMut(&mut ObservationCollector)) {
     OBSERVATION_COLLECTOR.with(|cell| {
         if let Some(collector) = cell.borrow_mut().as_mut() {
@@ -148,6 +177,10 @@ fn next_request_time() -> Option<f64> {
     value
 }
 
+fn asset_status_snapshot(assets: &BTreeMap<String, Asset>) -> BTreeMap<String, AssetStatus> {
+    assets.iter().map(|(id, asset)| (id.clone(), asset.status)).collect()
+}
+
 fn observe_due(
     at_s: f64,
     phase: ObservationPhase,
@@ -155,6 +188,7 @@ fn observe_due(
     running: Option<&RunningRepair>,
     trace: &[EngineTrace],
     interval: &EnergyFlow,
+    assets: &BTreeMap<String, AssetStatus>,
 ) {
     with_observations(|collector| {
         while let Some(request) = collector.requests.get(collector.index).copied() {
@@ -191,6 +225,8 @@ fn observe_due(
                     plans: plan_summary(&repair.plans),
                     resources: repair.resources.clone(),
                 }),
+                asset_statuses: assets.clone(),
+                asset_status_source: "NATIVE_CANONICAL_RUNTIME",
             });
             collector.index += 1;
         }
@@ -205,12 +241,11 @@ pub fn run_engine_observed(
 ) -> Result<ObservedEngineOutcome, EngineError> {
     let mut sorted = requests.to_vec();
     sorted.sort_by(|left, right| left.at_s.total_cmp(&right.at_s).then_with(|| left.phase.cmp(&right.phase)));
-    OBSERVATION_COLLECTOR.with(|cell| {
-        *cell.borrow_mut() =
-            Some(ObservationCollector { requests: sorted.clone(), index: 0, observations: Vec::new() });
-    });
+    let collector = ObservationCollector { requests: sorted.clone(), index: 0, observations: Vec::new() };
+    let guard = ObservationGuard::install(collector)?;
     let outcome = run_engine(model, options);
     let collected = OBSERVATION_COLLECTOR.with(|cell| cell.borrow_mut().take());
+    drop(guard);
     let result = outcome.map(|outcome| {
         let mut observations = collected.map(|collector| collector.observations).unwrap_or_default();
         for request in sorted {
@@ -228,6 +263,8 @@ pub fn run_engine_observed(
                     energy_curtailed_j: 0.0,
                     energy_resupply_j: 0.0,
                     running_repair: None,
+                    asset_statuses: BTreeMap::new(),
+                    asset_status_source: "UNOBSERVABLE",
                 });
             }
         }
@@ -504,7 +541,15 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
         }
     }
 
-    observe_due(clock.now_s(), ObservationPhase::After, &inventory, running.as_ref(), &trace, &interval_flow);
+    observe_due(
+        clock.now_s(),
+        ObservationPhase::After,
+        &inventory,
+        running.as_ref(),
+        &trace,
+        &interval_flow,
+        &asset_status_snapshot(&current.assets),
+    );
 
     let mut timeline: Vec<(f64, TimelineItem)> = Vec::new();
     for failure in &options.failures {
@@ -595,9 +640,25 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                 });
             }
         }
-        observe_due(clock.now_s(), ObservationPhase::Before, &inventory, running.as_ref(), &trace, &interval_flow);
+        observe_due(
+            clock.now_s(),
+            ObservationPhase::Before,
+            &inventory,
+            running.as_ref(),
+            &trace,
+            &interval_flow,
+            &asset_status_snapshot(&current.assets),
+        );
         if sample_only {
-            observe_due(clock.now_s(), ObservationPhase::After, &inventory, running.as_ref(), &trace, &interval_flow);
+            observe_due(
+                clock.now_s(),
+                ObservationPhase::After,
+                &inventory,
+                running.as_ref(),
+                &trace,
+                &interval_flow,
+                &asset_status_snapshot(&current.assets),
+            );
             continue;
         }
         if let Some(repair) = running.as_ref() {
@@ -644,12 +705,21 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     running.as_ref(),
                     &trace,
                     &interval_flow,
+                    &asset_status_snapshot(&current.assets),
                 );
                 continue;
             }
         }
         if clock.now_s() >= options.horizon_s - 1e-9 {
-            observe_due(clock.now_s(), ObservationPhase::After, &inventory, running.as_ref(), &trace, &interval_flow);
+            observe_due(
+                clock.now_s(),
+                ObservationPhase::After,
+                &inventory,
+                running.as_ref(),
+                &trace,
+                &interval_flow,
+                &asset_status_snapshot(&current.assets),
+            );
             if running.is_some() {
                 return Ok(EngineOutcome {
                     termination: EngineTermination::IncompleteAtHorizon("repair at horizon".into()),
@@ -757,6 +827,15 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                 repair.execution_dependencies.contains(&failure.asset)
                     || repair.restoration_targets.contains(&failure.asset)
             }) {
+                observe_due(
+                    clock.now_s(),
+                    ObservationPhase::After,
+                    &inventory,
+                    running.as_ref(),
+                    &trace,
+                    &interval_flow,
+                    &asset_status_snapshot(&current.assets),
+                );
                 return Ok(EngineOutcome {
                     termination: EngineTermination::Blocked(format!(
                         "repair interrupted at {:.0}s: {} failed",
@@ -770,7 +849,15 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
             }
         }
         pending.extend(repairable);
-        observe_due(clock.now_s(), ObservationPhase::After, &inventory, running.as_ref(), &trace, &interval_flow);
+        observe_due(
+            clock.now_s(),
+            ObservationPhase::After,
+            &inventory,
+            running.as_ref(),
+            &trace,
+            &interval_flow,
+            &asset_status_snapshot(&current.assets),
+        );
     }
 
     let tail = clock.advance_to(options.horizon_s);
@@ -804,7 +891,15 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
         energy_repair_j: 0.0,
         energy_curtailed_j: flow.curtailed_j,
     });
-    observe_due(clock.now_s(), ObservationPhase::After, &inventory, running.as_ref(), &trace, &interval_flow);
+    observe_due(
+        clock.now_s(),
+        ObservationPhase::After,
+        &inventory,
+        running.as_ref(),
+        &trace,
+        &interval_flow,
+        &asset_status_snapshot(&current.assets),
+    );
     Ok(EngineOutcome {
         termination: EngineTermination::CompletedHorizon,
         survived_s: clock.now_s(),
@@ -1234,5 +1329,88 @@ mod tests {
         let outcome =
             run_engine(&model, &options(vec![FailureEvent { at_s: 0.0, asset: "filter-1".into() }], 86_400.0)).unwrap();
         assert!(matches!(outcome.termination, EngineTermination::Blocked(_)));
+    }
+    #[test]
+    fn native_asset_status_before_after_restoration() {
+        let model = base08();
+        let opts = options(Vec::new(), 20.0 * 3600.0);
+        let direct = run_engine(&model, &opts).unwrap();
+        let observed = run_engine_observed(
+            &model,
+            &opts,
+            &[
+                ObservationRequest { at_s: 10800.0, phase: ObservationPhase::Before },
+                ObservationRequest { at_s: 10800.0, phase: ObservationPhase::After },
+            ],
+        )
+        .unwrap();
+        assert_eq!(direct, observed.outcome);
+        let before = &observed.observations[0];
+        let after = &observed.observations[1];
+        assert_eq!(before.asset_statuses["pump-p1"], AssetStatus::Degraded);
+        assert_eq!(after.asset_statuses["pump-p1"], AssetStatus::Available);
+        assert_eq!(before.asset_status_source, "NATIVE_CANONICAL_RUNTIME");
+        assert!(before.running_repair.is_some());
+        assert!(after.running_repair.is_none());
+    }
+
+    #[test]
+    fn native_asset_status_after_interruption() {
+        let model = base08();
+        let opts = options(vec![FailureEvent { at_s: 7200.0, asset: "robot-m1".into() }], 20.0 * 3600.0);
+        let direct = run_engine(&model, &opts).unwrap();
+        let observed =
+            run_engine_observed(&model, &opts, &[ObservationRequest { at_s: 7200.0, phase: ObservationPhase::After }])
+                .unwrap();
+        assert_eq!(direct, observed.outcome);
+        let after = &observed.observations[0];
+        assert_eq!(after.status, ObservationStatus::Observed);
+        assert_eq!(after.asset_statuses["robot-m1"], AssetStatus::Failed);
+        assert_eq!(after.asset_statuses["pump-p1"], AssetStatus::Degraded);
+        assert_eq!(after.asset_status_source, "NATIVE_CANONICAL_RUNTIME");
+        assert!(after.running_repair.is_some());
+    }
+
+    #[test]
+    fn native_observation_context_is_restored_between_runs() {
+        let model = base08();
+        let opts = options(Vec::new(), 20.0 * 3600.0);
+        let first =
+            run_engine_observed(&model, &opts, &[ObservationRequest { at_s: 3600.0, phase: ObservationPhase::After }])
+                .unwrap();
+        let second =
+            run_engine_observed(&model, &opts, &[ObservationRequest { at_s: 3600.0, phase: ObservationPhase::After }])
+                .unwrap();
+        assert_eq!(first.observations[0].asset_statuses, second.observations[0].asset_statuses);
+        let joined = std::thread::spawn(move || {
+            let model = base08();
+            let opts = options(Vec::new(), 20.0 * 3600.0);
+            run_engine_observed(&model, &opts, &[ObservationRequest { at_s: 3600.0, phase: ObservationPhase::After }])
+                .unwrap()
+                .observations[0]
+                .asset_statuses
+                .clone()
+        })
+        .join()
+        .unwrap();
+        assert_eq!(first.observations[0].asset_statuses, joined);
+    }
+
+    #[test]
+    fn native_observation_context_survives_error() {
+        let model = base08();
+        let bad = EngineOptions {
+            services: vec!["missing-service"],
+            horizon_s: 1.0,
+            failures: Vec::new(),
+            resupplies: Vec::new(),
+            resources: Vec::new(),
+            alternative_pool: Vec::new(),
+            battery: None,
+            load_kw: 0.0,
+        };
+        assert!(run_engine_observed(&model, &bad, &[]).is_err());
+        let valid = options(Vec::new(), 20.0 * 3600.0);
+        assert!(run_engine_observed(&model, &valid, &[]).is_ok());
     }
 }

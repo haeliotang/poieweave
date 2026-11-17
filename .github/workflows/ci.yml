@@ -1044,12 +1044,16 @@ jobs:
         run: python3 scripts/build-certificate-impact.py --check
       - name: S2 claim certificate coverage
         run: python3 scripts/build-claim-certificate-coverage.py --check
-      - name: S2 canonical claim certificates v2
-        run: python3 scripts/build-canonical-claim-certificates-v2.py --check
-      - name: S2 canonical claim certificate v2 verification
-        run: python3 scripts/verify-canonical-claim-certificates-v2.py
-      - name: S2 canonical claim certificate v2 tamper
-        run: python3 scripts/check-canonical-claim-certificate-tamper-v2.py
+      - name: S2 canonical claim certificates v3
+        run: python3 scripts/build-canonical-claim-certificates-v3.py --check
+      - name: S2 canonical claim certificate v3 verification
+        run: python3 scripts/verify-canonical-claim-certificates-v3.py
+      - name: S2 canonical claim certificate v3 tamper
+        run: python3 scripts/check-canonical-claim-certificate-tamper-v3.py
+      - name: Frozen v2 certificates and historical verification
+        run: python3 audit/certificates/verify_v2.py
+      - name: Frozen v1 historical verification
+        run: python3 audit/certificates/verify_v1_historical.py
       - name: S2 metrics certificate split
         run: python3 scripts/build-metrics-split.py --check
       - name: Frozen v1 certificates
@@ -1599,6 +1603,46 @@ jobs:
           name: s5v-n6-linux-evidence
           path: ${{ runner.temp }}/s5v-n6/evidence
           if-no-files-found: error
+
+  s5v-n7-linux:
+    name: S5-V N7 native observatory and certificate v3 Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Verify frozen N7/v1/v2 evidence before re-execution
+        run: |
+          python3 audit/phase7/check.py
+          python3 audit/certificates/verify_v2.py
+          python3 audit/certificates/verify_v1_historical.py
+      - name: Replay native observations and noninterference tests
+        run: |
+          cargo run --locked -q -p poie-viability --bin poie-s5v-n7-observatory
+          cargo test --locked -q -p poie-viability --lib native_
+          python3 audit/phase7/check.py
+      - name: Verify v3 certificates and tamper controls
+        run: |
+          python3 scripts/build-canonical-claim-certificates-v3.py --check
+          python3 scripts/verify-canonical-claim-certificates-v3.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v3.py
+          python3 scripts/build-claim-certificate-coverage.py --check
+      - name: Save N7 current-run evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n7/evidence"
+          cp -R audit/phase7/observations audit/phase7/differences "$RUNNER_TEMP/s5v-n7/evidence/"
+          cp audit/phase7/{PREREG.md,SEMANTICS.md,ASSET_STATE_CONTRACT.md,CERTIFICATE_IMPACT.md,REPORT.zh-CN.md,EVIDENCE.md,manifest.json} "$RUNNER_TEMP/s5v-n7/evidence/"
+          cp docs/research/canonical-claim-certificate-index-v3.json "$RUNNER_TEMP/s5v-n7/evidence/"
+          python3 audit/phase7/execution_manifest.py --output "$RUNNER_TEMP/s5v-n7/evidence/execution-manifest.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n7-linux-evidence
+          path: ${{ runner.temp }}/s5v-n7/evidence
 
   deny:
     name: cargo-deny (${{ matrix.checks }})
