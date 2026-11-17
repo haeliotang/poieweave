@@ -1,0 +1,56 @@
+{
+  "baseline": "dc9ebb39e6cf404ffd5dab880f99ec632700a306",
+  "files": [
+    {
+      "bytes": 436,
+      "path": "audit/phase8/CERTIFICATE_IMPACT.md",
+      "sha256": "00c295fa159fbc28d19029863adc01520bd13add79abf76a79be0bee8442a701"
+    },
+    {
+      "bytes": 944,
+      "path": "audit/phase8/EVENT_CONTRACT.md",
+      "sha256": "d7ed0a556f083f75a8d758475e40214c11033b6e6e37d8ec1cc4f1737a70663a"
+    },
+    {
+      "bytes": 478,
+      "path": "audit/phase8/EVIDENCE.md",
+      "sha256": "fc437869ae5e7a92d4d0f67d346c92d37b97bccc8c64792cb737a459c49fe206"
+    },
+    {
+      "bytes": 555,
+      "path": "audit/phase8/MODEL_MAPPING.md",
+      "sha256": "519311c6d445577d81187d8b6d244150fe3732e657b58ee2370faaeca502b6c2"
+    },
+    {
+      "bytes": 619,
+      "path": "audit/phase8/OBSERVATION_SEMANTICS.md",
+      "sha256": "9dca1c7e995b627a6c6be00017cabc8ea92d8a0cb3f07be7fc07987b17eed89d"
+    },
+    {
+      "bytes": 806,
+      "path": "audit/phase8/PREREG.md",
+      "sha256": "a3cfb6aacd540d23b5c3c3b04bfd1272d07326c7cb2aa4413c6aab8480cf8afc"
+    },
+    {
+      "bytes": 939,
+      "path": "audit/phase8/REPORT.zh-CN.md",
+      "sha256": "9e11eb98258abef37b54f54550780c3648c7198fd7f71577815f4edf159fe3c1"
+    },
+    {
+      "bytes": 60910,
+      "path": "audit/phase8/event-observations/events.csv",
+      "sha256": "bbed9392495c8fdb8f5f5835d4336d6cdcaefc76efcf33316373aa8bc3811ce3"
+    },
+    {
+      "bytes": 864,
+      "path": "audit/phase8/event-observations/summary.csv",
+      "sha256": "1669d70748f78353af8bc8a68ed6821e16e3119e1d8cc9da17178a8177fcdafc"
+    }
+  ],
+  "kind": "FROZEN_TRACKED_EVIDENCE",
+  "schema": "poie.s5v-n8-evidence/1",
+  "scope": {
+    "root": "audit/phase8/",
+    "source": "git ls-files"
+  }
+}

@@ -117,6 +117,69 @@ pub struct EngineObservation {
     pub asset_status_source: &'static str,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum EventKind {
+    InitialRepairStarted,
+    RepairStarted,
+    RepairCompleted,
+    AssetFailure,
+    Resupply,
+    RepairInterrupted,
+    EnergyDepleted,
+    HorizonReached,
+}
+
+impl EventKind {
+    pub fn label(self) -> &'static str {
+        match self {
+            EventKind::InitialRepairStarted => "InitialRepairStarted",
+            EventKind::RepairStarted => "RepairStarted",
+            EventKind::RepairCompleted => "RepairCompleted",
+            EventKind::AssetFailure => "AssetFailure",
+            EventKind::Resupply => "Resupply",
+            EventKind::RepairInterrupted => "RepairInterrupted",
+            EventKind::EnergyDepleted => "EnergyDepleted",
+            EventKind::HorizonReached => "HorizonReached",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum EventOrigin {
+    Exogenous,
+    Endogenous,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum EventStatus {
+    Committed,
+    Rejected,
+    NotApplied,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct EventRecord {
+    pub event_sequence: usize,
+    pub event_id: String,
+    pub event_batch_sequence: usize,
+    pub at_s: f64,
+    pub kind: EventKind,
+    pub origin: EventOrigin,
+    pub target_asset: Option<String>,
+    pub status: EventStatus,
+    pub asset_statuses_before: BTreeMap<String, AssetStatus>,
+    pub asset_statuses_after: BTreeMap<String, AssetStatus>,
+    pub inventory_before: BTreeMap<String, f64>,
+    pub inventory_after: BTreeMap<String, f64>,
+    pub running_repair: Option<RepairObservation>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct EventObservedOutcome {
+    pub outcome: EngineOutcome,
+    pub events: Vec<EventRecord>,
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct ObservedEngineOutcome {
     pub outcome: EngineOutcome,
@@ -159,6 +222,99 @@ impl Drop for ObservationGuard {
             *cell.borrow_mut() = self.previous.take();
         });
     }
+}
+
+thread_local! {
+    static EVENT_COLLECTOR: std::cell::RefCell<Option<Vec<EventRecord>>> =
+        const { std::cell::RefCell::new(None) };
+}
+
+struct EventGuard {
+    previous: Option<Vec<EventRecord>>,
+}
+
+impl EventGuard {
+    fn install() -> Result<Self, EngineError> {
+        EVENT_COLLECTOR.with(|cell| {
+            let mut slot = cell.borrow_mut();
+            if slot.is_some() {
+                return Err(EngineError("nested event observation is not supported".into()));
+            }
+            let previous = slot.take();
+            *slot = Some(Vec::new());
+            Ok(EventGuard { previous })
+        })
+    }
+}
+
+impl Drop for EventGuard {
+    fn drop(&mut self) {
+        EVENT_COLLECTOR.with(|cell| {
+            *cell.borrow_mut() = self.previous.take();
+        });
+    }
+}
+
+fn event_active() -> bool {
+    EVENT_COLLECTOR.with(|cell| cell.borrow().is_some())
+}
+
+#[allow(clippy::too_many_arguments)]
+fn record_event(
+    sequence: usize,
+    batch: usize,
+    at_s: f64,
+    kind: EventKind,
+    origin: EventOrigin,
+    target: Option<String>,
+    status: EventStatus,
+    before: &BTreeMap<String, AssetStatus>,
+    after: &BTreeMap<String, AssetStatus>,
+    inventory_before: &BTreeMap<String, f64>,
+    inventory_after: &BTreeMap<String, f64>,
+    running: Option<&RunningRepair>,
+) {
+    if !event_active() {
+        return;
+    }
+    let event = EventRecord {
+        event_sequence: sequence,
+        event_id: format!("ev-{sequence:04}-{}", kind.label()),
+        event_batch_sequence: batch,
+        at_s,
+        kind,
+        origin,
+        target_asset: target,
+        status,
+        asset_statuses_before: before.clone(),
+        asset_statuses_after: after.clone(),
+        inventory_before: inventory_before.clone(),
+        inventory_after: inventory_after.clone(),
+        running_repair: running.map(|repair| RepairObservation {
+            label: repair.label.clone(),
+            end_s: repair.end_s,
+            plans: plan_summary(&repair.plans),
+            resources: repair.resources.clone(),
+        }),
+    };
+    EVENT_COLLECTOR.with(|cell| {
+        if let Some(events) = cell.borrow_mut().as_mut() {
+            events.push(event);
+        }
+    });
+}
+
+/// Runs the kernel while recording every committed event and its native
+/// before/after asset status snapshot.
+pub fn run_engine_event_observed(
+    model: &Model,
+    options: &EngineOptions<'_>,
+) -> Result<EventObservedOutcome, EngineError> {
+    let guard = EventGuard::install()?;
+    let outcome = run_engine(model, options);
+    let events = EVENT_COLLECTOR.with(|cell| cell.borrow_mut().take()).unwrap_or_default();
+    drop(guard);
+    outcome.map(|outcome| EventObservedOutcome { outcome, events })
 }
 
 fn with_observations(mut f: impl FnMut(&mut ObservationCollector)) {
@@ -479,6 +635,8 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
     let mut clock = EventClock::new(options.horizon_s);
     let mut trace = Vec::new();
     let mut interval_flow = crate::survival::EnergyFlow::default();
+    let mut event_sequence = 0usize;
+    let mut event_batch = 0usize;
 
     // Initial repair is its own event.
     let planning_model = model_with_inventory(&current, &inventory);
@@ -521,6 +679,23 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
             Ok(repair) => {
                 running = Some(repair);
                 pending.clear();
+                let snapshot = asset_status_snapshot(&current.assets);
+                event_sequence += 1;
+                event_batch += 1;
+                record_event(
+                    event_sequence,
+                    event_batch,
+                    clock.now_s(),
+                    EventKind::InitialRepairStarted,
+                    EventOrigin::Endogenous,
+                    Some("initial-repair".into()),
+                    EventStatus::Committed,
+                    &snapshot,
+                    &snapshot,
+                    &inventory,
+                    &inventory,
+                    running.as_ref(),
+                );
             }
             Err(StartError::Blocked(reason)) => {
                 return Ok(EngineOutcome {
@@ -580,6 +755,23 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                 Ok(repair) => {
                     running = Some(repair);
                     pending.clear();
+                    let snapshot = asset_status_snapshot(&current.assets);
+                    event_sequence += 1;
+                    event_batch += 1;
+                    record_event(
+                        event_sequence,
+                        event_batch,
+                        clock.now_s(),
+                        EventKind::RepairStarted,
+                        EventOrigin::Endogenous,
+                        Some("repair".into()),
+                        EventStatus::Committed,
+                        &snapshot,
+                        &snapshot,
+                        &inventory,
+                        &inventory,
+                        running.as_ref(),
+                    );
                 }
                 Err(StartError::Blocked(reason)) => {
                     return Ok(EngineOutcome {
@@ -632,6 +824,22 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                 interval_flow.curtailed_j += flow.curtailed_j;
             }
             Err(offset) => {
+                let assets = asset_status_snapshot(&current.assets);
+                event_sequence += 1;
+                record_event(
+                    event_sequence,
+                    event_batch + 1,
+                    clock.now_s() - gap + offset,
+                    EventKind::EnergyDepleted,
+                    EventOrigin::Endogenous,
+                    None,
+                    EventStatus::Committed,
+                    &assets,
+                    &assets,
+                    &inventory,
+                    &inventory,
+                    running.as_ref(),
+                );
                 return Ok(EngineOutcome {
                     termination: EngineTermination::Blocked("energy_depleted".into()),
                     survived_s: clock.now_s() - gap + offset,
@@ -666,6 +874,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                 let repair = running.take().expect("running repair");
                 initial_phase = false;
                 let before = inventory.clone();
+                let assets_before = asset_status_snapshot(&current.assets);
                 if let Err(reason) = apply_plans(&mut current, &mut inventory, &repair.plans, &repair.planning_base) {
                     return Ok(EngineOutcome {
                         termination: EngineTermination::Blocked(reason),
@@ -674,6 +883,23 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                         final_inventory: inventory,
                     });
                 }
+                let assets_after = asset_status_snapshot(&current.assets);
+                event_sequence += 1;
+                event_batch += 1;
+                record_event(
+                    event_sequence,
+                    event_batch,
+                    clock.now_s(),
+                    EventKind::RepairCompleted,
+                    EventOrigin::Endogenous,
+                    Some(repair.label.clone()),
+                    EventStatus::Committed,
+                    &assets_before,
+                    &assets_after,
+                    &before,
+                    &inventory,
+                    None,
+                );
                 let repair_j: f64 = repair
                     .plans
                     .iter()
@@ -687,7 +913,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                 trace.push(EngineTrace {
                     at_s: clock.now_s(),
                     kind: format!("repair_completed:{}", repair.label),
-                    inventory_before: before,
+                    inventory_before: before.clone(),
                     inventory_after: inventory.clone(),
                     plans: plan_summary(&repair.plans),
                     resources: repair.resources.clone(),
@@ -737,6 +963,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
         }
         let mut failed: Vec<FailureEvent> = Vec::new();
         let mut repairable: Vec<FailureEvent> = Vec::new();
+        event_batch += 1;
         for (_, item) in &timeline[batch_start..index] {
             if let TimelineItem::Supply(supply) = item {
                 let before = inventory.clone();
@@ -759,7 +986,7 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                 trace.push(EngineTrace {
                     at_s: clock.now_s(),
                     kind: format!("resupply:{}", supply.resource),
-                    inventory_before: before,
+                    inventory_before: before.clone(),
                     inventory_after: inventory.clone(),
                     plans: Vec::new(),
                     resources: Vec::new(),
@@ -770,10 +997,27 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     energy_repair_j: 0.0,
                     energy_curtailed_j: flow.curtailed_j + curtailed_j,
                 });
+                event_sequence += 1;
+                let assets = asset_status_snapshot(&current.assets);
+                record_event(
+                    event_sequence,
+                    event_batch,
+                    clock.now_s(),
+                    EventKind::Resupply,
+                    EventOrigin::Exogenous,
+                    Some(supply.resource.clone()),
+                    EventStatus::Committed,
+                    &assets,
+                    &assets,
+                    &before,
+                    &inventory,
+                    running.as_ref(),
+                );
             }
         }
         for (_, item) in &timeline[batch_start..index] {
             if let TimelineItem::Failure(failure) = item {
+                let assets_before = asset_status_snapshot(&current.assets);
                 match current.assets.get_mut(&failure.asset) {
                     Some(asset) => asset.status = AssetStatus::Failed,
                     None => {
@@ -801,6 +1045,22 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     energy_repair_j: 0.0,
                     energy_curtailed_j: flow.curtailed_j,
                 });
+                event_sequence += 1;
+                let assets_after = asset_status_snapshot(&current.assets);
+                record_event(
+                    event_sequence,
+                    event_batch,
+                    clock.now_s(),
+                    EventKind::AssetFailure,
+                    EventOrigin::Exogenous,
+                    Some(failure.asset.clone()),
+                    EventStatus::Committed,
+                    &assets_before,
+                    &assets_after,
+                    &before,
+                    &inventory,
+                    running.as_ref(),
+                );
                 let relevant = services.iter().any(|service| {
                     if service.requires.contains(&failure.asset) {
                         return true;
@@ -835,6 +1095,22 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
                     &trace,
                     &interval_flow,
                     &asset_status_snapshot(&current.assets),
+                );
+                let snapshot = asset_status_snapshot(&current.assets);
+                event_sequence += 1;
+                record_event(
+                    event_sequence,
+                    event_batch,
+                    clock.now_s(),
+                    EventKind::RepairInterrupted,
+                    EventOrigin::Endogenous,
+                    Some("repair".into()),
+                    EventStatus::Committed,
+                    &snapshot,
+                    &snapshot,
+                    &inventory,
+                    &inventory,
+                    running.as_ref(),
                 );
                 return Ok(EngineOutcome {
                     termination: EngineTermination::Blocked(format!(
@@ -877,6 +1153,23 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
         }
     }
     let flow = std::mem::take(&mut interval_flow);
+    let horizon_assets = asset_status_snapshot(&current.assets);
+    event_sequence += 1;
+    event_batch += 1;
+    record_event(
+        event_sequence,
+        event_batch,
+        clock.now_s(),
+        EventKind::HorizonReached,
+        EventOrigin::Endogenous,
+        None,
+        EventStatus::Committed,
+        &horizon_assets,
+        &horizon_assets,
+        &inventory,
+        &inventory,
+        running.as_ref(),
+    );
     trace.push(EngineTrace {
         at_s: clock.now_s(),
         kind: "horizon".into(),
@@ -1422,5 +1715,27 @@ mod tests {
         assert!(run_engine_observed(&model, &opts, &[]).is_err());
         drop(guard);
         assert!(run_engine_observed(&model, &opts, &[]).is_ok());
+    }
+    #[test]
+    fn event_resolved_completion_and_failure_are_distinct_at_same_timestamp() {
+        let model = base08();
+        let opts = options(vec![FailureEvent { at_s: 10800.0, asset: "robot-m1".into() }], 20.0 * 3600.0);
+        let direct = run_engine(&model, &opts).unwrap();
+        let observed = run_engine_event_observed(&model, &opts).unwrap();
+        assert_eq!(direct, observed.outcome);
+        let completion = observed.events.iter().find(|event| event.kind == EventKind::RepairCompleted).unwrap();
+        let failure = observed.events.iter().find(|event| event.kind == EventKind::AssetFailure).unwrap();
+        assert_eq!(completion.at_s, 10800.0);
+        assert_eq!(failure.at_s, 10800.0);
+        assert!(completion.event_sequence < failure.event_sequence);
+        assert_ne!(completion.event_id, failure.event_id);
+        assert_eq!(completion.asset_statuses_before["pump-p1"], AssetStatus::Degraded);
+        assert_eq!(completion.asset_statuses_after["pump-p1"], AssetStatus::Available);
+        assert_eq!(failure.asset_statuses_before["robot-m1"], AssetStatus::Available);
+        assert_eq!(failure.asset_statuses_after["robot-m1"], AssetStatus::Failed);
+        let ids: std::collections::BTreeSet<&str> =
+            observed.events.iter().map(|event| event.event_id.as_str()).collect();
+        assert_eq!(ids.len(), observed.events.len());
+        assert_eq!(observed.events.last().unwrap().kind, EventKind::HorizonReached);
     }
 }

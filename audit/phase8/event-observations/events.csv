@@ -1,0 +1,433 @@
+scenario	event_sequence	event_id	event_batch_sequence	at_s	event_kind	event_origin	target_asset	event_status	asset_id	status_before	status_after	termination
+N8-00	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	completed
+N8-00	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	completed
+N8-00	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	completed
+N8-00	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	completed
+N8-00	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	completed
+N8-00	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	completed
+N8-00	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	completed
+N8-00	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	completed
+N8-00	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	completed
+N8-00	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bat-1	Available	Available	completed
+N8-00	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bus-1	Available	Available	completed
+N8-00	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	charger-1	Available	Available	completed
+N8-00	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	filter-1	Available	Available	completed
+N8-00	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	gauge-1	Available	Available	completed
+N8-00	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	lathe-1	Available	Available	completed
+N8-00	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pump-p1	Degraded	Available	completed
+N8-00	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pv-1	Available	Available	completed
+N8-00	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	robot-m1	Available	Available	completed
+N8-00	3	ev-0003-HorizonReached	3	72000.000	HorizonReached	Endogenous		Committed	bat-1	Available	Available	completed
+N8-00	3	ev-0003-HorizonReached	3	72000.000	HorizonReached	Endogenous		Committed	bus-1	Available	Available	completed
+N8-00	3	ev-0003-HorizonReached	3	72000.000	HorizonReached	Endogenous		Committed	charger-1	Available	Available	completed
+N8-00	3	ev-0003-HorizonReached	3	72000.000	HorizonReached	Endogenous		Committed	filter-1	Available	Available	completed
+N8-00	3	ev-0003-HorizonReached	3	72000.000	HorizonReached	Endogenous		Committed	gauge-1	Available	Available	completed
+N8-00	3	ev-0003-HorizonReached	3	72000.000	HorizonReached	Endogenous		Committed	lathe-1	Available	Available	completed
+N8-00	3	ev-0003-HorizonReached	3	72000.000	HorizonReached	Endogenous		Committed	pump-p1	Available	Available	completed
+N8-00	3	ev-0003-HorizonReached	3	72000.000	HorizonReached	Endogenous		Committed	pv-1	Available	Available	completed
+N8-00	3	ev-0003-HorizonReached	3	72000.000	HorizonReached	Endogenous		Committed	robot-m1	Available	Available	completed
+N8-01	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-01	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-01	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-01	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-01	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-01	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-01	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	blocked:energy_depleted
+N8-01	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	blocked:energy_depleted
+N8-01	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-01	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	pv-1	Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-01	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	pv-1	Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-01	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	pv-1	Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-01	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	pv-1	Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-01	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	pv-1	Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-01	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	pv-1	Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-01	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	pv-1	Committed	pump-p1	Degraded	Degraded	blocked:energy_depleted
+N8-01	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	pv-1	Committed	pv-1	Available	Failed	blocked:energy_depleted
+N8-01	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	pv-1	Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-01	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-01	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-01	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-01	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-01	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-01	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-01	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pump-p1	Degraded	Available	blocked:energy_depleted
+N8-01	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pv-1	Failed	Failed	blocked:energy_depleted
+N8-01	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-01	4	ev-0004-EnergyDepleted	4	53400.000	EnergyDepleted	Endogenous		Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-01	4	ev-0004-EnergyDepleted	4	53400.000	EnergyDepleted	Endogenous		Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-01	4	ev-0004-EnergyDepleted	4	53400.000	EnergyDepleted	Endogenous		Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-01	4	ev-0004-EnergyDepleted	4	53400.000	EnergyDepleted	Endogenous		Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-01	4	ev-0004-EnergyDepleted	4	53400.000	EnergyDepleted	Endogenous		Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-01	4	ev-0004-EnergyDepleted	4	53400.000	EnergyDepleted	Endogenous		Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-01	4	ev-0004-EnergyDepleted	4	53400.000	EnergyDepleted	Endogenous		Committed	pump-p1	Available	Available	blocked:energy_depleted
+N8-01	4	ev-0004-EnergyDepleted	4	53400.000	EnergyDepleted	Endogenous		Committed	pv-1	Failed	Failed	blocked:energy_depleted
+N8-01	4	ev-0004-EnergyDepleted	4	53400.000	EnergyDepleted	Endogenous		Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-02	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-02	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-02	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-02	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-02	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-02	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-02	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	blocked:energy_depleted
+N8-02	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	blocked:energy_depleted
+N8-02	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-02	2	ev-0002-AssetFailure	2	4500.000	AssetFailure	Exogenous	pv-1	Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-02	2	ev-0002-AssetFailure	2	4500.000	AssetFailure	Exogenous	pv-1	Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-02	2	ev-0002-AssetFailure	2	4500.000	AssetFailure	Exogenous	pv-1	Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-02	2	ev-0002-AssetFailure	2	4500.000	AssetFailure	Exogenous	pv-1	Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-02	2	ev-0002-AssetFailure	2	4500.000	AssetFailure	Exogenous	pv-1	Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-02	2	ev-0002-AssetFailure	2	4500.000	AssetFailure	Exogenous	pv-1	Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-02	2	ev-0002-AssetFailure	2	4500.000	AssetFailure	Exogenous	pv-1	Committed	pump-p1	Degraded	Degraded	blocked:energy_depleted
+N8-02	2	ev-0002-AssetFailure	2	4500.000	AssetFailure	Exogenous	pv-1	Committed	pv-1	Available	Failed	blocked:energy_depleted
+N8-02	2	ev-0002-AssetFailure	2	4500.000	AssetFailure	Exogenous	pv-1	Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-02	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-02	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-02	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-02	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-02	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-02	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-02	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pump-p1	Degraded	Available	blocked:energy_depleted
+N8-02	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pv-1	Failed	Failed	blocked:energy_depleted
+N8-02	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-02	4	ev-0004-EnergyDepleted	4	51150.000	EnergyDepleted	Endogenous		Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-02	4	ev-0004-EnergyDepleted	4	51150.000	EnergyDepleted	Endogenous		Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-02	4	ev-0004-EnergyDepleted	4	51150.000	EnergyDepleted	Endogenous		Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-02	4	ev-0004-EnergyDepleted	4	51150.000	EnergyDepleted	Endogenous		Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-02	4	ev-0004-EnergyDepleted	4	51150.000	EnergyDepleted	Endogenous		Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-02	4	ev-0004-EnergyDepleted	4	51150.000	EnergyDepleted	Endogenous		Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-02	4	ev-0004-EnergyDepleted	4	51150.000	EnergyDepleted	Endogenous		Committed	pump-p1	Available	Available	blocked:energy_depleted
+N8-02	4	ev-0004-EnergyDepleted	4	51150.000	EnergyDepleted	Endogenous		Committed	pv-1	Failed	Failed	blocked:energy_depleted
+N8-02	4	ev-0004-EnergyDepleted	4	51150.000	EnergyDepleted	Endogenous		Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-03	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	completed
+N8-03	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	completed
+N8-03	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	completed
+N8-03	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	completed
+N8-03	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	completed
+N8-03	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	completed
+N8-03	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	completed
+N8-03	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	completed
+N8-03	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	completed
+N8-03	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bat-1	Available	Available	completed
+N8-03	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bus-1	Available	Available	completed
+N8-03	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	charger-1	Available	Available	completed
+N8-03	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	filter-1	Available	Available	completed
+N8-03	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	gauge-1	Available	Available	completed
+N8-03	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	lathe-1	Available	Available	completed
+N8-03	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pump-p1	Degraded	Available	completed
+N8-03	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pv-1	Available	Available	completed
+N8-03	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	robot-m1	Available	Available	completed
+N8-03	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	bat-1	Available	Available	completed
+N8-03	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	bus-1	Available	Available	completed
+N8-03	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	charger-1	Available	Available	completed
+N8-03	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	filter-1	Available	Available	completed
+N8-03	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	gauge-1	Available	Available	completed
+N8-03	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	lathe-1	Available	Available	completed
+N8-03	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	pump-p1	Available	Available	completed
+N8-03	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	pv-1	Available	Available	completed
+N8-03	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	robot-m1	Available	Failed	completed
+N8-03	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	bat-1	Available	Available	completed
+N8-03	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	bus-1	Available	Available	completed
+N8-03	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	charger-1	Available	Available	completed
+N8-03	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	filter-1	Available	Available	completed
+N8-03	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	gauge-1	Available	Available	completed
+N8-03	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	lathe-1	Available	Available	completed
+N8-03	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	pump-p1	Available	Available	completed
+N8-03	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	pv-1	Available	Available	completed
+N8-03	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	robot-m1	Failed	Failed	completed
+N8-04	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	bat-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	bus-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	charger-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	filter-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	gauge-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	lathe-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	pv-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	robot-m1	Available	Failed	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	bat-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	bus-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	charger-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	filter-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	gauge-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	lathe-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	pv-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-04	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	robot-m1	Failed	Failed	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-05	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	completed
+N8-05	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	completed
+N8-05	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	completed
+N8-05	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	completed
+N8-05	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	completed
+N8-05	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	completed
+N8-05	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	completed
+N8-05	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	completed
+N8-05	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	completed
+N8-05	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	lathe-1	Committed	bat-1	Available	Available	completed
+N8-05	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	lathe-1	Committed	bus-1	Available	Available	completed
+N8-05	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	lathe-1	Committed	charger-1	Available	Available	completed
+N8-05	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	lathe-1	Committed	filter-1	Available	Available	completed
+N8-05	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	lathe-1	Committed	gauge-1	Available	Available	completed
+N8-05	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	lathe-1	Committed	lathe-1	Available	Failed	completed
+N8-05	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	lathe-1	Committed	pump-p1	Degraded	Degraded	completed
+N8-05	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	lathe-1	Committed	pv-1	Available	Available	completed
+N8-05	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	lathe-1	Committed	robot-m1	Available	Available	completed
+N8-05	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bat-1	Available	Available	completed
+N8-05	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bus-1	Available	Available	completed
+N8-05	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	charger-1	Available	Available	completed
+N8-05	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	filter-1	Available	Available	completed
+N8-05	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	gauge-1	Available	Available	completed
+N8-05	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	lathe-1	Failed	Failed	completed
+N8-05	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pump-p1	Degraded	Available	completed
+N8-05	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pv-1	Available	Available	completed
+N8-05	3	ev-0003-RepairCompleted	3	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	robot-m1	Available	Available	completed
+N8-05	4	ev-0004-RepairStarted	4	10800.000	RepairStarted	Endogenous	repair	Committed	bat-1	Available	Available	completed
+N8-05	4	ev-0004-RepairStarted	4	10800.000	RepairStarted	Endogenous	repair	Committed	bus-1	Available	Available	completed
+N8-05	4	ev-0004-RepairStarted	4	10800.000	RepairStarted	Endogenous	repair	Committed	charger-1	Available	Available	completed
+N8-05	4	ev-0004-RepairStarted	4	10800.000	RepairStarted	Endogenous	repair	Committed	filter-1	Available	Available	completed
+N8-05	4	ev-0004-RepairStarted	4	10800.000	RepairStarted	Endogenous	repair	Committed	gauge-1	Available	Available	completed
+N8-05	4	ev-0004-RepairStarted	4	10800.000	RepairStarted	Endogenous	repair	Committed	lathe-1	Failed	Failed	completed
+N8-05	4	ev-0004-RepairStarted	4	10800.000	RepairStarted	Endogenous	repair	Committed	pump-p1	Available	Available	completed
+N8-05	4	ev-0004-RepairStarted	4	10800.000	RepairStarted	Endogenous	repair	Committed	pv-1	Available	Available	completed
+N8-05	4	ev-0004-RepairStarted	4	10800.000	RepairStarted	Endogenous	repair	Committed	robot-m1	Available	Available	completed
+N8-05	5	ev-0005-RepairCompleted	5	18000.000	RepairCompleted	Endogenous	lathe-1	Committed	bat-1	Available	Available	completed
+N8-05	5	ev-0005-RepairCompleted	5	18000.000	RepairCompleted	Endogenous	lathe-1	Committed	bus-1	Available	Available	completed
+N8-05	5	ev-0005-RepairCompleted	5	18000.000	RepairCompleted	Endogenous	lathe-1	Committed	charger-1	Available	Available	completed
+N8-05	5	ev-0005-RepairCompleted	5	18000.000	RepairCompleted	Endogenous	lathe-1	Committed	filter-1	Available	Available	completed
+N8-05	5	ev-0005-RepairCompleted	5	18000.000	RepairCompleted	Endogenous	lathe-1	Committed	gauge-1	Available	Available	completed
+N8-05	5	ev-0005-RepairCompleted	5	18000.000	RepairCompleted	Endogenous	lathe-1	Committed	lathe-1	Failed	Available	completed
+N8-05	5	ev-0005-RepairCompleted	5	18000.000	RepairCompleted	Endogenous	lathe-1	Committed	pump-p1	Available	Available	completed
+N8-05	5	ev-0005-RepairCompleted	5	18000.000	RepairCompleted	Endogenous	lathe-1	Committed	pv-1	Available	Available	completed
+N8-05	5	ev-0005-RepairCompleted	5	18000.000	RepairCompleted	Endogenous	lathe-1	Committed	robot-m1	Available	Available	completed
+N8-05	6	ev-0006-HorizonReached	6	72000.000	HorizonReached	Endogenous		Committed	bat-1	Available	Available	completed
+N8-05	6	ev-0006-HorizonReached	6	72000.000	HorizonReached	Endogenous		Committed	bus-1	Available	Available	completed
+N8-05	6	ev-0006-HorizonReached	6	72000.000	HorizonReached	Endogenous		Committed	charger-1	Available	Available	completed
+N8-05	6	ev-0006-HorizonReached	6	72000.000	HorizonReached	Endogenous		Committed	filter-1	Available	Available	completed
+N8-05	6	ev-0006-HorizonReached	6	72000.000	HorizonReached	Endogenous		Committed	gauge-1	Available	Available	completed
+N8-05	6	ev-0006-HorizonReached	6	72000.000	HorizonReached	Endogenous		Committed	lathe-1	Available	Available	completed
+N8-05	6	ev-0006-HorizonReached	6	72000.000	HorizonReached	Endogenous		Committed	pump-p1	Available	Available	completed
+N8-05	6	ev-0006-HorizonReached	6	72000.000	HorizonReached	Endogenous		Committed	pv-1	Available	Available	completed
+N8-05	6	ev-0006-HorizonReached	6	72000.000	HorizonReached	Endogenous		Committed	robot-m1	Available	Available	completed
+N8-07	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	bus-1	Committed	bat-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	bus-1	Committed	bus-1	Available	Failed	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	bus-1	Committed	charger-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	bus-1	Committed	filter-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	bus-1	Committed	gauge-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	bus-1	Committed	lathe-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	bus-1	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	bus-1	Committed	pv-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	bus-1	Committed	robot-m1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	bat-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	bus-1	Failed	Failed	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	charger-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	filter-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	gauge-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	lathe-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	pv-1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-07	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	robot-m1	Available	Available	blocked:repair interrupted at 3600s: bus-1 failed
+N8-08	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	completed
+N8-08	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	completed
+N8-08	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	completed
+N8-08	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	completed
+N8-08	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	completed
+N8-08	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	completed
+N8-08	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	completed
+N8-08	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	completed
+N8-08	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	completed
+N8-08	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bat-1	Available	Available	completed
+N8-08	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bus-1	Available	Available	completed
+N8-08	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	charger-1	Available	Available	completed
+N8-08	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	filter-1	Available	Available	completed
+N8-08	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	gauge-1	Available	Available	completed
+N8-08	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	lathe-1	Available	Available	completed
+N8-08	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pump-p1	Degraded	Available	completed
+N8-08	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pv-1	Available	Available	completed
+N8-08	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	robot-m1	Available	Available	completed
+N8-08	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	bat-1	Available	Available	completed
+N8-08	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	bus-1	Available	Available	completed
+N8-08	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	charger-1	Available	Available	completed
+N8-08	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	filter-1	Available	Available	completed
+N8-08	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	gauge-1	Available	Available	completed
+N8-08	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	lathe-1	Available	Available	completed
+N8-08	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	pump-p1	Available	Available	completed
+N8-08	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	pv-1	Available	Available	completed
+N8-08	3	ev-0003-AssetFailure	3	10800.000	AssetFailure	Exogenous	robot-m1	Committed	robot-m1	Available	Failed	completed
+N8-08	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	bat-1	Available	Available	completed
+N8-08	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	bus-1	Available	Available	completed
+N8-08	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	charger-1	Available	Available	completed
+N8-08	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	filter-1	Available	Available	completed
+N8-08	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	gauge-1	Available	Available	completed
+N8-08	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	lathe-1	Available	Available	completed
+N8-08	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	pump-p1	Available	Available	completed
+N8-08	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	pv-1	Available	Available	completed
+N8-08	4	ev-0004-HorizonReached	4	72000.000	HorizonReached	Endogenous		Committed	robot-m1	Failed	Failed	completed
+N8-09	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	completed
+N8-09	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	completed
+N8-09	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	completed
+N8-09	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	completed
+N8-09	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	completed
+N8-09	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	completed
+N8-09	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	completed
+N8-09	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	completed
+N8-09	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	completed
+N8-09	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bat-1	Available	Available	completed
+N8-09	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bus-1	Available	Available	completed
+N8-09	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	charger-1	Available	Available	completed
+N8-09	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	filter-1	Available	Available	completed
+N8-09	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	gauge-1	Available	Available	completed
+N8-09	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	lathe-1	Available	Available	completed
+N8-09	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pump-p1	Degraded	Available	completed
+N8-09	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pv-1	Available	Available	completed
+N8-09	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	robot-m1	Available	Available	completed
+N8-09	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	bat-1	Available	Available	completed
+N8-09	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	bus-1	Available	Available	completed
+N8-09	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	charger-1	Available	Available	completed
+N8-09	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	filter-1	Available	Available	completed
+N8-09	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	gauge-1	Available	Available	completed
+N8-09	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	lathe-1	Available	Available	completed
+N8-09	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	pump-p1	Available	Available	completed
+N8-09	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	pv-1	Available	Available	completed
+N8-09	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	robot-m1	Available	Available	completed
+N8-10	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	completed
+N8-10	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	completed
+N8-10	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	completed
+N8-10	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	completed
+N8-10	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	completed
+N8-10	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	completed
+N8-10	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	completed
+N8-10	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	completed
+N8-10	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	completed
+N8-10	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bat-1	Available	Available	completed
+N8-10	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bus-1	Available	Available	completed
+N8-10	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	charger-1	Available	Available	completed
+N8-10	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	filter-1	Available	Available	completed
+N8-10	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	gauge-1	Available	Available	completed
+N8-10	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	lathe-1	Available	Available	completed
+N8-10	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pump-p1	Degraded	Available	completed
+N8-10	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pv-1	Available	Available	completed
+N8-10	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	robot-m1	Available	Available	completed
+N8-10	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	bat-1	Available	Available	completed
+N8-10	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	bus-1	Available	Available	completed
+N8-10	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	charger-1	Available	Available	completed
+N8-10	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	filter-1	Available	Available	completed
+N8-10	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	gauge-1	Available	Available	completed
+N8-10	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	lathe-1	Available	Available	completed
+N8-10	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	pump-p1	Available	Available	completed
+N8-10	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	pv-1	Available	Available	completed
+N8-10	3	ev-0003-HorizonReached	3	10800.000	HorizonReached	Endogenous		Committed	robot-m1	Available	Available	completed
+N8-11	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-11	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-11	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-11	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-11	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-11	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-11	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	blocked:energy_depleted
+N8-11	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	blocked:energy_depleted
+N8-11	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-11	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-11	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-11	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-11	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-11	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-11	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-11	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pump-p1	Degraded	Available	blocked:energy_depleted
+N8-11	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	pv-1	Available	Available	blocked:energy_depleted
+N8-11	2	ev-0002-RepairCompleted	2	10800.000	RepairCompleted	Endogenous	pump-p1	Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-11	3	ev-0003-Resupply	3	10800.000	Resupply	Exogenous	cutting-insert	Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-11	3	ev-0003-Resupply	3	10800.000	Resupply	Exogenous	cutting-insert	Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-11	3	ev-0003-Resupply	3	10800.000	Resupply	Exogenous	cutting-insert	Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-11	3	ev-0003-Resupply	3	10800.000	Resupply	Exogenous	cutting-insert	Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-11	3	ev-0003-Resupply	3	10800.000	Resupply	Exogenous	cutting-insert	Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-11	3	ev-0003-Resupply	3	10800.000	Resupply	Exogenous	cutting-insert	Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-11	3	ev-0003-Resupply	3	10800.000	Resupply	Exogenous	cutting-insert	Committed	pump-p1	Available	Available	blocked:energy_depleted
+N8-11	3	ev-0003-Resupply	3	10800.000	Resupply	Exogenous	cutting-insert	Committed	pv-1	Available	Available	blocked:energy_depleted
+N8-11	3	ev-0003-Resupply	3	10800.000	Resupply	Exogenous	cutting-insert	Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-11	4	ev-0004-AssetFailure	3	10800.000	AssetFailure	Exogenous	pv-1	Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-11	4	ev-0004-AssetFailure	3	10800.000	AssetFailure	Exogenous	pv-1	Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-11	4	ev-0004-AssetFailure	3	10800.000	AssetFailure	Exogenous	pv-1	Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-11	4	ev-0004-AssetFailure	3	10800.000	AssetFailure	Exogenous	pv-1	Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-11	4	ev-0004-AssetFailure	3	10800.000	AssetFailure	Exogenous	pv-1	Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-11	4	ev-0004-AssetFailure	3	10800.000	AssetFailure	Exogenous	pv-1	Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-11	4	ev-0004-AssetFailure	3	10800.000	AssetFailure	Exogenous	pv-1	Committed	pump-p1	Available	Available	blocked:energy_depleted
+N8-11	4	ev-0004-AssetFailure	3	10800.000	AssetFailure	Exogenous	pv-1	Committed	pv-1	Available	Failed	blocked:energy_depleted
+N8-11	4	ev-0004-AssetFailure	3	10800.000	AssetFailure	Exogenous	pv-1	Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-11	5	ev-0005-EnergyDepleted	4	56400.000	EnergyDepleted	Endogenous		Committed	bat-1	Available	Available	blocked:energy_depleted
+N8-11	5	ev-0005-EnergyDepleted	4	56400.000	EnergyDepleted	Endogenous		Committed	bus-1	Available	Available	blocked:energy_depleted
+N8-11	5	ev-0005-EnergyDepleted	4	56400.000	EnergyDepleted	Endogenous		Committed	charger-1	Available	Available	blocked:energy_depleted
+N8-11	5	ev-0005-EnergyDepleted	4	56400.000	EnergyDepleted	Endogenous		Committed	filter-1	Available	Available	blocked:energy_depleted
+N8-11	5	ev-0005-EnergyDepleted	4	56400.000	EnergyDepleted	Endogenous		Committed	gauge-1	Available	Available	blocked:energy_depleted
+N8-11	5	ev-0005-EnergyDepleted	4	56400.000	EnergyDepleted	Endogenous		Committed	lathe-1	Available	Available	blocked:energy_depleted
+N8-11	5	ev-0005-EnergyDepleted	4	56400.000	EnergyDepleted	Endogenous		Committed	pump-p1	Available	Available	blocked:energy_depleted
+N8-11	5	ev-0005-EnergyDepleted	4	56400.000	EnergyDepleted	Endogenous		Committed	pv-1	Failed	Failed	blocked:energy_depleted
+N8-11	5	ev-0005-EnergyDepleted	4	56400.000	EnergyDepleted	Endogenous		Committed	robot-m1	Available	Available	blocked:energy_depleted
+N8-12	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	robot-m1	Committed	bat-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	robot-m1	Committed	bus-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	robot-m1	Committed	charger-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	robot-m1	Committed	filter-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	robot-m1	Committed	gauge-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	robot-m1	Committed	lathe-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	robot-m1	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	robot-m1	Committed	pv-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	2	ev-0002-AssetFailure	2	3600.000	AssetFailure	Exogenous	robot-m1	Committed	robot-m1	Available	Failed	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	bat-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	bus-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	charger-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	filter-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	gauge-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	lathe-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	pv-1	Available	Available	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-12	3	ev-0003-RepairInterrupted	2	3600.000	RepairInterrupted	Endogenous	repair	Committed	robot-m1	Failed	Failed	blocked:repair interrupted at 3600s: robot-m1 failed
+N8-13	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bat-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	bus-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	charger-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	filter-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	gauge-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	lathe-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	pv-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	1	ev-0001-InitialRepairStarted	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	bat-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	bus-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	charger-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	filter-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	gauge-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	lathe-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	pv-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	2	ev-0002-AssetFailure	2	7200.000	AssetFailure	Exogenous	robot-m1	Committed	robot-m1	Available	Failed	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	bat-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	bus-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	charger-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	filter-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	gauge-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	lathe-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	pump-p1	Degraded	Degraded	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	pv-1	Available	Available	blocked:repair interrupted at 7200s: robot-m1 failed
+N8-13	3	ev-0003-RepairInterrupted	2	7200.000	RepairInterrupted	Endogenous	repair	Committed	robot-m1	Failed	Failed	blocked:repair interrupted at 7200s: robot-m1 failed
