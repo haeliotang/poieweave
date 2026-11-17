@@ -1,15 +1,34 @@
 {
-  "schema": "poie.s5v-n7-native-vs-derived/1",
-  "status": "NO_OVERLAPPING_CASE",
-  "scope": "N6 derived restoration covers synthetic a-lathe/b-pump/c-filter cases; N7 native evidence covers base-08 pump-p1 completion. The cases do not share a model/asset, so a direct per-case comparison is not claimed.",
-  "n6_derived_source": "audit/phase6/restoration/restoration-state.json",
-  "n7_native_source": "audit/phase7/observations/asset-statuses.csv",
-  "n7_native_restoration": {
-    "target_asset": "pump-p1",
-    "status_before": "Degraded",
-    "status_after": "Available",
-    "at_s": 10800,
-    "source": "NATIVE_CANONICAL_RUNTIME"
-  },
-  "limitation": "No overlapping N6/N7 model case exists in the current evidence package; do not infer derived-evidence correctness from this N7 native result."
+  "comparisons": [
+    {
+      "classification": "MATCH",
+      "derived_after": "Available",
+      "derived_before": "Failed",
+      "derived_completed_at_s": 10800.0,
+      "derived_termination": "completed",
+      "native_after": "Available",
+      "native_before": "Failed",
+      "native_observed_at_s": 10800.0,
+      "native_termination": "completed",
+      "target_asset": "lathe-1"
+    },
+    {
+      "classification": "MATCH",
+      "derived_after": "Available",
+      "derived_before": "Degraded",
+      "derived_completed_at_s": 10800.0,
+      "derived_termination": "completed",
+      "native_after": "Available",
+      "native_before": "Degraded",
+      "native_observed_at_s": 10800.0,
+      "native_termination": "completed",
+      "target_asset": "pump-p1"
+    }
+  ],
+  "derived_source": "audit/phase6/canonical/N6-A-10800-audit.json",
+  "limitation": "N6-A-10800 uses a synthetic two-target setup over base-08; N7-14 reproduces the same setup through the native path. This compares restoration targets and timestamps, not all N6 cases.",
+  "native_case": "N7-14",
+  "native_source": "audit/phase7/observations/asset-statuses.csv",
+  "schema": "poie.s5v-n7-native-vs-derived/2",
+  "status": "MATCH"
 }

@@ -7,7 +7,7 @@
   ],
   "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
   "engine": {
-    "sha256": "e798c45483c9c21187f06719510823f429bf7ed782c50df62170208d2c38512c",
+    "sha256": "b07b5927f584373ec2141e18664277dae94c48979e8b5bb1a1038c18e79ad394",
     "source": "crates/poie-viability/src/engine.rs"
   },
   "experiment": {
@@ -23,7 +23,7 @@
   ],
   "native_observatory": {
     "path": "audit/phase7/manifest.json",
-    "sha256": "bb6756053a43a08e887213693957eae777aa86fd78316ae03ce1d258deae0426"
+    "sha256": "9bbdfa6dd02bc0366354ecde15709114e4abfdc9d387134cbb54fb42262c009f"
   },
   "predecessor": {
     "path": "experiments/certificate-canonical-c80-v2/certificate.json",
@@ -47,7 +47,7 @@
     "files": [
       {
         "path": "crates/poie-viability/src/engine.rs",
-        "sha256": "e798c45483c9c21187f06719510823f429bf7ed782c50df62170208d2c38512c"
+        "sha256": "b07b5927f584373ec2141e18664277dae94c48979e8b5bb1a1038c18e79ad394"
       },
       {
         "path": "crates/poie-viability/src/survival.rs",
