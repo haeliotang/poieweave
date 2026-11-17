@@ -1413,4 +1413,14 @@ mod tests {
         let valid = options(Vec::new(), 20.0 * 3600.0);
         assert!(run_engine_observed(&model, &valid, &[]).is_ok());
     }
+    #[test]
+    fn nested_observation_is_rejected_and_outer_context_restored() {
+        let collector = ObservationCollector { requests: Vec::new(), index: 0, observations: Vec::new() };
+        let guard = ObservationGuard::install(collector).expect("install outer observation");
+        let model = base08();
+        let opts = options(Vec::new(), 20.0 * 3600.0);
+        assert!(run_engine_observed(&model, &opts, &[]).is_err());
+        drop(guard);
+        assert!(run_engine_observed(&model, &opts, &[]).is_ok());
+    }
 }

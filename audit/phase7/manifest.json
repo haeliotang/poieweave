@@ -22,9 +22,9 @@
       "sha256": "d665b301db480833aaada187fea26aa5062e4f7729d78eaccce142dbcd2db832"
     },
     {
-      "bytes": 2720,
+      "bytes": 2734,
       "path": "audit/phase7/REPORT.zh-CN.md",
-      "sha256": "261b83407cd327a011ab587a2f453a2096dfde0227f977235cafe23348d06550"
+      "sha256": "6759ccf12e5867ca32162b85ee6a530a709639f33137c5ad8bbb3903a699fa33"
     },
     {
       "bytes": 717,
@@ -32,9 +32,9 @@
       "sha256": "a216a692c0c5d266463624b8a7505d5b7a37785500281f04ecc9fc9f3a68fb46"
     },
     {
-      "bytes": 806,
+      "bytes": 1220,
       "path": "audit/phase7/differences/native-vs-derived.json",
-      "sha256": "8c0a26670bca6563473f6cccea863f33fc99d0271285a3582ec1dab99847a44a"
+      "sha256": "365d88730f134e164a5b407334ede204b62472d540940f01b1ba3872cc56d78b"
     },
     {
       "bytes": 780,
@@ -42,14 +42,14 @@
       "sha256": "7e570d806d81d19166df27ed444341ff96441501d1304e33f1156ff4fd5e0d65"
     },
     {
-      "bytes": 28766,
+      "bytes": 33578,
       "path": "audit/phase7/observations/asset-statuses.csv",
-      "sha256": "50356c3f2e3557ccb95670c1611dc5ba3f8f48a4854a2861abda189fce6d4f8f"
+      "sha256": "a88397708b72fbf2fa3dd0ccf6557fc134d7e45bdfb59c1656e94115f1edf4c9"
     },
     {
-      "bytes": 1372,
+      "bytes": 1591,
       "path": "audit/phase7/observations/summary.json",
-      "sha256": "e88f8b000a9fc5dd7112c22f09c3c8e41c87d95cad2e134e49047eda4b2463b0"
+      "sha256": "d6c0e8ecf2d512cc8792d77a657172a5e014d76c322236baaf4fefcf5cab4735"
     }
   ],
   "kind": "FROZEN_TRACKED_EVIDENCE",

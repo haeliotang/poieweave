@@ -42,6 +42,12 @@ def validate_observations(rows: list[dict]) -> list[str]:
     unknown = key.get(("N7-12", "0.000", "After", "lathe-1"))
     if not unknown or unknown["asset_status"] != "Unknown":
         problems.append("UNKNOWN_CONFUSED")
+    tool = key.get(("N7-05", "9000.000", "After", "tool-t1"))
+    if not tool or tool["asset_status"] != "Failed":
+        problems.append("REQUIRED_TOOL_STATE")
+    tool_target = key.get(("N7-05", "9000.000", "After", "a-lathe"))
+    if not tool_target or tool_target["asset_status"] != "Failed":
+        problems.append("TOOL_TARGET_RESTORED_ERROR")
     bus = key.get(("N7-06", "3600.000", "After", "bus-1"))
     if not bus or bus["asset_status"] != "Failed":
         problems.append("UPSTREAM_STATE_LOST")
@@ -68,6 +74,9 @@ def main() -> int:
     if not rows:
         problems.append("empty observations")
     problems.extend(validate_observations(rows))
+    derived = json.loads((PHASE / "differences/native-vs-derived.json").read_text())
+    if derived.get("status") != "MATCH":
+        problems.append("native-vs-derived MATCH")
     v3 = json.loads((ROOT / "docs/research/canonical-claim-certificate-index-v3.json").read_text())
     if len(v3["certificates"]) != 41:
         problems.append("v3 certificate count")

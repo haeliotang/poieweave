@@ -30,7 +30,7 @@ N7 REPRODUCIBILITY
 | N7-02 | yes | completion Before Degraded / After Available |
 | N7-03 | yes | selected robot fails, repair interrupted |
 | N7-04 | yes | unselected lathe failure, repair continues |
-| N7-05 | no | tool-t1 requires the N6 synthetic model; not in this native suite |
+| N7-05 | yes | required tool-t1 failure at 9000; tool Failed, target Failed, repair interrupted |
 | N7-06 | yes | bus-1 failure interrupts repair |
 | N7-07 | yes, scoped | same-time completion+failure needs a post-batch sample; see limitation |
 | N7-08 | yes | completion exactly at horizon |
@@ -39,6 +39,7 @@ N7 REPRODUCIBILITY
 | N7-11 | yes | multiple failures |
 | N7-12 | yes | Degraded/Unknown statuses |
 | N7-13 | yes | multiple same-time requests |
+| N7-14 | yes | overlap with N6-A-10800 derived restoration (lathe-1, pump-p1 MATCH) |
 
 Post-termination requests at 20000: `UNOBSERVABLE_AFTER_TERMINATION`, no backfill.
 All observed rows have `status_source=NATIVE_CANONICAL_RUNTIME`.
@@ -66,5 +67,4 @@ thread isolation and error cleanup.
 - Level 3 independent planning
 - general trajectory-level / full S2 cross-model validity
 - physical-world correctness
-- N7-05 required-tool native observation; current evidence is scoped to the listed cases
 - per-event phase labels for same-timestamp batches

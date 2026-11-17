@@ -1625,6 +1625,7 @@ jobs:
         run: |
           cargo run --locked -q -p poie-viability --bin poie-s5v-n7-observatory
           cargo test --locked -q -p poie-viability --lib native_
+          python3 audit/phase7/compare_derived.py
           python3 audit/phase7/check.py
           python3 audit/phase7/negative_controls.py
       - name: Verify v3 certificates and tamper controls
