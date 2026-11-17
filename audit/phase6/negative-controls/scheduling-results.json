@@ -1,0 +1,50 @@
+{
+  "schema": "poie.s5v-n6b-negative-controls/1",
+  "results": [
+    {
+      "control": "N6-B07-overlap",
+      "expected": "RESOURCE_CONTRACT_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_CONTRACT_VIOLATION"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "control": "N6-B01-duration",
+      "expected": "RESOURCE_CONTRACT_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_CONTRACT_VIOLATION"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "control": "N6-B00-outside-pool",
+      "expected": "RESOURCE_CONTRACT_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_CONTRACT_VIOLATION"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "control": "N6-B00-missing-restoration",
+      "expected": "RESTORATION_COMMIT_MISMATCH",
+      "detected": true,
+      "classes": [
+        "RESTORATION_COMMIT_MISMATCH"
+      ],
+      "status": "FAIL"
+    },
+    {
+      "control": "N6-B02-makespan",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT"
+      ],
+      "status": "FAIL"
+    }
+  ]
+}

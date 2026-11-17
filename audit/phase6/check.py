@@ -24,7 +24,9 @@ def main() -> int:
     for entry in manifest["files"]:
         if sha(ROOT / entry["path"]) != entry["sha256"]:
             problems.append(f"hash: {entry['path']}")
-    for path, key in ((manifest["tools"]["external_fmu"], "external_fmu_sha256"),):
+    for path, key in ((manifest["tools"]["external_fmu"], "external_fmu_sha256"),
+                      (manifest["tools"]["n6_fmu"], "n6_fmu_sha256"),
+                      ("external/fmu-n6-scheduler/src/model.c", "n6_model_source_sha256")):
         if sha(ROOT / path) != manifest["tools"][key]:
             problems.append(f"tool hash: {path}")
     comparison = json.loads((PHASE / "differences/resource-lifetime.json").read_text())
@@ -44,11 +46,26 @@ def main() -> int:
         problems.append("N6-A-10800: commit boundary")
     negatives = json.loads((PHASE / "negative-controls/lifetime-results.json").read_text())
     if not all(entry["detected"] for entry in negatives["results"]):
-        problems.append("negative controls")
+        problems.append("lifetime negative controls")
+    scheduling = json.loads((PHASE / "differences/scheduling.json").read_text())
+    if len(scheduling["cases"]) != 8:
+        problems.append("scheduling case count")
+    for entry in scheduling["cases"]:
+        if entry["status"] not in ("ACCEPTED", "ACCEPTED_POLICY_DIFFERENCE"):
+            problems.append(f"{entry['case']}: scheduling status")
+        if not entry["contract"]["canonical_valid"] or not entry["contract"]["external_valid"]:
+            problems.append(f"{entry['case']}: scheduling contract")
+    policy = [entry for entry in scheduling["cases"] if entry["policy_difference"]]
+    if not policy or policy[0]["decision"] != "DIFFERENT_BUT_VALID_DECISION":
+        problems.append("policy difference classification")
+    scheduling_negatives = json.loads((PHASE / "negative-controls/scheduling-results.json").read_text())
+    if not all(entry["detected"] for entry in scheduling_negatives["results"]):
+        problems.append("scheduling negative controls")
     if problems:
         print("N6-A evidence FAIL: " + ", ".join(problems), file=sys.stderr)
         return 1
-    print(f"ok N6-A lifetime: {len(comparison['cases'])} boundaries, {len(negatives['results'])} negative controls")
+    print(f"ok N6-A/B: {len(comparison['cases'])} lifetime boundaries, {len(scheduling['cases'])} scheduling cases, "
+          f"{len(negatives['results']) + len(scheduling_negatives['results'])} negative controls")
     return 0
 
 
