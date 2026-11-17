@@ -1,0 +1,101 @@
+{
+  "canonical_classification": "SEMANTIC_CORRECTION",
+  "certificate_id": "poie-s2-canonical-c89-v3",
+  "claim_statement": "aux batch13\uff1aadversarial failures/subsets \u65e5\u7ea7\u4e00\u81f4 + executor \u4fee\u6b63",
+  "claims": [
+    "C89"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "e798c45483c9c21187f06719510823f429bf7ed782c50df62170208d2c38512c",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "experiment": {
+    "expected": "experiments/s2-canonical-aux-batch13/expected.txt",
+    "expected_sha256": "5ebb7daad0b6dda131a7b51b58baf234e8a8a77cb14f9d20ebf462cb3518529d",
+    "path": "experiments/s2-canonical-aux-batch13"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "native_observatory": {
+    "path": "audit/phase7/manifest.json",
+    "sha256": "831232c8730f22b10e5748886f83e19e1f5569ec403c4c58e63195429e3730bd"
+  },
+  "predecessor": {
+    "path": "experiments/certificate-canonical-c89-v2/certificate.json",
+    "relation": "OBSERVATION_ONLY_SUCCESSOR",
+    "sha256": "d51f0afe3f32bd19aea1809722fa51f4c57a7afab0ff23f8a248ca12cd747960"
+  },
+  "replay": {
+    "command": "python3 scripts/check-experiment-replays.py",
+    "exit_code": 0,
+    "output_sha256": "1930f31941128dd308a7e17a440f9877b54adc690c49c555b9cf9676050c773c"
+  },
+  "runner": {
+    "binary": "poie-migration-aux-batch13",
+    "sha256": "78ec10e9f5a6694bbb63d4b91d9b0f2efff355795939590e6614d4ceaaf9570a",
+    "source": "crates/poie-viability/src/bin/poie-migration-aux-batch13.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/4",
+  "scope": "model/simulation evidence only; canonical claim C89; native observation does not change execution",
+  "semantics": "canonical event engine: monotonic EventClock; t=0 failures after initial repair; in-repair failures apply at event time; requires_any repaired only when no alternative; energy ledger conservation; native read-only AssetStatus observation does not alter execution",
+  "source_environment": {
+    "files": [
+      {
+        "path": "crates/poie-viability/src/engine.rs",
+        "sha256": "e798c45483c9c21187f06719510823f429bf7ed782c50df62170208d2c38512c"
+      },
+      {
+        "path": "crates/poie-viability/src/survival.rs",
+        "sha256": "ddad0fbd5b6e31b5ac88eca29435588454723810d96207c2d4e29d3be673fced"
+      },
+      {
+        "path": "crates/poie-viability/src/clock.rs",
+        "sha256": "4b8f2394da2feab5aeb9601f7fa8bd209bc436bfa3554b3338de62519ed05212"
+      },
+      {
+        "path": "crates/poie-viability/src/closure.rs",
+        "sha256": "f8ccb5f5596382f357f7cc12a6441e66b35b5dc3644e00026dace661ae513179"
+      },
+      {
+        "path": "crates/poie-viability/src/scheduler.rs",
+        "sha256": "c6c5618b78f20f1a1a18b3d594ac4ab4c8bf4dcbcf44fe99b7051835d6ef85f7"
+      },
+      {
+        "path": "Cargo.toml",
+        "sha256": "e50b40a6b80c3c45f851ac3fdeb5267c78eb21efd63dc91fea0eaea86e1a9957"
+      },
+      {
+        "path": "Cargo.lock",
+        "sha256": "b0abd0572bc06734d0b3253a27308d6013d3a4859c36cf8c818b50426cc9a5d1"
+      },
+      {
+        "path": "crates/poie-viability/src/bin/poie-migration-aux-batch13.rs",
+        "sha256": "78ec10e9f5a6694bbb63d4b91d9b0f2efff355795939590e6614d4ceaaf9570a"
+      },
+      {
+        "path": "scenarios/base-08/model.toml",
+        "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+      },
+      {
+        "path": "experiments/s2-canonical-aux-batch13/expected.txt",
+        "sha256": "5ebb7daad0b6dda131a7b51b58baf234e8a8a77cb14f9d20ebf462cb3518529d"
+      },
+      {
+        "path": "experiments/s2-canonical-aux-batch13/REPORT.md",
+        "sha256": "43346bf580dc423e857f020c49139e7b787a0653c08e2d29e2a2f3da93f49001"
+      },
+      {
+        "path": "experiments/s2-canonical-aux-batch13/PREREG.md",
+        "sha256": "2016b3d6628c136f9cf9ca7e8d06d290a010f12b69cedf6177e95373cb86ed2b"
+      }
+    ]
+  },
+  "status": "CANONICAL_ISSUED_V3",
+  "verifier": "poie-canonical-s2-certificate/4",
+  "version": 3
+}

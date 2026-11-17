@@ -34,7 +34,7 @@ canonical reproduces 25/56 independent and 24/56 joint after the non-service rep
 
 - scope: Base-06 joint coverage
 - model sha256: `09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c`
-- canonical certificate: `experiments/certificate-canonical-c6-v2/certificate.json`
+- canonical certificate: `experiments/certificate-canonical-c6-v3/certificate.json`
 
 ### `certificate-s2-load`
 
@@ -42,21 +42,21 @@ canonical reproduces all five Base-05 load rows with final energy and terminatio
 
 - scope: Base-05 load 0-4 kW
 - model sha256: `83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150`
-- canonical certificate: `experiments/certificate-canonical-c69-v2/certificate.json`
+- canonical certificate: `experiments/certificate-canonical-c69-v3/certificate.json`
 
 ### `certificate-s2-regeneration`
 
 canonical reproduces 8/8 rows including final energy and termination; canonical certificate issued
 
 - scope: Base-05/08 regeneration intervals
-- canonical certificate: `experiments/certificate-canonical-c70-v2/certificate.json`
+- canonical certificate: `experiments/certificate-canonical-c70-v3/certificate.json`
 
 ### `certificate-s2-metrics`
 
-scoped v2 certificate: 10 canonical groups, coverage definition service-impact-v1, 2 partial and 1 superseded group explicitly excluded; historical certificate preserved
+scoped v3 certificate: 10 canonical groups, coverage definition service-impact-v1, 2 partial and 1 superseded group explicitly excluded; historical certificate preserved
 
 - scope: cross-model metric definitions and values
-- canonical certificate: `experiments/certificate-canonical-c71-v2/certificate.json`
+- canonical certificate: `experiments/certificate-canonical-c71-v3/certificate.json`
 
 ### `certificate-s2-order`
 
@@ -64,5 +64,5 @@ canonical permutation search reproduces 24/25 and 40/44 with order_sensitive=0; 
 
 - scope: Base-06 repair-order sensitivity
 - model sha256: `09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c`
-- canonical certificate: `experiments/certificate-canonical-c72-v2/certificate.json`
+- canonical certificate: `experiments/certificate-canonical-c72-v3/certificate.json`
 

@@ -1,0 +1,73 @@
+{
+  "baseline": "117ba8169995c83a0d4225925e3faf6025913a9e",
+  "files": [
+    {
+      "bytes": 1052,
+      "path": "audit/phase7/ASSET_STATE_CONTRACT.md",
+      "sha256": "786a83baf1a3a4a0d46388514ffc3cd82921b4577a480b66d1e877485f920457"
+    },
+    {
+      "bytes": 897,
+      "path": "audit/phase7/CERTIFICATE_IMPACT.md",
+      "sha256": "25c381c410c7321294776ea702826e1b49b87efc60381457efde91e3bbcb4b05"
+    },
+    {
+      "bytes": 783,
+      "path": "audit/phase7/EVIDENCE.md",
+      "sha256": "4a33413acaba8979bd4c22419b1ec47674f23da9453b2f6dc9b7a6f494f1669a"
+    },
+    {
+      "bytes": 1077,
+      "path": "audit/phase7/PREREG.md",
+      "sha256": "d665b301db480833aaada187fea26aa5062e4f7729d78eaccce142dbcd2db832"
+    },
+    {
+      "bytes": 1754,
+      "path": "audit/phase7/REPORT.zh-CN.md",
+      "sha256": "63424e70726ef9824b33798622966b5d8c281d542045b959149010964dc76bd7"
+    },
+    {
+      "bytes": 717,
+      "path": "audit/phase7/SEMANTICS.md",
+      "sha256": "a216a692c0c5d266463624b8a7505d5b7a37785500281f04ecc9fc9f3a68fb46"
+    },
+    {
+      "bytes": 806,
+      "path": "audit/phase7/differences/native-vs-derived.json",
+      "sha256": "8c0a26670bca6563473f6cccea863f33fc99d0271285a3582ec1dab99847a44a"
+    },
+    {
+      "bytes": 7482,
+      "path": "audit/phase7/observations/asset-statuses.csv",
+      "sha256": "3b6c02737b4e67e1e9f0b6117ca71ba11d3054ffcef94352c498445265a115b4"
+    },
+    {
+      "bytes": 270,
+      "path": "audit/phase7/observations/summary.json",
+      "sha256": "53aa013dca4330881ecca182a456dd3cceb5d761afc288d5c39dedaa2269dcbe"
+    }
+  ],
+  "kind": "FROZEN_TRACKED_EVIDENCE",
+  "schema": "poie.s5v-n7-evidence/1",
+  "scope": {
+    "allowlist_dirs": [
+      "canonical/",
+      "differences/",
+      "negative-controls/",
+      "noninterference/",
+      "observations/",
+      "regressions/",
+      "restoration/"
+    ],
+    "allowlist_files": [
+      "ASSET_STATE_CONTRACT.md",
+      "CERTIFICATE_IMPACT.md",
+      "EVIDENCE.md",
+      "PREREG.md",
+      "REPORT.zh-CN.md",
+      "SEMANTICS.md"
+    ],
+    "root": "audit/phase7/",
+    "source": "git ls-files"
+  }
+}

@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 INVENTORY = ROOT / "docs/research/s2-evidence-inventory.json"
 MATRIX = ROOT / "docs/research/certificate-impact-matrix.json"
-CANONICAL_INDEX = ROOT / "docs/research/canonical-claim-certificate-index-v2.json"
+CANONICAL_INDEX = ROOT / "docs/research/canonical-claim-certificate-index-v3.json"
 OUT_JSON = ROOT / "docs/research/s2-claim-certificate-coverage.json"
 OUT_MD = ROOT / "docs/research/s2-claim-certificate-coverage.zh-CN.md"
 

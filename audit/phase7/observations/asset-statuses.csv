@@ -1,0 +1,74 @@
+case	at_s	phase	status	asset_id	asset_status	status_source	running_repair	termination
+N7-00	0.000	After	OBSERVED	bat-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	0.000	After	OBSERVED	bus-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	0.000	After	OBSERVED	charger-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	0.000	After	OBSERVED	filter-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	0.000	After	OBSERVED	gauge-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	0.000	After	OBSERVED	lathe-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	0.000	After	OBSERVED	pump-p1	Degraded	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	0.000	After	OBSERVED	pv-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	0.000	After	OBSERVED	robot-m1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	3600.000	After	OBSERVED	bat-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	3600.000	After	OBSERVED	bus-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	3600.000	After	OBSERVED	charger-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	3600.000	After	OBSERVED	filter-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	3600.000	After	OBSERVED	gauge-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	3600.000	After	OBSERVED	lathe-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	3600.000	After	OBSERVED	pump-p1	Degraded	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	3600.000	After	OBSERVED	pv-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	3600.000	After	OBSERVED	robot-m1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	7200.000	After	OBSERVED	bat-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	7200.000	After	OBSERVED	bus-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	7200.000	After	OBSERVED	charger-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	7200.000	After	OBSERVED	filter-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	7200.000	After	OBSERVED	gauge-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	7200.000	After	OBSERVED	lathe-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	7200.000	After	OBSERVED	pump-p1	Degraded	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	7200.000	After	OBSERVED	pv-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	7200.000	After	OBSERVED	robot-m1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	10800.000	Before	OBSERVED	bat-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	10800.000	Before	OBSERVED	bus-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	10800.000	Before	OBSERVED	charger-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	10800.000	Before	OBSERVED	filter-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	10800.000	Before	OBSERVED	gauge-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	10800.000	Before	OBSERVED	lathe-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	10800.000	Before	OBSERVED	pump-p1	Degraded	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	10800.000	Before	OBSERVED	pv-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	10800.000	Before	OBSERVED	robot-m1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	completed
+N7-00	10800.000	After	OBSERVED	bat-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	10800.000	After	OBSERVED	bus-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	10800.000	After	OBSERVED	charger-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	10800.000	After	OBSERVED	filter-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	10800.000	After	OBSERVED	gauge-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	10800.000	After	OBSERVED	lathe-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	10800.000	After	OBSERVED	pump-p1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	10800.000	After	OBSERVED	pv-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	10800.000	After	OBSERVED	robot-m1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	14400.000	After	OBSERVED	bat-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	14400.000	After	OBSERVED	bus-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	14400.000	After	OBSERVED	charger-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	14400.000	After	OBSERVED	filter-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	14400.000	After	OBSERVED	gauge-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	14400.000	After	OBSERVED	lathe-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	14400.000	After	OBSERVED	pump-p1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	14400.000	After	OBSERVED	pv-1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-00	14400.000	After	OBSERVED	robot-m1	Available	NATIVE_CANONICAL_RUNTIME	NONE	completed
+N7-03	7200.000	Before	OBSERVED	bat-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	Before	OBSERVED	bus-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	Before	OBSERVED	charger-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	Before	OBSERVED	filter-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	Before	OBSERVED	gauge-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	Before	OBSERVED	lathe-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	Before	OBSERVED	pump-p1	Degraded	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	Before	OBSERVED	pv-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	Before	OBSERVED	robot-m1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	After	OBSERVED	bat-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	After	OBSERVED	bus-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	After	OBSERVED	charger-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	After	OBSERVED	filter-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	After	OBSERVED	gauge-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	After	OBSERVED	lathe-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	After	OBSERVED	pump-p1	Degraded	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	After	OBSERVED	pv-1	Available	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	7200.000	After	OBSERVED	robot-m1	Failed	NATIVE_CANONICAL_RUNTIME	pump-p1	blocked:repair interrupted at 7200s: robot-m1 failed
+N7-03	20000.000	After	UNOBSERVABLE_AFTER_TERMINATION	*	UNOBSERVABLE	UNOBSERVABLE	NONE	blocked:repair interrupted at 7200s: robot-m1 failed
