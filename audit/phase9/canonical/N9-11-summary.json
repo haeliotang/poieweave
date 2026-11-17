@@ -1,0 +1,16 @@
+{
+ "case":"N9-11",
+ "restoration_committed":true,
+ "repair_completed_s":18000.000,
+ "selected_resources":["robot-m1","robot-m1"],
+ "execution_dependencies":["robot-m1"],
+ "restoration_targets":["a-lathe","b-pump"],
+ "witness":[],
+ "task_order":["n9-repair-a-lathe","n9-repair-b-pump"],
+ "termination":"completed",
+ "survived_s":72000.000,
+ "event_count":3,
+ "resource_release_observed":false,
+ "release_note":"RunTerminated is not a native resource release event",
+ "observation_source":"NATIVE_CANONICAL_RUNTIME"
+}

@@ -18,6 +18,7 @@ CASES = {
     "N9-04": {"external": "N9-04-fmpy-900.csv", "contract": "N9-04.contract"},
     "N9-05": {"external": "N9-05-fmpy-900.csv", "contract": "N9-05.contract"},
     "N9-06": {"external": "N9-06-fmpy-900.csv", "contract": "N9-06.contract"},
+    "N9-11": {"external": "N9-11-fmpy-900.csv", "contract": "N9-11.contract"},
 }
 
 
@@ -89,6 +90,7 @@ def canonical_contract(case: str, spec: dict, summary: dict, events: list[dict])
         "completion_s": float(completion["at_s"]) if completion else None,
         "restoration_targets": summary["restoration_targets"],
         "restoration_committed": summary["restoration_committed"],
+        "task_order": summary["task_order"],
         "resource_release_observed": False,
         "release_note": summary["release_note"],
         "provenance": "NATIVE_CANONICAL_RUNTIME",
@@ -112,6 +114,7 @@ def external_contract(case: str, spec: dict, last: dict) -> tuple[list[dict], di
             findings.append({"class": "RESOURCE_ELIGIBILITY_VIOLATION", "task": index, "robot": robot})
         if int(spec[f"t{index + 1}RequiresTool"]) > 0:
             tool_tasks.append(index)
+    intervals.sort(key=lambda item: item[0])
     for i, (s1, e1, r1) in enumerate(intervals):
         for s2, e2, r2 in intervals[i + 1:]:
             if r1 == r2 and s2 < e1 - 1e-9:
@@ -184,6 +187,16 @@ def compare(case: str) -> dict:
                          "external_completed": external["completed_count"]})
     if case == "N9-04" and external["interrupted"] == 1:
         findings.append({"class": "EXECUTION_DEPENDENCY_MISMATCH", "reason": "unselected backup interrupted"})
+    canonical_order = [entry.split("n9-repair-", 1)[-1] for entry in canonical.get("task_order", []) if "n9-repair-" in entry]
+    external_order = [name for _, name in sorted(
+        ((float(last[f"t{index + 1}Start_s"]), name) for index, name in enumerate(["a-lathe", "b-pump"][:len(external["robot_selection"])])
+         if float(last[f"t{index + 1}End_s"]) > 0.0), key=lambda pair: pair[0])]
+    if findings:
+        decision = "CONTRACT_VIOLATION"
+    elif canonical_order == external_order:
+        decision = "SAME_DECISION"
+    else:
+        decision = "DIFFERENT_POLICY_VALID_DECISIONS"
     status = "ACCEPTED" if not findings else "FAIL"
     return {
         "schema": "poie.s5v-n9-resource-trajectory/1",
@@ -196,6 +209,12 @@ def compare(case: str) -> dict:
         "external": external,
         "findings": findings,
         "first_event_divergence": findings[0] if findings else {"class": "NO_DIVERGENCE", "at_s": None},
+        "resource_decision_classification": decision,
+        "canonical_task_order": canonical_order,
+        "external_task_order": external_order,
+        "resource_selection_relation": (
+            "SAME_DECISION" if set(canonical["robots"]) == {f"robot-m{value}" for value in external["robot_selection"].values() if value > 0}
+            else "DIFFERENT_BUT_VALID_DECISION"),
         "energy_trajectory": "NOT_COMPARABLE",
         "status": status,
     }

@@ -1,10 +1,4 @@
-case	event_sequence	event_batch_sequence	at_s	event_kind	event_origin	target_asset	event_status	resources	execution_dependencies	restoration_targets	witness	termination
-N9-06	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	bat-1+bus-1+charger-1+robot-m1	a-lathe	sleeve-replacement:robot-m1:bat-1|bus-1|charger-1	blocked:repair interrupted at 9000s: bus-1 failed
-N9-06	2	2	9000.000	AssetFailure	Exogenous	bus-1	Committed	robot-m1	bat-1+bus-1+charger-1+robot-m1	a-lathe	sleeve-replacement:robot-m1:bat-1|bus-1|charger-1	blocked:repair interrupted at 9000s: bus-1 failed
-N9-06	3	2	9000.000	RepairInterrupted	Endogenous	repair	Committed	robot-m1	bat-1+bus-1+charger-1+robot-m1	a-lathe	sleeve-replacement:robot-m1:bat-1|bus-1|charger-1	blocked:repair interrupted at 9000s: bus-1 failed
-N9-06	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	bat-1+bus-1+charger-1+robot-m1	a-lathe	sleeve-replacement:robot-m1:bat-1|bus-1|charger-1	blocked:repair interrupted at 9000s: bus-1 failed
-N9-06	2	2	9000.000	AssetFailure	Exogenous	bus-1	Committed	robot-m1	bat-1+bus-1+charger-1+robot-m1	a-lathe	sleeve-replacement:robot-m1:bat-1|bus-1|charger-1	blocked:repair interrupted at 9000s: bus-1 failed
-N9-06	3	2	9000.000	RepairInterrupted	Endogenous	repair	Committed	robot-m1	bat-1+bus-1+charger-1+robot-m1	a-lathe	sleeve-replacement:robot-m1:bat-1|bus-1|charger-1	blocked:repair interrupted at 9000s: bus-1 failed
+case	event_sequence	event_batch_sequence	at_s	event_kind	event_origin	target_asset	event_status	resources	execution_dependencies	restoration_targets	witness	term
 N9-06	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	robot-m1	bat-1+bus-1+charger-1+robot-m1	a-lathe	sleeve-replacement:robot-m1:bat-1|bus-1|charger-1	blocked:repair interrupted at 9000s: bus-1 failed
 N9-06	2	2	9000.000	AssetFailure	Exogenous	bus-1	Committed	robot-m1	bat-1+bus-1+charger-1+robot-m1	a-lathe	sleeve-replacement:robot-m1:bat-1|bus-1|charger-1	blocked:repair interrupted at 9000s: bus-1 failed
 N9-06	3	2	9000.000	RepairInterrupted	Endogenous	repair	Committed	robot-m1	bat-1+bus-1+charger-1+robot-m1	a-lathe	sleeve-replacement:robot-m1:bat-1|bus-1|charger-1	blocked:repair interrupted at 9000s: bus-1 failed

@@ -12,10 +12,10 @@ N9 RESOURCE-CAUSAL OBSERVABILITY
   ESTABLISHED (SCOPED: canonical native witness + external native resource outputs)
 
 N9 INDEPENDENT RESOURCE CONTRACT VALIDATION
-  ESTABLISHED (SCOPED: seven enumerated cases)
+  ESTABLISHED (SCOPED: eight enumerated cases)
 
 N9 RESOURCE-CAUSAL CROSS-MODEL TRAJECTORY
-  ESTABLISHED (SCOPED: N9-00..N9-06)
+  ESTABLISHED (SCOPED: N9-00..N9-06, N9-11)
 
 N9 ADVERSARIAL VALIDITY
   ESTABLISHED (SCOPED: 11 resource-contract controls)
@@ -90,6 +90,9 @@ N9-06 upstream bus failure @9000               ACCEPTED
 - N9-06 的外侧模型只有 generic failureKind=3，无命名上游资产；
   upstream asset identity 标记为 NOT_AVAILABLE，只验证中断因果。
 - energy trajectory 全部 NOT_COMPARABLE，没有填零或复制 N4 曲线。
+- N9-11 双方顺序不同但都合法：canonical a→b，external b→a；分类
+  `DIFFERENT_POLICY_VALID_DECISIONS`，未判为失败。
+- N9-11 robot mask 允许同一机器人上的合法 OR/替代选择；实际选择相同。
 - resource release 只有外部 tool/group release 字段；canonical native release
   NOT_OBSERVED，终止未被当作释放。
 

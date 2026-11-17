@@ -1770,13 +1770,14 @@ jobs:
           python3 audit/phase9/check.py --frozen
           python3 audit/phase9/verify_evidence.py --frozen --claim
           python3 audit/phase9/negative_resources.py
+          python3 audit/phase9/negative_integrity.py
       - name: Build N6 FMU and run canonical resource trajectories
         run: |
           external/fmu-n6-scheduler/build.sh
           cargo run --locked -q -p poie-viability --bin poie-s5v-n9-resources
       - name: Execute independent N6 resource contracts
         run: |
-          for c in N9-00 N9-01 N9-02 N9-03 N9-04 N9-05 N9-06; do
+          for c in N9-00 N9-01 N9-02 N9-03 N9-04 N9-05 N9-06 N9-11; do
             external/fmu-n6-scheduler/build/harness external/fmu-n6-scheduler/poie-n6-scheduler.fmu 900 "audit/phase9/contracts/$c.contract" "audit/phase9/external/$c-harness-900.csv"
             python3 audit/phase6/fmpy_import.py --contract "audit/phase9/contracts/$c.contract" --step 900 --output "audit/phase9/external/$c-fmpy-900.csv" --log "audit/phase9/external/$c-fmpy.log"
           done
@@ -1784,7 +1785,9 @@ jobs:
         run: |
           python3 audit/phase9/compare_resource.py
           python3 audit/phase9/negative_resources.py
+          python3 audit/phase9/negative_integrity.py
           python3 audit/phase9/check.py
+          python3 audit/phase9/verify_evidence.py --claim
           python3 audit/phase9/verify_evidence.py --claim
       - name: Verify v5 and historical certificates
         run: |

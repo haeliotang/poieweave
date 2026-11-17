@@ -27,6 +27,9 @@
           "a-lathe"
         ],
         "restoration_committed": true,
+        "task_order": [
+          "n9-repair-a-lathe"
+        ],
         "resource_release_observed": false,
         "release_note": "RunTerminated is not a native resource release event",
         "provenance": "NATIVE_CANONICAL_RUNTIME"
@@ -54,6 +57,14 @@
         "class": "NO_DIVERGENCE",
         "at_s": null
       },
+      "resource_decision_classification": "SAME_DECISION",
+      "canonical_task_order": [
+        "a-lathe"
+      ],
+      "external_task_order": [
+        "a-lathe"
+      ],
+      "resource_selection_relation": "SAME_DECISION",
       "energy_trajectory": "NOT_COMPARABLE",
       "status": "ACCEPTED"
     },
@@ -86,6 +97,10 @@
           "b-pump"
         ],
         "restoration_committed": true,
+        "task_order": [
+          "n9-repair-a-lathe",
+          "n9-repair-b-pump"
+        ],
         "resource_release_observed": false,
         "release_note": "RunTerminated is not a native resource release event",
         "provenance": "NATIVE_CANONICAL_RUNTIME"
@@ -115,6 +130,16 @@
         "class": "NO_DIVERGENCE",
         "at_s": null
       },
+      "resource_decision_classification": "SAME_DECISION",
+      "canonical_task_order": [
+        "a-lathe",
+        "b-pump"
+      ],
+      "external_task_order": [
+        "a-lathe",
+        "b-pump"
+      ],
+      "resource_selection_relation": "SAME_DECISION",
       "energy_trajectory": "NOT_COMPARABLE",
       "status": "ACCEPTED"
     },
@@ -148,6 +173,10 @@
           "b-pump"
         ],
         "restoration_committed": true,
+        "task_order": [
+          "n9-repair-a-lathe",
+          "n9-repair-b-pump"
+        ],
         "resource_release_observed": false,
         "release_note": "RunTerminated is not a native resource release event",
         "provenance": "NATIVE_CANONICAL_RUNTIME"
@@ -177,6 +206,16 @@
         "class": "NO_DIVERGENCE",
         "at_s": null
       },
+      "resource_decision_classification": "SAME_DECISION",
+      "canonical_task_order": [
+        "a-lathe",
+        "b-pump"
+      ],
+      "external_task_order": [
+        "a-lathe",
+        "b-pump"
+      ],
+      "resource_selection_relation": "SAME_DECISION",
       "energy_trajectory": "NOT_COMPARABLE",
       "status": "ACCEPTED"
     },
@@ -206,6 +245,9 @@
           "a-lathe"
         ],
         "restoration_committed": false,
+        "task_order": [
+          "n9-repair-a-lathe"
+        ],
         "resource_release_observed": false,
         "release_note": "RunTerminated is not a native resource release event",
         "provenance": "NATIVE_CANONICAL_RUNTIME"
@@ -233,6 +275,14 @@
         "class": "NO_DIVERGENCE",
         "at_s": null
       },
+      "resource_decision_classification": "SAME_DECISION",
+      "canonical_task_order": [
+        "a-lathe"
+      ],
+      "external_task_order": [
+        "a-lathe"
+      ],
+      "resource_selection_relation": "SAME_DECISION",
       "energy_trajectory": "NOT_COMPARABLE",
       "status": "ACCEPTED"
     },
@@ -262,6 +312,9 @@
           "a-lathe"
         ],
         "restoration_committed": true,
+        "task_order": [
+          "n9-repair-a-lathe"
+        ],
         "resource_release_observed": false,
         "release_note": "RunTerminated is not a native resource release event",
         "provenance": "NATIVE_CANONICAL_RUNTIME"
@@ -289,6 +342,14 @@
         "class": "NO_DIVERGENCE",
         "at_s": null
       },
+      "resource_decision_classification": "SAME_DECISION",
+      "canonical_task_order": [
+        "a-lathe"
+      ],
+      "external_task_order": [
+        "a-lathe"
+      ],
+      "resource_selection_relation": "SAME_DECISION",
       "energy_trajectory": "NOT_COMPARABLE",
       "status": "ACCEPTED"
     },
@@ -322,6 +383,9 @@
           "a-lathe"
         ],
         "restoration_committed": false,
+        "task_order": [
+          "n9-repair-a-lathe"
+        ],
         "resource_release_observed": false,
         "release_note": "RunTerminated is not a native resource release event",
         "provenance": "NATIVE_CANONICAL_RUNTIME"
@@ -351,6 +415,14 @@
         "class": "NO_DIVERGENCE",
         "at_s": null
       },
+      "resource_decision_classification": "SAME_DECISION",
+      "canonical_task_order": [
+        "a-lathe"
+      ],
+      "external_task_order": [
+        "a-lathe"
+      ],
+      "resource_selection_relation": "SAME_DECISION",
       "energy_trajectory": "NOT_COMPARABLE",
       "status": "ACCEPTED"
     },
@@ -385,6 +457,9 @@
           "a-lathe"
         ],
         "restoration_committed": false,
+        "task_order": [
+          "n9-repair-a-lathe"
+        ],
         "resource_release_observed": false,
         "release_note": "RunTerminated is not a native resource release event",
         "provenance": "NATIVE_CANONICAL_RUNTIME"
@@ -412,6 +487,89 @@
         "class": "NO_DIVERGENCE",
         "at_s": null
       },
+      "resource_decision_classification": "SAME_DECISION",
+      "canonical_task_order": [
+        "a-lathe"
+      ],
+      "external_task_order": [
+        "a-lathe"
+      ],
+      "resource_selection_relation": "SAME_DECISION",
+      "energy_trajectory": "NOT_COMPARABLE",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n9-resource-trajectory/1",
+      "case": "N9-11",
+      "contract_sha256": "927a4e193f53e1745d07c67450c645ed2d24308a98f172c345194b76a2286d26",
+      "canonical_contract_valid": true,
+      "external_contract_valid": true,
+      "cross_model_agreement": true,
+      "canonical": {
+        "selected_resources": [
+          "robot-m1",
+          "robot-m1"
+        ],
+        "robots": [
+          "robot-m1",
+          "robot-m1"
+        ],
+        "tools": [],
+        "execution_dependencies": [
+          "robot-m1"
+        ],
+        "witness": [],
+        "failure_asset": null,
+        "interruption_s": null,
+        "completion_s": 18000.0,
+        "restoration_targets": [
+          "a-lathe",
+          "b-pump"
+        ],
+        "restoration_committed": true,
+        "task_order": [
+          "n9-repair-a-lathe",
+          "n9-repair-b-pump"
+        ],
+        "resource_release_observed": false,
+        "release_note": "RunTerminated is not a native resource release event",
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "robot_selection": {
+          "0": 1,
+          "1": 1
+        },
+        "tool_tasks": [],
+        "tool_mask": 0,
+        "makespan_s": 18000.0,
+        "interrupted": 0,
+        "failure_applied_s": -1.0,
+        "completed_count": 2,
+        "restored": [
+          1.0,
+          1.0
+        ],
+        "release_s": 18000.0,
+        "resource_release_observed": "group_contract_only",
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "upstream_asset_identity": "N/A"
+      },
+      "findings": [],
+      "first_event_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "resource_decision_classification": "DIFFERENT_POLICY_VALID_DECISIONS",
+      "canonical_task_order": [
+        "a-lathe",
+        "b-pump"
+      ],
+      "external_task_order": [
+        "b-pump",
+        "a-lathe"
+      ],
+      "resource_selection_relation": "SAME_DECISION",
       "energy_trajectory": "NOT_COMPARABLE",
       "status": "ACCEPTED"
     }
