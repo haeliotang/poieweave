@@ -1695,6 +1695,7 @@ jobs:
           cp -R audit/phase8/event-observations audit/phase8/external audit/phase8/trajectory-comparisons audit/phase8/negative-controls audit/phase8/differences "$RUNNER_TEMP/s5v-n8/evidence/" 2>/dev/null || true
           cp audit/phase8/{PREREG.md,EVENT_CONTRACT.md,OBSERVATION_SEMANTICS.md,MODEL_MAPPING.md,CERTIFICATE_IMPACT.md,REPORT.zh-CN.md,EVIDENCE.md,manifest.json} "$RUNNER_TEMP/s5v-n8/evidence/"
           cp docs/research/canonical-claim-certificate-index-v4.json "$RUNNER_TEMP/s5v-n8/evidence/"
+          python3 audit/phase8/execution_manifest.py --output "$RUNNER_TEMP/s5v-n8/evidence/execution-manifest.json"
       - uses: actions/upload-artifact@v4
         with:
           name: s5v-n8-linux-evidence
