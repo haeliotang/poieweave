@@ -5,20 +5,27 @@
 ## 状态
 
 ```text
+S5-V N7 NATIVE ASSET-STATE OBSERVATORY
+AND CERTIFICATE V3 MIGRATION
+  ESTABLISHED (SCOPED)
+
 N7 NATIVE ASSET-STATUS OBSERVATORY
-  ESTABLISHED (SCOPED: base-08 completion and interruption scenarios)
+  ESTABLISHED (SCOPED: 14 preregistered rows; N7-07 batch semantics documented)
 
 N7 OBSERVATION NONINTERFERENCE
-  ESTABLISHED (TESTED SCENARIOS: base-08 control/completion/interruption/error/thread)
+  ESTABLISHED (TESTED SCENARIOS)
 
 N7 NATIVE REPAIR-DRIVEN RESTORATION EVIDENCE
-  ESTABLISHED (SCOPED: pump-p1 completion and interruption)
+  ESTABLISHED (SCOPED: pump-p1 + N6-A-10800 overlap MATCH)
 
 N7 CERTIFICATE V3 MIGRATION
   ESTABLISHED (SCOPED: 41 current canonical claims; v2 frozen/historical)
 
 N7 REPRODUCIBILITY
   ESTABLISHED (SCOPED: frozen/execution manifests; clean checkout)
+
+V1 / V2 HISTORICAL CERTIFICATE INTEGRITY
+  VERIFIED
 ```
 
 ## Native observations
