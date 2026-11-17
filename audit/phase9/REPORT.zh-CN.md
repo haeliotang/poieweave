@@ -9,7 +9,7 @@ N9 COMPARATOR INTEGRITY
   VERIFIED (SCOPED: N8-H comparator)
 
 N9 RESOURCE-CAUSAL OBSERVABILITY
-  IN PROGRESS / AUDIT ONLY
+  IN PROGRESS (witness export implemented; N9 trajectory pending)
 
 N9 INDEPENDENT RESOURCE CONTRACT VALIDATION
   NOT ESTABLISHED
@@ -48,6 +48,19 @@ Raw File -> SHA-256 -> Frozen Manifest + manifest.sha256
 ```
 
 既有 N8-H 正例三个场景仍全部 `MATCH_WITH_EXPLAINED_ASSUMPTION`。
+
+## 资源见证导出（只读）
+
+`RepairObservation` 新增：
+
+```text
+execution_dependencies
+restoration_targets
+witness (capability/provider/dependencies)
+```
+
+通过 `run_engine_event_observed` 可读取当次 RunningRepair 的资源选择与依赖见证。
+这是 observation-only 变更；已冻结 v4 并生成 41 个 v5 successors。
 
 ## 资源能力审计
 
