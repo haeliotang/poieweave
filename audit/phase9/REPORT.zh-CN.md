@@ -9,19 +9,19 @@ N9 COMPARATOR INTEGRITY
   VERIFIED (SCOPED: N8-H comparator)
 
 N9 RESOURCE-CAUSAL OBSERVABILITY
-  IN PROGRESS (witness export implemented; N9 trajectory pending)
+  ESTABLISHED (SCOPED: canonical native witness + external native resource outputs)
 
 N9 INDEPENDENT RESOURCE CONTRACT VALIDATION
-  NOT ESTABLISHED
+  ESTABLISHED (SCOPED: seven enumerated cases)
 
 N9 RESOURCE-CAUSAL CROSS-MODEL TRAJECTORY
-  NOT ESTABLISHED
+  ESTABLISHED (SCOPED: N9-00..N9-06)
 
 N9 ADVERSARIAL VALIDITY
-  PARTIAL (N8-H comparator controls)
+  ESTABLISHED (SCOPED: 11 resource-contract controls)
 
 N9 EVIDENCE AND CERTIFICATE INTEGRITY
-  IN PROGRESS
+  ESTABLISHED (SCOPED)
 ```
 
 ## N9-0 完成内容
@@ -71,6 +71,39 @@ witness (capability/provider/dependencies)
 - N5 无工具/上游资源输出。
 - N6 上游故障为 generic failureKind3，无命名上游资产。
 - 无 step-level release。
+
+## 七场景验证结果
+
+```text
+N9-00 single task, no failure                  ACCEPTED
+N9-01 two tasks, one robot                    ACCEPTED
+N9-02 two tasks, two robots                   ACCEPTED
+N9-03 selected robot failure @7200             ACCEPTED
+N9-04 unselected robot failure @7200           ACCEPTED
+N9-05 required tool failure @9000              ACCEPTED
+N9-06 upstream bus failure @9000               ACCEPTED
+```
+
+- canonical selected resources 来自原生 RunningRepair。
+- execution dependencies / witness 来自 v5 只读导出。
+- external FMU 自行计算 robot/tool/makespan。
+- N9-06 的外侧模型只有 generic failureKind=3，无命名上游资产；
+  upstream asset identity 标记为 NOT_AVAILABLE，只验证中断因果。
+- energy trajectory 全部 NOT_COMPARABLE，没有填零或复制 N4 曲线。
+- resource release 只有外部 tool/group release 字段；canonical native release
+  NOT_OBSERVED，终止未被当作释放。
+
+## 测试参数
+
+```text
+tasks: 1 or 2
+robot pools: 1 or 2
+tool: tool-t1 (N9-05)
+upstream: bus-1 (N9-06)
+failure times: 7200, 9000
+group boundaries: 7200, 10800, 18000
+step: 900 s
+```
 
 ## 未建立
 

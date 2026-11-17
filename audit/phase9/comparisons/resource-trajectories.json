@@ -1,0 +1,419 @@
+{
+  "schema": "poie.s5v-n9-resource-set/1",
+  "cases": [
+    {
+      "schema": "poie.s5v-n9-resource-trajectory/1",
+      "case": "N9-00",
+      "contract_sha256": "9f77cd84e3e0ce7b9d998b7ef77e5ba81fc4d834df55256d30b08e2d79cc3d76",
+      "canonical_contract_valid": true,
+      "external_contract_valid": true,
+      "cross_model_agreement": true,
+      "canonical": {
+        "selected_resources": [
+          "robot-m1"
+        ],
+        "robots": [
+          "robot-m1"
+        ],
+        "tools": [],
+        "execution_dependencies": [
+          "robot-m1"
+        ],
+        "witness": [],
+        "failure_asset": null,
+        "interruption_s": null,
+        "completion_s": 7200.0,
+        "restoration_targets": [
+          "a-lathe"
+        ],
+        "restoration_committed": true,
+        "resource_release_observed": false,
+        "release_note": "RunTerminated is not a native resource release event",
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "robot_selection": {
+          "0": 1
+        },
+        "tool_tasks": [],
+        "tool_mask": 0,
+        "makespan_s": 7200.0,
+        "interrupted": 0,
+        "failure_applied_s": -1.0,
+        "completed_count": 1,
+        "restored": [
+          1.0
+        ],
+        "release_s": 7200.0,
+        "resource_release_observed": "group_contract_only",
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "upstream_asset_identity": "N/A"
+      },
+      "findings": [],
+      "first_event_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "energy_trajectory": "NOT_COMPARABLE",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n9-resource-trajectory/1",
+      "case": "N9-01",
+      "contract_sha256": "c6f60991f3b9c336b6fad03cfc675e07c1717ed1945ebeb5e702b8e0a5f88427",
+      "canonical_contract_valid": true,
+      "external_contract_valid": true,
+      "cross_model_agreement": true,
+      "canonical": {
+        "selected_resources": [
+          "robot-m1",
+          "robot-m1"
+        ],
+        "robots": [
+          "robot-m1",
+          "robot-m1"
+        ],
+        "tools": [],
+        "execution_dependencies": [
+          "robot-m1"
+        ],
+        "witness": [],
+        "failure_asset": null,
+        "interruption_s": null,
+        "completion_s": 18000.0,
+        "restoration_targets": [
+          "a-lathe",
+          "b-pump"
+        ],
+        "restoration_committed": true,
+        "resource_release_observed": false,
+        "release_note": "RunTerminated is not a native resource release event",
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "robot_selection": {
+          "0": 1,
+          "1": 1
+        },
+        "tool_tasks": [],
+        "tool_mask": 0,
+        "makespan_s": 18000.0,
+        "interrupted": 0,
+        "failure_applied_s": -1.0,
+        "completed_count": 2,
+        "restored": [
+          1.0,
+          1.0
+        ],
+        "release_s": 18000.0,
+        "resource_release_observed": "group_contract_only",
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "upstream_asset_identity": "N/A"
+      },
+      "findings": [],
+      "first_event_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "energy_trajectory": "NOT_COMPARABLE",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n9-resource-trajectory/1",
+      "case": "N9-02",
+      "contract_sha256": "0a5f72f04e204f243302df6cdd111ed93744535dc6ed50d7cd9336a127cff9bd",
+      "canonical_contract_valid": true,
+      "external_contract_valid": true,
+      "cross_model_agreement": true,
+      "canonical": {
+        "selected_resources": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "tools": [],
+        "execution_dependencies": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "witness": [],
+        "failure_asset": null,
+        "interruption_s": null,
+        "completion_s": 10800.0,
+        "restoration_targets": [
+          "a-lathe",
+          "b-pump"
+        ],
+        "restoration_committed": true,
+        "resource_release_observed": false,
+        "release_note": "RunTerminated is not a native resource release event",
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "robot_selection": {
+          "0": 1,
+          "1": 2
+        },
+        "tool_tasks": [],
+        "tool_mask": 0,
+        "makespan_s": 10800.0,
+        "interrupted": 0,
+        "failure_applied_s": -1.0,
+        "completed_count": 2,
+        "restored": [
+          1.0,
+          1.0
+        ],
+        "release_s": 10800.0,
+        "resource_release_observed": "group_contract_only",
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "upstream_asset_identity": "N/A"
+      },
+      "findings": [],
+      "first_event_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "energy_trajectory": "NOT_COMPARABLE",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n9-resource-trajectory/1",
+      "case": "N9-03",
+      "contract_sha256": "71ddb3e10b9b3f7711fda98afc985c8e9eba27e5720cfee23cae6804ecb63ef2",
+      "canonical_contract_valid": true,
+      "external_contract_valid": true,
+      "cross_model_agreement": true,
+      "canonical": {
+        "selected_resources": [
+          "robot-m1"
+        ],
+        "robots": [
+          "robot-m1"
+        ],
+        "tools": [],
+        "execution_dependencies": [
+          "robot-m1"
+        ],
+        "witness": [],
+        "failure_asset": "robot-m1",
+        "interruption_s": 7200.0,
+        "completion_s": null,
+        "restoration_targets": [
+          "a-lathe"
+        ],
+        "restoration_committed": false,
+        "resource_release_observed": false,
+        "release_note": "RunTerminated is not a native resource release event",
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "robot_selection": {
+          "0": 1
+        },
+        "tool_tasks": [],
+        "tool_mask": 0,
+        "makespan_s": 10800.0,
+        "interrupted": 1,
+        "failure_applied_s": 7200.0,
+        "completed_count": 0,
+        "restored": [
+          0.0
+        ],
+        "release_s": 7200.0,
+        "resource_release_observed": "group_contract_only",
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "upstream_asset_identity": "N/A"
+      },
+      "findings": [],
+      "first_event_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "energy_trajectory": "NOT_COMPARABLE",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n9-resource-trajectory/1",
+      "case": "N9-04",
+      "contract_sha256": "5bc5aed43a56122c362c0ca94c2a913d69e7d566a70a74e14f8b8cecf23dc2ea",
+      "canonical_contract_valid": true,
+      "external_contract_valid": true,
+      "cross_model_agreement": true,
+      "canonical": {
+        "selected_resources": [
+          "robot-m1"
+        ],
+        "robots": [
+          "robot-m1"
+        ],
+        "tools": [],
+        "execution_dependencies": [
+          "robot-m1"
+        ],
+        "witness": [],
+        "failure_asset": "robot-m2",
+        "interruption_s": null,
+        "completion_s": 10800.0,
+        "restoration_targets": [
+          "a-lathe"
+        ],
+        "restoration_committed": true,
+        "resource_release_observed": false,
+        "release_note": "RunTerminated is not a native resource release event",
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "robot_selection": {
+          "0": 1
+        },
+        "tool_tasks": [],
+        "tool_mask": 0,
+        "makespan_s": 10800.0,
+        "interrupted": 0,
+        "failure_applied_s": 7200.0,
+        "completed_count": 1,
+        "restored": [
+          1.0
+        ],
+        "release_s": 10800.0,
+        "resource_release_observed": "group_contract_only",
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "upstream_asset_identity": "N/A"
+      },
+      "findings": [],
+      "first_event_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "energy_trajectory": "NOT_COMPARABLE",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n9-resource-trajectory/1",
+      "case": "N9-05",
+      "contract_sha256": "d7299f05857a0c311bd6cb617e5262f7cafae8f7fed539e043a074c777a2d409",
+      "canonical_contract_valid": true,
+      "external_contract_valid": true,
+      "cross_model_agreement": true,
+      "canonical": {
+        "selected_resources": [
+          "tool-t1",
+          "robot-m1"
+        ],
+        "robots": [
+          "robot-m1"
+        ],
+        "tools": [
+          "tool-t1"
+        ],
+        "execution_dependencies": [
+          "robot-m1",
+          "tool-t1"
+        ],
+        "witness": [],
+        "failure_asset": "tool-t1",
+        "interruption_s": 9000.0,
+        "completion_s": null,
+        "restoration_targets": [
+          "a-lathe"
+        ],
+        "restoration_committed": false,
+        "resource_release_observed": false,
+        "release_note": "RunTerminated is not a native resource release event",
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "robot_selection": {
+          "0": 1
+        },
+        "tool_tasks": [
+          0
+        ],
+        "tool_mask": 1,
+        "makespan_s": 10800.0,
+        "interrupted": 1,
+        "failure_applied_s": 9000.0,
+        "completed_count": 0,
+        "restored": [
+          0.0
+        ],
+        "release_s": 9000.0,
+        "resource_release_observed": "tool",
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "upstream_asset_identity": "N/A"
+      },
+      "findings": [],
+      "first_event_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "energy_trajectory": "NOT_COMPARABLE",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n9-resource-trajectory/1",
+      "case": "N9-06",
+      "contract_sha256": "4fc81542dc106853d01c242e1d6f75390c4f8ba0311c76714592030de580cab0",
+      "canonical_contract_valid": true,
+      "external_contract_valid": true,
+      "cross_model_agreement": true,
+      "canonical": {
+        "selected_resources": [
+          "robot-m1"
+        ],
+        "robots": [
+          "robot-m1"
+        ],
+        "tools": [],
+        "execution_dependencies": [
+          "bat-1",
+          "bus-1",
+          "charger-1",
+          "robot-m1"
+        ],
+        "witness": [
+          "sleeve-replacement:robot-m1:bat-1|bus-1|charger-1"
+        ],
+        "failure_asset": "bus-1",
+        "interruption_s": 9000.0,
+        "completion_s": null,
+        "restoration_targets": [
+          "a-lathe"
+        ],
+        "restoration_committed": false,
+        "resource_release_observed": false,
+        "release_note": "RunTerminated is not a native resource release event",
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "robot_selection": {
+          "0": 1
+        },
+        "tool_tasks": [],
+        "tool_mask": 0,
+        "makespan_s": 10800.0,
+        "interrupted": 1,
+        "failure_applied_s": 9000.0,
+        "completed_count": 0,
+        "restored": [
+          0.0
+        ],
+        "release_s": 9000.0,
+        "resource_release_observed": "group_contract_only",
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "upstream_asset_identity": "NOT_AVAILABLE"
+      },
+      "findings": [],
+      "first_event_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "energy_trajectory": "NOT_COMPARABLE",
+      "status": "ACCEPTED"
+    }
+  ]
+}
