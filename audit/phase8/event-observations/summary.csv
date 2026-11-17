@@ -1,0 +1,14 @@
+scenario	event_count	termination	survived_s	direct_time_equal	direct_event_equal	time_event_equal
+N8-00	3	completed	72000.000	true	true	true
+N8-01	4	blocked:energy_depleted	53400.000	true	true	true
+N8-02	4	blocked:energy_depleted	51150.000	true	true	true
+N8-03	4	completed	72000.000	true	true	true
+N8-04	3	blocked:repair interrupted at 7200s: robot-m1 failed	7200.000	true	true	true
+N8-05	6	completed	72000.000	true	true	true
+N8-07	3	blocked:repair interrupted at 3600s: bus-1 failed	3600.000	true	true	true
+N8-08	4	completed	72000.000	true	true	true
+N8-09	3	completed	10800.000	true	true	true
+N8-10	3	completed	10800.000	true	true	true
+N8-11	5	blocked:energy_depleted	56400.000	true	true	true
+N8-12	3	blocked:repair interrupted at 3600s: robot-m1 failed	3600.000	true	true	true
+N8-13	3	blocked:repair interrupted at 7200s: robot-m1 failed	7200.000	true	true	true

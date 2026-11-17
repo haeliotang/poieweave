@@ -89,7 +89,7 @@ def main() -> int:
         problems.append("v2 frozen certificate files")
     if not (ROOT / "audit/certificates/v1-frozen.json").is_file():
         problems.append("v1 freeze")
-    for command in (["python3", "scripts/verify-canonical-claim-certificates-v3.py"],
+    for command in (["python3", "audit/certificates/verify_v3.py"],
                     ["python3", "audit/certificates/verify_v1.py"]):
         if subprocess.run(command, cwd=ROOT, capture_output=True).returncode != 0:
             problems.append("verification failed: " + " ".join(command))
