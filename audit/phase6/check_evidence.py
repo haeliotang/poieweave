@@ -28,17 +28,34 @@ def main() -> int:
             status = entry.get("status")
             if status in ("UNEXPLAINED", "FAIL"):
                 problems.append(f"{name}:{entry.get('case')}: {status}")
-    for name in ["lifetime-results", "scheduling-results", "dependencies-results"]:
+    for name in ["lifetime-results", "scheduling-results", "dependencies-results", "contract-results"]:
         data = json.loads((PHASE / "negative-controls" / f"{name}.json").read_text())
         if not data["results"] or not all(entry["detected"] for entry in data["results"]):
             problems.append(f"negative coverage {name}")
     restoration = json.loads((PHASE / "restoration/restoration-state.json").read_text())
     if not all(record["restoration_agreement"] for record in restoration["records"]):
         problems.append("restoration agreement")
+    for record in restoration["records"]:
+        for target in record["targets"]:
+            if target["selected_resources"] is not None or target["selected_resources_observed"] is not False:
+                problems.append("restoration selected_resources must be explicitly unobserved")
     if not (PHASE / "EVIDENCE.md").is_file():
         problems.append("evidence document")
+    report = (PHASE / "REPORT.zh-CN.md").read_text()
+    for token in ["N6-B CONTRACT-DRIVEN SCHEDULING", "S5-V N6 EVIDENCE HARDENING",
+                  "N6 CONTRACT-DRIVEN COORDINATION"]:
+        if token not in report:
+            problems.append(f"report missing {token}")
+    for stale in ["本轮仅完成 N6-A", "N6-B..E 保持未完成", "DIFFERENT_BUT_VALID_DECISION"]:
+        if stale in report:
+            problems.append(f"report stale: {stale}")
+    evidence_text = (PHASE / "EVIDENCE.md").read_text()
+    for token in ["FROZEN_TRACKED_EVIDENCE", "CURRENT_RUN_EXECUTION_EVIDENCE", "clean-checkout"]:
+        if token not in evidence_text:
+            problems.append(f"evidence doc missing {token}")
     ci = CI.read_text()
-    for token in ["s5v-n6-linux", "audit/phase6/compare_dependencies.py", "audit/phase6/manifest.py"]:
+    for token in ["s5v-n6-linux", "audit/phase6/compare_dependencies.py",
+                  "audit/phase6/negative_contracts.py", "audit/phase6/execution_manifest.py"]:
         if token not in ci:
             problems.append(f"CI missing {token}")
     v2 = json.loads((ROOT / "docs/research/canonical-claim-certificate-index-v2.json").read_text())

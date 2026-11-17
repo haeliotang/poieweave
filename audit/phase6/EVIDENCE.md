@@ -26,6 +26,23 @@ python3 audit/phase6/manifest.py
 python3 audit/phase6/check.py
 ```
 
+## Frozen vs execution evidence
+
+- `manifest.json`: FROZEN_TRACKED_EVIDENCE, built only from `git ls-files audit/phase6`
+  via an explicit allowlist. No `__pycache__`, `.pyc`, editor files or runtime caches.
+- `execution-manifest.json`: CURRENT_RUN_EXECUTION_EVIDENCE, written outside the
+  repository for each Linux CI run; it never replaces frozen evidence.
+- Frozen checks run before any re-execution. The clean-checkout proof runs
+`check.py`, `check_evidence.py` and `check-all` from a detached Git worktree
+without first regenerating any evidence:
+
+```bash
+git status --short
+python3 audit/phase6/check.py
+python3 audit/phase6/check_evidence.py
+./scripts/check-all.sh
+```
+
 ## Linux CI
 
 Job `S5-V N6 resource lifetime Linux conformance` builds both external FMUs,
@@ -40,7 +57,10 @@ No repository CSV is used in place of the current-run outputs.
 | class | control |
 | --- | --- |
 | RESOURCE_LIFETIME_MISMATCH | step release at 7201 |
-| RESOURCE_CONTRACT_VIOLATION | overlapping robot, duration, pool |
+| RESOURCE_CONTRACT_VIOLATION | overlapping robot, duration, pool, contract mutation |
+| RESOURCE_ELIGIBILITY_VIOLATION | mask-forbidden robot, no eligible robot |
+| REQUIRED_TOOL_MISSING | required tool absent from external schedule |
+| POLICY_CONTRACT_VIOLATION | same priority but order violated |
 | EXECUTION_DEPENDENCY_MISMATCH | tool failure ignored / completion interrupted |
 | UPSTREAM_DEPENDENCY_MISMATCH | bus failure ignored |
 | EVENT_TIME_DISPLACEMENT | late failure, horizon-accepted failure, makespan |
@@ -58,7 +78,7 @@ runtime source (`engine.rs`, `survival.rs`, `clock.rs`, `closure.rs`,
 ## Known limitations
 
 - N6-A is group-level only; step-level release is not represented.
-- N6-B does not represent an independent canonical priority input; B06 is a
-  classified scheduling-policy difference.
+- N6-B represents priority at the scheduler boundary; B08 is a classified
+  different-policy decision. Event-engine priority input remains NOT REPRESENTABLE.
 - N6-D asset status is derived from the canonical completion trace; no native
   asset-status field exists in the current observatory.

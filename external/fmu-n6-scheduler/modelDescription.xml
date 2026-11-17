@@ -43,6 +43,9 @@
     <Float64 name="toolAvailable" valueReference="37" causality="output" variability="discrete" initial="calculated"/>
     <Float64 name="toolFailureAppliedTime_s" valueReference="38" causality="output" variability="discrete" initial="calculated"/>
     <Float64 name="release_s" valueReference="39" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="toolAcquired_s" valueReference="40" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="toolReleased_s" valueReference="41" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="toolTaskMask" valueReference="42" causality="output" variability="discrete" initial="calculated"/>
   </ModelVariables>
   <ModelStructure>
     <Output valueReference="20"/>
@@ -65,5 +68,8 @@
     <Output valueReference="37"/>
     <Output valueReference="38"/>
     <Output valueReference="39"/>
+    <Output valueReference="40"/>
+    <Output valueReference="41"/>
+    <Output valueReference="42"/>
   </ModelStructure>
 </fmiModelDescription>

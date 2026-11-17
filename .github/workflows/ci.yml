@@ -1544,6 +1544,10 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: Install independent FMI importer
         run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Verify frozen evidence before any re-execution
+        run: |
+          python3 audit/phase6/check.py
+          python3 audit/phase6/check_evidence.py
       - name: Build external scheduler FMUs
         run: |
           external/fmu-n5-scheduler/build.sh
@@ -1579,15 +1583,16 @@ jobs:
           python3 audit/phase6/negative_scheduling.py
           python3 audit/phase6/compare_dependencies.py
           python3 audit/phase6/negative_dependencies.py
+          python3 audit/phase6/negative_contracts.py
           python3 audit/phase6/restoration_evidence.py
-          python3 audit/phase6/manifest.py
-          python3 audit/phase6/check.py
-          python3 audit/phase6/check_evidence.py
+          mkdir -p "$RUNNER_TEMP/s5v-n6"
+          python3 audit/phase6/execution_manifest.py --output "$RUNNER_TEMP/s5v-n6/execution-manifest.json"
       - name: Save N6-A evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n6/evidence"
           cp -R audit/phase6/canonical audit/phase6/external audit/phase6/differences audit/phase6/negative-controls audit/phase6/contracts audit/phase6/restoration "$RUNNER_TEMP/s5v-n6/evidence/"
           cp audit/phase6/{PREREG.md,SEMANTICS.md,RESOURCE_LIFETIME.md,REPORT.zh-CN.md,EVIDENCE.md,manifest.json} "$RUNNER_TEMP/s5v-n6/evidence/"
+          cp "$RUNNER_TEMP/s5v-n6/execution-manifest.json" "$RUNNER_TEMP/s5v-n6/evidence/"
           ( cd "$RUNNER_TEMP/s5v-n6/evidence" && sha256sum * > SHA256SUMS.txt 2>/dev/null || true )
       - uses: actions/upload-artifact@v4
         with:

@@ -6,6 +6,7 @@
       "expected": "RESOURCE_CONTRACT_VIOLATION",
       "detected": true,
       "classes": [
+        "POLICY_CONTRACT_VIOLATION",
         "RESOURCE_CONTRACT_VIOLATION"
       ],
       "status": "FAIL"
@@ -24,7 +25,8 @@
       "expected": "RESOURCE_CONTRACT_VIOLATION",
       "detected": true,
       "classes": [
-        "RESOURCE_CONTRACT_VIOLATION"
+        "RESOURCE_CONTRACT_VIOLATION",
+        "RESOURCE_ELIGIBILITY_VIOLATION"
       ],
       "status": "FAIL"
     },

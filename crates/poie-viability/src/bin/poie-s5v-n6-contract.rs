@@ -184,9 +184,10 @@ fn main() {
             .map(|step| (plan_order[step.plan_index], step.start_s, step.end_s, step.resources.join("+")))
             .collect();
         rows.sort_by_key(|row| row.0);
-        let mut csv = String::from("task_index\tstart_s\tend_s\tresources\n");
+        let mut csv = String::from("task_index\tpriority\tstart_s\tend_s\tresources\n");
         for (index, start, end, resources) in rows {
-            csv.push_str(&format!("{index}\t{start:.6}\t{end:.6}\t{resources}\n"));
+            let priority = plan_order.iter().position(|candidate| *candidate == index).map(|pos| pos + 1).unwrap_or(0);
+            csv.push_str(&format!("{index}\t{priority}\t{start:.6}\t{end:.6}\t{resources}\n"));
         }
         std::fs::write(out.join("canonical").join(format!("{}-schedule.csv", case.id)), csv).unwrap();
         let mut contract = String::new();

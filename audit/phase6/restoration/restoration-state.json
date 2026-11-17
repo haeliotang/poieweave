@@ -11,7 +11,8 @@
           "repair_completed_at_s": 10800.0,
           "restoration_committed_at_s": 10800.0,
           "resources_released_at_s": 10800.0,
-          "selected_resources": [],
+          "selected_resources": null,
+          "selected_resources_observed": false,
           "status_source": "DERIVED_FROM_TRACE_COMPLETION"
         }
       ],
@@ -35,7 +36,8 @@
           "repair_completed_at_s": 10800.0,
           "restoration_committed_at_s": 10800.0,
           "resources_released_at_s": 10800.0,
-          "selected_resources": [],
+          "selected_resources": null,
+          "selected_resources_observed": false,
           "status_source": "DERIVED_FROM_TRACE_COMPLETION"
         }
       ],
@@ -59,7 +61,8 @@
           "repair_completed_at_s": 10800.0,
           "restoration_committed_at_s": 10800.0,
           "resources_released_at_s": 10800.0,
-          "selected_resources": [],
+          "selected_resources": null,
+          "selected_resources_observed": false,
           "status_source": "DERIVED_FROM_TRACE_COMPLETION"
         }
       ],
@@ -83,7 +86,8 @@
           "repair_completed_at_s": 10800.0,
           "restoration_committed_at_s": 10800.0,
           "resources_released_at_s": 10800.0,
-          "selected_resources": [],
+          "selected_resources": null,
+          "selected_resources_observed": false,
           "status_source": "DERIVED_FROM_TRACE_COMPLETION"
         },
         {
@@ -93,7 +97,8 @@
           "repair_completed_at_s": 10800.0,
           "restoration_committed_at_s": 10800.0,
           "resources_released_at_s": 10800.0,
-          "selected_resources": [],
+          "selected_resources": null,
+          "selected_resources_observed": false,
           "status_source": "DERIVED_FROM_TRACE_COMPLETION"
         }
       ],
@@ -119,7 +124,8 @@
           "repair_completed_at_s": 10800.0,
           "restoration_committed_at_s": 10800.0,
           "resources_released_at_s": 10800.0,
-          "selected_resources": [],
+          "selected_resources": null,
+          "selected_resources_observed": false,
           "status_source": "DERIVED_FROM_TRACE_COMPLETION"
         }
       ],
@@ -143,7 +149,8 @@
           "repair_completed_at_s": 7200.0,
           "restoration_committed_at_s": 7200.0,
           "resources_released_at_s": 7200.0,
-          "selected_resources": [],
+          "selected_resources": null,
+          "selected_resources_observed": false,
           "status_source": "DERIVED_FROM_TRACE_COMPLETION"
         }
       ],

@@ -18,11 +18,6 @@
       "bytes": 2655
     },
     {
-      "path": "audit/phase5/__pycache__/compare.cpython-314.pyc",
-      "sha256": "fc587410e3dfaf57eebfb12c9cb8846ed20f3704134f3a9b40c8299ac2d57af1",
-      "bytes": 13562
-    },
-    {
       "path": "audit/phase5/canonical/N5-00-events.csv",
       "sha256": "66d604afcea5f6ba10859e427f8726037df7d493c34020b08887b78729f5eaac",
       "bytes": 114
@@ -204,8 +199,8 @@
     },
     {
       "path": "audit/phase5/manifest.py",
-      "sha256": "674a82e22fa46e4989beb75df5991ce0c991faaa0c707ad160b5a868330d1cba",
-      "bytes": 1662
+      "sha256": "7d8ce1c73a82ff5394810815d95a6613b7b7910efcdbc6d3a8631785e3ddde83",
+      "bytes": 2060
     },
     {
       "path": "audit/phase5/negative-controls/N5-00-no-restoration.csv",

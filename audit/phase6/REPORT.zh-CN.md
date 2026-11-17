@@ -1,7 +1,7 @@
 # S5-V N6 — Contract-Driven Coordination & Causal Boundary Challenge
 
 基线：`c38ea8500426a5bc9ea9e4b521a9c4fcc0bf9423`（PR #576）。
-本轮仅完成 N6-A 强制资源生命周期审计；N6-B..E 保持未完成。
+范围：N6-A group-level resource lifetime、N6-B parameterized scheduling、N6-C dependency/event boundaries、N6-D derived restoration state、N6-E evidence integrity，以及 N6 evidence hardening。所有声明均为 SCOPED。
 
 ## 状态
 
@@ -16,6 +16,15 @@ N6-B CONTRACT-DRIVEN SCHEDULING — ESTABLISHED (SCOPED: durations, task count 1
 N6-C CAUSAL DEPENDENCY AND EVENT BOUNDARIES — ESTABLISHED (SCOPED: tool-t1, bus-1, same-time, horizon)
 N6-D REPAIR-DRIVEN RESTORATION STATE VALIDITY — ESTABLISHED (SCOPED: derived asset state from completion trace; native asset-status export unavailable)
 N6-E EVIDENCE INTEGRITY — ESTABLISHED (SCOPED: A/B/C + derived D)
+
+S5-V N6 CONTRACT-DRIVEN COORDINATION
+AND CAUSAL BOUNDARY CHALLENGE
+  ESTABLISHED (SCOPED)
+
+S5-V N6 EVIDENCE HARDENING — ESTABLISHED (SCOPED)
+N6 FROZEN EVIDENCE REPRODUCIBILITY — VERIFIED
+N6 INDEPENDENT SCHEDULING CONTRACT VALIDATION — ESTABLISHED (SCOPED)
+N6 REPORT / EVIDENCE CONSISTENCY — VERIFIED
 
 N5-03 GROUP-LEVEL INTERRUPTION CONSISTENCY
   ESTABLISHED
@@ -64,11 +73,11 @@ robotCount, failure time/kind/index, horizon
 | B05 | 三任务 | 13200 | 13200 | SAME |
 | B06 | 反转优先级、单机器人 | 18000（pump→lathe） | 18000（pump→lathe） | SAME |
 | B07 | 单机器人串行对照 | 18000 | 18000 | SAME |
-| B08 | 外部 priority 与 canonical 计划顺序不同 | 18000（a→b） | 18000（b→a） | DIFFERENT_BUT_VALID_DECISION |
+| B08 | 外部 priority 与 canonical 计划顺序不同 | 18000（a→b） | 18000（b→a） | DIFFERENT_POLICY_VALID_DECISIONS |
 
 B06 现在由双方从同一 priority 契约独立计算，决策一致。
 B08 故意使用不同 priority 输入，两种顺序都合法且 makespan 相同，比较器分类为
-`DIFFERENT_BUT_VALID_DECISION`，而不是失败。
+`DIFFERENT_POLICY_VALID_DECISIONS`，而不是失败。
 
 边界：canonical scheduler 通过 `plans` 顺序接收 priority；canonical **event engine**
 的 `start_repair` 仍按固定初始资产顺序生成计划，因此“事件执行阶段的 priority
@@ -115,7 +124,20 @@ status_source = DERIVED_FROM_TRACE_COMPLETION
 提交与释放时间可审计，但资产状态来源是 canonical completion trace 的确定性派生，
 不是原生资产状态字段。该限制在 EVIDENCE.md 中保留。
 
-## 证据
+## Evidence hardening
+
+- 冻结 manifest 仅由 `git ls-files audit/phase6` 的 allowlist 文件生成，排除
+  `__pycache__`、`.pyc`、运行时与执行 manifest。
+- 冻结校验先于任何重算执行；当次运行使用独立 `execution-manifest.json`。
+- 调度契约逐任务校验 robot mask、必需工具、工具占用/释放与 priority。
+- 新增 mutation controls：mask 禁止机器人、无合法机器人、缺失工具、提前释放工具、
+  同 priority 顺序违规、契约输入变更、冻结证据篡改。
+- B06/B08 分类不再依赖 case ID，而由实际 priority 输入和资源竞争关系决定。
+- `selected_resources` 缺失时记录为 `null` + `selected_resources_observed=false`，
+  不把空数组解释为“无需资源”。
+- 冻结证据仅来自 Git-tracked allowlist；当次运行使用独立 execution manifest。
+- 干净 checkout 必须先通过冻结校验，再允许任何重算。
+
 
 - [PREREG.md](PREREG.md)
 - [SEMANTICS.md](SEMANTICS.md)
@@ -132,10 +154,13 @@ status_source = DERIVED_FROM_TRACE_COMPLETION
 python3 audit/phase6/check.py
 ```
 
-## 未覆盖
+## 未覆盖 / 范围限制
 
-- 参数化外部调度器（N6-B）
-- 工具与上游依赖失效（N6-C）
-- 同刻事件与 horizon 边界（N6-D）
-- 完整恢复前后资产状态（N6-D）
-- 完整 Linux CI 证据包（N6-E）尚未为本阶段单独建立；N6-A 使用本地验证
+- step-level resource release（canonical 仅组级）
+- event-engine priority input（仅 scheduler-level）
+- 原生 asset-status export（N6-D 为 completion trace 派生）
+- post-interruption replanning
+- autonomous recovery
+- Level 3 independent planning
+- trajectory-level / full S2 / physical-world correctness
+- 本阶段未修改 canonical 运行时，也未重签 S2 证书

@@ -42,9 +42,19 @@ def compare(case: str) -> dict:
         findings.append({"class": "RESTORATION_COMMIT_MISMATCH"})
     if not canonical["restored_targets"] and restored:
         findings.append({"class": "RESTORATION_COMMIT_MISMATCH", "reason": "restored after interruption"})
-    # tool state must be unavailable exactly at/after tool failure
-    if case.startswith("N6-C-tool") and failure_s >= 0 and ext["toolAvailable"] != 0:
-        findings.append({"class": "EXECUTION_DEPENDENCY_MISMATCH", "reason": "tool remained available"})
+    # tool state and allocation must be independently observable
+    if case.startswith("N6-C-tool"):
+        if ext["toolTaskMask"] < 1:
+            findings.append({"class": "REQUIRED_TOOL_MISSING", "reason": "tool not assigned"})
+        if ext["toolAcquired_s"] != 0.0:
+            findings.append({"class": "RESOURCE_CONTRACT_VIOLATION", "reason": "tool acquired late"})
+        if failure_s >= 0 and ext["toolAvailable"] != 0:
+            findings.append({"class": "EXECUTION_DEPENDENCY_MISMATCH", "reason": "tool remained available"})
+        if not interrupted:
+            if abs(ext["toolReleased_s"] - ext["makespan_s"]) > 1e-6:
+                findings.append({"class": "RESOURCE_LIFETIME_MISMATCH", "reason": "tool released before group commit"})
+        elif abs(ext["toolReleased_s"] - failure_s) > 1e-6:
+            findings.append({"class": "RESOURCE_LIFETIME_MISMATCH", "reason": "tool release at interruption"})
     # horizon: no failure event may be processed at horizon
     if "horizon" in case and failure_s >= 0:
         findings.append({"class": "EVENT_TIME_DISPLACEMENT", "reason": "horizon accepted failure"})

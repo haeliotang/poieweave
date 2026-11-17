@@ -25,3 +25,5 @@ external/fmu-n4-repair/build/
 external/fmu-n4-repair/build-*/
 external/fmu-n5-scheduler/build/
 external/fmu-n6-scheduler/build/
+__pycache__/
+*.pyc
