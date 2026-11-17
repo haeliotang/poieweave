@@ -22,9 +22,9 @@
       "sha256": "af1cfedf040062bf5ab1c6d5bb4a13f1bbd12dc4b6dc59b4b409300504089179"
     },
     {
-      "bytes": 3869,
+      "bytes": 3912,
       "path": "audit/phase8h/check.py",
-      "sha256": "4892ae6687b154c0ef6a5a2d9d831aa2418f14b2c41bc91d77c1aa7a83083c5d"
+      "sha256": "374ccacf6502ce0752f0546365c29630bddfc2620ca6890a400dc178046deeaf"
     },
     {
       "bytes": 11682,
@@ -42,44 +42,14 @@
       "sha256": "63a9f0181c9ac4d1b4d961afdae20c2c17b1bafc3dfb6ef565ebcac05a741b10"
     },
     {
-      "bytes": 173,
-      "path": "audit/phase8h/external/N8H-N8-01.log",
-      "sha256": "46caee346d097a98e362a7c47d59a93dcc24d0427033a5d2cc60e8dbaa0176ac"
-    },
-    {
-      "bytes": 582,
-      "path": "audit/phase8h/external/N8H-N8-01.meta.json",
-      "sha256": "5dd67647c404d5104924e81d0a94586b05578921a322bee01dadfee25c87298e"
-    },
-    {
       "bytes": 1301,
       "path": "audit/phase8h/external/N8H-N8-02.csv",
       "sha256": "72f99719d565a532cc2b8a3d99d8a63f1571b0f6c70f3708806982acf8756bf9"
     },
     {
-      "bytes": 182,
-      "path": "audit/phase8h/external/N8H-N8-02.log",
-      "sha256": "05f982fb102d66196d91130bd6dd2cbed2a5d16b0d35d09bad9f28c0be789f2d"
-    },
-    {
-      "bytes": 607,
-      "path": "audit/phase8h/external/N8H-N8-02.meta.json",
-      "sha256": "130ea09d0d1de78d53e371ac8f2597429b3e83a92fb62fcb7442330d92ea076b"
-    },
-    {
       "bytes": 874,
       "path": "audit/phase8h/external/N8H-N8-04.csv",
       "sha256": "35d41e6e0fb874422f76d1d8a4ab6c623f26516e879c588e4a0e82bd24eac2f9"
-    },
-    {
-      "bytes": 155,
-      "path": "audit/phase8h/external/N8H-N8-04.log",
-      "sha256": "3d0546299708abcd99cf4db44739c19db9389a87565d1bf03bdb6ebc5a990feb"
-    },
-    {
-      "bytes": 464,
-      "path": "audit/phase8h/external/N8H-N8-04.meta.json",
-      "sha256": "bec753fd7f8c332f1bc3ccc32f085b2448384d1992f2e42ee978a0680c33f2d8"
     },
     {
       "bytes": 1383,
