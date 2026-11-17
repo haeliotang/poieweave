@@ -6,10 +6,10 @@
 
 ```text
 N8 EVENT-RESOLVED NATIVE OBSERVATORY
-  ESTABLISHED (SCOPED: native event identity, sequence, before/after)
+  ESTABLISHED (SCOPED: 15 scenarios, native event identity/sequence/before-after)
 
 N8 EVENT-LEVEL NONINTERFERENCE
-  ESTABLISHED (TESTED SCENARIOS: N8-00..13)
+  ESTABLISHED (TESTED SCENARIOS: N8-00..14)
 
 N8 INDEPENDENT EVENT MAPPING
   NOT ESTABLISHED
@@ -27,6 +27,10 @@ N8 CERTIFICATE V4 MIGRATION
 - [summary.csv](event-observations/summary.csv)
 - same-timestamp N8-03: RepairCompleted sequence 2, AssetFailure sequence 3 at 10800.
 - direct, time-observed, and event-observed outcomes are equal per scenario.
+- N8-06 required tool failure: tool-t1 Failed, a-lathe Failed, repair interrupted.
+- N8-14 deterministic repeat: identical event ids/order across repeated event runs.
+- 8 event mutation controls reject swapped sequence, duplicate id, skipped event,
+  uncommitted event, wrong before/after state, batch-after-as-event, time shift.
 
 ## 未完成
 

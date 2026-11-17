@@ -4,7 +4,7 @@
 
 use std::path::{Path, PathBuf};
 
-use poie_ontology::model::Model;
+use poie_ontology::model::{AssetStatus, Model, Service};
 use poie_viability::engine::{
     run_engine, run_engine_event_observed, run_engine_observed, EngineOptions, EngineTermination, ObservationPhase,
     ObservationRequest,
@@ -33,6 +33,44 @@ fn options(failures: Vec<FailureEvent>, resupplies: Vec<Resupply>, horizon: f64)
         load_kw: 3.0,
     }
 }
+fn tool_model() -> Model {
+    let mut model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
+    let robot = model.assets.get("robot-m1").unwrap().clone();
+    let mut tool = robot.clone();
+    tool.id = "tool-t1".into();
+    tool.kind = "tool".into();
+    tool.status = AssetStatus::Available;
+    tool.requires.clear();
+    tool.requires_any.clear();
+    tool.provides.clear();
+    model.assets.insert("tool-t1".into(), tool);
+    let pump = model.assets.get("pump-p1").unwrap().clone();
+    let template = model.processes.iter().find(|process| process.id == "replace-sleeve-p1").unwrap().clone();
+    let mut asset = pump.clone();
+    asset.id = "a-lathe".into();
+    asset.status = AssetStatus::Failed;
+    asset.requires.clear();
+    asset.requires_any.clear();
+    asset.provides.clear();
+    model.assets.insert("a-lathe".into(), asset);
+    let mut process = template;
+    process.id = "repair-a-lathe".into();
+    process.inputs.clear();
+    process.outputs.clear();
+    process.requires_capabilities.clear();
+    process.occupies = vec!["robot-m1".into(), "tool-t1".into()];
+    process.restores = vec!["a-lathe".into()];
+    process.duration_s = Some(10800.0);
+    let index = model.processes.len();
+    model.processes.push(process);
+    model.restorers.entry("a-lathe".into()).or_default().push(index);
+    model.services.insert(
+        "n8-tool".into(),
+        Service { id: "n8-tool".into(), requires: vec!["a-lathe".into()], requires_any: Vec::new() },
+    );
+    model
+}
+
 fn main() {
     let out = root().join("audit/phase8");
     std::fs::create_dir_all(out.join("event-observations")).unwrap();
@@ -118,6 +156,87 @@ fn main() {
             event.events.len(),
             label(&event.outcome.termination),
             event.outcome.survived_s
+        ));
+    }
+    // N8-06: required tool failure with event identity.
+    {
+        let model = tool_model();
+        let opts = EngineOptions {
+            services: vec!["n8-tool"],
+            horizon_s: 20.0 * 3600.0,
+            failures: vec![FailureEvent { at_s: 9000.0, asset: "tool-t1".into() }],
+            resupplies: Vec::new(),
+            resources: vec!["robot-m1".into()],
+            alternative_pool: vec!["robot-m1".into()],
+            battery: None,
+            load_kw: 0.0,
+        };
+        let direct = run_engine(&model, &opts).unwrap();
+        let time =
+            run_engine_observed(&model, &opts, &[ObservationRequest { at_s: 9000.0, phase: ObservationPhase::After }])
+                .unwrap();
+        let event = run_engine_event_observed(&model, &opts).unwrap();
+        assert_eq!(direct, time.outcome, "time noninterference N8-06");
+        assert_eq!(direct, event.outcome, "event noninterference N8-06");
+        for record in &event.events {
+            let all: std::collections::BTreeSet<&str> = record
+                .asset_statuses_before
+                .keys()
+                .chain(record.asset_statuses_after.keys())
+                .map(|value| value.as_str())
+                .collect();
+            for asset in all {
+                let before = record
+                    .asset_statuses_before
+                    .get(asset)
+                    .map(|status| format!("{status:?}"))
+                    .unwrap_or_else(|| "ABSENT".into());
+                let after = record
+                    .asset_statuses_after
+                    .get(asset)
+                    .map(|status| format!("{status:?}"))
+                    .unwrap_or_else(|| "ABSENT".into());
+                rows.push_str(&format!(
+                    "N8-06	{}	{}	{}	{:.3}	{}	{:?}	{}	{:?}	{}	{}	{}	{}
+",
+                    record.event_sequence,
+                    record.event_id,
+                    record.event_batch_sequence,
+                    record.at_s,
+                    record.kind.label(),
+                    record.origin,
+                    record.target_asset.as_deref().unwrap_or(""),
+                    record.status,
+                    asset,
+                    before,
+                    after,
+                    label(&event.outcome.termination)
+                ));
+            }
+        }
+        summaries.push_str(&format!(
+            "N8-06	{}	{}	{:.3}	true	true	true
+",
+            event.events.len(),
+            label(&event.outcome.termination),
+            event.outcome.survived_s
+        ));
+    }
+    // N8-14: deterministic repeat of event observation (safety is also unit-tested).
+    {
+        let model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
+        let opts = options(Vec::new(), Vec::new(), 20.0 * 3600.0);
+        let first = run_engine_event_observed(&model, &opts).unwrap();
+        let second = run_engine_event_observed(&model, &opts).unwrap();
+        let ids: Vec<&str> = first.events.iter().map(|event| event.event_id.as_str()).collect();
+        let ids_second: Vec<&str> = second.events.iter().map(|event| event.event_id.as_str()).collect();
+        assert_eq!(ids, ids_second, "deterministic event identity N8-14");
+        summaries.push_str(&format!(
+            "N8-14	{}	{}	{:.3}	true	true	true
+",
+            first.events.len(),
+            label(&first.outcome.termination),
+            first.outcome.survived_s
         ));
     }
     std::fs::write(out.join("event-observations/events.csv"), rows).unwrap();

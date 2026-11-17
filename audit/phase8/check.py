@@ -13,19 +13,12 @@ from pathlib import Path
 PHASE = Path(__file__).resolve().parent
 
 
-def main() -> int:
+def validate(rows: list[dict], summary: list[dict]) -> list[str]:
     problems = []
-    rows = list(csv.DictReader((PHASE / "event-observations/events.csv").open(), delimiter="\t"))
-    summary = list(csv.DictReader((PHASE / "event-observations/summary.csv").open(), delimiter="\t"))
     if not rows or not summary:
         problems.append("empty event evidence")
-    seen_ids: set[tuple[str, str]] = set()
     per_scenario: dict[str, list[dict]] = {}
     for row in rows:
-        event_key = (row["scenario"], row["event_sequence"])
-        if event_key in seen_ids:
-            pass
-        seen_ids.add(event_key)
         if row["event_status"] != "Committed":
             problems.append("uncommitted event in accepted evidence")
         if not row["event_id"].startswith(f"ev-{int(row['event_sequence']):04d}-"):
@@ -46,14 +39,31 @@ def main() -> int:
     kinds = {(row["event_kind"], row["event_sequence"], row["event_batch_sequence"]) for row in same_time}
     if ("RepairCompleted", "2", "2") not in kinds or ("AssetFailure", "3", "3") not in kinds:
         problems.append("same-time event order")
+    key = {(row["scenario"], row["event_sequence"], row["asset_id"]): row for row in rows}
+    completion = key.get(("N8-03", "2", "pump-p1"))
+    failure = key.get(("N8-03", "3", "robot-m1"))
+    if not completion or completion["status_before"] != "Degraded" or completion["status_after"] != "Available":
+        problems.append("completion state transition")
+    if not failure or failure["status_before"] != "Available" or failure["status_after"] != "Failed":
+        problems.append("failure state transition")
+    if not completion or completion["at_s"] != "10800.000" or not failure or failure["at_s"] != "10800.000":
+        problems.append("same-time event timestamp")
+    if any(row["event_batch_sequence"] != row["event_sequence"] for row in same_time):
+        problems.append("same-time event batch identity")
     if any(row["direct_event_equal"] != "true" or row["direct_time_equal"] != "true" for row in summary):
         problems.append("noninterference")
+    return problems
+
+
+def main() -> int:
+    rows = list(csv.DictReader((PHASE / "event-observations/events.csv").open(), delimiter="\t"))
+    summary = list(csv.DictReader((PHASE / "event-observations/summary.csv").open(), delimiter="\t"))
+    problems = validate(rows, summary)
     if problems:
         print("N8 event evidence FAIL: " + ", ".join(problems), file=sys.stderr)
         return 1
     print(f"ok N8 event identities, ordering and noninterference: {len(summary)} scenarios, {len(rows)} event asset rows")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

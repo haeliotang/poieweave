@@ -32,19 +32,24 @@
       "sha256": "a3cfb6aacd540d23b5c3c3b04bfd1272d07326c7cb2aa4413c6aab8480cf8afc"
     },
     {
-      "bytes": 939,
+      "bytes": 1281,
       "path": "audit/phase8/REPORT.zh-CN.md",
-      "sha256": "9e11eb98258abef37b54f54550780c3648c7198fd7f71577815f4edf159fe3c1"
+      "sha256": "1f6fb2f994e939817e727c0b1ef62a823a5b5e4ab7f4d8ea7a75d6cf614027e5"
     },
     {
-      "bytes": 60910,
+      "bytes": 66522,
       "path": "audit/phase8/event-observations/events.csv",
-      "sha256": "bbed9392495c8fdb8f5f5835d4336d6cdcaefc76efcf33316373aa8bc3811ce3"
+      "sha256": "8aefbbe1cbd7d91b11705b0f9abd193f5c678757e378af5de78d511efebaa4d9"
     },
     {
-      "bytes": 864,
+      "bytes": 991,
       "path": "audit/phase8/event-observations/summary.csv",
-      "sha256": "1669d70748f78353af8bc8a68ed6821e16e3119e1d8cc9da17178a8177fcdafc"
+      "sha256": "fb4616609fc7cc1b0a563d7cbaa74b4a05cc0074222ca4917ce9e51b5d780eaf"
+    },
+    {
+      "bytes": 1059,
+      "path": "audit/phase8/negative-controls/event-results.json",
+      "sha256": "f6904e48409e0a6091039a70fb039751e1cd326cbae54ec2b5e74f6bed537eb8"
     }
   ],
   "kind": "FROZEN_TRACKED_EVIDENCE",

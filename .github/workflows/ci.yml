@@ -1668,6 +1668,7 @@ jobs:
           cargo run --locked -q -p poie-viability --bin poie-s5v-n8-events
           cargo test --locked -q -p poie-viability --lib event_resolved
           python3 audit/phase8/check.py
+          python3 audit/phase8/negative_controls.py
       - name: Verify v4 certificates and historical v1/v2/v3
         run: |
           python3 scripts/build-canonical-claim-certificates-v4.py --check
