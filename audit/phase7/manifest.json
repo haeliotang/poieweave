@@ -37,6 +37,11 @@
       "sha256": "8c0a26670bca6563473f6cccea863f33fc99d0271285a3582ec1dab99847a44a"
     },
     {
+      "bytes": 780,
+      "path": "audit/phase7/negative-controls/observation-results.json",
+      "sha256": "7e570d806d81d19166df27ed444341ff96441501d1304e33f1156ff4fd5e0d65"
+    },
+    {
       "bytes": 28766,
       "path": "audit/phase7/observations/asset-statuses.csv",
       "sha256": "50356c3f2e3557ccb95670c1611dc5ba3f8f48a4854a2861abda189fce6d4f8f"

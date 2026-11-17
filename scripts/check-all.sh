@@ -29,6 +29,7 @@ python3 audit/phase5/check.py
 python3 audit/phase6/check.py
 python3 audit/phase6/check_evidence.py
 python3 audit/phase7/check.py
+python3 audit/phase7/negative_controls.py
 python3 audit/certificates/verify_v1.py
 python3 audit/certificates/verify_v1_historical.py
 python3 audit/certificates/verify_v2.py
