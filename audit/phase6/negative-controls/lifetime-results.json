@@ -1,0 +1,49 @@
+{
+  "schema": "poie.s5v-n6a-negative-controls/1",
+  "results": [
+    {
+      "control": "N6-A-7201-step-release",
+      "expected": "RESOURCE_LIFETIME_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "RESOURCE_LIFETIME_MISMATCH",
+        "RESTORATION_COMMIT_MISMATCH"
+      ]
+    },
+    {
+      "control": "N6-A-10800-after-commit-interrupt",
+      "expected": "RESOURCE_LIFETIME_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "RESOURCE_LIFETIME_MISMATCH",
+        "RESTORATION_COMMIT_MISMATCH"
+      ]
+    },
+    {
+      "control": "N6-A-9000-late-failure",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT"
+      ]
+    },
+    {
+      "control": "N6-A-10800-missing-restoration",
+      "expected": "RESTORATION_COMMIT_MISMATCH",
+      "detected": true,
+      "classes": [
+        "RESTORATION_COMMIT_MISMATCH"
+      ]
+    },
+    {
+      "control": "N6-A-7199-moved-step",
+      "expected": "RESOURCE_LIFETIME_MISMATCH",
+      "detected": true,
+      "classes": [
+        "RESOURCE_LIFETIME_MISMATCH"
+      ]
+    }
+  ]
+}

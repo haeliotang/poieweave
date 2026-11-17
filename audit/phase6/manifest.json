@@ -1,0 +1,241 @@
+{
+  "schema": "poie.s5v-n6-evidence/1",
+  "baseline": "c38ea8500426a5bc9ea9e4b521a9c4fcc0bf9423",
+  "files": [
+    {
+      "path": "audit/phase6/PREREG.md",
+      "sha256": "448456e4019856d9398ee4dc6bb70f257334d6238ad425f37178079b9ca9d060",
+      "bytes": 1965
+    },
+    {
+      "path": "audit/phase6/REPORT.zh-CN.md",
+      "sha256": "f93ef9c119860fb3ea9f8d121e17e2dc633f614d0a116b9216f6c9598c11b131",
+      "bytes": 2208
+    },
+    {
+      "path": "audit/phase6/RESOURCE_LIFETIME.md",
+      "sha256": "ddeff4a484b3d6f026e395fb27b9daf4135df7ef8fcd6b23255605c961ef7611",
+      "bytes": 1859
+    },
+    {
+      "path": "audit/phase6/SEMANTICS.md",
+      "sha256": "0052d2671d8e5546ed58bd7523e6c56906337271dba80d38ccaa30e927b38473",
+      "bytes": 1114
+    },
+    {
+      "path": "audit/phase6/__pycache__/compare_lifetime.cpython-314.pyc",
+      "sha256": "02e722c8070278a4d1f713f33c94406a4c1458cf196c6b1937a93d176ae1532a",
+      "bytes": 6060
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-10800-audit.json",
+      "sha256": "c1e668a23c46a0ebbf33712b8d898fa4b01b7be2c3a6f8f661d7df0100b05d0b",
+      "bytes": 505
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-10800-events.csv",
+      "sha256": "ed51ba1a32a68df8e91c69aa40a6fc58d354cef589ff3759403a1f961be42bee",
+      "bytes": 181
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-10800-schedule.csv",
+      "sha256": "ea012b5726a73ed1459492c67ff13f703b073168df66fd7f25723af90c7e0864",
+      "bytes": 129
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-7199-audit.json",
+      "sha256": "a77c03c72bad9ce690a9b63dec6f204deb47185367658c9af4923e7934dc9fe8",
+      "bytes": 519
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-7199-events.csv",
+      "sha256": "a643ae50a547dd1dec5cbff67c692b4aeaf1469cb95411a548e294322a267318",
+      "bytes": 57
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-7199-schedule.csv",
+      "sha256": "ea012b5726a73ed1459492c67ff13f703b073168df66fd7f25723af90c7e0864",
+      "bytes": 129
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-7200-audit.json",
+      "sha256": "df56b48d6931c3d4a7efad57e38e16638cac817ceabd1a8bd6c6b4bd94016399",
+      "bytes": 519
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-7200-events.csv",
+      "sha256": "21cf523d8786da944cacb8d37e0279f3c15d5caedc4e0d925a818180f2ccffa1",
+      "bytes": 57
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-7200-schedule.csv",
+      "sha256": "ea012b5726a73ed1459492c67ff13f703b073168df66fd7f25723af90c7e0864",
+      "bytes": 129
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-7201-audit.json",
+      "sha256": "a248f1e2522f3a4ffeb08dec9df419d58a96a23f5cdf2df351c23150cf2f46d0",
+      "bytes": 519
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-7201-events.csv",
+      "sha256": "03603cd65851c57761172ac496daefa404708c9331ed95a476b5e165cbe37ac2",
+      "bytes": 57
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-7201-schedule.csv",
+      "sha256": "ea012b5726a73ed1459492c67ff13f703b073168df66fd7f25723af90c7e0864",
+      "bytes": 129
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-9000-audit.json",
+      "sha256": "a2841b7235b20daa77f443d9eb766055fa158332f1aa66a1c858cf281639150b",
+      "bytes": 519
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-9000-events.csv",
+      "sha256": "e8786bb0563e0544e9f5fa8285b021fed43fbbbf0004c72db0e10ed85a3f9d5e",
+      "bytes": 57
+    },
+    {
+      "path": "audit/phase6/canonical/N6-A-9000-schedule.csv",
+      "sha256": "ea012b5726a73ed1459492c67ff13f703b073168df66fd7f25723af90c7e0864",
+      "bytes": 129
+    },
+    {
+      "path": "audit/phase6/check.py",
+      "sha256": "2a4c3b47d72f0b27d1ae890646e5b3c3a8ffee95dd37e7e27b1f95f61d40d21d",
+      "bytes": 2321
+    },
+    {
+      "path": "audit/phase6/compare_lifetime.py",
+      "sha256": "63a137d848699311c8590f87f5cb35d6633dcfc13b3b9008b8d1ea5db8afc876",
+      "bytes": 3948
+    },
+    {
+      "path": "audit/phase6/differences/resource-lifetime.json",
+      "sha256": "3e7d883ba6d58d65293e4f8f758d80f8283d3532bde8ca4495036d5ce57f9ef9",
+      "bytes": 7169
+    },
+    {
+      "path": "audit/phase6/external/N6-A-10800-fmpy-900.csv",
+      "sha256": "80e178f8645d25a3715592bba2f818b38cb2d1583b0198a38588671703885d6a",
+      "bytes": 16237
+    },
+    {
+      "path": "audit/phase6/external/N6-A-10800-fmpy.log",
+      "sha256": "a42326d8a5e59bb0630e4c7027e4e77ac9cc13ba82b5de5cb2ed101a310758c5",
+      "bytes": 203
+    },
+    {
+      "path": "audit/phase6/external/N6-A-10800-harness-900.csv",
+      "sha256": "fb43e61ac3b1db916bb85f7133f21ebc6993d189459aeae37bacc8b360389df0",
+      "bytes": 15427
+    },
+    {
+      "path": "audit/phase6/external/N6-A-7199-fmpy-900.csv",
+      "sha256": "c750ed30cdd9f3f10ecadbc850a4c27081bc763eb942d6ee95c87b6163d79af2",
+      "bytes": 1923
+    },
+    {
+      "path": "audit/phase6/external/N6-A-7199-fmpy.log",
+      "sha256": "968b46a81218233ea3654a5c75fef613a12ece811b400a4c73ce4844fdcbe864",
+      "bytes": 200
+    },
+    {
+      "path": "audit/phase6/external/N6-A-7199-harness-900.csv",
+      "sha256": "4de740fe1367dc4ee15d9c52f9827c77312118f4ba8492bca3823ce23082f0c3",
+      "bytes": 1833
+    },
+    {
+      "path": "audit/phase6/external/N6-A-7200-fmpy-900.csv",
+      "sha256": "5bff3b9194ee133959ae4f3af7068683ca70de957c0a36fc9930d5ad4c6a6e44",
+      "bytes": 1923
+    },
+    {
+      "path": "audit/phase6/external/N6-A-7200-fmpy.log",
+      "sha256": "5fd4a59c34453b021fd58fd0c82ea97c87845eb4d5cd65700c473b28aa5495a1",
+      "bytes": 200
+    },
+    {
+      "path": "audit/phase6/external/N6-A-7200-harness-900.csv",
+      "sha256": "0fcb85a9eb6342d5a2e1a04484610225179230f0cd6a02c0f80492f5697f479c",
+      "bytes": 1833
+    },
+    {
+      "path": "audit/phase6/external/N6-A-7201-fmpy-900.csv",
+      "sha256": "927e8d16dc2665d6468e4b1e58622e36aac4741d33282364d573c33d16ceddd7",
+      "bytes": 2118
+    },
+    {
+      "path": "audit/phase6/external/N6-A-7201-fmpy.log",
+      "sha256": "463bf96acd91c20df5da1ddcea1da5d1d2521e597b724ec86fc66b493e7cc366",
+      "bytes": 201
+    },
+    {
+      "path": "audit/phase6/external/N6-A-7201-harness-900.csv",
+      "sha256": "283a5441956fb11852674c32e0224b596ba53e0cac62d121b750292114f422a2",
+      "bytes": 2018
+    },
+    {
+      "path": "audit/phase6/external/N6-A-9000-fmpy-900.csv",
+      "sha256": "bd6d6398d9b6fbe6456db530d1fe3b65e5ac4a631edd0847c18a8f7a3763c1b9",
+      "bytes": 2313
+    },
+    {
+      "path": "audit/phase6/external/N6-A-9000-fmpy.log",
+      "sha256": "3f27c37c13a1486edb182e8d6ec5e5a60b6e2cc3c93932ca8120f772b88284db",
+      "bytes": 201
+    },
+    {
+      "path": "audit/phase6/external/N6-A-9000-harness-900.csv",
+      "sha256": "c98115f07d31b144519ba1e6d77ef8459eca912a17ff065a79579d7ee775dc3c",
+      "bytes": 2203
+    },
+    {
+      "path": "audit/phase6/manifest.py",
+      "sha256": "6e59e7de3d9491ec8d48aabd5c82cc5105d402d5cecbe45de9be609495d85470",
+      "bytes": 1204
+    },
+    {
+      "path": "audit/phase6/negative-controls/N6-A-10800-after-commit-interrupt.csv",
+      "sha256": "55895d2b384dc2419472978b3319ab4d4bb432bc6219eb728b420c5fa956e5b8",
+      "bytes": 16269
+    },
+    {
+      "path": "audit/phase6/negative-controls/N6-A-10800-missing-restoration.csv",
+      "sha256": "9718d89854d302d7e15b53fea8942d306fcf3b80a5536922e14b3afcc543f508",
+      "bytes": 16309
+    },
+    {
+      "path": "audit/phase6/negative-controls/N6-A-7199-moved-step.csv",
+      "sha256": "98a76dafa9126cc237d9e3af4f3a5fb2116fa072192801ba76709535f5214945",
+      "bytes": 1925
+    },
+    {
+      "path": "audit/phase6/negative-controls/N6-A-7201-step-release.csv",
+      "sha256": "d12382553e0f4262eb42e1ae90ef68feb41ae510395039e0fe9d845c03a25098",
+      "bytes": 2080
+    },
+    {
+      "path": "audit/phase6/negative-controls/N6-A-9000-late-failure.csv",
+      "sha256": "735cfae52337100364e57516da3a0a547ad2dbc832361f89c8a53d6730c0aca8",
+      "bytes": 2317
+    },
+    {
+      "path": "audit/phase6/negative-controls/lifetime-results.json",
+      "sha256": "a330fde909264ce90be7304a18cc9cd772d1167f4d20c3c16746b84adab5fe92",
+      "bytes": 1203
+    },
+    {
+      "path": "audit/phase6/negative_lifetime.py",
+      "sha256": "38024caaeb4ec7549b9152dc0dea6e716cca5bc97788b4808cb34b3f58002b14",
+      "bytes": 3121
+    }
+  ],
+  "tools": {
+    "external_fmu": "external/fmu-n5-scheduler/poie-n5-scheduler.fmu",
+    "external_fmu_sha256": "154b5a2c9f00ff684de9e496685f03f2fbdbc4b454b36f3a0c798d7b6fc6f9fd",
+    "canonical_runner": "poie-s5v-n6-canonical"
+  }
+}
