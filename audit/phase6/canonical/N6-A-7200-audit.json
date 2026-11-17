@@ -1,0 +1,17 @@
+{
+  "case": "N6-A-7200",
+  "failure_s": 7200.000,
+  "failure_applied_s": 7200.000,
+  "resource_acquired_s": 0.0,
+  "resource_release_semantics": "GROUP_LEVEL",
+  "resource_released_s": 7200.000,
+  "step_completed_lathe_s": 7200.0,
+  "step_completed_pump_s": 10800.0,
+  "group_committed_s": null,
+  "repair_interrupted": true,
+  "restoration_committed": false,
+  "restored_targets": [],
+  "termination": "blocked:repair interrupted at 7200s: robot-m1 failed",
+  "survived_s": 7200.000000,
+  "makespan_s": 10800.000000
+}

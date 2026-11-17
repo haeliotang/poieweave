@@ -1,0 +1,238 @@
+{
+  "schema": "poie.s5v-n6a-lifetime-set/1",
+  "cases": [
+    {
+      "schema": "poie.s5v-n6a-lifetime/1",
+      "case": "N6-A-7199",
+      "failure_s": 7199.0,
+      "contract": {
+        "resource_release_semantics": "GROUP_LEVEL",
+        "step_completed_lathe_s": 7200.0,
+        "step_completed_pump_s": 10800.0,
+        "group_commit_s": 10800.0,
+        "step_level_release": "NOT_REPRESENTABLE"
+      },
+      "canonical": {
+        "case": "N6-A-7199",
+        "failure_s": 7199.0,
+        "failure_applied_s": 7199.0,
+        "resource_acquired_s": 0.0,
+        "resource_release_semantics": "GROUP_LEVEL",
+        "resource_released_s": 7199.0,
+        "step_completed_lathe_s": 7200.0,
+        "step_completed_pump_s": 10800.0,
+        "group_committed_s": null,
+        "repair_interrupted": true,
+        "restoration_committed": false,
+        "restored_targets": [],
+        "termination": "blocked:repair interrupted at 7199s: robot-m1 failed",
+        "survived_s": 7199.0,
+        "makespan_s": 10800.0
+      },
+      "external": {
+        "makespan_s": 10800.0,
+        "completed": 0,
+        "interrupted": 1,
+        "failure_applied_s": 7199.0,
+        "group_committed_s": null,
+        "restored": false,
+        "terminal_s": 7199.0,
+        "t1_end_s": 7200.0,
+        "t2_end_s": 10800.0
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "EXPLAINED"
+    },
+    {
+      "schema": "poie.s5v-n6a-lifetime/1",
+      "case": "N6-A-7200",
+      "failure_s": 7200.0,
+      "contract": {
+        "resource_release_semantics": "GROUP_LEVEL",
+        "step_completed_lathe_s": 7200.0,
+        "step_completed_pump_s": 10800.0,
+        "group_commit_s": 10800.0,
+        "step_level_release": "NOT_REPRESENTABLE"
+      },
+      "canonical": {
+        "case": "N6-A-7200",
+        "failure_s": 7200.0,
+        "failure_applied_s": 7200.0,
+        "resource_acquired_s": 0.0,
+        "resource_release_semantics": "GROUP_LEVEL",
+        "resource_released_s": 7200.0,
+        "step_completed_lathe_s": 7200.0,
+        "step_completed_pump_s": 10800.0,
+        "group_committed_s": null,
+        "repair_interrupted": true,
+        "restoration_committed": false,
+        "restored_targets": [],
+        "termination": "blocked:repair interrupted at 7200s: robot-m1 failed",
+        "survived_s": 7200.0,
+        "makespan_s": 10800.0
+      },
+      "external": {
+        "makespan_s": 10800.0,
+        "completed": 0,
+        "interrupted": 1,
+        "failure_applied_s": 7200.0,
+        "group_committed_s": null,
+        "restored": false,
+        "terminal_s": 7200.0,
+        "t1_end_s": 7200.0,
+        "t2_end_s": 10800.0
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "EXPLAINED"
+    },
+    {
+      "schema": "poie.s5v-n6a-lifetime/1",
+      "case": "N6-A-7201",
+      "failure_s": 7201.0,
+      "contract": {
+        "resource_release_semantics": "GROUP_LEVEL",
+        "step_completed_lathe_s": 7200.0,
+        "step_completed_pump_s": 10800.0,
+        "group_commit_s": 10800.0,
+        "step_level_release": "NOT_REPRESENTABLE"
+      },
+      "canonical": {
+        "case": "N6-A-7201",
+        "failure_s": 7201.0,
+        "failure_applied_s": 7201.0,
+        "resource_acquired_s": 0.0,
+        "resource_release_semantics": "GROUP_LEVEL",
+        "resource_released_s": 7201.0,
+        "step_completed_lathe_s": 7200.0,
+        "step_completed_pump_s": 10800.0,
+        "group_committed_s": null,
+        "repair_interrupted": true,
+        "restoration_committed": false,
+        "restored_targets": [],
+        "termination": "blocked:repair interrupted at 7201s: robot-m1 failed",
+        "survived_s": 7201.0,
+        "makespan_s": 10800.0
+      },
+      "external": {
+        "makespan_s": 10800.0,
+        "completed": 0,
+        "interrupted": 1,
+        "failure_applied_s": 7201.0,
+        "group_committed_s": null,
+        "restored": false,
+        "terminal_s": 7201.0,
+        "t1_end_s": 7200.0,
+        "t2_end_s": 10800.0
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "EXPLAINED"
+    },
+    {
+      "schema": "poie.s5v-n6a-lifetime/1",
+      "case": "N6-A-9000",
+      "failure_s": 9000.0,
+      "contract": {
+        "resource_release_semantics": "GROUP_LEVEL",
+        "step_completed_lathe_s": 7200.0,
+        "step_completed_pump_s": 10800.0,
+        "group_commit_s": 10800.0,
+        "step_level_release": "NOT_REPRESENTABLE"
+      },
+      "canonical": {
+        "case": "N6-A-9000",
+        "failure_s": 9000.0,
+        "failure_applied_s": 9000.0,
+        "resource_acquired_s": 0.0,
+        "resource_release_semantics": "GROUP_LEVEL",
+        "resource_released_s": 9000.0,
+        "step_completed_lathe_s": 7200.0,
+        "step_completed_pump_s": 10800.0,
+        "group_committed_s": null,
+        "repair_interrupted": true,
+        "restoration_committed": false,
+        "restored_targets": [],
+        "termination": "blocked:repair interrupted at 9000s: robot-m1 failed",
+        "survived_s": 9000.0,
+        "makespan_s": 10800.0
+      },
+      "external": {
+        "makespan_s": 10800.0,
+        "completed": 0,
+        "interrupted": 1,
+        "failure_applied_s": 9000.0,
+        "group_committed_s": null,
+        "restored": false,
+        "terminal_s": 9000.0,
+        "t1_end_s": 7200.0,
+        "t2_end_s": 10800.0
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "EXPLAINED"
+    },
+    {
+      "schema": "poie.s5v-n6a-lifetime/1",
+      "case": "N6-A-10800",
+      "failure_s": 10800.0,
+      "contract": {
+        "resource_release_semantics": "GROUP_LEVEL",
+        "step_completed_lathe_s": 7200.0,
+        "step_completed_pump_s": 10800.0,
+        "group_commit_s": 10800.0,
+        "step_level_release": "NOT_REPRESENTABLE"
+      },
+      "canonical": {
+        "case": "N6-A-10800",
+        "failure_s": 10800.0,
+        "failure_applied_s": 10800.0,
+        "resource_acquired_s": 0.0,
+        "resource_release_semantics": "GROUP_LEVEL",
+        "resource_released_s": 10800.0,
+        "step_completed_lathe_s": 7200.0,
+        "step_completed_pump_s": 10800.0,
+        "group_committed_s": 10800.0,
+        "repair_interrupted": false,
+        "restoration_committed": true,
+        "restored_targets": [
+          "lathe-1",
+          "pump-p1"
+        ],
+        "termination": "completed",
+        "survived_s": 72000.0,
+        "makespan_s": 10800.0
+      },
+      "external": {
+        "makespan_s": 10800.0,
+        "completed": 2,
+        "interrupted": 0,
+        "failure_applied_s": 10800.0,
+        "group_committed_s": 10800.0,
+        "restored": true,
+        "terminal_s": 72000.0,
+        "t1_end_s": 7200.0,
+        "t2_end_s": 10800.0
+      },
+      "findings": [],
+      "first_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "status": "EXPLAINED"
+    }
+  ]
+}

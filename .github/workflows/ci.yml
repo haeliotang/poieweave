@@ -1532,6 +1532,46 @@ jobs:
           path: ${{ runner.temp }}/s5v-n5/evidence
           if-no-files-found: error
 
+  s5v-n6-linux:
+    name: S5-V N6 resource lifetime Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install independent FMI importer
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Build external scheduler FMU
+        run: external/fmu-n5-scheduler/build.sh
+      - name: Run N6 canonical lifetime audit
+        run: cargo run --locked -q -p poie-viability --bin poie-s5v-n6-canonical
+      - name: Execute external boundary cases
+        run: |
+          for t in 7199 7200 7201 9000 10800; do
+            external/fmu-n5-scheduler/build/harness external/fmu-n5-scheduler/poie-n5-scheduler.fmu 900 1 2 "$t" 1 72000 "audit/phase6/external/N6-A-$t-harness-900.csv"
+            python3 audit/phase5/fmpy_import.py --step 900 --task-mode 1 --robots 2 --failure-time "$t" --failure-robot 1 --stop 72000 --output "audit/phase6/external/N6-A-$t-fmpy-900.csv" --log "audit/phase6/external/N6-A-$t-fmpy.log"
+          done
+      - name: Compare lifetime and run negative controls
+        run: |
+          python3 audit/phase6/compare_lifetime.py
+          python3 audit/phase6/negative_lifetime.py
+          python3 audit/phase6/manifest.py
+          python3 audit/phase6/check.py
+      - name: Save N6-A evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n6/evidence"
+          cp -R audit/phase6/canonical audit/phase6/external audit/phase6/differences audit/phase6/negative-controls "$RUNNER_TEMP/s5v-n6/evidence/"
+          cp audit/phase6/{PREREG.md,SEMANTICS.md,RESOURCE_LIFETIME.md,REPORT.zh-CN.md,manifest.json} "$RUNNER_TEMP/s5v-n6/evidence/"
+          ( cd "$RUNNER_TEMP/s5v-n6/evidence" && sha256sum * > SHA256SUMS.txt 2>/dev/null || true )
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n6-linux-evidence
+          path: ${{ runner.temp }}/s5v-n6/evidence
+          if-no-files-found: error
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest
