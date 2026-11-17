@@ -1,0 +1,161 @@
+{
+  "schema": "poie.s5v-n6d-restoration/1",
+  "records": [
+    {
+      "case": "N6-C-tool-10800",
+      "targets": [
+        {
+          "target_asset": "a-lathe",
+          "asset_status_before": "FAILED",
+          "asset_status_after": "AVAILABLE",
+          "repair_completed_at_s": 10800.0,
+          "restoration_committed_at_s": 10800.0,
+          "resources_released_at_s": 10800.0,
+          "selected_resources": [],
+          "status_source": "DERIVED_FROM_TRACE_COMPLETION"
+        }
+      ],
+      "canonical_restored_targets": [
+        "a-lathe"
+      ],
+      "external_restored_targets": [
+        "a-lathe"
+      ],
+      "restoration_agreement": true,
+      "native_asset_status_export": false,
+      "limitation": "Native Observatory does not export asset status; AC/resource state is derived from commit trace and external restoration flags."
+    },
+    {
+      "case": "N6-C-tool-12000",
+      "targets": [
+        {
+          "target_asset": "a-lathe",
+          "asset_status_before": "FAILED",
+          "asset_status_after": "AVAILABLE",
+          "repair_completed_at_s": 10800.0,
+          "restoration_committed_at_s": 10800.0,
+          "resources_released_at_s": 10800.0,
+          "selected_resources": [],
+          "status_source": "DERIVED_FROM_TRACE_COMPLETION"
+        }
+      ],
+      "canonical_restored_targets": [
+        "a-lathe"
+      ],
+      "external_restored_targets": [
+        "a-lathe"
+      ],
+      "restoration_agreement": true,
+      "native_asset_status_export": false,
+      "limitation": "Native Observatory does not export asset status; AC/resource state is derived from commit trace and external restoration flags."
+    },
+    {
+      "case": "N6-C-bus-10800",
+      "targets": [
+        {
+          "target_asset": "a-lathe",
+          "asset_status_before": "FAILED",
+          "asset_status_after": "AVAILABLE",
+          "repair_completed_at_s": 10800.0,
+          "restoration_committed_at_s": 10800.0,
+          "resources_released_at_s": 10800.0,
+          "selected_resources": [],
+          "status_source": "DERIVED_FROM_TRACE_COMPLETION"
+        }
+      ],
+      "canonical_restored_targets": [
+        "a-lathe"
+      ],
+      "external_restored_targets": [
+        "a-lathe"
+      ],
+      "restoration_agreement": true,
+      "native_asset_status_export": false,
+      "limitation": "Native Observatory does not export asset status; AC/resource state is derived from commit trace and external restoration flags."
+    },
+    {
+      "case": "N6-D-same-10800",
+      "targets": [
+        {
+          "target_asset": "a-lathe",
+          "asset_status_before": "FAILED",
+          "asset_status_after": "AVAILABLE",
+          "repair_completed_at_s": 10800.0,
+          "restoration_committed_at_s": 10800.0,
+          "resources_released_at_s": 10800.0,
+          "selected_resources": [],
+          "status_source": "DERIVED_FROM_TRACE_COMPLETION"
+        },
+        {
+          "target_asset": "b-pump",
+          "asset_status_before": "FAILED",
+          "asset_status_after": "AVAILABLE",
+          "repair_completed_at_s": 10800.0,
+          "restoration_committed_at_s": 10800.0,
+          "resources_released_at_s": 10800.0,
+          "selected_resources": [],
+          "status_source": "DERIVED_FROM_TRACE_COMPLETION"
+        }
+      ],
+      "canonical_restored_targets": [
+        "a-lathe",
+        "b-pump"
+      ],
+      "external_restored_targets": [
+        "a-lathe",
+        "b-pump"
+      ],
+      "restoration_agreement": true,
+      "native_asset_status_export": false,
+      "limitation": "Native Observatory does not export asset status; AC/resource state is derived from commit trace and external restoration flags."
+    },
+    {
+      "case": "N6-D-horizon-completion",
+      "targets": [
+        {
+          "target_asset": "a-lathe",
+          "asset_status_before": "FAILED",
+          "asset_status_after": "AVAILABLE",
+          "repair_completed_at_s": 10800.0,
+          "restoration_committed_at_s": 10800.0,
+          "resources_released_at_s": 10800.0,
+          "selected_resources": [],
+          "status_source": "DERIVED_FROM_TRACE_COMPLETION"
+        }
+      ],
+      "canonical_restored_targets": [
+        "a-lathe"
+      ],
+      "external_restored_targets": [
+        "a-lathe"
+      ],
+      "restoration_agreement": true,
+      "native_asset_status_export": false,
+      "limitation": "Native Observatory does not export asset status; AC/resource state is derived from commit trace and external restoration flags."
+    },
+    {
+      "case": "N6-D-horizon-failure",
+      "targets": [
+        {
+          "target_asset": "a-lathe",
+          "asset_status_before": "FAILED",
+          "asset_status_after": "AVAILABLE",
+          "repair_completed_at_s": 7200.0,
+          "restoration_committed_at_s": 7200.0,
+          "resources_released_at_s": 7200.0,
+          "selected_resources": [],
+          "status_source": "DERIVED_FROM_TRACE_COMPLETION"
+        }
+      ],
+      "canonical_restored_targets": [
+        "a-lathe"
+      ],
+      "external_restored_targets": [
+        "a-lathe"
+      ],
+      "restoration_agreement": true,
+      "native_asset_status_export": false,
+      "limitation": "Native Observatory does not export asset status; AC/resource state is derived from commit trace and external restoration flags."
+    }
+  ]
+}

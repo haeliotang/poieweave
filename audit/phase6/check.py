@@ -61,11 +61,24 @@ def main() -> int:
     scheduling_negatives = json.loads((PHASE / "negative-controls/scheduling-results.json").read_text())
     if not all(entry["detected"] for entry in scheduling_negatives["results"]):
         problems.append("scheduling negative controls")
+    dependencies = json.loads((PHASE / "differences/dependencies.json").read_text())
+    if len(dependencies["cases"]) != 9:
+        problems.append("dependency case count")
+    for entry in dependencies["cases"]:
+        if entry["status"] != "EXPLAINED":
+            problems.append(f"{entry['case']}: dependency status")
+    dependency_negatives = json.loads((PHASE / "negative-controls/dependencies-results.json").read_text())
+    if not all(entry["detected"] for entry in dependency_negatives["results"]):
+        problems.append("dependency negative controls")
+    restoration = json.loads((PHASE / "restoration/restoration-state.json").read_text())
+    if not all(record["restoration_agreement"] for record in restoration["records"]):
+        problems.append("restoration agreement")
     if problems:
         print("N6-A evidence FAIL: " + ", ".join(problems), file=sys.stderr)
         return 1
-    print(f"ok N6-A/B: {len(comparison['cases'])} lifetime boundaries, {len(scheduling['cases'])} scheduling cases, "
-          f"{len(negatives['results']) + len(scheduling_negatives['results'])} negative controls")
+    print(f"ok N6-A/B/C/D: {len(comparison['cases'])} lifetime boundaries, {len(scheduling['cases'])} scheduling cases, "
+          f"{len(dependencies['cases'])} dependency/boundary cases, "
+          f"{len(negatives['results']) + len(scheduling_negatives['results']) + len(dependency_negatives['results'])} negative controls")
     return 0
 
 

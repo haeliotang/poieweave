@@ -9,8 +9,8 @@
     },
     {
       "path": "audit/phase6/REPORT.zh-CN.md",
-      "sha256": "3c52e7545bf460d8da77f2a7d9f9b8a92dc7410af6441e833116e4302a82b04e",
-      "bytes": 3511
+      "sha256": "bfd4d09aee43a05a48d1d92c16b9171c3a7f2d9a703bfcee4bd768d68341e45a",
+      "bytes": 4976
     },
     {
       "path": "audit/phase6/RESOURCE_LIFETIME.md",
@@ -21,6 +21,11 @@
       "path": "audit/phase6/SEMANTICS.md",
       "sha256": "0052d2671d8e5546ed58bd7523e6c56906337271dba80d38ccaa30e927b38473",
       "bytes": 1114
+    },
+    {
+      "path": "audit/phase6/__pycache__/compare_dependencies.cpython-314.pyc",
+      "sha256": "5defb3984167ffebb643ef28eef49287c949fecd6604399620dcc156618dd135",
+      "bytes": 5701
     },
     {
       "path": "audit/phase6/__pycache__/compare_lifetime.cpython-314.pyc",
@@ -188,9 +193,149 @@
       "bytes": 336
     },
     {
+      "path": "audit/phase6/canonical/N6-C-bus-10800-audit.json",
+      "sha256": "1cdb50af2bbc9c0eca96ae1834a7810dc3939fbed9b28668e7c24cf341c620de",
+      "bytes": 323
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-bus-10800-events.csv",
+      "sha256": "9967ddbf93c61c0113f5e2f976bacb954e901919b42b96de6e5ab6ebb8f0247c",
+      "bytes": 140
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-bus-10800-schedule.csv",
+      "sha256": "885e233a2fdb66667c044111747c520c43d4f2ae9a032ba9fc271c31e225600b",
+      "bytes": 55
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-bus-9000-audit.json",
+      "sha256": "f8a4a3209aaf776a9804d0746a0325e6c94b1d20e42e5eaf63bb4160b383a0e2",
+      "bytes": 345
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-bus-9000-events.csv",
+      "sha256": "155e0ac27710b23da82bae714079411b86df40e1200affee600ab63e59b5cc7d",
+      "bytes": 54
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-bus-9000-schedule.csv",
+      "sha256": "885e233a2fdb66667c044111747c520c43d4f2ae9a032ba9fc271c31e225600b",
+      "bytes": 55
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-1-audit.json",
+      "sha256": "33e6cd1104c94e1017cef8a478017344ec6f42b4c419650c75c1c4733813a0a5",
+      "bytes": 336
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-1-events.csv",
+      "sha256": "789ea0cbee5c00a798ade5970786f3446893ddebbf0890e3bc617e287ca8bf63",
+      "bytes": 53
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-1-schedule.csv",
+      "sha256": "ba161647cd1be81257a09943b2f59663818dbf3e5f346004e5e04ef565b0214b",
+      "bytes": 63
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-10800-audit.json",
+      "sha256": "a80488a80724eda6d3bec514f9d752c7412efea7e6c60cf1db79fea111cfa9c8",
+      "bytes": 324
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-10800-events.csv",
+      "sha256": "888b3056927314accf7ea54aea42a80f1eb34a2e77acb06f101c328e261dc129",
+      "bytes": 150
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-10800-schedule.csv",
+      "sha256": "ba161647cd1be81257a09943b2f59663818dbf3e5f346004e5e04ef565b0214b",
+      "bytes": 63
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-12000-audit.json",
+      "sha256": "bd5aca378206c0c5e26ff7a6e401dcdb5664073a5dab136915446371cd79e17a",
+      "bytes": 324
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-12000-events.csv",
+      "sha256": "a2f45c690ac79d5bd1cacdba92e44c085f2d01f27b6eea8df5a96b25777ebe4e",
+      "bytes": 150
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-12000-schedule.csv",
+      "sha256": "ba161647cd1be81257a09943b2f59663818dbf3e5f346004e5e04ef565b0214b",
+      "bytes": 63
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-9000-audit.json",
+      "sha256": "d2901ef5de9894cf87b0150c6dff2f4dcabc3d32df6cbdab4077a300dcf8bc7a",
+      "bytes": 348
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-9000-events.csv",
+      "sha256": "38670ad25d04c012e08d7da4f1f1bb9863c876c155d1a80c904e443c5ec5b693",
+      "bytes": 56
+    },
+    {
+      "path": "audit/phase6/canonical/N6-C-tool-9000-schedule.csv",
+      "sha256": "ba161647cd1be81257a09943b2f59663818dbf3e5f346004e5e04ef565b0214b",
+      "bytes": 63
+    },
+    {
+      "path": "audit/phase6/canonical/N6-D-horizon-completion-audit.json",
+      "sha256": "0ea3040ee79fff28fec5ef704efe5297e278f26269be404933526eccd53c1ade",
+      "bytes": 328
+    },
+    {
+      "path": "audit/phase6/canonical/N6-D-horizon-completion-events.csv",
+      "sha256": "9839c9fb38f21b6d161b50f06b26372b59394acd8c0b57f8048a145ec008e2ff",
+      "bytes": 111
+    },
+    {
+      "path": "audit/phase6/canonical/N6-D-horizon-completion-schedule.csv",
+      "sha256": "885e233a2fdb66667c044111747c520c43d4f2ae9a032ba9fc271c31e225600b",
+      "bytes": 55
+    },
+    {
+      "path": "audit/phase6/canonical/N6-D-horizon-failure-audit.json",
+      "sha256": "92c9b5267c3c9a54e31fc174501fc1d3002bf2446bc086cb98e6f81620ceda3f",
+      "bytes": 323
+    },
+    {
+      "path": "audit/phase6/canonical/N6-D-horizon-failure-events.csv",
+      "sha256": "46c709792a6e728f8821a62ffa850f93b80651243b7ba0e83f9f4af5a4dccc83",
+      "bytes": 110
+    },
+    {
+      "path": "audit/phase6/canonical/N6-D-horizon-failure-schedule.csv",
+      "sha256": "7b2f1fcbe5660360edd77d2d2d04c058ec8d6ac21f62eb9ea14a049c003dd1d4",
+      "bytes": 54
+    },
+    {
+      "path": "audit/phase6/canonical/N6-D-same-10800-audit.json",
+      "sha256": "07b0a0651cea6814ca908f668b64570fcc10b0d71e88e7ea40655b58f994d22a",
+      "bytes": 334
+    },
+    {
+      "path": "audit/phase6/canonical/N6-D-same-10800-events.csv",
+      "sha256": "31b0dfb9d4f0480de9741e23ec7235572a7663b422e9fef0e303cdf79340bef1",
+      "bytes": 173
+    },
+    {
+      "path": "audit/phase6/canonical/N6-D-same-10800-schedule.csv",
+      "sha256": "12d1dea3911b96f8c76106387afa55c271046c74304bbb7c125beab4d44baa34",
+      "bytes": 85
+    },
+    {
       "path": "audit/phase6/check.py",
-      "sha256": "193c3664d38ff4e4bcc3b48f6ab882a98535cefc82ec5d5fcdece643136ec4fe",
-      "bytes": 3569
+      "sha256": "73784bf6cbc6b655dd60dc884183b1140f139eb6089e815bef33dc1875253774",
+      "bytes": 4473
+    },
+    {
+      "path": "audit/phase6/compare_dependencies.py",
+      "sha256": "2fdd02734d41c91a101c97f2c4472ffb0b452e798542e8ef45714edeefa016da",
+      "bytes": 3718
     },
     {
       "path": "audit/phase6/compare_lifetime.py",
@@ -243,9 +388,59 @@
       "bytes": 271
     },
     {
+      "path": "audit/phase6/contracts/N6-C-bus-10800.contract",
+      "sha256": "b00b0b86809beb18315c9cacb0bd11db155249f6f6eded4d661a777d407fcdee",
+      "bytes": 271
+    },
+    {
+      "path": "audit/phase6/contracts/N6-C-bus-9000.contract",
+      "sha256": "8d5167f4adc589068b62c7c0f9634994d360d038e3c115f67f4b7a78081b1a92",
+      "bytes": 270
+    },
+    {
+      "path": "audit/phase6/contracts/N6-C-tool-1.contract",
+      "sha256": "080346ec1a242bc11fc44c8dd70e736b60b92de7fb8a92717a8f9ac379e0fc59",
+      "bytes": 267
+    },
+    {
+      "path": "audit/phase6/contracts/N6-C-tool-10800.contract",
+      "sha256": "dd1d7189258f7211cc13b35f410f76db89174478587f75ed4686b6ad93a56ed9",
+      "bytes": 271
+    },
+    {
+      "path": "audit/phase6/contracts/N6-C-tool-12000.contract",
+      "sha256": "241fb4d813598fb7b33fc2429e2a79d97933dd90432388f5744f67c6b1cefc3b",
+      "bytes": 271
+    },
+    {
+      "path": "audit/phase6/contracts/N6-C-tool-9000.contract",
+      "sha256": "ac7603edff46784317a2659f0c56469276712ad1a88cdc17d2358c7df09f8d38",
+      "bytes": 270
+    },
+    {
+      "path": "audit/phase6/contracts/N6-D-horizon-completion.contract",
+      "sha256": "b0e7e0a2e411a0890ff5d725f30e04612817501d58e921f22060aa02248e0e56",
+      "bytes": 271
+    },
+    {
+      "path": "audit/phase6/contracts/N6-D-horizon-failure.contract",
+      "sha256": "a5646691a4abd8ff2223983184c8e63546e670a52737f3d2262d5595531e5432",
+      "bytes": 270
+    },
+    {
+      "path": "audit/phase6/contracts/N6-D-same-10800.contract",
+      "sha256": "5ff2bf484be1a866fcca88bc2fb4ebeb4b8c8fcd331f0b27f8368474e30b5edb",
+      "bytes": 274
+    },
+    {
       "path": "audit/phase6/contracts/default.contract",
       "sha256": "eaae9153dd79400bbf99fdc658f71b13b30f901abad4ecfc364aa1e0c328814a",
       "bytes": 271
+    },
+    {
+      "path": "audit/phase6/differences/dependencies.json",
+      "sha256": "42fdae8cdf284101880c11d91946b1b5f30b154857b80fa0d87f5135b5c93b2e",
+      "bytes": 12964
     },
     {
       "path": "audit/phase6/differences/resource-lifetime.json",
@@ -453,6 +648,141 @@
       "bytes": 22669
     },
     {
+      "path": "audit/phase6/external/N6-C-bus-10800-fmpy-900.csv",
+      "sha256": "a8acea0560ce8e4fb6feb40065136719e26af0346b540c633c5bc87a84088229",
+      "bytes": 23200
+    },
+    {
+      "path": "audit/phase6/external/N6-C-bus-10800-fmpy.log",
+      "sha256": "9821968a4e87cb6f9410f7b258a2707e6eb0780edaeba60be327af069eb49dfc",
+      "bytes": 177
+    },
+    {
+      "path": "audit/phase6/external/N6-C-bus-10800-harness-900.csv",
+      "sha256": "8f39206aadc585876351f4a1c96da117f155f36319ade341b0e1e1d9eb28764f",
+      "bytes": 22390
+    },
+    {
+      "path": "audit/phase6/external/N6-C-bus-9000-fmpy-900.csv",
+      "sha256": "dc573d173f8c06f409ebd5d625ae92af712c3f31b0dcbe272374bfa5c3faebbc",
+      "bytes": 3325
+    },
+    {
+      "path": "audit/phase6/external/N6-C-bus-9000-fmpy.log",
+      "sha256": "a762e19fe02665528462a503e273f416d62f5b2d02d7698c1a161530ed79f694",
+      "bytes": 176
+    },
+    {
+      "path": "audit/phase6/external/N6-C-bus-9000-harness-900.csv",
+      "sha256": "672b5f5cf45ac3e9282736ad326ff2856649ef8c452097b0be2c8ae2e0ef60f2",
+      "bytes": 3215
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-1-fmpy-900.csv",
+      "sha256": "167c78ba3ec41f9f2c03f9ff7337298e327eaa660a7e02370244017a2dfae253",
+      "bytes": 797
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-1-fmpy.log",
+      "sha256": "16cdf73981f00624da87cdeb5a0470d5afe2ba307364c1bacb17acad4ca1c7aa",
+      "bytes": 172
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-1-harness-900.csv",
+      "sha256": "fdbd17d9a435f9f4c3a8ea85649f1e5470d05cb2cb37a3533b110d7c05c657a3",
+      "bytes": 777
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-10800-fmpy-900.csv",
+      "sha256": "000e3c5c9ab73be46b87543b5032e74b799c25109791f57599e1418f006a9fea",
+      "bytes": 23476
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-10800-fmpy.log",
+      "sha256": "9821968a4e87cb6f9410f7b258a2707e6eb0780edaeba60be327af069eb49dfc",
+      "bytes": 177
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-10800-harness-900.csv",
+      "sha256": "70136235741bff7e6d12f549b8b14142ecbe9806ba85883ec7dda5c02d40d2df",
+      "bytes": 22666
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-12000-fmpy-900.csv",
+      "sha256": "f95c8086207c1064a7d92bd328543504b36b98971555f82910b3816f540dfcd0",
+      "bytes": 23462
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-12000-fmpy.log",
+      "sha256": "9821968a4e87cb6f9410f7b258a2707e6eb0780edaeba60be327af069eb49dfc",
+      "bytes": 177
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-12000-harness-900.csv",
+      "sha256": "908139ed51cee9baf63b14f9830fbbae35fed376b954a7b0b5713401f139bbcb",
+      "bytes": 22652
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-9000-fmpy-900.csv",
+      "sha256": "2a540e2249b764a85277969206cc30597300af56dde6dc9be49d00de28f34ab1",
+      "bytes": 3328
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-9000-fmpy.log",
+      "sha256": "a762e19fe02665528462a503e273f416d62f5b2d02d7698c1a161530ed79f694",
+      "bytes": 176
+    },
+    {
+      "path": "audit/phase6/external/N6-C-tool-9000-harness-900.csv",
+      "sha256": "f138a8a9b898cad945f756a46952de41fe6ed14f06001b6c4e004a3f9f876718",
+      "bytes": 3218
+    },
+    {
+      "path": "audit/phase6/external/N6-D-horizon-completion-fmpy-900.csv",
+      "sha256": "563b03e4f37993fd31ae841f9c47c3cb65a0f6b8b8cb320ac977ebeb8e00ab34",
+      "bytes": 3885
+    },
+    {
+      "path": "audit/phase6/external/N6-D-horizon-completion-fmpy.log",
+      "sha256": "2e44e71659a9ec07c40073500fe75a11aef5ed3e1ab93e0c014af5f4ad8420c0",
+      "bytes": 177
+    },
+    {
+      "path": "audit/phase6/external/N6-D-horizon-completion-harness-900.csv",
+      "sha256": "d9ab5cedddaffc2ba644a9c307d9b7428e0ebeef920d35b69b5461b720448ceb",
+      "bytes": 3755
+    },
+    {
+      "path": "audit/phase6/external/N6-D-horizon-failure-fmpy-900.csv",
+      "sha256": "36619a30154c4570bb3774cde374a55f144fcb7ff84d6e2a14dd6b3ba7028885",
+      "bytes": 3846
+    },
+    {
+      "path": "audit/phase6/external/N6-D-horizon-failure-fmpy.log",
+      "sha256": "fc33c7f33586eaaf4d8fb89ffc669111c18bf1296aaf93ccce6b71e267369676",
+      "bytes": 176
+    },
+    {
+      "path": "audit/phase6/external/N6-D-horizon-failure-harness-900.csv",
+      "sha256": "8396ec588de197bbef707494d35833c3d267d10fe5f02e75f7401816ba917e55",
+      "bytes": 3716
+    },
+    {
+      "path": "audit/phase6/external/N6-D-same-10800-fmpy-900.csv",
+      "sha256": "1f50ac61b83d1df28618bac0db9b95e22604d10740f4c0fa5a863afd32f09d88",
+      "bytes": 23443
+    },
+    {
+      "path": "audit/phase6/external/N6-D-same-10800-fmpy.log",
+      "sha256": "89b308f084d96bb35989030167f993efcbbd72680b949db563204c57c52587fa",
+      "bytes": 177
+    },
+    {
+      "path": "audit/phase6/external/N6-D-same-10800-harness-900.csv",
+      "sha256": "697bce2fbe88a72f5c8e08388a8f36a0a0866bd95f99cf99a649820221d743cd",
+      "bytes": 22633
+    },
+    {
       "path": "audit/phase6/external/default-fmpy.csv",
       "sha256": "bfec23bca71998d4f4319e27612b9d238d0d573a4d3047b49d640257e0e98948",
       "bytes": 23236
@@ -528,6 +858,41 @@
       "bytes": 23550
     },
     {
+      "path": "audit/phase6/negative-controls/N6-C-bus-9000-ignored.csv",
+      "sha256": "bd2493cad9c3d32627178b62930b9380500d61f38966132c534ae953a686cb3e",
+      "bytes": 3307
+    },
+    {
+      "path": "audit/phase6/negative-controls/N6-C-tool-10800-interrupted.csv",
+      "sha256": "f2a7453a3a572b47407524afe813057686b1a6d37dd8c80b9989a5a06303919b",
+      "bytes": 23528
+    },
+    {
+      "path": "audit/phase6/negative-controls/N6-C-tool-10800-missing-restoration.csv",
+      "sha256": "35feb1e6c4f1b6e5636476303b1b8564fc8af241d01e5afd5ab7775923b5fabb",
+      "bytes": 23548
+    },
+    {
+      "path": "audit/phase6/negative-controls/N6-C-tool-9000-ignored.csv",
+      "sha256": "f9b83a048577d83c84136b1d090ab8f5d7fa3dd6c78f95b32cf92ae3672acc62",
+      "bytes": 3310
+    },
+    {
+      "path": "audit/phase6/negative-controls/N6-D-horizon-accepted-failure.csv",
+      "sha256": "f1eed65aa1176bc69de6c52fb9d723d782cbe6638b6d6c70c4d1eca4b0066402",
+      "bytes": 3894
+    },
+    {
+      "path": "audit/phase6/negative-controls/N6-D-same-order-reversed.csv",
+      "sha256": "bb600ad6c03237912c4622fc95b22a8bdf509871e0f1b1f5c190475e87b3aba3",
+      "bytes": 23495
+    },
+    {
+      "path": "audit/phase6/negative-controls/dependencies-results.json",
+      "sha256": "1b57b3bb06c7db6d898ed80378fd344d90a09369d858a008a29d8b387a54a546",
+      "bytes": 1446
+    },
+    {
       "path": "audit/phase6/negative-controls/lifetime-results.json",
       "sha256": "a330fde909264ce90be7304a18cc9cd772d1167f4d20c3c16746b84adab5fe92",
       "bytes": 1203
@@ -538,6 +903,11 @@
       "bytes": 1131
     },
     {
+      "path": "audit/phase6/negative_dependencies.py",
+      "sha256": "13e9cb7e7b0fc2939e0e682eb2e22b8e3450788b13ccbd7f564184d2b6bcd376",
+      "bytes": 3095
+    },
+    {
       "path": "audit/phase6/negative_lifetime.py",
       "sha256": "38024caaeb4ec7549b9152dc0dea6e716cca5bc97788b4808cb34b3f58002b14",
       "bytes": 3121
@@ -546,14 +916,24 @@
       "path": "audit/phase6/negative_scheduling.py",
       "sha256": "32713f6d92064cd9eceabddd6f492c6054364e7252114001976a6d53d4ef242e",
       "bytes": 2873
+    },
+    {
+      "path": "audit/phase6/restoration/restoration-state.json",
+      "sha256": "5054d840d324f9c3fbcf180afa36411f9bb36afcacd9d6d6830734315cd4c860",
+      "bytes": 5360
+    },
+    {
+      "path": "audit/phase6/restoration_evidence.py",
+      "sha256": "0e0313f36fd8b27315df91924c06d068c13691f235acc410034cede2e28d320d",
+      "bytes": 2507
     }
   ],
   "tools": {
     "external_fmu": "external/fmu-n5-scheduler/poie-n5-scheduler.fmu",
     "external_fmu_sha256": "154b5a2c9f00ff684de9e496685f03f2fbdbc4b454b36f3a0c798d7b6fc6f9fd",
     "n6_fmu": "external/fmu-n6-scheduler/poie-n6-scheduler.fmu",
-    "n6_fmu_sha256": "2f9f21d18fa94284e75419f40ad735d1f9810215df7a6ecfa0433b624fa2ab6a",
-    "n6_model_source_sha256": "1c8e8db941d5e243824c82c0955e4352147dac478f7937b62b344190ea9c9227",
+    "n6_fmu_sha256": "090fbe76590b44b312bc83eb382929ce24df698a8977da81b68419c7b581860d",
+    "n6_model_source_sha256": "e59d74bbec05d30b51c11dc6f42f3c323a2aca0f8f46a518cb8a76d1f3b620da",
     "canonical_runner": "poie-s5v-n6-canonical"
   }
 }

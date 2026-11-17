@@ -172,11 +172,36 @@ fmi3Status fmi3DoStep(fmi3Instance i, fmi3Float64 current, fmi3Float64 step, fmi
         if (x->completed < 0.5 && x->makespan > x->time + 1e-9 && x->makespan < boundary) boundary = x->makespan;
         fmi3Float64 piece = boundary - x->time;
         x->time += piece; remaining -= piece;
+        int completion_due = x->completed < 0.5 && x->time >= x->makespan - 1e-9;
+        /* Horizon boundary wins over exogenous events at the same timestamp;
+           canonical processes completion before the horizon check. */
+        if (x->time >= x->horizon - 1e-9) {
+            if (completion_due) {
+                int n = (int)x->task_count; if (n < 0) n = 0; if (n > MAXT) n = MAXT;
+                x->completed = n;
+                for (int t = 0; t < n; ++t) x->restored[t] = 1;
+                x->release = x->makespan; x->last_event = 2;
+            }
+            x->last_event = 5;
+            if (term) *term = true; if (last) *last = x->horizon;
+            return fmi3OK;
+        }
+        /* Completion at makespan is processed before a same-timestamp failure. */
+        if (completion_due) {
+            int n = (int)x->task_count; if (n < 0) n = 0; if (n > MAXT) n = MAXT;
+            x->completed = n;
+            for (int t = 0; t < n; ++t) x->restored[t] = 1;
+            x->release = x->makespan; x->last_event = 2;
+        }
         if (x->fail_time >= 0 && x->fail_applied < 0 && x->time >= x->fail_time - 1e-9) {
             x->fail_applied = x->fail_time; x->last_event = 4;
             int hit = 0;
             if ((int)x->fail_kind == 1) hit = selected_robot(x, (int)x->fail_index);
             else if ((int)x->fail_kind == 2) { x->tool_available = 0; x->tool_fail_applied = x->fail_time; hit = uses_tool(x); }
+            else if ((int)x->fail_kind == 3) {
+                /* upstream dependency of any selected robot */
+                for (int t = 0; t < MAXT; ++t) if (x->robot[t] > 0) hit = 1;
+            }
             if (hit && x->fail_time < x->makespan - 1e-9) {
                 x->interrupted = 1; x->completed = 0;
                 for (int t = 0; t < MAXT; ++t) x->restored[t] = 0;
@@ -184,12 +209,6 @@ fmi3Status fmi3DoStep(fmi3Instance i, fmi3Float64 current, fmi3Float64 step, fmi
                 if (term) *term = true; if (last) *last = x->fail_time;
                 return fmi3OK;
             }
-        }
-        if (x->completed < 0.5 && x->time >= x->makespan - 1e-9) {
-            int n = (int)x->task_count; if (n < 0) n = 0; if (n > MAXT) n = MAXT;
-            x->completed = n;
-            for (int t = 0; t < n; ++t) x->restored[t] = 1;
-            x->release = x->makespan; x->last_event = 2;
         }
         if (x->time >= x->horizon - 1e-9) {
             x->last_event = 5;
