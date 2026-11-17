@@ -1701,6 +1701,47 @@ jobs:
           name: s5v-n8-linux-evidence
           path: ${{ runner.temp }}/s5v-n8/evidence
 
+  s5v-n8h-linux:
+    name: S5-V N8-H temporal alignment and trajectory evidence Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install independent FMI importer
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Verify frozen N8-H evidence before re-execution
+        run: python3 audit/phase8h/check.py
+      - name: Reproduce false passes
+        run: python3 audit/phase8h/reproduce_false_pass.py
+      - name: Build N4 FMUs and run exact-schedule importer
+        run: |
+          external/fmu-n4-pv-battery/build.sh
+          external/fmu-n4-repair/build.sh
+          python3 audit/phase8h/fmpy_schedule.py --kind pv --schedule 0,3600,7200,10800,14400 --step 900 --failure 7200 --output audit/phase8h/external/N8H-N8-01.csv --log audit/phase8h/external/N8H-N8-01.log --metadata audit/phase8h/external/N8H-N8-01.meta.json
+          python3 audit/phase8h/fmpy_schedule.py --kind pv --schedule 0,3600,4500,7200,10800,14400 --step 1000 --failure 4500 --output audit/phase8h/external/N8H-N8-02.csv --log audit/phase8h/external/N8H-N8-02.log --metadata audit/phase8h/external/N8H-N8-02.meta.json
+          python3 audit/phase8h/fmpy_schedule.py --kind repair --schedule 0,3600,7200 --step 900 --robot-failure 7200 --output audit/phase8h/external/N8H-N8-04.csv --log audit/phase8h/external/N8H-N8-04.log --metadata audit/phase8h/external/N8H-N8-04.meta.json
+      - name: Strict comparator and adversarial controls
+        run: |
+          python3 audit/phase8h/compare_strict.py
+          python3 audit/phase8h/negative_controls.py
+          python3 audit/phase8h/check.py
+      - name: Save N8-H evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n8h/evidence"
+          cp -R audit/phase8h/external audit/phase8h/comparisons audit/phase8h/negative-controls "$RUNNER_TEMP/s5v-n8h/evidence/"
+          cp audit/phase8h/{PREREG.md,SEMANTICS.md,REPORT.zh-CN.md,EVIDENCE.md,old-evidence.json,false-pass.json,manifest.json} "$RUNNER_TEMP/s5v-n8h/evidence/"
+          python3 audit/phase8h/execution_manifest.py --output "$RUNNER_TEMP/s5v-n8h/evidence/execution-manifest.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n8h-linux-evidence
+          path: ${{ runner.temp }}/s5v-n8h/evidence
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest

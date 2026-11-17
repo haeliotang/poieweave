@@ -1,0 +1,34 @@
+{
+  "schema": "poie.s5v-n8h-old-evidence/1",
+  "baseline": "c038ba82bc09dc7d15c1734b7a9bcbf9ed65d284",
+  "files": [
+    {
+      "path": "audit/phase8/compare_trajectory.py",
+      "sha256": "b0312da8a8071eaa4e351a6397fd6214f624fe21d2b3da0c34479858a7fd23f7"
+    },
+    {
+      "path": "audit/phase8/trajectory-comparisons/trajectories.json",
+      "sha256": "7577bb59ae857276b64a71d155bf109bb8f48aa48539bc9fff95e0df211f989f"
+    },
+    {
+      "path": "audit/phase8/external/N8-01-fmpy-900.csv",
+      "sha256": "87a9d6820dda082d0de52f92da21a506e62e5ef5b0dd13fbc771d6939a95bc34"
+    },
+    {
+      "path": "audit/phase8/external/N8-02-fmpy-1000.csv",
+      "sha256": "7a854ffb105e2fe818b2cb5b9868bdd83075bbecfa22bae02581c3953db95f86"
+    },
+    {
+      "path": "audit/phase8/external/N8-04-fmpy-900.csv",
+      "sha256": "e5709187a75a9311de3293021175e0a56e4f41fd8e2d94fa2ef9770bf912c801"
+    },
+    {
+      "path": "audit/phase4/canonical/N4-02-observations.csv",
+      "sha256": "a59e13cf98143f3bc2af26b60f655eedda86bcca2dddbbc7b149bb3b9a4130dd"
+    },
+    {
+      "path": "audit/phase4/canonical/N4-05-observations.csv",
+      "sha256": "e467522c0f48a4db3a4fd6155ea7094f5602c4ad78b4b23392b3e3029222d73c"
+    }
+  ]
+}

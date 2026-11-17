@@ -1,0 +1,5 @@
+fmpy_version=0.3.32
+fmu_sha256=0b7d1c11a409faf4091ad5440344ef45746b0d72e48c3c1a68d4d2991f27cfae
+rows=3
+nominal_step_s=900.0
+schedule=[0.0, 3600.0, 7200.0]

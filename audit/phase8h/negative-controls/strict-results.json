@@ -1,0 +1,64 @@
+{
+  "schema": "poie.s5v-n8h-strict-controls/1",
+  "results": [
+    {
+      "control": "nearest-neighbor-14400-to-14000",
+      "expected": "TIME_ALIGNMENT_MISMATCH",
+      "detected": true,
+      "classes": [
+        "TIME_ALIGNMENT_MISMATCH"
+      ]
+    },
+    {
+      "control": "nearest-neighbor-4500-to-4000",
+      "expected": "TIME_ALIGNMENT_MISMATCH",
+      "detected": true,
+      "classes": [
+        "TIME_ALIGNMENT_MISMATCH"
+      ]
+    },
+    {
+      "control": "post-termination-zero-as-observed",
+      "expected": "UNOBSERVABLE_SAMPLE_USED",
+      "detected": true,
+      "classes": [
+        "ENERGY_CONSERVATION",
+        "UNOBSERVABLE_SAMPLE_USED"
+      ]
+    },
+    {
+      "control": "n8-02-step-1000-declared-900",
+      "expected": "EXECUTION_METADATA_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_METADATA_MISMATCH"
+      ]
+    },
+    {
+      "control": "post-completion-extra-100kj",
+      "expected": "UNEXPLAINED_RESIDUAL",
+      "detected": true,
+      "classes": [
+        "ENERGY_CONSERVATION",
+        "UNEXPLAINED_RESIDUAL"
+      ]
+    },
+    {
+      "control": "pv-generation-after-failure",
+      "expected": "STATE_CONTRACT_FAILURE",
+      "detected": true,
+      "classes": [
+        "ENERGY_CONSERVATION",
+        "STATE_CONTRACT_FAILURE"
+      ]
+    },
+    {
+      "control": "same-time-event-order-swap",
+      "expected": "EVENT_ORDER_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EVENT_ORDER_MISMATCH"
+      ]
+    }
+  ]
+}
