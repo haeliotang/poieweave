@@ -131,6 +131,18 @@
       }
     },
     {
+      "control": "same-time-event-order-swap",
+      "expected": "EVENT_ORDER_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EVENT_ORDER_MISMATCH"
+      ],
+      "contracts": {
+        "canonical": false,
+        "external": true
+      }
+    },
+    {
       "control": "both-models-invalid",
       "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
       "detected": true,

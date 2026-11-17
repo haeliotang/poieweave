@@ -27,7 +27,7 @@
   ],
   "native_resource_observatory": {
     "path": "audit/phase9/manifest.json",
-    "sha256": "b696c40962a32eb149c05ff929b315bba4616314061da24abba533c0e678f347"
+    "sha256": "d60da8b374454afbc4e5de612d987c491b9e54673fe821adc96639ddda5717c2"
   },
   "predecessor": {
     "path": "experiments/certificate-canonical-c81-v4/certificate.json",

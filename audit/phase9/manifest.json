@@ -22,9 +22,9 @@
       "sha256": "f601811dadc979580d912ddb0b066c984317425d8d0b1e7722765a09819b2050"
     },
     {
-      "bytes": 4053,
+      "bytes": 4085,
       "path": "audit/phase9/REPORT.zh-CN.md",
-      "sha256": "4283a8c7210cda9723257f5ff5ddf36fde67b4efeba1d16cbd4e83e9c33b440b"
+      "sha256": "68ea9f3bc2adb5ceb00aec0bf6ac83f3e1e9b7656adac2034cb048c61ed97598"
     },
     {
       "bytes": 1274,
@@ -117,9 +117,9 @@
       "sha256": "4a9f3039b6338f8807b83f6ca820239881410e8f004383777da3ffd6a48cbe22"
     },
     {
-      "bytes": 12405,
+      "bytes": 12654,
       "path": "audit/phase9/compare_resource.py",
-      "sha256": "d880c547e506a1ba2b7d694989dff696ee2955186dab0690c3ebf0d2f515ac31"
+      "sha256": "c618ad7c7b1d0afaa9ffa5a6dab2b36a3f4adbe1b54ff45bdc3c17e19099044c"
     },
     {
       "bytes": 16001,
@@ -292,9 +292,9 @@
       "sha256": "bf3e6ec1a0a1afd5bfd0760db73df51c57fef18dec6ed6d2acb36876d984d51e"
     },
     {
-      "bytes": 3505,
+      "bytes": 3772,
       "path": "audit/phase9/negative-controls/resource-results.json",
-      "sha256": "8ac681af8d018c159e5b8443238566798016360e15aa36a0fc95812574917ad9"
+      "sha256": "9edf5be8acf399d1d5a704fe44a465c970111455c07f87b0a693158a0a32abf8"
     },
     {
       "bytes": 2872,
@@ -302,9 +302,9 @@
       "sha256": "5f719c47d1f5dc7414b2e70628bf740eed43a11e4878e8311d373d0e26145fe1"
     },
     {
-      "bytes": 4072,
+      "bytes": 4853,
       "path": "audit/phase9/negative_resources.py",
-      "sha256": "e7d479e0983fbc8358f389f07425943f55bae6c11047ee9750b9afd19ef2198b"
+      "sha256": "d16de7dc6be64c04e86fa43be9fec4e63899fa79c894c01f36705aeaf320bdd6"
     },
     {
       "bytes": 855,
