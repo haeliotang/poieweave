@@ -20,10 +20,10 @@ fn label(term: &EngineTermination) -> String {
         EngineTermination::IncompleteAtHorizon(reason) => format!("incomplete:{reason}"),
     }
 }
-fn options(failures: Vec<FailureEvent>) -> EngineOptions<'static> {
+fn options(failures: Vec<FailureEvent>, horizon_s: f64) -> EngineOptions<'static> {
     EngineOptions {
         services: vec!["potable-water", "workshop-operability"],
-        horizon_s: 20.0 * 3600.0,
+        horizon_s,
         failures,
         resupplies: Vec::new(),
         resources: vec!["robot-m1".into(), "lathe-1".into()],
@@ -39,6 +39,8 @@ fn main() {
         (
             "N7-00",
             Vec::new(),
+            20.0 * 3600.0,
+            false,
             vec![
                 (0.0, ObservationPhase::After),
                 (3600.0, ObservationPhase::After),
@@ -48,22 +50,110 @@ fn main() {
                 (14400.0, ObservationPhase::After),
             ],
         ),
+        ("N7-01", Vec::new(), 20.0 * 3600.0, false, vec![(0.0, ObservationPhase::After)]),
+        (
+            "N7-02",
+            Vec::new(),
+            20.0 * 3600.0,
+            false,
+            vec![(10800.0, ObservationPhase::Before), (10800.0, ObservationPhase::After)],
+        ),
         (
             "N7-03",
             vec![FailureEvent { at_s: 7200.0, asset: "robot-m1".into() }],
+            20.0 * 3600.0,
+            false,
             vec![
                 (7200.0, ObservationPhase::Before),
                 (7200.0, ObservationPhase::After),
                 (20000.0, ObservationPhase::After),
             ],
         ),
+        (
+            "N7-04",
+            vec![FailureEvent { at_s: 3600.0, asset: "lathe-1".into() }],
+            20.0 * 3600.0,
+            false,
+            vec![
+                (3600.0, ObservationPhase::Before),
+                (3600.0, ObservationPhase::After),
+                (10800.0, ObservationPhase::After),
+            ],
+        ),
+        (
+            "N7-06",
+            vec![FailureEvent { at_s: 3600.0, asset: "bus-1".into() }],
+            20.0 * 3600.0,
+            false,
+            vec![(3600.0, ObservationPhase::Before), (3600.0, ObservationPhase::After)],
+        ),
+        (
+            "N7-07",
+            vec![FailureEvent { at_s: 10800.0, asset: "robot-m1".into() }],
+            20.0 * 3600.0,
+            false,
+            vec![
+                (10800.0, ObservationPhase::Before),
+                (10800.0, ObservationPhase::After),
+                (10800.0, ObservationPhase::After),
+                (10800.0, ObservationPhase::After),
+                (10800.001, ObservationPhase::After),
+            ],
+        ),
+        (
+            "N7-08",
+            Vec::new(),
+            10800.0,
+            false,
+            vec![(10800.0, ObservationPhase::Before), (10800.0, ObservationPhase::After)],
+        ),
+        (
+            "N7-09",
+            vec![FailureEvent { at_s: 10800.0, asset: "robot-m1".into() }],
+            10800.0,
+            false,
+            vec![(10800.0, ObservationPhase::Before), (10800.0, ObservationPhase::After)],
+        ),
+        (
+            "N7-10",
+            vec![FailureEvent { at_s: 7200.0, asset: "robot-m1".into() }],
+            20.0 * 3600.0,
+            false,
+            vec![(7200.0, ObservationPhase::After), (20000.0, ObservationPhase::After)],
+        ),
+        (
+            "N7-11",
+            vec![
+                FailureEvent { at_s: 3600.0, asset: "robot-m1".into() },
+                FailureEvent { at_s: 7200.0, asset: "lathe-1".into() },
+            ],
+            20.0 * 3600.0,
+            false,
+            vec![(3600.0, ObservationPhase::After), (7200.0, ObservationPhase::After)],
+        ),
+        ("N7-12", Vec::new(), 20.0 * 3600.0, true, vec![(0.0, ObservationPhase::After)]),
+        (
+            "N7-13",
+            Vec::new(),
+            20.0 * 3600.0,
+            false,
+            vec![
+                (3600.0, ObservationPhase::After),
+                (3600.0, ObservationPhase::After),
+                (10800.0, ObservationPhase::Before),
+                (10800.0, ObservationPhase::After),
+            ],
+        ),
     ];
     let mut rows =
         String::from("case\tat_s\tphase\tstatus\tasset_id\tasset_status\tstatus_source\trunning_repair\ttermination\n");
     let mut summaries = Vec::new();
-    for (case, failures, samples) in cases {
-        let model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
-        let opts = options(failures);
+    for (case, failures, horizon, unknown_asset, samples) in cases {
+        let mut model = Model::load(&root().join("scenarios/base-08/model.toml")).unwrap();
+        if unknown_asset {
+            model.assets.get_mut("lathe-1").unwrap().status = AssetStatus::Unknown;
+        }
+        let opts = options(failures, horizon);
         let requests: Vec<ObservationRequest> =
             samples.into_iter().map(|(at_s, phase)| ObservationRequest { at_s, phase }).collect();
         let direct = run_engine(&model, &opts).unwrap();

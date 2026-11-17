@@ -46,6 +46,18 @@ def main() -> int:
     pump_interrupted = key.get(("N7-03", "7200.000", "After", "pump-p1"))
     if not pump_interrupted or pump_interrupted["asset_status"] != "Degraded":
         problems.append("interruption target status")
+    post_batch = key.get(("N7-07", "10800.001", "After", "robot-m1"))
+    if not post_batch or post_batch["asset_status"] != "Failed":
+        problems.append("same-time post-batch failure state")
+    horizon_failure = key.get(("N7-09", "10800.000", "After", "robot-m1"))
+    if not horizon_failure or horizon_failure["asset_status"] != "Available":
+        problems.append("horizon failure must not be processed")
+    unknown = key.get(("N7-12", "0.000", "After", "lathe-1"))
+    if not unknown or unknown["asset_status"] != "Unknown":
+        problems.append("Unknown status")
+    bus = key.get(("N7-06", "3600.000", "After", "bus-1"))
+    if not bus or bus["asset_status"] != "Failed":
+        problems.append("upstream bus status")
     unobservable = [row for row in rows if row["case"] == "N7-03" and row["at_s"] == "20000.000"]
     if not unobservable or any(row["status"] != "UNOBSERVABLE_AFTER_TERMINATION" for row in unobservable):
         problems.append("post-termination backfill")

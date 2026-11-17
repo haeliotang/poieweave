@@ -23,7 +23,7 @@
   ],
   "native_observatory": {
     "path": "audit/phase7/manifest.json",
-    "sha256": "831232c8730f22b10e5748886f83e19e1f5569ec403c4c58e63195429e3730bd"
+    "sha256": "f99b3139f4e9b4f6216ae58301f4195b11e426b4606d9a3908ca52af1cc6bf16"
   },
   "predecessor": {
     "path": "experiments/certificate-canonical-c6-v2/certificate.json",

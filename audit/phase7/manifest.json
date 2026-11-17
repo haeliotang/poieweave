@@ -22,9 +22,9 @@
       "sha256": "d665b301db480833aaada187fea26aa5062e4f7729d78eaccce142dbcd2db832"
     },
     {
-      "bytes": 1754,
+      "bytes": 2720,
       "path": "audit/phase7/REPORT.zh-CN.md",
-      "sha256": "63424e70726ef9824b33798622966b5d8c281d542045b959149010964dc76bd7"
+      "sha256": "261b83407cd327a011ab587a2f453a2096dfde0227f977235cafe23348d06550"
     },
     {
       "bytes": 717,
@@ -37,14 +37,14 @@
       "sha256": "8c0a26670bca6563473f6cccea863f33fc99d0271285a3582ec1dab99847a44a"
     },
     {
-      "bytes": 7482,
+      "bytes": 28766,
       "path": "audit/phase7/observations/asset-statuses.csv",
-      "sha256": "3b6c02737b4e67e1e9f0b6117ca71ba11d3054ffcef94352c498445265a115b4"
+      "sha256": "50356c3f2e3557ccb95670c1611dc5ba3f8f48a4854a2861abda189fce6d4f8f"
     },
     {
-      "bytes": 270,
+      "bytes": 1372,
       "path": "audit/phase7/observations/summary.json",
-      "sha256": "53aa013dca4330881ecca182a456dd3cceb5d761afc288d5c39dedaa2269dcbe"
+      "sha256": "e88f8b000a9fc5dd7112c22f09c3c8e41c87d95cad2e134e49047eda4b2463b0"
     }
   ],
   "kind": "FROZEN_TRACKED_EVIDENCE",
