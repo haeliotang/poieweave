@@ -1,0 +1,455 @@
+{
+  "schema": "poie.s5v-n8h-strict-set/1",
+  "scenarios": [
+    {
+      "schema": "poie.s5v-n8h-strict-trajectory/1",
+      "scenario": "N8-01",
+      "nominal_communication_step_s": 900.0,
+      "declared_step_s": 900.0,
+      "actual_max_step_s": 900.0,
+      "event_split_times_s": [
+        7200.0
+      ],
+      "samples": [
+        {
+          "requested_time_s": 0.0,
+          "canonical_actual_time_s": 0.0,
+          "external_actual_time_s": 0.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 144000000.0,
+          "external_energy_J": 144000000.0,
+          "raw_energy_difference_J": 0.0,
+          "explained_model_assumption_delta_J": -0.0,
+          "unexplained_residual_J": 0.0
+        },
+        {
+          "requested_time_s": 3600.0,
+          "canonical_actual_time_s": 3600.0,
+          "external_actual_time_s": 3600.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 142200000.0,
+          "external_energy_J": 141600000.0,
+          "raw_energy_difference_J": -600000.0,
+          "explained_model_assumption_delta_J": -600000.0,
+          "unexplained_residual_J": 0.0
+        },
+        {
+          "requested_time_s": 7200.0,
+          "canonical_actual_time_s": 7200.0,
+          "external_actual_time_s": 7200.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 140400000.0,
+          "external_energy_J": 139200000.0,
+          "raw_energy_difference_J": -1200000.0,
+          "explained_model_assumption_delta_J": -1200000.0,
+          "unexplained_residual_J": 0.0
+        },
+        {
+          "requested_time_s": 10800.0,
+          "canonical_actual_time_s": 10800.0,
+          "external_actual_time_s": 10800.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 127800000.0,
+          "external_energy_J": 127800000.0,
+          "raw_energy_difference_J": 0.0,
+          "explained_model_assumption_delta_J": 0.0,
+          "unexplained_residual_J": 0.0
+        },
+        {
+          "requested_time_s": 14400.0,
+          "canonical_actual_time_s": 14400.0,
+          "external_actual_time_s": 14400.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 117000000.0,
+          "external_energy_J": 117000000.0,
+          "raw_energy_difference_J": 0.0,
+          "explained_model_assumption_delta_J": 0.0,
+          "unexplained_residual_J": 0.0
+        }
+      ],
+      "excluded_samples": [],
+      "energy_conservation": [
+        {
+          "side": "external",
+          "at_s": 0.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "external",
+          "at_s": 3600.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "external",
+          "at_s": 7200.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "external",
+          "at_s": 10800.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "external",
+          "at_s": 14400.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 0.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 3600.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 7200.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 10800.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 14400.0,
+          "residual_J": 0.0
+        }
+      ],
+      "discrete_events": [
+        {
+          "kind": "AssetFailure",
+          "canonical_s": 7200.0,
+          "external_s": 7200.0,
+          "error_s": 0.0
+        },
+        {
+          "kind": "RepairCompleted",
+          "canonical_s": 10800.0,
+          "external_s": 10800.0,
+          "error_s": 0.0
+        }
+      ],
+      "first_raw_difference_time_s": 3600.0,
+      "first_unexplained_divergence_time_s": null,
+      "first_invalid_alignment_time_s": null,
+      "first_discrete_event_divergence": null,
+      "findings": [],
+      "classification": "MATCH_WITH_EXPLAINED_ASSUMPTION",
+      "status": "MATCH"
+    },
+    {
+      "schema": "poie.s5v-n8h-strict-trajectory/1",
+      "scenario": "N8-02",
+      "nominal_communication_step_s": 1000.0,
+      "declared_step_s": 1000.0,
+      "actual_max_step_s": 1000.0,
+      "event_split_times_s": [
+        4500.0
+      ],
+      "samples": [
+        {
+          "requested_time_s": 0.0,
+          "canonical_actual_time_s": 0.0,
+          "external_actual_time_s": 0.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 144000000.0,
+          "external_energy_J": 144000000.0,
+          "raw_energy_difference_J": 0.0,
+          "explained_model_assumption_delta_J": -0.0,
+          "unexplained_residual_J": 0.0
+        },
+        {
+          "requested_time_s": 3600.0,
+          "canonical_actual_time_s": 3600.0,
+          "external_actual_time_s": 3600.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 142200000.0,
+          "external_energy_J": 141600000.00000003,
+          "raw_energy_difference_J": -599999.9999999702,
+          "explained_model_assumption_delta_J": -600000.0,
+          "unexplained_residual_J": 2.9802322387695312e-08
+        },
+        {
+          "requested_time_s": 4500.0,
+          "canonical_actual_time_s": 4500.0,
+          "external_actual_time_s": 4500.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 141750000.0,
+          "external_energy_J": 141000000.00000003,
+          "raw_energy_difference_J": -749999.9999999702,
+          "explained_model_assumption_delta_J": -750000.0,
+          "unexplained_residual_J": 2.9802322387695312e-08
+        },
+        {
+          "requested_time_s": 7200.0,
+          "canonical_actual_time_s": 7200.0,
+          "external_actual_time_s": 7200.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 133650000.0,
+          "external_energy_J": 132450000.00000004,
+          "raw_energy_difference_J": -1199999.9999999553,
+          "explained_model_assumption_delta_J": -1200000.0,
+          "unexplained_residual_J": 4.470348358154297e-08
+        },
+        {
+          "requested_time_s": 10800.0,
+          "canonical_actual_time_s": 10800.0,
+          "external_actual_time_s": 10800.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 121050000.0,
+          "external_energy_J": 121050000.00000003,
+          "raw_energy_difference_J": 2.9802322387695312e-08,
+          "explained_model_assumption_delta_J": 0.0,
+          "unexplained_residual_J": 2.9802322387695312e-08
+        },
+        {
+          "requested_time_s": 14400.0,
+          "canonical_actual_time_s": 14400.0,
+          "external_actual_time_s": 14400.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 110250000.0,
+          "external_energy_J": 110250000.00000003,
+          "raw_energy_difference_J": 2.9802322387695312e-08,
+          "explained_model_assumption_delta_J": 0.0,
+          "unexplained_residual_J": 2.9802322387695312e-08
+        }
+      ],
+      "excluded_samples": [],
+      "energy_conservation": [
+        {
+          "side": "external",
+          "at_s": 0.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "external",
+          "at_s": 3600.0,
+          "residual_J": 2.9802322387695312e-08
+        },
+        {
+          "side": "external",
+          "at_s": 4500.0,
+          "residual_J": 2.9802322387695312e-08
+        },
+        {
+          "side": "external",
+          "at_s": 7200.0,
+          "residual_J": 4.470348358154297e-08
+        },
+        {
+          "side": "external",
+          "at_s": 10800.0,
+          "residual_J": 2.9802322387695312e-08
+        },
+        {
+          "side": "external",
+          "at_s": 14400.0,
+          "residual_J": 2.9802322387695312e-08
+        },
+        {
+          "side": "canonical",
+          "at_s": 0.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 3600.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 4500.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 7200.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 10800.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 14400.0,
+          "residual_J": 0.0
+        }
+      ],
+      "discrete_events": [
+        {
+          "kind": "AssetFailure",
+          "canonical_s": 4500.0,
+          "external_s": 4500.0,
+          "error_s": 0.0
+        },
+        {
+          "kind": "RepairCompleted",
+          "canonical_s": 10800.0,
+          "external_s": 10800.0,
+          "error_s": 0.0
+        }
+      ],
+      "first_raw_difference_time_s": 3600.0,
+      "first_unexplained_divergence_time_s": null,
+      "first_invalid_alignment_time_s": null,
+      "first_discrete_event_divergence": null,
+      "findings": [],
+      "classification": "MATCH_WITH_EXPLAINED_ASSUMPTION",
+      "status": "MATCH"
+    },
+    {
+      "schema": "poie.s5v-n8h-strict-trajectory/1",
+      "scenario": "N8-04",
+      "nominal_communication_step_s": 900.0,
+      "declared_step_s": 900.0,
+      "actual_max_step_s": 900.0,
+      "event_split_times_s": [
+        7200.0
+      ],
+      "samples": [
+        {
+          "requested_time_s": 0.0,
+          "canonical_actual_time_s": 0.0,
+          "external_actual_time_s": 0.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 144000000.0,
+          "external_energy_J": 144000000.0,
+          "raw_energy_difference_J": 0.0,
+          "explained_model_assumption_delta_J": -0.0,
+          "unexplained_residual_J": 0.0
+        },
+        {
+          "requested_time_s": 3600.0,
+          "canonical_actual_time_s": 3600.0,
+          "external_actual_time_s": 3600.0,
+          "time_alignment_error_s": 0.0,
+          "alignment_method": "EXACT_SAMPLE",
+          "phase": "After",
+          "validity": "OBSERVED",
+          "canonical_energy_J": 142200000.0,
+          "external_energy_J": 141600000.0,
+          "raw_energy_difference_J": -600000.0,
+          "explained_model_assumption_delta_J": -600000.0,
+          "unexplained_residual_J": 0.0
+        }
+      ],
+      "excluded_samples": [
+        {
+          "at_s": 7200.0,
+          "phase": "Before",
+          "validity": "NOT_COMPARABLE",
+          "reason": "EVENT_BOUNDARY_PHASE_MISMATCH"
+        },
+        {
+          "at_s": 10800.0,
+          "phase": "Before",
+          "validity": "NOT_COMPARABLE",
+          "reason": "CANONICAL_TERMINATED"
+        },
+        {
+          "at_s": 14400.0,
+          "phase": "After",
+          "validity": "NOT_COMPARABLE",
+          "reason": "CANONICAL_TERMINATED"
+        }
+      ],
+      "energy_conservation": [
+        {
+          "side": "external",
+          "at_s": 0.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "external",
+          "at_s": 3600.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "external",
+          "at_s": 7200.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 0.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 3600.0,
+          "residual_J": 0.0
+        },
+        {
+          "side": "canonical",
+          "at_s": 7200.0,
+          "residual_J": 0.0
+        }
+      ],
+      "discrete_events": [
+        {
+          "kind": "AssetFailure",
+          "canonical_s": 7200.0,
+          "external_s": 7200.0,
+          "error_s": 0.0
+        },
+        {
+          "kind": "RepairInterrupted",
+          "canonical_s": 7200.0,
+          "external_s": 7200.0,
+          "error_s": 0.0,
+          "repair_state": 2.0
+        }
+      ],
+      "first_raw_difference_time_s": 3600.0,
+      "first_unexplained_divergence_time_s": null,
+      "first_invalid_alignment_time_s": 7200.0,
+      "first_discrete_event_divergence": null,
+      "findings": [],
+      "classification": "MATCH_WITH_EXPLAINED_ASSUMPTION",
+      "status": "MATCH"
+    }
+  ]
+}

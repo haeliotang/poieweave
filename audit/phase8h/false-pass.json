@@ -1,0 +1,33 @@
+{
+  "schema": "poie.s5v-n8h-false-pass/1",
+  "P0_A_nearest_neighbor": {
+    "requested_time_s": 14400.0,
+    "canonical_actual_time_s": 14400.0,
+    "external_actual_time_s": 14000.0,
+    "time_alignment_error_s": 400.0,
+    "canonical_energy_J": 110250000.0,
+    "external_energy_J": 111450000.00000001,
+    "raw_difference_J": 1200000.000000015,
+    "old_status": "MATCH",
+    "root_cause": "row_at_nearest selected 14000 s for a 14400 s comparison",
+    "expected_classification": "TIME_ALIGNMENT_MISMATCH"
+  },
+  "P0_B_post_termination": {
+    "canonical_at_s": 14400.0,
+    "canonical_status": "UNOBSERVABLE_AFTER_TERMINATION",
+    "canonical_energy_placeholder_J": 0.0,
+    "external_selected_time_s": 7200.0,
+    "external_energy_J": 139200000.0,
+    "old_status": "MATCH",
+    "root_cause": "UNOBSERVABLE_AFTER_TERMINATION placeholder 0 J entered energy statistics",
+    "expected_classification": "UNOBSERVABLE_SAMPLE_USED"
+  },
+  "P0_C_unconditional_assumption": {
+    "old_numerical_classification": "MODEL_ASSUMPTION_DIFFERENCE",
+    "old_max_abs_error_J": 139200000.0,
+    "hypothetical_post_completion_extra_error_J": 100000.0,
+    "root_cause": "old comparator labels any max_abs_error > 1 J as MODEL_ASSUMPTION_DIFFERENCE without checking repair window/sign/amount",
+    "old_status_would_remain": "MATCH",
+    "expected_classification": "UNEXPLAINED_RESIDUAL"
+  }
+}
