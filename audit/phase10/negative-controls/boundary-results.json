@@ -1,0 +1,46 @@
+{
+  "schema": "poie.s5v-n10-boundary-controls/1",
+  "results": [
+    {
+      "control": "7199-failure-shifted-to-7200",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT"
+      ]
+    },
+    {
+      "control": "horizon-failure-wrongly-applied",
+      "expected": "OBSERVATION_ARTIFACT",
+      "detected": true,
+      "classes": [
+        "OBSERVATION_ARTIFACT"
+      ]
+    },
+    {
+      "control": "post-commit-failure-interrupts",
+      "expected": "EXECUTION_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT",
+        "EXECUTION_DEPENDENCY_MISMATCH"
+      ]
+    },
+    {
+      "control": "same-time-order-swap",
+      "expected": "EVENT_ORDER_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EVENT_ORDER_MISMATCH"
+      ]
+    },
+    {
+      "control": "failure-not-applied",
+      "expected": "OBSERVATION_ARTIFACT",
+      "detected": true,
+      "classes": [
+        "OBSERVATION_ARTIFACT"
+      ]
+    }
+  ]
+}

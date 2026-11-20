@@ -1,0 +1,5 @@
+case	event_sequence	event_batch_sequence	at_s	event_kind	event_origin	target_asset	event_status	task_resources	termination
+N10-03	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	0:robot-m1	completed
+N10-03	2	2	7200.000	RepairCompleted	Endogenous	a-lathe	Committed		completed
+N10-03	3	3	7201.000	AssetFailure	Exogenous	robot-m1	Committed		completed
+N10-03	4	4	72000.000	HorizonReached	Endogenous		Committed		completed
