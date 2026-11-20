@@ -114,9 +114,15 @@ def main() -> int:
             ["cargo", "metadata", "--format-version", "1", "--offline"],
             text=True,
         )
-    except (OSError, subprocess.CalledProcessError) as error:
-        print(f"check-apache-licenses: cargo metadata failed: {error}", file=sys.stderr)
-        return 2
+    except (OSError, subprocess.CalledProcessError):
+        try:
+            raw = subprocess.check_output(
+                ["cargo", "metadata", "--format-version", "1"],
+                text=True,
+            )
+        except (OSError, subprocess.CalledProcessError) as error:
+            print(f"check-apache-licenses: cargo metadata failed: {error}", file=sys.stderr)
+            return 2
     metadata = json.loads(raw)
     packages = {package["id"]: package for package in metadata["packages"]}
     by_name = {package["name"]: package for package in metadata["packages"]}
