@@ -1,0 +1,4 @@
+case	event_sequence	at_s	event_kind	event_origin	target_asset	resources	execution_dependencies	task_resources	restoration_targets
+N10-OR3	1	0.000	InitialRepairStarted	Endogenous	initial-repair	tool-t1+robot-m1	robot-m1+tool-t1	0:tool-t1+robot-m1	a-lathe
+N10-OR3	2	7200.000	RepairCompleted	Endogenous	a-lathe				
+N10-OR3	3	72000.000	HorizonReached	Endogenous					

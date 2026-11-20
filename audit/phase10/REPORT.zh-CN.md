@@ -15,10 +15,10 @@ N10 RESOURCE-CAUSAL EVENT BOUNDARIES
   ESTABLISHED (SCOPED: N10-00..N10-06)
 
 N10 NAMED UPSTREAM DEPENDENCY VALIDITY
-  NOT ESTABLISHED
+  ESTABLISHED (SCOPED: N10-U01..U04)
 
 N10 ALTERNATIVE-RESOURCE CAUSAL VALIDITY
-  NOT ESTABLISHED
+  ESTABLISHED (SCOPED: N10-OR1..OR3)
 
 N10 BOUNDARY-AWARE RESOURCE-CAUSAL TRAJECTORY
   NOT ESTABLISHED
@@ -49,11 +49,34 @@ N10-06 failure == horizon 7200                    ACCEPTED (not applied)
 
 边界负例：7199 事件位移、horizon 伪应用、提交后故障中断、同刻顺序反转、故障未应用，全部检出。
 
+## 命名上游与 OR 结果
+
+```text
+N10-U01 bus-1 active dependency @3600       ACCEPTED (both interrupt)
+N10-U02 unrelated sensor-x @3600            ACCEPTED (both continue)
+N10-U03 unselected bus-2 path @3600         ACCEPTED (both continue)
+N10-U04 bus-1 == completion @7200           ACCEPTED (both complete)
+N10-OR1 two robots, preferred robot2        ACCEPTED (DIFFERENT_BUT_VALID_DECISION)
+N10-OR2 robot1 @3600, canonical robot1      ACCEPTED (VALID_POLICY_DEPENDENT_OUTCOME_DIFFERENCE)
+N10-OR3 robot OR + tool AND, preferred 2    ACCEPTED (different valid, tool required both)
+```
+
+- 外部 N10 FMU 新增命名 `failureAssetId`、`robot1/2DependencyMask`、
+  `selectedDependencyMask`、`failureTargetId`、`dependencyPathCode`。
+- 外部依赖闭包由契约输入 + 实际选中机器人独立计算，不读取 canonical witness。
+- N10-U02/U03 的失败命中不同 bit，外部不中断；canonical witness 不含该资产。
+- N10-OR1 中 canonical robot1 / external robot2，mask 均允许；不判 FAIL。
+- N10-OR2 中合法选择差异导致 canonical 中断、external 完成；标记
+  `VALID_POLICY_DEPENDENT_OUTCOME_DIFFERENCE`，不是契约违规。
+- N10-OR3 证明机器人 OR 与工具 AND 复合：两模型都需要 tool-t1。
+- 8 个上游/OR 负例全部检出，包括两模型共同选择非法 robot。
+
 ## 未建立
 
 ```text
-N10 NAMED UPSTREAM DEPENDENCY VALIDITY — NOT ESTABLISHED
-N10 ALTERNATIVE-RESOURCE CAUSAL VALIDITY — NOT ESTABLISHED
 N10 BOUNDARY-AWARE RESOURCE-CAUSAL TRAJECTORY — NOT ESTABLISHED
 N10 EVIDENCE AND CERTIFICATE INTEGRITY — IN PROGRESS
 ```
+
+外部对 OR/上游场景提供 900 s step trace，但 comparator 仍主要使用 endpoint
+字段；不能宣称完整事件轨迹一致。

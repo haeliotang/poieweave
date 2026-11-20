@@ -1,0 +1,4 @@
+case	event_sequence	at_s	event_kind	event_origin	target_asset	resources	execution_dependencies	task_resources	restoration_targets
+N10-OR2	1	0.000	InitialRepairStarted	Endogenous	initial-repair	robot-m1	robot-m1	0:robot-m1	a-lathe
+N10-OR2	2	3600.000	AssetFailure	Exogenous	robot-m1	robot-m1	robot-m1	0:robot-m1	a-lathe
+N10-OR2	3	3600.000	RepairInterrupted	Endogenous	repair	robot-m1	robot-m1	0:robot-m1	a-lathe

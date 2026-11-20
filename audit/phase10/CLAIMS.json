@@ -9,8 +9,8 @@
     {"id": "N9-E", "status": "ESTABLISHED", "scope": "frozen/current manifests, CI, clean check-all"},
     {"id": "N10-0", "status": "VERIFIED", "scope": "task-level contract hardening"},
     {"id": "N10-A", "status": "ESTABLISHED", "scope": "critical event boundaries"},
-    {"id": "N10-B", "status": "NOT_ESTABLISHED", "scope": "named upstream dependency"},
-    {"id": "N10-C", "status": "NOT_ESTABLISHED", "scope": "true OR selection"},
+    {"id": "N10-B", "status": "ESTABLISHED", "scope": "named upstream dependency"},
+    {"id": "N10-C", "status": "ESTABLISHED", "scope": "true OR selection"},
     {"id": "N10-D", "status": "NOT_ESTABLISHED", "scope": "event-resolved resource trajectory"},
     {"id": "N10-E", "status": "NOT_ESTABLISHED", "scope": "final evidence/certificate integrity"}
   ]

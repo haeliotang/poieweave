@@ -1835,8 +1835,10 @@ jobs:
       - name: Build N6 FMU and execute N9/N10 resource contracts
         run: |
           external/fmu-n6-scheduler/build.sh
+          external/fmu-n10-scheduler/build.sh
           cargo run --locked -q -p poie-viability --bin poie-s5v-n9-resources
           cargo run --locked -q -p poie-viability --bin poie-s5v-n10-boundaries
+          cargo run --locked -q -p poie-viability --bin poie-s5v-n10-causal
           for c in N9-00 N9-01 N9-02 N9-03 N9-04 N9-05 N9-06 N9-11; do
             external/fmu-n6-scheduler/build/harness external/fmu-n6-scheduler/poie-n6-scheduler.fmu 900 "audit/phase9/contracts/$c.contract" "audit/phase9/external/$c-harness-900.csv"
             python3 audit/phase6/fmpy_import.py --contract "audit/phase9/contracts/$c.contract" --step 900 --output "audit/phase9/external/$c-fmpy-900.csv" --log "audit/phase9/external/$c-fmpy.log"
@@ -1844,6 +1846,10 @@ jobs:
           for c in N10-00 N10-01 N10-02 N10-03 N10-04 N10-05 N10-06; do
             external/fmu-n6-scheduler/build/harness external/fmu-n6-scheduler/poie-n6-scheduler.fmu 1 "audit/phase10/contracts/$c.contract" "audit/phase10/external/$c-harness-1.csv"
             python3 audit/phase6/fmpy_import.py --contract "audit/phase10/contracts/$c.contract" --step 1 --output "audit/phase10/external/$c-fmpy-1.csv" --log "audit/phase10/external/$c-fmpy.log"
+          done
+          for c in N10-U01 N10-U02 N10-U03 N10-U04 N10-OR1 N10-OR2 N10-OR3; do
+            external/fmu-n10-scheduler/build/harness external/fmu-n10-scheduler/poie-n10-scheduler.fmu 900 "audit/phase10/contracts/$c.contract" "audit/phase10/external/$c-harness-900.csv"
+            python3 audit/phase10/fmpy_import.py --contract "audit/phase10/contracts/$c.contract" --step 900 --output "audit/phase10/external/$c-fmpy-900.csv" --log "audit/phase10/external/$c-fmpy.log"
           done
       - name: Task-level and boundary comparators, controls
         run: |
@@ -1853,6 +1859,8 @@ jobs:
           python3 audit/phase9/verify_evidence.py --claim
           python3 audit/phase10/compare_boundaries.py
           python3 audit/phase10/negative_boundaries.py
+          python3 audit/phase10/compare_causal.py
+          python3 audit/phase10/negative_causal.py
           python3 audit/phase10/check.py
       - name: Verify v6 and historical certificates
         run: |

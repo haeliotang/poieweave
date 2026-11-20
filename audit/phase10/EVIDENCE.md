@@ -18,4 +18,16 @@ audit/phase10/comparisons/boundaries.json
 audit/phase10/negative-controls/boundary-results.json
 ```
 
-Named-upstream and true-OR evidence do not exist yet.
+N10-B/C evidence:
+
+```text
+audit/phase10/canonical/N10-U0*-events.csv
+audit/phase10/canonical/N10-OR*-summary.json
+audit/phase10/external/N10-U0*-fmpy-900.csv
+audit/phase10/external/N10-OR*-fmpy-900.csv
+audit/phase10/comparisons/causal.json
+audit/phase10/negative-controls/causal-results.json
+external/fmu-n10-scheduler/
+```
+
+N10-D full event trajectory is not established.

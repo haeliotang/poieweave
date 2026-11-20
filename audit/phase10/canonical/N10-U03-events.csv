@@ -1,0 +1,5 @@
+case	event_sequence	at_s	event_kind	event_origin	target_asset	resources	execution_dependencies	task_resources	restoration_targets
+N10-U03	1	0.000	InitialRepairStarted	Endogenous	initial-repair	robot-m1	bat-1+bus-1+charger-1+robot-m1	0:robot-m1	a-lathe
+N10-U03	2	3600.000	AssetFailure	Exogenous	bus-2	robot-m1	bat-1+bus-1+charger-1+robot-m1	0:robot-m1	a-lathe
+N10-U03	3	7200.000	RepairCompleted	Endogenous	a-lathe				
+N10-U03	4	72000.000	HorizonReached	Endogenous					
