@@ -1,0 +1,50 @@
+{
+  "schema": "poie.s5v-n12-identity-false-pass/1",
+  "cases": [
+    {
+      "case": "N10-U01",
+      "contract_expected_target": "bus-1",
+      "journal_targets": [
+        "robot-m1"
+      ],
+      "old_n11_status": "ACCEPTED",
+      "correct_classification": "EVENT_TARGET_IDENTITY_MISMATCH"
+    },
+    {
+      "case": "N10-U02",
+      "contract_expected_target": "sensor-x",
+      "journal_targets": [
+        "robot-m1"
+      ],
+      "old_n11_status": "ACCEPTED",
+      "correct_classification": "EVENT_TARGET_IDENTITY_MISMATCH"
+    },
+    {
+      "case": "N10-U03",
+      "contract_expected_target": "bus-2",
+      "journal_targets": [
+        "robot-m1"
+      ],
+      "old_n11_status": "ACCEPTED",
+      "correct_classification": "EVENT_TARGET_IDENTITY_MISMATCH"
+    },
+    {
+      "case": "N10-U04",
+      "contract_expected_target": "bus-1",
+      "journal_targets": [
+        "robot-m1"
+      ],
+      "old_n11_status": "ACCEPTED",
+      "correct_classification": "EVENT_TARGET_IDENTITY_MISMATCH"
+    },
+    {
+      "case": "N10-OR2",
+      "contract_expected_target": "robot-m1",
+      "journal_targets": [
+        "robot-m1"
+      ],
+      "old_n11_status": "ACCEPTED",
+      "correct_classification": "MATCH"
+    }
+  ]
+}

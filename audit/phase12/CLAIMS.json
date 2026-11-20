@@ -1,0 +1,35 @@
+{
+  "schema": "poie.s5v-n12-claim-status/1",
+  "claims": [
+    {
+      "id": "N12-0",
+      "status": "VERIFIED",
+      "scope": "historical false-pass correction"
+    },
+    {
+      "id": "N12-A",
+      "status": "ESTABLISHED",
+      "scope": "native event target identity"
+    },
+    {
+      "id": "N12-B",
+      "status": "NOT_ESTABLISHED",
+      "scope": "canonical/external state projection"
+    },
+    {
+      "id": "N12-C",
+      "status": "NOT_ESTABLISHED",
+      "scope": "bidirectional state transitions"
+    },
+    {
+      "id": "N12-D",
+      "status": "NOT_ESTABLISHED",
+      "scope": "adversarial/stress"
+    },
+    {
+      "id": "N12-E",
+      "status": "NOT_ESTABLISHED",
+      "scope": "evidence/certificates"
+    }
+  ]
+}

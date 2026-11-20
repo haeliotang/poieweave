@@ -53,6 +53,8 @@ python3 audit/phase10/negative_trajectory.py
 python3 audit/phase11/validate_native.py
 python3 audit/phase11/negative_native.py
 python3 audit/phase11/check.py
+python3 audit/phase12/validate_identity.py
+python3 audit/phase12/check.py
 python3 audit/phase10/check.py --frozen
 python3 audit/phase7/negative_controls.py
 python3 audit/certificates/verify_v1.py
