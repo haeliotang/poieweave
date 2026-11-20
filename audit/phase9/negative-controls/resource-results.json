@@ -143,7 +143,7 @@
       }
     },
     {
-      "control": "both-models-invalid",
+      "control": "task-level-resource-swap",
       "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
       "detected": true,
       "classes": [
@@ -151,6 +151,18 @@
       ],
       "contracts": {
         "canonical": false,
+        "external": false
+      }
+    },
+    {
+      "control": "both-models-invalid",
+      "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_ELIGIBILITY_VIOLATION"
+      ],
+      "contracts": {
+        "canonical": true,
         "external": false
       }
     }

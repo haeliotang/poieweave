@@ -12,6 +12,14 @@
         "selected_resources": [
           "robot-m1"
         ],
+        "task_map": [
+          {
+            "task": "n9-repair-a-lathe",
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
         "robots": [
           "robot-m1"
         ],
@@ -80,6 +88,20 @@
           "robot-m1",
           "robot-m1"
         ],
+        "task_map": [
+          {
+            "task": "n9-repair-a-lathe",
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "task": "n9-repair-b-pump",
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
         "robots": [
           "robot-m1",
           "robot-m1"
@@ -146,7 +168,7 @@
     {
       "schema": "poie.s5v-n9-resource-trajectory/1",
       "case": "N9-02",
-      "contract_sha256": "0a5f72f04e204f243302df6cdd111ed93744535dc6ed50d7cd9336a127cff9bd",
+      "contract_sha256": "22c5b70c6e46e004fd4eb00e93e4f9ff65f47267416432d3f84d4676478a3724",
       "canonical_contract_valid": true,
       "external_contract_valid": true,
       "cross_model_agreement": true,
@@ -154,6 +176,20 @@
         "selected_resources": [
           "robot-m1",
           "robot-m2"
+        ],
+        "task_map": [
+          {
+            "task": "n9-repair-a-lathe",
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "task": "n9-repair-b-pump",
+            "resources": [
+              "robot-m2"
+            ]
+          }
         ],
         "robots": [
           "robot-m1",
@@ -230,6 +266,14 @@
         "selected_resources": [
           "robot-m1"
         ],
+        "task_map": [
+          {
+            "task": "n9-repair-a-lathe",
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
         "robots": [
           "robot-m1"
         ],
@@ -296,6 +340,14 @@
       "canonical": {
         "selected_resources": [
           "robot-m1"
+        ],
+        "task_map": [
+          {
+            "task": "n9-repair-a-lathe",
+            "resources": [
+              "robot-m1"
+            ]
+          }
         ],
         "robots": [
           "robot-m1"
@@ -364,6 +416,15 @@
         "selected_resources": [
           "tool-t1",
           "robot-m1"
+        ],
+        "task_map": [
+          {
+            "task": "n9-repair-a-lathe",
+            "resources": [
+              "tool-t1",
+              "robot-m1"
+            ]
+          }
         ],
         "robots": [
           "robot-m1"
@@ -437,6 +498,14 @@
         "selected_resources": [
           "robot-m1"
         ],
+        "task_map": [
+          {
+            "task": "n9-repair-a-lathe",
+            "resources": [
+              "robot-m1"
+            ]
+          }
+        ],
         "robots": [
           "robot-m1"
         ],
@@ -509,6 +578,20 @@
         "selected_resources": [
           "robot-m1",
           "robot-m1"
+        ],
+        "task_map": [
+          {
+            "task": "n9-repair-a-lathe",
+            "resources": [
+              "robot-m1"
+            ]
+          },
+          {
+            "task": "n9-repair-b-pump",
+            "resources": [
+              "robot-m1"
+            ]
+          }
         ],
         "robots": [
           "robot-m1",

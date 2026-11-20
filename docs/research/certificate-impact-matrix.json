@@ -27,7 +27,7 @@
       "scope": "time semantics and boundaries"
     },
     {
-      "canonical_certificate": "experiments/certificate-canonical-c6-v5/certificate.json",
+      "canonical_certificate": "experiments/certificate-canonical-c6-v6/certificate.json",
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
         "s2-canonical-c6"
@@ -47,7 +47,7 @@
       "scope": "Base-06 joint coverage"
     },
     {
-      "canonical_certificate": "experiments/certificate-canonical-c69-v5/certificate.json",
+      "canonical_certificate": "experiments/certificate-canonical-c69-v6/certificate.json",
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
         "s2-canonical-load-base05"
@@ -67,7 +67,7 @@
       "scope": "Base-05 load 0-4 kW"
     },
     {
-      "canonical_certificate": "experiments/certificate-canonical-c70-v5/certificate.json",
+      "canonical_certificate": "experiments/certificate-canonical-c70-v6/certificate.json",
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
         "s2-canonical-regen-horizon"
@@ -87,7 +87,7 @@
       "scope": "Base-05/08 regeneration intervals"
     },
     {
-      "canonical_certificate": "experiments/certificate-canonical-c71-v5/certificate.json",
+      "canonical_certificate": "experiments/certificate-canonical-c71-v6/certificate.json",
       "canonical_classification": "MIXED_AGREEMENT_AND_DEFINITION_CHANGE",
       "canonical_experiments": [
         "s2-canonical-metrics-groups"
@@ -101,13 +101,13 @@
       "id": "certificate-s2-metrics",
       "model": "multi-model",
       "model_sha256": null,
-      "rationale": "scoped v5 certificate: 10 canonical groups, coverage definition service-impact-v1, 2 partial and 1 superseded group explicitly excluded; historical certificate preserved",
+      "rationale": "scoped v6 certificate: 10 canonical groups, coverage definition service-impact-v1, 2 partial and 1 superseded group explicitly excluded; historical certificate preserved",
       "reissued": true,
       "schema": "poie.metrics-certificate/1",
       "scope": "cross-model metric definitions and values"
     },
     {
-      "canonical_certificate": "experiments/certificate-canonical-c72-v5/certificate.json",
+      "canonical_certificate": "experiments/certificate-canonical-c72-v6/certificate.json",
       "canonical_classification": "EXPECTED_AGREEMENT",
       "canonical_experiments": [
         "s2-canonical-order"

@@ -12,9 +12,9 @@
       "sha256": "cce2550d59ef2b5bc2c8c2e8d572e345cf5e4c522652c8ab993bdeddfe941717"
     },
     {
-      "bytes": 522,
+      "bytes": 842,
       "path": "audit/phase9/EVIDENCE.md",
-      "sha256": "360d538f00b89085b70247000a123e9a570f42dfeb7e78b91669d877ed21b0a3"
+      "sha256": "16d96279d4f83deaf20a9e3d85b9f9f2efb9511e2834474b786225ceb344c252"
     },
     {
       "bytes": 1691,
@@ -22,9 +22,9 @@
       "sha256": "f601811dadc979580d912ddb0b066c984317425d8d0b1e7722765a09819b2050"
     },
     {
-      "bytes": 4085,
+      "bytes": 4180,
       "path": "audit/phase9/REPORT.zh-CN.md",
-      "sha256": "68ea9f3bc2adb5ceb00aec0bf6ac83f3e1e9b7656adac2034cb048c61ed97598"
+      "sha256": "cf20969b03c1f136fafd5e7d83875a2b84a04d0c0a9912eeab1443a9633ea8c0"
     },
     {
       "bytes": 1274,
@@ -37,9 +37,9 @@
       "sha256": "d0b43f8ef4d06a01b54080524bcf5b54af3e9a0c83277c3723164f046231e67d"
     },
     {
-      "bytes": 476,
+      "bytes": 551,
       "path": "audit/phase9/canonical/N9-00-summary.json",
-      "sha256": "4570db3bc774214e67e0ee807f08f5945c166ff69e95f9929fb4edadce54b7cd"
+      "sha256": "5cfa3faea6088dba93dde380b1dd294fa91b86ced2ee497f5e063e9b5fd88854"
     },
     {
       "bytes": 445,
@@ -47,9 +47,9 @@
       "sha256": "03c1c828b38cae5645bdab84234f1958fb00a5de61afbc34b23cbdebea7218b2"
     },
     {
-      "bytes": 516,
+      "bytes": 644,
       "path": "audit/phase9/canonical/N9-01-summary.json",
-      "sha256": "1454f47571ca2890d53d71b9d698da9b3da6c4d32ffee160a8d9f18b99c90a89"
+      "sha256": "a1c925348a55dac6068ba960e033b5b54c49388a147359e91f8dd892588b4157"
     },
     {
       "bytes": 454,
@@ -57,9 +57,9 @@
       "sha256": "5ccbd043fab6bac1afa7c27a0491454c043ee57ffe86b939a3d72e91fd8dd9bf"
     },
     {
-      "bytes": 527,
+      "bytes": 655,
       "path": "audit/phase9/canonical/N9-02-summary.json",
-      "sha256": "7f78cbbb7f43f4c0c67acff92c6b7e759d8c7a13cbee17443687c415e2382871"
+      "sha256": "06a851845022ae391816c2c3fb2fbb8f4c6590c32a344f08d5c62b7d6ac2ea4e"
     },
     {
       "bytes": 601,
@@ -67,9 +67,9 @@
       "sha256": "2e346c6cf3e8d151116426de9e0dcdaa65e897d503b5c1348184b7ab120bce77"
     },
     {
-      "bytes": 515,
+      "bytes": 590,
       "path": "audit/phase9/canonical/N9-03-summary.json",
-      "sha256": "fbaf36efbd57c84e34c636b2be9e097b504841ba176dbfb60c12876e5e47d421"
+      "sha256": "b309a4e6a5b9eb86913c5cb2a225fb5ad91dc8ac4adea0e035be3a955f288de3"
     },
     {
       "bytes": 520,
@@ -77,9 +77,9 @@
       "sha256": "8bb242c7ff92b2882da7b86f05ba2447442ad7fef2ca5454c94e091196a64013"
     },
     {
-      "bytes": 477,
+      "bytes": 552,
       "path": "audit/phase9/canonical/N9-04-summary.json",
-      "sha256": "716efb85f8b94da85ee6be9fcb1d09b542b4322f7ff383220794332694f4396b"
+      "sha256": "33388f2006963d747e297be820a88d4d1a8f3b798561cde1a23225e9870bb3bb"
     },
     {
       "bytes": 645,
@@ -87,9 +87,9 @@
       "sha256": "6b6134551dbe833cc012288d5c9971a64d27c407430f5aabeef502342d46861d"
     },
     {
-      "bytes": 534,
+      "bytes": 619,
       "path": "audit/phase9/canonical/N9-05-summary.json",
-      "sha256": "0611a481c9c798e08a511c6913bcd35a0a4d10e242d25e83f04dea146ea1f27c"
+      "sha256": "a298d7ee9034573e625012d15a22e96d7c27afa429f3eef555f5bd19edca5fcf"
     },
     {
       "bytes": 802,
@@ -97,9 +97,9 @@
       "sha256": "e6a572925380eace4753b5f2acbd7fb0a5ef70a9055988b695042342dafcd39d"
     },
     {
-      "bytes": 591,
+      "bytes": 666,
       "path": "audit/phase9/canonical/N9-06-summary.json",
-      "sha256": "6770e30f1f6379ffbcf9bfa1b76d10dfa669153097aefd67ed6e8335d73607a5"
+      "sha256": "2c05939867141a12e394be7f419991f033eb26ce79cf1af9abbfc12eef50353e"
     },
     {
       "bytes": 445,
@@ -107,9 +107,9 @@
       "sha256": "0fad0dc1fa23a77123f47e30dab0c5f2f23cab92488770dd7bb072360c58181e"
     },
     {
-      "bytes": 516,
+      "bytes": 644,
       "path": "audit/phase9/canonical/N9-11-summary.json",
-      "sha256": "3653d75de65d232741a723412cbb3efd857954e5ebfdca99a857d370832f778c"
+      "sha256": "11c96ab8fc18cb130debca4b8130c1d0351dc1b8d9d348628c56b7360167f18b"
     },
     {
       "bytes": 1886,
@@ -117,14 +117,14 @@
       "sha256": "4a9f3039b6338f8807b83f6ca820239881410e8f004383777da3ffd6a48cbe22"
     },
     {
-      "bytes": 12654,
+      "bytes": 13647,
       "path": "audit/phase9/compare_resource.py",
-      "sha256": "c618ad7c7b1d0afaa9ffa5a6dab2b36a3f4adbe1b54ff45bdc3c17e19099044c"
+      "sha256": "e9ad2de996a92eb9729ceba9d58f8054c908eb5ac0178a220272c3793b931a44"
     },
     {
-      "bytes": 16001,
+      "bytes": 17731,
       "path": "audit/phase9/comparisons/resource-trajectories.json",
-      "sha256": "9e2e295eeb62fbc8a38b69a4d4d4112187c1fe2aadd2e000176329240f4bdee8"
+      "sha256": "0d050769b46a98ce646ffaec7e3f0b0db1986f7f6402af3c0501a7314123a7dd"
     },
     {
       "bytes": 267,
@@ -139,7 +139,7 @@
     {
       "bytes": 271,
       "path": "audit/phase9/contracts/N9-02.contract",
-      "sha256": "0a5f72f04e204f243302df6cdd111ed93744535dc6ed50d7cd9336a127cff9bd"
+      "sha256": "22c5b70c6e46e004fd4eb00e93e4f9ff65f47267416432d3f84d4676478a3724"
     },
     {
       "bytes": 270,
@@ -292,9 +292,9 @@
       "sha256": "bf3e6ec1a0a1afd5bfd0760db73df51c57fef18dec6ed6d2acb36876d984d51e"
     },
     {
-      "bytes": 3772,
+      "bytes": 4057,
       "path": "audit/phase9/negative-controls/resource-results.json",
-      "sha256": "9edf5be8acf399d1d5a704fe44a465c970111455c07f87b0a693158a0a32abf8"
+      "sha256": "ad49e3997712d563cf8f51929ce5d8c715ad03ad502c9587f7feb090ded01792"
     },
     {
       "bytes": 2872,
@@ -302,9 +302,9 @@
       "sha256": "5f719c47d1f5dc7414b2e70628bf740eed43a11e4878e8311d373d0e26145fe1"
     },
     {
-      "bytes": 4853,
+      "bytes": 5581,
       "path": "audit/phase9/negative_resources.py",
-      "sha256": "d16de7dc6be64c04e86fa43be9fec4e63899fa79c894c01f36705aeaf320bdd6"
+      "sha256": "f7afb8221711f56a96fc38591c4028c5073fc6d0adfe170cd5732a40342c03b5"
     },
     {
       "bytes": 855,

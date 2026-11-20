@@ -1,0 +1,368 @@
+{
+  "baseline_commit": "492e20f838c33076dc6b36cc13d298390c8e68a7",
+  "certificate_files": [
+    {
+      "path": "experiments/certificate-canonical-c56-v5/README.md",
+      "sha256": "d525583c3cfb584b34ccb1ddc4ed018879ee88639331c24bf9e9d4c9fa68a6e9"
+    },
+    {
+      "path": "experiments/certificate-canonical-c56-v5/certificate.json",
+      "sha256": "a16917c07575c70568e6a15d8aa1d2097c2eaf923d5c0d46c380bfc435745c23"
+    },
+    {
+      "path": "experiments/certificate-canonical-c57-v5/README.md",
+      "sha256": "bb6d90a561481494738503a0021b608ca297e5d2a1e9bdd1e7be505b63c843fa"
+    },
+    {
+      "path": "experiments/certificate-canonical-c57-v5/certificate.json",
+      "sha256": "1a7ef030a3bc85cb077d1d8aaaf74504489c0c8ea9741cd18ba9cf84e43ec7e1"
+    },
+    {
+      "path": "experiments/certificate-canonical-c58-v5/README.md",
+      "sha256": "3c0a9f2b88bd6162710cf85db5c9faffc82be1292a9e127ef96a471e16512e69"
+    },
+    {
+      "path": "experiments/certificate-canonical-c58-v5/certificate.json",
+      "sha256": "34450ed258280ad95ee4218cb8556e7be2a3a075b44416ad27daa31e1a1f65ef"
+    },
+    {
+      "path": "experiments/certificate-canonical-c59-v5/README.md",
+      "sha256": "2120fe2dc1c48741bfeb58eb5a196d383f062e86c1c6f2253b432359025ed3ff"
+    },
+    {
+      "path": "experiments/certificate-canonical-c59-v5/certificate.json",
+      "sha256": "ab6a6b66b6ec5491a38cad53ea3b4d5afa135f986e7cd463edcccc1d6c31aa61"
+    },
+    {
+      "path": "experiments/certificate-canonical-c6-v5/README.md",
+      "sha256": "ffe720f80bc5bc698c65baeb6d72273db5ffc094a67338778f3b3cee5da0b59b"
+    },
+    {
+      "path": "experiments/certificate-canonical-c6-v5/certificate.json",
+      "sha256": "69052d6532cdf71c83f67e6bf86686da107d1ccb84a1e1b492bf30ae2abbde75"
+    },
+    {
+      "path": "experiments/certificate-canonical-c60-v5/README.md",
+      "sha256": "39f3d6d8cf45c033d3859e82960d63f0500b80575b90c85ee932d436d167f9b0"
+    },
+    {
+      "path": "experiments/certificate-canonical-c60-v5/certificate.json",
+      "sha256": "2e2d653055df60f5fa382340db4c604c969e0e8abe61d00a91605bbd82a7fd59"
+    },
+    {
+      "path": "experiments/certificate-canonical-c61-v5/README.md",
+      "sha256": "72ae6247b8ff90d9d37b2063f00366a6593340cf2e7c8adc4d3d42e603e4d8e7"
+    },
+    {
+      "path": "experiments/certificate-canonical-c61-v5/certificate.json",
+      "sha256": "8c6c818818e62dde88c66aefb52681fdf1d15f2dd340148d614df39df31c36ee"
+    },
+    {
+      "path": "experiments/certificate-canonical-c62-v5/README.md",
+      "sha256": "2f2908408ee095bc7f362f01f0c7ddcf4ff39a8cf8a845a4ef71b0506b1f450c"
+    },
+    {
+      "path": "experiments/certificate-canonical-c62-v5/certificate.json",
+      "sha256": "fb3dba0e86f3caff739a3ea4a822f9e4f83a61c7c441d8d6281d02118cd64a08"
+    },
+    {
+      "path": "experiments/certificate-canonical-c63-v5/README.md",
+      "sha256": "bcb32d036bb94fef90c288e4ab47bca63a28f6054b9db7242df6f88902d441f1"
+    },
+    {
+      "path": "experiments/certificate-canonical-c63-v5/certificate.json",
+      "sha256": "a7b0beddb71f80737339b510e37dd3018ef895e8f9fe60350be4513b565b5e2c"
+    },
+    {
+      "path": "experiments/certificate-canonical-c64-v5/README.md",
+      "sha256": "b6f82b49e38d083cedd2b3c9546b5b1394f7132e3e32a090aded9f842a52a170"
+    },
+    {
+      "path": "experiments/certificate-canonical-c64-v5/certificate.json",
+      "sha256": "61dd2982c81e991e33e8f606693e096f980d9d81e03a4ca505631b1ac8f146d1"
+    },
+    {
+      "path": "experiments/certificate-canonical-c65-v5/README.md",
+      "sha256": "3587508af3bf639a5f9c8824104b44f38c46c619dd55937d9eaa8ed88914d5da"
+    },
+    {
+      "path": "experiments/certificate-canonical-c65-v5/certificate.json",
+      "sha256": "9dfa43e7db0ad12b832ded59bc1f2d7dbe1c0d2294543ab5491380c5d714926e"
+    },
+    {
+      "path": "experiments/certificate-canonical-c66-v5/README.md",
+      "sha256": "fc0bacfc8bacc2680f755da8519986db8ce5cba620229e2e8fb38c864cefc213"
+    },
+    {
+      "path": "experiments/certificate-canonical-c66-v5/certificate.json",
+      "sha256": "ea80cd72a82c4e572e528c10a45d2e133a87ee2a7bb612f056ae23e5fee70212"
+    },
+    {
+      "path": "experiments/certificate-canonical-c67-v5/README.md",
+      "sha256": "38c9855b891f8d11a7e1fce62110ac2ec570721353ef6c2949d86b4a9475deb9"
+    },
+    {
+      "path": "experiments/certificate-canonical-c67-v5/certificate.json",
+      "sha256": "32540191b1dcdcd82c15d0f604a3a9ebcac57fd6532e60d9f112525a7ec266b8"
+    },
+    {
+      "path": "experiments/certificate-canonical-c69-v5/README.md",
+      "sha256": "b74956e3d95741f58791abaf414b4da6829a8b0a4e2b3055ed8e768dee8cc197"
+    },
+    {
+      "path": "experiments/certificate-canonical-c69-v5/certificate.json",
+      "sha256": "2e7b169d3c5371a89ca6c181dfb1b52deb6106a2de0598d1eb6a92b501967d1f"
+    },
+    {
+      "path": "experiments/certificate-canonical-c70-v5/README.md",
+      "sha256": "fcd5af91a38783380bd27fbc4c0e3e6a845d4ced0f6cb64f6acd6e0d34bfa628"
+    },
+    {
+      "path": "experiments/certificate-canonical-c70-v5/certificate.json",
+      "sha256": "0ee7c4ad8346eeffe22f5c7abd20d3fde16038f7e04b2903eba6802be7373476"
+    },
+    {
+      "path": "experiments/certificate-canonical-c71-v5/README.md",
+      "sha256": "80ae4026c514438a2bf0ac174e1bd0d3a172d7fd763c8441fa7552a6ec7607ef"
+    },
+    {
+      "path": "experiments/certificate-canonical-c71-v5/certificate.json",
+      "sha256": "360c97c8132e12983899bb7a1c145c95bc555d566396ebfefb25805d8bd29445"
+    },
+    {
+      "path": "experiments/certificate-canonical-c72-v5/README.md",
+      "sha256": "f728c749172241bbf15281e82bada8fe8d17031776b3a2dc63400f686e98877c"
+    },
+    {
+      "path": "experiments/certificate-canonical-c72-v5/certificate.json",
+      "sha256": "4a4deb7599db92375edddf1074af458a1b4b77a0096b052988dcfedff6fa85c0"
+    },
+    {
+      "path": "experiments/certificate-canonical-c73-v5/README.md",
+      "sha256": "066e78284cfae9085e202af7d83cff6d77809ea171b7a2ef7519eed1e377084c"
+    },
+    {
+      "path": "experiments/certificate-canonical-c73-v5/certificate.json",
+      "sha256": "10c3e14923b7e982838ce2bbc5c4692a5de042500e7a0e8a7d6d5ec16307acdb"
+    },
+    {
+      "path": "experiments/certificate-canonical-c74-v5/README.md",
+      "sha256": "43bf2c2a3c542cfc643136e565a413c32fffe012b342dfeb39dd8bc8f02563b8"
+    },
+    {
+      "path": "experiments/certificate-canonical-c74-v5/certificate.json",
+      "sha256": "cfcd83dc1abe43e3ce6f6dc09f17284499bc8896442d6a498d638a36201bd61b"
+    },
+    {
+      "path": "experiments/certificate-canonical-c75-v5/README.md",
+      "sha256": "1d46834d2d32731300b5b08f5021b376de2d89327e52ecc93731dc1b55e87582"
+    },
+    {
+      "path": "experiments/certificate-canonical-c75-v5/certificate.json",
+      "sha256": "db61f6c9478b5a8df55a7e77bc9a21f9e372e2efcccb0806e0942b41ec451d25"
+    },
+    {
+      "path": "experiments/certificate-canonical-c76-v5/README.md",
+      "sha256": "d149b268d779e24ed30bef61244c2c1372083444cac0fa9ff8ffaba11260f2e3"
+    },
+    {
+      "path": "experiments/certificate-canonical-c76-v5/certificate.json",
+      "sha256": "7a599e71f6c5628d62a8efd25237c875584bdc4a601abd343654f6e25b2fd8e6"
+    },
+    {
+      "path": "experiments/certificate-canonical-c77-v5/README.md",
+      "sha256": "a4fbea015515fa0c039c74cf69232035c55d7c8189477f10380040325d419acd"
+    },
+    {
+      "path": "experiments/certificate-canonical-c77-v5/certificate.json",
+      "sha256": "f07f03253197c3ead678eb6b34f1e29bac6f3916959df8046cb4331020e89875"
+    },
+    {
+      "path": "experiments/certificate-canonical-c78-v5/README.md",
+      "sha256": "22281977ac4c32b9efabc3fbccbecbed3ff61d54405d7897f1a3e0f08c957d7b"
+    },
+    {
+      "path": "experiments/certificate-canonical-c78-v5/certificate.json",
+      "sha256": "42133be4e9f6af747df129fa163114aef457f9a173f04542a0707319a946daa8"
+    },
+    {
+      "path": "experiments/certificate-canonical-c79-v5/README.md",
+      "sha256": "9cc6218cf4550dee53e308a624701a1828a9fbb33458bd0f931d0c342c924064"
+    },
+    {
+      "path": "experiments/certificate-canonical-c79-v5/certificate.json",
+      "sha256": "71198b90c27481ce4c1a637172dfee5b21f510c01166abd7acf5a3d62f4f419e"
+    },
+    {
+      "path": "experiments/certificate-canonical-c80-v5/README.md",
+      "sha256": "09d4c1893466035481513cb75768a1911a85e02193a2640dfca2e03ec04eefb8"
+    },
+    {
+      "path": "experiments/certificate-canonical-c80-v5/certificate.json",
+      "sha256": "c39aed75c4b3e5f654c40a89676f8efd24cca57e959af4e16ae25ae176ade23e"
+    },
+    {
+      "path": "experiments/certificate-canonical-c81-v5/README.md",
+      "sha256": "f61114b861fab4ea13025a39fc2783bd1e9f71d47fa24f72a8ce0010f4debd28"
+    },
+    {
+      "path": "experiments/certificate-canonical-c81-v5/certificate.json",
+      "sha256": "fbb140a00eaf234dbac63ce51551c3a421862e844f6ab46d868abcc071d15903"
+    },
+    {
+      "path": "experiments/certificate-canonical-c82-v5/README.md",
+      "sha256": "84908a40fecd41bcc643b54590499124f5d0ee93afc3e9f6cddf48a7a7628dc2"
+    },
+    {
+      "path": "experiments/certificate-canonical-c82-v5/certificate.json",
+      "sha256": "f4a0e286138e9af5a1a3a4f338b3af8790eab658fbb2f60e05547f3a1042369b"
+    },
+    {
+      "path": "experiments/certificate-canonical-c83-v5/README.md",
+      "sha256": "aaea6966288a710a7ab7aee35b63491629a5a65917997b9b7001efc2bda088a5"
+    },
+    {
+      "path": "experiments/certificate-canonical-c83-v5/certificate.json",
+      "sha256": "994ffbb986885002f786e262ff793370241a97b045e9c057213f9d8cdfd2fc09"
+    },
+    {
+      "path": "experiments/certificate-canonical-c84-v5/README.md",
+      "sha256": "9457584ccf6b3c49e4e28b2ab9170b7d4f85dfde763bc0f45521249f68ca5b36"
+    },
+    {
+      "path": "experiments/certificate-canonical-c84-v5/certificate.json",
+      "sha256": "ecdf4eb49a48e1ee76e3ea9f137713a5b317bcf4ac4f4d7c443113b426ff9040"
+    },
+    {
+      "path": "experiments/certificate-canonical-c85-v5/README.md",
+      "sha256": "75d49257501375914ea5776eecca41aefdaeffd358731954a27fb5ca25a594f3"
+    },
+    {
+      "path": "experiments/certificate-canonical-c85-v5/certificate.json",
+      "sha256": "f08eba7de506ad69d0a9086cb56b4c4f4d6164b33fb635cbf67d1b46693184a0"
+    },
+    {
+      "path": "experiments/certificate-canonical-c86-v5/README.md",
+      "sha256": "b61d6ae663c0ad672af25348cdcc99e409fbebeb7af4f5537a9ea884554219a8"
+    },
+    {
+      "path": "experiments/certificate-canonical-c86-v5/certificate.json",
+      "sha256": "ee92afe4528a20e7526d63b66dae8d9cd548713b211642f7e93fe30d87742ab9"
+    },
+    {
+      "path": "experiments/certificate-canonical-c87-v5/README.md",
+      "sha256": "2ea6eabb081c5a236ba4304caf50c34426782fa6006a80c5f8511209095a7ecd"
+    },
+    {
+      "path": "experiments/certificate-canonical-c87-v5/certificate.json",
+      "sha256": "066051ee6ca2cb112c28190aa51cdd883a4da1de53ac7f3a223d3e8f40fe3302"
+    },
+    {
+      "path": "experiments/certificate-canonical-c88-v5/README.md",
+      "sha256": "64cb011a7fb0c1b83166b3d062c3437e3cc6a0d5a562441254ab37f2897f2ad3"
+    },
+    {
+      "path": "experiments/certificate-canonical-c88-v5/certificate.json",
+      "sha256": "258efdcba55eb0f7378045794c4f3f5a50820f83e719edbfad3568b67638e601"
+    },
+    {
+      "path": "experiments/certificate-canonical-c89-v5/README.md",
+      "sha256": "e71d39169859e18adbd42962861c44c00c8e17bd0bfc346ed2f0bb73f9050faf"
+    },
+    {
+      "path": "experiments/certificate-canonical-c89-v5/certificate.json",
+      "sha256": "288362ef5db075e6d1175c0d58c30f3b2bbb61bf1c0ac3c9d4589e3057701021"
+    },
+    {
+      "path": "experiments/certificate-canonical-c90-v5/README.md",
+      "sha256": "f4f6ba4ba6c76432c0ea5103b321f6341aab6f90fa59a0beeb0078b073749fe4"
+    },
+    {
+      "path": "experiments/certificate-canonical-c90-v5/certificate.json",
+      "sha256": "96a3a88314e01070496c24a91dd93dc538a9d8e31ed86b3da9d934ba7c990ae3"
+    },
+    {
+      "path": "experiments/certificate-canonical-c91-v5/README.md",
+      "sha256": "4053c1339afec5e48726d2bea3ed517c0bbe5c475d7a4a18ee1ea7ed887c3fa6"
+    },
+    {
+      "path": "experiments/certificate-canonical-c91-v5/certificate.json",
+      "sha256": "f3e864eff179db10a40fe62b1b364652b0e8f9387d2f202a92f3725afea336b3"
+    },
+    {
+      "path": "experiments/certificate-canonical-c92-v5/README.md",
+      "sha256": "e0707e45412d18020043bffc201bf1e80fb08f13f55003b8f66aac316f03a21b"
+    },
+    {
+      "path": "experiments/certificate-canonical-c92-v5/certificate.json",
+      "sha256": "48bd2144f0cd14a433a43b928a8d1910833c24966f290e0dd5fbad8c132aeaeb"
+    },
+    {
+      "path": "experiments/certificate-canonical-c93-v5/README.md",
+      "sha256": "1e914fc1e2278fad07223dbf777ae66a3dd1f47ccc0b4a0bf8ce8493eecbb3f2"
+    },
+    {
+      "path": "experiments/certificate-canonical-c93-v5/certificate.json",
+      "sha256": "8002b720922079c01b0030960ed990a04c8c67857e8ebd63da31ceee4a31ca1b"
+    },
+    {
+      "path": "experiments/certificate-canonical-c94-v5/README.md",
+      "sha256": "519a66fe82d45db74e5dd754464826d88f2fa2c94513d9895068cc3bdc389750"
+    },
+    {
+      "path": "experiments/certificate-canonical-c94-v5/certificate.json",
+      "sha256": "8ed0b00325bccdb23c721b91c7bd452aca6b1ad8420869b5d2461dc5cd3a1d7b"
+    },
+    {
+      "path": "experiments/certificate-canonical-c95-v5/README.md",
+      "sha256": "7f312360dcc460dc2c6819a2a56a60b148583b98ecaea39554456b09df02abea"
+    },
+    {
+      "path": "experiments/certificate-canonical-c95-v5/certificate.json",
+      "sha256": "8696584871b86d1d8f0b1eff4381abe5e482ce1c13ee44a7fb84f9d35953c667"
+    },
+    {
+      "path": "experiments/certificate-canonical-c96-v5/README.md",
+      "sha256": "6589bc3207f0fe479735dbb3df1101543120bf2ed115245d9dfe99de14a67f92"
+    },
+    {
+      "path": "experiments/certificate-canonical-c96-v5/certificate.json",
+      "sha256": "67dd3fa1f4e570fc75f80f17b8fc8089ec01348445ec82b4825b73defab588d0"
+    }
+  ],
+  "runtime_sources": [
+    {
+      "path": "crates/poie-viability/src/engine.rs",
+      "sha256": "2fe449c3196fd3ab0f8653360feb04ec81cd33876d6d704d24624f1933e42612"
+    },
+    {
+      "path": "crates/poie-viability/src/survival.rs",
+      "sha256": "ddad0fbd5b6e31b5ac88eca29435588454723810d96207c2d4e29d3be673fced"
+    },
+    {
+      "path": "crates/poie-viability/src/clock.rs",
+      "sha256": "4b8f2394da2feab5aeb9601f7fa8bd209bc436bfa3554b3338de62519ed05212"
+    },
+    {
+      "path": "crates/poie-viability/src/closure.rs",
+      "sha256": "f8ccb5f5596382f357f7cc12a6441e66b35b5dc3644e00026dace661ae513179"
+    },
+    {
+      "path": "crates/poie-viability/src/scheduler.rs",
+      "sha256": "c6c5618b78f20f1a1a18b3d594ac4ab4c8bf4dcbcf44fe99b7051835d6ef85f7"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "e50b40a6b80c3c45f851ac3fdeb5267c78eb21efd63dc91fea0eaea86e1a9957"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "b0abd0572bc06734d0b3253a27308d6013d3a4859c36cf8c818b50426cc9a5d1"
+    }
+  ],
+  "schema": "poie.s5v-v5-certificate-freeze/1",
+  "v5_index": {
+    "path": "docs/research/canonical-claim-certificate-index-v5.json",
+    "sha256": "758b943ef1a750295747e87f362114f375eaa88b32f9622bc29424ccde6057ab"
+  }
+}

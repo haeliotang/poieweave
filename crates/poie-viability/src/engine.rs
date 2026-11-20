@@ -84,6 +84,14 @@ pub struct RepairObservation {
     pub execution_dependencies: Vec<String>,
     pub restoration_targets: Vec<String>,
     pub witness: Vec<WitnessEntry>,
+    pub task_resources: Vec<TaskResourceObservation>,
+}
+
+/// Observation-only per-plan resource assignment derived from the actual schedule.
+#[derive(Clone, Debug, PartialEq)]
+pub struct TaskResourceObservation {
+    pub plan_index: usize,
+    pub resources: Vec<String>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -301,6 +309,7 @@ fn record_event(
             execution_dependencies: repair.execution_dependencies.iter().cloned().collect(),
             restoration_targets: repair.restoration_targets.iter().cloned().collect(),
             witness: repair.witness.clone(),
+            task_resources: repair.task_resources.clone(),
         }),
     };
     EVENT_COLLECTOR.with(|cell| {
@@ -389,6 +398,7 @@ fn observe_due(
                     execution_dependencies: repair.execution_dependencies.iter().cloned().collect(),
                     restoration_targets: repair.restoration_targets.iter().cloned().collect(),
                     witness: repair.witness.clone(),
+                    task_resources: repair.task_resources.clone(),
                 }),
                 asset_statuses: assets.clone(),
                 asset_status_source: "NATIVE_CANONICAL_RUNTIME",
@@ -468,6 +478,7 @@ struct RunningRepair {
     restoration_targets: BTreeSet<String>,
     resources: Vec<String>,
     witness: Vec<WitnessEntry>,
+    task_resources: Vec<TaskResourceObservation>,
     end_s: f64,
     label: String,
 }
@@ -604,6 +615,20 @@ fn start_repair(
         execution_dependencies.insert(entry.provider.clone());
         execution_dependencies.extend(entry.dependencies.iter().cloned());
     }
+    let mut task_resources: Vec<TaskResourceObservation> = Vec::new();
+    for step in &schedule.steps {
+        match task_resources.iter_mut().find(|entry| entry.plan_index == step.plan_index) {
+            Some(entry) => {
+                for resource in &step.resources {
+                    if !entry.resources.contains(resource) {
+                        entry.resources.push(resource.clone());
+                    }
+                }
+            }
+            None => task_resources
+                .push(TaskResourceObservation { plan_index: step.plan_index, resources: step.resources.clone() }),
+        }
+    }
     let label = pending.iter().map(|failure| failure.asset.as_str()).collect::<Vec<_>>().join(",");
     Ok(RunningRepair {
         plans,
@@ -612,6 +637,7 @@ fn start_repair(
         restoration_targets,
         resources: schedule.steps.iter().flat_map(|step| step.resources.clone()).collect(),
         witness,
+        task_resources,
         end_s: now_s + schedule.makespan_s,
         label,
     })

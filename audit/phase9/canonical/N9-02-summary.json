@@ -7,6 +7,7 @@
  "restoration_targets":["a-lathe","b-pump"],
  "witness":[],
  "task_order":["n9-repair-a-lathe","n9-repair-b-pump"],
+ "task_resources":[{"task":"n9-repair-a-lathe","resources":["robot-m1"]},{"task":"n9-repair-b-pump","resources":["robot-m2"]}],
  "termination":"completed",
  "survived_s":72000.000,
  "event_count":3,
