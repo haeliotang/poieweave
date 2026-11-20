@@ -61,6 +61,7 @@ def compare(case):
   if c_int and not x_int:
    return {"schema":"poie.s5v-n10-trajectory/1","case":case,"status":"ACCEPTED",
            "canonical_events":ce,"external_events":xe,"event_order_coverage":order_coverage,
+           "external_event_order":"NOT_OBSERVED_FROM_ENDPOINT_TRACE",
            "event_before_coverage":"NOT_OBSERVED_FOR_INTERMEDIATE_BOUNDARY",
            "resource_state_after":{"canonical":"INTERRUPTED","external":"COMPLETED"},
            "first_event_time_divergence":None,

@@ -371,6 +371,7 @@
         }
       ],
       "event_order_coverage": "OBSERVED",
+      "external_event_order": "NOT_OBSERVED_FROM_ENDPOINT_TRACE",
       "event_before_coverage": "NOT_OBSERVED_FOR_INTERMEDIATE_BOUNDARY",
       "resource_state_after": {
         "canonical": "INTERRUPTED",

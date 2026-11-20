@@ -31,6 +31,10 @@ for claim in claims:
         source=report if claim["id"].startswith("N9") else report10
         if token not in source:
             problems.append(f"report missing {claim['id']}")
+        else:
+            after=source.split(token,1)[1].lstrip()
+            if after.startswith("NOT ESTABLISHED") or after.startswith("IN PROGRESS"):
+                problems.append(f"report status mismatch {claim['id']}")
 if "resource trajectory evidence is not yet produced" in evidence:
     problems.append("stale N9 EVIDENCE")
 if "witness/execution_dependencies are now exported" not in matrix:
