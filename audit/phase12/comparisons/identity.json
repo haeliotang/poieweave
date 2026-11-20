@@ -1,0 +1,1880 @@
+{
+  "schema": "poie.s5v-n12-identity-set/1",
+  "cases": [
+    {
+      "case": "N10-00",
+      "expected_target": null,
+      "expected_id": null,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 4,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": -1,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 7200.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": -1,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 7200.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": -1,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 7200.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": -1,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-01",
+      "expected_target": "robot-m1",
+      "expected_id": 0,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 4,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 7199.0,
+            "kind": "AssetFailure",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "robot-m1",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              1,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 7199.0,
+            "kind": "RepairInterrupted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              1,
+              2,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 7199.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              1,
+              2,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              1,
+              2,
+              0,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-02",
+      "expected_target": "robot-m1",
+      "expected_id": 0,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 5,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 7200.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 7200.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 7200.0,
+            "kind": "AssetFailure",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "robot-m1",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 5,
+            "at": 7201.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-03",
+      "expected_target": "robot-m1",
+      "expected_id": 0,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 5,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 7200.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 7200.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 7201.0,
+            "kind": "AssetFailure",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "robot-m1",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 5,
+            "at": 7202.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-04",
+      "expected_target": "robot-m1",
+      "expected_id": 0,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 5,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 10800.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 10800.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 10800.0,
+            "kind": "AssetFailure",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "robot-m1",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 5,
+            "at": 10801.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-05",
+      "expected_target": "robot-m1",
+      "expected_id": 0,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 5,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 10800.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 10800.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 12000.0,
+            "kind": "AssetFailure",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "robot-m1",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 5,
+            "at": 12001.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-06",
+      "expected_target": "robot-m1",
+      "expected_id": 0,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 4,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 7200.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 7200.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 7200.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              0,
+              0,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-U01",
+      "expected_target": "bus-1",
+      "expected_id": 3,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 4,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 3,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 3600.0,
+            "kind": "AssetFailure",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "bus-1",
+            "target_id": 3,
+            "before": [
+              1,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 3600.0,
+            "kind": "RepairInterrupted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 3,
+            "before": [
+              1,
+              1,
+              28,
+              1,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              2,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 3600.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 3,
+            "before": [
+              1,
+              1,
+              28,
+              1,
+              2,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              2,
+              0,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-U02",
+      "expected_target": "sensor-x",
+      "expected_id": 5,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 5,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 5,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 3600.0,
+            "kind": "AssetFailure",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "sensor-x",
+            "target_id": 5,
+            "before": [
+              1,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 7200.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 5,
+            "before": [
+              1,
+              1,
+              28,
+              1,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 7200.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 5,
+            "before": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 5,
+            "at": 72000.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 5,
+            "before": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-U03",
+      "expected_target": "bus-2",
+      "expected_id": 6,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 5,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 6,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 3600.0,
+            "kind": "AssetFailure",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "bus-2",
+            "target_id": 6,
+            "before": [
+              1,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 7200.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 6,
+            "before": [
+              1,
+              1,
+              28,
+              1,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 7200.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 6,
+            "before": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 5,
+            "at": 72000.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 6,
+            "before": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-U04",
+      "expected_target": "bus-1",
+      "expected_id": 3,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 5,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 3,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 7200.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 3,
+            "before": [
+              1,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 7200.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 3,
+            "before": [
+              1,
+              1,
+              28,
+              0,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              0,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 7200.0,
+            "kind": "AssetFailure",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "bus-1",
+            "target_id": 3,
+            "before": [
+              1,
+              1,
+              28,
+              0,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 5,
+            "at": 72000.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 3,
+            "before": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              1,
+              1,
+              28,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-OR1",
+      "expected_target": null,
+      "expected_id": null,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 4,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": -1,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 7200.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": -1,
+            "before": [
+              2,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 7200.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": -1,
+            "before": [
+              2,
+              1,
+              28,
+              0,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              0,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 72000.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": -1,
+            "before": [
+              2,
+              1,
+              28,
+              0,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              0,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-OR2",
+      "expected_target": "robot-m1",
+      "expected_id": 0,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 5,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 3600.0,
+            "kind": "AssetFailure",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "robot-m1",
+            "target_id": 0,
+            "before": [
+              2,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              1,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 7200.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              2,
+              1,
+              28,
+              1,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              1,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 7200.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": 0,
+            "before": [
+              2,
+              1,
+              28,
+              1,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              1,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 5,
+            "at": 72000.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": 0,
+            "before": [
+              2,
+              1,
+              28,
+              1,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N10-OR3",
+      "expected_target": null,
+      "expected_id": null,
+      "journal": {
+        "schema": "poie.s5v-n11-native-events/1",
+        "capacity": 32,
+        "count": 4,
+        "overflow": false,
+        "events": [
+          {
+            "seq": 1,
+            "at": 0.0,
+            "kind": "InitialRepairStarted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": -1,
+            "before": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 2,
+            "at": 7200.0,
+            "kind": "RepairCompleted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": -1,
+            "before": [
+              2,
+              1,
+              28,
+              0,
+              0,
+              0,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "seq": 3,
+            "at": 7200.0,
+            "kind": "RestorationCommitted",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "a-lathe",
+            "target_id": -1,
+            "before": [
+              2,
+              1,
+              28,
+              0,
+              1,
+              0,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              0,
+              1,
+              1,
+              0
+            ]
+          },
+          {
+            "seq": 4,
+            "at": 72000.0,
+            "kind": "RunTerminated",
+            "origin": "NATIVE_EXTERNAL_FMU",
+            "target": "",
+            "target_id": -1,
+            "before": [
+              2,
+              1,
+              28,
+              0,
+              1,
+              1,
+              0
+            ],
+            "after": [
+              2,
+              1,
+              28,
+              0,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      "harness_fmpy_equal": true,
+      "status": "ACCEPTED"
+    }
+  ],
+  "problems": []
+}

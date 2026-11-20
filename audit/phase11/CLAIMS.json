@@ -1,11 +1,35 @@
 {
   "schema": "poie.s5v-n11-claim-status/1",
   "claims": [
-    {"id":"N11-0","status":"IN_PROGRESS","scope":"precondition hardening"},
-    {"id":"N11-A","status":"ESTABLISHED","scope":"native external journal, 14 enumerated cases"},
-    {"id":"N11-B","status":"ESTABLISHED","scope":"external true before/after at transition sites"},
-    {"id":"N11-C","status":"ESTABLISHED","scope":"14 enumerated cases; canonical before/after NOT_OBSERVED"},
-    {"id":"N11-D","status":"ESTABLISHED","scope":"native journal mutations + inherited both-model-invalid"},
-    {"id":"N11-E","status":"ESTABLISHED","scope":"frozen/current manifests, CI, clean check-all"}
+    {
+      "id": "N11-0",
+      "status": "VERIFIED",
+      "scope": "N10 report/CLAIMS, derived-order limitation, case-independent policy classifier"
+    },
+    {
+      "id": "N11-A",
+      "status": "ESTABLISHED",
+      "scope": "native external journal, 14 enumerated cases"
+    },
+    {
+      "id": "N11-B",
+      "status": "ESTABLISHED",
+      "scope": "external true before/after at transition sites"
+    },
+    {
+      "id": "N11-C",
+      "status": "ESTABLISHED",
+      "scope": "14 enumerated cases; canonical before/after NOT_OBSERVED"
+    },
+    {
+      "id": "N11-D",
+      "status": "ESTABLISHED",
+      "scope": "native journal mutations + inherited both-model-invalid"
+    },
+    {
+      "id": "N11-E",
+      "status": "ESTABLISHED",
+      "scope": "frozen/current manifests, CI, clean check-all"
+    }
   ]
 }

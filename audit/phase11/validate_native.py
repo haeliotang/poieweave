@@ -44,7 +44,9 @@ def validate(case):
     if e["before"][0]!=0 or e["after"][0]==0: problems.append("initial robot state")
    elif e["after"][idx]!=after: problems.append(f"state after {e['kind']}")
  # canonical common event alignment
- ce=canonical_events(case); cmap={}
+ ce=canonical_events(case)
+ c_int=any(e["kind"]=="RepairInterrupted" for e in ce); x_int=any(e["kind"]=="RepairInterrupted" for e in ev)
+ cmap={}
  for e in ce: cmap.setdefault(e["kind"],[]).append(e)
  xmap={}
  for e in ev: xmap.setdefault(e["kind"],[]).append(e)
@@ -52,8 +54,10 @@ def validate(case):
  for kind in common:
   cs=cmap.get(kind,[]); xs=xmap.get(kind,[])
   if len(cs)!=len(xs):
-   if case=="N10-OR2" and kind in ("RepairInterrupted","RepairCompleted"): continue
-   problems.append(f"event count {kind}: canonical={len(cs)} external={len(xs)}")
+   # A legitimate policy-dependent outcome changes interruption/completion event counts.
+   policy_candidate = (kind in ("RepairInterrupted","RepairCompleted") and c_int != x_int)
+   if not policy_candidate:
+    problems.append(f"event count {kind}: canonical={len(cs)} external={len(xs)}")
   for c,x in zip(cs,xs):
    if abs(c["at"]-x["at"])>1e-9: problems.append(f"event time {kind}")
  # same-time order: compare canonical sequence ordering with external native sequence.
@@ -66,7 +70,6 @@ def validate(case):
  spec={}
  for line in (P/"contracts"/f"{case}.contract").read_text().splitlines():
   k,v=line.split("=",1); spec[k]=float(v)
- c_int=any(e["kind"]=="RepairInterrupted" for e in ce); x_int=any(e["kind"]=="RepairInterrupted" for e in ev)
  c_robot=next((e["after"][0] for e in ev if e["kind"]=="InitialRepairStarted"),None)
  # external selected robot is journal before/after index 0; canonical task robot from phase10 summary.
  canon_robot=None
@@ -77,8 +80,6 @@ def validate(case):
  classification="SAME_CAUSAL_TRANSITION"
  if c_int!=x_int:
   if c_int and not x_int and canon_robot and c_robot and canon_robot!=c_robot and int(spec.get("failureKind",0))==1:
-   classification="VALID_POLICY_DEPENDENT_DIVERGENCE"
-  elif case=="N10-OR2":
    classification="VALID_POLICY_DEPENDENT_DIVERGENCE"
   else: problems.append("interruption mismatch")
  return {"schema":"poie.s5v-n11-native-validation/1","case":case,

@@ -6,7 +6,7 @@
 
 ```text
 N11-0 PRECONDITION EVIDENCE HARDENING
-  IN PROGRESS
+  VERIFIED
 
 N11-A EXTERNAL NATIVE EVENT JOURNAL
   ESTABLISHED (SCOPED)
@@ -39,7 +39,7 @@ N11-E EVIDENCE AND CERTIFICATE INTEGRITY
 ## 限制
 
 ```text
-canonical before/after 未在 N11 证据中导出 => N11-C NOT ESTABLISHED
+canonical before/after 未在 N11 证据中导出 => N11-C 仅覆盖事件/资源契约与 external 原生状态。
 journal 未做 overflow 运行实例
 N11 adversarial controls 尚未完成
 N11 CI/clean check-all 尚未完成

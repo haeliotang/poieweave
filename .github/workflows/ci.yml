@@ -1934,6 +1934,45 @@ jobs:
           name: s5v-n11-linux-evidence
           path: ${{ runner.temp }}/s5v-n11/evidence
 
+  s5v-n12-linux:
+    name: S5-V N12 native event identity Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install independent FMI importer
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Build N12 FMU and execute identity cases
+        run: |
+          external/fmu-n12-scheduler/build.sh
+          for c in N10-00 N10-01 N10-02 N10-03 N10-04 N10-05 N10-06; do
+            external/fmu-n12-scheduler/build/harness external/fmu-n12-scheduler/poie-n12-scheduler.fmu 1 "audit/phase12/contracts/$c.contract" "audit/phase12/external/N12-$c.csv"
+            python3 audit/phase12/fmpy_import.py --contract "audit/phase12/contracts/$c.contract" --step 1 --output "audit/phase12/external/N12-$c-fmpy.csv" --log "audit/phase12/external/N12-$c.log"
+          done
+          for c in N10-U01 N10-U02 N10-U03 N10-U04 N10-OR1 N10-OR2 N10-OR3; do
+            external/fmu-n12-scheduler/build/harness external/fmu-n12-scheduler/poie-n12-scheduler.fmu 900 "audit/phase12/contracts/$c.contract" "audit/phase12/external/N12-$c.csv"
+            python3 audit/phase12/fmpy_import.py --contract "audit/phase12/contracts/$c.contract" --step 900 --output "audit/phase12/external/N12-$c-fmpy.csv" --log "audit/phase12/external/N12-$c.log"
+          done
+      - name: Validate native identity and historical false pass
+        run: |
+          python3 audit/phase12/reproduce_identity_false_pass.py
+          python3 audit/phase12/validate_identity.py
+          python3 audit/phase12/check.py
+      - name: Save N12 evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n12/evidence"
+          cp -R audit/phase12 "$RUNNER_TEMP/s5v-n12/evidence/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n12-linux-evidence
+          path: ${{ runner.temp }}/s5v-n12/evidence
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest
