@@ -48,6 +48,8 @@ python3 audit/phase10/compare_boundaries.py
 python3 audit/phase10/negative_boundaries.py
 python3 audit/phase10/compare_causal.py
 python3 audit/phase10/negative_causal.py
+python3 audit/phase10/compare_trajectory.py
+python3 audit/phase10/negative_trajectory.py
 python3 audit/phase10/check.py --frozen
 python3 audit/phase7/negative_controls.py
 python3 audit/certificates/verify_v1.py

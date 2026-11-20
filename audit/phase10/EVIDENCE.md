@@ -30,4 +30,14 @@ audit/phase10/negative-controls/causal-results.json
 external/fmu-n10-scheduler/
 ```
 
-N10-D full event trajectory is not established.
+N10-D trajectory evidence:
+
+```text
+audit/phase10/comparisons/trajectories.json
+audit/phase10/negative-controls/trajectory-results.json
+audit/phase10/canonical/N10-U0*-events.csv
+audit/phase10/external/N10-U0*-fmpy-900.csv
+```
+
+External events remain `DERIVED_FROM_EXECUTION_OUTPUT`; intermediate before-state
+is `NOT_OBSERVED_FOR_INTERMEDIATE_BOUNDARY`.

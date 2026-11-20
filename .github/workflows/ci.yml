@@ -1861,6 +1861,8 @@ jobs:
           python3 audit/phase10/negative_boundaries.py
           python3 audit/phase10/compare_causal.py
           python3 audit/phase10/negative_causal.py
+          python3 audit/phase10/compare_trajectory.py
+          python3 audit/phase10/negative_trajectory.py
           python3 audit/phase10/check.py
       - name: Verify v6 and historical certificates
         run: |
@@ -1877,6 +1879,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/s5v-n10/evidence"
           cp -R audit/phase10 audit/phase9/comparisons audit/phase9/negative-controls "$RUNNER_TEMP/s5v-n10/evidence/"
           cp audit/phase9/{REPORT.zh-CN.md,EVIDENCE.md,CAPABILITY_MATRIX.md} "$RUNNER_TEMP/s5v-n10/evidence/"
+          python3 audit/phase10/execution_manifest.py --output "$RUNNER_TEMP/s5v-n10/evidence/execution-manifest.json"
       - uses: actions/upload-artifact@v4
         with:
           name: s5v-n10-linux-evidence
