@@ -99,12 +99,23 @@ fn write_case(out: &Path, case: &str, model: &Model, options: &EngineOptions<'_>
     let mut dependencies = Vec::new();
     let mut targets = Vec::new();
     let mut task_order: Vec<String> = Vec::new();
+    let mut task_resources: Vec<(String, Vec<String>)> = Vec::new();
     let mut witness = Vec::new();
     if let Some(repair) = observed.events.first().and_then(|event| event.running_repair.as_ref()) {
         selected = repair.resources.clone();
         dependencies = repair.execution_dependencies.clone();
         targets = repair.restoration_targets.clone();
         task_order = repair.plans.clone();
+        task_resources = repair
+            .task_resources
+            .iter()
+            .map(|entry| {
+                (
+                    repair.plans.get(entry.plan_index).cloned().unwrap_or_else(|| format!("plan-{}", entry.plan_index)),
+                    entry.resources.clone(),
+                )
+            })
+            .collect();
         witness = repair
             .witness
             .iter()
@@ -118,8 +129,19 @@ fn write_case(out: &Path, case: &str, model: &Model, options: &EngineOptions<'_>
         .iter()
         .find(|event| event.kind == poie_viability::engine::EventKind::RepairCompleted)
         .map(|event| event.at_s);
+    let task_resource_json = format!(
+        "[{}]",
+        task_resources
+            .iter()
+            .map(|(task, resources)| format!(
+                "{{\"task\":\"{task}\",\"resources\":[{}]}}",
+                resources.iter().map(|r| format!("\"{r}\"")).collect::<Vec<_>>().join(",")
+            ))
+            .collect::<Vec<_>>()
+            .join(",")
+    );
     let summary = format!(
-        "{{\n \"case\":\"{case}\",\n \"restoration_committed\":{},\n \"repair_completed_s\":{},\n \"selected_resources\":[{}],\n \"execution_dependencies\":[{}],\n \"restoration_targets\":[{}],\n \"witness\":[{}],\n \"task_order\":[{}],\n \"termination\":\"{}\",\n \"survived_s\":{:.3},\n \"event_count\":{},\n \"resource_release_observed\":false,\n \"release_note\":\"RunTerminated is not a native resource release event\",\n \"observation_source\":\"NATIVE_CANONICAL_RUNTIME\"\n}}\n",
+        "{{\n \"case\":\"{case}\",\n \"restoration_committed\":{},\n \"repair_completed_s\":{},\n \"selected_resources\":[{}],\n \"execution_dependencies\":[{}],\n \"restoration_targets\":[{}],\n \"witness\":[{}],\n \"task_order\":[{}],\n \"task_resources\":{},\n \"termination\":\"{}\",\n \"survived_s\":{:.3},\n \"event_count\":{},\n \"resource_release_observed\":false,\n \"release_note\":\"RunTerminated is not a native resource release event\",\n \"observation_source\":\"NATIVE_CANONICAL_RUNTIME\"\n}}\n",
         restoration_committed,
         repair_completed_s.map(|value| format!("{value:.3}")).unwrap_or_else(|| "null".into()),
         selected.iter().map(|v| format!("\"{v}\"")).collect::<Vec<_>>().join(","),
@@ -127,6 +149,7 @@ fn write_case(out: &Path, case: &str, model: &Model, options: &EngineOptions<'_>
         targets.iter().map(|v| format!("\"{v}\"")).collect::<Vec<_>>().join(","),
         witness.iter().map(|v| format!("\"{v}\"")).collect::<Vec<_>>().join(","),
         task_order.iter().map(|v| format!("\"{v}\"")).collect::<Vec<_>>().join(","),
+        task_resource_json,
         label(&observed.outcome.termination), observed.outcome.survived_s, observed.events.len()
     );
     std::fs::write(out.join("canonical").join(format!("{case}-summary.json")), summary).unwrap();

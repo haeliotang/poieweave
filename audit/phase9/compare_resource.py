@@ -57,13 +57,28 @@ def canonical_contract(case: str, spec: dict, summary: dict, events: list[dict])
     failure = next((event for event in events if event["event_kind"] == "AssetFailure"), None)
     interruption = next((event for event in events if event["event_kind"] == "RepairInterrupted"), None)
     completion = next((event for event in events if event["event_kind"] == "RepairCompleted"), None)
-    for robot in robots:
-        index = int(robot.split("robot-m", 1)[1])
-        mask = int(spec["t1RobotMask"]) if len(robots) == 1 else int(spec["t1RobotMask"]) | int(spec["t2RobotMask"])
-        if not (mask & (1 << (index - 1))):
-            findings.append({"class": "RESOURCE_ELIGIBILITY_VIOLATION", "resource": robot})
-    if int(spec["t1RequiresTool"]) > 0 and "tool-t1" not in selected:
-        findings.append({"class": "EXECUTION_DEPENDENCY_MISMATCH", "reason": "required tool not selected"})
+    task_resources = summary.get("task_resources", [])
+    tasks = int(spec["taskCount"])
+    if len(task_resources) != tasks:
+        findings.append({"class": "TASK_MAPPING_NOT_OBSERVED", "expected": tasks, "observed": len(task_resources)})
+    task_map = []
+    for index in range(min(tasks, len(task_resources))):
+        entry = task_resources[index]
+        resources = entry["resources"]
+        task_robots = [resource for resource in resources if resource.startswith("robot-")]
+        task_map.append({"task": entry["task"], "resources": resources})
+        if len(task_robots) != 1:
+            findings.append({"class": "RESOURCE_ELIGIBILITY_VIOLATION", "task": index,
+                             "reason": "exactly one robot required", "robots": task_robots})
+        else:
+            robot_index = int(task_robots[0].split("robot-m", 1)[1])
+            mask = int(spec[f"t{index + 1}RobotMask"])
+            if not (mask & (1 << (robot_index - 1))):
+                findings.append({"class": "RESOURCE_ELIGIBILITY_VIOLATION", "task": index,
+                                 "resource": task_robots[0], "mask": mask})
+        if int(spec[f"t{index + 1}RequiresTool"]) > 0 and "tool-t1" not in resources:
+            findings.append({"class": "EXECUTION_DEPENDENCY_MISMATCH", "task": index,
+                             "reason": "required tool missing from task resources"})
     if case == "N9-06" and not any("bus-1" in entry for entry in witness):
         findings.append({"class": "UPSTREAM_DEPENDENCY_MISMATCH", "reason": "bus-1 absent from witness"})
     if failure is not None:
@@ -84,6 +99,7 @@ def canonical_contract(case: str, spec: dict, summary: dict, events: list[dict])
         findings.append({"class": "RESTORATION_COMMIT_MISMATCH", "reason": "commit without completion event"})
     return findings, {
         "selected_resources": selected,
+        "task_map": task_map,
         "robots": robots,
         "tools": tools,
         "execution_dependencies": dependencies,
@@ -124,8 +140,10 @@ def external_contract(case: str, spec: dict, last: dict) -> tuple[list[dict], di
                 findings.append({"class": "RESOURCE_CONTENTION_VIOLATION", "robot": r1})
     if tool_tasks:
         mask = int(float(last.get("toolTaskMask", 0)))
-        if not all(mask & (1 << index) for index in tool_tasks):
-            findings.append({"class": "EXECUTION_DEPENDENCY_MISMATCH", "reason": "tool not assigned"})
+        for index in tool_tasks:
+            if not (mask & (1 << index)):
+                findings.append({"class": "EXECUTION_DEPENDENCY_MISMATCH", "task": index,
+                                 "reason": "tool not assigned to required task"})
         if float(last.get("toolAcquired_s", -1)) < 0:
             findings.append({"class": "EXECUTION_DEPENDENCY_MISMATCH", "reason": "tool not acquired"})
     failure_kind = int(spec["failureKind"])

@@ -101,6 +101,19 @@ finally:
     events_path.write_text(original_events)
 record("same-time-event-order-swap", "EVENT_ORDER_MISMATCH", result)
 
+# Task-level mapping swap: group union is unchanged, each task violates its own mask.
+summary_path = PHASE / "canonical/N9-02-summary.json"
+summary_backup = summary_path.read_text()
+try:
+    swapped = json.loads(summary_backup)
+    for entry in swapped["task_resources"]:
+        entry["resources"] = ["robot-m2" if resource == "robot-m1" else "robot-m1" if resource == "robot-m2" else resource for resource in entry["resources"]]
+    summary_path.write_text(json.dumps(swapped, indent=2) + "\n")
+    ok, result = mutate_external("N9-02", lambda row: row.update(t1Robot="2.0", t2Robot="1.0"))
+    record("task-level-resource-swap", "RESOURCE_ELIGIBILITY_VIOLATION", result)
+finally:
+    summary_path.write_text(summary_backup)
+
 # Both models violate the same mask: agreement is not correctness.
 summary_path = PHASE / "canonical/N9-02-summary.json"
 backup = summary_path.read_text()

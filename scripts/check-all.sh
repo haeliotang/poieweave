@@ -16,9 +16,9 @@ python3 scripts/build-s2-inventory.py --check
 python3 scripts/check-certificate-invariants.py
 python3 scripts/build-certificate-impact.py --check
 python3 scripts/build-metrics-split.py --check
-python3 scripts/build-canonical-claim-certificates-v5.py --check
-python3 scripts/verify-canonical-claim-certificates-v5.py
-python3 scripts/check-canonical-claim-certificate-tamper-v5.py
+python3 scripts/build-canonical-claim-certificates-v6.py --check
+python3 scripts/verify-canonical-claim-certificates-v6.py
+python3 scripts/check-canonical-claim-certificate-tamper-v6.py
 python3 scripts/build-claim-certificate-coverage.py --check
 python3 audit/phase1/check.py
 python3 audit/phase2/check.py
@@ -44,12 +44,14 @@ python3 audit/phase9/check.py --frozen
 python3 audit/phase9/verify_evidence.py --frozen --claim
 python3 audit/phase9/negative_resources.py
 python3 audit/phase9/negative_integrity.py
+python3 audit/phase10/check.py --frozen
 python3 audit/phase7/negative_controls.py
 python3 audit/certificates/verify_v1.py
 python3 audit/certificates/verify_v1_historical.py
 python3 audit/certificates/verify_v2.py
 python3 audit/certificates/verify_v3.py
 python3 audit/certificates/verify_v4.py
+python3 audit/certificates/verify_v5.py
 python3 scripts/check-docs.py
 
 echo "ok all checks"

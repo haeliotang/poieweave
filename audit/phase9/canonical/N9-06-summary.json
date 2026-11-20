@@ -7,6 +7,7 @@
  "restoration_targets":["a-lathe"],
  "witness":["sleeve-replacement:robot-m1:bat-1|bus-1|charger-1"],
  "task_order":["n9-repair-a-lathe"],
+ "task_resources":[{"task":"n9-repair-a-lathe","resources":["robot-m1"]}],
  "termination":"blocked:repair interrupted at 9000s: bus-1 failed",
  "survived_s":9000.000,
  "event_count":3,

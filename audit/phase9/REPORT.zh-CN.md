@@ -110,15 +110,17 @@ step: 900 s
 
 ## 未建立
 
-- 任何 N9 资源因果跨模型轨迹声明。
-- N5/N6 资源生命周期跨模型轨迹。
+- 一般（非枚举）资源因果轨迹有效性。
+- 步骤级资源释放。
+- 命名上游资产身份与依赖路径（N9-06 外部仅为 generic failureKind=3）。
+- 真正的 OR 替代资源选择与策略导致的不同结局。
 - 事件引擎 priority、重规划、自主恢复、Level 3。
 - 物理正确性。
 
-## 下一步
+## 下一步（N10）
 
-1. 读取/扩展只读 RunningRepair 资源 witness（先做证书影响评估）。
-2. 建立 N9 canonical resource event export。
-3. 扩展 N6 FMU 只读上游/资源事件导出，保持调度规则不变。
-4. 实现 N9 strict resource comparator 与六个核心场景。
-5. 负例覆盖共同资源契约违反。
+1. 修复 N9 报告与 EVIDENCE 的状态一致性。
+2. 将 robot mask 验证下沉到 task-level。
+3. 扩展命名上游依赖与真实 OR 选择。
+4. 覆盖 7199/7200/7201/10800/12000/horizon 边界。
+5. 建立 N10 boundary/identity/OR 证据与负例。
