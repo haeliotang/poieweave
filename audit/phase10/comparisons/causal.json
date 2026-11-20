@@ -1,0 +1,252 @@
+{
+  "schema": "poie.s5v-n10-causal-set/1",
+  "cases": [
+    {
+      "schema": "poie.s5v-n10-causal/1",
+      "case": "N10-U01",
+      "contract_sha256": "da6896e3b49586b6a1ae58fad6c490b37cfb4218f0fb4c5bef4f73e791a205b7",
+      "canonical": {
+        "task_robot": "robot-m1",
+        "task_resources": [
+          "robot-m1"
+        ],
+        "witness": [
+          "sleeve-replacement:robot-m1:bat-1|bus-1|charger-1"
+        ],
+        "interruption_s": 3600.0,
+        "completion_s": null,
+        "restoration_committed": false,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "selected_robot": 1,
+        "selected_dependency_mask": 28,
+        "failure_target_id": 3,
+        "dependency_path_code": 3,
+        "interrupted": true,
+        "makespan_s": 7200.0,
+        "tool_mask": 0,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "STEP_TRACE_AVAILABLE"
+      },
+      "resource_decision": "SAME_DECISION",
+      "outcome_relation": "SAME_OUTCOME",
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE"
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-causal/1",
+      "case": "N10-U02",
+      "contract_sha256": "6674010175e3f5a4da079e600865502469b77c777328a81a77893379be084cab",
+      "canonical": {
+        "task_robot": "robot-m1",
+        "task_resources": [
+          "robot-m1"
+        ],
+        "witness": [
+          "sleeve-replacement:robot-m1:bat-1|bus-1|charger-1"
+        ],
+        "interruption_s": null,
+        "completion_s": 7200.0,
+        "restoration_committed": true,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "selected_robot": 1,
+        "selected_dependency_mask": 28,
+        "failure_target_id": 5,
+        "dependency_path_code": 0,
+        "interrupted": false,
+        "makespan_s": 7200.0,
+        "tool_mask": 0,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "STEP_TRACE_AVAILABLE"
+      },
+      "resource_decision": "SAME_DECISION",
+      "outcome_relation": "SAME_OUTCOME",
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE"
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-causal/1",
+      "case": "N10-U03",
+      "contract_sha256": "70a1b46132ce4f6bcdb84f96b4fcedae0d51823a6b5cc084941ea2d33536af67",
+      "canonical": {
+        "task_robot": "robot-m1",
+        "task_resources": [
+          "robot-m1"
+        ],
+        "witness": [
+          "sleeve-replacement:robot-m1:bat-1|bus-1|charger-1"
+        ],
+        "interruption_s": null,
+        "completion_s": 7200.0,
+        "restoration_committed": true,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "selected_robot": 1,
+        "selected_dependency_mask": 28,
+        "failure_target_id": 6,
+        "dependency_path_code": 0,
+        "interrupted": false,
+        "makespan_s": 7200.0,
+        "tool_mask": 0,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "STEP_TRACE_AVAILABLE"
+      },
+      "resource_decision": "SAME_DECISION",
+      "outcome_relation": "SAME_OUTCOME",
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE"
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-causal/1",
+      "case": "N10-U04",
+      "contract_sha256": "a132f33f0cbb347dca675d7fdb8609efb4593addeff0536ead4f9378cd2e9698",
+      "canonical": {
+        "task_robot": "robot-m1",
+        "task_resources": [
+          "robot-m1"
+        ],
+        "witness": [
+          "sleeve-replacement:robot-m1:bat-1|bus-1|charger-1"
+        ],
+        "interruption_s": null,
+        "completion_s": 7200.0,
+        "restoration_committed": true,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "selected_robot": 1,
+        "selected_dependency_mask": 28,
+        "failure_target_id": 3,
+        "dependency_path_code": 3,
+        "interrupted": false,
+        "makespan_s": 7200.0,
+        "tool_mask": 0,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "STEP_TRACE_AVAILABLE"
+      },
+      "resource_decision": "SAME_DECISION",
+      "outcome_relation": "SAME_OUTCOME",
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE"
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-causal/1",
+      "case": "N10-OR1",
+      "contract_sha256": "ade856ab0ffc339a5d688709fb2320219c3e8d001c02b4fd365ca038024a476a",
+      "canonical": {
+        "task_robot": "robot-m1",
+        "task_resources": [
+          "robot-m1"
+        ],
+        "witness": [],
+        "interruption_s": null,
+        "completion_s": 7200.0,
+        "restoration_committed": true,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "selected_robot": 2,
+        "selected_dependency_mask": 28,
+        "failure_target_id": -1,
+        "dependency_path_code": 0,
+        "interrupted": false,
+        "makespan_s": 7200.0,
+        "tool_mask": 0,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "STEP_TRACE_AVAILABLE"
+      },
+      "resource_decision": "DIFFERENT_BUT_VALID_DECISION",
+      "outcome_relation": "SAME_OUTCOME",
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE"
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-causal/1",
+      "case": "N10-OR2",
+      "contract_sha256": "d6fff9b14987777b6fbf0ddd2ae5949450a3a4ad2e4054db6dde68453570990b",
+      "canonical": {
+        "task_robot": "robot-m1",
+        "task_resources": [
+          "robot-m1"
+        ],
+        "witness": [],
+        "interruption_s": 3600.0,
+        "completion_s": null,
+        "restoration_committed": false,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "selected_robot": 2,
+        "selected_dependency_mask": 28,
+        "failure_target_id": 1,
+        "dependency_path_code": 0,
+        "interrupted": false,
+        "makespan_s": 7200.0,
+        "tool_mask": 0,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "STEP_TRACE_AVAILABLE"
+      },
+      "resource_decision": "DIFFERENT_BUT_VALID_DECISION",
+      "outcome_relation": "VALID_POLICY_DEPENDENT_OUTCOME_DIFFERENCE",
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE"
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-causal/1",
+      "case": "N10-OR3",
+      "contract_sha256": "39958aef106c047830dcf52c60b9b48c12859e86912621bda58fdd30ed019a47",
+      "canonical": {
+        "task_robot": "robot-m1",
+        "task_resources": [
+          "tool-t1",
+          "robot-m1"
+        ],
+        "witness": [],
+        "interruption_s": null,
+        "completion_s": 7200.0,
+        "restoration_committed": true,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "selected_robot": 2,
+        "selected_dependency_mask": 28,
+        "failure_target_id": -1,
+        "dependency_path_code": 0,
+        "interrupted": false,
+        "makespan_s": 7200.0,
+        "tool_mask": 1,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "STEP_TRACE_AVAILABLE"
+      },
+      "resource_decision": "DIFFERENT_BUT_VALID_DECISION",
+      "outcome_relation": "SAME_OUTCOME",
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE"
+      },
+      "status": "ACCEPTED"
+    }
+  ]
+}

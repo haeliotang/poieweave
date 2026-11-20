@@ -1,0 +1,77 @@
+{
+  "schema": "poie.s5v-n10-causal-controls/1",
+  "results": [
+    {
+      "control": "active-bus-ignored",
+      "expected": "UPSTREAM_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "UPSTREAM_DEPENDENCY_MISMATCH"
+      ]
+    },
+    {
+      "control": "unrelated-upstream-interrupts",
+      "expected": "UPSTREAM_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH",
+        "UPSTREAM_DEPENDENCY_MISMATCH"
+      ]
+    },
+    {
+      "control": "wrong-failure-target-id",
+      "expected": "UPSTREAM_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "UPSTREAM_DEPENDENCY_MISMATCH"
+      ]
+    },
+    {
+      "control": "missing-dependency-path",
+      "expected": "UPSTREAM_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "UPSTREAM_DEPENDENCY_MISMATCH"
+      ]
+    },
+    {
+      "control": "unselected-or-path-interrupts",
+      "expected": "EXECUTION_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH"
+      ]
+    },
+    {
+      "control": "or-tool-and-ignored",
+      "expected": "EXECUTION_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EXECUTION_DEPENDENCY_MISMATCH"
+      ]
+    },
+    {
+      "control": "or-robot-outside-mask",
+      "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_ELIGIBILITY_VIOLATION"
+      ]
+    },
+    {
+      "control": "both-or-models-invalid",
+      "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
+      "detected": true,
+      "classes": [
+        "RESOURCE_ELIGIBILITY_VIOLATION"
+      ]
+    },
+    {
+      "control": "valid-or-difference-not-failure",
+      "expected": "ACCEPTED_DIFFERENT_VALID",
+      "detected": true,
+      "classes": []
+    }
+  ]
+}

@@ -15,6 +15,8 @@ TOKENS={
  "N9-E":"N9 EVIDENCE AND CERTIFICATE INTEGRITY",
  "N10-0":"N10 TASK-LEVEL CONTRACT HARDENING",
  "N10-A":"N10 RESOURCE-CAUSAL EVENT BOUNDARIES",
+ "N10-B":"N10 NAMED UPSTREAM DEPENDENCY VALIDITY",
+ "N10-C":"N10 ALTERNATIVE-RESOURCE CAUSAL VALIDITY",
 }
 claims=json.loads((PHASE/"CLAIMS.json").read_text())["claims"]
 report=(ROOT/"audit/phase9/REPORT.zh-CN.md").read_text()
@@ -49,6 +51,17 @@ for case in boundaries["cases"]:
     if case["external"]["trajectory_coverage"]!="ENDPOINT_ONLY": problems.append(f"{case['case']}: coverage")
 bcontrols=json.loads((PHASE/"negative-controls/boundary-results.json").read_text())["results"]
 if not all(entry["detected"] for entry in bcontrols): problems.append("boundary controls")
+causal=json.loads((PHASE/"comparisons/causal.json").read_text())
+if [case["case"] for case in causal["cases"]]!=["N10-U01","N10-U02","N10-U03","N10-U04","N10-OR1","N10-OR2","N10-OR3"]:
+    problems.append("causal case set")
+for case in causal["cases"]:
+    if case["status"]!="ACCEPTED" or case["findings"]: problems.append(f"{case['case']}: causal status")
+if not any(c["case"]=="N10-OR1" and c["resource_decision"]=="DIFFERENT_BUT_VALID_DECISION" for c in causal["cases"]):
+    problems.append("OR different valid decision")
+if not any(c["case"]=="N10-OR2" and c["outcome_relation"]=="VALID_POLICY_DEPENDENT_OUTCOME_DIFFERENCE" for c in causal["cases"]):
+    problems.append("OR policy outcome")
+ccontrols=json.loads((PHASE/"negative-controls/causal-results.json").read_text())["results"]
+if not all(entry["detected"] for entry in ccontrols): problems.append("causal controls")
 manifest=json.loads((PHASE/"manifest.json").read_text())
 if manifest.get("kind")!="FROZEN_TRACKED_EVIDENCE": problems.append("N10 manifest kind")
 if "--frozen" in sys.argv:
