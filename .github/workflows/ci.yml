@@ -1792,11 +1792,12 @@ jobs:
           python3 audit/phase9/check.py
           python3 audit/phase9/verify_evidence.py --claim
           python3 audit/phase9/verify_evidence.py --claim
-      - name: Verify v5 and historical certificates
+      - name: Verify v6 and historical certificates
         run: |
-          python3 scripts/build-canonical-claim-certificates-v5.py --check
-          python3 scripts/verify-canonical-claim-certificates-v5.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v5.py
+          python3 scripts/build-canonical-claim-certificates-v6.py --check
+          python3 scripts/verify-canonical-claim-certificates-v6.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v6.py
+          python3 audit/certificates/verify_v5.py
           python3 audit/certificates/verify_v4.py
           python3 audit/certificates/verify_v3.py
           python3 audit/certificates/verify_v2.py
