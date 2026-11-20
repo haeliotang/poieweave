@@ -18,5 +18,13 @@ if not any(c["case"]=="N10-OR2" and c["classification"]=="VALID_POLICY_DEPENDENT
     problems.append("policy classification")
 controls=json.loads((P/"negative-controls/native-results.json").read_text())["results"]
 if not all(entry["detected"] for entry in controls): problems.append("native journal controls")
+bi=json.loads((P/"causal-comparisons/bidirectional.json").read_text())
+if len(bi["cases"])!=14: problems.append("bidirectional case count")
+for case in bi["cases"]:
+    if case["status"]!="ACCEPTED": problems.append(f"{case['case']}: bidirectional")
+    if not case["canonical_resource_contract_valid"] or not case["external_resource_contract_valid"]:
+        problems.append(f"{case['case']}: resource contract")
+if not any(c["case"]=="N10-OR2" and c["classification"]=="VALID_POLICY_DEPENDENT_DIVERGENCE" for c in bi["cases"]):
+    problems.append("bidirectional policy")
 if problems: print("N11 FAIL: "+", ".join(problems),file=sys.stderr); raise SystemExit(1)
 print("ok N11 native external event journal and before/after")
