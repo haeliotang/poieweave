@@ -27,7 +27,7 @@
   ],
   "native_task_resource_observatory": {
     "path": "audit/phase10/manifest.json",
-    "sha256": "3d3d2c23f6c9720d5326680aac31af7a97a12da8ca1ac0e55098f2a61bb2b00a"
+    "sha256": "cabd1283e259fa746c4c516b587167f2b03957dc351e9de371b3bafa529e404c"
   },
   "predecessor": {
     "path": "experiments/certificate-canonical-c71-v5/certificate.json",

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription fmiVersion="3.0" modelName="poie_n11_scheduler"
+    instantiationToken="{e9f4d1b5-6c7a-4d2e-9f5b-n11scheduler01}"
+    description="Parameterized independent scheduler, no Poieweave linkage" generationTool="hand-written C99" generationDateAndTime="2026-11-17T00:00:00Z">
+  <CoSimulation modelIdentifier="poie_n11_scheduler" canHandleVariableCommunicationStepSize="true" canReturnEarlyAfterIntermediateUpdate="false" hasEventMode="false"/>
+  <ModelVariables>
+    <Float64 name="time" valueReference="1" causality="independent" variability="continuous" start="0"/>
+    <Float64 name="taskCount" valueReference="2" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t1Duration_s" valueReference="3" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t1Priority" valueReference="4" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t1RobotMask" valueReference="5" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t1RequiresTool" valueReference="6" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t2Duration_s" valueReference="7" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t2Priority" valueReference="8" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t2RobotMask" valueReference="9" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t2RequiresTool" valueReference="10" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t3Duration_s" valueReference="11" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t3Priority" valueReference="12" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t3RobotMask" valueReference="13" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="t3RequiresTool" valueReference="14" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="robotCount" valueReference="15" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="failureTime_s" valueReference="16" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="failureKind" valueReference="17" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="failureIndex" valueReference="18" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="horizon_s" valueReference="19" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="makespan_s" valueReference="20" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="completedCount" valueReference="21" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="interrupted" valueReference="22" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="failureAppliedTime_s" valueReference="23" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="t1Start_s" valueReference="24" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="t1End_s" valueReference="25" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="t1Robot" valueReference="26" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="t2Start_s" valueReference="27" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="t2End_s" valueReference="28" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="t2Robot" valueReference="29" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="t3Start_s" valueReference="30" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="t3End_s" valueReference="31" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="t3Robot" valueReference="32" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="restored1" valueReference="33" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="restored2" valueReference="34" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="restored3" valueReference="35" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="lastEventCode" valueReference="36" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="toolAvailable" valueReference="37" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="toolFailureAppliedTime_s" valueReference="38" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="release_s" valueReference="39" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="toolAcquired_s" valueReference="40" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="toolReleased_s" valueReference="41" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="toolTaskMask" valueReference="42" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="preferredRobot" valueReference="43" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="failureAssetId" valueReference="44" causality="parameter" variability="fixed" start="-1"/>
+    <Float64 name="robot1DependencyMask" valueReference="45" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="robot2DependencyMask" valueReference="46" causality="parameter" variability="fixed" start="0"/>
+    <Float64 name="selectedDependencyMask" valueReference="47" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="failureTargetId" valueReference="48" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="dependencyPathCode" valueReference="49" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="affectedSelectedResource" valueReference="50" causality="output" variability="discrete" initial="calculated"/>
+    <String name="eventJournal" valueReference="100" causality="output" variability="discrete"/>
+    <Float64 name="eventJournalCount" valueReference="101" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventJournalOverflow" valueReference="102" causality="output" variability="discrete" initial="calculated"/>
+  </ModelVariables>
+  <ModelStructure>
+    <Output valueReference="20"/>
+    <Output valueReference="21"/>
+    <Output valueReference="22"/>
+    <Output valueReference="23"/>
+    <Output valueReference="24"/>
+    <Output valueReference="25"/>
+    <Output valueReference="26"/>
+    <Output valueReference="27"/>
+    <Output valueReference="28"/>
+    <Output valueReference="29"/>
+    <Output valueReference="30"/>
+    <Output valueReference="31"/>
+    <Output valueReference="32"/>
+    <Output valueReference="33"/>
+    <Output valueReference="34"/>
+    <Output valueReference="35"/>
+    <Output valueReference="36"/>
+    <Output valueReference="37"/>
+    <Output valueReference="38"/>
+    <Output valueReference="39"/>
+    <Output valueReference="40"/>
+    <Output valueReference="41"/>
+    <Output valueReference="42"/>
+    <Output valueReference="43"/>
+    <Output valueReference="44"/>
+    <Output valueReference="45"/>
+    <Output valueReference="46"/>
+    <Output valueReference="47"/>
+    <Output valueReference="48"/>
+    <Output valueReference="49"/>
+    <Output valueReference="50"/>
+    <Output valueReference="100"/>
+    <Output valueReference="101"/>
+    <Output valueReference="102"/>
+  </ModelStructure>
+</fmiModelDescription>

@@ -42,9 +42,9 @@
       "sha256": "233f273b10229d9a8c5513b6c76f6dfac7ed3bfce62ed1e60b56e6480392caea"
     },
     {
-      "bytes": 4007,
+      "bytes": 4038,
       "path": "audit/phase10/REPORT.zh-CN.md",
-      "sha256": "d3ef4d9bc10905955302f542d026155515c270e1823a3724dd2fa99cc781f05c"
+      "sha256": "a4d09fd18bb0427b71930a57a59a76541db197d2fe2d4faaa2ffe69be212237e"
     },
     {
       "bytes": 366,
@@ -192,9 +192,9 @@
       "sha256": "9a88be908b2c55cf0b1f596cf34b0eedaecdce5f51c77b0316409df8df040412"
     },
     {
-      "bytes": 5681,
+      "bytes": 5907,
       "path": "audit/phase10/check.py",
-      "sha256": "7e898fc931de91b314bf71ee9f7fc4de0d7c86d8031f2779668bfeceb255c808"
+      "sha256": "4115fe88f3e254850f9abb788d21fa188de76188d6a84ad62ce1a33580fa3ef1"
     },
     {
       "bytes": 6927,
@@ -207,9 +207,9 @@
       "sha256": "c726d7d42430bde8e0715a39964653089529c93060594b7091ebbccdf28754fd"
     },
     {
-      "bytes": 14023,
+      "bytes": 14089,
       "path": "audit/phase10/comparisons/trajectories.json",
-      "sha256": "d89dfd4d687ae084c5ad3ea42a04dc6c976fe6cec34e724c90b8b54f52ba9a63"
+      "sha256": "7e08e4ef607a94948798afb13b50e4c82a8ae7e9e911bf17a6eefd4bacb051ba"
     },
     {
       "bytes": 266,

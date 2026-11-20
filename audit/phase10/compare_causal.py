@@ -65,12 +65,20 @@ def compare(case):
     else:
         decision="SAME_DECISION" if not findings else "CONTRACT_VIOLATION"
     outcome="SAME_OUTCOME" if interrupted==ext_interrupted else "VALID_POLICY_DEPENDENT_OUTCOME_DIFFERENCE"
-    if case=="N10-OR2" and interrupted and not ext_interrupted and not findings:
-        outcome="VALID_POLICY_DEPENDENT_OUTCOME_DIFFERENCE"
-    if case=="N10-OR2" and ext_interrupted:
+    if ext_interrupted and failure_kind==1 and int(spec["failureIndex"]) != ext_robot:
         findings.append({"class":"EXECUTION_DEPENDENCY_MISMATCH","model":"external",
-                         "reason":"unselected robot1 failure interrupted robot2 execution"})
-        status="FAIL"
+                         "reason":"failure did not hit selected external robot but interrupted"})
+    # Generic policy-difference rule: both selections valid, different selected resources,
+    # canonical failure hits only its own robot, external failure does not hit its robot.
+    if (failure_kind==1 and interrupted != ext_interrupted and task_robot != f"robot-m{ext_robot}"
+            and int(float(ext["failureTargetId"])) == int(spec["failureIndex"])):
+        canon_hit = task_robot == f"robot-m{int(spec['failureIndex'])}"
+        if canon_hit and interrupted and not ext_interrupted and not findings:
+            outcome="VALID_POLICY_DEPENDENT_OUTCOME_DIFFERENCE"
+        if ext_interrupted and int(spec["failureIndex"]) != ext_robot:
+            findings.append({"class":"EXECUTION_DEPENDENCY_MISMATCH","model":"external",
+                             "reason":"failure did not hit selected external robot but interrupted"})
+            status="FAIL"
     status="ACCEPTED" if not findings else "FAIL"
     return {"schema":"poie.s5v-n10-causal/1","case":case,
             "contract_sha256":__import__("hashlib").sha256((PHASE/"contracts"/f"{case}.contract").read_bytes()).hexdigest(),
