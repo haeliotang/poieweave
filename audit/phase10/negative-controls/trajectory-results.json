@@ -1,0 +1,43 @@
+{
+  "schema": "poie.s5v-n10-trajectory-controls/1",
+  "results": [
+    {
+      "control": "failure-time-shift",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT"
+      ]
+    },
+    {
+      "control": "exact-failure-row-removed",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT"
+      ]
+    },
+    {
+      "control": "interruption-state-mismatch",
+      "expected": "EVENT_TIME_DISPLACEMENT",
+      "detected": true,
+      "classes": [
+        "EVENT_TIME_DISPLACEMENT"
+      ]
+    },
+    {
+      "control": "same-time-order-swap",
+      "expected": "EVENT_ORDER_MISMATCH",
+      "detected": true,
+      "classes": [
+        "EVENT_ORDER_MISMATCH"
+      ]
+    },
+    {
+      "control": "policy-difference-not-failure",
+      "expected": "ACCEPTED_POLICY_DIFFERENCE",
+      "detected": true,
+      "classes": []
+    }
+  ]
+}

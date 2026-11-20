@@ -1,0 +1,456 @@
+{
+  "schema": "poie.s5v-n10-trajectory-set/1",
+  "cases": [
+    {
+      "schema": "poie.s5v-n10-trajectory/1",
+      "case": "N10-U01",
+      "status": "ACCEPTED",
+      "canonical_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "sequence": 1,
+          "target": "initial-repair",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        },
+        {
+          "time": 3600.0,
+          "kind": "AssetFailure",
+          "sequence": 2,
+          "target": "bus-1",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        },
+        {
+          "time": 3600.0,
+          "kind": "RepairInterrupted",
+          "sequence": 3,
+          "target": "repair",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        }
+      ],
+      "external_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 3600.0,
+          "kind": "AssetFailure",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 3600.0,
+          "kind": "RepairInterrupted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        }
+      ],
+      "event_order_coverage": "PARTIAL",
+      "event_before_coverage": "NOT_OBSERVED_FOR_INTERMEDIATE_BOUNDARY",
+      "resource_state_after": {
+        "canonical": "INTERRUPTED",
+        "external": "INTERRUPTED",
+        "failure_row_present": true
+      },
+      "first_event_time_divergence": null,
+      "first_event_order_divergence": null,
+      "first_resource_selection_divergence": null,
+      "first_dependency_identity_divergence": null,
+      "first_resource_lifetime_divergence": null,
+      "first_interruption_divergence": null,
+      "first_restoration_divergence": null,
+      "first_unexplained_divergence": null,
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRAJECTORY",
+      "trajectory_coverage": "EVENT_LEVEL_WITH_ENDPOINT_STATE",
+      "external_event_source": "DERIVED_FROM_EXECUTION_OUTPUT"
+    },
+    {
+      "schema": "poie.s5v-n10-trajectory/1",
+      "case": "N10-U02",
+      "status": "ACCEPTED",
+      "canonical_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "sequence": 1,
+          "target": "initial-repair",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        },
+        {
+          "time": 3600.0,
+          "kind": "AssetFailure",
+          "sequence": 2,
+          "target": "sensor-x",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        },
+        {
+          "time": 7200.0,
+          "kind": "RepairCompleted",
+          "sequence": 3,
+          "target": "a-lathe",
+          "resources": "",
+          "task_resources": ""
+        }
+      ],
+      "external_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 3600.0,
+          "kind": "AssetFailure",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 7200.0,
+          "kind": "RepairCompleted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        }
+      ],
+      "event_order_coverage": "OBSERVED",
+      "event_before_coverage": "NOT_OBSERVED_FOR_INTERMEDIATE_BOUNDARY",
+      "resource_state_after": {
+        "canonical": "COMPLETED",
+        "external": "COMPLETED",
+        "failure_row_present": true
+      },
+      "first_event_time_divergence": null,
+      "first_event_order_divergence": null,
+      "first_resource_selection_divergence": null,
+      "first_dependency_identity_divergence": null,
+      "first_resource_lifetime_divergence": null,
+      "first_interruption_divergence": null,
+      "first_restoration_divergence": null,
+      "first_unexplained_divergence": null,
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRAJECTORY",
+      "trajectory_coverage": "EVENT_LEVEL_WITH_ENDPOINT_STATE",
+      "external_event_source": "DERIVED_FROM_EXECUTION_OUTPUT"
+    },
+    {
+      "schema": "poie.s5v-n10-trajectory/1",
+      "case": "N10-U03",
+      "status": "ACCEPTED",
+      "canonical_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "sequence": 1,
+          "target": "initial-repair",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        },
+        {
+          "time": 3600.0,
+          "kind": "AssetFailure",
+          "sequence": 2,
+          "target": "bus-2",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        },
+        {
+          "time": 7200.0,
+          "kind": "RepairCompleted",
+          "sequence": 3,
+          "target": "a-lathe",
+          "resources": "",
+          "task_resources": ""
+        }
+      ],
+      "external_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 3600.0,
+          "kind": "AssetFailure",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 7200.0,
+          "kind": "RepairCompleted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        }
+      ],
+      "event_order_coverage": "OBSERVED",
+      "event_before_coverage": "NOT_OBSERVED_FOR_INTERMEDIATE_BOUNDARY",
+      "resource_state_after": {
+        "canonical": "COMPLETED",
+        "external": "COMPLETED",
+        "failure_row_present": true
+      },
+      "first_event_time_divergence": null,
+      "first_event_order_divergence": null,
+      "first_resource_selection_divergence": null,
+      "first_dependency_identity_divergence": null,
+      "first_resource_lifetime_divergence": null,
+      "first_interruption_divergence": null,
+      "first_restoration_divergence": null,
+      "first_unexplained_divergence": null,
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRAJECTORY",
+      "trajectory_coverage": "EVENT_LEVEL_WITH_ENDPOINT_STATE",
+      "external_event_source": "DERIVED_FROM_EXECUTION_OUTPUT"
+    },
+    {
+      "schema": "poie.s5v-n10-trajectory/1",
+      "case": "N10-U04",
+      "status": "ACCEPTED",
+      "canonical_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "sequence": 1,
+          "target": "initial-repair",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        },
+        {
+          "time": 7200.0,
+          "kind": "RepairCompleted",
+          "sequence": 2,
+          "target": "a-lathe",
+          "resources": "",
+          "task_resources": ""
+        },
+        {
+          "time": 7200.0,
+          "kind": "AssetFailure",
+          "sequence": 3,
+          "target": "bus-1",
+          "resources": "",
+          "task_resources": ""
+        }
+      ],
+      "external_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 7200.0,
+          "kind": "AssetFailure",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 7200.0,
+          "kind": "RepairCompleted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        }
+      ],
+      "event_order_coverage": "PARTIAL",
+      "event_before_coverage": "NOT_OBSERVED_FOR_INTERMEDIATE_BOUNDARY",
+      "resource_state_after": {
+        "canonical": "COMPLETED",
+        "external": "COMPLETED",
+        "failure_row_present": true
+      },
+      "first_event_time_divergence": null,
+      "first_event_order_divergence": null,
+      "first_resource_selection_divergence": null,
+      "first_dependency_identity_divergence": null,
+      "first_resource_lifetime_divergence": null,
+      "first_interruption_divergence": null,
+      "first_restoration_divergence": null,
+      "first_unexplained_divergence": null,
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRAJECTORY",
+      "trajectory_coverage": "EVENT_LEVEL_WITH_ENDPOINT_STATE",
+      "external_event_source": "DERIVED_FROM_EXECUTION_OUTPUT"
+    },
+    {
+      "schema": "poie.s5v-n10-trajectory/1",
+      "case": "N10-OR1",
+      "status": "ACCEPTED",
+      "canonical_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "sequence": 1,
+          "target": "initial-repair",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        },
+        {
+          "time": 7200.0,
+          "kind": "RepairCompleted",
+          "sequence": 2,
+          "target": "a-lathe",
+          "resources": "",
+          "task_resources": ""
+        }
+      ],
+      "external_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 7200.0,
+          "kind": "RepairCompleted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        }
+      ],
+      "event_order_coverage": "OBSERVED",
+      "event_before_coverage": "NOT_OBSERVED_FOR_INTERMEDIATE_BOUNDARY",
+      "resource_state_after": {
+        "canonical": "COMPLETED",
+        "external": "COMPLETED",
+        "failure_row_present": false
+      },
+      "first_event_time_divergence": null,
+      "first_event_order_divergence": null,
+      "first_resource_selection_divergence": null,
+      "first_dependency_identity_divergence": null,
+      "first_resource_lifetime_divergence": null,
+      "first_interruption_divergence": null,
+      "first_restoration_divergence": null,
+      "first_unexplained_divergence": null,
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRAJECTORY",
+      "trajectory_coverage": "EVENT_LEVEL_WITH_ENDPOINT_STATE",
+      "external_event_source": "DERIVED_FROM_EXECUTION_OUTPUT"
+    },
+    {
+      "schema": "poie.s5v-n10-trajectory/1",
+      "case": "N10-OR2",
+      "status": "ACCEPTED",
+      "canonical_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "sequence": 1,
+          "target": "initial-repair",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        },
+        {
+          "time": 3600.0,
+          "kind": "AssetFailure",
+          "sequence": 2,
+          "target": "robot-m1",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        },
+        {
+          "time": 3600.0,
+          "kind": "RepairInterrupted",
+          "sequence": 3,
+          "target": "repair",
+          "resources": "robot-m1",
+          "task_resources": "0:robot-m1"
+        }
+      ],
+      "external_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 3600.0,
+          "kind": "AssetFailure",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 7200.0,
+          "kind": "RepairCompleted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        }
+      ],
+      "event_order_coverage": "OBSERVED",
+      "event_before_coverage": "NOT_OBSERVED_FOR_INTERMEDIATE_BOUNDARY",
+      "resource_state_after": {
+        "canonical": "INTERRUPTED",
+        "external": "COMPLETED"
+      },
+      "first_event_time_divergence": null,
+      "first_event_order_divergence": null,
+      "first_resource_selection_divergence": {
+        "canonical": "0:robot-m1",
+        "external": "t1:robot-m2"
+      },
+      "first_dependency_identity_divergence": null,
+      "first_resource_lifetime_divergence": null,
+      "first_interruption_divergence": {
+        "at_s": 3600.0,
+        "classification": "VALID_POLICY_DIFFERENCE"
+      },
+      "first_restoration_divergence": {
+        "at_s": 7200.0,
+        "classification": "VALID_POLICY_DIFFERENCE"
+      },
+      "first_unexplained_divergence": null,
+      "findings": [],
+      "classification": "VALID_POLICY_DEPENDENT_OUTCOME_DIFFERENCE",
+      "trajectory_coverage": "EVENT_LEVEL_WITH_ENDPOINT_STATE",
+      "external_event_source": "DERIVED_FROM_EXECUTION_OUTPUT"
+    },
+    {
+      "schema": "poie.s5v-n10-trajectory/1",
+      "case": "N10-OR3",
+      "status": "ACCEPTED",
+      "canonical_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "sequence": 1,
+          "target": "initial-repair",
+          "resources": "tool-t1+robot-m1",
+          "task_resources": "0:tool-t1+robot-m1"
+        },
+        {
+          "time": 7200.0,
+          "kind": "RepairCompleted",
+          "sequence": 2,
+          "target": "a-lathe",
+          "resources": "",
+          "task_resources": ""
+        }
+      ],
+      "external_events": [
+        {
+          "time": 0.0,
+          "kind": "InitialRepairStarted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        },
+        {
+          "time": 7200.0,
+          "kind": "RepairCompleted",
+          "source": "DERIVED_FROM_EXECUTION_OUTPUT"
+        }
+      ],
+      "event_order_coverage": "OBSERVED",
+      "event_before_coverage": "NOT_OBSERVED_FOR_INTERMEDIATE_BOUNDARY",
+      "resource_state_after": {
+        "canonical": "COMPLETED",
+        "external": "COMPLETED",
+        "failure_row_present": false
+      },
+      "first_event_time_divergence": null,
+      "first_event_order_divergence": null,
+      "first_resource_selection_divergence": null,
+      "first_dependency_identity_divergence": null,
+      "first_resource_lifetime_divergence": null,
+      "first_interruption_divergence": null,
+      "first_restoration_divergence": null,
+      "first_unexplained_divergence": null,
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRAJECTORY",
+      "trajectory_coverage": "EVENT_LEVEL_WITH_ENDPOINT_STATE",
+      "external_event_source": "DERIVED_FROM_EXECUTION_OUTPUT"
+    }
+  ]
+}

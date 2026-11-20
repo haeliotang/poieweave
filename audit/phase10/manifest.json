@@ -17,9 +17,9 @@
       "sha256": "390a4d1df7b45e2c32d6bb12a7432833a86af347235c15f35afa8f07c25e7f56"
     },
     {
-      "bytes": 1147,
+      "bytes": 1139,
       "path": "audit/phase10/CLAIMS.json",
-      "sha256": "de798a66e3d131b2ee0597260bb48ef76cd471db76091d5d45d1274c4699d9b9"
+      "sha256": "262211c626c2f1e52c30e8d57725c046dc0023d89b5233dd0de8f1afccff3b64"
     },
     {
       "bytes": 310,
@@ -27,9 +27,9 @@
       "sha256": "85c481854f764a31d9b663df74e01151d3488f7bc2f59540d897aa72af5f21be"
     },
     {
-      "bytes": 858,
+      "bytes": 1165,
       "path": "audit/phase10/EVIDENCE.md",
-      "sha256": "644fb4fbcc73210fc5f46bbf4cabcca4443ef0497676a710903a435c12895dfc"
+      "sha256": "1ef28f500cd9a704eefae15a3ad3b7f7e9f031b6e428e37d480b17affda3bf20"
     },
     {
       "bytes": 355,
@@ -42,9 +42,9 @@
       "sha256": "233f273b10229d9a8c5513b6c76f6dfac7ed3bfce62ed1e60b56e6480392caea"
     },
     {
-      "bytes": 3291,
+      "bytes": 4007,
       "path": "audit/phase10/REPORT.zh-CN.md",
-      "sha256": "5cb27a4303ccf5dfd6fa8f65d0b2bf1aa000579897f9af778958dd58ff6ef939"
+      "sha256": "d3ef4d9bc10905955302f542d026155515c270e1823a3724dd2fa99cc781f05c"
     },
     {
       "bytes": 366,
@@ -192,9 +192,9 @@
       "sha256": "9a88be908b2c55cf0b1f596cf34b0eedaecdce5f51c77b0316409df8df040412"
     },
     {
-      "bytes": 4590,
+      "bytes": 5681,
       "path": "audit/phase10/check.py",
-      "sha256": "1afbea06a535c7f248236d629deb676d125753ece8ee912eb7bfa413d91b693f"
+      "sha256": "7e898fc931de91b314bf71ee9f7fc4de0d7c86d8031f2779668bfeceb255c808"
     },
     {
       "bytes": 6927,
@@ -205,6 +205,11 @@
       "bytes": 7660,
       "path": "audit/phase10/comparisons/causal.json",
       "sha256": "c726d7d42430bde8e0715a39964653089529c93060594b7091ebbccdf28754fd"
+    },
+    {
+      "bytes": 14023,
+      "path": "audit/phase10/comparisons/trajectories.json",
+      "sha256": "d89dfd4d687ae084c5ad3ea42a04dc6c976fe6cec34e724c90b8b54f52ba9a63"
     },
     {
       "bytes": 266,
@@ -275,6 +280,11 @@
       "bytes": 351,
       "path": "audit/phase10/contracts/N10-U04.contract",
       "sha256": "a132f33f0cbb347dca675d7fdb8609efb4593addeff0536ead4f9378cd2e9698"
+    },
+    {
+      "bytes": 1440,
+      "path": "audit/phase10/execution_manifest.py",
+      "sha256": "e3a2e48f4caaf9b675757633478db633ef6fbaebf5f0812180dafa83d86cc8a6"
     },
     {
       "bytes": 2267496,
@@ -487,9 +497,9 @@
       "sha256": "ae0562e9e0f61c00f26f53780eb0aa649970a8674d4bffbae527deb50f768d47"
     },
     {
-      "bytes": 1685,
+      "bytes": 1709,
       "path": "audit/phase10/manifest.py",
-      "sha256": "5d3af4de00837c1fbf7648bd36e3bba25c8d96e464f50e5c8a0757873ecc753a"
+      "sha256": "14ac3ba774c875524d4a04f8c1271df582037042b42878af98a834aff21f5184"
     },
     {
       "bytes": 1047,
@@ -500,6 +510,11 @@
       "bytes": 1893,
       "path": "audit/phase10/negative-controls/causal-results.json",
       "sha256": "53106f44027f0e4dd15c1a44afbe1b99fcc4816ecb306d7daaf6aece247c8cb7"
+    },
+    {
+      "bytes": 967,
+      "path": "audit/phase10/negative-controls/trajectory-results.json",
+      "sha256": "6b704d5523fc608deb4b5f91d8dc574fefdcfe4f68924c80446280970639d234"
     }
   ],
   "kind": "FROZEN_TRACKED_EVIDENCE",

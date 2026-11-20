@@ -21,7 +21,7 @@ N10 ALTERNATIVE-RESOURCE CAUSAL VALIDITY
   ESTABLISHED (SCOPED: N10-OR1..OR3)
 
 N10 BOUNDARY-AWARE RESOURCE-CAUSAL TRAJECTORY
-  NOT ESTABLISHED
+  ESTABLISHED (SCOPED: N10-U01..U04, N10-OR1..OR3)
 
 N10 EVIDENCE AND CERTIFICATE INTEGRITY
   NOT ESTABLISHED
@@ -71,12 +71,26 @@ N10-OR3 robot OR + tool AND, preferred 2    ACCEPTED (different valid, tool requ
 - N10-OR3 证明机器人 OR 与工具 AND 复合：两模型都需要 tool-t1。
 - 8 个上游/OR 负例全部检出，包括两模型共同选择非法 robot。
 
+## 事件轨迹结果
+
+```text
+N10-U01..U04, N10-OR1, N10-OR3   SAME_CAUSAL_TRAJECTORY
+N10-OR2                           VALID_POLICY_DEPENDENT_OUTCOME_DIFFERENCE
+```
+
+- canonical 事件为原生事件。
+- external 事件由 900 s step trace 派生，标记 `DERIVED_FROM_EXECUTION_OUTPUT`。
+- 事件时间严格比较，无 nearest-neighbor。
+- 中间 Before 状态无精确同刻样本，标记 `NOT_OBSERVED_FOR_INTERMEDIATE_BOUNDARY`。
+- 同刻 completion/failure 的外部顺序无法从 endpoint trace 建立，标记 PARTIAL。
+- 轨迹负例：failure time shift、exact failure row removed、interruption state mismatch、同刻 order swap，全部检出。
+- 合法 OR2 策略差异保持 ACCEPTED，不误判为失败。
+
 ## 未建立
 
 ```text
-N10 BOUNDARY-AWARE RESOURCE-CAUSAL TRAJECTORY — NOT ESTABLISHED
-N10 EVIDENCE AND CERTIFICATE INTEGRITY — IN PROGRESS
+GENERAL RESOURCE-CAUSAL VALIDITY — NOT ESTABLISHED
+STEP-LEVEL RESOURCE RELEASE — NOT ESTABLISHED
+EVENT-ENGINE PRIORITY INPUT — NOT ESTABLISHED
+FULL EVENT TRACE / SAME-PLEX CAUSALITY — NOT ESTABLISHED
 ```
-
-外部对 OR/上游场景提供 900 s step trace，但 comparator 仍主要使用 endpoint
-字段；不能宣称完整事件轨迹一致。

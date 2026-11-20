@@ -6,7 +6,7 @@ from __future__ import annotations
 import hashlib,json,subprocess
 from pathlib import Path
 PHASE=Path(__file__).resolve().parent; ROOT=PHASE.parents[1]; PREFIX="audit/phase10/"
-FILES={"PREREG.md","BOUNDARY_CONTRACT.md","RESOURCE_IDENTITY.md","ALTERNATIVE_SELECTION.md","OBSERVATION_PROVENANCE.md","COMPARISON_SEMANTICS.md","CERTIFICATE_IMPACT.md","REPORT.zh-CN.md","EVIDENCE.md","CLAIMS.json","check.py","manifest.py"}
+FILES={"PREREG.md","BOUNDARY_CONTRACT.md","RESOURCE_IDENTITY.md","ALTERNATIVE_SELECTION.md","OBSERVATION_PROVENANCE.md","COMPARISON_SEMANTICS.md","CERTIFICATE_IMPACT.md","REPORT.zh-CN.md","EVIDENCE.md","CLAIMS.json","check.py","manifest.py","execution_manifest.py"}
 DIRS={"contracts/","canonical/","external/","event-trajectories/","dependency-paths/","alternative-decisions/","comparisons/","negative-controls/","manifests/"}
 EXCLUDE={"manifest.json","manifest.sha256","execution-manifest.json"}
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
