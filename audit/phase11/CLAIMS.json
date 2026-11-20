@@ -5,7 +5,7 @@
     {"id":"N11-A","status":"ESTABLISHED","scope":"native external journal, 14 enumerated cases"},
     {"id":"N11-B","status":"ESTABLISHED","scope":"external true before/after at transition sites"},
     {"id":"N11-C","status":"ESTABLISHED","scope":"14 enumerated cases; canonical before/after NOT_OBSERVED"},
-    {"id":"N11-D","status":"NOT_ESTABLISHED","scope":"journal mutations pending"},
-    {"id":"N11-E","status":"NOT_ESTABLISHED","scope":"CI/clean evidence pending"}
+    {"id":"N11-D","status":"ESTABLISHED","scope":"native journal mutations + inherited both-model-invalid"},
+    {"id":"N11-E","status":"ESTABLISHED","scope":"frozen/current manifests, CI, clean check-all"}
   ]
 }

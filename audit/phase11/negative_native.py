@@ -37,6 +37,9 @@ def provenance(data): data["events"][0]["origin"]="DERIVED_FROM_EXECUTION_OUTPUT
 record("fake-native-provenance","EVIDENCE_PROVENANCE_VIOLATION",run("N10-U01",provenance))
 def restore(data): next(e for e in data["events"] if e["kind"]=="RestorationCommitted")["after"][5]=0
 record("restoration-flag","state after RestorationCommitted",run("N10-00",restore))
+def dependency(data):
+    next(e for e in data["events"] if e["kind"]=="InitialRepairStarted")["after"][2]=0
+record("wrong-dependency-witness","RESOURCE_DEPENDENCY_MISMATCH",run("N10-U01",dependency))
 output=P/"negative-controls/native-results.json"
 output.write_text(json.dumps({"schema":"poie.s5v-n11-native-controls/1","results":results},indent=2)+"\n")
 raise SystemExit(0 if all(r["detected"] for r in results) else 1)
