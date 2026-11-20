@@ -18,6 +18,8 @@ if not any(c["case"]=="N10-OR2" and c["classification"]=="VALID_POLICY_DEPENDENT
     problems.append("policy classification")
 controls=json.loads((P/"negative-controls/native-results.json").read_text())["results"]
 if not all(entry["detected"] for entry in controls): problems.append("native journal controls")
+n10c=json.loads((P.parent/"phase10"/"negative-controls"/"causal-results.json").read_text())["results"]
+if not any(e["control"]=="both-or-models-invalid" and e["detected"] for e in n10c): problems.append("both-models-invalid")
 bi=json.loads((P/"causal-comparisons/bidirectional.json").read_text())
 if len(bi["cases"])!=14: problems.append("bidirectional case count")
 for case in bi["cases"]:
