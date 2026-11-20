@@ -68,6 +68,14 @@
         "STATE_TRANSITION_MISMATCH: RestorationCommitted",
         "state after RestorationCommitted"
       ]
+    },
+    {
+      "control": "wrong-dependency-witness",
+      "expected": "RESOURCE_DEPENDENCY_MISMATCH",
+      "detected": true,
+      "findings": [
+        "RESOURCE_DEPENDENCY_MISMATCH"
+      ]
     }
   ]
 }

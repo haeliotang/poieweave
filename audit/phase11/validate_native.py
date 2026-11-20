@@ -30,6 +30,12 @@ def validate(case):
   if e["seq"]<=last_seq: problems.append("non-monotonic sequence")
   if e["at"]+1e-9<last_at: problems.append("non-monotonic time")
   if e["origin"]!="NATIVE_EXTERNAL_FMU": problems.append("EVIDENCE_PROVENANCE_VIOLATION")
+  if e["kind"]=="InitialRepairStarted":
+   spec={}
+   for line in (P/"contracts"/f"{case}.contract").read_text().splitlines():
+    k,v=line.split("=",1); spec[k]=float(v)
+   robot=int(e["after"][0]); expected=int(spec.get(f"robot{robot}DependencyMask",0))
+   if int(e["after"][2])!=expected: problems.append("RESOURCE_DEPENDENCY_MISMATCH")
   if e["before"]==e["after"]: problems.append(f"STATE_TRANSITION_MISMATCH: {e['kind']}")
   last_seq=e["seq"]; last_at=e["at"]
   if e["kind"] in EXPECTED:

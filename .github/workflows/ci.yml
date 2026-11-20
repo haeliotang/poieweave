@@ -1919,6 +1919,7 @@ jobs:
       - name: Native journal validation and attacks
         run: |
           python3 audit/phase11/validate_native.py
+          python3 audit/phase11/compare_bidirectional.py
           python3 audit/phase11/negative_native.py
           python3 audit/phase11/check.py
           python3 audit/phase10/check.py --frozen
@@ -1927,6 +1928,7 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n11/evidence"
           cp -R audit/phase11 audit/phase10/comparisons audit/phase10/negative-controls "$RUNNER_TEMP/s5v-n11/evidence/"
+          python3 audit/phase11/execution_manifest.py --output "$RUNNER_TEMP/s5v-n11/evidence/execution-manifest.json"
       - uses: actions/upload-artifact@v4
         with:
           name: s5v-n11-linux-evidence
