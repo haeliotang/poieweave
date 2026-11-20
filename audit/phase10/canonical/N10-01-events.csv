@@ -1,0 +1,4 @@
+case	event_sequence	event_batch_sequence	at_s	event_kind	event_origin	target_asset	event_status	task_resources	termination
+N10-01	1	1	0.000	InitialRepairStarted	Endogenous	initial-repair	Committed	0:robot-m1	blocked:repair interrupted at 7199s: robot-m1 failed
+N10-01	2	2	7199.000	AssetFailure	Exogenous	robot-m1	Committed	0:robot-m1	blocked:repair interrupted at 7199s: robot-m1 failed
+N10-01	3	2	7199.000	RepairInterrupted	Endogenous	repair	Committed	0:robot-m1	blocked:repair interrupted at 7199s: robot-m1 failed

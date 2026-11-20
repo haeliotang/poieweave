@@ -1,0 +1,222 @@
+{
+  "schema": "poie.s5v-n10-boundary-set/1",
+  "cases": [
+    {
+      "schema": "poie.s5v-n10-boundary/1",
+      "case": "N10-00",
+      "contract_sha256": "d66cc98a928c8437432c69678594286c3cfd0708279ce16ac7bc699bbb0e28da",
+      "canonical": {
+        "completion_s": 7200.0,
+        "interruption_s": null,
+        "native_failure_s": null,
+        "native_failure_sequence": null,
+        "native_completion_sequence": 2,
+        "resource_release_observed": false,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "makespan_s": 7200.0,
+        "interrupted": 0,
+        "failure_applied_s": -1.0,
+        "completed_count": 1,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "ENDPOINT_ONLY"
+      },
+      "requested_failure_s": -1.0,
+      "horizon_s": 7200.0,
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "resource_release_claim": "NOT_OBSERVED",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-boundary/1",
+      "case": "N10-01",
+      "contract_sha256": "1c044a183d417bd77e298007c27e8af0d9afae47da0e926b6d04891f1f62b1aa",
+      "canonical": {
+        "completion_s": null,
+        "interruption_s": 7199.0,
+        "native_failure_s": 7199.0,
+        "native_failure_sequence": 2,
+        "native_completion_sequence": null,
+        "resource_release_observed": false,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "makespan_s": 7200.0,
+        "interrupted": 1,
+        "failure_applied_s": 7199.0,
+        "completed_count": 0,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "ENDPOINT_ONLY"
+      },
+      "requested_failure_s": 7199.0,
+      "horizon_s": 7200.0,
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "resource_release_claim": "NOT_OBSERVED",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-boundary/1",
+      "case": "N10-02",
+      "contract_sha256": "e4dfc21f36da398c2912ba79c9a317d7997d9dcb95db673dac67ca46955cbaed",
+      "canonical": {
+        "completion_s": 7200.0,
+        "interruption_s": null,
+        "native_failure_s": 7200.0,
+        "native_failure_sequence": 3,
+        "native_completion_sequence": 2,
+        "resource_release_observed": false,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "makespan_s": 7200.0,
+        "interrupted": 0,
+        "failure_applied_s": 7200.0,
+        "completed_count": 1,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "ENDPOINT_ONLY"
+      },
+      "requested_failure_s": 7200.0,
+      "horizon_s": 7201.0,
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "resource_release_claim": "NOT_OBSERVED",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-boundary/1",
+      "case": "N10-03",
+      "contract_sha256": "244501b3044ba06633fa6c135817bff76870716306b7917d05be7cfd0905b673",
+      "canonical": {
+        "completion_s": 7200.0,
+        "interruption_s": null,
+        "native_failure_s": 7201.0,
+        "native_failure_sequence": 3,
+        "native_completion_sequence": 2,
+        "resource_release_observed": false,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "makespan_s": 7200.0,
+        "interrupted": 0,
+        "failure_applied_s": 7201.0,
+        "completed_count": 1,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "ENDPOINT_ONLY"
+      },
+      "requested_failure_s": 7201.0,
+      "horizon_s": 7202.0,
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "resource_release_claim": "NOT_OBSERVED",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-boundary/1",
+      "case": "N10-04",
+      "contract_sha256": "c46828a778c31948d7fb78cb28bd538bbac350c4fb8781a8bf68b319cb6f248e",
+      "canonical": {
+        "completion_s": 10800.0,
+        "interruption_s": null,
+        "native_failure_s": 10800.0,
+        "native_failure_sequence": 3,
+        "native_completion_sequence": 2,
+        "resource_release_observed": false,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "makespan_s": 10800.0,
+        "interrupted": 0,
+        "failure_applied_s": 10800.0,
+        "completed_count": 1,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "ENDPOINT_ONLY"
+      },
+      "requested_failure_s": 10800.0,
+      "horizon_s": 10801.0,
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "resource_release_claim": "NOT_OBSERVED",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-boundary/1",
+      "case": "N10-05",
+      "contract_sha256": "6dd88e00aba6027942bc5fa143570f3670178192f12f91779870f656341e398f",
+      "canonical": {
+        "completion_s": 10800.0,
+        "interruption_s": null,
+        "native_failure_s": 12000.0,
+        "native_failure_sequence": 3,
+        "native_completion_sequence": 2,
+        "resource_release_observed": false,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "makespan_s": 10800.0,
+        "interrupted": 0,
+        "failure_applied_s": 12000.0,
+        "completed_count": 1,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "ENDPOINT_ONLY"
+      },
+      "requested_failure_s": 12000.0,
+      "horizon_s": 12001.0,
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "resource_release_claim": "NOT_OBSERVED",
+      "status": "ACCEPTED"
+    },
+    {
+      "schema": "poie.s5v-n10-boundary/1",
+      "case": "N10-06",
+      "contract_sha256": "1c182efeb3cb9dae9d2cc39e1fcbd9617ce5a9fce802525abb3ec96b60b8ed9f",
+      "canonical": {
+        "completion_s": 7200.0,
+        "interruption_s": null,
+        "native_failure_s": null,
+        "native_failure_sequence": null,
+        "native_completion_sequence": 2,
+        "resource_release_observed": false,
+        "provenance": "NATIVE_CANONICAL_RUNTIME"
+      },
+      "external": {
+        "makespan_s": 7200.0,
+        "interrupted": 0,
+        "failure_applied_s": -1.0,
+        "completed_count": 1,
+        "provenance": "NATIVE_EXTERNAL_FMU",
+        "trajectory_coverage": "ENDPOINT_ONLY"
+      },
+      "requested_failure_s": 7200.0,
+      "horizon_s": 7200.0,
+      "findings": [],
+      "first_causal_divergence": {
+        "class": "NO_DIVERGENCE",
+        "at_s": null
+      },
+      "resource_release_claim": "NOT_OBSERVED",
+      "status": "ACCEPTED"
+    }
+  ]
+}
