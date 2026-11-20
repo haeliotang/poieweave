@@ -29,7 +29,8 @@ def validate(case):
  for e in ev:
   if e["seq"]<=last_seq: problems.append("non-monotonic sequence")
   if e["at"]+1e-9<last_at: problems.append("non-monotonic time")
-  if e["before"]==e["after"]: problems.append(f"no state transition: {e['kind']}")
+  if e["origin"]!="NATIVE_EXTERNAL_FMU": problems.append("EVIDENCE_PROVENANCE_VIOLATION")
+  if e["before"]==e["after"]: problems.append(f"STATE_TRANSITION_MISMATCH: {e['kind']}")
   last_seq=e["seq"]; last_at=e["at"]
   if e["kind"] in EXPECTED:
    idx,after=EXPECTED[e["kind"]]

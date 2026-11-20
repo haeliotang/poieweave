@@ -1,0 +1,73 @@
+{
+  "schema": "poie.s5v-n11-native-controls/1",
+  "results": [
+    {
+      "control": "event-missing",
+      "expected": "event count AssetFailure",
+      "detected": true,
+      "findings": [
+        "event count AssetFailure: canonical=1 external=0"
+      ]
+    },
+    {
+      "control": "event-extra",
+      "expected": "event count AssetFailure",
+      "detected": true,
+      "findings": [
+        "non-monotonic sequence",
+        "event count AssetFailure: canonical=1 external=2"
+      ]
+    },
+    {
+      "control": "same-time-order-swap",
+      "expected": "same-time order",
+      "detected": true,
+      "findings": [
+        "non-monotonic sequence",
+        "same-time order"
+      ]
+    },
+    {
+      "control": "event-time-shift",
+      "expected": "event time AssetFailure",
+      "detected": true,
+      "findings": [
+        "non-monotonic time",
+        "event time AssetFailure"
+      ]
+    },
+    {
+      "control": "before-after-swap",
+      "expected": "initial robot state",
+      "detected": true,
+      "findings": [
+        "initial robot state"
+      ]
+    },
+    {
+      "control": "journal-overflow",
+      "expected": "OBSERVATION_OVERFLOW",
+      "detected": true,
+      "findings": [
+        "OBSERVATION_OVERFLOW"
+      ]
+    },
+    {
+      "control": "fake-native-provenance",
+      "expected": "EVIDENCE_PROVENANCE_VIOLATION",
+      "detected": true,
+      "findings": [
+        "EVIDENCE_PROVENANCE_VIOLATION"
+      ]
+    },
+    {
+      "control": "restoration-flag",
+      "expected": "state after RestorationCommitted",
+      "detected": true,
+      "findings": [
+        "STATE_TRANSITION_MISMATCH: RestorationCommitted",
+        "state after RestorationCommitted"
+      ]
+    }
+  ]
+}

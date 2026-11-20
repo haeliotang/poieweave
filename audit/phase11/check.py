@@ -16,5 +16,7 @@ for case in data["cases"]:
     if case["canonical_before_after"]!="NOT_OBSERVED": problems.append(f"{case['case']}: canonical state claim")
 if not any(c["case"]=="N10-OR2" and c["classification"]=="VALID_POLICY_DEPENDENT_DIVERGENCE" for c in data["cases"]):
     problems.append("policy classification")
+controls=json.loads((P/"negative-controls/native-results.json").read_text())["results"]
+if not all(entry["detected"] for entry in controls): problems.append("native journal controls")
 if problems: print("N11 FAIL: "+", ".join(problems),file=sys.stderr); raise SystemExit(1)
 print("ok N11 native external event journal and before/after")
