@@ -1,0 +1,13 @@
+{
+  "schema": "poie.s5v-n13-evidence-controls/1",
+  "results": [
+    {
+      "control": "journal-tamper",
+      "detected": true
+    },
+    {
+      "control": "manifest-tamper",
+      "detected": true
+    }
+  ]
+}

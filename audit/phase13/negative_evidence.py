@@ -6,7 +6,7 @@ import json,subprocess,sys
 from pathlib import Path
 P=Path(__file__).resolve().parent; ROOT=P.parents[1]; results=[]
 def rejected(*a): return subprocess.run([sys.executable,str(P/"verify_evidence.py"),*a],cwd=ROOT,capture_output=True,text=True).returncode!=0
-path=P/"external/N13-02.csv.journal.json"; backup=path.read_text()
+path=P/"external/N13-N13-02.csv.journal.json"; backup=path.read_text()
 try:
  d=json.loads(backup); d["events"][1]["target"]="robot-m1"; path.write_text(json.dumps(d)); results.append({"control":"journal-tamper","detected":rejected("--frozen")})
 finally: path.write_text(backup)
