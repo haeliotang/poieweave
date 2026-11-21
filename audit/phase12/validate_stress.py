@@ -9,7 +9,7 @@ P=Path(__file__).resolve().parent
 def events(p): return json.loads(p.read_text())["events"]
 def key(ev): return [(e["kind"],round(e["at"],9),e["target"],e["target_id"],tuple(e["before"]),tuple(e["after"])) for e in ev]
 import argparse
-ap=argparse.ArgumentParser(); ap.add_argument("--require-multi-instance",action="store_true"); args=ap.parse_args()
+ap=argparse.ArgumentParser(); ap.add_argument("--require-multi-instance",action="store_true"); ap.add_argument("--write",action="store_true"); args=ap.parse_args()
 problems=[]
 ov=json.loads((P/"overflow-tests/N12-overflow.csv.journal.json").read_text())
 if ov["capacity"]!=3 or ov["count"]!=3 or not ov["overflow"]: problems.append("overflow execution")
@@ -48,6 +48,6 @@ try:
 except Exception as exc:
  if args.require_multi_instance: problems.append(f"multi-instance BLOCKED: {exc}")
  multi_instance_status=f"BLOCKED: {exc}"
-(P/"comparisons/stress.json").write_text(json.dumps({"schema":"poie.s5v-n12-stress/1","overflow":ov,"step_sizes":[1,900,1000],"multi_instance":locals().get("multi_instance_status","CHECKED"),"problems":problems},indent=2)+"\n")
+if args.write: (P/"comparisons/stress.json").write_text(json.dumps({"schema":"poie.s5v-n12-stress/1","overflow":ov,"step_sizes":[1,900,1000],"multi_instance":locals().get("multi_instance_status","CHECKED"),"problems":problems},indent=2)+"\n")
 if problems: print("N12 stress FAIL: "+", ".join(problems),file=sys.stderr); raise SystemExit(1)
 print("ok N12 overflow, step invariance and multi-instance journal")
