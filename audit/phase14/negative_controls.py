@@ -17,6 +17,12 @@ def mutate(case,fn):
 def record(name,expected,r):
  detected=any(expected in f for f in r["findings"]); results.append({"control":name,"expected":expected,"detected":detected,"findings":r["findings"]})
  print(name,"PASS" if detected else "FAIL",r["findings"])
+def pick_case(min_failures=2):
+ for path in sorted((P/"generated-cases/external").glob("N14-G*.csv.journal.json")):
+  j=json.loads(path.read_text())
+  if sum(1 for e in j["events"] if e["kind"]=="AssetFailure")>=min_failures: return path.name.split(".")[0]
+ raise SystemExit("no multi-failure generated case")
+MULTI=pick_case()
 def both_time(ce,ex):
  for e in ce:
   if e["event_kind"]=="AssetFailure": e["at_s"]+=100
@@ -25,14 +31,14 @@ def both_time(ce,ex):
 record("shared-wrong-time","CONTRACT_EVENT_TIME_VIOLATION",mutate("N14-G03",both_time))
 def missing(ce,ex):
  ex["events"]=[e for e in ex["events"] if not (e["kind"]=="AssetFailure" and e.get("failure_id")==1)]
-record("second-failure-missing","EVENT_MISSING",mutate("N14-G11",missing))
+record("second-failure-missing","EVENT_MISSING",mutate(MULTI,missing))
 def history(ce,ex):
  f=[e for e in ex["events"] if e["kind"]=="AssetFailure"][-1]; f["failed_before"]=0
-record("state-history-loss","STATE_HISTORY_LOSS",mutate("N14-G11",history))
+record("state-history-loss","STATE_HISTORY_LOSS",mutate(MULTI,history))
 def id_swap(ce,ex):
  fs=[e for e in ex["events"] if e["kind"]=="AssetFailure"]
  if len(fs)>1: fs[0]["failure_id"],fs[1]["failure_id"]=fs[1]["failure_id"],fs[0]["failure_id"]
-record("failure-id-swap","FAILURE_IDENTITY_MISMATCH",mutate("N14-G11",id_swap))
+record("failure-id-swap","FAILURE_IDENTITY_MISMATCH",mutate(MULTI,id_swap))
 def post_term(ce,ex):
  f=copy.deepcopy([e for e in ex["events"] if e["kind"]=="AssetFailure"][0]); f["failure_id"]=3; f["target"]="sensor-x"; f["target_id"]=5; ex["events"].append(f)
 record("post-termination-event","EVENT_EXTRA",mutate("N14-G02",post_term))
