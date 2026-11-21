@@ -79,6 +79,7 @@ typedef struct {
     char failure_target_name[32];
     char journal[65536];
     char journal_output[65536];
+    unsigned long long failed_mask, journal_before_mask, journal_after_mask;
 } Component;
 
 const char *fmi3GetVersion(void) { return "3.0"; }
@@ -159,6 +160,7 @@ fmi3Status fmi3EnterInitializationMode(fmi3Instance i, fmi3Boolean a, fmi3Float6
         if ((int)x->robot[t] == 2) x->dep_mask = (fmi3Float64)(((int)x->dep_mask) | ((int)x->dep2));
     }
     resolve_failure_target(x);
+    x->failed_mask = 0; x->journal_before_mask = 0; x->journal_after_mask = 0;
     x->journal[0] = 0; x->journal_count = 0; x->journal_overflow = 0; x->journal_terminated = 0;
     record_transition(x, "InitialRepairStarted", "", 0, 1, 0, 0, 0, 0, 0);
     return fmi3OK;
@@ -188,8 +190,9 @@ static void append_event(Component *x, const char *kind, const char *target,
     size_t used = strlen(x->journal);
     snprintf(x->journal + used, sizeof(x->journal) - used,
              "%s{\"seq\":%d,\"at\":%.9f,\"kind\":\"%s\",\"origin\":\"NATIVE_EXTERNAL_FMU\",\"target\":\"%s\","
-             "\"target_id\":%d,\"before\":[%d,%d,%d,%d,%d,%d,%d],\"after\":[%d,%d,%d,%d,%d,%d,%d]}",
+             "\"target_id\":%d,\"failed_before\":%llu,\"failed_after\":%llu,\"before\":[%d,%d,%d,%d,%d,%d,%d],\"after\":[%d,%d,%d,%d,%d,%d,%d]}",
              n == 1 ? "" : ",", n, x->time, kind, target, (int)x->failure_target_id,
+             x->journal_before_mask, x->journal_after_mask,
              rb, hb, db, fb, pb, sb, tb, ra, ha, da, fa, pa, sa, ta);
 }
 static void event_states(Component *x, int *robot, int *health, int *dep, int *fail, int *repair, int *rest, int *term) {
@@ -200,6 +203,7 @@ static void event_states(Component *x, int *robot, int *health, int *dep, int *f
 }
 static void record_transition(Component *x, const char *kind, const char *target,
                               int rb, int hb, int db, int fb, int pb, int sb, int tb) {
+    if (kind[0] != 'A' || kind[1] != 's') { x->journal_before_mask = x->failed_mask; x->journal_after_mask = x->failed_mask; }
     int ra, ha, da, fa, pa, sa, ta;
     event_states(x, &ra, &ha, &da, &fa, &pa, &sa, &ta);
     append_event(x, kind, target, rb, hb, db, fb, pb, sb, tb, ra, ha, da, fa, pa, sa, ta);
@@ -321,6 +325,9 @@ fmi3Status fmi3DoStep(fmi3Instance i, fmi3Float64 current, fmi3Float64 step, fmi
         if (x->fail_time >= 0 && x->fail_applied < 0 && x->time >= x->fail_time - 1e-9) {
             int rr, hh, dd, ff, pp, ss, tt;
             event_states(x, &rr, &hh, &dd, &ff, &pp, &ss, &tt);
+            x->journal_before_mask = x->failed_mask;
+            if (x->failure_target_id >= 0) x->failed_mask |= (1ULL << (int)x->failure_target_id);
+            x->journal_after_mask = x->failed_mask;
             x->fail_applied = x->fail_time; x->last_event = 4;
             record_transition(x, "AssetFailure", x->failure_target_name, rr, hh, dd, ff, pp, ss, tt);
             int hit = 0;

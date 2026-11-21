@@ -1,0 +1,84 @@
+{
+  "schema": "poie.s5v-n12-projection-controls/1",
+  "results": [
+    {
+      "control": "shared-wrong-target",
+      "expected": "EVENT_TARGET_IDENTITY_MISMATCH",
+      "detected": true,
+      "findings": [
+        {
+          "class": "EVENT_TARGET_IDENTITY_MISMATCH",
+          "model": "canonical"
+        },
+        {
+          "class": "EVENT_TARGET_IDENTITY_MISMATCH",
+          "model": "external"
+        },
+        {
+          "class": "AFTER_STATE_MISMATCH",
+          "dimension": "asset_health"
+        }
+      ]
+    },
+    {
+      "control": "external-before-health",
+      "expected": "BEFORE_STATE_MISMATCH",
+      "detected": true,
+      "findings": [
+        {
+          "class": "BEFORE_STATE_MISMATCH",
+          "dimension": "asset_health"
+        }
+      ]
+    },
+    {
+      "control": "external-after-health",
+      "expected": "AFTER_STATE_MISMATCH",
+      "detected": true,
+      "findings": [
+        {
+          "class": "AFTER_STATE_MISMATCH",
+          "dimension": "asset_health"
+        }
+      ]
+    },
+    {
+      "control": "canonical-after-health",
+      "expected": "AFTER_STATE_MISMATCH",
+      "detected": true,
+      "findings": [
+        {
+          "class": "AFTER_STATE_MISMATCH",
+          "dimension": "asset_health"
+        }
+      ]
+    },
+    {
+      "control": "same-time-order-swap",
+      "expected": "EVENT_ORDER_MISMATCH",
+      "detected": true,
+      "findings": [
+        {
+          "class": "EVENT_ORDER_MISMATCH",
+          "at_s": 7200.0
+        }
+      ]
+    },
+    {
+      "control": "premature-restoration",
+      "expected": "RESTORATION_PRECONDITION_VIOLATION",
+      "detected": true,
+      "findings": [
+        {
+          "class": "RESTORATION_PRECONDITION_VIOLATION"
+        }
+      ]
+    },
+    {
+      "control": "valid-or-difference",
+      "expected": "ACCEPTED_POLICY",
+      "detected": true,
+      "findings": []
+    }
+  ]
+}

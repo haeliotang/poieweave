@@ -18,6 +18,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -44,6 +46,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -70,6 +74,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -96,6 +102,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -137,6 +145,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -163,6 +173,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "robot-m1",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 1,
             "before": [
               1,
               1,
@@ -189,6 +201,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 1,
+            "failed_after": 1,
             "before": [
               1,
               1,
@@ -215,6 +229,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 1,
+            "failed_after": 1,
             "before": [
               1,
               1,
@@ -256,6 +272,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -282,6 +300,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -308,6 +328,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -334,6 +356,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "robot-m1",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 1,
             "before": [
               1,
               1,
@@ -360,6 +384,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 1,
+            "failed_after": 1,
             "before": [
               1,
               1,
@@ -401,6 +427,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -427,6 +455,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -453,6 +483,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -479,6 +511,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "robot-m1",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 1,
             "before": [
               1,
               1,
@@ -505,6 +539,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 1,
+            "failed_after": 1,
             "before": [
               1,
               1,
@@ -546,6 +582,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -572,6 +610,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -598,6 +638,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -624,6 +666,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "robot-m1",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 1,
             "before": [
               1,
               1,
@@ -650,6 +694,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 1,
+            "failed_after": 1,
             "before": [
               1,
               1,
@@ -691,6 +737,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -717,6 +765,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -743,6 +793,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -769,6 +821,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "robot-m1",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 1,
             "before": [
               1,
               1,
@@ -795,6 +849,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 1,
+            "failed_after": 1,
             "before": [
               1,
               1,
@@ -836,6 +892,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -862,6 +920,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -888,6 +948,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -914,6 +976,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -955,6 +1019,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 3,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -981,6 +1047,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "bus-1",
             "target_id": 3,
+            "failed_before": 0,
+            "failed_after": 8,
             "before": [
               1,
               1,
@@ -1007,6 +1075,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 3,
+            "failed_before": 8,
+            "failed_after": 8,
             "before": [
               1,
               1,
@@ -1033,6 +1103,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 3,
+            "failed_before": 8,
+            "failed_after": 8,
             "before": [
               1,
               1,
@@ -1074,6 +1146,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 5,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -1100,6 +1174,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "sensor-x",
             "target_id": 5,
+            "failed_before": 0,
+            "failed_after": 32,
             "before": [
               1,
               1,
@@ -1126,6 +1202,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 5,
+            "failed_before": 0,
+            "failed_after": 32,
             "before": [
               1,
               1,
@@ -1152,6 +1230,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 5,
+            "failed_before": 0,
+            "failed_after": 32,
             "before": [
               1,
               1,
@@ -1178,6 +1258,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 5,
+            "failed_before": 32,
+            "failed_after": 32,
             "before": [
               1,
               1,
@@ -1219,6 +1301,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 6,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -1245,6 +1329,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "bus-2",
             "target_id": 6,
+            "failed_before": 0,
+            "failed_after": 64,
             "before": [
               1,
               1,
@@ -1271,6 +1357,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 6,
+            "failed_before": 0,
+            "failed_after": 64,
             "before": [
               1,
               1,
@@ -1297,6 +1385,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 6,
+            "failed_before": 0,
+            "failed_after": 64,
             "before": [
               1,
               1,
@@ -1323,6 +1413,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 6,
+            "failed_before": 64,
+            "failed_after": 64,
             "before": [
               1,
               1,
@@ -1364,6 +1456,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 3,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -1390,6 +1484,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 3,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -1416,6 +1512,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 3,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               1,
               1,
@@ -1442,6 +1540,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "bus-1",
             "target_id": 3,
+            "failed_before": 0,
+            "failed_after": 8,
             "before": [
               1,
               1,
@@ -1468,6 +1568,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 3,
+            "failed_before": 8,
+            "failed_after": 8,
             "before": [
               1,
               1,
@@ -1509,6 +1611,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -1535,6 +1639,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               2,
               1,
@@ -1561,6 +1667,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               2,
               1,
@@ -1587,6 +1695,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               2,
               1,
@@ -1628,6 +1738,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -1654,6 +1766,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "robot-m1",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 1,
             "before": [
               2,
               1,
@@ -1680,6 +1794,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 1,
             "before": [
               2,
               1,
@@ -1706,6 +1822,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": 0,
+            "failed_before": 0,
+            "failed_after": 1,
             "before": [
               2,
               1,
@@ -1732,6 +1850,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": 0,
+            "failed_before": 1,
+            "failed_after": 1,
             "before": [
               2,
               1,
@@ -1773,6 +1893,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               0,
               1,
@@ -1799,6 +1921,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               2,
               1,
@@ -1825,6 +1949,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "a-lathe",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               2,
               1,
@@ -1851,6 +1977,8 @@
             "origin": "NATIVE_EXTERNAL_FMU",
             "target": "",
             "target_id": -1,
+            "failed_before": 0,
+            "failed_after": 0,
             "before": [
               2,
               1,

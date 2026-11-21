@@ -1,0 +1,12 @@
+{
+ "case":"N10-03",
+ "duration_s":7200.000,
+ "requested_failure_s":7201.000,
+ "horizon_s":72000.000,
+ "completion_s":7200.000,
+ "interruption_s":null,
+ "restoration_committed":true,
+ "task_resources":["0:robot-m1"],
+ "termination":"completed",
+ "survived_s":72000.000
+}

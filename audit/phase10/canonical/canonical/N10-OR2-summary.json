@@ -1,0 +1,10 @@
+{
+ "case":"N10-OR2",
+ "resources":["robot-m1"],
+ "task_resources":["0:robot-m1"],
+ "witness":[],
+ "completion_s":null,
+ "interruption_s":3600.000,
+ "restoration_committed":false,
+ "termination":"blocked:repair interrupted at 3600s: robot-m1 failed"
+}

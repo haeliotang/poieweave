@@ -13,12 +13,12 @@
     },
     {
       "id": "N12-B",
-      "status": "NOT_ESTABLISHED",
+      "status": "ESTABLISHED",
       "scope": "canonical/external state projection"
     },
     {
       "id": "N12-C",
-      "status": "NOT_ESTABLISHED",
+      "status": "ESTABLISHED",
       "scope": "bidirectional state transitions"
     },
     {

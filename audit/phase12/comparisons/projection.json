@@ -1,0 +1,5812 @@
+{
+  "schema": "poie.s5v-n12-projection-set/1",
+  "cases": [
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-00",
+      "target": null,
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-00",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 7200.0,
+          "case": "N10-00",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-RepairCompleted",
+          "event_kind": "RepairCompleted",
+          "event_origin": "Endogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "a-lathe"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 72000.0,
+          "case": "N10-00",
+          "event_batch_sequence": 3,
+          "event_id": "ev-0003-HorizonReached",
+          "event_kind": "HorizonReached",
+          "event_origin": "Endogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": null
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 7200.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 7200.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 7200.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-01",
+      "target": "robot-m1",
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-01",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 7199.0,
+          "case": "N10-01",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-AssetFailure",
+          "event_kind": "AssetFailure",
+          "event_origin": "Exogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 161997500.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 161997500.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "robot-m1"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "at_s": 7199.0,
+          "case": "N10-01",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0003-RepairInterrupted",
+          "event_kind": "RepairInterrupted",
+          "event_origin": "Endogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 161997500.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 161997500.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "repair"
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 7199.0,
+          "kind": "AssetFailure",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "robot-m1",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 1,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 7199.0,
+          "kind": "RepairInterrupted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 1,
+          "failed_after": 1,
+          "before": [
+            1,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            1,
+            2,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 7199.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 1,
+          "failed_after": 1,
+          "before": [
+            1,
+            1,
+            0,
+            1,
+            2,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            1,
+            2,
+            0,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "target_health_before": {
+          "canonical": "Available",
+          "external": 1,
+          "status": "MATCH"
+        },
+        "target_health_after": {
+          "canonical": "Failed",
+          "external": 0,
+          "status": "MATCH"
+        },
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-02",
+      "target": "robot-m1",
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-02",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 7200.0,
+          "case": "N10-02",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-RepairCompleted",
+          "event_kind": "RepairCompleted",
+          "event_origin": "Endogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "a-lathe"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 7200.0,
+          "case": "N10-02",
+          "event_batch_sequence": 3,
+          "event_id": "ev-0003-AssetFailure",
+          "event_kind": "AssetFailure",
+          "event_origin": "Exogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "robot-m1"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "at_s": 72000.0,
+          "case": "N10-02",
+          "event_batch_sequence": 4,
+          "event_id": "ev-0004-HorizonReached",
+          "event_kind": "HorizonReached",
+          "event_origin": "Endogenous",
+          "event_sequence": 4,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": null
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 7200.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 7200.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 7200.0,
+          "kind": "AssetFailure",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "robot-m1",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 1,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 5,
+          "at": 7201.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 1,
+          "failed_after": 1,
+          "before": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "target_health_before": {
+          "canonical": "Available",
+          "external": 1,
+          "status": "MATCH"
+        },
+        "target_health_after": {
+          "canonical": "Failed",
+          "external": 0,
+          "status": "MATCH"
+        },
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-03",
+      "target": "robot-m1",
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-03",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 7200.0,
+          "case": "N10-03",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-RepairCompleted",
+          "event_kind": "RepairCompleted",
+          "event_origin": "Endogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "a-lathe"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 7201.0,
+          "case": "N10-03",
+          "event_batch_sequence": 3,
+          "event_id": "ev-0003-AssetFailure",
+          "event_kind": "AssetFailure",
+          "event_origin": "Exogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162002500.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162002500.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "robot-m1"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "at_s": 72000.0,
+          "case": "N10-03",
+          "event_batch_sequence": 4,
+          "event_id": "ev-0004-HorizonReached",
+          "event_kind": "HorizonReached",
+          "event_origin": "Endogenous",
+          "event_sequence": 4,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": null
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 7200.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 7200.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 7201.0,
+          "kind": "AssetFailure",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "robot-m1",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 1,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 5,
+          "at": 7202.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 1,
+          "failed_after": 1,
+          "before": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "target_health_before": {
+          "canonical": "Available",
+          "external": 1,
+          "status": "MATCH"
+        },
+        "target_health_after": {
+          "canonical": "Failed",
+          "external": 0,
+          "status": "MATCH"
+        },
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-04",
+      "target": "robot-m1",
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-04",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 10800.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 10800.0,
+          "case": "N10-04",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-RepairCompleted",
+          "event_kind": "RepairCompleted",
+          "event_origin": "Endogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 171000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 171000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "a-lathe"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 10800.0,
+          "case": "N10-04",
+          "event_batch_sequence": 3,
+          "event_id": "ev-0003-AssetFailure",
+          "event_kind": "AssetFailure",
+          "event_origin": "Exogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 171000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 171000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "robot-m1"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "at_s": 72000.0,
+          "case": "N10-04",
+          "event_batch_sequence": 4,
+          "event_id": "ev-0004-HorizonReached",
+          "event_kind": "HorizonReached",
+          "event_origin": "Endogenous",
+          "event_sequence": 4,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": null
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 10800.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 10800.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 10800.0,
+          "kind": "AssetFailure",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "robot-m1",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 1,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 5,
+          "at": 10801.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 1,
+          "failed_after": 1,
+          "before": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "target_health_before": {
+          "canonical": "Available",
+          "external": 1,
+          "status": "MATCH"
+        },
+        "target_health_after": {
+          "canonical": "Failed",
+          "external": 0,
+          "status": "MATCH"
+        },
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-05",
+      "target": "robot-m1",
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-05",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 10800.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 10800.0,
+          "case": "N10-05",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-RepairCompleted",
+          "event_kind": "RepairCompleted",
+          "event_origin": "Endogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 171000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 171000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "a-lathe"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 12000.0,
+          "case": "N10-05",
+          "event_batch_sequence": 3,
+          "event_id": "ev-0003-AssetFailure",
+          "event_kind": "AssetFailure",
+          "event_origin": "Exogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 174000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 174000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "robot-m1"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed"
+          },
+          "at_s": 72000.0,
+          "case": "N10-05",
+          "event_batch_sequence": 4,
+          "event_id": "ev-0004-HorizonReached",
+          "event_kind": "HorizonReached",
+          "event_origin": "Endogenous",
+          "event_sequence": 4,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": null
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 10800.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 10800.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 12000.0,
+          "kind": "AssetFailure",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "robot-m1",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 1,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 5,
+          "at": 12001.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 1,
+          "failed_after": 1,
+          "before": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "target_health_before": {
+          "canonical": "Available",
+          "external": 1,
+          "status": "MATCH"
+        },
+        "target_health_after": {
+          "canonical": "Failed",
+          "external": 0,
+          "status": "MATCH"
+        },
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-06",
+      "target": "robot-m1",
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-06",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 7200.0,
+          "case": "N10-06",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-RepairCompleted",
+          "event_kind": "RepairCompleted",
+          "event_origin": "Endogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "a-lathe"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available"
+          },
+          "at_s": 7200.0,
+          "case": "N10-06",
+          "event_batch_sequence": 3,
+          "event_id": "ev-0003-HorizonReached",
+          "event_kind": "HorizonReached",
+          "event_origin": "Endogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": null
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 7200.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 7200.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 7200.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-U01",
+      "target": "bus-1",
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-U01",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "bat-1",
+              "bus-1",
+              "charger-1",
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Failed",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 3600.0,
+          "case": "N10-U01",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-AssetFailure",
+          "event_kind": "AssetFailure",
+          "event_origin": "Exogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "bat-1",
+              "bus-1",
+              "charger-1",
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "bus-1"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Failed",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Failed",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 3600.0,
+          "case": "N10-U01",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0003-RepairInterrupted",
+          "event_kind": "RepairInterrupted",
+          "event_origin": "Endogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "bat-1",
+              "bus-1",
+              "charger-1",
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "repair"
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 3,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 3600.0,
+          "kind": "AssetFailure",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "bus-1",
+          "target_id": 3,
+          "failed_before": 0,
+          "failed_after": 8,
+          "before": [
+            1,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 3600.0,
+          "kind": "RepairInterrupted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 3,
+          "failed_before": 8,
+          "failed_after": 8,
+          "before": [
+            1,
+            1,
+            28,
+            1,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            2,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 3600.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 3,
+          "failed_before": 8,
+          "failed_after": 8,
+          "before": [
+            1,
+            1,
+            28,
+            1,
+            2,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            2,
+            0,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "target_health_before": {
+          "canonical": "Available",
+          "external": 1,
+          "status": "MATCH"
+        },
+        "target_health_after": {
+          "canonical": "Failed",
+          "external": 0,
+          "status": "MATCH"
+        },
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-U02",
+      "target": "sensor-x",
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-U02",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "bat-1",
+              "bus-1",
+              "charger-1",
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 3600.0,
+          "case": "N10-U02",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-AssetFailure",
+          "event_kind": "AssetFailure",
+          "event_origin": "Exogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "bat-1",
+              "bus-1",
+              "charger-1",
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "sensor-x"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Failed"
+          },
+          "at_s": 7200.0,
+          "case": "N10-U02",
+          "event_batch_sequence": 3,
+          "event_id": "ev-0003-RepairCompleted",
+          "event_kind": "RepairCompleted",
+          "event_origin": "Endogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "a-lathe"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Failed"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Failed"
+          },
+          "at_s": 72000.0,
+          "case": "N10-U02",
+          "event_batch_sequence": 4,
+          "event_id": "ev-0004-HorizonReached",
+          "event_kind": "HorizonReached",
+          "event_origin": "Endogenous",
+          "event_sequence": 4,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": null
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 5,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 3600.0,
+          "kind": "AssetFailure",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "sensor-x",
+          "target_id": 5,
+          "failed_before": 0,
+          "failed_after": 32,
+          "before": [
+            1,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 7200.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 5,
+          "failed_before": 0,
+          "failed_after": 32,
+          "before": [
+            1,
+            1,
+            28,
+            1,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 7200.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 5,
+          "failed_before": 0,
+          "failed_after": 32,
+          "before": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 5,
+          "at": 72000.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 5,
+          "failed_before": 32,
+          "failed_after": 32,
+          "before": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "target_health_before": {
+          "canonical": "Available",
+          "external": 1,
+          "status": "MATCH"
+        },
+        "target_health_after": {
+          "canonical": "Failed",
+          "external": 0,
+          "status": "MATCH"
+        },
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-U03",
+      "target": "bus-2",
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-U03",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "bat-1",
+              "bus-1",
+              "charger-1",
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Failed",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 3600.0,
+          "case": "N10-U03",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-AssetFailure",
+          "event_kind": "AssetFailure",
+          "event_origin": "Exogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "bat-1",
+              "bus-1",
+              "charger-1",
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "bus-2"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Failed",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Failed",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 7200.0,
+          "case": "N10-U03",
+          "event_batch_sequence": 3,
+          "event_id": "ev-0003-RepairCompleted",
+          "event_kind": "RepairCompleted",
+          "event_origin": "Endogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "a-lathe"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Failed",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Failed",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 72000.0,
+          "case": "N10-U03",
+          "event_batch_sequence": 4,
+          "event_id": "ev-0004-HorizonReached",
+          "event_kind": "HorizonReached",
+          "event_origin": "Endogenous",
+          "event_sequence": 4,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": null
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 6,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 3600.0,
+          "kind": "AssetFailure",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "bus-2",
+          "target_id": 6,
+          "failed_before": 0,
+          "failed_after": 64,
+          "before": [
+            1,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 7200.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 6,
+          "failed_before": 0,
+          "failed_after": 64,
+          "before": [
+            1,
+            1,
+            28,
+            1,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 7200.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 6,
+          "failed_before": 0,
+          "failed_after": 64,
+          "before": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 5,
+          "at": 72000.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 6,
+          "failed_before": 64,
+          "failed_after": 64,
+          "before": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "target_health_before": {
+          "canonical": "Available",
+          "external": 1,
+          "status": "MATCH"
+        },
+        "target_health_after": {
+          "canonical": "Failed",
+          "external": 0,
+          "status": "MATCH"
+        },
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-U04",
+      "target": "bus-1",
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-U04",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "bat-1",
+              "bus-1",
+              "charger-1",
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 7200.0,
+          "case": "N10-U04",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-RepairCompleted",
+          "event_kind": "RepairCompleted",
+          "event_origin": "Endogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "a-lathe"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Failed",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 7200.0,
+          "case": "N10-U04",
+          "event_batch_sequence": 3,
+          "event_id": "ev-0003-AssetFailure",
+          "event_kind": "AssetFailure",
+          "event_origin": "Exogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "bus-1"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Failed",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Failed",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 72000.0,
+          "case": "N10-U04",
+          "event_batch_sequence": 4,
+          "event_id": "ev-0004-HorizonReached",
+          "event_kind": "HorizonReached",
+          "event_origin": "Endogenous",
+          "event_sequence": 4,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": null
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 3,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 7200.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 3,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 7200.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 3,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            1,
+            1,
+            28,
+            0,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 7200.0,
+          "kind": "AssetFailure",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "bus-1",
+          "target_id": 3,
+          "failed_before": 0,
+          "failed_after": 8,
+          "before": [
+            1,
+            1,
+            28,
+            0,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 5,
+          "at": 72000.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 3,
+          "failed_before": 8,
+          "failed_after": 8,
+          "before": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            1,
+            1,
+            28,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "target_health_before": {
+          "canonical": "Available",
+          "external": 1,
+          "status": "MATCH"
+        },
+        "target_health_after": {
+          "canonical": "Failed",
+          "external": 0,
+          "status": "MATCH"
+        },
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-OR1",
+      "target": null,
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-OR1",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 7200.0,
+          "case": "N10-OR1",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-RepairCompleted",
+          "event_kind": "RepairCompleted",
+          "event_origin": "Endogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "a-lathe"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 72000.0,
+          "case": "N10-OR1",
+          "event_batch_sequence": 3,
+          "event_id": "ev-0003-HorizonReached",
+          "event_kind": "HorizonReached",
+          "event_origin": "Endogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": null
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 7200.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            2,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 7200.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            2,
+            1,
+            28,
+            0,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 72000.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            2,
+            1,
+            28,
+            0,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            0,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-OR2",
+      "target": "robot-m1",
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-OR2",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 3600.0,
+          "case": "N10-OR2",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-AssetFailure",
+          "event_kind": "AssetFailure",
+          "event_origin": "Exogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "robot-m1"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Failed",
+            "robot-m2": "Available",
+            "sensor-x": "Available"
+          },
+          "at_s": 3600.0,
+          "case": "N10-OR2",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0003-RepairInterrupted",
+          "event_kind": "RepairInterrupted",
+          "event_origin": "Endogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 153000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "repair"
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 3600.0,
+          "kind": "AssetFailure",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "robot-m1",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 1,
+          "before": [
+            2,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 7200.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 1,
+          "before": [
+            2,
+            1,
+            28,
+            1,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            1,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 7200.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": 0,
+          "failed_before": 0,
+          "failed_after": 1,
+          "before": [
+            2,
+            1,
+            28,
+            1,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            1,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 5,
+          "at": 72000.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": 0,
+          "failed_before": 1,
+          "failed_after": 1,
+          "before": [
+            2,
+            1,
+            28,
+            1,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "target_health_before": {
+          "canonical": "Available",
+          "external": 1,
+          "status": "MATCH"
+        },
+        "target_health_after": {
+          "canonical": "Failed",
+          "external": 0,
+          "status": "MATCH"
+        },
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "VALID_POLICY_DEPENDENT_DIVERGENCE",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    },
+    {
+      "schema": "poie.s5v-n12-projection/1",
+      "case": "N10-OR3",
+      "target": null,
+      "canonical_events": [
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available",
+            "tool-t1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available",
+            "tool-t1": "Available"
+          },
+          "at_s": 0.0,
+          "case": "N10-OR3",
+          "event_batch_sequence": 1,
+          "event_id": "ev-0001-InitialRepairStarted",
+          "event_kind": "InitialRepairStarted",
+          "event_origin": "Endogenous",
+          "event_sequence": 1,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 144000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": {
+            "end_s": 7200.0,
+            "execution_dependencies": [
+              "robot-m1",
+              "tool-t1"
+            ],
+            "label": "a-lathe",
+            "plans": [
+              "n10-repair-a-lathe"
+            ],
+            "resources": [
+              "tool-t1",
+              "robot-m1"
+            ],
+            "restoration_targets": [
+              "a-lathe"
+            ],
+            "task_resources": [
+              {
+                "plan_index": 0,
+                "resources": [
+                  "tool-t1",
+                  "robot-m1"
+                ]
+              }
+            ]
+          },
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "initial-repair"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available",
+            "tool-t1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Failed",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available",
+            "tool-t1": "Available"
+          },
+          "at_s": 7200.0,
+          "case": "N10-OR3",
+          "event_batch_sequence": 2,
+          "event_id": "ev-0002-RepairCompleted",
+          "event_kind": "RepairCompleted",
+          "event_origin": "Endogenous",
+          "event_sequence": 2,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 162000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": "a-lathe"
+        },
+        {
+          "asset_statuses_after": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available",
+            "tool-t1": "Available"
+          },
+          "asset_statuses_before": {
+            "a-lathe": "Available",
+            "bat-1": "Available",
+            "bus-1": "Available",
+            "bus-2": "Available",
+            "charger-1": "Available",
+            "filter-1": "Available",
+            "gauge-1": "Available",
+            "lathe-1": "Available",
+            "pump-p1": "Degraded",
+            "pv-1": "Available",
+            "robot-m1": "Available",
+            "robot-m2": "Available",
+            "sensor-x": "Available",
+            "tool-t1": "Available"
+          },
+          "at_s": 72000.0,
+          "case": "N10-OR3",
+          "event_batch_sequence": 3,
+          "event_id": "ev-0003-HorizonReached",
+          "event_kind": "HorizonReached",
+          "event_origin": "Endogenous",
+          "event_sequence": 3,
+          "event_status": "Committed",
+          "inventory_after": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "inventory_before": {
+            "breaker-b1": 1.0,
+            "bronze-bar": 3.0,
+            "bronze-swarf": 1.2,
+            "cutting-insert": 4.0,
+            "electric-energy": 324000000.0,
+            "grease": 1.0,
+            "lathe-nut": 1.0,
+            "sleeve-p1": 2.0
+          },
+          "observation_source": "NATIVE_CANONICAL_RUNTIME",
+          "running_repair": null,
+          "schema": "poie.s5v-n12-canonical-event/1",
+          "target_asset": null
+        }
+      ],
+      "external_events": [
+        {
+          "seq": 1,
+          "at": 0.0,
+          "kind": "InitialRepairStarted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 2,
+          "at": 7200.0,
+          "kind": "RepairCompleted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            2,
+            1,
+            28,
+            0,
+            0,
+            0,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "seq": 3,
+          "at": 7200.0,
+          "kind": "RestorationCommitted",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "a-lathe",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            2,
+            1,
+            28,
+            0,
+            1,
+            0,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "seq": 4,
+          "at": 72000.0,
+          "kind": "RunTerminated",
+          "origin": "NATIVE_EXTERNAL_FMU",
+          "target": "",
+          "target_id": -1,
+          "failed_before": 0,
+          "failed_after": 0,
+          "before": [
+            2,
+            1,
+            28,
+            0,
+            1,
+            1,
+            0
+          ],
+          "after": [
+            2,
+            1,
+            28,
+            0,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "dimensions": {
+        "repair_state_before": {
+          "canonical": "NOT_OBSERVED",
+          "external": 0,
+          "status": "NOT_COMPARABLE"
+        },
+        "restoration_committed": {
+          "canonical": "NOT_OBSERVED",
+          "external": 1,
+          "status": "NOT_COMPARABLE"
+        }
+      },
+      "findings": [],
+      "classification": "SAME_CAUSAL_TRANSITION",
+      "status": "ACCEPTED",
+      "first_identity_divergence": null,
+      "first_time_divergence": null,
+      "first_order_divergence": null,
+      "first_before_state_divergence": null,
+      "first_after_state_divergence": null,
+      "first_unexplained_divergence": null
+    }
+  ]
+}
