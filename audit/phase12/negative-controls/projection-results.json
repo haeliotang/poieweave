@@ -75,6 +75,17 @@
       ]
     },
     {
+      "control": "both-models-invalid-resource",
+      "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
+      "detected": true,
+      "findings": [
+        {
+          "class": "RESOURCE_ELIGIBILITY_VIOLATION",
+          "model": "external"
+        }
+      ]
+    },
+    {
       "control": "valid-or-difference",
       "expected": "ACCEPTED_POLICY",
       "detected": true,

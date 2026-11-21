@@ -39,6 +39,9 @@ record("same-time-order-swap","EVENT_ORDER_MISMATCH",mutate("N10-02",swap))
 def premature(ce,ex):
  r=next(e for e in ex["events"] if e["kind"]=="RestorationCommitted"); r["before"][4]=0
 record("premature-restoration","RESTORATION_PRECONDITION_VIOLATION",mutate("N10-00",premature))
+def both_bad_robot(ce,ex):
+    ex["events"][0]["after"][0]=3
+record("both-models-invalid-resource","RESOURCE_ELIGIBILITY_VIOLATION",mutate("N10-OR1",both_bad_robot))
 # Valid OR policy difference must remain accepted.
 r=n12.compare("N10-OR2"); detected=r["status"]=="ACCEPTED" and r["classification"]=="VALID_POLICY_DEPENDENT_DIVERGENCE"
 results.append({"control":"valid-or-difference","expected":"ACCEPTED_POLICY","detected":detected,"findings":[]})
