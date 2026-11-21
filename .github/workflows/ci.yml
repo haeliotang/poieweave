@@ -2148,8 +2148,12 @@ jobs:
         run: |
           external/fmu-n14-scheduler/build.sh
           python3 audit/phase14rh/compare_importers.py
+          python3 audit/phase14rh/or_cases.py
+          python3 audit/phase14rh/or_negative.py
           python3 audit/phase14rh/reducer/reduce.py
           python3 audit/phase14rh/check.py
+          python3 scripts/verify-canonical-claim-certificates-v8.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v8.py
       - name: Save N14RH evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n14rh/evidence"
