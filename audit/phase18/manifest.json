@@ -7,14 +7,14 @@
       "sha256": "d37d6bc2fed88b60826c682508c6e4b785cdc93b2c85cb7d35443f05f8344ed9"
     },
     {
-      "bytes": 1037,
+      "bytes": 1058,
       "path": "audit/phase18/CLAIMS.json",
-      "sha256": "85f38cc86204290dc86208d377671b27468be49290861858b4c48dcc1a453189"
+      "sha256": "5d8d6ee881eb10f2402c69c96681455209cadbb335929281cfcc0abe021504ce"
     },
     {
       "bytes": 3633,
       "path": "audit/phase18/N18_EXTERNAL_VALIDATION_CERTIFICATE.json",
-      "sha256": "b61e5a95d281322a3ae9bce488ee74f17c661ad9e0bc9871f486dfa8870e8d86"
+      "sha256": "c4d76d59ee5cccf14cd2c07f5d82c5bfa454f8c5b50ddff0bff98ace2388c1fe"
     },
     {
       "bytes": 1058,
@@ -27,9 +27,9 @@
       "sha256": "6073b9d5cdf562e2ce84be28ea7a8a6c74e377f61849ce35e2e059fe929ea031"
     },
     {
-      "bytes": 1376,
+      "bytes": 1369,
       "path": "audit/phase18/REPORT.zh-CN.md",
-      "sha256": "d2bb7156c49b90686606f5d4d2f92e4756a3ab60d6e8fbfd806ccf283b54b5b1"
+      "sha256": "1e613fa67e5ce2649c996de801b703995821d6d1244b32e2fcccbbdf5f291161"
     },
     {
       "bytes": 319,
@@ -2062,9 +2062,9 @@
       "sha256": "e3f1ef8b1dc636640c66a39d9f343e510e64c7ceaca46d3a32aa75a24aaca9d0"
     },
     {
-      "bytes": 3537,
+      "bytes": 3541,
       "path": "audit/phase18/generate_n18.py",
-      "sha256": "70ad3ec6cb37cc4c1494b5775b000e9e053a382779184f083aa036d0d2b73166"
+      "sha256": "a0aaa094ce2745aa3c85c0fd927743ef0f45822b51198c60d909cb27332f64b6"
     },
     {
       "bytes": 14660,
