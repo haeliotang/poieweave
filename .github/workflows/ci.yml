@@ -2046,6 +2046,8 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: Install FMI importer
         run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Verify frozen N14 evidence before execution
+        run: python3 audit/phase14/verify_evidence.py --frozen --claim
       - name: Build and run N14 evidence
         run: |
           external/fmu-n14-scheduler/build.sh
@@ -2053,13 +2055,17 @@ jobs:
           python3 audit/phase14/revalidate_n13.py || true
           python3 audit/phase14/validate_composition.py
           python3 audit/phase14/generate_cross_model.py
+          python3 audit/phase14/generate_cross_model.py --seed 20261122
           python3 audit/phase14/negative_controls.py
           python3 audit/phase14/validate_composition.py
           python3 audit/phase14/check.py
+          python3 audit/phase14/verify_evidence.py --claim
+          python3 audit/phase14/negative_evidence.py
       - name: Save N14 evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n14/evidence"
           cp -R audit/phase14 "$RUNNER_TEMP/s5v-n14/evidence/"
+          python3 audit/phase14/execution_manifest.py --output "$RUNNER_TEMP/s5v-n14/evidence/execution-manifest.json"
       - uses: actions/upload-artifact@v4
         with:
           name: s5v-n14-linux-evidence

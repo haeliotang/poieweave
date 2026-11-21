@@ -10,10 +10,10 @@
   "failures": [
     {
       "failure_id": 0,
-      "time_s": 3600,
-      "target": "bus-1",
-      "kind": 3,
-      "target_id": 3
+      "time_s": 5400,
+      "target": "robot-m1",
+      "kind": 1,
+      "target_id": 0
     }
   ]
 }

@@ -60,13 +60,16 @@ def compare(cid,js):
 def hashlib_sha(p):
  import hashlib; return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
- random.seed(20261121); cases=[]
+ import argparse
+ ap=argparse.ArgumentParser(); ap.add_argument("--seed",type=int,default=20261121); a=ap.parse_args()
+ random.seed(a.seed); cases=[]
  for i in range(24):
   n=random.randint(0,4); fails=[]
   for fid in range(n): fails.append((random.choice(TIMES),random.choice(list(ASSETS))))
-  cid=f"N14-G{i:02d}"; js=make_case(cid,20261121,fails); cases.append(compare(cid,js))
+  cid=f"N14-G{i:02d}"; js=make_case(cid,a.seed,fails); cases.append(compare(cid,js))
  bad=[c for c in cases if c["findings"]]
- (OUT/"cross-model.json").write_text(json.dumps({"schema":"poie.s5v-n14-generated-cross-model/1","seed":20261121,"count":len(cases),"accepted":len(cases)-len(bad),"cases":cases},indent=2)+"\n")
+ name="cross-model.json" if a.seed==20261121 else f"cross-model-{a.seed}.json"
+ (OUT/name).write_text(json.dumps({"schema":"poie.s5v-n14-generated-cross-model/1","seed":a.seed,"count":len(cases),"accepted":len(cases)-len(bad),"cases":cases},indent=2)+"\n")
  print("generated",len(cases),"accepted",len(cases)-len(bad),"failed",len(bad))
  for c in bad[:5]: print(c["case"],c["findings"])
  return 0 if not bad else 1

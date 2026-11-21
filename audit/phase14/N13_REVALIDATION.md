@@ -12,3 +12,8 @@ Also fixed in the N14 validator:
 - failure_id identity and one-execution checks;
 - exact bit-set state conservation, no cleared/unsourced bits;
 - independent outcome/restoration preconditions.
+hashes
+78498b0757c2277469650a9a58f6dffde3ab7999a1ad3c5cfe009d7ef8b69d0f  audit/phase13/PREREG.md
+f1f8c41401822cff1645e835a8d2f3ec29556d2383d60a2d6ec24833d7209c48  audit/phase13/CLAIMS.json
+5d98d6618ebbf01a8c3410a963e71ca72f9a6745ade45095350cb36ee8f10ad5  audit/phase13/REPORT.zh-CN.md
+N13 PREREG/CLAIMS updated as versioned errata; N13 manifest re-frozen.

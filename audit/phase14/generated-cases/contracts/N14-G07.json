@@ -7,5 +7,20 @@
   ],
   "robot_count": 1,
   "horizon_s": 72000.0,
-  "failures": []
+  "failures": [
+    {
+      "failure_id": 0,
+      "time_s": 5400,
+      "target": "bus-2",
+      "kind": 3,
+      "target_id": 6
+    },
+    {
+      "failure_id": 1,
+      "time_s": 3600,
+      "target": "bus-1",
+      "kind": 3,
+      "target_id": 3
+    }
+  ]
 }

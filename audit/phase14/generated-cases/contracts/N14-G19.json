@@ -10,17 +10,31 @@
   "failures": [
     {
       "failure_id": 0,
-      "time_s": 3599,
+      "time_s": 3600,
       "target": "robot-m1",
       "kind": 1,
       "target_id": 0
     },
     {
       "failure_id": 1,
-      "time_s": 3601,
-      "target": "bus-2",
+      "time_s": 7200,
+      "target": "sensor-x",
       "kind": 3,
-      "target_id": 6
+      "target_id": 5
+    },
+    {
+      "failure_id": 2,
+      "time_s": 3600,
+      "target": "robot-m1",
+      "kind": 1,
+      "target_id": 0
+    },
+    {
+      "failure_id": 3,
+      "time_s": 3601,
+      "target": "sensor-x",
+      "kind": 3,
+      "target_id": 5
     }
   ]
 }
