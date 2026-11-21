@@ -70,6 +70,12 @@
       ]
     },
     {
+      "control": "JOURNAL_MANIFEST_TAMPER",
+      "expected": "EVIDENCE_INTEGRITY_FAILURE",
+      "detected": true,
+      "detail": "hash changed, original unchanged"
+    },
+    {
       "control": "SHARED_DEPENDENCY_DEACTIVATION_MUTANT",
       "expected": "OR_DEPENDENCY_PATH_MISMATCH",
       "detected": true,
