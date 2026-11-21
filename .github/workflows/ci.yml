@@ -2020,6 +2020,8 @@ jobs:
           python3 audit/phase13/negative_multifailure.py
           python3 audit/phase13/validate_metamorphic.py
           python3 audit/phase13/check.py
+          python3 audit/phase13/verify_evidence.py --claim
+          python3 audit/phase13/negative_evidence.py
       - name: Save N13 evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n13/evidence"
