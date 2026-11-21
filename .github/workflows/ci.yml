@@ -2311,6 +2311,50 @@ jobs:
           name: s5v-n17-linux-evidence
           path: ${{ runner.temp }}/s5v-n17/evidence
 
+  s5v-n18-linux:
+    name: S5-V N18 alternative-path causal integrity Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install fmpy
+        run: python3 -m pip install -q fmpy==0.3.32
+      - name: Build canonical and FMUs
+        run: |
+          external/fmu-n16-scheduler/build.sh
+          external/fmu-n16-scheduler/build_mutant.sh
+          external/fmu-n16-scheduler/build_or_mutant.sh
+          cargo build --locked -q -p poie-viability --bin poie-s5v-n14-canonical-adapter
+      - name: Execute N18 interventions and oracle
+        run: |
+          python3 audit/phase18/revalidate_n17.py
+          python3 audit/phase18/run_n18.py
+          python3 audit/phase18/generate_n18.py
+          python3 audit/phase18/metamorphic18.py
+          python3 audit/phase18/negative_effect_controls.py
+          python3 audit/phase18/mutant_reducer.py
+          python3 audit/phase18/compare_importers.py
+          python3 audit/phase18/make_certificate.py
+          python3 audit/phase18/check_certificate.py
+          python3 audit/phase18/check.py
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+          python3 scripts/verify-canonical-claim-certificates-v10.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v10.py
+      - name: Save N18 evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n18/evidence"
+          cp -R audit/phase18 "$RUNNER_TEMP/s5v-n18/evidence/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n18-linux-evidence
+          path: ${{ runner.temp }}/s5v-n18/evidence
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest

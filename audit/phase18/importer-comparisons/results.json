@@ -1,0 +1,786 @@
+{
+  "schema": "poie.s5v-n17-importer/1",
+  "cases": [
+    {
+      "case": "N18-00-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-01-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-02-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-03-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-04-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-05-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-06-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-07-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-08-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-09-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-10-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-11-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-15-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-00-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-01-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-02-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-03-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-04-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-05-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-06-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-07-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-08-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-09-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-10-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-11-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-12-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-13-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-14-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-15-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-16-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-17-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-18-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-19-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-20-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-21-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-22-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-23-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-24-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-25-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-26-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-27-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-28-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-29-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-30-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-31-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-00-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-01-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-02-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-03-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-04-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-05-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-06-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-07-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-08-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-09-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-10-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-11-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-12-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-13-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-14-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-15-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-16-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-17-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-18-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-19-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-20-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-21-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-22-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-23-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-24-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-25-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-26-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-27-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-28-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-29-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-30-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-31-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-P7a-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-P7b-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-00-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-01-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-02-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-03-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-04-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-05-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-06-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-07-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-08-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-09-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-10-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-11-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-15-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-00-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-01-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-02-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-03-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-04-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-05-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-06-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-07-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-08-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-09-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-10-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-11-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-12-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-13-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-14-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-15-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-16-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-17-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-18-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-19-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-20-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-21-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-22-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-23-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-24-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-25-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-26-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-27-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-28-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-29-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-30-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1801-31-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-00-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-01-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-02-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-03-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-04-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-05-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-06-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-07-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-08-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-09-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-10-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-11-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-12-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-13-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-14-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-15-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-16-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-17-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-18-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-19-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-20-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-21-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-22-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-23-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-24-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-25-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-26-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-27-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-28-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-29-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-30-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N18-G1817-31-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    }
+  ],
+  "problems": []
+}

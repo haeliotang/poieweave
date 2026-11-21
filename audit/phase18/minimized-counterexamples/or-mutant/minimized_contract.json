@@ -1,0 +1,41 @@
+{
+  "baseline": {
+    "profile": "split",
+    "tool": false,
+    "failures": [],
+    "alts": [
+      null,
+      null
+    ],
+    "pref": 0,
+    "order": [
+      "A",
+      "B"
+    ],
+    "b_mask": 2,
+    "a_mask": 2
+  },
+  "intervention": {
+    "profile": "split",
+    "tool": false,
+    "failures": [
+      {
+        "time_s": 7201,
+        "target": "bus-2",
+        "kind": 3,
+        "target_id": 6
+      }
+    ],
+    "alts": [
+      null,
+      null
+    ],
+    "pref": 0,
+    "order": [
+      "A",
+      "B"
+    ],
+    "b_mask": 2,
+    "a_mask": 2
+  }
+}

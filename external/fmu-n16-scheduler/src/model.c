@@ -318,7 +318,11 @@ static void recompute_dep_mask(Component *x) {
     for (int t = 0; t < MAXT; ++t) {
         if (x->task_done[t] > 0.5) continue;
         if ((int)x->robot[t] == 1) mask |= (int)x->dep1;
+#ifdef MUTANT_OR_DEP_BIND
+        if ((int)x->robot[t] == 2) mask |= (int)x->dep1;
+#else
         if ((int)x->robot[t] == 2) mask |= (int)x->dep2;
+#endif
         if (x->tool[t] > 0.5) mask |= (1 << 7);
     }
     x->dep_mask = (fmi3Float64)mask;

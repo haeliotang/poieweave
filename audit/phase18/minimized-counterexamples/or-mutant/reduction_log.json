@@ -1,0 +1,24 @@
+{
+  "schema": "poie.s5v-n18-reducer/1",
+  "steps": [
+    {
+      "step": "original",
+      "findings": [
+        "CLOSURE_7200.0",
+        "INTERRUPTION_TIME"
+      ]
+    },
+    {
+      "step": "drop-3",
+      "accepted": true
+    },
+    {
+      "step": "drop-2",
+      "accepted": true
+    },
+    {
+      "step": "drop-1",
+      "accepted": true
+    }
+  ]
+}

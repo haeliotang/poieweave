@@ -32,10 +32,13 @@ def model_outcome(spec,side,json_path,contract_path,run_dir):
    for j in range(i+1,len(tr)):
     if robots[i]==robots[j] and tr[j]["start_s"]<tr[i]["end_s"]-1e-9: findings.append("CONTENTION")
   makespan=max(ends.values())
+  init_expected=set().union(*(upstream_for(robots[i],profile) for i in range(len(tasks))))
+  init_actual=set((ce[0].get("running_repair") or {}).get("execution_dependencies") or []) if ce else set()
+  if not init_expected <= init_actual: findings.append("INITIAL_CLOSURE_MISSING")
   failures=[(e["at_s"],e["target_asset"]) for e in ce if e["event_kind"]=="AssetFailure"]
   interruption=next((e["at_s"] for e in ce if e["event_kind"]=="RepairInterrupted"),None)
   completed=any(e["event_kind"]=="RepairCompleted" for e in ce)
-  restoration=None
+  restoration=None; restorations=[]
   closure_at={}
   for e in ce:
    if e.get("running_repair") and e["at_s"]==ends.get("A"): closure_at["A"]=set(e["running_repair"]["execution_dependencies"])&UP
@@ -61,9 +64,14 @@ def model_outcome(spec,side,json_path,contract_path,run_dir):
    for j in range(i+1,len(tasks)):
     if robots[i]==robots[j] and float(last[f"t{j+1}Start_s"])<float(last[f"t{i+1}End_s"])-1e-9: findings.append("CONTENTION")
   makespan=max(ends.values()); failures=[(e["at"],e.get("target")) for e in ev if e["kind"]=="AssetFailure"]
+  init_expected=set().union(*(upstream_for(robots[i],profile) for i in range(len(tasks))))
+  init_actual=set()
+  for e in ev:
+   if "dep_after" in e: init_actual=bits(e["dep_after"]); break
+  if not init_expected <= init_actual: findings.append("INITIAL_CLOSURE_MISSING")
   interruption=next((e["at"] for e in ev if e["kind"]=="RepairInterrupted"),None)
   completed=any(e["kind"]=="RepairCompleted" for e in ev)
-  restoration=next((e["at"] for e in ev if e["kind"]=="RestorationCommitted"),None)
+  restorations=[e["at"] for e in ev if e["kind"]=="RestorationCommitted"]; restoration=restorations[0] if restorations else None
   for at in {ends[t] for t in ends}:
    unfinished=[task for task in tasks if ends[task["task_id"]]>at+1e-9]
    exp=set().union(*(upstream_for(robots[i],profile) for i,task in enumerate(tasks) if task["task_id"] in {x["task_id"] for x in unfinished})) if unfinished else set()
@@ -88,7 +96,7 @@ def model_outcome(spec,side,json_path,contract_path,run_dir):
  else:
   if interruption is not None: findings.append("FALSE_INTERRUPTION")
   if not completed: findings.append("MISSING_GROUP_COMMIT")
-  if completed and restoration is not None and restoration<makespan-1e-9: findings.append("PREMATURE_RESTORATION")
+  if completed and any(r<makespan-1e-9 for r in restorations): findings.append("PREMATURE_RESTORATION")
  # scheduled failures must be recorded (unless after termination)
  for f in js["failures"]:
   if termination is not None and f["time_s"]>termination+1e-9: continue

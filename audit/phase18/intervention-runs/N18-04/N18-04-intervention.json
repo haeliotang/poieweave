@@ -1,0 +1,30 @@
+{
+  "group_id": "N18-04-intervention",
+  "restoration_target": "a-lathe",
+  "horizon_s": 72000,
+  "robot_count": 2,
+  "release_mode": "task_release",
+  "dependency_profile": "split",
+  "preferred_robot": 2,
+  "tasks": [
+    {
+      "task_id": "A",
+      "duration_s": 7200,
+      "priority": 1,
+      "robot_mask": 3,
+      "requires_tool": false,
+      "robot_alternatives": [
+        "robot-m2"
+      ]
+    },
+    {
+      "task_id": "B",
+      "duration_s": 10800,
+      "priority": 2,
+      "robot_mask": 2,
+      "requires_tool": false,
+      "robot_alternatives": []
+    }
+  ],
+  "failures": []
+}
