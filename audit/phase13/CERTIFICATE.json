@@ -1,0 +1,22 @@
+{
+  "schema": "poie.s5v-n13-external-validation-certificate/1",
+  "scope": "N13 multi-failure causal execution; external validation only",
+  "files": [
+    {
+      "path": "external/fmu-n13-scheduler/src/model.c",
+      "sha256": "0d9066f787c6fc0f47b7a2f9ed053f65be9f509b402869d5ead3efedd30a7bf6"
+    },
+    {
+      "path": "external/fmu-n13-scheduler/poie-n13-scheduler.fmu",
+      "sha256": "e12373a3ac7b213b752562c3068baa07e5858ea2f25fe5b019f562854b7ae610"
+    },
+    {
+      "path": "audit/phase13/validate_multifailure.py",
+      "sha256": "8dec5c6bedd23820fa70d9ec4179c01a3b13d75036954fa9ed3ff75a14798122"
+    },
+    {
+      "path": "audit/phase13/trajectory-comparisons/multifailure.json",
+      "sha256": "be1ffb976fe8586edc779f89df56fb03d70bd3e5f1454acac360cb671bea1045"
+    }
+  ]
+}
