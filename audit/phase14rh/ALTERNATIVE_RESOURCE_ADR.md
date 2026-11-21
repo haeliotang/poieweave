@@ -12,7 +12,7 @@ TASK-SPECIFIC ROBOT OR + TOOL AND
   ADDITIONAL EXECUTION-SEMANTIC EXTENSION REQUIRED
 ```
 
-No v8 runtime change was made in this phase. N14RH-E remains NOT ESTABLISHED.
+The task OR extension was implemented as v8. N14RH-E is ESTABLISHED under the OR-01..OR-06 tested domain.
 
 ## Resolution
 

@@ -16,5 +16,7 @@
     ],
     "canonical_exit": 0,
     "external_journal": true
-  }
+  },
+  "scope": "CONTRACT_LEVEL_COUNTEREXAMPLE_REDUCTION",
+  "note": "dual execution is performed but the preserved signature is the contract oracle RESOURCE_ELIGIBILITY_VIOLATION; this is not execution-state divergence reduction"
 }

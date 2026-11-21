@@ -23,7 +23,7 @@
   ],
   "native_task_resource_observatory": {
     "path": "audit/phase14rh/manifest.json",
-    "sha256": "32689a5575913a33f00b67039f52563f5fe0303223bbb334434edc9f942e2299"
+    "sha256": "b0fab4746c1219d9a333bf5ce8be7ba124a545bda82a7dd0afc56ef988c50d5e"
   },
   "predecessor": {
     "path": "experiments/certificate-canonical-c64-v7/certificate.json",
