@@ -1,0 +1,185 @@
+{
+  "schema": "poie.s5v-n18-n17-revalidation/1",
+  "pairs": [
+    {
+      "intervention_id": "N17-C1",
+      "expected": {
+        "outcome": true,
+        "failure": true,
+        "schedule": false
+      },
+      "dimensions": {
+        "outcome_changed": true,
+        "failure_history_changed": true,
+        "schedule_changed": false,
+        "policy_difference": false
+      },
+      "previous_relation": "CHANGED_OUTCOME_EXPLAINED",
+      "corrected_relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C2",
+      "expected": {
+        "outcome": true,
+        "failure": true,
+        "schedule": false
+      },
+      "dimensions": {
+        "outcome_changed": true,
+        "failure_history_changed": true,
+        "schedule_changed": false,
+        "policy_difference": false
+      },
+      "previous_relation": "CHANGED_OUTCOME_EXPLAINED",
+      "corrected_relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C3",
+      "expected": {
+        "outcome": true,
+        "failure": true,
+        "schedule": false
+      },
+      "dimensions": {
+        "outcome_changed": true,
+        "failure_history_changed": false,
+        "schedule_changed": false,
+        "policy_difference": false
+      },
+      "previous_relation": "CHANGED_OUTCOME_EXPLAINED",
+      "corrected_relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C4",
+      "expected": {
+        "outcome": false,
+        "failure": false,
+        "schedule": true
+      },
+      "dimensions": {
+        "outcome_changed": false,
+        "failure_history_changed": false,
+        "schedule_changed": true,
+        "policy_difference": false
+      },
+      "previous_relation": "CHANGED_OUTCOME_EXPLAINED",
+      "corrected_relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C7",
+      "expected": {
+        "outcome": false,
+        "failure": true,
+        "schedule": false
+      },
+      "dimensions": {
+        "outcome_changed": false,
+        "failure_history_changed": true,
+        "schedule_changed": false,
+        "policy_difference": false
+      },
+      "previous_relation": "CHANGED_OUTCOME_EXPLAINED",
+      "corrected_relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C8a",
+      "expected": {
+        "outcome": true,
+        "failure": true,
+        "schedule": false
+      },
+      "dimensions": {
+        "outcome_changed": true,
+        "failure_history_changed": true,
+        "schedule_changed": false,
+        "policy_difference": false
+      },
+      "previous_relation": "CHANGED_OUTCOME_EXPLAINED",
+      "corrected_relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C8b",
+      "expected": {
+        "outcome": false,
+        "failure": true,
+        "schedule": false
+      },
+      "dimensions": {
+        "outcome_changed": false,
+        "failure_history_changed": true,
+        "schedule_changed": false,
+        "policy_difference": false
+      },
+      "previous_relation": "CHANGED_OUTCOME_EXPLAINED",
+      "corrected_relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C9",
+      "expected": {
+        "outcome": false,
+        "failure": true,
+        "schedule": false
+      },
+      "dimensions": {
+        "outcome_changed": false,
+        "failure_history_changed": true,
+        "schedule_changed": false,
+        "policy_difference": false
+      },
+      "previous_relation": "CHANGED_OUTCOME_EXPLAINED",
+      "corrected_relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C6",
+      "expected": {
+        "outcome": false,
+        "failure": true,
+        "schedule": true
+      },
+      "dimensions": {
+        "outcome_changed": false,
+        "failure_history_changed": false,
+        "schedule_changed": true,
+        "policy_difference": false
+      },
+      "previous_relation": "CHANGED_OUTCOME_EXPLAINED",
+      "corrected_relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C10",
+      "expected": {
+        "outcome": true,
+        "failure": true,
+        "schedule": false
+      },
+      "dimensions": {
+        "outcome_changed": true,
+        "failure_history_changed": true,
+        "schedule_changed": false,
+        "policy_difference": false
+      },
+      "previous_relation": "CHANGED_OUTCOME_EXPLAINED",
+      "corrected_relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "findings": [],
+      "status": "ACCEPTED"
+    }
+  ]
+}

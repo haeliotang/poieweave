@@ -1,0 +1,14 @@
+{
+  "event": "TaskCompleted(A)@7200",
+  "actual_execution_dependencies": [
+    "bat-1",
+    "bus-1",
+    "bus-2",
+    "charger-1",
+    "robot-m1"
+  ],
+  "expected_without_bus2": "bus-2 must leave closure because Task B uses robot-m1/bus-1",
+  "observed_bus2_present": true,
+  "first_release_of_bus2": null,
+  "classification": "PREMATURE_DEPENDENCY_LOSS"
+}

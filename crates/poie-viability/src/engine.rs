@@ -803,32 +803,6 @@ fn start_explicit_repair(
         execution_dependencies.insert(entry.provider.clone());
         execution_dependencies.extend(entry.dependencies.iter().cloned());
     }
-    let mut task_dependencies: Vec<BTreeSet<String>> = vec![BTreeSet::new(); group.tasks.len()];
-    for (index, _task) in group.tasks.iter().enumerate() {
-        let selected: BTreeSet<String> = plans
-            .get(index)
-            .map(|plan| {
-                plan.steps
-                    .iter()
-                    .flat_map(|step| {
-                        current
-                            .processes
-                            .iter()
-                            .find(|p| p.id == step.process)
-                            .map(|p| p.occupies.clone())
-                            .unwrap_or_default()
-                    })
-                    .collect()
-            })
-            .unwrap_or_default();
-        for resource in selected {
-            if resource.starts_with("robot") {
-                let mut deps = BTreeSet::new();
-                collect_asset_dependencies(current, &resource, &mut deps);
-                task_dependencies[index].extend(deps);
-            }
-        }
-    }
     let mut task_resources: Vec<TaskResourceObservation> = Vec::new();
     for step in &schedule.steps {
         match task_resources.iter_mut().find(|entry| entry.plan_index == step.plan_index) {
@@ -846,6 +820,16 @@ fn start_explicit_repair(
                 start_s: step.start_s,
                 end_s: step.end_s,
             }),
+        }
+    }
+    let mut task_dependencies: Vec<BTreeSet<String>> = vec![BTreeSet::new(); group.tasks.len()];
+    for entry in &task_resources {
+        for resource in &entry.resources {
+            if resource.starts_with("robot") {
+                let mut deps = BTreeSet::new();
+                collect_asset_dependencies(current, resource, &mut deps);
+                task_dependencies[entry.plan_index].extend(deps);
+            }
         }
     }
     Ok(RunningRepair {

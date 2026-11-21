@@ -1050,11 +1050,12 @@ jobs:
         run: |
           python3 scripts/verify-canonical-claim-certificates-v7-historical.py
           python3 scripts/verify-canonical-claim-certificates-v8-historical.py
-                    python3 scripts/build-canonical-claim-certificates-v9.py --check
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+                    python3 scripts/build-canonical-claim-certificates-v10.py --check
       - name: S2 canonical claim certificate v6 verification
-        run: python3 scripts/verify-canonical-claim-certificates-v9.py
+        run: python3 scripts/verify-canonical-claim-certificates-v10.py
       - name: S2 canonical claim certificate v6 tamper
-        run: python3 scripts/check-canonical-claim-certificate-tamper-v9.py
+        run: python3 scripts/check-canonical-claim-certificate-tamper-v10.py
       - name: Frozen v5 certificates and historical verification
         run: python3 audit/certificates/verify_v5.py
       - name: Frozen v4 certificates and historical verification
@@ -1644,9 +1645,10 @@ jobs:
           python3 scripts/verify-canonical-claim-certificates-v6-historical.py
           python3 scripts/verify-canonical-claim-certificates-v7-historical.py
           python3 scripts/verify-canonical-claim-certificates-v8-historical.py
-                    python3 scripts/build-canonical-claim-certificates-v9.py --check
-          python3 scripts/verify-canonical-claim-certificates-v9.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v9.py
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+                    python3 scripts/build-canonical-claim-certificates-v10.py --check
+          python3 scripts/verify-canonical-claim-certificates-v10.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v10.py
           python3 audit/certificates/verify_v5.py
           python3 audit/certificates/verify_v4.py
           python3 audit/certificates/verify_v3.py
@@ -1699,9 +1701,10 @@ jobs:
           python3 scripts/verify-canonical-claim-certificates-v6-historical.py
           python3 scripts/verify-canonical-claim-certificates-v7-historical.py
           python3 scripts/verify-canonical-claim-certificates-v8-historical.py
-                    python3 scripts/build-canonical-claim-certificates-v9.py --check
-          python3 scripts/verify-canonical-claim-certificates-v9.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v9.py
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+                    python3 scripts/build-canonical-claim-certificates-v10.py --check
+          python3 scripts/verify-canonical-claim-certificates-v10.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v10.py
           python3 audit/certificates/verify_v5.py
           python3 audit/certificates/verify_v4.py
           python3 audit/certificates/verify_v3.py
@@ -1808,9 +1811,10 @@ jobs:
           python3 scripts/verify-canonical-claim-certificates-v6-historical.py
           python3 scripts/verify-canonical-claim-certificates-v7-historical.py
           python3 scripts/verify-canonical-claim-certificates-v8-historical.py
-                    python3 scripts/build-canonical-claim-certificates-v9.py --check
-          python3 scripts/verify-canonical-claim-certificates-v9.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v9.py
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+                    python3 scripts/build-canonical-claim-certificates-v10.py --check
+          python3 scripts/verify-canonical-claim-certificates-v10.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v10.py
           python3 audit/certificates/verify_v5.py
           python3 audit/certificates/verify_v4.py
           python3 audit/certificates/verify_v3.py
@@ -1883,9 +1887,10 @@ jobs:
           python3 scripts/verify-canonical-claim-certificates-v6-historical.py
           python3 scripts/verify-canonical-claim-certificates-v7-historical.py
           python3 scripts/verify-canonical-claim-certificates-v8-historical.py
-                    python3 scripts/build-canonical-claim-certificates-v9.py --check
-          python3 scripts/verify-canonical-claim-certificates-v9.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v9.py
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+                    python3 scripts/build-canonical-claim-certificates-v10.py --check
+          python3 scripts/verify-canonical-claim-certificates-v10.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v10.py
           python3 audit/certificates/verify_v5.py
           python3 audit/certificates/verify_v4.py
           python3 audit/certificates/verify_v3.py
@@ -2113,9 +2118,10 @@ jobs:
           python3 scripts/verify-canonical-claim-certificates-v6-historical.py
           python3 scripts/verify-canonical-claim-certificates-v7-historical.py
           python3 scripts/verify-canonical-claim-certificates-v8-historical.py
-                    python3 scripts/build-canonical-claim-certificates-v9.py --check
-          python3 scripts/verify-canonical-claim-certificates-v9.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v9.py
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+                    python3 scripts/build-canonical-claim-certificates-v10.py --check
+          python3 scripts/verify-canonical-claim-certificates-v10.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v10.py
       - name: Save N14R evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n14r/evidence"
@@ -2158,8 +2164,8 @@ jobs:
           python3 audit/phase14rh/or_negative.py
           python3 audit/phase14rh/reducer/reduce.py
           python3 audit/phase14rh/check.py
-          python3 scripts/verify-canonical-claim-certificates-v9.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v9.py
+          python3 scripts/verify-canonical-claim-certificates-v10.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v10.py
       - name: Save N14RH evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n14rh/evidence"
@@ -2198,9 +2204,11 @@ jobs:
           python3 audit/phase15/reduce_release.py
           python3 audit/phase15/check.py
           python3 scripts/verify-canonical-claim-certificates-v8-historical.py
-          python3 scripts/build-canonical-claim-certificates-v9.py --check
-          python3 scripts/verify-canonical-claim-certificates-v9.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v9.py
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+          python3 scripts/build-canonical-claim-certificates-v10.py --check
+          python3 scripts/verify-canonical-claim-certificates-v10.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v10.py
       - name: Save N15 evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n15/evidence"
@@ -2246,8 +2254,9 @@ jobs:
           python3 audit/phase16/current_run_manifest.py
           python3 audit/phase16/check.py
           python3 scripts/verify-canonical-claim-certificates-v8-historical.py
-          python3 scripts/verify-canonical-claim-certificates-v9.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v9.py
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+          python3 scripts/verify-canonical-claim-certificates-v10.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v10.py
       - name: Save N16 evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n16/evidence"
@@ -2290,8 +2299,9 @@ jobs:
           python3 audit/phase17/current_run_manifest.py
           python3 audit/phase17/check.py
           python3 scripts/verify-canonical-claim-certificates-v8-historical.py
-          python3 scripts/verify-canonical-claim-certificates-v9.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v9.py
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+          python3 scripts/verify-canonical-claim-certificates-v10.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v10.py
       - name: Save N17 evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n17/evidence"

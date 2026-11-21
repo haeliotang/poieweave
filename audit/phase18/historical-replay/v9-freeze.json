@@ -1,0 +1,214 @@
+{
+  "baseline": "e51689060b1d7b88aaa7ea3c3396233c66d04e2d",
+  "certificate_count": 41,
+  "certificates": [
+    {
+      "claim": "C56",
+      "path": "experiments/certificate-canonical-c56-v9/certificate.json",
+      "sha256": "d4870bf7b854f7bcbe2435a0c6ed48c77b31bdc21831b3c70461bc6623c2ab82"
+    },
+    {
+      "claim": "C57",
+      "path": "experiments/certificate-canonical-c57-v9/certificate.json",
+      "sha256": "97fb086879f93fb06a57d249badf20514fc100d9ed1fba93a7a6d2601d6ec7db"
+    },
+    {
+      "claim": "C58",
+      "path": "experiments/certificate-canonical-c58-v9/certificate.json",
+      "sha256": "9f1f5c666e2865bcc2d7e81f629658e42eff61805c043ad38261713bed5ee350"
+    },
+    {
+      "claim": "C59",
+      "path": "experiments/certificate-canonical-c59-v9/certificate.json",
+      "sha256": "4971190bf3caef9cb6f7ee323d907c838c64953111c69f538c5b7f7bd778fccb"
+    },
+    {
+      "claim": "C6",
+      "path": "experiments/certificate-canonical-c6-v9/certificate.json",
+      "sha256": "fa88e03dbd638ddaf64cb154948ed2e16ad5ee74af8979cd84d0f1ea5860b0b3"
+    },
+    {
+      "claim": "C60",
+      "path": "experiments/certificate-canonical-c60-v9/certificate.json",
+      "sha256": "f637bef1c5457d9ab85e374f00ac2c81401e80d92e7d1db4b9595546deea18eb"
+    },
+    {
+      "claim": "C61",
+      "path": "experiments/certificate-canonical-c61-v9/certificate.json",
+      "sha256": "45006342709a978baa4fb41f784b03554c5a5b8727dfed0bf89d75713078e781"
+    },
+    {
+      "claim": "C62",
+      "path": "experiments/certificate-canonical-c62-v9/certificate.json",
+      "sha256": "f66dcc26d52736d00671740897427551e602d7850f9624ac3a54e0877a607503"
+    },
+    {
+      "claim": "C63",
+      "path": "experiments/certificate-canonical-c63-v9/certificate.json",
+      "sha256": "73ae094fb0ab0323537fafaf72a9efb5b19ddb4883903ac45d5e7a2b78905f05"
+    },
+    {
+      "claim": "C64",
+      "path": "experiments/certificate-canonical-c64-v9/certificate.json",
+      "sha256": "0ca8fd9524bd30432ec7c7c1924769975449ade84099681facd064bb80d8730d"
+    },
+    {
+      "claim": "C65",
+      "path": "experiments/certificate-canonical-c65-v9/certificate.json",
+      "sha256": "0ce37ef2836f4663677d45adecfaac6413306b15d611ee855944ca5c8cc66fb0"
+    },
+    {
+      "claim": "C66",
+      "path": "experiments/certificate-canonical-c66-v9/certificate.json",
+      "sha256": "51b1744af333d0ddf2f97344f6a8a08a05401205c05b7a7b95553e167395dda9"
+    },
+    {
+      "claim": "C67",
+      "path": "experiments/certificate-canonical-c67-v9/certificate.json",
+      "sha256": "6c8123ace32556bd45c3e7fb97dce836b432c354de927d569bd914b5803de80b"
+    },
+    {
+      "claim": "C69",
+      "path": "experiments/certificate-canonical-c69-v9/certificate.json",
+      "sha256": "996e8238c268dcbead1471dab0f2b32f4322d5b5e7ec889d47224bc433f1f0f7"
+    },
+    {
+      "claim": "C70",
+      "path": "experiments/certificate-canonical-c70-v9/certificate.json",
+      "sha256": "43c71487d95eea7b4fa948422259b735acd263ab352cf9efe4d436ad8aed1d39"
+    },
+    {
+      "claim": "C71",
+      "path": "experiments/certificate-canonical-c71-v9/certificate.json",
+      "sha256": "ad3cf3202e1250bce801ff083f660b703b2c4e7005501c0a7d4974e8ac5d05ee"
+    },
+    {
+      "claim": "C72",
+      "path": "experiments/certificate-canonical-c72-v9/certificate.json",
+      "sha256": "688ea59d1bc50b7a99e79eae6fe10758a29c1811d6495d0f8b67a49460866434"
+    },
+    {
+      "claim": "C73",
+      "path": "experiments/certificate-canonical-c73-v9/certificate.json",
+      "sha256": "c2f599b0e71f4a18278b55e5318e91b3c14e8364c71ea13e21ec9d854018ca66"
+    },
+    {
+      "claim": "C74",
+      "path": "experiments/certificate-canonical-c74-v9/certificate.json",
+      "sha256": "2984a857c7718261d548adc4bce1871cf185e245a42b0cfa71e0630cc81e0325"
+    },
+    {
+      "claim": "C75",
+      "path": "experiments/certificate-canonical-c75-v9/certificate.json",
+      "sha256": "6ce56d83c4e63d4bb3210a91afcc56621f75014c2750a7f2f0f0098e81594254"
+    },
+    {
+      "claim": "C76",
+      "path": "experiments/certificate-canonical-c76-v9/certificate.json",
+      "sha256": "f6b53b3da35da59e1d161171bac6d4d062d2d086339b8b49d2e732fe8a8c0061"
+    },
+    {
+      "claim": "C77",
+      "path": "experiments/certificate-canonical-c77-v9/certificate.json",
+      "sha256": "b4c9d8d829e39150b3ca4120ce77b763df38727281d95a372da0175fded0e8b6"
+    },
+    {
+      "claim": "C78",
+      "path": "experiments/certificate-canonical-c78-v9/certificate.json",
+      "sha256": "832518a705947fd07a91965e828bd64fb0be7881ae48ae247cd4df530cded8f5"
+    },
+    {
+      "claim": "C79",
+      "path": "experiments/certificate-canonical-c79-v9/certificate.json",
+      "sha256": "1c8cd999474bfe9fb5b06ee9afafb1e7f0684487c4c98992c4574ea857d0a5de"
+    },
+    {
+      "claim": "C80",
+      "path": "experiments/certificate-canonical-c80-v9/certificate.json",
+      "sha256": "393bc5a62953f1df759032251389124aa0f47568ea0d2bb07d25fd20d03b7dfc"
+    },
+    {
+      "claim": "C81",
+      "path": "experiments/certificate-canonical-c81-v9/certificate.json",
+      "sha256": "6b2d46b97286990db5dda8ecd84f6939356e1ea4279156cad5e43d86b35964d5"
+    },
+    {
+      "claim": "C82",
+      "path": "experiments/certificate-canonical-c82-v9/certificate.json",
+      "sha256": "09fd9c5552810ecb670d09d0db290fcc83e29c34f779dddb4b77d5d686730b1f"
+    },
+    {
+      "claim": "C83",
+      "path": "experiments/certificate-canonical-c83-v9/certificate.json",
+      "sha256": "0d12c31edc057d85a78a04767b54f3a810edf0d213e324eb43f3fd130315a26b"
+    },
+    {
+      "claim": "C84",
+      "path": "experiments/certificate-canonical-c84-v9/certificate.json",
+      "sha256": "92948681f18a17489cae17a895c772e0ce695618d0c4177cebe460c9bf92309e"
+    },
+    {
+      "claim": "C85",
+      "path": "experiments/certificate-canonical-c85-v9/certificate.json",
+      "sha256": "ec47bfc90d5a8ff067587529252971ce4e63568fc8bd95184a93b92a51545b51"
+    },
+    {
+      "claim": "C86",
+      "path": "experiments/certificate-canonical-c86-v9/certificate.json",
+      "sha256": "f330e7297990f6a425da8af0e5c7f9ffc3aeac40de38a36bbb0ec0c61807c4ba"
+    },
+    {
+      "claim": "C87",
+      "path": "experiments/certificate-canonical-c87-v9/certificate.json",
+      "sha256": "34d376f4127e77585b095c77399e46751096e9881f165af4e8ba2cdf53a1af9b"
+    },
+    {
+      "claim": "C88",
+      "path": "experiments/certificate-canonical-c88-v9/certificate.json",
+      "sha256": "a09e408019d1db8e357dc6c96691d71fa8e7c63908b31fa03d21e0468f3b0eca"
+    },
+    {
+      "claim": "C89",
+      "path": "experiments/certificate-canonical-c89-v9/certificate.json",
+      "sha256": "b97c6a492544b2dd954b0959d6cf17b5fc7d81bbe5f7ac4123392b6cc63369b9"
+    },
+    {
+      "claim": "C90",
+      "path": "experiments/certificate-canonical-c90-v9/certificate.json",
+      "sha256": "c9a839ece47a85ce231447822c202c8c841a6fd11a003e21c0b3d61d7520e77b"
+    },
+    {
+      "claim": "C91",
+      "path": "experiments/certificate-canonical-c91-v9/certificate.json",
+      "sha256": "a262be2f0c95ab4166caccec95a7cc2da653ae18919c1492ad6f0232687ad3be"
+    },
+    {
+      "claim": "C92",
+      "path": "experiments/certificate-canonical-c92-v9/certificate.json",
+      "sha256": "af6d8636e05fa0f358167f159ca1c601bc827c161c8d325af7ca555676f9e5a6"
+    },
+    {
+      "claim": "C93",
+      "path": "experiments/certificate-canonical-c93-v9/certificate.json",
+      "sha256": "e2401b8f1c1d940f20f4eb03fa0b219599154dcfb08af10dde6652b1dbd8422b"
+    },
+    {
+      "claim": "C94",
+      "path": "experiments/certificate-canonical-c94-v9/certificate.json",
+      "sha256": "3d4e4e65dd8d26e40ce766bbc9689490901fe50d43179ccf7de2410bef5dbb32"
+    },
+    {
+      "claim": "C95",
+      "path": "experiments/certificate-canonical-c95-v9/certificate.json",
+      "sha256": "7ea2027aed420deaeaa0fc0435e1f99b87f26ce39c7f68db5bfa65ca03e349df"
+    },
+    {
+      "claim": "C96",
+      "path": "experiments/certificate-canonical-c96-v9/certificate.json",
+      "sha256": "5959066cfd3c385837993a4c2da5405b76532ed80d83fb95c15f581d602cf9ca"
+    }
+  ],
+  "engine_sha256": "28befa5506cae40905fa968d5c217c5fc0d10e54c533900bf2a7ef1c1dc642d1",
+  "index_sha256": "6511a6c54b83e76e47dd6fe937fc78dd2ab195deee0fa7bb5c4bf480d0899559",
+  "schema": "poie.s5v-n18-v9-historical-freeze/1"
+}
