@@ -1,0 +1,73 @@
+{
+  "canonical_version": "v10 EXECUTION_SEMANTIC_CORRECTION_SUCCESSOR",
+  "evidence": {
+    "audit/phase18/causal-comparisons/fixed.json": "ca502d9fea25d1686845446c16d0cd1b5dc0017e28b0bbcac4da0ea5bd9da303",
+    "audit/phase18/causal-comparisons/metamorphic.json": "8f5dd53b449bafaed10c5033384a31d229c7f801dcfc11cc1cf5f3e7206c41bd",
+    "audit/phase18/causal-comparisons/n17-revalidation.json": "203f5b88ab46803f5346e5664168b29146d52bdaee267204307b86a209cfdfcb",
+    "audit/phase18/failing-witness/canonical_events.jsonl": "e72f3bbd4cec48a505d310c171efd380b0a6cafe2b3adfc7e5ff25c1bd790b5c",
+    "audit/phase18/generated-pairs/results.json": "f3fbdc627979db4b67b6c0a1c2853c4a7793384bcde40723dd35bc9394d17c06",
+    "audit/phase18/importer-comparisons/results.json": "511d26b2f5446045c8291097ced53164f2c77fc0c50a7d2e80755f83bb2d4a0a",
+    "audit/phase18/minimized-counterexamples/or-mutant/failure_signature.json": "77446c64adf3a58186e70b8c644b3176a71558ad789cd07b3ec5877f75f18d5c",
+    "audit/phase18/negative-controls/effect-results.json": "59e9781a9ad7062dbf3e2626ae9f6ae50925642c58ba7a33a849926d5dd96a18"
+  },
+  "inputs": {
+    "canonical_adapter": {
+      "path": "crates/poie-viability/src/bin/poie-s5v-n14-canonical-adapter.rs",
+      "sha256": "1ac7bd3d741946bd7af8b4e46b86d7287498225d191d9f663f5f6bf4d1db6d47"
+    },
+    "canonical_engine": {
+      "path": "crates/poie-viability/src/engine.rs",
+      "sha256": "713ba9fde93b9c8f9d72bf111479cb1f0718d33f9409ce48ab687755cb845471"
+    },
+    "external_fmu": {
+      "path": "external/fmu-n16-scheduler/poie-n16-scheduler.fmu",
+      "sha256": "9b0688bfcfd1ba74c8301899fc50063e5a0bd832a8eb1b2109cc54c18147cae6"
+    },
+    "external_model": {
+      "path": "external/fmu-n16-scheduler/src/model.c",
+      "sha256": "f80d7bf39619551bb711296820773f2ff65a65f0980be8c5fbab8eb643b3e13f"
+    },
+    "generator": {
+      "path": "audit/phase18/generate_n18.py",
+      "sha256": "70ad3ec6cb37cc4c1494b5775b000e9e053a382779184f083aa036d0d2b73166"
+    },
+    "or_mutant": {
+      "path": "external/fmu-n16-scheduler/poie-n16-or-mutant.fmu",
+      "sha256": "7fabdad2c6858d454f8d8da762c778b1f577b3ca633af10d855a620eeac07082"
+    },
+    "oracle": {
+      "path": "audit/phase17/intervention_oracle.py",
+      "sha256": "a494af101764e9afe06e9ded4acf8d3423df9e074c7b8fe6ec5d72504fa9877c"
+    },
+    "reducer": {
+      "path": "audit/phase18/mutant_reducer.py",
+      "sha256": "fdd1bc5d07accea8bce59aea195dc5d45d88f5ad7811c28eddf46b5730596303"
+    },
+    "runner": {
+      "path": "audit/phase18/run_n18.py",
+      "sha256": "0a83796c427679506aef871bac003e7f8201591523a68376b33d6148421505fc"
+    },
+    "shared_mutant": {
+      "path": "external/fmu-n16-scheduler/poie-n16-mutant.fmu",
+      "sha256": "67ed6fb2eeb037fabcab22f712b27d32066c14d135e9faf9bce6d979eeff42c7"
+    }
+  },
+  "kind": "N18_EXTERNAL_VALIDATION_CERTIFICATE",
+  "limitations": [
+    "13 fixed + 64 generated pairs (55 accepted, 9 recorded unexpected effects)",
+    "2 tasks/2 robots/named upstream domain",
+    "v9 frozen; v10 canonical correction",
+    "oracle is model-based, not real-world causal identification"
+  ],
+  "not_an_s2_certificate": true,
+  "replay": [
+    "python3 audit/phase18/run_n18.py",
+    "python3 audit/phase18/generate_n18.py",
+    "python3 audit/phase18/metamorphic18.py",
+    "python3 audit/phase18/negative_effect_controls.py",
+    "python3 audit/phase18/mutant_reducer.py",
+    "python3 audit/phase18/check.py"
+  ],
+  "schema": "poie.s5v-n18-external-validation-certificate/1",
+  "scope": "tested simulated alternative-path and counterfactual interventions; not real-world causal identification"
+}

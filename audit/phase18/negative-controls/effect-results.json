@@ -1,0 +1,45 @@
+{
+  "schema": "poie.s5v-n18-negative/1",
+  "controls": [
+    {
+      "control": "WRONG_EXPLANATION",
+      "expected": "NO_FALSE_OUTCOME_CLAIM",
+      "detected": true,
+      "detail": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME"
+    },
+    {
+      "control": "NO_CAUSAL_EFFECT_OVERCLAIM",
+      "expected": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "detected": true,
+      "detail": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME"
+    },
+    {
+      "control": "MISSING_INTERVENTION",
+      "expected": "INTERVENTION_NOT_APPLIED",
+      "detected": true,
+      "detail": []
+    },
+    {
+      "control": "POLICY_PLUS_INVALID_RESTORATION",
+      "expected": "RESTORATION_PRECONDITION_VIOLATION",
+      "detected": true,
+      "detail": [
+        "PREMATURE_RESTORATION"
+      ]
+    },
+    {
+      "control": "OR_DEPENDENCY_MISBINDING",
+      "expected": "OR_DEPENDENCY_PATH_MISMATCH",
+      "detected": true,
+      "detail": [
+        "INITIAL_CLOSURE_MISSING"
+      ]
+    },
+    {
+      "control": "EVENT_ORDER_MUTATION",
+      "expected": "EVENT_ORDER_VIOLATION",
+      "detected": true,
+      "detail": "same-time order broken"
+    }
+  ]
+}

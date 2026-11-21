@@ -822,6 +822,18 @@ fn start_explicit_repair(
             }),
         }
     }
+    // Every actually selected resource and its upstream closure belongs to the
+    // initial group closure, including tasks whose capability witness was shared.
+    for entry in &task_resources {
+        for resource in &entry.resources {
+            if resource.starts_with("robot") {
+                execution_dependencies.insert(resource.clone());
+                let mut deps = BTreeSet::new();
+                collect_asset_dependencies(current, resource, &mut deps);
+                execution_dependencies.extend(deps);
+            }
+        }
+    }
     let mut task_dependencies: Vec<BTreeSet<String>> = vec![BTreeSet::new(); group.tasks.len()];
     for entry in &task_resources {
         for resource in &entry.resources {

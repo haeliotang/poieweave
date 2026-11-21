@@ -1,0 +1,107 @@
+{
+  "schema": "poie.s5v-n18-metamorphic/1",
+  "properties": [
+    {
+      "property": "P1_IRRELEVANT_FAILURE_INVARIANCE",
+      "case": "N18-00",
+      "pass": true,
+      "checked_invariants": [
+        "failure_recorded",
+        "repair_outcome_unchanged"
+      ],
+      "evidence_refs": [
+        "fixed.json#N18-00"
+      ]
+    },
+    {
+      "property": "P2_RELEASED_DEPENDENCY_NONINTERFERENCE",
+      "case": "N18-11",
+      "pass": true,
+      "checked_invariants": [
+        "failure_recorded",
+        "no_interruption",
+        "completed"
+      ],
+      "evidence_refs": [
+        "fixed.json#N18-11"
+      ]
+    },
+    {
+      "property": "P3_SHARED_DEPENDENCY_PERSISTENCE",
+      "case": "N18-05",
+      "pass": true,
+      "checked_invariants": [
+        "shared_bus2_active",
+        "interruption"
+      ],
+      "evidence_refs": [
+        "fixed.json#N18-05"
+      ]
+    },
+    {
+      "property": "P4_REQUIRED_TOOL_NON_BYPASS",
+      "case": "N18-07",
+      "pass": true,
+      "checked_invariants": [
+        "tool_failure_hit",
+        "interruption"
+      ],
+      "evidence_refs": [
+        "fixed.json#N18-07"
+      ]
+    },
+    {
+      "property": "P5_CONTROLLED_FAILURE_TIME_SENSITIVITY",
+      "case": "N18-02",
+      "pass": true,
+      "checked_invariants": [
+        "before_boundary_interrupts",
+        "after_boundary_completes"
+      ],
+      "evidence_refs": [
+        "fixed.json#N18-02"
+      ]
+    },
+    {
+      "property": "P6_POLICY_DEPENDENT_OUTCOME",
+      "case": "N18-04",
+      "pass": true,
+      "checked_invariants": [
+        "actual_policy_changed",
+        "both_models_valid",
+        "schedule_explained"
+      ],
+      "evidence_refs": [
+        "fixed.json#N18-04"
+      ]
+    },
+    {
+      "property": "P7_DETERMINISTIC_REPLAY",
+      "case": [
+        "N18-P7a",
+        "N18-P7b"
+      ],
+      "pass": true,
+      "checked_invariants": [
+        "same_discrete_outcome"
+      ],
+      "evidence_refs": [
+        "N18-P7a",
+        "N18-P7b"
+      ]
+    },
+    {
+      "property": "P8_NO_UNAUTHORIZED_RECOVERY",
+      "case": "N18-01",
+      "pass": true,
+      "checked_invariants": [
+        "no_completion",
+        "no_restoration",
+        "no_new_task_after_interrupt"
+      ],
+      "evidence_refs": [
+        "fixed.json#N18-01"
+      ]
+    }
+  ]
+}

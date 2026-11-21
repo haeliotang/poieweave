@@ -1,8 +1,40 @@
-{"schema":"poie.s5v-n18-claim-status/1","claims":[
- {"id":"N18-0","status":"IN_PROGRESS","scope":"N17 relation revalidation; metamorphic/negative/accounting pending"},
- {"id":"N18-A","status":"VERIFIED","scope":"OR+split witness, root cause INCORRECT_TASK_DEPENDENCY_CONSTRUCTION"},
- {"id":"N18-B","status":"ESTABLISHED","scope":"task dependencies from actual selected resources; bus2 release at task completion"},
- {"id":"N18-C","status":"NOT_ESTABLISHED","scope":"mechanism-specific expected-effect oracle"},
- {"id":"N18-D","status":"NOT_ESTABLISHED","scope":"falsification, mutant, reducer"},
- {"id":"N18-E","status":"IN_PROGRESS","scope":"v9 frozen, 41 v10 correction successors"},
- {"id":"N18-F","status":"NOT_ESTABLISHED","scope":"reproducibility"}]}
+{
+  "schema": "poie.s5v-n18-claim-status/1",
+  "claims": [
+    {
+      "id": "N18-0",
+      "status": "VERIFIED",
+      "scope": "relation revalidation, metamorphic booleans, 6 real negative controls, generated ledger, isolated mutation"
+    },
+    {
+      "id": "N18-A",
+      "status": "VERIFIED",
+      "scope": "OR+split witness, root cause INCORRECT_TASK_DEPENDENCY_CONSTRUCTION"
+    },
+    {
+      "id": "N18-B",
+      "status": "ESTABLISHED",
+      "scope": "task dependencies from actual selected resources; bus2 release at task completion"
+    },
+    {
+      "id": "N18-C",
+      "status": "VERIFIED",
+      "scope": "13 fixed expected-effect pairs + 64 generated"
+    },
+    {
+      "id": "N18-D",
+      "status": "VERIFIED",
+      "scope": "6 P0 controls, OR mutant, reducer"
+    },
+    {
+      "id": "N18-E",
+      "status": "VERIFIED",
+      "scope": "v9 frozen, 41 v10 correction successors, N18 certificate"
+    },
+    {
+      "id": "N18-F",
+      "status": "NOT_ESTABLISHED",
+      "scope": "reproducibility"
+    }
+  ]
+}

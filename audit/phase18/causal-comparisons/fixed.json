@@ -1,0 +1,1532 @@
+{
+  "schema": "poie.s5v-n18-fixed/1",
+  "pairs": [
+    {
+      "intervention_id": "N18-00",
+      "type": "FAILURE_INSERTION",
+      "expected": {
+        "outcome": false
+      },
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              3600.0,
+              "sensor-x"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              3600.0,
+              "sensor-x"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-01",
+      "type": "FAILURE_INSERTION",
+      "expected": {
+        "outcome": true
+      },
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              3600.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "bus-1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              3600.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "bus-1"
+          ]
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-02",
+      "type": "FAILURE_TIME_CHANGE",
+      "expected": {
+        "outcome": true
+      },
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7199.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7199.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7199.0,
+          "expected_first_hit": [
+            7199.0,
+            "bus-1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7199.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7199.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7199.0,
+          "expected_first_hit": [
+            7199.0,
+            "bus-1"
+          ]
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-03",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "expected": {
+        "outcome": true
+      },
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7201.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7201.0,
+          "expected_first_hit": [
+            7201.0,
+            "bus-1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7201.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7201.0,
+          "expected_first_hit": [
+            7201.0,
+            "bus-1"
+          ]
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-04",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "expected": {
+        "outcome": false,
+        "schedule": true
+      },
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m2"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 18000.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 18000.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 18000.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 18000.0,
+          "termination": 18000.0,
+          "expected_first_hit": null
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-05",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "expected": {
+        "outcome": true
+      },
+      "valid": true,
+      "relation": "VALID_POLICY_DEPENDENT_DIVERGENCE",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m2"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 18000.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 18000.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m2"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 18000.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": 7201.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7201.0,
+          "expected_first_hit": [
+            7201.0,
+            "bus-2"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": 7201.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7201.0,
+          "expected_first_hit": [
+            7201.0,
+            "bus-2"
+          ]
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-06",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "expected": {
+        "outcome": true
+      },
+      "valid": true,
+      "relation": "VALID_POLICY_DEPENDENT_DIVERGENCE",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m2"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 18000.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 18000.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m2"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 18000.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": 7201.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7201.0,
+          "expected_first_hit": [
+            7201.0,
+            "bus-2"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": 7201.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7201.0,
+          "expected_first_hit": [
+            7201.0,
+            "bus-2"
+          ]
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-07",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "expected": {
+        "outcome": true
+      },
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1",
+              "tool-t1"
+            ],
+            "B": [
+              "robot-m2",
+              "tool-t1"
+            ]
+          },
+          "makespan": 18000.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 18000.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 18000.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 18000.0,
+          "termination": 18000.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m2",
+              "tool-t1"
+            ],
+            "B": [
+              "robot-m2",
+              "tool-t1"
+            ]
+          },
+          "makespan": 18000.0,
+          "failures": [
+            [
+              3600.0,
+              "tool-t1"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "tool-t1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 18000.0,
+          "failures": [
+            [
+              3600.0,
+              "tool-t1"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "tool-t1"
+          ]
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-08",
+      "type": "FAILURE_INSERTION",
+      "expected": {
+        "outcome": false
+      },
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              10800.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              10800.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-09",
+      "type": "FAILURE_INSERTION",
+      "expected": {
+        "outcome": false
+      },
+      "valid": true,
+      "relation": "SAME_REPAIR_OUTCOME_VALID",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-10",
+      "type": "FAILURE_INSERTION",
+      "expected": {
+        "outcome": true
+      },
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              3600.0,
+              "bus-1"
+            ],
+            [
+              3600.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "bus-1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              3600.0,
+              "bus-1"
+            ],
+            [
+              3600.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "bus-1"
+          ]
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-11",
+      "type": "FAILURE_INSERTION",
+      "expected": {
+        "outcome": false
+      },
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N18-15",
+      "type": "OR_SPLIT_WITNESS",
+      "expected": {
+        "outcome": true
+      },
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "B": [
+              "robot-m1"
+            ],
+            "A": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7199.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": 7199.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7199.0,
+          "expected_first_hit": [
+            7199.0,
+            "bus-2"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "B": [],
+            "A": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7199.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": 7199.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7199.0,
+          "expected_first_hit": [
+            7199.0,
+            "bus-2"
+          ]
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "B": [
+              "robot-m1"
+            ],
+            "A": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "B": [],
+            "A": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "status": "ACCEPTED"
+    }
+  ]
+}

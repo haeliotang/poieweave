@@ -1,0 +1,592 @@
+{
+  "schema": "poie.s5v-n18-generated/1",
+  "stats": {
+    "attempted": 64,
+    "valid": 64,
+    "executed": 64,
+    "accepted": 55,
+    "failed": 9,
+    "not_representable": 0,
+    "excluded_with_reason": 0,
+    "unexpected_effect": 9,
+    "unexplained_divergence": 0
+  },
+  "ledger": [
+    {
+      "id": "N18-G1801-00",
+      "seed": 1801,
+      "index": 0,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-01",
+      "seed": 1801,
+      "index": 1,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-02",
+      "seed": 1801,
+      "index": 2,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-03",
+      "seed": 1801,
+      "index": 3,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-04",
+      "seed": 1801,
+      "index": 4,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-05",
+      "seed": 1801,
+      "index": 5,
+      "type": "FAILURE_TARGET_CHANGE",
+      "valid": true,
+      "relation": "SAME_REPAIR_OUTCOME_VALID",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-06",
+      "seed": 1801,
+      "index": 6,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-07",
+      "seed": 1801,
+      "index": 7,
+      "type": "FAILURE_REMOVAL",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-08",
+      "seed": 1801,
+      "index": 8,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-09",
+      "seed": 1801,
+      "index": 9,
+      "type": "FAILURE_TARGET_CHANGE",
+      "valid": true,
+      "relation": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+      "status": "FAILED"
+    },
+    {
+      "id": "N18-G1801-10",
+      "seed": 1801,
+      "index": 10,
+      "type": "FAILURE_TARGET_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-11",
+      "seed": 1801,
+      "index": 11,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-12",
+      "seed": 1801,
+      "index": 12,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-13",
+      "seed": 1801,
+      "index": 13,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-14",
+      "seed": 1801,
+      "index": 14,
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-15",
+      "seed": 1801,
+      "index": 15,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-16",
+      "seed": 1801,
+      "index": 16,
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-17",
+      "seed": 1801,
+      "index": 17,
+      "type": "FAILURE_TARGET_CHANGE",
+      "valid": true,
+      "relation": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+      "status": "FAILED"
+    },
+    {
+      "id": "N18-G1801-18",
+      "seed": 1801,
+      "index": 18,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-19",
+      "seed": 1801,
+      "index": 19,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+      "status": "FAILED"
+    },
+    {
+      "id": "N18-G1801-20",
+      "seed": 1801,
+      "index": 20,
+      "type": "FAILURE_TARGET_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-21",
+      "seed": 1801,
+      "index": 21,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-22",
+      "seed": 1801,
+      "index": 22,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-23",
+      "seed": 1801,
+      "index": 23,
+      "type": "FAILURE_TARGET_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-24",
+      "seed": 1801,
+      "index": 24,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-25",
+      "seed": 1801,
+      "index": 25,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+      "status": "FAILED"
+    },
+    {
+      "id": "N18-G1801-26",
+      "seed": 1801,
+      "index": 26,
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-27",
+      "seed": 1801,
+      "index": 27,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-28",
+      "seed": 1801,
+      "index": 28,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-29",
+      "seed": 1801,
+      "index": 29,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-30",
+      "seed": 1801,
+      "index": 30,
+      "type": "FAILURE_REMOVAL",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1801-31",
+      "seed": 1801,
+      "index": 31,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-00",
+      "seed": 1817,
+      "index": 0,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+      "status": "FAILED"
+    },
+    {
+      "id": "N18-G1817-01",
+      "seed": 1817,
+      "index": 1,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-02",
+      "seed": 1817,
+      "index": 2,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-03",
+      "seed": 1817,
+      "index": 3,
+      "type": "FAILURE_REMOVAL",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-04",
+      "seed": 1817,
+      "index": 4,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-05",
+      "seed": 1817,
+      "index": 5,
+      "type": "FAILURE_REMOVAL",
+      "valid": true,
+      "relation": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+      "status": "FAILED"
+    },
+    {
+      "id": "N18-G1817-06",
+      "seed": 1817,
+      "index": 6,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-07",
+      "seed": 1817,
+      "index": 7,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-08",
+      "seed": 1817,
+      "index": 8,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-09",
+      "seed": 1817,
+      "index": 9,
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-10",
+      "seed": 1817,
+      "index": 10,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-11",
+      "seed": 1817,
+      "index": 11,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-12",
+      "seed": 1817,
+      "index": 12,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-13",
+      "seed": 1817,
+      "index": 13,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-14",
+      "seed": 1817,
+      "index": 14,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-15",
+      "seed": 1817,
+      "index": 15,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-16",
+      "seed": 1817,
+      "index": 16,
+      "type": "FAILURE_TARGET_CHANGE",
+      "valid": true,
+      "relation": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+      "status": "FAILED"
+    },
+    {
+      "id": "N18-G1817-17",
+      "seed": 1817,
+      "index": 17,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "CHANGED_REPAIR_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-18",
+      "seed": 1817,
+      "index": 18,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-19",
+      "seed": 1817,
+      "index": 19,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-20",
+      "seed": 1817,
+      "index": 20,
+      "type": "FAILURE_REMOVAL",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-21",
+      "seed": 1817,
+      "index": 21,
+      "type": "FAILURE_TARGET_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-22",
+      "seed": 1817,
+      "index": 22,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-23",
+      "seed": 1817,
+      "index": 23,
+      "type": "FAILURE_REMOVAL",
+      "valid": true,
+      "relation": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+      "status": "FAILED"
+    },
+    {
+      "id": "N18-G1817-24",
+      "seed": 1817,
+      "index": 24,
+      "type": "FAILURE_TARGET_CHANGE",
+      "valid": true,
+      "relation": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+      "status": "FAILED"
+    },
+    {
+      "id": "N18-G1817-25",
+      "seed": 1817,
+      "index": 25,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-26",
+      "seed": 1817,
+      "index": 26,
+      "type": "FAILURE_TARGET_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-27",
+      "seed": 1817,
+      "index": 27,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-28",
+      "seed": 1817,
+      "index": 28,
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "valid": true,
+      "relation": "CHANGED_SCHEDULE_EXPLAINED",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-29",
+      "seed": 1817,
+      "index": 29,
+      "type": "FAILURE_INSERTION",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-30",
+      "seed": 1817,
+      "index": 30,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G1817-31",
+      "seed": 1817,
+      "index": 31,
+      "type": "FAILURE_TIME_CHANGE",
+      "valid": true,
+      "relation": "DIFFERENT_FAILURE_HISTORY_SAME_REPAIR_OUTCOME",
+      "status": "ACCEPTED"
+    }
+  ]
+}
