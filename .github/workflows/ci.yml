@@ -2130,12 +2130,12 @@ jobs:
         run: |
           git worktree add --detach /tmp/n14rh-v6 161273d4599ff07fdd90f7a4be9e3bd6e221a94f
           cd /tmp/n14rh-v6
-          cargo build --locked --offline --bins
+          cargo build --locked --bins
           cd "$GITHUB_WORKSPACE"
           python3 audit/phase14rh/historical_v6_replay.py
       - name: Current v7 attestations
         run: |
-          cargo build --locked --offline --bins
+          cargo build --locked --bins
           python3 audit/phase14rh/v7_attestation.py
       - name: Dual importer and reducer
         run: |
