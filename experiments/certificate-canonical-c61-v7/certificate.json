@@ -1,0 +1,102 @@
+{
+  "canonical_classification": "EXPECTED_AGREEMENT",
+  "certificate_id": "poie-s2-canonical-c61-v7",
+  "claim_statement": "canonical C10 \u8865\u8d27\u95f4\u9694 60/50/40/30 \u4e00\u81f4",
+  "claims": [
+    "C61"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "5d16388583ec3e8538388a4f9eee6b865e9c01a76b8a2992373ce1d53d33b922",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "experiment": {
+    "expected": "experiments/s2-canonical-c10/expected.txt",
+    "expected_sha256": "7c6db8108a6e2b744a9cf6b108bb6da90a94c03dd5ff67fc2428bd6c2859c824",
+    "path": "experiments/s2-canonical-c10"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "native_task_resource_observatory": {
+    "path": "audit/phase14r/manifest.json",
+    "sha256": "9d264a7bc1ab1125d875d565abecb7e1a461aaf314326de287218ed43d920a35"
+  },
+  "predecessor": {
+    "path": "experiments/certificate-canonical-c61-v6/certificate.json",
+    "relation": "EXECUTION_SEMANTIC_EXTENSION_SUCCESSOR",
+    "sha256": "95945028459a58e2f8c002697bd727bc81bee11909dab50ab7121c6ec16cb206"
+  },
+  "replay": {
+    "command": "python3 scripts/check-experiment-replays.py",
+    "exit_code": 0,
+    "output_sha256": "1930f31941128dd308a7e17a440f9877b54adc690c49c555b9cf9676050c773c"
+  },
+  "runner": {
+    "binary": "poie-migration-c10",
+    "sha256": "feff57fda5277b17385ca6f06f54648950da6a8ed6901278a0ed082d1902f72c",
+    "source": "crates/poie-viability/src/bin/poie-migration-c10.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/8",
+  "scope": "model/simulation evidence only; canonical claim C61; explicit group extension does not alter legacy execution",
+  "semantics": "canonical event engine with observed legacy semantics; explicit same-target repair-group extension reuses the same event loop, scheduler, dependency closure, inventory ledger and atomic commit; legacy run_engine outcomes unchanged; step-level release, replanning and autonomous recovery are not implemented",
+  "source_environment": {
+    "files": [
+      {
+        "path": "crates/poie-viability/src/engine.rs",
+        "sha256": "5d16388583ec3e8538388a4f9eee6b865e9c01a76b8a2992373ce1d53d33b922"
+      },
+      {
+        "path": "crates/poie-viability/src/survival.rs",
+        "sha256": "ddad0fbd5b6e31b5ac88eca29435588454723810d96207c2d4e29d3be673fced"
+      },
+      {
+        "path": "crates/poie-viability/src/clock.rs",
+        "sha256": "4b8f2394da2feab5aeb9601f7fa8bd209bc436bfa3554b3338de62519ed05212"
+      },
+      {
+        "path": "crates/poie-viability/src/closure.rs",
+        "sha256": "f8ccb5f5596382f357f7cc12a6441e66b35b5dc3644e00026dace661ae513179"
+      },
+      {
+        "path": "crates/poie-viability/src/scheduler.rs",
+        "sha256": "c6c5618b78f20f1a1a18b3d594ac4ab4c8bf4dcbcf44fe99b7051835d6ef85f7"
+      },
+      {
+        "path": "Cargo.toml",
+        "sha256": "e50b40a6b80c3c45f851ac3fdeb5267c78eb21efd63dc91fea0eaea86e1a9957"
+      },
+      {
+        "path": "Cargo.lock",
+        "sha256": "b0abd0572bc06734d0b3253a27308d6013d3a4859c36cf8c818b50426cc9a5d1"
+      },
+      {
+        "path": "crates/poie-viability/src/bin/poie-migration-c10.rs",
+        "sha256": "feff57fda5277b17385ca6f06f54648950da6a8ed6901278a0ed082d1902f72c"
+      },
+      {
+        "path": "scenarios/base-08/model.toml",
+        "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+      },
+      {
+        "path": "experiments/s2-canonical-c10/expected.txt",
+        "sha256": "7c6db8108a6e2b744a9cf6b108bb6da90a94c03dd5ff67fc2428bd6c2859c824"
+      },
+      {
+        "path": "experiments/s2-canonical-c10/REPORT.md",
+        "sha256": "62aa69023886a42f407a7107d32a3e3e0c0a61068cc130dfffe54cadf16095b6"
+      },
+      {
+        "path": "experiments/s2-canonical-c10/PREREG.md",
+        "sha256": "398736b65e9245967ee7fbab6363a1c237f064c867b4f317ff153305297d25b0"
+      }
+    ]
+  },
+  "status": "CANONICAL_ISSUED_V7",
+  "successor_classification": "EXECUTION_SEMANTIC_EXTENSION_SUCCESSOR",
+  "verifier": "poie-canonical-s2-certificate/8",
+  "version": 7
+}

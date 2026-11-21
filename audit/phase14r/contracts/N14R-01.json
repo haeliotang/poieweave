@@ -1,0 +1,23 @@
+{
+  "group_id": "N14R-01",
+  "restoration_target": "a-lathe",
+  "horizon_s": 72000,
+  "robot_count": 1,
+  "tasks": [
+    {
+      "task_id": "A",
+      "duration_s": 7200,
+      "priority": 1,
+      "robot_mask": 1,
+      "requires_tool": false
+    },
+    {
+      "task_id": "B",
+      "duration_s": 10800,
+      "priority": 2,
+      "robot_mask": 1,
+      "requires_tool": false
+    }
+  ],
+  "failures": []
+}

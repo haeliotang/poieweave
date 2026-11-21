@@ -1,0 +1,35 @@
+{
+  "schema": "poie.s5v-n14r-claim-status/1",
+  "claims": [
+    {
+      "id": "N14R-0",
+      "status": "VERIFIED",
+      "scope": "R1/R2/R3 audit and explicit extension ADR"
+    },
+    {
+      "id": "N14R-A",
+      "status": "ESTABLISHED",
+      "scope": "canonical 2-task same-target group, parallel and serialized"
+    },
+    {
+      "id": "N14R-B",
+      "status": "ESTABLISHED",
+      "scope": "10 cross-model group cases incl. 2-4 applied failures"
+    },
+    {
+      "id": "N14R-C",
+      "status": "VERIFIED",
+      "scope": "12 generated 2-task cross-model cases"
+    },
+    {
+      "id": "N14R-D",
+      "status": "ESTABLISHED",
+      "scope": "v6 frozen; 41 v7 extension successors; tamper controls"
+    },
+    {
+      "id": "N14R-E",
+      "status": "ESTABLISHED",
+      "scope": "manifests/CI/clean replay"
+    }
+  ]
+}

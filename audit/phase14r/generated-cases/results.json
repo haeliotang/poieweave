@@ -1,0 +1,420 @@
+{
+  "schema": "poie.s5v-n14r-generated/1",
+  "seed": 20261123,
+  "count": 12,
+  "cases": [
+    {
+      "case": "N14R-G00",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 18000.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 7200.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m1",
+        "t2": "robot-m1"
+      },
+      "makespan": 18000.0,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G00.json",
+      "seed": 20261123
+    },
+    {
+      "case": "N14R-G01",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m2",
+            "tool-t1"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 10800.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 0.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m2",
+        "t2": "robot-m1"
+      },
+      "makespan": 10800.0,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G01.json",
+      "seed": 20261123
+    },
+    {
+      "case": "N14R-G02",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m1",
+            "tool-t1"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 18000.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 7200.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m1",
+        "t2": "robot-m1"
+      },
+      "makespan": 18000.0,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G02.json",
+      "seed": 20261123
+    },
+    {
+      "case": "N14R-G03",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m2"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 18000.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m2"
+          ],
+          "start_s": 7200.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m2",
+        "t2": "robot-m2"
+      },
+      "makespan": 18000.0,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G03.json",
+      "seed": 20261123
+    },
+    {
+      "case": "N14R-G04",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 18000.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 7200.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m1",
+        "t2": "robot-m1"
+      },
+      "makespan": 18000.0,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G04.json",
+      "seed": 20261123
+    },
+    {
+      "case": "N14R-G05",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 18000.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 7200.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m1",
+        "t2": "robot-m1"
+      },
+      "makespan": 18000.0,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G05.json",
+      "seed": 20261123
+    },
+    {
+      "case": "N14R-G06",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m2",
+            "tool-t1"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 18000.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m2"
+          ],
+          "start_s": 7200.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m2",
+        "t2": "robot-m2"
+      },
+      "makespan": 18000.0,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G06.json",
+      "seed": 20261123
+    },
+    {
+      "case": "N14R-G07",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m2",
+            "tool-t1"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 18000.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m2"
+          ],
+          "start_s": 7200.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m2",
+        "t2": "robot-m2"
+      },
+      "makespan": 18000.0,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G07.json",
+      "seed": 20261123
+    },
+    {
+      "case": "N14R-G08",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 10800.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m2"
+          ],
+          "start_s": 0.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m1",
+        "t2": "robot-m2"
+      },
+      "makespan": 10800.0,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G08.json",
+      "seed": 20261123
+    },
+    {
+      "case": "N14R-G09",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 10800.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m2"
+          ],
+          "start_s": 0.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m1",
+        "t2": "robot-m2"
+      },
+      "makespan": 10800.0,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G09.json",
+      "seed": 20261123
+    },
+    {
+      "case": "N14R-G10",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 18000.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m1"
+          ],
+          "start_s": 7200.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m1",
+        "t2": "robot-m1"
+      },
+      "makespan": 18000.0,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G10.json",
+      "seed": 20261123
+    },
+    {
+      "case": "N14R-G11",
+      "task_resources": [
+        {
+          "end_s": 7200.0,
+          "plan_index": 0,
+          "resources": [
+            "robot-m1",
+            "tool-t1"
+          ],
+          "start_s": 0.0,
+          "task_id": "A"
+        },
+        {
+          "end_s": 10800.0,
+          "plan_index": 1,
+          "resources": [
+            "robot-m2"
+          ],
+          "start_s": 0.0,
+          "task_id": "B"
+        }
+      ],
+      "external_resources": {
+        "t1": "robot-m1",
+        "t2": "robot-m2"
+      },
+      "makespan": 10800.0,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "problems": [],
+      "status": "ACCEPTED",
+      "contract": "/Users/hao/Documents/poieweave/audit/phase14r/contracts/N14R-G11.json",
+      "seed": 20261123
+    }
+  ]
+}

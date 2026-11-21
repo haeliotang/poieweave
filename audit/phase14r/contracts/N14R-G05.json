@@ -1,0 +1,45 @@
+{
+  "group_id": "N14R-G05",
+  "restoration_target": "a-lathe",
+  "horizon_s": 72000,
+  "robot_count": 2,
+  "tasks": [
+    {
+      "task_id": "A",
+      "duration_s": 7200,
+      "priority": 1,
+      "robot_mask": 1,
+      "requires_tool": false
+    },
+    {
+      "task_id": "B",
+      "duration_s": 10800,
+      "priority": 2,
+      "robot_mask": 1,
+      "requires_tool": false
+    }
+  ],
+  "failures": [
+    {
+      "failure_id": 0,
+      "time_s": 7199,
+      "target": "robot-m1",
+      "kind": 1,
+      "target_id": 0
+    },
+    {
+      "failure_id": 1,
+      "time_s": 7200,
+      "target": "sensor-x",
+      "kind": 3,
+      "target_id": 5
+    },
+    {
+      "failure_id": 2,
+      "time_s": 10800,
+      "target": "bus-2",
+      "kind": 3,
+      "target_id": 6
+    }
+  ]
+}
