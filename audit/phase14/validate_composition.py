@@ -5,7 +5,7 @@ from __future__ import annotations
 import csv,json
 from pathlib import Path
 P=Path(__file__).resolve().parent
-CASES=["N14-T00","N14-T01","N14-T02","N14-T03","N14-T04"]
+CASES=["N14-T00","N14-T01","N14-T02","N14-T03","N14-T04","N14-T05"]
 def main():
  results=[]
  for case in CASES:
@@ -42,7 +42,10 @@ def main():
   for i in range(int(spec["taskCount"])):
    mask=int(spec[f"t{i+1}RobotMask"]); robot=int(float(last[f"t{i+1}Robot"]))
    if robot<=0 or not (mask & (1<<(robot-1))): problems.append("RESOURCE_ELIGIBILITY_VIOLATION")
-  if abs(float(last["makespan_s"])-10800.0)>1e-9 and case!="N14-T03": problems.append("GROUP_MAKESPAN_MISMATCH")
+  expected_makespan=18000.0 if case=="N14-T05" else 10800.0
+  if abs(float(last["makespan_s"])-expected_makespan)>1e-9: problems.append("GROUP_MAKESPAN_MISMATCH")
+  if int(spec["taskCount"])>1 and int(float(last["t1Robot"]))==int(float(last["t2Robot"])) and int(float(last["t2Start_s"]))+1e-9 < float(last["t1End_s"]): problems.append("RESOURCE_CONTENTION_VIOLATION")
+  if case=="N14-T05" and int(float(last["t1Robot"]))!=int(float(last["t2Robot"])): problems.append("RESOURCE_CONTENTION_VIOLATION")
   if any(e["kind"]=="RestorationCommitted" for e in j["events"]) and any(e["kind"]=="RepairInterrupted" for e in j["events"]): problems.append("RESTORATION_PRECONDITION_VIOLATION")
   if any(e["kind"]=="AssetFailure" for e in j["events"] if e["at"]>float(last["time_s"])): problems.append("POST_TERMINATION_EVENT")
   results.append({"case":case,"task_count":int(spec["taskCount"]),"failure_count":len(expected),"applied":len(xf),"resources":{"t1":int(float(last["t1Robot"])),"t2":int(float(last["t2Robot"]))},"makespan":float(last["makespan_s"]),"interrupted":any(e["kind"]=="RepairInterrupted" for e in j["events"]),"problems":problems,"status":"ACCEPTED" if not problems else "FAIL"})

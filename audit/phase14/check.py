@@ -6,7 +6,7 @@ import json,sys
 from pathlib import Path
 P=Path(__file__).resolve().parent; problems=[]
 comp=json.loads((P/"trajectory-comparisons/composition.json").read_text())["cases"]
-if len(comp)!=5 or any(c["status"]!="ACCEPTED" for c in comp): problems.append("composition")
+if len(comp)!=6 or any(c["status"]!="ACCEPTED" for c in comp): problems.append("composition")
 cross=json.loads((P/"generated-cases/cross-model.json").read_text())
 if cross["count"]!=24 or cross["accepted"]!=24: problems.append("cross-model")
 for seed in (20261121,20261122):
