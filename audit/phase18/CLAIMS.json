@@ -33,8 +33,8 @@
     },
     {
       "id": "N18-F",
-      "status": "NOT_ESTABLISHED",
-      "scope": "reproducibility"
+      "status": "VERIFIED",
+      "scope": "Linux CI, C/fmpy, check-all, clean worktree"
     }
   ]
 }
