@@ -77,6 +77,7 @@ python3 audit/phase14r/check.py
 python3 audit/phase14r/verify_evidence.py --frozen --claim
 python3 audit/phase15/validate_release.py
 python3 audit/phase15/negative_release.py
+python3 audit/phase15/validate_release.py
 python3 audit/phase15/reduce_release.py
 python3 audit/phase15/check.py
 python3 audit/phase14rh/check.py
