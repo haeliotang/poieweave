@@ -1,0 +1,235 @@
+{
+  "schema": "poie.s5v-n15-release/1",
+  "cases": [
+    {
+      "case": "N15-D1-R1-7201",
+      "canonical_completed": {
+        "A": 7200.0,
+        "B": 10800.0
+      },
+      "canonical_released": {
+        "robot-m1": 7200.0,
+        "robot-m2": 10800.0,
+        "bat-1": 10800.0,
+        "bus-1": 10800.0,
+        "charger-1": 10800.0
+      },
+      "external_completed": [
+        [
+          "A",
+          7200.0
+        ],
+        [
+          "B",
+          10800.0
+        ]
+      ],
+      "external_released": [
+        [
+          "robot-m1",
+          7200.0
+        ],
+        [
+          "robot-m2",
+          10800.0
+        ]
+      ],
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "makespan": 10800.0,
+      "findings": [],
+      "first_release_divergence": null,
+      "first_sensitivity_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N15-D1-R2-7201",
+      "canonical_completed": {
+        "A": 7200.0
+      },
+      "canonical_released": {
+        "robot-m1": 7200.0
+      },
+      "external_completed": [
+        [
+          "A",
+          7200.0
+        ]
+      ],
+      "external_released": [
+        [
+          "robot-m1",
+          7200.0
+        ]
+      ],
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "makespan": 10800.0,
+      "findings": [],
+      "first_release_divergence": null,
+      "first_sensitivity_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N15-D1-R1-7199",
+      "canonical_completed": {},
+      "canonical_released": {},
+      "external_completed": [],
+      "external_released": [],
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "makespan": 10800.0,
+      "findings": [],
+      "first_release_divergence": null,
+      "first_sensitivity_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N15-D2-SERIAL-7201",
+      "canonical_completed": {
+        "A": 7200.0
+      },
+      "canonical_released": {},
+      "external_completed": [
+        [
+          "A",
+          7200.0
+        ]
+      ],
+      "external_released": [],
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "makespan": 18000.0,
+      "findings": [],
+      "first_release_divergence": null,
+      "first_sensitivity_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N15-D3-TOOL-7201",
+      "canonical_completed": {
+        "A": 7200.0,
+        "B": 10800.0
+      },
+      "canonical_released": {
+        "robot-m1": 7200.0,
+        "tool-t1": 7200.0,
+        "robot-m2": 10800.0,
+        "bat-1": 10800.0,
+        "bus-1": 10800.0,
+        "charger-1": 10800.0
+      },
+      "external_completed": [
+        [
+          "A",
+          7200.0
+        ],
+        [
+          "B",
+          10800.0
+        ]
+      ],
+      "external_released": [
+        [
+          "robot-m1",
+          7200.0
+        ],
+        [
+          "tool-t1",
+          7200.0
+        ],
+        [
+          "robot-m2",
+          10800.0
+        ]
+      ],
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "makespan": 10800.0,
+      "findings": [],
+      "first_release_divergence": null,
+      "first_sensitivity_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N15-D3-TOOL-7199",
+      "canonical_completed": {},
+      "canonical_released": {},
+      "external_completed": [],
+      "external_released": [],
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "makespan": 10800.0,
+      "findings": [],
+      "first_release_divergence": null,
+      "first_sensitivity_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N15-OR-RELEASE",
+      "canonical_completed": {
+        "A": 7200.0,
+        "B": 10800.0
+      },
+      "canonical_released": {
+        "robot-m1": 7200.0,
+        "robot-m2": 10800.0
+      },
+      "external_completed": [
+        [
+          "A",
+          7200.0
+        ],
+        [
+          "B",
+          10800.0
+        ]
+      ],
+      "external_released": [
+        [
+          "robot-m1",
+          7200.0
+        ],
+        [
+          "robot-m2",
+          10800.0
+        ]
+      ],
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "makespan": 10800.0,
+      "findings": [],
+      "first_release_divergence": null,
+      "first_sensitivity_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N15-MUT-ORIG",
+      "canonical_completed": {
+        "A": 7200.0
+      },
+      "canonical_released": {},
+      "external_completed": [
+        [
+          "A",
+          7200.0
+        ]
+      ],
+      "external_released": [
+        [
+          "robot-m1",
+          7200.0
+        ]
+      ],
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "makespan": 18000.0,
+      "findings": [
+        "EXTERNAL_RELEASE_MISMATCH_robot-m1"
+      ],
+      "first_release_divergence": "EXTERNAL_RELEASE_MISMATCH_robot-m1",
+      "first_sensitivity_divergence": null,
+      "status": "FAIL"
+    }
+  ]
+}

@@ -1,0 +1,379 @@
+{
+  "certificates": [
+    {
+      "certificate": "experiments/certificate-canonical-c56-v9/certificate.json",
+      "claim": "C56",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-c5",
+      "predecessor": "experiments/certificate-canonical-c56-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c57-v9/certificate.json",
+      "claim": "C57",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-c6",
+      "predecessor": "experiments/certificate-canonical-c57-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c58-v9/certificate.json",
+      "claim": "C58",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-c7",
+      "predecessor": "experiments/certificate-canonical-c58-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c59-v9/certificate.json",
+      "claim": "C59",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-c8",
+      "predecessor": "experiments/certificate-canonical-c59-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c6-v9/certificate.json",
+      "claim": "C6",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-joint-coverage",
+      "predecessor": "experiments/certificate-canonical-c6-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c60-v9/certificate.json",
+      "claim": "C60",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-c9",
+      "predecessor": "experiments/certificate-canonical-c60-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c61-v9/certificate.json",
+      "claim": "C61",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-c10",
+      "predecessor": "experiments/certificate-canonical-c61-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c62-v9/certificate.json",
+      "claim": "C62",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-c11",
+      "predecessor": "experiments/certificate-canonical-c62-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c63-v9/certificate.json",
+      "claim": "C63",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-c12",
+      "predecessor": "experiments/certificate-canonical-c63-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c64-v9/certificate.json",
+      "claim": "C64",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-c13",
+      "predecessor": "experiments/certificate-canonical-c64-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c65-v9/certificate.json",
+      "claim": "C65",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-c14",
+      "predecessor": "experiments/certificate-canonical-c65-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c66-v9/certificate.json",
+      "claim": "C66",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-c18",
+      "predecessor": "experiments/certificate-canonical-c66-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c67-v9/certificate.json",
+      "claim": "C67",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-c19",
+      "predecessor": "experiments/certificate-canonical-c67-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c69-v9/certificate.json",
+      "claim": "C69",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-load-base05",
+      "predecessor": "experiments/certificate-canonical-c69-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c70-v9/certificate.json",
+      "claim": "C70",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-regen-horizon",
+      "predecessor": "experiments/certificate-canonical-c70-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c71-v9/certificate.json",
+      "claim": "C71",
+      "classification": "MIXED_AGREEMENT_AND_DEFINITION_CHANGE",
+      "experiment": "s2-canonical-metrics-groups",
+      "predecessor": "experiments/certificate-canonical-c71-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c72-v9/certificate.json",
+      "claim": "C72",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-order",
+      "predecessor": "experiments/certificate-canonical-c72-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c73-v9/certificate.json",
+      "claim": "C73",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-c68-monte-carlo",
+      "predecessor": "experiments/certificate-canonical-c73-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c74-v9/certificate.json",
+      "claim": "C74",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-c12-components",
+      "predecessor": "experiments/certificate-canonical-c74-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c75-v9/certificate.json",
+      "claim": "C75",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-energy-interventions",
+      "predecessor": "experiments/certificate-canonical-c75-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c76-v9/certificate.json",
+      "claim": "C76",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-redundancy-restorers",
+      "predecessor": "experiments/certificate-canonical-c76-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c77-v9/certificate.json",
+      "claim": "C77",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch1",
+      "predecessor": "experiments/certificate-canonical-c77-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c78-v9/certificate.json",
+      "claim": "C78",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch2",
+      "predecessor": "experiments/certificate-canonical-c78-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c79-v9/certificate.json",
+      "claim": "C79",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch3",
+      "predecessor": "experiments/certificate-canonical-c79-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c80-v9/certificate.json",
+      "claim": "C80",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch4",
+      "predecessor": "experiments/certificate-canonical-c80-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c81-v9/certificate.json",
+      "claim": "C81",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-aux-batch5",
+      "predecessor": "experiments/certificate-canonical-c81-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c82-v9/certificate.json",
+      "claim": "C82",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch6",
+      "predecessor": "experiments/certificate-canonical-c82-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c83-v9/certificate.json",
+      "claim": "C83",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch7",
+      "predecessor": "experiments/certificate-canonical-c83-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c84-v9/certificate.json",
+      "claim": "C84",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-aux-batch8",
+      "predecessor": "experiments/certificate-canonical-c84-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c85-v9/certificate.json",
+      "claim": "C85",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch9",
+      "predecessor": "experiments/certificate-canonical-c85-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c86-v9/certificate.json",
+      "claim": "C86",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch10",
+      "predecessor": "experiments/certificate-canonical-c86-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c87-v9/certificate.json",
+      "claim": "C87",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch11",
+      "predecessor": "experiments/certificate-canonical-c87-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c88-v9/certificate.json",
+      "claim": "C88",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch12",
+      "predecessor": "experiments/certificate-canonical-c88-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c89-v9/certificate.json",
+      "claim": "C89",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-aux-batch13",
+      "predecessor": "experiments/certificate-canonical-c89-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c90-v9/certificate.json",
+      "claim": "C90",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-aux-batch14",
+      "predecessor": "experiments/certificate-canonical-c90-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c91-v9/certificate.json",
+      "claim": "C91",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch15",
+      "predecessor": "experiments/certificate-canonical-c91-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c92-v9/certificate.json",
+      "claim": "C92",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch16",
+      "predecessor": "experiments/certificate-canonical-c92-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c93-v9/certificate.json",
+      "claim": "C93",
+      "classification": "EXPECTED_AGREEMENT",
+      "experiment": "s2-canonical-aux-batch17",
+      "predecessor": "experiments/certificate-canonical-c93-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c94-v9/certificate.json",
+      "claim": "C94",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-aux-batch18",
+      "predecessor": "experiments/certificate-canonical-c94-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c95-v9/certificate.json",
+      "claim": "C95",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-aux-batch19",
+      "predecessor": "experiments/certificate-canonical-c95-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    },
+    {
+      "certificate": "experiments/certificate-canonical-c96-v9/certificate.json",
+      "claim": "C96",
+      "classification": "SEMANTIC_CORRECTION",
+      "experiment": "s2-canonical-aux-batch20",
+      "predecessor": "experiments/certificate-canonical-c96-v8/certificate.json",
+      "status": "CANONICAL_ISSUED_V7"
+    }
+  ],
+  "schema": "poie.canonical-claim-certificate-index/9",
+  "summary": {
+    "certificates": 41,
+    "claims": [
+      "C56",
+      "C57",
+      "C58",
+      "C59",
+      "C6",
+      "C60",
+      "C61",
+      "C62",
+      "C63",
+      "C64",
+      "C65",
+      "C66",
+      "C67",
+      "C69",
+      "C70",
+      "C71",
+      "C72",
+      "C73",
+      "C74",
+      "C75",
+      "C76",
+      "C77",
+      "C78",
+      "C79",
+      "C80",
+      "C81",
+      "C82",
+      "C83",
+      "C84",
+      "C85",
+      "C86",
+      "C87",
+      "C88",
+      "C89",
+      "C90",
+      "C91",
+      "C92",
+      "C93",
+      "C94",
+      "C95",
+      "C96"
+    ]
+  }
+}

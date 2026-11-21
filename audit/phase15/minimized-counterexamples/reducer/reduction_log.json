@@ -1,0 +1,35 @@
+{
+  "schema": "poie.s5v-n15-reduction/1",
+  "accepted": [
+    "drop failure 3",
+    "drop failure 2",
+    "drop failure 1"
+  ],
+  "steps": [
+    {
+      "step": "original",
+      "failures": 4,
+      "signature": "EXTERNAL_PREMATURE_RESOURCE_RELEASE"
+    },
+    {
+      "step": "drop-failure-3",
+      "accepted": true
+    },
+    {
+      "step": "drop-failure-2",
+      "accepted": true
+    },
+    {
+      "step": "drop-failure-1",
+      "accepted": true
+    },
+    {
+      "step": "drop-failure-0",
+      "accepted": false
+    },
+    {
+      "step": "shorten-B",
+      "accepted": false
+    }
+  ]
+}

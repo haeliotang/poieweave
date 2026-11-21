@@ -1,0 +1,102 @@
+{
+  "canonical_classification": "SEMANTIC_CORRECTION",
+  "certificate_id": "poie-s2-canonical-c75-v9",
+  "claim_statement": "energy interventions 12 \u884c\u65e5\u7ea7\u4e00\u81f4\uff1b16\u219216.25 d",
+  "claims": [
+    "C75"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "1f20cc0edcd23791ea476878156b50c14b3ab028e49ced3bf824b7f2cddc981f",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "experiment": {
+    "expected": "experiments/s2-canonical-energy-interventions/expected.txt",
+    "expected_sha256": "35c8a021a7b0fd891ab2606826218902dd5224e8cdc350958e06606860982c9f",
+    "path": "experiments/s2-canonical-energy-interventions"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "native_task_resource_observatory": {
+    "path": "audit/phase15/manifest.json",
+    "sha256": "dc6c556409c3556b667a7cb0cf592434050caf418ac668c224c03029fcaa86b4"
+  },
+  "predecessor": {
+    "path": "experiments/certificate-canonical-c75-v8/certificate.json",
+    "relation": "EXECUTION_SEMANTIC_EXTENSION_SUCCESSOR",
+    "sha256": "72836b47d52df8b9f804083b302c0fa8dd3f4825edc40218ed52b2d63f2850bc"
+  },
+  "replay": {
+    "command": "python3 scripts/check-experiment-replays.py",
+    "exit_code": 0,
+    "output_sha256": "1930f31941128dd308a7e17a440f9877b54adc690c49c555b9cf9676050c773c"
+  },
+  "runner": {
+    "binary": "poie-migration-energy-interventions",
+    "sha256": "4969423954f8f4a5b7939173a77df7992c3d9162ec705af3363a5a819fc9f0ee",
+    "source": "crates/poie-viability/src/bin/poie-migration-energy-interventions.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/10",
+  "scope": "model/simulation evidence only; canonical claim C75; explicit group extension does not alter legacy execution",
+  "semantics": "canonical event engine with observed legacy semantics; explicit same-target repair-group extension reuses the same event loop, scheduler, dependency closure, inventory ledger and atomic commit; legacy run_engine outcomes unchanged; step-level release, replanning and autonomous recovery are not implemented",
+  "source_environment": {
+    "files": [
+      {
+        "path": "crates/poie-viability/src/engine.rs",
+        "sha256": "1f20cc0edcd23791ea476878156b50c14b3ab028e49ced3bf824b7f2cddc981f"
+      },
+      {
+        "path": "crates/poie-viability/src/survival.rs",
+        "sha256": "ddad0fbd5b6e31b5ac88eca29435588454723810d96207c2d4e29d3be673fced"
+      },
+      {
+        "path": "crates/poie-viability/src/clock.rs",
+        "sha256": "4b8f2394da2feab5aeb9601f7fa8bd209bc436bfa3554b3338de62519ed05212"
+      },
+      {
+        "path": "crates/poie-viability/src/closure.rs",
+        "sha256": "f8ccb5f5596382f357f7cc12a6441e66b35b5dc3644e00026dace661ae513179"
+      },
+      {
+        "path": "crates/poie-viability/src/scheduler.rs",
+        "sha256": "c6c5618b78f20f1a1a18b3d594ac4ab4c8bf4dcbcf44fe99b7051835d6ef85f7"
+      },
+      {
+        "path": "Cargo.toml",
+        "sha256": "e50b40a6b80c3c45f851ac3fdeb5267c78eb21efd63dc91fea0eaea86e1a9957"
+      },
+      {
+        "path": "Cargo.lock",
+        "sha256": "b0abd0572bc06734d0b3253a27308d6013d3a4859c36cf8c818b50426cc9a5d1"
+      },
+      {
+        "path": "crates/poie-viability/src/bin/poie-migration-energy-interventions.rs",
+        "sha256": "4969423954f8f4a5b7939173a77df7992c3d9162ec705af3363a5a819fc9f0ee"
+      },
+      {
+        "path": "scenarios/base-08/model.toml",
+        "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+      },
+      {
+        "path": "experiments/s2-canonical-energy-interventions/expected.txt",
+        "sha256": "35c8a021a7b0fd891ab2606826218902dd5224e8cdc350958e06606860982c9f"
+      },
+      {
+        "path": "experiments/s2-canonical-energy-interventions/REPORT.md",
+        "sha256": "03dcfe67a41525b6b2b021313870c8894d8ae969082177553322f0617a651436"
+      },
+      {
+        "path": "experiments/s2-canonical-energy-interventions/PREREG.md",
+        "sha256": "fd8fb6c0e55e2b357873cc887d856b7204ffab068d824189edb30e1ee7f696ab"
+      }
+    ]
+  },
+  "status": "CANONICAL_ISSUED_V9",
+  "successor_classification": "EXECUTION_SEMANTIC_EXTENSION_SUCCESSOR",
+  "verifier": "poie-canonical-s2-certificate/10",
+  "version": 9
+}
