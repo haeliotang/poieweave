@@ -12,9 +12,9 @@
       "sha256": "8df5a0eb217705767ffaeca6f154b7b36bda6aa35267bb49e84a9dae346fa77a"
     },
     {
-      "bytes": 768,
+      "bytes": 815,
       "path": "audit/phase13/CLAIMS.json",
-      "sha256": "f1f8c41401822cff1645e835a8d2f3ec29556d2383d60a2d6ec24833d7209c48"
+      "sha256": "2e48211374bfbd3f42641efde5ad7540cbd70bef7bc1a9855b06d5fbd9fc1eae"
     },
     {
       "bytes": 446,
@@ -47,9 +47,9 @@
       "sha256": "f2b4dca6cb4748b2c9a2bda897a4eff928f573a259b43d9f6fa92dd2b1084c3d"
     },
     {
-      "bytes": 596,
+      "bytes": 581,
       "path": "audit/phase13/PREREG.md",
-      "sha256": "78498b0757c2277469650a9a58f6dffde3ab7999a1ad3c5cfe009d7ef8b69d0f"
+      "sha256": "ea3116f1a8ddc6515a73e8545b2dbc24acb1e8d2ca8beecaf5064f6959ec090d"
     },
     {
       "bytes": 1663,
@@ -695,6 +695,11 @@
       "bytes": 3909,
       "path": "audit/phase13/minimized-counterexamples/wrong-target.json",
       "sha256": "b58669d29d59f8da9233a2a4a911bb36cee30b51dfebb6f83bc49e5e5de395a5"
+    },
+    {
+      "bytes": 213,
+      "path": "audit/phase13/negative-controls/evidence-results.json",
+      "sha256": "3868a35a1618da507df099b3553c94fc7af5c4da41478833366b7ef07e40616e"
     },
     {
       "bytes": 1918,

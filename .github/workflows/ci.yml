@@ -2053,13 +2053,17 @@ jobs:
           python3 audit/phase14/revalidate_n13.py || true
           python3 audit/phase14/validate_composition.py
           python3 audit/phase14/generate_cross_model.py
+          python3 audit/phase14/generate_cross_model.py --seed 20261122
           python3 audit/phase14/negative_controls.py
           python3 audit/phase14/validate_composition.py
           python3 audit/phase14/check.py
+          python3 audit/phase14/verify_evidence.py --frozen --claim
+          python3 audit/phase14/negative_evidence.py
       - name: Save N14 evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n14/evidence"
           cp -R audit/phase14 "$RUNNER_TEMP/s5v-n14/evidence/"
+          python3 audit/phase14/execution_manifest.py --output "$RUNNER_TEMP/s5v-n14/evidence/execution-manifest.json"
       - uses: actions/upload-artifact@v4
         with:
           name: s5v-n14-linux-evidence

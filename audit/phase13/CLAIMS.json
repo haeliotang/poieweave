@@ -14,7 +14,7 @@
     {
       "id": "N13-B",
       "status": "ESTABLISHED",
-      "scope": "10 multi-failure cases; target/time/history/interruption/completion"
+      "scope": "10 multi-failure cases; target/time/interruption/completion; state-history continuity narrowed by N14 revalidation"
     },
     {
       "id": "N13-C",

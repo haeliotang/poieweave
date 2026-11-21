@@ -1,0 +1,46 @@
+{
+  "schema": "poie.s5v-n14-external-validation-certificate/1",
+  "scope": "N14 compositional multi-failure cross-model external validation only; not S2 canonical certification",
+  "seeds": [
+    20261121,
+    20261122
+  ],
+  "files": [
+    {
+      "path": "audit/phase14/generate_cross_model.py",
+      "sha256": "83a53f5033e68ecb619be8d273ced63b09d724c9eaa4c54b2fafe916dfc1f1bd"
+    },
+    {
+      "path": "audit/phase14/validate_composition.py",
+      "sha256": "69232b5ee9a680866a88eecc1cab839bda0cfc91ffb601a32b660ff146822271"
+    },
+    {
+      "path": "audit/phase14/revalidate_n13.py",
+      "sha256": "e46a5feb89bb6f3dae1da3b706188673fa3050d1778142a7d89845b7a3d3b3bc"
+    },
+    {
+      "path": "crates/poie-viability/src/bin/poie-s5v-n14-canonical-adapter.rs",
+      "sha256": "5e9d4f8d1171b931f980591470aa3ac3d6c3a88dfae6bdcfe555a40397e2ecf5"
+    },
+    {
+      "path": "external/fmu-n14-scheduler/src/model.c",
+      "sha256": "ee4112b0f6fe9e4107de0eb8dfa73f567b1e1a1beed360c30baadad0207f0500"
+    },
+    {
+      "path": "external/fmu-n14-scheduler/poie-n14-scheduler.fmu",
+      "sha256": "8a7da66c422b493776ab88cbaf125d12b2ca400507f5850e17effd7903c3b928"
+    },
+    {
+      "path": "audit/phase14/generated-cases/cross-model.json",
+      "sha256": "493b9c4e1998ded1939086b84e18ab908fb34d58a9f5394fe03dd48a4176ca43"
+    },
+    {
+      "path": "audit/phase14/generated-cases/cross-model-20261122.json",
+      "sha256": "5334d8f70d065a4cfd5c4b4115cabea539dd62655d13ce0476f169f40254fbac"
+    },
+    {
+      "path": "audit/phase14/trajectory-comparisons/composition.json",
+      "sha256": "608a8237338632d60259d2dfc366c382927124702b41fb37c8fab824af4aca67"
+    }
+  ]
+}
