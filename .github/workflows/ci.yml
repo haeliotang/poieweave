@@ -2071,6 +2071,41 @@ jobs:
           name: s5v-n14-linux-evidence
           path: ${{ runner.temp }}/s5v-n14/evidence
 
+  s5v-n14r-linux:
+    name: S5-V N14R canonical group and v7 Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install FMI importer
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Build and run N14R evidence
+        run: |
+          external/fmu-n14-scheduler/build.sh
+          cargo build --locked -q -p poie-viability --bin poie-s5v-n14-canonical-adapter
+          python3 audit/phase14r/generate_group_cases.py
+          python3 audit/phase14r/generate_cross_model.py
+          python3 audit/phase14r/negative_group.py
+          python3 audit/phase14r/check.py
+          python3 scripts/verify-canonical-claim-certificates-v6-historical.py
+          python3 scripts/build-canonical-claim-certificates-v7.py --check
+          python3 scripts/verify-canonical-claim-certificates-v7.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v7.py
+      - name: Save N14R evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n14r/evidence"
+          cp -R audit/phase14r "$RUNNER_TEMP/s5v-n14r/evidence/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n14r-linux-evidence
+          path: ${{ runner.temp }}/s5v-n14r/evidence
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest

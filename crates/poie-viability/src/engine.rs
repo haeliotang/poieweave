@@ -14,8 +14,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use poie_ontology::model::{Asset, AssetStatus, Model, Service};
 
 use crate::clock::EventClock;
-use crate::closure::{analyze, ClosureOutcome, Plan};
-use crate::scheduler::schedule_plans_with_alternatives;
+use crate::closure::{analyze, ClosureOutcome, Plan, Step, StepAction};
+use crate::scheduler::{schedule_plans, schedule_plans_with_alternatives};
 use crate::survival::{
     apply_energy_interval_ledger, apply_plans, energy, initial_inventory, model_with_inventory, BatteryLimits,
     EnergyFlow, FailureEvent, Resupply,
@@ -91,7 +91,10 @@ pub struct RepairObservation {
 #[derive(Clone, Debug, PartialEq)]
 pub struct TaskResourceObservation {
     pub plan_index: usize,
+    pub task_id: Option<String>,
     pub resources: Vec<String>,
+    pub start_s: f64,
+    pub end_s: f64,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -465,6 +468,23 @@ pub struct EngineOptions<'a> {
     pub load_kw: f64,
 }
 
+/// One explicit task in a canonical repair group.
+#[derive(Clone, Debug, PartialEq)]
+pub struct ExplicitRepairTask {
+    pub task_id: String,
+    pub process: String,
+    pub duration_s: f64,
+}
+
+/// Versioned explicit repair-group input. Tasks are scheduled by the canonical
+/// scheduler and all complete before the single restoration target is applied.
+#[derive(Clone, Debug, PartialEq)]
+pub struct ExplicitRepairGroup {
+    pub group_id: String,
+    pub restoration_target: String,
+    pub tasks: Vec<ExplicitRepairTask>,
+}
+
 #[derive(Clone, Debug)]
 enum TimelineItem {
     Failure(FailureEvent),
@@ -625,8 +645,13 @@ fn start_repair(
                     }
                 }
             }
-            None => task_resources
-                .push(TaskResourceObservation { plan_index: step.plan_index, resources: step.resources.clone() }),
+            None => task_resources.push(TaskResourceObservation {
+                plan_index: step.plan_index,
+                task_id: None,
+                resources: step.resources.clone(),
+                start_s: step.start_s,
+                end_s: step.end_s,
+            }),
         }
     }
     let label = pending.iter().map(|failure| failure.asset.as_str()).collect::<Vec<_>>().join(",");
@@ -643,12 +668,147 @@ fn start_repair(
     })
 }
 
+fn start_explicit_repair(
+    current: &Model,
+    group: &ExplicitRepairGroup,
+    inventory: &BTreeMap<String, f64>,
+    now_s: f64,
+    remaining_s: f64,
+    resources: &[String],
+    alternative_pool: &[String],
+) -> Result<RunningRepair, StartError> {
+    if group.tasks.is_empty() {
+        return Err(StartError::Blocked("explicit repair group has no tasks".into()));
+    }
+    let planning_base = inventory.clone();
+    let mut plans = Vec::new();
+    let mut execution_dependencies = BTreeSet::new();
+    let mut restoration_targets = BTreeSet::new();
+    for task in &group.tasks {
+        let process = current
+            .processes
+            .iter()
+            .find(|process| process.id == task.process)
+            .ok_or_else(|| StartError::Blocked(format!("unknown explicit task process {}", task.process)))?;
+        for asset in &process.occupies {
+            if !alternative_pool.contains(asset) {
+                execution_dependencies.insert(asset.clone());
+            }
+        }
+        restoration_targets.insert(group.restoration_target.clone());
+        plans.push(Plan {
+            steps: vec![Step {
+                process: process.id.clone(),
+                action: StepAction::Restore(group.restoration_target.clone()),
+                duration_s: task.duration_s,
+            }],
+            total_duration_s: task.duration_s,
+            remaining_inventory: planning_base.clone(),
+        });
+    }
+    let mut pool = resources.to_vec();
+    for asset in &execution_dependencies {
+        if !pool.contains(asset) && !alternative_pool.contains(asset) {
+            pool.push(asset.clone());
+        }
+    }
+    let schedule = if alternative_pool.is_empty() {
+        match schedule_plans(current, &plans, &pool) {
+            Ok(schedule) => schedule,
+            Err(error) => return Err(StartError::Blocked(format!("schedule failed: {error:?}"))),
+        }
+    } else {
+        match schedule_plans_with_alternatives(
+            current,
+            &plans,
+            &pool,
+            alternative_pool,
+            std::slice::from_ref(&alternative_pool.to_vec()),
+        ) {
+            Ok(schedule) => schedule,
+            Err(error) => return Err(StartError::Blocked(format!("schedule failed: {error:?}"))),
+        }
+    };
+    if schedule.makespan_s > remaining_s + 1e-9 {
+        return Err(StartError::Incomplete);
+    }
+    for step in &schedule.steps {
+        execution_dependencies.extend(step.resources.iter().cloned());
+    }
+    let selected = schedule.steps.iter().flat_map(|step| step.resources.clone()).collect::<Vec<_>>();
+    let witness = derive_witness(current, &plans, &selected);
+    for entry in &witness {
+        execution_dependencies.insert(entry.provider.clone());
+        execution_dependencies.extend(entry.dependencies.iter().cloned());
+    }
+    let mut task_resources: Vec<TaskResourceObservation> = Vec::new();
+    for step in &schedule.steps {
+        match task_resources.iter_mut().find(|entry| entry.plan_index == step.plan_index) {
+            Some(entry) => {
+                for resource in &step.resources {
+                    if !entry.resources.contains(resource) {
+                        entry.resources.push(resource.clone());
+                    }
+                }
+            }
+            None => task_resources.push(TaskResourceObservation {
+                plan_index: step.plan_index,
+                task_id: group.tasks.get(step.plan_index).map(|task| task.task_id.clone()),
+                resources: step.resources.clone(),
+                start_s: step.start_s,
+                end_s: step.end_s,
+            }),
+        }
+    }
+    Ok(RunningRepair {
+        plans,
+        planning_base,
+        execution_dependencies,
+        restoration_targets,
+        resources: schedule.steps.iter().flat_map(|step| step.resources.clone()).collect(),
+        witness,
+        task_resources,
+        end_s: now_s + schedule.makespan_s,
+        label: group.group_id.clone(),
+    })
+}
+
 fn plan_summary(plans: &[Plan]) -> Vec<String> {
     plans.iter().map(|plan| plan.steps.iter().map(|step| step.process.clone()).collect::<Vec<_>>().join("+")).collect()
 }
 
 /// Runs the canonical kernel.
 pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOutcome, EngineError> {
+    run_engine_inner(model, options, None)
+}
+
+/// Runs the canonical kernel with one explicit multi-task repair group while
+/// reusing the same event loop, ledger, failure handling and termination rules.
+pub fn run_engine_with_repair_group(
+    model: &Model,
+    options: &EngineOptions<'_>,
+    group: &ExplicitRepairGroup,
+) -> Result<EngineOutcome, EngineError> {
+    run_engine_inner(model, options, Some(group))
+}
+
+pub fn run_engine_with_repair_group_event_observed(
+    model: &Model,
+    options: &EngineOptions<'_>,
+    group: &ExplicitRepairGroup,
+) -> Result<EventObservedOutcome, EngineError> {
+    let guard = EventGuard::install()?;
+    let outcome = run_engine_inner(model, options, Some(group));
+    let events = EVENT_COLLECTOR.with(|cell| cell.borrow_mut().take()).unwrap_or_default();
+    drop(guard);
+    outcome.map(|outcome| EventObservedOutcome { outcome, events })
+}
+
+fn run_engine_inner(
+    model: &Model,
+    options: &EngineOptions<'_>,
+    explicit_group: Option<&ExplicitRepairGroup>,
+) -> Result<EngineOutcome, EngineError> {
     let mut services: Vec<&Service> = Vec::new();
     for service_id in &options.services {
         let Some(service) = model.services.get(*service_id) else {
@@ -701,8 +861,18 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
     let mut pending: Vec<FailureEvent> =
         initial_assets.into_iter().map(|asset| FailureEvent { at_s: 0.0, asset }).collect();
     let mut running: Option<RunningRepair> = None;
-    if !pending.is_empty() {
-        match start_repair(
+    let initial_attempt = if let Some(group) = explicit_group {
+        start_explicit_repair(
+            &current,
+            group,
+            &inventory,
+            clock.now_s(),
+            clock.remaining_s(),
+            &options.resources,
+            &options.alternative_pool,
+        )
+    } else if !pending.is_empty() {
+        start_repair(
             &current,
             &pending,
             &inventory,
@@ -710,7 +880,12 @@ pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOu
             clock.remaining_s(),
             &options.resources,
             &options.alternative_pool,
-        ) {
+        )
+    } else {
+        Err(StartError::Incomplete)
+    };
+    if explicit_group.is_some() || !pending.is_empty() {
+        match initial_attempt {
             Ok(repair) => {
                 running = Some(repair);
                 pending.clear();

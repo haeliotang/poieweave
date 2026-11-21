@@ -1,0 +1,49 @@
+{
+  "schema": "poie.s5v-n14r-negative/1",
+  "results": [
+    {
+      "control": "task-missing",
+      "expected": "TASK_COUNT",
+      "detected": true,
+      "problems": [
+        "TASK_COUNT",
+        "GROUP_MAKESPAN"
+      ]
+    },
+    {
+      "control": "task-start-shift",
+      "expected": "TASK_START_0",
+      "detected": true,
+      "problems": [
+        "TASK_START_0"
+      ]
+    },
+    {
+      "control": "task-resource",
+      "expected": "TASK_RESOURCE_0",
+      "detected": true,
+      "problems": [
+        "TASK_RESOURCE_0"
+      ]
+    },
+    {
+      "control": "early-restoration",
+      "expected": "RESTORATION_TIME",
+      "detected": true,
+      "problems": [
+        "RESTORATION_TIME"
+      ]
+    },
+    {
+      "control": "shared-wrong-time",
+      "expected": "EVENT_TIME",
+      "detected": true,
+      "problems": [
+        "EVENT_TIME",
+        "EVENT_TIME",
+        "EVENT_TIME",
+        "EVENT_TIME"
+      ]
+    }
+  ]
+}
