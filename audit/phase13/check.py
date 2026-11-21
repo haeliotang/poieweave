@@ -17,5 +17,9 @@ for c in n12:
   if c["id"] not in (P.parent/"phase12"/"REPORT.zh-CN.md").read_text(): problems.append(f"N12 claim {c['id']}")
 stress=json.loads((P.parent/"phase12"/"comparisons"/"stress.json").read_text())
 if stress.get("multi_instance","").startswith("BLOCKED"): problems.append("N12 multi-instance blocked")
+meta=json.loads((P/"generated-cases/metamorphic.json").read_text())
+if meta.get("problems"): problems.append("metamorphic problems")
+nc=json.loads((P/"negative-controls/multifailure-results.json").read_text())["results"]
+if not all(x["detected"] for x in nc): problems.append("multifailure controls")
 if problems: print("N13 FAIL: "+", ".join(problems),file=sys.stderr); raise SystemExit(1)
 print("ok N13 multi-failure execution and validator generalization")

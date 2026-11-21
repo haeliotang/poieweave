@@ -1,0 +1,90 @@
+{
+  "schema": "poie.s5v-n13-multifailure-controls/1",
+  "results": [
+    {
+      "control": "second-failure-dropped",
+      "expected": "EVENT_MISSING",
+      "detected": true,
+      "findings": [
+        {
+          "class": "EVENT_MISSING"
+        }
+      ]
+    },
+    {
+      "control": "duplicate-failure",
+      "expected": "EVENT_EXTRA",
+      "detected": true,
+      "findings": [
+        {
+          "class": "EVENT_EXTRA"
+        },
+        {
+          "class": "STATE_HISTORY_LOSS"
+        }
+      ]
+    },
+    {
+      "control": "wrong-target",
+      "expected": "EVENT_TARGET_IDENTITY_MISMATCH",
+      "detected": true,
+      "findings": [
+        {
+          "class": "EVENT_TARGET_IDENTITY_MISMATCH"
+        },
+        {
+          "class": "EVENT_TARGET_IDENTITY_MISMATCH",
+          "model": "external"
+        }
+      ]
+    },
+    {
+      "control": "state-history-loss",
+      "expected": "STATE_HISTORY_LOSS",
+      "detected": true,
+      "findings": [
+        {
+          "class": "STATE_HISTORY_LOSS"
+        }
+      ]
+    },
+    {
+      "control": "post-termination-event",
+      "expected": "EVENT_EXTRA",
+      "detected": true,
+      "findings": [
+        {
+          "class": "EVENT_EXTRA"
+        },
+        {
+          "class": "STATE_HISTORY_LOSS"
+        }
+      ]
+    },
+    {
+      "control": "premature-restoration",
+      "expected": "RESTORATION_PRECONDITION_VIOLATION",
+      "detected": true,
+      "findings": [
+        {
+          "class": "RESTORATION_PRECONDITION_VIOLATION"
+        }
+      ]
+    },
+    {
+      "control": "both-models-invalid-target",
+      "expected": "EVENT_TARGET_IDENTITY_MISMATCH",
+      "detected": true,
+      "findings": [
+        {
+          "class": "EVENT_TARGET_IDENTITY_MISMATCH",
+          "model": "canonical"
+        },
+        {
+          "class": "EVENT_TARGET_IDENTITY_MISMATCH",
+          "model": "external"
+        }
+      ]
+    }
+  ]
+}

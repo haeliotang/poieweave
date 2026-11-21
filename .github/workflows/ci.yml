@@ -2005,17 +2005,26 @@ jobs:
       - name: Build and run N13 multi-failure evidence
         run: |
           external/fmu-n13-scheduler/build.sh
+          external/fmu-n13-scheduler/build_overflow.sh
           cargo run --locked -q -p poie-viability --bin poie-s5v-n13-multifailure
           for c in N13-00 N13-01 N13-02 N13-03 N13-04 N13-05 N13-06 N13-07 N13-08 N13-09; do
             external/fmu-n13-scheduler/build/harness external/fmu-n13-scheduler/poie-n13-scheduler.fmu 900 "audit/phase13/contracts/$c.contract" "audit/phase13/external/N13-$c.csv"
             python3 audit/phase13/fmpy_import.py --contract "audit/phase13/contracts/$c.contract" --step 900 --output "audit/phase13/external/N13-$c-fmpy.csv" --log "audit/phase13/external/N13-$c.log"
           done
+          external/fmu-n13-scheduler/build/harness external/fmu-n13-scheduler/poie-n13-overflow.fmu 900 "audit/phase13/contracts/N13-02.contract" "audit/phase13/overflow-tests/N13-02-overflow.csv"
+          for s in 1 900 1000; do
+            external/fmu-n13-scheduler/build/harness external/fmu-n13-scheduler/poie-n13-scheduler.fmu "$s" "audit/phase13/contracts/N13-02.contract" "audit/phase13/step-invariance/N13-02-step$s.csv"
+          done
+          python3 audit/phase13/generate_cases.py
           python3 audit/phase13/validate_multifailure.py
+          python3 audit/phase13/negative_multifailure.py
+          python3 audit/phase13/validate_metamorphic.py
           python3 audit/phase13/check.py
       - name: Save N13 evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n13/evidence"
           cp -R audit/phase13 "$RUNNER_TEMP/s5v-n13/evidence/"
+          python3 audit/phase13/execution_manifest.py --output "$RUNNER_TEMP/s5v-n13/evidence/execution-manifest.json"
       - uses: actions/upload-artifact@v4
         with:
           name: s5v-n13-linux-evidence

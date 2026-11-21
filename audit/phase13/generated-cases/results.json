@@ -1,0 +1,198 @@
+{
+  "schema": "poie.s5v-n13-generated/1",
+  "seed": 20261121,
+  "cases": [
+    {
+      "case": "N13-G00",
+      "failure_sequence": [
+        [
+          7199,
+          6
+        ],
+        [
+          3601,
+          3
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G00.csv",
+      "applied": 1,
+      "problems": []
+    },
+    {
+      "case": "N13-G01",
+      "failure_sequence": [
+        [
+          7199,
+          5
+        ],
+        [
+          3601,
+          5
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G01.csv",
+      "applied": 2,
+      "problems": []
+    },
+    {
+      "case": "N13-G02",
+      "failure_sequence": [
+        [
+          3599,
+          6
+        ],
+        [
+          3600,
+          3
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G02.csv",
+      "applied": 2,
+      "problems": []
+    },
+    {
+      "case": "N13-G03",
+      "failure_sequence": [
+        [
+          3601,
+          6
+        ],
+        [
+          3600,
+          1
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G03.csv",
+      "applied": 2,
+      "problems": []
+    },
+    {
+      "case": "N13-G04",
+      "failure_sequence": [
+        [
+          3601,
+          0
+        ],
+        [
+          3601,
+          3
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G04.csv",
+      "applied": 2,
+      "problems": []
+    },
+    {
+      "case": "N13-G05",
+      "failure_sequence": [
+        [
+          7199,
+          5
+        ],
+        [
+          3600,
+          0
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G05.csv",
+      "applied": 1,
+      "problems": []
+    },
+    {
+      "case": "N13-G06",
+      "failure_sequence": [
+        [
+          3599,
+          0
+        ],
+        [
+          3599,
+          3
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G06.csv",
+      "applied": 2,
+      "problems": []
+    },
+    {
+      "case": "N13-G07",
+      "failure_sequence": [
+        [
+          3600,
+          5
+        ],
+        [
+          3600,
+          6
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G07.csv",
+      "applied": 2,
+      "problems": []
+    },
+    {
+      "case": "N13-G08",
+      "failure_sequence": [
+        [
+          3601,
+          5
+        ],
+        [
+          3601,
+          1
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G08.csv",
+      "applied": 2,
+      "problems": []
+    },
+    {
+      "case": "N13-G09",
+      "failure_sequence": [
+        [
+          7200,
+          0
+        ],
+        [
+          3599,
+          6
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G09.csv",
+      "applied": 2,
+      "problems": []
+    },
+    {
+      "case": "N13-G10",
+      "failure_sequence": [
+        [
+          3600,
+          1
+        ],
+        [
+          3600,
+          6
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G10.csv",
+      "applied": 2,
+      "problems": []
+    },
+    {
+      "case": "N13-G11",
+      "failure_sequence": [
+        [
+          3601,
+          1
+        ],
+        [
+          7200,
+          1
+        ]
+      ],
+      "journal": "generated-cases/journals/N13-G11.csv",
+      "applied": 2,
+      "problems": []
+    }
+  ]
+}

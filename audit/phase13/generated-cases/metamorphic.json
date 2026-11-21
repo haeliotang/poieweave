@@ -1,0 +1,15 @@
+{
+  "schema": "poie.s5v-n13-metamorphic/1",
+  "order_permutation": "PASS",
+  "irrelevant_invariance": "PASS",
+  "dependency_monotonicity": "PASS",
+  "step_sizes": [
+    1,
+    900,
+    1000
+  ],
+  "overflow": "PASS",
+  "generated_seed": 20261121,
+  "generated_cases": 12,
+  "problems": []
+}

@@ -27,9 +27,19 @@ def compare(case):
   # Compare only failures canonical actually executed; extra external failures are invalid.
   if len(xfails)>len(cfails): findings.append({"class":"EVENT_EXTRA"})
   else: findings.append({"class":"EVENT_MISSING"})
+ expected=[]
+ for which in range(int(spec.get("failureCount",0))):
+  tname,_=target(which,spec); ftime=float(spec["failureTime_s" if which==0 else "f2Time_s"]); expected.append((ftime,tname))
+ expected.sort(key=lambda x:x[0])
  for c,x in zip(cfails,xfails):
   if abs(c["at_s"]-x["at"])>1e-9: findings.append({"class":"EVENT_TIME_DISPLACEMENT"})
   if c["target_asset"]!=x["target"]: findings.append({"class":"EVENT_TARGET_IDENTITY_MISMATCH"})
+ for index,(c,x) in enumerate(zip(cfails,xfails)):
+  if index < len(expected):
+   if c["target_asset"]!=expected[index][1]: findings.append({"class":"EVENT_TARGET_IDENTITY_MISMATCH","model":"canonical"})
+   if x["target"]!=expected[index][1]: findings.append({"class":"EVENT_TARGET_IDENTITY_MISMATCH","model":"external"})
+ for a,b in zip(xfails,xfails[1:]):
+  if b["at"]+1e-9<a["at"]: findings.append({"class":"EVENT_ORDER_MISMATCH"})
   if c["asset_statuses_before"].get(c["target_asset"])=="Failed": findings.append({"class":"STATE_HISTORY_LOSS"})
   # cumulative failed mask must include this and all prior failures
   if x["failed_before"] > x["failed_after"]: findings.append({"class":"STATE_HISTORY_LOSS"})
@@ -42,6 +52,8 @@ def compare(case):
  if c_int!=x_int: findings.append({"class":"EXECUTION_DEPENDENCY_MISMATCH"})
  c_comp=any(e["event_kind"]=="RepairCompleted" for e in ce); x_comp=any(e["kind"]=="RepairCompleted" for e in ev)
  if c_comp!=x_comp: findings.append({"class":"RESTORATION_COMMIT_MISMATCH"})
+ for r in [e for e in ev if e["kind"]=="RestorationCommitted"]:
+  if r["before"][4]!=1: findings.append({"class":"RESTORATION_PRECONDITION_VIOLATION"})
  classification="SAME_CAUSAL_TRANSITION"
  if c_int and any(e["kind"]=="AssetFailure" and e["target"] in ("robot-m1","robot-m2") for e in ev): pass
  status="ACCEPTED" if not findings else "FAIL"

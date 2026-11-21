@@ -61,6 +61,8 @@ python3 audit/phase12/check.py
 python3 audit/phase12/verify_evidence.py --frozen --claim
 python3 audit/phase12/negative_evidence.py
 python3 audit/phase13/validate_multifailure.py
+python3 audit/phase13/negative_multifailure.py
+python3 audit/phase13/validate_metamorphic.py
 python3 audit/phase13/check.py
 python3 audit/phase10/check.py --frozen
 python3 audit/phase7/negative_controls.py
