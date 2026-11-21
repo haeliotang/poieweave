@@ -54,7 +54,7 @@
     {
       "bytes": 3393,
       "path": "audit/phase16/N16_EXTERNAL_VALIDATION_CERTIFICATE.json",
-      "sha256": "64c1c81e8e1646849386ce7888820a9482c242dd31631757e32c6f13d42837a9"
+      "sha256": "72d56e34f3426aaf1b50c2501ce556d07f96109045d67f6e03fab3b6fe9dd21e"
     },
     {
       "bytes": 684,
@@ -1147,14 +1147,14 @@
       "sha256": "52fd3449ef956bfc437c6be2ed5ffd4574b9cc15352ce7a6a366cb375f27d815"
     },
     {
-      "bytes": 1129,
+      "bytes": 1010,
       "path": "audit/phase16/negative-controls/results.json",
-      "sha256": "ed3d29e1f803e1a02a7b5cf4c59e601e3c662fb444467305a67bad0d13de704e"
+      "sha256": "c0ccf458059ce42e33589fa0340d3cb61050b8c923549cb442df1da87db9b038"
     },
     {
-      "bytes": 2444,
+      "bytes": 2435,
       "path": "audit/phase16/negative_closure.py",
-      "sha256": "0fcf7d90490f4367186b3362a99aaaf3e3ee35359df9e4ad700f2867afc81b77"
+      "sha256": "48a3ed7b8e665676ff78d006e5667a4181efdeceacbe0c84c2f23e82b6735a5b"
     },
     {
       "bytes": 4343,

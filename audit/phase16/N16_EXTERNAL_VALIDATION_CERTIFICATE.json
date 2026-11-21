@@ -6,7 +6,7 @@
     "audit/phase16/generated-cases/results.json": "d1687cb3ba19b2c540bf0ab4f72fd68078205a35e1fb6ec3a2e62acf73c5bb89",
     "audit/phase16/importer-comparisons/results.json": "f35a63343fae76d20473350df71333a2a28f8f0d9140205eecf56ed5a44a6e11",
     "audit/phase16/minimized-counterexamples/reducer/failure_signature.json": "d5a07a89277866871aa496c437364091c143fa86e27309fd5b7dc00c4eb32ab5",
-    "audit/phase16/negative-controls/results.json": "ed3d29e1f803e1a02a7b5cf4c59e601e3c662fb444467305a67bad0d13de704e"
+    "audit/phase16/negative-controls/results.json": "c0ccf458059ce42e33589fa0340d3cb61050b8c923549cb442df1da87db9b038"
   },
   "inputs": {
     "canonical_adapter": {
