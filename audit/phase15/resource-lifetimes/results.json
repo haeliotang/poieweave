@@ -106,6 +106,42 @@
       "status": "ACCEPTED"
     },
     {
+      "case": "N15-D2-SERIAL-NOFAIL",
+      "canonical_completed": {
+        "A": 7200.0,
+        "B": 18000.0
+      },
+      "canonical_released": {
+        "robot-m1": 18000.0,
+        "bat-1": 18000.0,
+        "bus-1": 18000.0,
+        "charger-1": 18000.0
+      },
+      "external_completed": [
+        [
+          "A",
+          7200.0
+        ],
+        [
+          "B",
+          18000.0
+        ]
+      ],
+      "external_released": [
+        [
+          "robot-m1",
+          18000.0
+        ]
+      ],
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "makespan": 18000.0,
+      "findings": [],
+      "first_release_divergence": null,
+      "first_sensitivity_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
       "case": "N15-D3-TOOL-7201",
       "canonical_completed": {
         "A": 7200.0,
@@ -225,9 +261,10 @@
       "external_interrupted": true,
       "makespan": 18000.0,
       "findings": [
+        "EXTERNAL_SHARED_RESOURCE_RELEASE_VIOLATION_robot-m1",
         "EXTERNAL_RELEASE_MISMATCH_robot-m1"
       ],
-      "first_release_divergence": "EXTERNAL_RELEASE_MISMATCH_robot-m1",
+      "first_release_divergence": "EXTERNAL_SHARED_RESOURCE_RELEASE_VIOLATION_robot-m1",
       "first_sensitivity_divergence": null,
       "status": "FAIL"
     }

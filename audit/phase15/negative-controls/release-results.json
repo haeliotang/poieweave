@@ -7,7 +7,8 @@
       "expected": "RESOURCE_RELEASE_MISSING_robot-m1",
       "detected": true,
       "findings": [
-        "RESOURCE_RELEASE_MISSING_robot-m1"
+        "RESOURCE_RELEASE_MISSING_robot-m1",
+        "EXTERNAL_RELEASE_MISMATCH_robot-m1"
       ]
     },
     {
@@ -46,6 +47,17 @@
       "detected": true,
       "findings": [
         "PREMATURE_GROUP_COMMIT"
+      ]
+    },
+    {
+      "control": "SHARED_RESOURCE_RELEASE_VIOLATION_robot-m1",
+      "case": "N15-D2-SERIAL-NOFAIL",
+      "expected": "SHARED_RESOURCE_RELEASE_VIOLATION_robot-m1",
+      "detected": true,
+      "findings": [
+        "DUPLICATE_RESOURCE_RELEASE_robot-m1",
+        "SHARED_RESOURCE_RELEASE_VIOLATION_robot-m1",
+        "EXTERNAL_RELEASE_MISMATCH_robot-m1"
       ]
     }
   ]

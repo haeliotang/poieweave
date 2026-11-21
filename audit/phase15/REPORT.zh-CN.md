@@ -34,6 +34,6 @@ opt-in `RepairLifecycleMode::{GroupHold,TaskRelease}`。真实任务结束边界
 
 ```text
 upstream release external = NOT_COMPARABLE (excluded)
-N15-C dual importer not yet run on N15 FMU
-v8/v9 migration in progress
+N15-C dual importer executed: 7/7 MATCH (completion addendum).
+v9 migration completed: 41 successors.
 ```

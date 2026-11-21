@@ -2181,6 +2181,8 @@ jobs:
           python-version: "3.12"
       - uses: dtolnay/rust-toolchain@1.94.0
       - uses: Swatinem/rust-cache@v2
+      - name: Install fmpy
+        run: python3 -m pip install -q fmpy==0.3.32
       - name: Build N15 FMUs and canonical adapter
         run: |
           external/fmu-n15-scheduler/build.sh
@@ -2188,7 +2190,9 @@ jobs:
           cargo build --locked -q -p poie-viability --bin poie-s5v-n14-canonical-adapter
       - name: Validate task-level release evidence
         run: |
+          python3 audit/phase15/run_cases.py
           python3 audit/phase15/validate_release.py
+          python3 audit/phase15/compare_importers.py
           python3 audit/phase15/negative_release.py
           python3 audit/phase15/validate_release.py
           python3 audit/phase15/reduce_release.py

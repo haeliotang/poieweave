@@ -1,0 +1,327 @@
+{
+  "schema": "poie.s5v-n16-closure/1",
+  "cases": [
+    {
+      "case": "N16-00",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "canonical_events": 9,
+      "external_events": 9,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-01",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "canonical_events": 2,
+      "external_events": 2,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-02",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "canonical_events": 10,
+      "external_events": 10,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-03",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "canonical_events": 2,
+      "external_events": 2,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-04",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "canonical_events": 10,
+      "external_events": 10,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-05",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "canonical_events": 7,
+      "external_events": 7,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-06",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "charger-1"
+      ],
+      "canonical_events": 4,
+      "external_events": 4,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-08",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "charger-1"
+      ],
+      "canonical_events": 4,
+      "external_events": 4,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-10",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "canonical_events": 10,
+      "external_events": 10,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-11",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "canonical_events": 10,
+      "external_events": 10,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-12",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "canonical_events": 8,
+      "external_events": 8,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-13",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "canonical_events": 10,
+      "external_events": 10,
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-14",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "canonical_events": 2,
+      "external_events": 2,
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "N16-MUT-SHARED",
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bat-1",
+        "bus-1",
+        "charger-1"
+      ],
+      "canonical_events": 6,
+      "external_events": 12,
+      "canonical_interrupted": true,
+      "external_interrupted": false,
+      "findings": [
+        "EVENT_STREAM_DIVERGENCE:7200.0:ResourceReleased:DependencyDeactivated",
+        "CLOSURE_AT_7200.0",
+        "CLOSURE_AT_7201.0",
+        "INTERRUPTION_DIVERGENCE",
+        "GROUP_COMMIT_DIVERGENCE"
+      ],
+      "first_closure_divergence": "CLOSURE_AT_7200.0",
+      "first_event_divergence": "EVENT_STREAM_DIVERGENCE:7200.0:ResourceReleased:DependencyDeactivated",
+      "status": "FAIL"
+    }
+  ]
+}

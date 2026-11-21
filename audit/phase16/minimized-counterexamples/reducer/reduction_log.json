@@ -1,0 +1,31 @@
+{
+  "schema": "poie.s5v-n16-reduction/1",
+  "accepted": [
+    "drop failure 3",
+    "drop failure 1",
+    "drop failure 0"
+  ],
+  "steps": [
+    {
+      "step": "original",
+      "failures": 4,
+      "signature": "SHARED_DEPENDENCY_LOSS"
+    },
+    {
+      "step": "drop-failure-3",
+      "accepted": true
+    },
+    {
+      "step": "drop-failure-2",
+      "accepted": false
+    },
+    {
+      "step": "drop-failure-1",
+      "accepted": true
+    },
+    {
+      "step": "drop-failure-0",
+      "accepted": true
+    }
+  ]
+}
