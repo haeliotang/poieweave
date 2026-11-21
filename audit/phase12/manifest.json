@@ -22,9 +22,9 @@
       "sha256": "9fd35b3345f26551516786a8f17267e6b3330bec5a257b5a9838a1cd81610497"
     },
     {
-      "bytes": 1877,
+      "bytes": 1888,
       "path": "audit/phase12/REPORT.zh-CN.md",
-      "sha256": "9de9a6888d420fbb2be467decdc8975496606344cb52fb1f269e301f287f7fed"
+      "sha256": "2cac5235d704b8c5624e1420e1927a5561aec589435194d43779e6a730ae5519"
     },
     {
       "bytes": 3692,
@@ -182,9 +182,9 @@
       "sha256": "0bc2e04cce26b7eb5dc7f65b1e8b315032fbcf10be6b717f26856f68ac041239"
     },
     {
-      "bytes": 1752,
+      "bytes": 1728,
       "path": "audit/phase12/comparisons/stress.json",
-      "sha256": "1c0f43798971182fa00194df6e1c95d1653b4f0d53810d59651e1623c8aabd03"
+      "sha256": "177f2f713bd3a739bbc3521fbdaaecdad3925af62c5369c4c5545d71f57ff0ae"
     },
     {
       "bytes": 266,
@@ -632,9 +632,9 @@
       "sha256": "cc4fe10414233b17a08cdcc456b6b8520c86ae1cbadd79bd299f0ccee02ef335"
     },
     {
-      "bytes": 2172,
+      "bytes": 2193,
       "path": "audit/phase12/negative-controls/projection-results.json",
-      "sha256": "7e11a4a7283a3e44763a0e87e085e1d08ad5f0166f50eb36a62644760d8225cd"
+      "sha256": "59232cd45c2e9f554fcd98ee66040171f7437f9fa7a9136d7ed604e3a92a5363"
     },
     {
       "bytes": 1324,
@@ -697,14 +697,14 @@
       "sha256": "573b56bd85278e17302c8490cab7fce1af86e4d30ec911f5aa6360a5d226eba3"
     },
     {
-      "bytes": 6925,
+      "bytes": 8619,
       "path": "audit/phase12/validate_projection.py",
-      "sha256": "b08389b2662226ef97d924e323a059c23fcb5bebd3c133a8d533406ccdddcbf9"
+      "sha256": "dd01a268c2dd88bbe7934829a4f6d21e04577525b4c1141c9647a8d0a852f34a"
     },
     {
-      "bytes": 3011,
+      "bytes": 3226,
       "path": "audit/phase12/validate_stress.py",
-      "sha256": "323fbf53d635813a604eaddec5e7c7598db071cd9de63befed6c8e3d6cf050d4"
+      "sha256": "51c769f9f094f143a7cf2209316eae3451c8a011fbe2efab2693688b4acf2465"
     },
     {
       "bytes": 1662,

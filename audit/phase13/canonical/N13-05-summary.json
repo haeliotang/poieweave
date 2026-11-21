@@ -1,0 +1,10 @@
+{
+ "case":"N13-05",
+ "resources":["robot-m1"],
+ "task_resources":["0:robot-m1"],
+ "witness":["sleeve-replacement:robot-m1:bat-1|bus-1|charger-1"],
+ "completion_s":null,
+ "interruption_s":5400.000,
+ "restoration_committed":false,
+ "termination":"blocked:repair interrupted at 5400s: robot-m1 failed"
+}

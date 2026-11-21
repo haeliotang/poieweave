@@ -1968,7 +1968,7 @@ jobs:
           for s in 1 900 1000; do
             external/fmu-n12-scheduler/build/harness external/fmu-n12-scheduler/poie-n12-scheduler.fmu "$s" "audit/phase12/contracts/N10-U01.contract" "audit/phase12/step-invariance/N12-U01-step$s.csv"
           done
-          python3 audit/phase12/validate_stress.py
+          python3 audit/phase12/validate_stress.py --require-multi-instance
       - name: Validate native identity and historical false pass
         run: |
           python3 audit/phase12/reproduce_identity_false_pass.py
@@ -1987,6 +1987,39 @@ jobs:
         with:
           name: s5v-n12-linux-evidence
           path: ${{ runner.temp }}/s5v-n12/evidence
+
+  s5v-n13-linux:
+    name: S5-V N13 multi-failure causal execution Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install independent FMI importer
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Build and run N13 multi-failure evidence
+        run: |
+          external/fmu-n13-scheduler/build.sh
+          cargo run --locked -q -p poie-viability --bin poie-s5v-n13-multifailure
+          for c in N13-00 N13-01 N13-02 N13-03 N13-04 N13-05 N13-06 N13-07 N13-08 N13-09; do
+            external/fmu-n13-scheduler/build/harness external/fmu-n13-scheduler/poie-n13-scheduler.fmu 900 "audit/phase13/contracts/$c.contract" "audit/phase13/external/N13-$c.csv"
+            python3 audit/phase13/fmpy_import.py --contract "audit/phase13/contracts/$c.contract" --step 900 --output "audit/phase13/external/N13-$c-fmpy.csv" --log "audit/phase13/external/N13-$c.log"
+          done
+          python3 audit/phase13/validate_multifailure.py
+          python3 audit/phase13/check.py
+      - name: Save N13 evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n13/evidence"
+          cp -R audit/phase13 "$RUNNER_TEMP/s5v-n13/evidence/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n13-linux-evidence
+          path: ${{ runner.temp }}/s5v-n13/evidence
 
   deny:
     name: cargo-deny (${{ matrix.checks }})

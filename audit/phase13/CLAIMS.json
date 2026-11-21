@@ -1,0 +1,11 @@
+{
+  "schema":"poie.s5v-n13-claim-status/1",
+  "claims":[
+    {"id":"N13-0","status":"VERIFIED","scope":"validator generalization and stress fail-closed"},
+    {"id":"N13-A","status":"ESTABLISHED","scope":"native queue, 10 cases, up to 2 failures"},
+    {"id":"N13-B","status":"ESTABLISHED","scope":"10 multi-failure cases; target/time/history/interruption/completion"},
+    {"id":"N13-C","status":"NOT_ESTABLISHED","scope":"metamorphic/generated"},
+    {"id":"N13-D","status":"NOT_ESTABLISHED","scope":"adversarial controls"},
+    {"id":"N13-E","status":"NOT_ESTABLISHED","scope":"evidence/final CI"}
+  ]
+}

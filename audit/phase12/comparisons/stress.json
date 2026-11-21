@@ -97,6 +97,6 @@
     900,
     1000
   ],
-  "multi_instance": "NOT_RUN: No module named 'fmpy'",
+  "multi_instance": "CHECKED",
   "problems": []
 }
