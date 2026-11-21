@@ -2032,6 +2032,39 @@ jobs:
           name: s5v-n13-linux-evidence
           path: ${{ runner.temp }}/s5v-n13/evidence
 
+  s5v-n14-linux:
+    name: S5-V N14 compositional multi-failure Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install FMI importer
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Build and run N14 evidence
+        run: |
+          external/fmu-n14-scheduler/build.sh
+          cargo build --locked -q -p poie-viability --bin poie-s5v-n14-canonical-adapter
+          python3 audit/phase14/revalidate_n13.py || true
+          python3 audit/phase14/validate_composition.py
+          python3 audit/phase14/generate_cross_model.py
+          python3 audit/phase14/negative_controls.py
+          python3 audit/phase14/validate_composition.py
+          python3 audit/phase14/check.py
+      - name: Save N14 evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n14/evidence"
+          cp -R audit/phase14 "$RUNNER_TEMP/s5v-n14/evidence/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n14-linux-evidence
+          path: ${{ runner.temp }}/s5v-n14/evidence
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest
