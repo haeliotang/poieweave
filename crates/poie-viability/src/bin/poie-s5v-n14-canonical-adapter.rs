@@ -3,19 +3,12 @@
 //! N10 named-upstream and alternative-resource canonical evidence runner.
 
 use poie_ontology::model::{AssetStatus, Model, Service};
-use poie_viability::engine::{run_engine, run_engine_event_observed, EngineOptions, EngineTermination};
+use poie_viability::engine::{run_engine_event_observed, EngineOptions};
 use poie_viability::survival::FailureEvent;
 use std::path::{Path, PathBuf};
 
 fn root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../..")
-}
-fn label(term: &EngineTermination) -> String {
-    match term {
-        EngineTermination::CompletedHorizon => "completed".into(),
-        EngineTermination::Blocked(reason) => format!("blocked:{reason}"),
-        EngineTermination::IncompleteAtHorizon(reason) => format!("incomplete:{reason}"),
-    }
 }
 
 fn model_for(robots: usize, tool: bool, capability: bool) -> Model {
