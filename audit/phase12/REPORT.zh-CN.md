@@ -38,16 +38,12 @@ N12-E EVIDENCE AND CERTIFICATE INTEGRITY
 - 14 个案例身份验证：失败目标、horizon 未应用、harness/fmpy 一致全部通过。
 - 修复 `fmi3GetString` 的静态共享缓冲区，改为实例拥有的输出缓冲区。
 
-## 未建立
+## 限制
 
 ```text
-canonical native Before/After 导出
-共享状态投影
-逐维双向状态比较
-真实 journal overflow
-step-size 不变性
-native both-models-invalid
-N12 CI/clean check-all/final certificate
+canonical repair-state before/after = NOT_OBSERVED
+restoration 维度 = NOT_COMPARABLE
+N12 FMU 仍仅有单故障输入
+N12 both-invalid 为 native-evidence mutation，不是真实双模型共同缺陷执行
 ```
-
 N11 历史 journal 的身份错误保留为研究反例；受影响历史声明的目标身份范围收窄。

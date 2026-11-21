@@ -1,0 +1,10 @@
+{
+ "case":"N13-03",
+ "resources":["robot-m1"],
+ "task_resources":["0:robot-m1"],
+ "witness":["sleeve-replacement:robot-m1:bat-1|bus-1|charger-1"],
+ "completion_s":7200.000,
+ "interruption_s":null,
+ "restoration_committed":true,
+ "termination":"completed"
+}

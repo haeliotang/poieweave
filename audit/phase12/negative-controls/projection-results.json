@@ -81,7 +81,8 @@
       "findings": [
         {
           "class": "RESOURCE_ELIGIBILITY_VIOLATION",
-          "model": "external"
+          "model": "external",
+          "task": 0
         }
       ]
     },

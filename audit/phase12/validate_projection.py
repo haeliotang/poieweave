@@ -13,6 +13,18 @@ def contract(case):
  for line in (P/"contracts"/f"{case}.contract").read_text().splitlines():
   k,v=line.split("=",1); d[k]=float(v)
  return d
+def canonical_task_resources(case):
+ summary=json.loads((P/"canonical"/f"{case}-summary.json").read_text())
+ out=[]
+ for entry in summary.get("task_resources",[]):
+  if isinstance(entry,dict): out.append(entry.get("resources",[]))
+  else: out.append(entry.split(":",1)[1].split("+"))
+ return out
+def canonical_robot(case):
+ try:
+  rs=canonical_task_resources(case); return int(next(r for r in rs[0] if r.startswith("robot-m")).split("robot-m")[1])
+ except Exception: return None
+
 def canonical(case): return [json.loads(line) for line in (P/"canonical"/f"{case}-events.jsonl").read_text().splitlines()]
 def external(case): return json.loads((P/"external"/f"N12-{case}.csv.journal.json").read_text())
 def classify_target(spec):
@@ -30,9 +42,14 @@ def compare(case):
  for kind in ["InitialRepairStarted","AssetFailure","RepairInterrupted","RepairCompleted"]:
   cs=cmap.get(kind,[]); xs=xmap.get(kind,[])
   if len(cs)!=len(xs):
-   policy=(kind in ("RepairInterrupted","RepairCompleted") and bool(cs)!=bool(xs) and case in ("N10-OR2",))
-   # generic policy: canonical interrupted, external completed, different selected robot
-   if case=="N10-OR2" and kind in ("RepairInterrupted","RepairCompleted") and len(cs)!=len(xs): policy=True
+   # Generic policy exemption: interruption/completion counts differ only when the two
+   # models made different, contract-valid robot selections and the failure targets
+   # the canonical selected robot but not the external selected robot.
+   c_robot=canonical_robot(case)
+   x_robot=int(ev[0]["after"][0])
+   failure_robot=(target=="robot-m1" or target=="robot-m2")
+   policy=(kind in ("RepairInterrupted","RepairCompleted") and c_robot is not None and c_robot!=x_robot
+           and failure_robot and target==f"robot-m{c_robot}")
    if not policy: findings.append({"class":"EVENT_MISSING" if len(xs)<len(cs) else "EVENT_EXTRA","event":kind})
   for c,x in zip(cs,xs):
    if abs(c["at_s"]-x["at"])>1e-9: findings.append({"class":"EVENT_TIME_DISPLACEMENT","event":kind})
@@ -55,14 +72,25 @@ def compare(case):
     dims["target_health_after"]={"canonical":ca,"external":xa,"status":"MATCH" if (ca=="Available")==bool(xa) else "MISMATCH"}
     if dims["target_health_before"]["status"]!="MATCH": findings.append({"class":"BEFORE_STATE_MISMATCH","dimension":"asset_health"})
     if dims["target_health_after"]["status"]!="MATCH": findings.append({"class":"AFTER_STATE_MISMATCH","dimension":"asset_health"})
- # per-task resource mask: canonical summary robot and external InitialRepairStarted robot.
+ # per-task resource validation for every task actually present.
  try:
   summary=json.loads((P/"canonical"/f"{case}-summary.json").read_text())
-  cr=int(summary["task_resources"][0].split("robot-m")[1]); mask=int(spec["t1RobotMask"])
-  xr=int(ev[0]["after"][0])
-  if not (mask & (1 << (cr-1))): findings.append({"class":"RESOURCE_ELIGIBILITY_VIOLATION","model":"canonical"})
-  if not (mask & (1 << (xr-1))): findings.append({"class":"RESOURCE_ELIGIBILITY_VIOLATION","model":"external"})
- except Exception: findings.append({"class":"NOT_COMPARABLE","reason":"resource selection not observed"})
+  ext_rows=list(__import__("csv").DictReader((P/"external"/f"N12-{case}-fmpy.csv").open())); last=ext_rows[-1]
+  tasks=int(spec["taskCount"])
+  for index in range(tasks):
+   mask=int(spec[f"t{index+1}RobotMask"])
+   ctask=canonical_task_resources(case)[index]
+   crobot=next((r for r in ctask if r.startswith("robot-")),None)
+   if crobot is None: findings.append({"class":"RESOURCE_ELIGIBILITY_VIOLATION","model":"canonical","task":index})
+   else:
+    ci=int(crobot.split("robot-m")[1])
+    if not (mask & (1 << (ci-1))): findings.append({"class":"RESOURCE_ELIGIBILITY_VIOLATION","model":"canonical","task":index})
+   xr=int(ev[0]["after"][0]) if index==0 else int(float(last[f"t{index+1}Robot"]))
+   if xr<=0 or not (mask & (1 << (xr-1))): findings.append({"class":"RESOURCE_ELIGIBILITY_VIOLATION","model":"external","task":index})
+   required=int(spec[f"t{index+1}RequiresTool"])>0
+   if required and "tool-t1" not in ctask: findings.append({"class":"EXECUTION_DEPENDENCY_MISMATCH","model":"canonical","task":index})
+   if required and not (int(float(last["toolTaskMask"])) & (1 << index)): findings.append({"class":"EXECUTION_DEPENDENCY_MISMATCH","model":"external","task":index})
+ except Exception as exc: findings.append({"class":"NOT_COMPARABLE","reason":f"resource selection not observed: {exc}"})
  # non-observable canonical dimensions
  dims["repair_state_before"]={"canonical":"NOT_OBSERVED","external":ev[0]["before"][4],"status":"NOT_COMPARABLE"}
  dims["restoration_committed"]={"canonical":"NOT_OBSERVED","external":ev[-1]["after"][5],"status":"NOT_COMPARABLE"}
@@ -81,11 +109,13 @@ def compare(case):
  if len(cmap.get("RepairCompleted",[]))==1 and len(xmap.get("RepairCompleted",[]))==1:
   c=cmap["RepairCompleted"][0]; x=xmap["RepairCompleted"][0]
   if abs(c["at_s"]-x["at"])>1e-9: findings.append({"class":"EVENT_TIME_DISPLACEMENT","event":"RepairCompleted"})
- # policy OR2
+ # generic policy classification
  classification="SAME_CAUSAL_TRANSITION"
- if case=="N10-OR2":
-  c_int=any(e["event_kind"]=="RepairInterrupted" for e in ce); x_int=any(e["kind"]=="RepairInterrupted" for e in ev)
-  if c_int and not x_int: classification="VALID_POLICY_DEPENDENT_DIVERGENCE"
+ c_int=any(e["event_kind"]=="RepairInterrupted" for e in ce); x_int=any(e["kind"]=="RepairInterrupted" for e in ev)
+ c_robot=canonical_robot(case)
+ x_robot=int(ev[0]["after"][0])
+ policy=(c_int and not x_int and c_robot is not None and c_robot!=x_robot and target==f"robot-m{c_robot}")
+ if policy: classification="VALID_POLICY_DEPENDENT_DIVERGENCE"
  status="ACCEPTED" if not findings else "FAIL"
  return {"schema":"poie.s5v-n12-projection/1","case":case,"target":target,
          "canonical_events":ce,"external_events":ev,
