@@ -1,0 +1,7 @@
+fmpy_version=0.3.32
+fmu_sha256=3314152f45d942e5a962ac2513731a9011cf710390d1760c83c135b32c55e3db
+rows=81
+terminal_time_s=72000.0
+makespan_s=10800.0
+completed=2.0
+interrupted=0.0

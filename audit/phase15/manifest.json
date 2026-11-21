@@ -112,14 +112,19 @@
       "sha256": "4c54d6de6d3581360a09f1f32b5301e09773876bc496133581cc458a26a86828"
     },
     {
-      "bytes": 1337,
+      "bytes": 1514,
       "path": "audit/phase15/check.py",
-      "sha256": "5033caafa87563c422ab6e180574d4a767c71744567bca1c72066d77eee98640"
+      "sha256": "08c5a9b47bae52d251f092c8b731f4a5ce336e9f508ab58126c9b413f030754f"
     },
     {
       "bytes": 1108,
       "path": "audit/phase15/claim_consistency.py",
       "sha256": "aff99dd2112be5d2a9adca429fbb39e8d3e28b5e16d7142b4ea8cbd9a0a73034"
+    },
+    {
+      "bytes": 2122,
+      "path": "audit/phase15/compare_importers.py",
+      "sha256": "f4c53b58aab2eddc3a58f916623ac78764509c5b10415aad62c0a594a549c0cc"
     },
     {
       "bytes": 385,
@@ -292,9 +297,124 @@
       "sha256": "f5666b4e111447446e48ac6ae29ac05dc642659ac392bcd946696699a820b42c"
     },
     {
+      "bytes": 4487,
+      "path": "audit/phase15/fmpy_import.py",
+      "sha256": "17cf426ee180531248614d82261f1394a10d95038a4771246246d44a1db7cedb"
+    },
+    {
       "bytes": 8247,
       "path": "audit/phase15/historical-replay/v8-freeze.json",
       "sha256": "ed0f719d7647421918e30df39bcb7752f69ce73a6fcdd198e1f30937fc51e20f"
+    },
+    {
+      "bytes": 4213,
+      "path": "audit/phase15/importer-comparisons/N15-D1-R1-7199-fmpy.csv",
+      "sha256": "56b1dcf5a54d93d18d5a5690c4611dafd517225db63ae28f4db17d9a831e7fd4"
+    },
+    {
+      "bytes": 1087,
+      "path": "audit/phase15/importer-comparisons/N15-D1-R1-7199-fmpy.csv.journal.json",
+      "sha256": "1a11d03f33afc46ff46f173cba7c4801d0402841cf0f23842262e30874204eb6"
+    },
+    {
+      "bytes": 175,
+      "path": "audit/phase15/importer-comparisons/N15-D1-R1-7199-fmpy.log",
+      "sha256": "d193cf4545ca3c5fb95863917d20b227844d5931b99451186619c0047818b226"
+    },
+    {
+      "bytes": 34525,
+      "path": "audit/phase15/importer-comparisons/N15-D1-R1-7201-fmpy.csv",
+      "sha256": "b890ffa9660a424a1e7a0ab76e39fbd1498a2ff3b149d54bd5ed9500e92dc76d"
+    },
+    {
+      "bytes": 2344,
+      "path": "audit/phase15/importer-comparisons/N15-D1-R1-7201-fmpy.csv.journal.json",
+      "sha256": "b2712c7c813215352f9bb905f6f0be6e1a313a22bb779c9712ceebf67cd54075"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase15/importer-comparisons/N15-D1-R1-7201-fmpy.log",
+      "sha256": "772bae5b0b4df25a183c9f0802ec24726dc11ebe042e92e1854d85160aaa760f"
+    },
+    {
+      "bytes": 4632,
+      "path": "audit/phase15/importer-comparisons/N15-D1-R2-7201-fmpy.csv",
+      "sha256": "f3d93d6a7d76545e39f758c83fc6b8e2cc05ec443e7a1605d6913a760d969a9c"
+    },
+    {
+      "bytes": 1587,
+      "path": "audit/phase15/importer-comparisons/N15-D1-R2-7201-fmpy.csv.journal.json",
+      "sha256": "ade73ff7f22d26512dd351b762d9dff2a4e1b12b86156a058d193de6ac54ac99"
+    },
+    {
+      "bytes": 176,
+      "path": "audit/phase15/importer-comparisons/N15-D1-R2-7201-fmpy.log",
+      "sha256": "41d8771028b8f289cfec345dd070c892306522a7e985d443af487dab81689d53"
+    },
+    {
+      "bytes": 4662,
+      "path": "audit/phase15/importer-comparisons/N15-D2-SERIAL-7201-fmpy.csv",
+      "sha256": "fd8815c931b31bb3b4890053217e10e2b55d79d4aecf020ebb24a4dd422e63a9"
+    },
+    {
+      "bytes": 1332,
+      "path": "audit/phase15/importer-comparisons/N15-D2-SERIAL-7201-fmpy.csv.journal.json",
+      "sha256": "6951f8f16352dbc72c45dbd90002e454feed53e9b368a678ff8d6143aca3a58e"
+    },
+    {
+      "bytes": 176,
+      "path": "audit/phase15/importer-comparisons/N15-D2-SERIAL-7201-fmpy.log",
+      "sha256": "9d59ebf24148817acb65101dd4ae4c799b653330ddcbb3bc6c1497a7541d5244"
+    },
+    {
+      "bytes": 4233,
+      "path": "audit/phase15/importer-comparisons/N15-D3-TOOL-7199-fmpy.csv",
+      "sha256": "6030493a39672f0d72feec70617f8ec8b7fe2693b619aec6cd3862ed4e665951"
+    },
+    {
+      "bytes": 1096,
+      "path": "audit/phase15/importer-comparisons/N15-D3-TOOL-7199-fmpy.csv.journal.json",
+      "sha256": "b0662443561705eaf95162fc5665785d1a251381678d6abe85b73592a1cc2a7e"
+    },
+    {
+      "bytes": 175,
+      "path": "audit/phase15/importer-comparisons/N15-D3-TOOL-7199-fmpy.log",
+      "sha256": "d193cf4545ca3c5fb95863917d20b227844d5931b99451186619c0047818b226"
+    },
+    {
+      "bytes": 34903,
+      "path": "audit/phase15/importer-comparisons/N15-D3-TOOL-7201-fmpy.csv",
+      "sha256": "27d1ac07a6573d731ac57992347a4e1c8205ee5f355ec19eb5bb7dfb27bd64f0"
+    },
+    {
+      "bytes": 2635,
+      "path": "audit/phase15/importer-comparisons/N15-D3-TOOL-7201-fmpy.csv.journal.json",
+      "sha256": "3c9eeb6eef4139fb5358cae8cac862f9e1be57b42dc83ddb12de3ed0d4fbe145"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase15/importer-comparisons/N15-D3-TOOL-7201-fmpy.log",
+      "sha256": "772bae5b0b4df25a183c9f0802ec24726dc11ebe042e92e1854d85160aaa760f"
+    },
+    {
+      "bytes": 34381,
+      "path": "audit/phase15/importer-comparisons/N15-OR-RELEASE-fmpy.csv",
+      "sha256": "0e167234300612b28371cfe0c191c03083fff96795455cc4591193b1bde1d756"
+    },
+    {
+      "bytes": 2102,
+      "path": "audit/phase15/importer-comparisons/N15-OR-RELEASE-fmpy.csv.journal.json",
+      "sha256": "f5666b4e111447446e48ac6ae29ac05dc642659ac392bcd946696699a820b42c"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase15/importer-comparisons/N15-OR-RELEASE-fmpy.log",
+      "sha256": "772bae5b0b4df25a183c9f0802ec24726dc11ebe042e92e1854d85160aaa760f"
+    },
+    {
+      "bytes": 1212,
+      "path": "audit/phase15/importer-comparisons/results.json",
+      "sha256": "2c53cef6b0d69de92820215570e055e67b4eda514f0fd0ddc9a37be44ff0eefa"
     },
     {
       "bytes": 1058,

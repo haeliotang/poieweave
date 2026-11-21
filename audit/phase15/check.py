@@ -17,5 +17,7 @@ s=json.loads((P/"minimized-counterexamples/reducer/failure_signature.json").read
 if s["failure_class"]!="EXTERNAL_PREMATURE_RESOURCE_RELEASE": problems.append("reducer signature")
 o=json.loads((P/"minimized-counterexamples/reducer/original_contract.json").read_text()); m=json.loads((P/"minimized-counterexamples/reducer/minimized_contract.json").read_text())
 if len(m["tasks"])!=2 or len(m["failures"])>=len(o["failures"]): problems.append("reducer preservation")
+imp=json.loads((P/"importer-comparisons/results.json").read_text())
+if len(imp["cases"])!=7 or any(c["status"]!="MATCH" for c in imp["cases"]): problems.append("dual importer")
 if problems: print("N15 FAIL: "+", ".join(problems)); sys.exit(1)
 print("ok N15 task-level resource lifetime")
