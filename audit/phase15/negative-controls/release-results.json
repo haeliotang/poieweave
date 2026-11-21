@@ -1,0 +1,52 @@
+{
+  "schema": "poie.s5v-n15-negative/1",
+  "results": [
+    {
+      "control": "RESOURCE_RELEASE_MISSING_robot-m1",
+      "case": "N15-D1-R1-7201",
+      "expected": "RESOURCE_RELEASE_MISSING_robot-m1",
+      "detected": true,
+      "findings": [
+        "RESOURCE_RELEASE_MISSING_robot-m1"
+      ]
+    },
+    {
+      "control": "RESOURCE_RELEASE_TIME_robot-m1",
+      "case": "N15-D1-R1-7201",
+      "expected": "RESOURCE_RELEASE_TIME_robot-m1",
+      "detected": true,
+      "findings": [
+        "RESOURCE_RELEASE_TIME_robot-m1",
+        "EXTERNAL_RELEASE_MISMATCH_robot-m1"
+      ]
+    },
+    {
+      "control": "SHARED_RESOURCE_RELEASE_VIOLATION_robot-m1",
+      "case": "N15-D2-SERIAL-7201",
+      "expected": "SHARED_RESOURCE_RELEASE_VIOLATION_robot-m1",
+      "detected": true,
+      "findings": [
+        "SHARED_RESOURCE_RELEASE_VIOLATION_robot-m1",
+        "EXTERNAL_RELEASE_MISMATCH_robot-m1"
+      ]
+    },
+    {
+      "control": "CANONICAL_FAILURE_SENSITIVITY",
+      "case": "N15-D1-R1-7201",
+      "expected": "CANONICAL_FAILURE_SENSITIVITY",
+      "detected": true,
+      "findings": [
+        "CANONICAL_FAILURE_SENSITIVITY"
+      ]
+    },
+    {
+      "control": "PREMATURE_GROUP_COMMIT",
+      "case": "N15-OR-RELEASE",
+      "expected": "PREMATURE_GROUP_COMMIT",
+      "detected": true,
+      "findings": [
+        "PREMATURE_GROUP_COMMIT"
+      ]
+    }
+  ]
+}

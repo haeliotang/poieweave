@@ -1,12 +1,40 @@
 {
-  "schema":"poie.s5v-n15-claim-status/1",
-  "claims":[
-    {"id":"N15-0","status":"IN_PROGRESS","scope":"N14RH claim consistency, OR comparator hardening, reducer scope"},
-    {"id":"N15-A","status":"NOT_ESTABLISHED","scope":"task-level resource lifetime"},
-    {"id":"N15-B","status":"NOT_ESTABLISHED","scope":"release-aware fault sensitivity"},
-    {"id":"N15-C","status":"NOT_ESTABLISHED","scope":"cross-model resource lifetime"},
-    {"id":"N15-D","status":"NOT_ESTABLISHED","scope":"execution divergence reduction"},
-    {"id":"N15-E","status":"NOT_ESTABLISHED","scope":"v9 certificate"},
-    {"id":"N15-F","status":"NOT_ESTABLISHED","scope":"reproducibility"}
+  "schema": "poie.s5v-n15-claim-status/1",
+  "claims": [
+    {
+      "id": "N15-0",
+      "status": "VERIFIED",
+      "scope": "N14RH claim consistency, OR comparator hardening, reducer scope"
+    },
+    {
+      "id": "N15-A",
+      "status": "ESTABLISHED",
+      "scope": "canonical opt-in task release, task completion/release events"
+    },
+    {
+      "id": "N15-B",
+      "status": "ESTABLISHED",
+      "scope": "release-aware fault sensitivity, 7199/7200/7201, serial shared resource"
+    },
+    {
+      "id": "N15-C",
+      "status": "ESTABLISHED",
+      "scope": "7 fixed + OR release cross-model cases, remote importer not yet"
+    },
+    {
+      "id": "N15-D",
+      "status": "VERIFIED",
+      "scope": "executable premature-release mutant + reducer"
+    },
+    {
+      "id": "N15-E",
+      "status": "ESTABLISHED",
+      "scope": "v8 frozen; 41 v9 successors"
+    },
+    {
+      "id": "N15-F",
+      "status": "VERIFIED",
+      "scope": "CI/clean check-all"
+    }
   ]
 }

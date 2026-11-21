@@ -1,0 +1,55 @@
+{
+  "group_id": "N15-MUT-ORIG",
+  "restoration_target": "a-lathe",
+  "horizon_s": 72000,
+  "robot_count": 1,
+  "release_mode": "task_release",
+  "tasks": [
+    {
+      "task_id": "A",
+      "duration_s": 7200,
+      "priority": 1,
+      "robot_mask": 1,
+      "requires_tool": false,
+      "robot_alternatives": []
+    },
+    {
+      "task_id": "B",
+      "duration_s": 10800,
+      "priority": 2,
+      "robot_mask": 1,
+      "requires_tool": false,
+      "robot_alternatives": []
+    }
+  ],
+  "failures": [
+    {
+      "failure_id": 0,
+      "time_s": 7201,
+      "target": "robot-m1",
+      "kind": 1,
+      "target_id": 0
+    },
+    {
+      "failure_id": 1,
+      "time_s": 7300,
+      "target": "tool-t1",
+      "kind": 2,
+      "target_id": 7
+    },
+    {
+      "failure_id": 2,
+      "time_s": 9000,
+      "target": "bus-2",
+      "kind": 3,
+      "target_id": 6
+    },
+    {
+      "failure_id": 3,
+      "time_s": 10000,
+      "target": "sensor-x",
+      "kind": 3,
+      "target_id": 5
+    }
+  ]
+}

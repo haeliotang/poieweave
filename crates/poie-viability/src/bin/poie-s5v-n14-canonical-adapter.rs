@@ -5,7 +5,7 @@
 use poie_ontology::model::{AssetStatus, Model, Service};
 use poie_viability::engine::{
     run_engine_event_observed, run_engine_with_repair_group_event_observed, EngineOptions, ExplicitRepairGroup,
-    ExplicitRepairTask,
+    ExplicitRepairTask, RepairLifecycleMode,
 };
 use poie_viability::survival::FailureEvent;
 use std::path::{Path, PathBuf};
@@ -159,6 +159,11 @@ fn main() {
         group_id: "n14-group".into(),
         restoration_target: "a-lathe".into(),
         tasks: explicit_tasks,
+        lifecycle: if c["release_mode"].as_str() == Some("task_release") {
+            RepairLifecycleMode::TaskRelease
+        } else {
+            RepairLifecycleMode::GroupHold
+        },
     };
     let observed = if tasks.len() == 2 {
         run_engine_with_repair_group_event_observed(&model, &options, &group).unwrap()
@@ -178,7 +183,7 @@ fn main() {
             .iter()
             .map(|(k, v)| (k.clone(), serde_json::Value::String(format!("{v:?}"))))
             .collect();
-        let repair = event.running_repair.as_ref().map(|r| serde_json::json!({"resources": r.resources, "task_resources": r.task_resources.iter().map(|e| serde_json::json!({"plan_index": e.plan_index, "task_id": e.task_id, "resources": e.resources, "start_s": e.start_s, "end_s": e.end_s})).collect::<Vec<_>>(), "execution_dependencies": r.execution_dependencies, "restoration_targets": r.restoration_targets}));
+        let repair = event.running_repair.as_ref().map(|r| serde_json::json!({"resources": r.resources, "task_resources": r.task_resources.iter().map(|e| serde_json::json!({"plan_index": e.plan_index, "task_id": e.task_id, "resources": e.resources, "start_s": e.start_s, "end_s": e.end_s})).collect::<Vec<_>>(), "execution_dependencies": r.execution_dependencies, "restoration_targets": r.restoration_targets, "completed_tasks": r.completed_tasks, "active_resources": r.active_resources, "future_resources": r.future_resources, "released_resources": r.released_resources}));
         let v = serde_json::json!({"schema":"poie.s5v-n14-canonical-event/1","event_sequence":event.event_sequence,"at_s":event.at_s,"event_kind":event.kind.label(),"target_asset":event.target_asset,"asset_statuses_before":before,"asset_statuses_after":after,"running_repair":repair,"observation_source":"NATIVE_CANONICAL_RUNTIME"});
         lines.push_str(&serde_json::to_string(&v).unwrap());
         lines.push('\n');

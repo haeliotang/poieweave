@@ -87,6 +87,10 @@ pub struct RepairObservation {
     pub restoration_targets: Vec<String>,
     pub witness: Vec<WitnessEntry>,
     pub task_resources: Vec<TaskResourceObservation>,
+    pub completed_tasks: Vec<String>,
+    pub active_resources: Vec<String>,
+    pub future_resources: Vec<String>,
+    pub released_resources: Vec<String>,
 }
 
 /// Observation-only per-plan resource assignment derived from the actual schedule.
@@ -143,6 +147,8 @@ pub enum EventKind {
     RepairInterrupted,
     EnergyDepleted,
     HorizonReached,
+    TaskCompleted,
+    ResourceReleased,
 }
 
 impl EventKind {
@@ -156,6 +162,8 @@ impl EventKind {
             EventKind::RepairInterrupted => "RepairInterrupted",
             EventKind::EnergyDepleted => "EnergyDepleted",
             EventKind::HorizonReached => "HorizonReached",
+            EventKind::TaskCompleted => "TaskCompleted",
+            EventKind::ResourceReleased => "ResourceReleased",
         }
     }
 }
@@ -276,6 +284,36 @@ fn event_active() -> bool {
 }
 
 #[allow(clippy::too_many_arguments)]
+fn repair_observation(repair: &RunningRepair, at_s: f64) -> RepairObservation {
+    let mut completed = Vec::new();
+    let mut active = BTreeSet::new();
+    let mut future = BTreeSet::new();
+    for (index, task) in repair.task_resources.iter().enumerate() {
+        if repair.completed_tasks.contains(&index) {
+            completed.push(task.task_id.clone().unwrap_or_else(|| format!("task-{index}")));
+        } else if task.start_s <= at_s + 1e-9 && at_s < task.end_s - 1e-9 {
+            active.extend(task.resources.iter().cloned());
+        } else if at_s < task.start_s - 1e-9 {
+            future.extend(task.resources.iter().cloned());
+        }
+    }
+    RepairObservation {
+        label: repair.label.clone(),
+        end_s: repair.end_s,
+        plans: plan_summary(&repair.plans),
+        resources: repair.resources.clone(),
+        execution_dependencies: repair.execution_dependencies.iter().cloned().collect(),
+        restoration_targets: repair.restoration_targets.iter().cloned().collect(),
+        witness: repair.witness.clone(),
+        task_resources: repair.task_resources.clone(),
+        completed_tasks: completed,
+        active_resources: active.into_iter().collect(),
+        future_resources: future.into_iter().collect(),
+        released_resources: repair.released_resources.iter().cloned().collect(),
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
 fn record_event(
     sequence: usize,
     batch: usize,
@@ -306,16 +344,7 @@ fn record_event(
         asset_statuses_after: after.clone(),
         inventory_before: inventory_before.clone(),
         inventory_after: inventory_after.clone(),
-        running_repair: running.map(|repair| RepairObservation {
-            label: repair.label.clone(),
-            end_s: repair.end_s,
-            plans: plan_summary(&repair.plans),
-            resources: repair.resources.clone(),
-            execution_dependencies: repair.execution_dependencies.iter().cloned().collect(),
-            restoration_targets: repair.restoration_targets.iter().cloned().collect(),
-            witness: repair.witness.clone(),
-            task_resources: repair.task_resources.clone(),
-        }),
+        running_repair: running.map(|repair| repair_observation(repair, at_s)),
     };
     EVENT_COLLECTOR.with(|cell| {
         if let Some(events) = cell.borrow_mut().as_mut() {
@@ -395,16 +424,7 @@ fn observe_due(
                 energy_repair_j: repair,
                 energy_curtailed_j: curtailed,
                 energy_resupply_j: resupply,
-                running_repair: running.map(|repair| RepairObservation {
-                    label: repair.label.clone(),
-                    end_s: repair.end_s,
-                    plans: plan_summary(&repair.plans),
-                    resources: repair.resources.clone(),
-                    execution_dependencies: repair.execution_dependencies.iter().cloned().collect(),
-                    restoration_targets: repair.restoration_targets.iter().cloned().collect(),
-                    witness: repair.witness.clone(),
-                    task_resources: repair.task_resources.clone(),
-                }),
+                running_repair: running.map(|repair| repair_observation(repair, at_s)),
                 asset_statuses: assets.clone(),
                 asset_status_source: "NATIVE_CANONICAL_RUNTIME",
             });
@@ -483,11 +503,17 @@ pub struct ExplicitRepairTask {
 
 /// Versioned explicit repair-group input. Tasks are scheduled by the canonical
 /// scheduler and all complete before the single restoration target is applied.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum RepairLifecycleMode {
+    GroupHold,
+    TaskRelease,
+}
+
 pub struct ExplicitRepairGroup {
     pub group_id: String,
     pub restoration_target: String,
     pub tasks: Vec<ExplicitRepairTask>,
+    pub lifecycle: RepairLifecycleMode,
 }
 
 #[derive(Clone, Debug)]
@@ -506,6 +532,10 @@ struct RunningRepair {
     task_resources: Vec<TaskResourceObservation>,
     end_s: f64,
     label: String,
+    task_release: bool,
+    completed_tasks: BTreeSet<usize>,
+    task_dependencies: Vec<BTreeSet<String>>,
+    released_resources: BTreeSet<String>,
 }
 
 enum StartError {
@@ -670,6 +700,10 @@ fn start_repair(
         task_resources,
         end_s: now_s + schedule.makespan_s,
         label,
+        task_release: false,
+        completed_tasks: BTreeSet::new(),
+        task_dependencies: Vec::new(),
+        released_resources: BTreeSet::new(),
     })
 }
 
@@ -769,6 +803,32 @@ fn start_explicit_repair(
         execution_dependencies.insert(entry.provider.clone());
         execution_dependencies.extend(entry.dependencies.iter().cloned());
     }
+    let mut task_dependencies: Vec<BTreeSet<String>> = vec![BTreeSet::new(); group.tasks.len()];
+    for (index, _task) in group.tasks.iter().enumerate() {
+        let selected: BTreeSet<String> = plans
+            .get(index)
+            .map(|plan| {
+                plan.steps
+                    .iter()
+                    .flat_map(|step| {
+                        current
+                            .processes
+                            .iter()
+                            .find(|p| p.id == step.process)
+                            .map(|p| p.occupies.clone())
+                            .unwrap_or_default()
+                    })
+                    .collect()
+            })
+            .unwrap_or_default();
+        for resource in selected {
+            if resource.starts_with("robot") {
+                let mut deps = BTreeSet::new();
+                collect_asset_dependencies(current, &resource, &mut deps);
+                task_dependencies[index].extend(deps);
+            }
+        }
+    }
     let mut task_resources: Vec<TaskResourceObservation> = Vec::new();
     for step in &schedule.steps {
         match task_resources.iter_mut().find(|entry| entry.plan_index == step.plan_index) {
@@ -798,6 +858,10 @@ fn start_explicit_repair(
         task_resources,
         end_s: now_s + schedule.makespan_s,
         label: group.group_id.clone(),
+        task_release: group.lifecycle == RepairLifecycleMode::TaskRelease,
+        completed_tasks: BTreeSet::new(),
+        task_dependencies,
+        released_resources: BTreeSet::new(),
     })
 }
 
@@ -1041,7 +1105,19 @@ fn run_engine_inner(
         } else {
             raw_next_event
         };
-        let next_completion = running.as_ref().map(|repair| repair.end_s);
+        let next_completion = running.as_ref().map(|repair| {
+            if repair.task_release {
+                repair
+                    .task_resources
+                    .iter()
+                    .enumerate()
+                    .filter(|(index, _)| !repair.completed_tasks.contains(index))
+                    .map(|(_, task)| task.end_s)
+                    .fold(f64::INFINITY, f64::min)
+            } else {
+                repair.end_s
+            }
+        });
         let mut next_s =
             [next_event, next_completion, Some(options.horizon_s)].into_iter().flatten().fold(f64::INFINITY, f64::min);
         let mut sample_only = false;
@@ -1106,6 +1182,93 @@ fn run_engine_inner(
                 &asset_status_snapshot(&current.assets),
             );
             continue;
+        }
+        let mut completed_events: Vec<String> = Vec::new();
+        let mut released_events: Vec<String> = Vec::new();
+        if let Some(repair) = running.as_mut() {
+            if repair.task_release {
+                for (index, task) in repair.task_resources.iter().enumerate() {
+                    if task.end_s <= clock.now_s() + 1e-9 && !repair.completed_tasks.contains(&index) {
+                        repair.completed_tasks.insert(index);
+                        completed_events.push(task.task_id.clone().unwrap_or_else(|| format!("task-{index}")));
+                    }
+                }
+                let unfinished: Vec<usize> = repair
+                    .task_resources
+                    .iter()
+                    .enumerate()
+                    .filter(|(index, _)| !repair.completed_tasks.contains(index))
+                    .map(|(index, _)| index)
+                    .collect();
+                let mut needed = BTreeSet::new();
+                let mut needed_deps = BTreeSet::new();
+                for index in &unfinished {
+                    needed.extend(repair.task_resources[*index].resources.iter().cloned());
+                    if let Some(deps) = repair.task_dependencies.get(*index) {
+                        needed_deps.extend(deps.iter().cloned());
+                    }
+                }
+                let all_resources: BTreeSet<String> =
+                    repair.task_resources.iter().flat_map(|task| task.resources.iter().cloned()).collect();
+                for resource in all_resources {
+                    if !needed.contains(&resource) && repair.execution_dependencies.remove(&resource) {
+                        repair.released_resources.insert(resource.clone());
+                        released_events.push(resource);
+                    }
+                }
+                let removable_deps: Vec<String> = repair
+                    .execution_dependencies
+                    .iter()
+                    .filter(|dep| {
+                        !needed_deps.contains(*dep) && repair.task_dependencies.iter().flatten().any(|d| d == *dep)
+                    })
+                    .cloned()
+                    .collect();
+                for dep in removable_deps {
+                    if repair.execution_dependencies.remove(&dep) {
+                        repair.released_resources.insert(dep.clone());
+                        released_events.push(dep);
+                    }
+                }
+            }
+        }
+        for task_id in completed_events {
+            let snapshot = asset_status_snapshot(&current.assets);
+            event_sequence += 1;
+            event_batch += 1;
+            record_event(
+                event_sequence,
+                event_batch,
+                clock.now_s(),
+                EventKind::TaskCompleted,
+                EventOrigin::Endogenous,
+                Some(task_id),
+                EventStatus::Committed,
+                &snapshot,
+                &snapshot,
+                &inventory,
+                &inventory,
+                running.as_ref(),
+            );
+        }
+        for resource in released_events {
+            let snapshot = asset_status_snapshot(&current.assets);
+            event_sequence += 1;
+            event_batch += 1;
+            record_event(
+                event_sequence,
+                event_batch,
+                clock.now_s(),
+                EventKind::ResourceReleased,
+                EventOrigin::Endogenous,
+                Some(resource),
+                EventStatus::Committed,
+                &snapshot,
+                &snapshot,
+                &inventory,
+                &inventory,
+                running.as_ref(),
+            );
         }
         if let Some(repair) = running.as_ref() {
             if repair.end_s <= clock.now_s() + 1e-9 {

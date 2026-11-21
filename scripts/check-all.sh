@@ -18,9 +18,10 @@ python3 scripts/build-certificate-impact.py --check
 python3 scripts/build-metrics-split.py --check
 python3 scripts/verify-canonical-claim-certificates-v6-historical.py
 python3 scripts/verify-canonical-claim-certificates-v7-historical.py
-python3 scripts/build-canonical-claim-certificates-v8.py --check
-python3 scripts/verify-canonical-claim-certificates-v8.py
-python3 scripts/check-canonical-claim-certificate-tamper-v8.py
+python3 scripts/verify-canonical-claim-certificates-v8-historical.py
+python3 scripts/build-canonical-claim-certificates-v9.py --check
+python3 scripts/verify-canonical-claim-certificates-v9.py
+python3 scripts/check-canonical-claim-certificate-tamper-v9.py
 python3 scripts/build-claim-certificate-coverage.py --check
 python3 audit/phase1/check.py
 python3 audit/phase2/check.py
@@ -72,11 +73,13 @@ python3 audit/phase14/validate_composition.py
 python3 audit/phase14/check.py
 python3 audit/phase14/verify_evidence.py --frozen --claim
 python3 audit/phase14/negative_evidence.py
-python3 audit/phase14r/generate_group_cases.py
-python3 audit/phase14r/generate_cross_model.py
-python3 audit/phase14r/negative_group.py
 python3 audit/phase14r/check.py
 python3 audit/phase14r/verify_evidence.py --frozen --claim
+python3 audit/phase15/validate_release.py
+python3 audit/phase15/negative_release.py
+python3 audit/phase15/validate_release.py
+python3 audit/phase15/reduce_release.py
+python3 audit/phase15/check.py
 python3 audit/phase14rh/check.py
 python3 audit/phase10/check.py --frozen
 python3 audit/phase7/negative_controls.py
