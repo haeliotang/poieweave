@@ -14,7 +14,7 @@
       "canonical_interrupted": false,
       "external_interrupted": false,
       "classification": "SAME_DECISION",
-      "problems": [],
+      "findings": [],
       "status": "ACCEPTED"
     },
     {
@@ -30,7 +30,7 @@
       "canonical_interrupted": false,
       "external_interrupted": false,
       "classification": "SAME_DECISION",
-      "problems": [],
+      "findings": [],
       "status": "ACCEPTED"
     },
     {
@@ -46,7 +46,7 @@
       "canonical_interrupted": false,
       "external_interrupted": false,
       "classification": "DIFFERENT_POLICY_VALID_DECISIONS",
-      "problems": [],
+      "findings": [],
       "status": "ACCEPTED"
     },
     {
@@ -62,7 +62,7 @@
       "canonical_interrupted": true,
       "external_interrupted": false,
       "classification": "VALID_POLICY_DEPENDENT_DIVERGENCE",
-      "problems": [],
+      "findings": [],
       "status": "ACCEPTED"
     },
     {
@@ -78,7 +78,7 @@
       "canonical_interrupted": true,
       "external_interrupted": true,
       "classification": "SAME_DECISION",
-      "problems": [],
+      "findings": [],
       "status": "ACCEPTED"
     },
     {
@@ -94,7 +94,7 @@
       "canonical_interrupted": false,
       "external_interrupted": false,
       "classification": "SAME_DECISION",
-      "problems": [],
+      "findings": [],
       "status": "ACCEPTED"
     }
   ]

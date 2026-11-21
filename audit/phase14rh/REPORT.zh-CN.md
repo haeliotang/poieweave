@@ -25,6 +25,6 @@ N14RH-F REPRODUCIBILITY                    VERIFIED
 ## 限制
 
 ```text
-N14RH-E task-specific OR + tool AND = NOT ESTABLISHED
-N14RH-F clean CI pending
+N14RH-E implemented by v8 task OR; N14RH-F CI and clean check-all passed.
+See v8 certificate index and OR evidence for scope.
 ```

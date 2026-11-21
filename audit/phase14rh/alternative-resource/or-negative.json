@@ -1,12 +1,55 @@
 {
   "schema": "poie.s5v-n14rh-or-negative/1",
-  "control": "task-level-illegal-selection",
-  "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
-  "detected": true,
-  "allowed": [
-    "robot-m1"
-  ],
-  "actual": [
-    "robot-m2"
+  "results": [
+    {
+      "control": "illegal-task-robot",
+      "expected": "RESOURCE_ELIGIBILITY_VIOLATION_A",
+      "detected": true,
+      "findings": [
+        "RESOURCE_ELIGIBILITY_VIOLATION_A",
+        "RESOURCE_CONTENTION_VIOLATION"
+      ]
+    },
+    {
+      "control": "missing-required-tool",
+      "expected": "REQUIRED_TOOL_MISSING_A",
+      "detected": true,
+      "findings": [
+        "REQUIRED_TOOL_MISSING_A"
+      ]
+    },
+    {
+      "control": "illegal-resource-contention",
+      "expected": "RESOURCE_CONTENTION_VIOLATION",
+      "detected": true,
+      "findings": [
+        "RESOURCE_CONTENTION_VIOLATION"
+      ]
+    },
+    {
+      "control": "wrong-task-start",
+      "expected": "TASK_START_MISMATCH_A",
+      "detected": true,
+      "findings": [
+        "TASK_START_MISMATCH_A"
+      ]
+    },
+    {
+      "control": "premature-group-commit",
+      "expected": "PREMATURE_GROUP_COMMIT",
+      "detected": true,
+      "findings": [
+        "PREMATURE_GROUP_COMMIT"
+      ]
+    },
+    {
+      "control": "both-models-missing-tool",
+      "expected": "REQUIRED_TOOL_MISSING_A",
+      "detected": true,
+      "findings": [
+        "REQUIRED_TOOL_MISSING_A",
+        "EXTERNAL_REQUIRED_TOOL_MISSING_A"
+      ]
+    }
   ]
 }

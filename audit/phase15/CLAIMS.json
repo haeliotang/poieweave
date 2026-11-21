@@ -1,0 +1,12 @@
+{
+  "schema":"poie.s5v-n15-claim-status/1",
+  "claims":[
+    {"id":"N15-0","status":"IN_PROGRESS","scope":"N14RH claim consistency, OR comparator hardening, reducer scope"},
+    {"id":"N15-A","status":"NOT_ESTABLISHED","scope":"task-level resource lifetime"},
+    {"id":"N15-B","status":"NOT_ESTABLISHED","scope":"release-aware fault sensitivity"},
+    {"id":"N15-C","status":"NOT_ESTABLISHED","scope":"cross-model resource lifetime"},
+    {"id":"N15-D","status":"NOT_ESTABLISHED","scope":"execution divergence reduction"},
+    {"id":"N15-E","status":"NOT_ESTABLISHED","scope":"v9 certificate"},
+    {"id":"N15-F","status":"NOT_ESTABLISHED","scope":"reproducibility"}
+  ]
+}

@@ -2,9 +2,9 @@
   "baseline": "9a084980ae08c64f61b0a378d98ffba4c4ac57a2",
   "files": [
     {
-      "bytes": 1076,
+      "bytes": 1104,
       "path": "audit/phase14rh/ALTERNATIVE_RESOURCE_ADR.md",
-      "sha256": "138ed4e9ba1aa05447aace0c4958b695f7aacca65d96d27317be5869848f12c1"
+      "sha256": "f9d7ccef7cb7f873a415035caefb3a570f29a4bd057f569091796d41ed8b1e4c"
     },
     {
       "bytes": 566,
@@ -42,9 +42,9 @@
       "sha256": "c1c02a15c4ff278a6ccde6df1b97e74db9a99f24f8b2b738d6e04a747b9952a7"
     },
     {
-      "bytes": 530,
+      "bytes": 536,
       "path": "audit/phase14rh/PREREG.md",
-      "sha256": "69f913082fc94b94a3b37ba570a7e7cb69fa84aa5b2713de2a76c86fcc344bc4"
+      "sha256": "27b180d1504c310c704fe326757e64b32eed74ad07804a8e55c886f5a6c5271d"
     },
     {
       "bytes": 409,
@@ -52,9 +52,9 @@
       "sha256": "6f7201dfd1007294433f2643628a2193bd465080ef8e73866a31adeeec1edc6d"
     },
     {
-      "bytes": 1571,
+      "bytes": 1618,
       "path": "audit/phase14rh/REPORT.zh-CN.md",
-      "sha256": "880634baddf370fe6ee728a9fc68eb8be527c5dc8523a35b0ed9464e8e618d9e"
+      "sha256": "f9b6fd9923123861cd769c0e2239021a89dfed4fa7c2f0a4deb4de76834c6442"
     },
     {
       "bytes": 305,
@@ -207,14 +207,14 @@
       "sha256": "96d034b9199314faab11fd4401c4fa6794771198e481d5423f0419d7fa07ea14"
     },
     {
-      "bytes": 229,
+      "bytes": 1293,
       "path": "audit/phase14rh/alternative-resource/or-negative.json",
-      "sha256": "b4c6af1575f2db30e731dd2a5cc96715d833cd3bde3e951fe24a0d742f085421"
+      "sha256": "52d8cb50a40e9a93f299992fd01ec76cbe8b4a80318a812b50e61bfab439a8d2"
     },
     {
       "bytes": 2203,
       "path": "audit/phase14rh/alternative-resource/results.json",
-      "sha256": "df53b820ca94859da0dbe06d61b06cfc0611ab1e94f70a864d02dd14087f19f7"
+      "sha256": "f6214536d84b191b45ef55902a92459f59f7dba095c576ccee9ad7875eb83bf6"
     },
     {
       "bytes": 1958,
@@ -427,9 +427,9 @@
       "sha256": "abaf66cc1393bb95fba9be4de7ce68caaa66370f18498a89db3664b2f33b84ac"
     },
     {
-      "bytes": 1820,
+      "bytes": 1847,
       "path": "audit/phase14rh/check.py",
-      "sha256": "1816b8f8147f03ba6f2c98faef2b0bd4b0a0aa33024f716e388a30db1b48ea55"
+      "sha256": "ff12cbe8a067d790092a591899d83fc7dcdd9984a37ce493c264b4fbfce57311"
     },
     {
       "bytes": 2487,
@@ -1027,14 +1027,14 @@
       "sha256": "c94dba7264d79ef2203f083996448a314b2a0c88afbf6f65ae43f977fcae1a2e"
     },
     {
-      "bytes": 5006,
+      "bytes": 8091,
       "path": "audit/phase14rh/or_cases.py",
-      "sha256": "a87e45da11616102fce0a0fdac49c2352c6b0952ea7ff10aafccc113bc8680e3"
+      "sha256": "461ef5f35a4ba279240f10dfd7e45883c642732bbddb98473a4ce558e6e1392c"
     },
     {
-      "bytes": 1059,
+      "bytes": 2807,
       "path": "audit/phase14rh/or_negative.py",
-      "sha256": "7b7d22f7876bbfbe6fcceb8731e92d3da4a73af1be46cdfa99193b1032c8b00b"
+      "sha256": "f5dd147a46dd5a4a7cf539fe4b5563f3866ded64821ae82120d020568bc18384"
     },
     {
       "bytes": 246,
@@ -1197,9 +1197,9 @@
       "sha256": "4b477f1ff836a9365a89373384ce46d05d07726cc954567c58a21677259955ea"
     },
     {
-      "bytes": 447,
+      "bytes": 674,
       "path": "audit/phase14rh/reducer/failure-signature.json",
-      "sha256": "73149b9b6733f2cc528db011c7459d7142a32ad627b27bb9d729d9f869c74250"
+      "sha256": "e26df50b38b8f36de5ac55228f01bc7f4f56bbb352953b80ef30d8cfdff76b8f"
     },
     {
       "bytes": 271,
