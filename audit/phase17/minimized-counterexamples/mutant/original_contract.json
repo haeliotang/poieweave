@@ -1,0 +1,47 @@
+{
+  "baseline": {
+    "profile": "shared",
+    "tool": false,
+    "failures": [],
+    "alts": [
+      null,
+      null
+    ],
+    "pref": 0
+  },
+  "intervention": {
+    "profile": "shared",
+    "tool": false,
+    "failures": [
+      {
+        "time_s": 7201,
+        "target": "bus-1",
+        "kind": 3,
+        "target_id": 3
+      },
+      {
+        "time_s": 8000,
+        "target": "sensor-x",
+        "kind": 3,
+        "target_id": 5
+      },
+      {
+        "time_s": 9000,
+        "target": "bus-2",
+        "kind": 3,
+        "target_id": 6
+      },
+      {
+        "time_s": 10000,
+        "target": "bus-1",
+        "kind": 3,
+        "target_id": 3
+      }
+    ],
+    "alts": [
+      null,
+      null
+    ],
+    "pref": 0
+  }
+}

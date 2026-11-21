@@ -1,0 +1,1373 @@
+{
+  "schema": "poie.s5v-n17-interventions/1",
+  "pairs": [
+    {
+      "intervention_id": "N17-C1",
+      "type": "FAILURE_TARGET_CHANGE",
+      "policy_related": false,
+      "changed": {
+        "profile": false,
+        "failures": true,
+        "alts": false,
+        "pref": false,
+        "tool": false
+      },
+      "unchanged": {
+        "tasks": true,
+        "horizon": true
+      },
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              3600.0,
+              "sensor-x"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              3600.0,
+              "sensor-x"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              3600.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "bus-1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              3600.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "bus-1"
+          ]
+        }
+      },
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "relation_detail": {
+        "canonical_changed": true,
+        "external_changed": true
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C2",
+      "type": "FAILURE_TIME_CHANGE",
+      "policy_related": false,
+      "changed": {
+        "profile": false,
+        "failures": true,
+        "alts": false,
+        "pref": false,
+        "tool": false
+      },
+      "unchanged": {
+        "tasks": true,
+        "horizon": true
+      },
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7199.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7199.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7199.0,
+          "expected_first_hit": [
+            7199.0,
+            "bus-1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7199.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7199.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7199.0,
+          "expected_first_hit": [
+            7199.0,
+            "bus-1"
+          ]
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "relation_detail": {
+        "canonical_changed": true,
+        "external_changed": true
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C3",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "policy_related": false,
+      "changed": {
+        "profile": true,
+        "failures": false,
+        "alts": false,
+        "pref": false,
+        "tool": false
+      },
+      "unchanged": {
+        "tasks": true,
+        "horizon": true
+      },
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7201.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7201.0,
+          "expected_first_hit": [
+            7201.0,
+            "bus-1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7201.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7201.0,
+          "expected_first_hit": [
+            7201.0,
+            "bus-1"
+          ]
+        }
+      },
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "relation_detail": {
+        "canonical_changed": true,
+        "external_changed": true
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C4",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "policy_related": false,
+      "changed": {
+        "profile": false,
+        "failures": false,
+        "alts": true,
+        "pref": true,
+        "tool": false
+      },
+      "unchanged": {
+        "tasks": true,
+        "horizon": true
+      },
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m2"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 18000.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 18000.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 18000.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 18000.0,
+          "termination": 18000.0,
+          "expected_first_hit": null
+        }
+      },
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "relation_detail": {
+        "canonical_changed": true,
+        "external_changed": true
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C7",
+      "type": "FAILURE_INSERTION",
+      "policy_related": false,
+      "changed": {
+        "profile": false,
+        "failures": true,
+        "alts": false,
+        "pref": false,
+        "tool": false
+      },
+      "unchanged": {
+        "tasks": true,
+        "horizon": true
+      },
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "relation_detail": {
+        "canonical_changed": true,
+        "external_changed": true
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C8a",
+      "type": "FAILURE_TIME_CHANGE",
+      "policy_related": false,
+      "changed": {
+        "profile": false,
+        "failures": true,
+        "alts": false,
+        "pref": false,
+        "tool": false
+      },
+      "unchanged": {
+        "tasks": true,
+        "horizon": true
+      },
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7199.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7199.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7199.0,
+          "expected_first_hit": [
+            7199.0,
+            "bus-1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7199.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7199.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7199.0,
+          "expected_first_hit": [
+            7199.0,
+            "bus-1"
+          ]
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7200.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7200.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "relation_detail": {
+        "canonical_changed": true,
+        "external_changed": true
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C8b",
+      "type": "FAILURE_TIME_CHANGE",
+      "policy_related": false,
+      "changed": {
+        "profile": false,
+        "failures": true,
+        "alts": false,
+        "pref": false,
+        "tool": false
+      },
+      "unchanged": {
+        "tasks": true,
+        "horizon": true
+      },
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7200.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7200.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "relation_detail": {
+        "canonical_changed": true,
+        "external_changed": true
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C9",
+      "type": "FAILURE_TIME_CHANGE",
+      "policy_related": false,
+      "changed": {
+        "profile": false,
+        "failures": true,
+        "alts": false,
+        "pref": false,
+        "tool": false
+      },
+      "unchanged": {
+        "tasks": true,
+        "horizon": true
+      },
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7199.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7199.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7199.0,
+          "expected_first_hit": [
+            7199.0,
+            "bus-1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7199.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7199.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7199.0,
+          "expected_first_hit": [
+            7199.0,
+            "bus-1"
+          ]
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7201.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7201.0,
+          "expected_first_hit": [
+            7201.0,
+            "bus-1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              7201.0,
+              "bus-1"
+            ]
+          ],
+          "interruption": 7201.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 7201.0,
+          "expected_first_hit": [
+            7201.0,
+            "bus-1"
+          ]
+        }
+      },
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "relation_detail": {
+        "canonical_changed": true,
+        "external_changed": true
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C6",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "policy_related": false,
+      "changed": {
+        "profile": false,
+        "failures": false,
+        "alts": true,
+        "pref": true,
+        "tool": false
+      },
+      "unchanged": {
+        "tasks": true,
+        "horizon": true
+      },
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1",
+              "tool-t1"
+            ],
+            "B": [
+              "robot-m2",
+              "tool-t1"
+            ]
+          },
+          "makespan": 18000.0,
+          "failures": [
+            [
+              3600.0,
+              "tool-t1"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "tool-t1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 18000.0,
+          "failures": [
+            [
+              3600.0,
+              "tool-t1"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "tool-t1"
+          ]
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m2",
+              "tool-t1"
+            ],
+            "B": [
+              "robot-m2",
+              "tool-t1"
+            ]
+          },
+          "makespan": 18000.0,
+          "failures": [
+            [
+              3600.0,
+              "tool-t1"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "tool-t1"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m2",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 18000.0,
+          "failures": [
+            [
+              3600.0,
+              "tool-t1"
+            ]
+          ],
+          "interruption": 3600.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 3600.0,
+          "expected_first_hit": [
+            3600.0,
+            "tool-t1"
+          ]
+        }
+      },
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "relation_detail": {
+        "canonical_changed": true,
+        "external_changed": true
+      },
+      "status": "ACCEPTED"
+    },
+    {
+      "intervention_id": "N17-C10",
+      "type": "FAILURE_TIME_CHANGE",
+      "policy_related": false,
+      "changed": {
+        "profile": false,
+        "failures": true,
+        "alts": false,
+        "pref": false,
+        "tool": false
+      },
+      "unchanged": {
+        "tasks": true,
+        "horizon": true
+      },
+      "baseline": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              10799.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": 10799.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 10799.0,
+          "expected_first_hit": [
+            10799.0,
+            "bus-2"
+          ]
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              10799.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": 10799.0,
+          "completed": false,
+          "restoration": null,
+          "termination": 10799.0,
+          "expected_first_hit": [
+            10799.0,
+            "bus-2"
+          ]
+        }
+      },
+      "intervention": {
+        "canonical": {
+          "side": "canonical",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [
+              "robot-m1"
+            ],
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              10801.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": null,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        },
+        "external": {
+          "side": "external",
+          "valid": true,
+          "findings": [],
+          "selected_robots": [
+            "robot-m1",
+            "robot-m2"
+          ],
+          "selected_resources": {
+            "A": [],
+            "B": []
+          },
+          "makespan": 10800.0,
+          "failures": [
+            [
+              10801.0,
+              "bus-2"
+            ]
+          ],
+          "interruption": null,
+          "completed": true,
+          "restoration": 10800.0,
+          "termination": 10800.0,
+          "expected_first_hit": null
+        }
+      },
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "relation_detail": {
+        "canonical_changed": true,
+        "external_changed": true
+      },
+      "status": "ACCEPTED"
+    }
+  ]
+}

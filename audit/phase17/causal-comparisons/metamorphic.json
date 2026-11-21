@@ -1,0 +1,53 @@
+{
+  "schema": "poie.s5v-n17-metamorphic/1",
+  "properties": [
+    {
+      "property": "P1_IRRELEVANT_FAILURE_INVARIANCE",
+      "case": "N17-C1",
+      "pass": true
+    },
+    {
+      "property": "P2_RELEASED_DEPENDENCY_NONINTERFERENCE",
+      "case": "N17-C7",
+      "pass": [
+        [
+          7201.0,
+          "bus-1"
+        ]
+      ]
+    },
+    {
+      "property": "P3_SHARED_DEPENDENCY_PERSISTENCE",
+      "case": "N17-C3",
+      "pass": true
+    },
+    {
+      "property": "P4_REQUIRED_TOOL_NON_BYPASS",
+      "case": "N17-C6",
+      "pass": true
+    },
+    {
+      "property": "P5_CONTROLLED_FAILURE_TIME_SENSITIVITY",
+      "case": "N17-C2",
+      "pass": true
+    },
+    {
+      "property": "P6_POLICY_DEPENDENT_OUTCOME",
+      "case": "N17-C4",
+      "pass": true
+    },
+    {
+      "property": "P7_DETERMINISTIC_REPLAY",
+      "cases": [
+        "N17-P7",
+        "N17-P7b"
+      ],
+      "pass": true
+    },
+    {
+      "property": "P8_NO_UNAUTHORIZED_RECOVERY",
+      "case": "N17-C8a",
+      "pass": true
+    }
+  ]
+}

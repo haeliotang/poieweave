@@ -1,0 +1,26 @@
+{
+  "schema": "poie.s5v-n17-mutant-reduction/1",
+  "steps": [
+    {
+      "step": "original",
+      "signature": "SHARED_DEPENDENCY_LOSS",
+      "findings": [
+        "CLOSURE_7200.0",
+        "ACTIVE_DEPENDENCY_FAILURE_IGNORED",
+        "RESTORED_AFTER_INTERRUPTION"
+      ]
+    },
+    {
+      "step": "drop-failure-3",
+      "accepted": true
+    },
+    {
+      "step": "drop-failure-2",
+      "accepted": true
+    },
+    {
+      "step": "drop-failure-1",
+      "accepted": true
+    }
+  ]
+}
