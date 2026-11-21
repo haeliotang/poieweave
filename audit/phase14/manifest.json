@@ -757,9 +757,9 @@
       "sha256": "495b82566f8cf2db1688be192d8b06ead3c07be737ec881738b9457f858627b0"
     },
     {
-      "bytes": 1721,
+      "bytes": 1638,
       "path": "audit/phase14/negative-controls/cross-model-results.json",
-      "sha256": "18282b66dac0cf1c373d1126f17ae83cb75250ea31c2054b1f7c8deda05f726a"
+      "sha256": "92b15cdef1b21d2b7a63719fc31b21e99543fed8e44d033d405b9e3871974ce4"
     },
     {
       "bytes": 213,
@@ -767,9 +767,9 @@
       "sha256": "eda021246e091742b1f6180e882cc31ecd6efc2686164b9bd7c6016cf3537686"
     },
     {
-      "bytes": 3969,
+      "bytes": 4285,
       "path": "audit/phase14/negative_controls.py",
-      "sha256": "52184740d6ca4806d6ce1494e8c339191f52162b20d7708b2e1775529968a202"
+      "sha256": "db6b08a6f4272c6d5d08a78f581f5689f3af46e07658f9d2ccff1cc07d8341a4"
     },
     {
       "bytes": 1239,
