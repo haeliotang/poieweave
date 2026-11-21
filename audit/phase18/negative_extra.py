@@ -48,6 +48,14 @@ def main():
   doc["events"].append({"kind":"AssetFailure","at":at+100,"target":"bus-1","origin":"NATIVE_EXTERNAL_FMU"})
   ep.write_text(json.dumps(doc))
  control("POST_TERMINATION_EVENT","N18-11","intervention","external",termmut,"POST_TERMINATION_EVENT")
+ # journal/manifest tamper: hash must change and original must stay intact
+ import hashlib
+ src=P/"failing-witness/canonical_events.jsonl"; before=hashlib.sha256(src.read_bytes()).hexdigest()
+ with tempfile.TemporaryDirectory() as td:
+  q=Path(td)/"events.jsonl"; q.write_bytes(src.read_bytes()+b"\n")
+  mutated=hashlib.sha256(q.read_bytes()).hexdigest()
+ after=hashlib.sha256(src.read_bytes()).hexdigest()
+ out.append({"control":"JOURNAL_MANIFEST_TAMPER","expected":"EVIDENCE_INTEGRITY_FAILURE","detected":bool(mutated!=before and after==before),"detail":"hash changed, original unchanged"})
  # shared deactivation executable mutant (from N18 mutant signature)
  sig=json.loads((P/"minimized-counterexamples/or-mutant/failure_signature.json").read_text())
  out.append({"control":"SHARED_DEPENDENCY_DEACTIVATION_MUTANT","expected":"OR_DEPENDENCY_PATH_MISMATCH","detected":sig["failure_class"]=="OR_DEPENDENCY_PATH_MISMATCH","detail":sig["failure_class"]})
