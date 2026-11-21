@@ -51,6 +51,15 @@ try:
  results.append({"control":"task2-resource","expected":"RESOURCE_ELIGIBILITY_VIOLATION","detected":detected,"findings":r.stdout.strip().splitlines()[-1:]})
  print("task2-resource","PASS" if detected else "FAIL")
 finally: csv.write_text(bak)
+# Serialized same-robot tasks must not overlap.
+csv5=P/"external/N14-T05.csv"; bak5=csv5.read_text()
+try:
+ lines=bak5.splitlines(); h=lines[0].split(','); idx=h.index('t2Start_s'); last=lines[-1].split(','); last[idx]='0.000000000'; lines[-1]=','.join(last); csv5.write_text('\n'.join(lines)+'\n')
+ r=subprocess.run([sys.executable,str(P/"validate_composition.py")],capture_output=True,text=True)
+ detected=r.returncode!=0 and 'RESOURCE_CONTENTION_VIOLATION' in r.stdout
+ results.append({"control":"task-contention","expected":"RESOURCE_CONTENTION_VIOLATION","detected":detected,"findings":r.stdout.strip().splitlines()[-1:]})
+ print("task-contention","PASS" if detected else "FAIL")
+finally: csv5.write_text(bak5)
 # Invalid failure count rejects at FMI initialization.
 bad=P/"contracts/N14-invalid-count.contract"; bad.write_text((P/"contracts/N14-T00.contract").read_text().replace('failureCount=0','failureCount=5'))
 r=subprocess.run(["external/fmu-n14-scheduler/build/harness","external/fmu-n14-scheduler/poie-n14-scheduler.fmu","900",str(bad),str(P/"external/N14-invalid-count.csv")],capture_output=True,text=True)

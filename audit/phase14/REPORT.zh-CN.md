@@ -27,7 +27,7 @@ N14-E EVIDENCE AND CERTIFICATE
 - N13 严格复验发现真实缺陷：完成/恢复事件的 `failed_before` 使用旧 mask。
 - N14 FMU 修复该历史连续性，支持 4 故障、2 任务、双机器人。
 - 越界 failureCount、非法 kind/asset 返回 FMI 错误，不再静默截断。
-- 2 任务外部案例：0/2/2 同刻/选中+工具/4 故障，全部通过。
+- 2 任务外部案例：0/2/2 同刻/选中+工具/4 故障/同机器人串行，全部通过。
 - 同一 JSON 契约驱动 canonical adapter 与 N14 FMU，24/24 生成案例 ACCEPTED。
 - 负例：共同错误时间、事件丢失、状态历史丢失、failure_id 交换、终止后事件、Task 2 非法资源、超容量输入全部拒绝。
 

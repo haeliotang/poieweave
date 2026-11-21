@@ -55,7 +55,15 @@
       "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
       "detected": true,
       "findings": [
-        "N14-T04 ACCEPTED 4 {'t1': 1, 't2': 2} []"
+        "N14-T05 ACCEPTED 0 {'t1': 1, 't2': 1} []"
+      ]
+    },
+    {
+      "control": "task-contention",
+      "expected": "RESOURCE_CONTENTION_VIOLATION",
+      "detected": true,
+      "findings": [
+        "N14-T05 FAIL 0 {'t1': 1, 't2': 1} ['RESOURCE_CONTENTION_VIOLATION']"
       ]
     },
     {

@@ -70,6 +70,20 @@
       "interrupted": true,
       "problems": [],
       "status": "ACCEPTED"
+    },
+    {
+      "case": "N14-T05",
+      "task_count": 2,
+      "failure_count": 0,
+      "applied": 0,
+      "resources": {
+        "t1": 1,
+        "t2": 1
+      },
+      "makespan": 18000.0,
+      "interrupted": false,
+      "problems": [],
+      "status": "ACCEPTED"
     }
   ]
 }
