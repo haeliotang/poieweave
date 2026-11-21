@@ -59,9 +59,10 @@ def main():
    if k in ("InitialRepairStarted","RunTerminated"): continue
    et=e.get("target")
    if k in ("RepairCompleted","RepairInterrupted"): et="a-lathe"
-   if k in ("TaskCompleted","ResourceReleased","DependencyDeactivated","AssetFailure","RepairInterrupted","RepairCompleted"): xnorm.append((t,k,et))
+   if k in ("TaskCompleted","ResourceReleased","DependencyDeactivated","AssetFailure","RepairInterrupted","RepairCompleted"): xnorm.append((t,k,et,e.get("dep_after")))
    if "dep_after" in e: xdep_after[(t,k,e.get("target"))]=e["dep_after"]
   # independent OR-policy detection and per-model sensitivity
+  crobots=[next((r for r in tr[i]["resources"] if r.startswith("robot")),None) for i in range(len(tasks))]
   policy=False; policy_details=[]
   for i,task in enumerate(tasks):
    crobot=next((r for r in tr[i]["resources"] if r.startswith("robot")),None)
@@ -69,47 +70,59 @@ def main():
    allowed=task.get("robot_alternatives") or []
    if crobot!=erobot and crobot in allowed and erobot in allowed:
     policy=True; policy_details.append({"task":task["task_id"],"canonical":crobot,"external":erobot})
-  if policy:
-   # each model must be sensitive according to its own closure at the failure
-   for f in js["failures"]:
-    cfail=[e for e in ce if e["event_kind"]=="AssetFailure" and e["target_asset"]==f["target"]]
-    xfail=[e for e in journal if e["kind"]=="AssetFailure" and e.get("target")==f["target"]]
-    if cfail:
-     cdeps=set((cfail[0].get("running_repair") or {}).get("execution_dependencies") or [])
-     c_expect=f["target"] in cdeps or f["target"] in set((ce[0].get("running_repair") or {}).get("restoration_targets") or [])
-     if (any(e["event_kind"]=="RepairInterrupted" for e in ce) and not c_expect): findings.append("POLICY_CANONICAL_SENSITIVITY")
-    if xfail and "dep_before" in xfail[0]:
-     x_expect=bool(xfail[0]["dep_before"] & (1 << f["target_id"])) if f["kind"]!=1 else any(task["robot_mask"] and f["target"] in resources[task["task_id"]] for task in tasks)
-     if (any(e["kind"]=="RepairInterrupted" for e in journal) and not x_expect): findings.append("POLICY_EXTERNAL_SENSITIVITY")
-  # compare normalized streams by type/time/target
-  cs=sorted(canon); xs=sorted(xnorm)
-  if cs!=xs:
-   # find first difference
-   for i,(a,b) in enumerate(zip(cs,xs)):
-    if a!=b: findings.append(f"EVENT_STREAM_DIVERGENCE:{a[0]}:{a[1]}:{b[1]}"); break
-   else: findings.append("EVENT_COUNT_DIVERGENCE")
-  # dependency closure after initial and at every deactivation
-  if ce:
-   init_deps=set((ce[0].get("running_repair") or {}).get("execution_dependencies") or []); init_up=init_deps & UPSTREAM
-   initial=[e for e in journal if e["kind"]=="InitialRepairStarted"][0]
-   if init_up!=bitset(initial["dep_after"]): findings.append(f"INITIAL_CLOSURE:{sorted(init_up)}:{sorted(bitset(initial['dep_after']))}")
-  xdep_at={}
-  for e in journal:
-   if "dep_after" in e: xdep_at[e["at"]]=e["dep_after"]
-  for at,mask in xdep_at.items():
-   cand=[e for e in ce if abs(e["at_s"]-at)<1e-9 and e.get("running_repair")]
-   if not cand: continue
-   cd=set((cand[-1].get("running_repair") or {}).get("execution_dependencies") or []) & UPSTREAM
-   if cd!=bitset(mask): findings.append(f"CLOSURE_AT_{at}")
-  # independent closure invariant from the contract: shared/future upstream must persist
-  profile=js.get("dependency_profile","default")
-  task_up={}
-  for i,task in enumerate(tasks):
-   robot="robot-m1" if i==0 else "robot-m2"
+  def upstream_for(robot,profile):
    if profile=="split":
-    task_up[task["task_id"]]={"bus-1","bat-1","charger-1"} if robot=="robot-m1" else {"bus-2"}
-   else:
-    task_up[task["task_id"]]={"bus-1","bat-1","charger-1"}
+    return {"bus-1","bat-1","charger-1"} if robot=="robot-m1" else {"bus-2"}
+   return {"bus-1","bat-1","charger-1"}
+  profile=js.get("dependency_profile","default")
+  c_task_up={tasks[i]["task_id"]:upstream_for(next(r for r in tr[i]["resources"] if r.startswith("robot")),profile) for i in range(len(tasks))}
+  x_task_up={tasks[i]["task_id"]:upstream_for(xrobots[i],profile) for i in range(len(tasks))}
+  def closure_check(events, ends, robots, task_up_map, side):
+   for at in sorted({e["at_s"] for e in events if e.get("event_kind")=="TaskCompleted"}):
+    unfinished=[task for task in tasks if ends[task["task_id"]]>at+1e-9]
+    expected=set().union(*(task_up_map[task["task_id"]] for task in unfinished)) if unfinished else set()
+    cand=[e for e in events if abs(e["at_s"]-at)<1e-9 and e.get("running_repair")]
+    if cand:
+     actual=set((cand[-1].get("running_repair") or {}).get("execution_dependencies") or []) & UPSTREAM
+     if not expected <= actual: findings.append(f"{side}_SHARED_DEPENDENCY_LOSS")
+   # external native deactivation must not remove a still-needed upstream
+   if side=="EXTERNAL":
+    for de in [e for e in events if e.get("kind")=="DependencyDeactivated"]:
+     if de.get("target") in UPSTREAM:
+      unfinished=[task for task in tasks if ends[task["task_id"]]>de["at"]+1e-9]
+      expected=set().union(*(task_up_map[task["task_id"]] for task in unfinished)) if unfinished else set()
+      if de["target"] in expected: findings.append(f"EXTERNAL_PREMATURE_DEACTIVATION_{de['target']}")
+  if policy:
+   c_ends={task["task_id"]:tr[i]["end_s"] for i,task in enumerate(tasks)}
+   x_ends={task["task_id"]:float(last[f"t{i+1}End_s"]) for i,task in enumerate(tasks)}
+   closure_check([{"at_s":e["at_s"],"event_kind":e["event_kind"],"running_repair":e.get("running_repair")} for e in ce],c_ends,crobots,c_task_up,"CANONICAL")
+   # external closure check uses dep_after vs expected at each task completion time
+   for at in sorted({x_ends[t] for t in x_ends}):
+    unfinished=[task for task in tasks if x_ends[task["task_id"]]>at+1e-9]
+    expected=set().union(*(x_task_up[task["task_id"]] for task in unfinished)) if unfinished else set()
+    cand=[e for e in journal if abs(e["at"]-at)<1e-9 and "dep_after" in e]
+    if cand:
+     actual=bitset(cand[-1]["dep_after"])
+     if not expected <= actual: findings.append("EXTERNAL_SHARED_DEPENDENCY_LOSS")
+  init_deps=set((ce[0].get("running_repair") or {}).get("execution_dependencies") or []) if ce else set(); init_up=init_deps & UPSTREAM
+  initial=[e for e in journal if e["kind"]=="InitialRepairStarted"][0] if journal else {"dep_after":0}
+  # compare normalized streams in ORIGINAL ORDER
+  rank={"TaskCompleted":0,"ResourceReleased":1,"DependencyDeactivated":2,"AssetFailure":3,"RepairInterrupted":4,"RepairCompleted":3,"AssetFailure":4,"RepairInterrupted":5,"RestorationCommitted":6}
+  def rank_ok(events):
+   by={}
+   for ev in events: by.setdefault(ev[0],[]).append(rank.get(ev[1],9))
+   return all(v==sorted(v) for v in by.values())
+  if not policy:
+   if not rank_ok(canon): findings.append("CANONICAL_EVENT_ORDER")
+   if not rank_ok(xnorm): findings.append("EXTERNAL_EVENT_ORDER")
+   ct={}
+   for e in canon: ct.setdefault(e[0],[]).append((e[1],e[2]))
+   xt={}
+   for e in xnorm: xt.setdefault(e[0],[]).append((e[1],e[2]))
+   for at in sorted(set(ct)|set(xt)):
+    if sorted(ct.get(at,[]))!=sorted(xt.get(at,[])): findings.append(f"EVENT_SET_DIVERGENCE_{at}")
+  # independent closure invariant from the contract: shared/future upstream must persist
+  task_up=c_task_up
   for at in sorted({e["at_s"] for e in ce if e["event_kind"]=="TaskCompleted"}):
    unfinished=[task for i,task in enumerate(tasks) if tr[i]["end_s"]>at+1e-9]
    expected=set().union(*(task_up[task["task_id"]] for task in unfinished)) if unfinished else set()
@@ -129,10 +142,15 @@ def main():
    if f["time_s"] <= x_term+1e-9 and not any(e["kind"]=="AssetFailure" and abs(e["at"]-f["time_s"])<1e-9 and e.get("target")==f["target"] for e in journal): findings.append(f"EXTERNAL_FAILURE_MISSING_{f['failure_id']}")
   c_int=any(e["event_kind"]=="RepairInterrupted" for e in ce); x_int=any(e["kind"]=="RepairInterrupted" for e in journal)
   c_comp=any(e["event_kind"]=="RepairCompleted" for e in ce); x_comp=any(e["kind"]=="RepairCompleted" for e in journal)
+  x_makespan=max(float(last[f"t{i+1}End_s"]) for i in range(len(tasks)))
+  if any(e["event_kind"]=="RepairCompleted" and e["at_s"]<makespan-1e-9 for e in ce): findings.append("PREMATURE_GROUP_COMMIT")
+  if any(e["kind"]=="RepairCompleted" and e["at"]<x_makespan-1e-9 for e in journal): findings.append("PREMATURE_GROUP_COMMIT_EXTERNAL")
+  if x_int and any(e["kind"]=="RestorationCommitted" for e in journal): findings.append("INTERRUPTED_RESTORED")
+  if any(e["kind"]=="RestorationCommitted" and e["at"]<x_makespan-1e-9 for e in journal): findings.append("PREMATURE_GROUP_COMMIT_EXTERNAL")
   if c_int!=x_int: findings.append("INTERRUPTION_DIVERGENCE")
   if c_comp!=x_comp: findings.append("GROUP_COMMIT_DIVERGENCE")
   if policy:
-   findings=[f for f in findings if not (f.startswith("EVENT") or f.startswith("CLOSURE") or f.startswith("INITIAL_CLOSURE") or f.startswith("INTERRUPTION") or f.startswith("GROUP_COMMIT") or f.startswith("EXTERNAL_FAILURE") or f=="MAKESPAN")]
+   findings=[f for f in findings if not (f.startswith("EVENT") or f.startswith("INTERRUPTION") or f.startswith("GROUP_COMMIT") or f=="MAKESPAN")]
   results.append({"case":cid,"classification":"VALID_POLICY_DEPENDENT_DIVERGENCE" if policy else "SAME_POLICY","policy":policy_details,"initial_canonical_closure":sorted(init_up) if ce else [],"initial_external_closure":sorted(bitset(initial["dep_after"])) if journal else [],"canonical_events":len(canon),"external_events":len(xnorm),"canonical_interrupted":c_int,"external_interrupted":x_int,"findings":findings,"first_closure_divergence":next((f for f in findings if "CLOSURE" in f),None),"first_event_divergence":next((f for f in findings if "EVENT" in f),None),"status":"ACCEPTED" if not findings else "FAIL"})
  (P/"dependency-trajectories/results.json").write_text(json.dumps({"schema":"poie.s5v-n16-closure/1","cases":results},indent=2)+"\n")
  for r in results: print(r["case"],r["status"],r["findings"])

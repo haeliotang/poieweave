@@ -1,0 +1,8 @@
+{"schema":"poie.s5v-n17-claim-status/1","claims":[
+ {"id":"N17-0","status":"VERIFIED","scope":"N16 false-pass controls, event order, phase alignment, generated oracle, claim consistency"},
+ {"id":"N17-A","status":"NOT_ESTABLISHED","scope":"controlled intervention execution"},
+ {"id":"N17-B","status":"NOT_ESTABLISHED","scope":"causal oracle independence"},
+ {"id":"N17-C","status":"NOT_ESTABLISHED","scope":"counterfactual relations"},
+ {"id":"N17-D","status":"NOT_ESTABLISHED","scope":"generated/adversarial"},
+ {"id":"N17-E","status":"NOT_ESTABLISHED","scope":"evidence/certificate"},
+ {"id":"N17-F","status":"NOT_ESTABLISHED","scope":"reproducibility"}]}
