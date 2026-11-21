@@ -1044,12 +1044,14 @@ jobs:
         run: python3 scripts/build-certificate-impact.py --check
       - name: S2 claim certificate coverage
         run: python3 scripts/build-claim-certificate-coverage.py --check
-      - name: S2 canonical claim certificates v6
-        run: python3 scripts/build-canonical-claim-certificates-v6.py --check
+      - name: S2 v6 historical freeze
+        run: python3 scripts/verify-canonical-claim-certificates-v6-historical.py
+      - name: S2 canonical claim certificates v7
+        run: python3 scripts/build-canonical-claim-certificates-v7.py --check
       - name: S2 canonical claim certificate v6 verification
-        run: python3 scripts/verify-canonical-claim-certificates-v6.py
+        run: python3 scripts/verify-canonical-claim-certificates-v7.py
       - name: S2 canonical claim certificate v6 tamper
-        run: python3 scripts/check-canonical-claim-certificate-tamper-v6.py
+        run: python3 scripts/check-canonical-claim-certificate-tamper-v7.py
       - name: Frozen v5 certificates and historical verification
         run: python3 audit/certificates/verify_v5.py
       - name: Frozen v4 certificates and historical verification
@@ -1636,9 +1638,10 @@ jobs:
           python3 audit/phase7/negative_controls.py
       - name: Verify v6 certificates and tamper controls
         run: |
-          python3 scripts/build-canonical-claim-certificates-v6.py --check
-          python3 scripts/verify-canonical-claim-certificates-v6.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v6.py
+          python3 scripts/verify-canonical-claim-certificates-v6-historical.py
+          python3 scripts/build-canonical-claim-certificates-v7.py --check
+          python3 scripts/verify-canonical-claim-certificates-v7.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v7.py
           python3 audit/certificates/verify_v5.py
           python3 audit/certificates/verify_v4.py
           python3 audit/certificates/verify_v3.py
@@ -1688,9 +1691,10 @@ jobs:
           python3 audit/phase8/negative_trajectory.py
       - name: Verify v6 certificates and historical v1/v2/v3/v4/v5
         run: |
-          python3 scripts/build-canonical-claim-certificates-v6.py --check
-          python3 scripts/verify-canonical-claim-certificates-v6.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v6.py
+          python3 scripts/verify-canonical-claim-certificates-v6-historical.py
+          python3 scripts/build-canonical-claim-certificates-v7.py --check
+          python3 scripts/verify-canonical-claim-certificates-v7.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v7.py
           python3 audit/certificates/verify_v5.py
           python3 audit/certificates/verify_v4.py
           python3 audit/certificates/verify_v3.py
@@ -1794,9 +1798,10 @@ jobs:
           python3 audit/phase9/verify_evidence.py --claim
       - name: Verify v6 and historical certificates
         run: |
-          python3 scripts/build-canonical-claim-certificates-v6.py --check
-          python3 scripts/verify-canonical-claim-certificates-v6.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v6.py
+          python3 scripts/verify-canonical-claim-certificates-v6-historical.py
+          python3 scripts/build-canonical-claim-certificates-v7.py --check
+          python3 scripts/verify-canonical-claim-certificates-v7.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v7.py
           python3 audit/certificates/verify_v5.py
           python3 audit/certificates/verify_v4.py
           python3 audit/certificates/verify_v3.py
@@ -1866,9 +1871,10 @@ jobs:
           python3 audit/phase10/check.py
       - name: Verify v6 and historical certificates
         run: |
-          python3 scripts/build-canonical-claim-certificates-v6.py --check
-          python3 scripts/verify-canonical-claim-certificates-v6.py
-          python3 scripts/check-canonical-claim-certificate-tamper-v6.py
+          python3 scripts/verify-canonical-claim-certificates-v6-historical.py
+          python3 scripts/build-canonical-claim-certificates-v7.py --check
+          python3 scripts/verify-canonical-claim-certificates-v7.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v7.py
           python3 audit/certificates/verify_v5.py
           python3 audit/certificates/verify_v4.py
           python3 audit/certificates/verify_v3.py
