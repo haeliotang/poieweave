@@ -23,12 +23,12 @@
     },
     {
       "id": "N12-D",
-      "status": "NOT_ESTABLISHED",
+      "status": "ESTABLISHED",
       "scope": "adversarial/stress"
     },
     {
       "id": "N12-E",
-      "status": "NOT_ESTABLISHED",
+      "status": "ESTABLISHED",
       "scope": "evidence/certificates"
     }
   ]

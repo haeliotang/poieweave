@@ -1951,6 +1951,7 @@ jobs:
       - name: Build N12 FMU and execute identity cases
         run: |
           external/fmu-n12-scheduler/build.sh
+          external/fmu-n12-scheduler/build_overflow.sh
           cargo run --locked -q -p poie-viability --bin poie-s5v-n12-boundary
           cargo run --locked -q -p poie-viability --bin poie-s5v-n12-causal
           for c in N10-00 N10-01 N10-02 N10-03 N10-04 N10-05 N10-06; do
@@ -1961,6 +1962,13 @@ jobs:
             external/fmu-n12-scheduler/build/harness external/fmu-n12-scheduler/poie-n12-scheduler.fmu 900 "audit/phase12/contracts/$c.contract" "audit/phase12/external/N12-$c.csv"
             python3 audit/phase12/fmpy_import.py --contract "audit/phase12/contracts/$c.contract" --step 900 --output "audit/phase12/external/N12-$c-fmpy.csv" --log "audit/phase12/external/N12-$c.log"
           done
+      - name: Overflow and step invariance
+        run: |
+          external/fmu-n12-scheduler/build/harness external/fmu-n12-scheduler/poie-n12-overflow.fmu 900 "audit/phase12/contracts/N10-00.contract" "audit/phase12/overflow-tests/N12-overflow.csv"
+          for s in 1 900 1000; do
+            external/fmu-n12-scheduler/build/harness external/fmu-n12-scheduler/poie-n12-scheduler.fmu "$s" "audit/phase12/contracts/N10-U01.contract" "audit/phase12/step-invariance/N12-U01-step$s.csv"
+          done
+          python3 audit/phase12/validate_stress.py
       - name: Validate native identity and historical false pass
         run: |
           python3 audit/phase12/reproduce_identity_false_pass.py
@@ -1968,10 +1976,13 @@ jobs:
           python3 audit/phase12/validate_projection.py
           python3 audit/phase12/negative_projection.py
           python3 audit/phase12/check.py
+          python3 audit/phase12/verify_evidence.py --claim
+          python3 audit/phase12/negative_evidence.py
       - name: Save N12 evidence
         run: |
           mkdir -p "$RUNNER_TEMP/s5v-n12/evidence"
           cp -R audit/phase12 "$RUNNER_TEMP/s5v-n12/evidence/"
+          python3 audit/phase12/execution_manifest.py --output "$RUNNER_TEMP/s5v-n12/evidence/execution-manifest.json"
       - uses: actions/upload-artifact@v4
         with:
           name: s5v-n12-linux-evidence

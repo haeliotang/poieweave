@@ -24,5 +24,9 @@ for c in proj["cases"]:
     if c.get("dimensions",{}).get("repair_state_before",{}).get("status")!="NOT_COMPARABLE": problems.append(f"{c['case']}: unobserved repair state")
 controls=json.loads((P/"negative-controls/projection-results.json").read_text())["results"]
 if not all(e["detected"] for e in controls): problems.append("projection controls")
+stress=json.loads((P/"comparisons/stress.json").read_text())
+if stress.get("problems"): problems.append("stress problems")
+ec=json.loads((P/"negative-controls/evidence-results.json").read_text())["results"]
+if not all(x["detected"] for x in ec): problems.append("evidence controls")
 if problems: print("N12 FAIL: "+", ".join(problems),file=sys.stderr); raise SystemExit(1)
 print("ok N12 event identity and historical false-pass correction")

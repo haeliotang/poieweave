@@ -55,6 +55,14 @@ def compare(case):
     dims["target_health_after"]={"canonical":ca,"external":xa,"status":"MATCH" if (ca=="Available")==bool(xa) else "MISMATCH"}
     if dims["target_health_before"]["status"]!="MATCH": findings.append({"class":"BEFORE_STATE_MISMATCH","dimension":"asset_health"})
     if dims["target_health_after"]["status"]!="MATCH": findings.append({"class":"AFTER_STATE_MISMATCH","dimension":"asset_health"})
+ # per-task resource mask: canonical summary robot and external InitialRepairStarted robot.
+ try:
+  summary=json.loads((P/"canonical"/f"{case}-summary.json").read_text())
+  cr=int(summary["task_resources"][0].split("robot-m")[1]); mask=int(spec["t1RobotMask"])
+  xr=int(ev[0]["after"][0])
+  if not (mask & (1 << (cr-1))): findings.append({"class":"RESOURCE_ELIGIBILITY_VIOLATION","model":"canonical"})
+  if not (mask & (1 << (xr-1))): findings.append({"class":"RESOURCE_ELIGIBILITY_VIOLATION","model":"external"})
+ except Exception: findings.append({"class":"NOT_COMPARABLE","reason":"resource selection not observed"})
  # non-observable canonical dimensions
  dims["repair_state_before"]={"canonical":"NOT_OBSERVED","external":ev[0]["before"][4],"status":"NOT_COMPARABLE"}
  dims["restoration_committed"]={"canonical":"NOT_OBSERVED","external":ev[-1]["after"][5],"status":"NOT_COMPARABLE"}
