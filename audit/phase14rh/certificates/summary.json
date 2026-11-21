@@ -1,0 +1,214 @@
+{
+  "schema": "poie.s5v-n14rh-attestation-summary/1",
+  "claims": 41,
+  "passed": 41,
+  "failed": [],
+  "attestations": [
+    {
+      "claim": "C56",
+      "attestation": "audit/phase14rh/certificates/C56.json",
+      "sha256": "42e1e59ed2993202eb28b246d4bdc1dd07bd93102150a84c6fd2556228084726"
+    },
+    {
+      "claim": "C57",
+      "attestation": "audit/phase14rh/certificates/C57.json",
+      "sha256": "61f31907af9d4c811b7455bfa77a78047c6d78c6cba10807a72ae515912472b9"
+    },
+    {
+      "claim": "C58",
+      "attestation": "audit/phase14rh/certificates/C58.json",
+      "sha256": "325690505a33248f2292897540b01fc6f04595333765354171807a23c862aaac"
+    },
+    {
+      "claim": "C59",
+      "attestation": "audit/phase14rh/certificates/C59.json",
+      "sha256": "7f6d25e22ade2e9926634d2c0a8e0409a0b03dd5a3731e8ad51a4345b686e569"
+    },
+    {
+      "claim": "C6",
+      "attestation": "audit/phase14rh/certificates/C6.json",
+      "sha256": "902e58b8faeb9478aaf48c858fc319e287f79a78aa60908fd4b7226963e91f6e"
+    },
+    {
+      "claim": "C60",
+      "attestation": "audit/phase14rh/certificates/C60.json",
+      "sha256": "6834574e040ed21f74b71145e076cafe24c33a2b0179c77e9fff5e54333729aa"
+    },
+    {
+      "claim": "C61",
+      "attestation": "audit/phase14rh/certificates/C61.json",
+      "sha256": "f187fd12efa13e643ca3d063a9803fe4314d8ce1ba1bf9edd8fca0df43b0e4fe"
+    },
+    {
+      "claim": "C62",
+      "attestation": "audit/phase14rh/certificates/C62.json",
+      "sha256": "208f2565c853b3bcb55d757cb910ce2bb0c1d2e1bfe857e88ee6762aeed7fbb9"
+    },
+    {
+      "claim": "C63",
+      "attestation": "audit/phase14rh/certificates/C63.json",
+      "sha256": "f53088c8806df5a3bb6e693a79478f1ad7bcf8991997970b80381b3eb50d546c"
+    },
+    {
+      "claim": "C64",
+      "attestation": "audit/phase14rh/certificates/C64.json",
+      "sha256": "9965474f7ee0ea7250acfb69e8ca7156ce58c4bd8fac47f400ba1592fa16e056"
+    },
+    {
+      "claim": "C65",
+      "attestation": "audit/phase14rh/certificates/C65.json",
+      "sha256": "f6f9bc8d367a680ce7907127ecb40026c52111b43d405befa5e81089671085ca"
+    },
+    {
+      "claim": "C66",
+      "attestation": "audit/phase14rh/certificates/C66.json",
+      "sha256": "141dc647b1741a6595432c9b4e755150895232a633f31bbd9493ea802e0021ca"
+    },
+    {
+      "claim": "C67",
+      "attestation": "audit/phase14rh/certificates/C67.json",
+      "sha256": "97d4deb9b7390c7e364e452438d69deb5da539627bb707429d99a439c39cdeac"
+    },
+    {
+      "claim": "C69",
+      "attestation": "audit/phase14rh/certificates/C69.json",
+      "sha256": "b4d1480cfbe4d9e600b3c75a01efb35a0e73537b0cf80d2b950b599b70fdfb54"
+    },
+    {
+      "claim": "C70",
+      "attestation": "audit/phase14rh/certificates/C70.json",
+      "sha256": "31ba750b816cd18d8f2c799800fae653f902b41367cf6e265bdeb5c867b4d7c7"
+    },
+    {
+      "claim": "C71",
+      "attestation": "audit/phase14rh/certificates/C71.json",
+      "sha256": "2fb95f4ab0a4ba2b8ec55759bbed26144120e0f166f49ef315eca5a91fe98723"
+    },
+    {
+      "claim": "C72",
+      "attestation": "audit/phase14rh/certificates/C72.json",
+      "sha256": "8e822609ec94f1d49807dc2434b437d52c74464555c934174b0ef1ac940d5e38"
+    },
+    {
+      "claim": "C73",
+      "attestation": "audit/phase14rh/certificates/C73.json",
+      "sha256": "c384dc7b9e13d257a9d22e6a8ade6df1fc86748c69a828209199b8d6d9b9c6ef"
+    },
+    {
+      "claim": "C74",
+      "attestation": "audit/phase14rh/certificates/C74.json",
+      "sha256": "112ca063a8eb8654bc20c4c243819f10eeb2adefa89f5aa30794d788be269cd7"
+    },
+    {
+      "claim": "C75",
+      "attestation": "audit/phase14rh/certificates/C75.json",
+      "sha256": "79c53781221d6e1640d6a37e201592afc481da4a0415c76941e1a14aee28f731"
+    },
+    {
+      "claim": "C76",
+      "attestation": "audit/phase14rh/certificates/C76.json",
+      "sha256": "cfeec470fc10c51368f52ebaac4fde8e884b930b2a386c023976c0b28b98a484"
+    },
+    {
+      "claim": "C77",
+      "attestation": "audit/phase14rh/certificates/C77.json",
+      "sha256": "9e0445952e5280349de80a4c554e6425a13d37debe809da672300fed5e3eb79b"
+    },
+    {
+      "claim": "C78",
+      "attestation": "audit/phase14rh/certificates/C78.json",
+      "sha256": "bbea31ad126ed97431b806423b158cef402c4b3b6ad160ed94f2870567c53188"
+    },
+    {
+      "claim": "C79",
+      "attestation": "audit/phase14rh/certificates/C79.json",
+      "sha256": "035ffed721a49e106ca5a1431473f343701faf18b281276ef14016b5e7bdf196"
+    },
+    {
+      "claim": "C80",
+      "attestation": "audit/phase14rh/certificates/C80.json",
+      "sha256": "55c2a8e522cf2e4f68295f9a05cd6878cf66bdae78d8d71f8908477fe05aac62"
+    },
+    {
+      "claim": "C81",
+      "attestation": "audit/phase14rh/certificates/C81.json",
+      "sha256": "6b351db9eeb34ffb2c25e1a5d8b47f97765ae0e59e969c7a8b9b21bacd1b5799"
+    },
+    {
+      "claim": "C82",
+      "attestation": "audit/phase14rh/certificates/C82.json",
+      "sha256": "865d655e5729c475ddec9d58d730226c8ddc28dded7d9b0eeb8bb19d7e39ca75"
+    },
+    {
+      "claim": "C83",
+      "attestation": "audit/phase14rh/certificates/C83.json",
+      "sha256": "f810466bb0d607c61fc7107fbd587b321d97aa43f3df44c3f12705659b3fd314"
+    },
+    {
+      "claim": "C84",
+      "attestation": "audit/phase14rh/certificates/C84.json",
+      "sha256": "8389798b19d0f325b183400fc7a81f9cf87e33af5f72d3c12c8e2d9e2a1bb9d7"
+    },
+    {
+      "claim": "C85",
+      "attestation": "audit/phase14rh/certificates/C85.json",
+      "sha256": "68c337d965318e38a9f49d55cac7073bfb529ba80f75fc76262ed7f2fe109712"
+    },
+    {
+      "claim": "C86",
+      "attestation": "audit/phase14rh/certificates/C86.json",
+      "sha256": "c55ce79c79d049c62261e74058f1fea50181b28bd025bae6c3f26c6b516e22e4"
+    },
+    {
+      "claim": "C87",
+      "attestation": "audit/phase14rh/certificates/C87.json",
+      "sha256": "bea366e630af389db98a1993115d349defeaaf9345af252cf06c6d088fac0f73"
+    },
+    {
+      "claim": "C88",
+      "attestation": "audit/phase14rh/certificates/C88.json",
+      "sha256": "5760d63a357159c2be10da2549253564fb944e73e314e561ce5340ce7207af30"
+    },
+    {
+      "claim": "C89",
+      "attestation": "audit/phase14rh/certificates/C89.json",
+      "sha256": "bf7abb182604bb3b4db5a21730d751c5b84b86cee3c428dab54b1a1b2d6b1357"
+    },
+    {
+      "claim": "C90",
+      "attestation": "audit/phase14rh/certificates/C90.json",
+      "sha256": "e247f6eaf4ac6b52ee68a227a2ad8af7da554975525a9c86f4aca2510e81463b"
+    },
+    {
+      "claim": "C91",
+      "attestation": "audit/phase14rh/certificates/C91.json",
+      "sha256": "f474bb6cd2d6d54baade1f919169863b80383f1137586cf4000a623c46e3cecd"
+    },
+    {
+      "claim": "C92",
+      "attestation": "audit/phase14rh/certificates/C92.json",
+      "sha256": "149b6d64e177be52d175b484ca9f839d7a191cdbb60b79c33d7860ae3d121576"
+    },
+    {
+      "claim": "C93",
+      "attestation": "audit/phase14rh/certificates/C93.json",
+      "sha256": "5e31d411826a1cf9d1bba1e7fef7795b046ab01dccb3037a886839f82fa2d701"
+    },
+    {
+      "claim": "C94",
+      "attestation": "audit/phase14rh/certificates/C94.json",
+      "sha256": "10fec8f563e72acb1080ad12ca66bc42ce494737fca529f9d041cc783032a7fe"
+    },
+    {
+      "claim": "C95",
+      "attestation": "audit/phase14rh/certificates/C95.json",
+      "sha256": "4a023aeedd8b8a5f1b090e2cb6507e349d8683832c47a6809dfab8044a9d696c"
+    },
+    {
+      "claim": "C96",
+      "attestation": "audit/phase14rh/certificates/C96.json",
+      "sha256": "ab4ba7091baf3e59265a09debf0f08d78b016f28572478bc5487358d371de89f"
+    }
+  ],
+  "global_legacy_replay_reused_for_claims": false
+}

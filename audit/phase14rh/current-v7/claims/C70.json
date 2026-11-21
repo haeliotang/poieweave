@@ -1,0 +1,11 @@
+{
+  "claim_id": "C70",
+  "certificate_id": "poie-s2-canonical-c70-v7",
+  "runner": "poie-migration-s2-regen-horizon",
+  "runner_sha256": "854da73439ec4ee77df934f74d192a5d8277408a604e2b158e965f9d1257a6a6",
+  "expected_sha256": "e9a787b1d9d4705c5aaf3e9ef0158ea76c826faddc5ae41f392b06cfc2e227c9",
+  "actual_output_sha256": "e9a787b1d9d4705c5aaf3e9ef0158ea76c826faddc5ae41f392b06cfc2e227c9",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-s2-regen-horizon"
+}

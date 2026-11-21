@@ -76,6 +76,7 @@ python3 audit/phase14r/generate_cross_model.py
 python3 audit/phase14r/negative_group.py
 python3 audit/phase14r/check.py
 python3 audit/phase14r/verify_evidence.py --frozen --claim
+python3 audit/phase14rh/check.py
 python3 audit/phase10/check.py --frozen
 python3 audit/phase7/negative_controls.py
 python3 audit/certificates/verify_v1.py

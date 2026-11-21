@@ -1,0 +1,45 @@
+{
+  "group_id": "reduce",
+  "restoration_target": "a-lathe",
+  "horizon_s": 72000,
+  "robot_count": 2,
+  "tasks": [
+    {
+      "task_id": "A",
+      "duration_s": 7200,
+      "priority": 1,
+      "robot_mask": 0,
+      "requires_tool": true
+    },
+    {
+      "task_id": "B",
+      "duration_s": 10800,
+      "priority": 2,
+      "robot_mask": 2,
+      "requires_tool": false
+    }
+  ],
+  "failures": [
+    {
+      "failure_id": 0,
+      "time_s": 3600,
+      "target": "sensor-x",
+      "kind": 3,
+      "target_id": 5
+    },
+    {
+      "failure_id": 1,
+      "time_s": 3600,
+      "target": "bus-2",
+      "kind": 3,
+      "target_id": 6
+    },
+    {
+      "failure_id": 2,
+      "time_s": 5400,
+      "target": "robot-m1",
+      "kind": 1,
+      "target_id": 0
+    }
+  ]
+}

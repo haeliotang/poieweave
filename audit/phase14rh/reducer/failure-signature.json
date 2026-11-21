@@ -1,0 +1,20 @@
+{
+  "schema": "poie.s5v-n14rh-failure-signature/1",
+  "failure_class": "RESOURCE_ELIGIBILITY_VIOLATION",
+  "original": {
+    "failure_class": "RESOURCE_ELIGIBILITY_VIOLATION",
+    "invalid_tasks": [
+      "A"
+    ],
+    "canonical_exit": 0,
+    "external_journal": true
+  },
+  "minimized": {
+    "failure_class": "RESOURCE_ELIGIBILITY_VIOLATION",
+    "invalid_tasks": [
+      "A"
+    ],
+    "canonical_exit": 0,
+    "external_journal": true
+  }
+}

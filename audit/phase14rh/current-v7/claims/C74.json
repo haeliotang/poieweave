@@ -1,0 +1,11 @@
+{
+  "claim_id": "C74",
+  "certificate_id": "poie-s2-canonical-c74-v7",
+  "runner": "poie-migration-c12-components",
+  "runner_sha256": "b9e0145174e00e31c73917cbf790b0bc40ec3034d41a4751d859eddeaf3522f4",
+  "expected_sha256": "fdad38ec68b0d22740f688ee1628479bfd3b29f40f80718ad2fb402055b1a22c",
+  "actual_output_sha256": "fdad38ec68b0d22740f688ee1628479bfd3b29f40f80718ad2fb402055b1a22c",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-c12-components"
+}

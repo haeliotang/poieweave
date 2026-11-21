@@ -1,0 +1,11 @@
+{
+  "claim_id": "C83",
+  "certificate_id": "poie-s2-canonical-c83-v7",
+  "runner": "poie-migration-aux-batch7",
+  "runner_sha256": "c21e443005fc34ca8e6a9e82cae0207756a667c9ac88f55cd401526141605c8c",
+  "expected_sha256": "5acfa490b185a5119b9e810ab8e6ef54c79fe1dfbacb5aabccb64c622d480a46",
+  "actual_output_sha256": "5acfa490b185a5119b9e810ab8e6ef54c79fe1dfbacb5aabccb64c622d480a46",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-aux-batch7"
+}

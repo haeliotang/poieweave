@@ -1,0 +1,11 @@
+{
+  "claim_id": "C84",
+  "certificate_id": "poie-s2-canonical-c84-v7",
+  "runner": "poie-migration-aux-batch8",
+  "runner_sha256": "f8dde73d11fb11f8846f963aa904827ef72fc7cc03062e101e2c862f1395cffe",
+  "expected_sha256": "d11289a94cb05f204d362054111c5453e25661c012ca31cbc4fd46eab5630863",
+  "actual_output_sha256": "d11289a94cb05f204d362054111c5453e25661c012ca31cbc4fd46eab5630863",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-aux-batch8"
+}

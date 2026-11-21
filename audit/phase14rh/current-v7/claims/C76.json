@@ -1,0 +1,11 @@
+{
+  "claim_id": "C76",
+  "certificate_id": "poie-s2-canonical-c76-v7",
+  "runner": "poie-migration-redundancy-restorers",
+  "runner_sha256": "cc66d782851d7a8cbb0855a90da46ea3cd205234b7f9c026512b3972ad0cfe44",
+  "expected_sha256": "9eb6f040c4a0bff21809ff5753c7daf23d44a8581a6b8449c47e9dc2c9c36a8d",
+  "actual_output_sha256": "9eb6f040c4a0bff21809ff5753c7daf23d44a8581a6b8449c47e9dc2c9c36a8d",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-redundancy-restorers"
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "poie.s5v-n14rh-supplementary-attestation/1",
+  "kind": "SUPPLEMENTARY_EXECUTION_ATTESTATION",
+  "claim_id": "C65",
+  "v7_certificate": "experiments/certificate-canonical-c65-v7/certificate.json",
+  "v7_certificate_sha256": "ef461189e0229e6b8b82f103c31079be06587602e26b36e286b5ac67ce299182",
+  "v6_predecessor": "experiments/certificate-canonical-c65-v6/certificate.json",
+  "v6_predecessor_sha256": "1315bd4162c3abfe30a5b3fcd7fc266a28bf5a2e71138e67349d3703ba9d8949",
+  "historical_v6_replay": {
+    "claim_id": "C65",
+    "certificate_id": "poie-s2-canonical-c65-v6",
+    "experiment": "experiments/s2-canonical-c14",
+    "historical_commit": "161273d4599ff07fdd90f7a4be9e3bd6e221a94f",
+    "runner": "poie-migration-c14",
+    "runner_sha256": "2a88cf41075f9f65c338951d410b59fcac9a9588baebe3b61bd40d3dd0556b06",
+    "model": "scenarios/base-08/model.toml",
+    "expected_sha256": "04c77b821f1ca332a66631def2ea091dcff0bb0f9485e05c186174dcc291a817",
+    "actual_output_sha256": "04c77b821f1ca332a66631def2ea091dcff0bb0f9485e05c186174dcc291a817",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "stdout_stderr_sha256": "04c77b821f1ca332a66631def2ea091dcff0bb0f9485e05c186174dcc291a817",
+    "replay_command": "cd /tmp/n14rh-v6 && target/debug/poie-migration-c14",
+    "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+  },
+  "current_v7_replay": {
+    "claim_id": "C65",
+    "certificate_id": "poie-s2-canonical-c65-v7",
+    "runner": "poie-migration-c14",
+    "runner_sha256": "bb1d56a3e29bdb3fb282e6c1b5c36ed6f487c4fe2aaf19b53abbb8d28151e55b",
+    "expected_sha256": "04c77b821f1ca332a66631def2ea091dcff0bb0f9485e05c186174dcc291a817",
+    "actual_output_sha256": "04c77b821f1ca332a66631def2ea091dcff0bb0f9485e05c186174dcc291a817",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "replay_command": "target/debug/poie-migration-c14"
+  },
+  "legacy_expected_unchanged": true,
+  "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+}

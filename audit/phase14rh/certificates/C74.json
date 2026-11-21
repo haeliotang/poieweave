@@ -1,0 +1,38 @@
+{
+  "schema": "poie.s5v-n14rh-supplementary-attestation/1",
+  "kind": "SUPPLEMENTARY_EXECUTION_ATTESTATION",
+  "claim_id": "C74",
+  "v7_certificate": "experiments/certificate-canonical-c74-v7/certificate.json",
+  "v7_certificate_sha256": "b2091de40e7aaa764739d2e94467017a88e07977e3bcf7e1d9d67a98118e5797",
+  "v6_predecessor": "experiments/certificate-canonical-c74-v6/certificate.json",
+  "v6_predecessor_sha256": "50115e4e02acd60ea169b55fb6e00a601082a76720e04ef95cfbc1341914d5b0",
+  "historical_v6_replay": {
+    "claim_id": "C74",
+    "certificate_id": "poie-s2-canonical-c74-v6",
+    "experiment": "experiments/s2-canonical-c12-components",
+    "historical_commit": "161273d4599ff07fdd90f7a4be9e3bd6e221a94f",
+    "runner": "poie-migration-c12-components",
+    "runner_sha256": "9f90fe6d45e0a879281ce52401c61c5086686e919dcbc4e389cc01dbcf81b114",
+    "model": "scenarios/base-08/model.toml",
+    "expected_sha256": "fdad38ec68b0d22740f688ee1628479bfd3b29f40f80718ad2fb402055b1a22c",
+    "actual_output_sha256": "fdad38ec68b0d22740f688ee1628479bfd3b29f40f80718ad2fb402055b1a22c",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "stdout_stderr_sha256": "fdad38ec68b0d22740f688ee1628479bfd3b29f40f80718ad2fb402055b1a22c",
+    "replay_command": "cd /tmp/n14rh-v6 && target/debug/poie-migration-c12-components",
+    "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+  },
+  "current_v7_replay": {
+    "claim_id": "C74",
+    "certificate_id": "poie-s2-canonical-c74-v7",
+    "runner": "poie-migration-c12-components",
+    "runner_sha256": "b9e0145174e00e31c73917cbf790b0bc40ec3034d41a4751d859eddeaf3522f4",
+    "expected_sha256": "fdad38ec68b0d22740f688ee1628479bfd3b29f40f80718ad2fb402055b1a22c",
+    "actual_output_sha256": "fdad38ec68b0d22740f688ee1628479bfd3b29f40f80718ad2fb402055b1a22c",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "replay_command": "target/debug/poie-migration-c12-components"
+  },
+  "legacy_expected_unchanged": true,
+  "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+}

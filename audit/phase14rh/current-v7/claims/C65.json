@@ -1,0 +1,11 @@
+{
+  "claim_id": "C65",
+  "certificate_id": "poie-s2-canonical-c65-v7",
+  "runner": "poie-migration-c14",
+  "runner_sha256": "bb1d56a3e29bdb3fb282e6c1b5c36ed6f487c4fe2aaf19b53abbb8d28151e55b",
+  "expected_sha256": "04c77b821f1ca332a66631def2ea091dcff0bb0f9485e05c186174dcc291a817",
+  "actual_output_sha256": "04c77b821f1ca332a66631def2ea091dcff0bb0f9485e05c186174dcc291a817",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-c14"
+}

@@ -1,0 +1,16 @@
+{
+  "claim_id": "C6",
+  "certificate_id": "poie-s2-canonical-c6-v6",
+  "experiment": "experiments/s2-joint-coverage",
+  "historical_commit": "161273d4599ff07fdd90f7a4be9e3bd6e221a94f",
+  "runner": "poie-joint-coverage",
+  "runner_sha256": "e436c5d64f55e4e2328cdcf69a14c6c018685eb7f182f5ca56fa8bd6407775c8",
+  "model": "scenarios/base-06/model.toml",
+  "expected_sha256": "78c1e3e02edd7a36453236f7881d43750d9d768862b23edd7caac73471186efc",
+  "actual_output_sha256": "78c1e3e02edd7a36453236f7881d43750d9d768862b23edd7caac73471186efc",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "stdout_stderr_sha256": "78c1e3e02edd7a36453236f7881d43750d9d768862b23edd7caac73471186efc",
+  "replay_command": "cd /tmp/n14rh-v6 && target/debug/poie-joint-coverage",
+  "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+}

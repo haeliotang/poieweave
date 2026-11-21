@@ -1,0 +1,11 @@
+{
+  "claim_id": "C94",
+  "certificate_id": "poie-s2-canonical-c94-v7",
+  "runner": "poie-migration-aux-batch18",
+  "runner_sha256": "a517a7ae90b39e4c4ee2704007574d1897c14c05f9697d3e5c97f6e303744c7c",
+  "expected_sha256": "9332664dba14a01e81e3110a8e0ba1bac439c1901fc818da2220c3037c3c9b5a",
+  "actual_output_sha256": "9332664dba14a01e81e3110a8e0ba1bac439c1901fc818da2220c3037c3c9b5a",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-aux-batch18"
+}

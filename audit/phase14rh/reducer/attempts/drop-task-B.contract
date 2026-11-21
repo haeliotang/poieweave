@@ -1,0 +1,11 @@
+taskCount=1
+robotCount=2
+horizon_s=72000
+preferredRobot=0
+robot1DependencyMask=28
+robot2DependencyMask=28
+failureCount=0
+t1Duration_s=7200
+t1Priority=1
+t1RobotMask=0
+t1RequiresTool=1

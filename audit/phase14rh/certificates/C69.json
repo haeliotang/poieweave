@@ -1,0 +1,38 @@
+{
+  "schema": "poie.s5v-n14rh-supplementary-attestation/1",
+  "kind": "SUPPLEMENTARY_EXECUTION_ATTESTATION",
+  "claim_id": "C69",
+  "v7_certificate": "experiments/certificate-canonical-c69-v7/certificate.json",
+  "v7_certificate_sha256": "99fc8b4e1381df0e533866f70ed072edbcc6d70055de66d69cdf7418f94db514",
+  "v6_predecessor": "experiments/certificate-canonical-c69-v6/certificate.json",
+  "v6_predecessor_sha256": "1ba14c1cfd9d99af347950fbf94a9288b0b451cd3af8ffd8bc705500252caefa",
+  "historical_v6_replay": {
+    "claim_id": "C69",
+    "certificate_id": "poie-s2-canonical-c69-v6",
+    "experiment": "experiments/s2-canonical-load-base05",
+    "historical_commit": "161273d4599ff07fdd90f7a4be9e3bd6e221a94f",
+    "runner": "poie-migration-s2-load-base05",
+    "runner_sha256": "f67c3b022d8220aa387335645b716554a5f87201f1572195bad81f9e7bce4427",
+    "model": "scenarios/base-05/model.toml",
+    "expected_sha256": "efd07629a3442b6ac1e71ab667b5ef1afb780d3ca08c6af05a6adaea2ee56d22",
+    "actual_output_sha256": "efd07629a3442b6ac1e71ab667b5ef1afb780d3ca08c6af05a6adaea2ee56d22",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "stdout_stderr_sha256": "efd07629a3442b6ac1e71ab667b5ef1afb780d3ca08c6af05a6adaea2ee56d22",
+    "replay_command": "cd /tmp/n14rh-v6 && target/debug/poie-migration-s2-load-base05",
+    "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+  },
+  "current_v7_replay": {
+    "claim_id": "C69",
+    "certificate_id": "poie-s2-canonical-c69-v7",
+    "runner": "poie-migration-s2-load-base05",
+    "runner_sha256": "c61ae6a707e6b79b246968d1e3862a82ec475880f973861d1e68fd3bf4954ebf",
+    "expected_sha256": "efd07629a3442b6ac1e71ab667b5ef1afb780d3ca08c6af05a6adaea2ee56d22",
+    "actual_output_sha256": "efd07629a3442b6ac1e71ab667b5ef1afb780d3ca08c6af05a6adaea2ee56d22",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "replay_command": "target/debug/poie-migration-s2-load-base05"
+  },
+  "legacy_expected_unchanged": true,
+  "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+}

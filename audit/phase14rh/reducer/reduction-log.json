@@ -1,0 +1,98 @@
+{
+  "schema": "poie.s5v-n14rh-reduction/1",
+  "accepted": [
+    "drop failure 3",
+    "drop failure 2",
+    "drop failure 1",
+    "drop failure 0",
+    "drop task B",
+    "duration A=1"
+  ],
+  "steps": [
+    {
+      "step": "original",
+      "tasks": 2,
+      "failures": 4,
+      "signature": {
+        "failure_class": "RESOURCE_ELIGIBILITY_VIOLATION",
+        "invalid_tasks": [
+          "A"
+        ],
+        "canonical_exit": 0,
+        "external_journal": true
+      }
+    },
+    {
+      "step": "drop-failure-3",
+      "accepted": true,
+      "signature": {
+        "failure_class": "RESOURCE_ELIGIBILITY_VIOLATION",
+        "invalid_tasks": [
+          "A"
+        ],
+        "canonical_exit": 0,
+        "external_journal": true
+      }
+    },
+    {
+      "step": "drop-failure-2",
+      "accepted": true,
+      "signature": {
+        "failure_class": "RESOURCE_ELIGIBILITY_VIOLATION",
+        "invalid_tasks": [
+          "A"
+        ],
+        "canonical_exit": 0,
+        "external_journal": true
+      }
+    },
+    {
+      "step": "drop-failure-1",
+      "accepted": true,
+      "signature": {
+        "failure_class": "RESOURCE_ELIGIBILITY_VIOLATION",
+        "invalid_tasks": [
+          "A"
+        ],
+        "canonical_exit": 0,
+        "external_journal": true
+      }
+    },
+    {
+      "step": "drop-failure-0",
+      "accepted": true,
+      "signature": {
+        "failure_class": "RESOURCE_ELIGIBILITY_VIOLATION",
+        "invalid_tasks": [
+          "A"
+        ],
+        "canonical_exit": 0,
+        "external_journal": true
+      }
+    },
+    {
+      "step": "drop-task-B",
+      "accepted": true,
+      "signature": {
+        "failure_class": "RESOURCE_ELIGIBILITY_VIOLATION",
+        "invalid_tasks": [
+          "A"
+        ],
+        "canonical_exit": 0,
+        "external_journal": true
+      }
+    },
+    {
+      "step": "duration-A-1",
+      "accepted": true,
+      "signature": {
+        "failure_class": "RESOURCE_ELIGIBILITY_VIOLATION",
+        "invalid_tasks": [
+          "A"
+        ],
+        "canonical_exit": 0,
+        "external_journal": true
+      }
+    }
+  ]
+}
