@@ -1,0 +1,40 @@
+{
+  "schema": "poie.s5v-n16-claim-status/1",
+  "claims": [
+    {
+      "id": "N16-0",
+      "status": "VERIFIED",
+      "scope": "temporal ownership, schedule contract, current-run N15 generation"
+    },
+    {
+      "id": "N16-A",
+      "status": "ESTABLISHED",
+      "scope": "named upstream model, 13 fixed cases"
+    },
+    {
+      "id": "N16-B",
+      "status": "ESTABLISHED",
+      "scope": "closure lifecycle, shared/future/upstream"
+    },
+    {
+      "id": "N16-C",
+      "status": "ESTABLISHED",
+      "scope": "13 enumerated cross-model cases"
+    },
+    {
+      "id": "N16-D",
+      "status": "IN_PROGRESS",
+      "scope": "shared mutant + reducer; property/generated pending"
+    },
+    {
+      "id": "N16-E",
+      "status": "NOT_ESTABLISHED",
+      "scope": "evidence/certificate"
+    },
+    {
+      "id": "N16-F",
+      "status": "NOT_ESTABLISHED",
+      "scope": "reproducibility"
+    }
+  ]
+}

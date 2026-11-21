@@ -22,7 +22,7 @@ def main():
  results.append(mutate("N15-D1-R1-7201",missing,"RESOURCE_RELEASE_MISSING_robot-m1"))
  def early(ce,j):
   for e in ce:
-   if e["event_kind"]=="ResourceReleased" and e["target_asset"]=="robot-m1": e["at_s"]=7100.0
+   if e["event_kind"]=="ResourceReleased" and e["target_asset"]=="robot-m1": e["at_s"]=7300.0
  results.append(mutate("N15-D1-R1-7201",early,"RESOURCE_RELEASE_TIME_robot-m1"))
  def shared(ce,j):
   ce.append({"event_kind":"ResourceReleased","at_s":7200.0,"target_asset":"robot-m1","event_sequence":99,"event_batch_sequence":99,"asset_statuses_before":{},"asset_statuses_after":{},"inventory_before":{},"inventory_after":{},"running_repair":None})
@@ -33,6 +33,9 @@ def main():
  def add_complete(ce,j):
   ce.append({"event_kind":"RepairCompleted","at_s":7200.0,"target_asset":"n14-group","event_sequence":99,"event_batch_sequence":99,"asset_statuses_before":{},"asset_statuses_after":{},"inventory_before":{},"inventory_after":{},"running_repair":None})
  results.append(mutate("N15-OR-RELEASE",add_complete,"PREMATURE_GROUP_COMMIT"))
+ def premature_no_fail(ce,j):
+  ce.append({"event_kind":"ResourceReleased","at_s":7200.0,"target_asset":"robot-m1","event_sequence":99,"event_batch_sequence":99,"asset_statuses_before":{},"asset_statuses_after":{},"inventory_before":{},"inventory_after":{},"running_repair":None})
+ results.append(mutate("N15-D2-SERIAL-NOFAIL",premature_no_fail,"SHARED_RESOURCE_RELEASE_VIOLATION_robot-m1"))
  (P/"negative-controls").mkdir(exist_ok=True)
  (P/"negative-controls/release-results.json").write_text(json.dumps({"schema":"poie.s5v-n15-negative/1","results":results},indent=2)+"\n")
  for r in results: print(r["expected"],"PASS" if r["detected"] else "FAIL",r["findings"])

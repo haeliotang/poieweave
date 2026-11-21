@@ -6,7 +6,7 @@ import json,sys
 from pathlib import Path
 P=Path(__file__).resolve().parent; problems=[]
 r=json.loads((P/"resource-lifetimes/results.json").read_text())["cases"]
-if len(r)!=8: problems.append("case count")
+if len(r)!=9: problems.append("case count")
 for c in r:
  if c["case"]=="N15-MUT-ORIG":
   if c["status"]!="FAIL" or not any("EXTERNAL_RELEASE_MISMATCH" in f for f in c["findings"]): problems.append("mutant")

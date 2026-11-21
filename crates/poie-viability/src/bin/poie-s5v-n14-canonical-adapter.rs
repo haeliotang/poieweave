@@ -89,6 +89,20 @@ fn main() {
     let robots = c["robot_count"].as_u64().unwrap_or(1) as usize;
     let tool = tasks.iter().any(|task| task["requires_tool"].as_bool().unwrap_or(false));
     let mut model = model_for(robots, tool, true);
+    if c["dependency_profile"].as_str() == Some("split") {
+        let mut bus2 = model.assets.get("bus-1").unwrap().clone();
+        bus2.id = "bus-2".into();
+        bus2.requires.clear();
+        bus2.requires_any.clear();
+        model.assets.insert("bus-2".into(), bus2);
+        if let Some(robot2) = model.assets.get_mut("robot-m2") {
+            robot2.requires = vec!["bus-2".into()];
+            robot2.requires_any.clear();
+            if !robot2.provides.iter().any(|p| p == "n16-robot-b") {
+                robot2.provides.push("n16-robot-b".into());
+            }
+        }
+    }
     // Process n10-repair-a-lathe is task A; clone it for task B.
     let template = model.processes.iter().find(|p| p.id == "n10-repair-a-lathe").unwrap().clone();
     let mut explicit_tasks = Vec::new();
@@ -120,6 +134,9 @@ fn main() {
             process.id = process_id.clone();
             process.duration_s = Some(duration);
             process.occupies = occupies.clone();
+            if c["dependency_profile"].as_str() == Some("split") {
+                process.requires_capabilities = vec!["n16-robot-b".into()];
+            }
             model.processes.push(process);
         }
         explicit_tasks.push(ExplicitRepairTask {

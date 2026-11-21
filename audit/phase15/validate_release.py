@@ -5,7 +5,7 @@ from __future__ import annotations
 import csv,json
 from pathlib import Path
 P=Path(__file__).resolve().parent
-CASES=["N15-D1-R1-7201","N15-D1-R2-7201","N15-D1-R1-7199","N15-D2-SERIAL-7201","N15-D3-TOOL-7201","N15-D3-TOOL-7199","N15-OR-RELEASE","N15-MUT-ORIG"]
+CASES=["N15-D1-R1-7201","N15-D1-R2-7201","N15-D1-R1-7199","N15-D2-SERIAL-7201","N15-D2-SERIAL-NOFAIL","N15-D3-TOOL-7201","N15-D3-TOOL-7199","N15-OR-RELEASE","N15-MUT-ORIG"]
 ASSETS={0:"robot-m1",1:"robot-m2",7:"tool-t1"}
 def main():
  results=[]
@@ -27,34 +27,43 @@ def main():
   expected_interrupt=first_hit is not None
   expected_completed={tid for tid,end in ends.items() if first_hit is None or end < first_hit-1e-9}
   completed={e["target_asset"]:e["at_s"] for e in ce if e["event_kind"]=="TaskCompleted"}
-  releases={e["target_asset"]:e["at_s"] for e in ce if e["event_kind"]=="ResourceReleased"}
-  if set(completed)!=expected_completed: findings.append("TASK_COMPLETION_MISSING")
-  for tid in expected_completed:
-   if abs(completed.get(tid,-1)-ends[tid])>1e-9: findings.append(f"TASK_COMPLETION_TIME_{tid}")
-  for task in tasks:
-   allowed=task.get("robot_alternatives",[])
-   if allowed:
-    selected=next((r for r in resources[task["task_id"]] if r.startswith("robot")),None)
-    if selected not in allowed: findings.append(f"RESOURCE_ELIGIBILITY_VIOLATION_{task['task_id']}")
-  for tid in expected_completed:
-   end=ends[tid]
-   for rid in resources.get(tid,set()):
-    if rid not in ("robot-m1","robot-m2","tool-t1"): continue
-    unfinished_users=[other for other in tasks if other["task_id"] not in expected_completed and rid in resources.get(other["task_id"],set())]
-    if not unfinished_users and releases.get(rid) is None: findings.append(f"RESOURCE_RELEASE_MISSING_{rid}")
-    if not unfinished_users and releases.get(rid) is not None and abs(releases[rid]-end)>1e-9: findings.append(f"RESOURCE_RELEASE_TIME_{rid}")
-    if unfinished_users and releases.get(rid) is not None and releases[rid] < end+1e-9: findings.append(f"SHARED_RESOURCE_RELEASE_VIOLATION_{rid}")
+  rel_events=[e for e in ce if e["event_kind"]=="ResourceReleased"]
+  releases={}
+  for e in rel_events:
+   rid=e["target_asset"]
+   if rid in releases: findings.append(f"DUPLICATE_RESOURCE_RELEASE_{rid}")
+   releases[rid]=e["at_s"]
+  def resource_users(rid):
+   return [task for task in tasks if rid in resources.get(task["task_id"],set())]
+  for rid,at in releases.items():
+   if rid not in ("robot-m1","robot-m2","tool-t1"): continue
+   users=resource_users(rid)
+   if users:
+    last_end=max(ends[task["task_id"]] for task in users)
+    if at < last_end-1e-9: findings.append(f"SHARED_RESOURCE_RELEASE_VIOLATION_{rid}")
+    elif abs(at-last_end)>1e-9: findings.append(f"RESOURCE_RELEASE_TIME_{rid}")
+  release_deadline = first_hit if first_hit is not None else makespan
+  for rid in ("robot-m1","robot-m2","tool-t1"):
+   users=resource_users(rid)
+   if users:
+    last_end=max(ends[task["task_id"]] for task in users)
+    if last_end < release_deadline - 1e-9 and rid not in releases: findings.append(f"RESOURCE_RELEASE_MISSING_{rid}")
   xt=[e for e in journal if e["kind"]=="TaskCompleted"]; xr=[e for e in journal if e["kind"]=="ResourceReleased"]
   if set(e["target"] for e in xt)!=expected_completed: findings.append("EXTERNAL_TASK_COMPLETION")
-  # extra external release not present in canonical evidence
   for e in xr:
-   if e["target"] in ("robot-m1","robot-m2","tool-t1") and e["target"] not in releases:
-    findings.append(f"EXTERNAL_RELEASE_MISMATCH_{e['target']}")
-  # compare release events for resources of completed tasks
+   rid=e["target"]
+   if rid not in ("robot-m1","robot-m2","tool-t1"): continue
+   users=resource_users(rid)
+   if users:
+    last_end=max(ends[task["task_id"]] for task in users)
+    if e["at"] < last_end-1e-9: findings.append(f"EXTERNAL_SHARED_RESOURCE_RELEASE_VIOLATION_{rid}")
   for rid,at in releases.items():
    if rid not in ("robot-m1","robot-m2","tool-t1"): continue
    xr_at=next((e["at"] for e in xr if e["target"]==rid),None)
    if xr_at is None or abs(xr_at-at)>1e-9: findings.append(f"EXTERNAL_RELEASE_MISMATCH_{rid}")
+  for e in xr:
+   if e["target"] in ("robot-m1","robot-m2","tool-t1") and e["target"] not in releases:
+    findings.append(f"EXTERNAL_RELEASE_MISMATCH_{e['target']}")
   # failure sensitivity
   exp_int=expected_interrupt
   c_int=any(e["event_kind"]=="RepairInterrupted" for e in ce); x_int=any(e["kind"]=="RepairInterrupted" for e in journal)
