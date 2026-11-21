@@ -36,6 +36,8 @@ def model_outcome(spec,side,json_path,contract_path,run_dir):
   init_actual=set((ce[0].get("running_repair") or {}).get("execution_dependencies") or []) if ce else set()
   if not init_expected <= init_actual: findings.append("INITIAL_CLOSURE_MISSING")
   failures=[(e["at_s"],e["target_asset"]) for e in ce if e["event_kind"]=="AssetFailure"]
+  if len(failures)!=len(set(failures)): findings.append("DUPLICATE_FAILURE")
+  if any(e["event_kind"] in ("AssetFailure","RepairInterrupted","RepairCompleted") and any(p["event_kind"]=="HorizonReached" and p["at_s"]<e["at_s"]-1e-9 for p in ce) for e in ce): findings.append("POST_TERMINATION_EVENT")
   interruption=next((e["at_s"] for e in ce if e["event_kind"]=="RepairInterrupted"),None)
   completed=any(e["event_kind"]=="RepairCompleted" for e in ce)
   restoration=None; restorations=[]
@@ -64,6 +66,9 @@ def model_outcome(spec,side,json_path,contract_path,run_dir):
    for j in range(i+1,len(tasks)):
     if robots[i]==robots[j] and float(last[f"t{j+1}Start_s"])<float(last[f"t{i+1}End_s"])-1e-9: findings.append("CONTENTION")
   makespan=max(ends.values()); failures=[(e["at"],e.get("target")) for e in ev if e["kind"]=="AssetFailure"]
+  if len(failures)!=len(set(failures)): findings.append("DUPLICATE_FAILURE")
+  term_at=next((e["at"] for e in ev if e["kind"] in ("RunTerminated","RepairInterrupted")),None)
+  if term_at is not None and any(e["at"]>term_at+1e-9 and e["kind"] in ("AssetFailure","RepairInterrupted","RepairCompleted","RestorationCommitted") for e in ev): findings.append("POST_TERMINATION_EVENT")
   init_expected=set().union(*(upstream_for(robots[i],profile) for i in range(len(tasks))))
   init_actual=set()
   for e in ev:

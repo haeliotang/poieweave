@@ -14,7 +14,8 @@ if g["attempted"]!=64 or g["accepted"]<32 or g["failed"]!=g["unexpected_effect"]
 m=json.loads((P/"causal-comparisons/metamorphic.json").read_text())["properties"]
 if not all(x["pass"] is True and isinstance(x["pass"],bool) for x in m): problems.append("metamorphic")
 n=json.loads((P/"negative-controls/effect-results.json").read_text())["controls"]
-if len(n)<6 or not all(x["detected"] for x in n): problems.append("negatives")
+x=json.loads((P/"negative-controls/extra-results.json").read_text())["controls"]
+if len(n)+len(x)<15 or not all(c["detected"] for c in n+x): problems.append("negatives")
 mu=json.loads((P/"minimized-counterexamples/or-mutant/failure_signature.json").read_text())
 if mu["failure_class"]!="OR_DEPENDENCY_PATH_MISMATCH": problems.append("mutant")
 r=json.loads((P/"causal-comparisons/n17-revalidation.json").read_text())["pairs"]

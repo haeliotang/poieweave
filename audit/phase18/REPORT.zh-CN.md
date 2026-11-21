@@ -23,6 +23,12 @@ N18-F REPRODUCIBILITY                    VERIFIED
   A/B 共享 robot-m2 时 bus-2 不在 A 完成时提前退出。
 - v9 冻结，41 个 v10 correction successors 签发。
 
+## 限制
+
+- 13 个固定干预，未覆盖表中全部 16 个 ID。
+- 6 个 P0 负例 + 9 个额外真实负例；未覆盖全部 16 类 mutation。
+- 64 个生成对中 55 accepted、9 个记录为 unexpected effect，未隐藏。
+
 ## 未完成
 
 - N17 relation 语义重分类（已完成初版）、严格 metamorphic、真实负例、生成式

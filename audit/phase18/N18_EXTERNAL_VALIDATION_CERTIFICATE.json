@@ -8,7 +8,8 @@
     "audit/phase18/generated-pairs/results.json": "f3fbdc627979db4b67b6c0a1c2853c4a7793384bcde40723dd35bc9394d17c06",
     "audit/phase18/importer-comparisons/results.json": "511d26b2f5446045c8291097ced53164f2c77fc0c50a7d2e80755f83bb2d4a0a",
     "audit/phase18/minimized-counterexamples/or-mutant/failure_signature.json": "77446c64adf3a58186e70b8c644b3176a71558ad789cd07b3ec5877f75f18d5c",
-    "audit/phase18/negative-controls/effect-results.json": "59e9781a9ad7062dbf3e2626ae9f6ae50925642c58ba7a33a849926d5dd96a18"
+    "audit/phase18/negative-controls/effect-results.json": "59e9781a9ad7062dbf3e2626ae9f6ae50925642c58ba7a33a849926d5dd96a18",
+    "audit/phase18/negative-controls/extra-results.json": "73e44eaec3c714af3cadcb2a42f251528c160530956e5b439baacad5cd2063f8"
   },
   "inputs": {
     "canonical_adapter": {
@@ -37,7 +38,7 @@
     },
     "oracle": {
       "path": "audit/phase17/intervention_oracle.py",
-      "sha256": "a494af101764e9afe06e9ded4acf8d3423df9e074c7b8fe6ec5d72504fa9877c"
+      "sha256": "165bd9d14776b04ce1d2e343b546cfae289d845abe412feb481d47a9d7631dcb"
     },
     "reducer": {
       "path": "audit/phase18/mutant_reducer.py",

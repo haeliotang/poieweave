@@ -12,9 +12,9 @@
       "sha256": "5d8d6ee881eb10f2402c69c96681455209cadbb335929281cfcc0abe021504ce"
     },
     {
-      "bytes": 3633,
+      "bytes": 3759,
       "path": "audit/phase18/N18_EXTERNAL_VALIDATION_CERTIFICATE.json",
-      "sha256": "c4d76d59ee5cccf14cd2c07f5d82c5bfa454f8c5b50ddff0bff98ace2388c1fe"
+      "sha256": "29e65faddc62f7af77d4ceb095f48f7aca0fe781784dcf0b47f404fe0f73b244"
     },
     {
       "bytes": 1058,
@@ -27,9 +27,9 @@
       "sha256": "6073b9d5cdf562e2ce84be28ea7a8a6c74e377f61849ce35e2e059fe929ea031"
     },
     {
-      "bytes": 1369,
+      "bytes": 1603,
       "path": "audit/phase18/REPORT.zh-CN.md",
-      "sha256": "1e613fa67e5ce2649c996de801b703995821d6d1244b32e2fcccbbdf5f291161"
+      "sha256": "b85bcb00a06b0116a140b32c97ad918b3bce612bd0dff3addf086f279b2ee17a"
     },
     {
       "bytes": 319,
@@ -2022,9 +2022,9 @@
       "sha256": "203f5b88ab46803f5346e5664168b29146d52bdaee267204307b86a209cfdfcb"
     },
     {
-      "bytes": 1681,
+      "bytes": 1772,
       "path": "audit/phase18/check.py",
-      "sha256": "80c7f95ed65e46cb0c0472993e962008f8a4bc8b9d6021ef42b00ce6cf3f3869"
+      "sha256": "c80c08b53950b8bb81edbea658053b4b6e5f3ee0b5a3b6340e797bd5e448556b"
     },
     {
       "bytes": 691,
@@ -6347,9 +6347,9 @@
       "sha256": "7492cab9ef1d1688a08423eaefa0bb55753e222979471676aba1610164f3dc64"
     },
     {
-      "bytes": 2477,
+      "bytes": 2530,
       "path": "audit/phase18/make_certificate.py",
-      "sha256": "0be0410d67a0b9d1b4cc292ce6da860a4f4718543d8dffdcf950acffa23c154b"
+      "sha256": "7c9859b75f849333eb3d74d24945747bde3c3d77bb135ac7f4365e12f6bed657"
     },
     {
       "bytes": 1083,
@@ -6637,9 +6637,19 @@
       "sha256": "59e9781a9ad7062dbf3e2626ae9f6ae50925642c58ba7a33a849926d5dd96a18"
     },
     {
+      "bytes": 1777,
+      "path": "audit/phase18/negative-controls/extra-results.json",
+      "sha256": "73e44eaec3c714af3cadcb2a42f251528c160530956e5b439baacad5cd2063f8"
+    },
+    {
       "bytes": 5915,
       "path": "audit/phase18/negative_effect_controls.py",
       "sha256": "ab7c395810b891aaea75ae6eeb693947204e5f9bbd322099d4f569a65c65dc3c"
+    },
+    {
+      "bytes": 4742,
+      "path": "audit/phase18/negative_extra.py",
+      "sha256": "b830d7894a7beb1a3763b3e48051f8a21001c1cd453efb899b55ee93e3c02cd4"
     },
     {
       "bytes": 4836,
