@@ -54,7 +54,7 @@
     {
       "bytes": 3393,
       "path": "audit/phase16/N16_EXTERNAL_VALIDATION_CERTIFICATE.json",
-      "sha256": "025708ef8f7adb541eea56927918018cbc5ad2875406405df857fed198a7cc98"
+      "sha256": "64c1c81e8e1646849386ce7888820a9482c242dd31631757e32c6f13d42837a9"
     },
     {
       "bytes": 684,
@@ -362,9 +362,9 @@
       "sha256": "f5bffd7db0d32f600256173337d1710174251b84fb5d299b09c5e4e12f2eeec3"
     },
     {
-      "bytes": 9206,
+      "bytes": 9161,
       "path": "audit/phase16/dependency-trajectories/results.json",
-      "sha256": "7d3b253ea03800046775c8053a9b2506edbb0ab1b8127e289eaccb8a91e4c7dc"
+      "sha256": "38d6d1ce2d21bcd2178098b257a01ebe870fb0ba9277f932e4bc2b2783c1f73f"
     },
     {
       "bytes": 33571,

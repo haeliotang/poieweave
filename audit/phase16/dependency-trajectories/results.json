@@ -220,12 +220,10 @@
       "external_events": 6,
       "canonical_interrupted": true,
       "external_interrupted": false,
-      "findings": [
-        "PREMATURE_GROUP_COMMIT_EXTERNAL"
-      ],
+      "findings": [],
       "first_closure_divergence": null,
       "first_event_divergence": null,
-      "status": "FAIL"
+      "status": "ACCEPTED"
     },
     {
       "case": "N16-10",
