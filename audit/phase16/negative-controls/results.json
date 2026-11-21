@@ -1,0 +1,43 @@
+{
+  "schema": "poie.s5v-n16-negative/1",
+  "results": [
+    {
+      "control": "SHARED_DEPENDENCY_LOSS",
+      "case": "N16-06",
+      "expected": "SHARED_DEPENDENCY_LOSS",
+      "detected": true,
+      "findings": [
+        "SHARED_DEPENDENCY_LOSS",
+        "SHARED_DEPENDENCY_LOSS_EXTERNAL"
+      ]
+    },
+    {
+      "control": "EVENT_STREAM_DIVERGENCE",
+      "case": "N16-04",
+      "expected": "EVENT_STREAM_DIVERGENCE",
+      "detected": true,
+      "findings": [
+        "EVENT_STREAM_DIVERGENCE:7200.0:DependencyDeactivated:DependencyDeactivated"
+      ]
+    },
+    {
+      "control": "EVENT_STREAM_DIVERGENCE",
+      "case": "N16-04",
+      "expected": "EVENT_STREAM_DIVERGENCE",
+      "detected": true,
+      "findings": [
+        "EVENT_STREAM_DIVERGENCE:7200.0:ResourceReleased:DependencyDeactivated"
+      ]
+    },
+    {
+      "control": "EVENT_STREAM_DIVERGENCE",
+      "case": "N16-04",
+      "expected": "EVENT_STREAM_DIVERGENCE",
+      "detected": true,
+      "findings": [
+        "EVENT_STREAM_DIVERGENCE:10800.0:DependencyDeactivated:RepairInterrupted",
+        "INTERRUPTION_DIVERGENCE"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "poie.s5v-n16-time-invariance/1",
+  "case": "N16-00",
+  "results": [
+    {
+      "step_s": 1,
+      "journal_equal_to_900": true,
+      "event_count": 12
+    },
+    {
+      "step_s": 900,
+      "journal_equal_to_900": true,
+      "event_count": 12
+    },
+    {
+      "step_s": 1000,
+      "journal_equal_to_900": true,
+      "event_count": 12
+    }
+  ],
+  "status": "PASS"
+}

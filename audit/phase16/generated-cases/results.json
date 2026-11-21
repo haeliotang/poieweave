@@ -1,0 +1,266 @@
+{
+  "schema": "poie.s5v-n16-generated/1",
+  "input_domain": {
+    "tasks": "1-2",
+    "robots": 2,
+    "failures": "0-2",
+    "profiles": [
+      "split",
+      "shared"
+    ],
+    "assets": [
+      "bus-1",
+      "bus-2",
+      "sensor-x",
+      "tool-t1"
+    ]
+  },
+  "valid_cases": 8,
+  "invalid_cases": 0,
+  "not_representable_cases": 0,
+  "accepted_cases": 8,
+  "failed_cases": 0,
+  "cases": [
+    {
+      "case": "GEN-01",
+      "seed": 1,
+      "profile": "split",
+      "tool": false,
+      "failures": [],
+      "expected": {
+        "completed": true
+      },
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "canonical_completed": true,
+      "external_completed": true,
+      "canonical_closure_after_A": [
+        "bus-2",
+        "robot-m2"
+      ],
+      "external_closure_after_A": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "GEN-02",
+      "seed": 2,
+      "profile": "split",
+      "tool": false,
+      "failures": [
+        [
+          7199,
+          3
+        ]
+      ],
+      "expected": {
+        "bus1_active_interrupt": true
+      },
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "canonical_completed": false,
+      "external_completed": false,
+      "canonical_closure_after_A": [],
+      "external_closure_after_A": [],
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "GEN-03",
+      "seed": 3,
+      "profile": "split",
+      "tool": false,
+      "failures": [
+        [
+          7201,
+          3
+        ]
+      ],
+      "expected": {
+        "bus1_released_noninterference": true
+      },
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "canonical_completed": true,
+      "external_completed": true,
+      "canonical_closure_after_A": [
+        "bus-2",
+        "robot-m2"
+      ],
+      "external_closure_after_A": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "GEN-04",
+      "seed": 4,
+      "profile": "split",
+      "tool": false,
+      "failures": [
+        [
+          7201,
+          6
+        ]
+      ],
+      "expected": {
+        "bus2_active_interrupt": true
+      },
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "canonical_completed": false,
+      "external_completed": false,
+      "canonical_closure_after_A": [
+        "bus-2",
+        "robot-m2"
+      ],
+      "external_closure_after_A": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "GEN-05",
+      "seed": 5,
+      "profile": "split",
+      "tool": true,
+      "failures": [
+        [
+          7201,
+          7
+        ]
+      ],
+      "expected": {},
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "canonical_completed": false,
+      "external_completed": false,
+      "canonical_closure_after_A": [
+        "bus-2",
+        "robot-m2",
+        "tool-t1"
+      ],
+      "external_closure_after_A": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "GEN-06",
+      "seed": 6,
+      "profile": "shared",
+      "tool": false,
+      "failures": [
+        [
+          7201,
+          3
+        ]
+      ],
+      "expected": {
+        "bus1_shared_still_active": true
+      },
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "canonical_completed": false,
+      "external_completed": false,
+      "canonical_closure_after_A": [
+        "bat-1",
+        "bus-1",
+        "charger-1",
+        "robot-m2"
+      ],
+      "external_closure_after_A": [
+        "bat-1",
+        "bus-1",
+        "charger-1"
+      ],
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "GEN-07",
+      "seed": 7,
+      "profile": "shared",
+      "tool": false,
+      "failures": [
+        [
+          3600,
+          5
+        ]
+      ],
+      "expected": {
+        "sensor_irrelevant": true
+      },
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "canonical_completed": true,
+      "external_completed": true,
+      "canonical_closure_after_A": [
+        "bat-1",
+        "bus-1",
+        "charger-1",
+        "robot-m2"
+      ],
+      "external_closure_after_A": [
+        "bat-1",
+        "bus-1",
+        "charger-1"
+      ],
+      "findings": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "GEN-08",
+      "seed": 8,
+      "profile": "split",
+      "tool": true,
+      "failures": [
+        [
+          3600,
+          5
+        ],
+        [
+          7201,
+          3
+        ]
+      ],
+      "expected": {
+        "bus1_released_noninterference": true
+      },
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "canonical_completed": true,
+      "external_completed": true,
+      "canonical_closure_after_A": [
+        "bus-2",
+        "robot-m2",
+        "tool-t1"
+      ],
+      "external_closure_after_A": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "findings": [],
+      "status": "ACCEPTED"
+    }
+  ]
+}

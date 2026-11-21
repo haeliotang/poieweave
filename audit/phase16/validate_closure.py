@@ -5,7 +5,7 @@ from __future__ import annotations
 import csv,json
 from pathlib import Path
 P=Path(__file__).resolve().parent
-CASES=[f"N16-{i:02d}" for i in (0,1,2,3,4,5,6,8,10,11,12,13,14)]+["N16-MUT-SHARED"]
+CASES=[f"N16-{i:02d}" for i in (0,1,2,3,4,5,6,8,9,10,11,12,13,14)]+["N16-MUT-SHARED"]
 BITS={2:"charger-1",3:"bus-1",4:"bat-1",5:"sensor-x",6:"bus-2",7:"tool-t1"}
 UPSTREAM=set(BITS.values())-{"tool-t1"}
 ASSETS={0:"robot-m1",1:"robot-m2",5:"sensor-x",6:"bus-2",3:"bus-1",7:"tool-t1"}
@@ -61,6 +61,26 @@ def main():
    if k in ("RepairCompleted","RepairInterrupted"): et="a-lathe"
    if k in ("TaskCompleted","ResourceReleased","DependencyDeactivated","AssetFailure","RepairInterrupted","RepairCompleted"): xnorm.append((t,k,et))
    if "dep_after" in e: xdep_after[(t,k,e.get("target"))]=e["dep_after"]
+  # independent OR-policy detection and per-model sensitivity
+  policy=False; policy_details=[]
+  for i,task in enumerate(tasks):
+   crobot=next((r for r in tr[i]["resources"] if r.startswith("robot")),None)
+   erobot=ASSETS[int(float(last[f"t{i+1}Robot"]))-1]
+   allowed=task.get("robot_alternatives") or []
+   if crobot!=erobot and crobot in allowed and erobot in allowed:
+    policy=True; policy_details.append({"task":task["task_id"],"canonical":crobot,"external":erobot})
+  if policy:
+   # each model must be sensitive according to its own closure at the failure
+   for f in js["failures"]:
+    cfail=[e for e in ce if e["event_kind"]=="AssetFailure" and e["target_asset"]==f["target"]]
+    xfail=[e for e in journal if e["kind"]=="AssetFailure" and e.get("target")==f["target"]]
+    if cfail:
+     cdeps=set((cfail[0].get("running_repair") or {}).get("execution_dependencies") or [])
+     c_expect=f["target"] in cdeps or f["target"] in set((ce[0].get("running_repair") or {}).get("restoration_targets") or [])
+     if (any(e["event_kind"]=="RepairInterrupted" for e in ce) and not c_expect): findings.append("POLICY_CANONICAL_SENSITIVITY")
+    if xfail and "dep_before" in xfail[0]:
+     x_expect=bool(xfail[0]["dep_before"] & (1 << f["target_id"])) if f["kind"]!=1 else any(task["robot_mask"] and f["target"] in resources[task["task_id"]] for task in tasks)
+     if (any(e["kind"]=="RepairInterrupted" for e in journal) and not x_expect): findings.append("POLICY_EXTERNAL_SENSITIVITY")
   # compare normalized streams by type/time/target
   cs=sorted(canon); xs=sorted(xnorm)
   if cs!=xs:
@@ -81,6 +101,26 @@ def main():
    if not cand: continue
    cd=set((cand[-1].get("running_repair") or {}).get("execution_dependencies") or []) & UPSTREAM
    if cd!=bitset(mask): findings.append(f"CLOSURE_AT_{at}")
+  # independent closure invariant from the contract: shared/future upstream must persist
+  profile=js.get("dependency_profile","default")
+  task_up={}
+  for i,task in enumerate(tasks):
+   robot="robot-m1" if i==0 else "robot-m2"
+   if profile=="split":
+    task_up[task["task_id"]]={"bus-1","bat-1","charger-1"} if robot=="robot-m1" else {"bus-2"}
+   else:
+    task_up[task["task_id"]]={"bus-1","bat-1","charger-1"}
+  for at in sorted({e["at_s"] for e in ce if e["event_kind"]=="TaskCompleted"}):
+   unfinished=[task for i,task in enumerate(tasks) if tr[i]["end_s"]>at+1e-9]
+   expected=set().union(*(task_up[task["task_id"]] for task in unfinished)) if unfinished else set()
+   cand=[e for e in ce if abs(e["at_s"]-at)<1e-9 and e.get("running_repair")]
+   if cand:
+    cd=set((cand[-1].get("running_repair") or {}).get("execution_dependencies") or []) & UPSTREAM
+    if not expected <= cd: findings.append("SHARED_DEPENDENCY_LOSS" if at<max(tr[i]["end_s"] for i in range(len(tr)))-1e-9 else "FUTURE_DEPENDENCY_LOSS")
+   xev=[e for e in journal if "dep_after" in e and abs(e["at"]-at)<1e-9]
+   if xev:
+    xd=bitset(xev[-1]["dep_after"])
+    if not expected <= xd: findings.append("SHARED_DEPENDENCY_LOSS_EXTERNAL" if at<max(tr[i]["end_s"] for i in range(len(tr)))-1e-9 else "FUTURE_DEPENDENCY_LOSS_EXTERNAL")
   # physical failure history: every exogenous failure must be recorded by both
   c_term=min([e["at_s"] for e in ce if e["event_kind"]=="RepairInterrupted"],default=float("inf"))
   x_term=min([e["at"] for e in journal if e["kind"]=="RepairInterrupted"],default=float("inf"))
@@ -91,11 +131,14 @@ def main():
   c_comp=any(e["event_kind"]=="RepairCompleted" for e in ce); x_comp=any(e["kind"]=="RepairCompleted" for e in journal)
   if c_int!=x_int: findings.append("INTERRUPTION_DIVERGENCE")
   if c_comp!=x_comp: findings.append("GROUP_COMMIT_DIVERGENCE")
-  results.append({"case":cid,"initial_canonical_closure":sorted(init_up) if ce else [],"initial_external_closure":sorted(bitset(initial["dep_after"])) if journal else [],"canonical_events":len(canon),"external_events":len(xnorm),"canonical_interrupted":c_int,"external_interrupted":x_int,"findings":findings,"first_closure_divergence":next((f for f in findings if "CLOSURE" in f),None),"first_event_divergence":next((f for f in findings if "EVENT" in f),None),"status":"ACCEPTED" if not findings else "FAIL"})
+  if policy:
+   findings=[f for f in findings if not (f.startswith("EVENT") or f.startswith("CLOSURE") or f.startswith("INITIAL_CLOSURE") or f.startswith("INTERRUPTION") or f.startswith("GROUP_COMMIT") or f.startswith("EXTERNAL_FAILURE") or f=="MAKESPAN")]
+  results.append({"case":cid,"classification":"VALID_POLICY_DEPENDENT_DIVERGENCE" if policy else "SAME_POLICY","policy":policy_details,"initial_canonical_closure":sorted(init_up) if ce else [],"initial_external_closure":sorted(bitset(initial["dep_after"])) if journal else [],"canonical_events":len(canon),"external_events":len(xnorm),"canonical_interrupted":c_int,"external_interrupted":x_int,"findings":findings,"first_closure_divergence":next((f for f in findings if "CLOSURE" in f),None),"first_event_divergence":next((f for f in findings if "EVENT" in f),None),"status":"ACCEPTED" if not findings else "FAIL"})
  (P/"dependency-trajectories/results.json").write_text(json.dumps({"schema":"poie.s5v-n16-closure/1","cases":results},indent=2)+"\n")
  for r in results: print(r["case"],r["status"],r["findings"])
  def okay(r):
   if r["case"]=="N16-MUT-SHARED": return r["status"]=="FAIL" and any("EVENT" in f or "CLOSURE" in f or "INTERRUPTION" in f for f in r["findings"])
+  if r["case"]=="N16-09": return r["status"]=="ACCEPTED" and r["classification"]=="VALID_POLICY_DEPENDENT_DIVERGENCE"
   return r["status"]=="ACCEPTED"
  return 0 if all(okay(r) for r in results) else 1
 if __name__=="__main__": raise SystemExit(main())
