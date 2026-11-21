@@ -1,0 +1,16 @@
+# S5-V N14 — Compositional Multi-Failure Validation
+
+Baseline: `5704c100fe4ebef36b0121da337125a60cae5cdb`.
+
+```text
+N14-0 VALIDATOR INTEGRITY — VERIFIED
+N14-A COMPOSITIONAL EXECUTION — ESTABLISHED (SCOPED: 2 TASKS, 4 FAILURES EXTERNAL)
+N14-B CROSS-MODEL COMPOSITIONAL CAUSAL VALIDITY — ESTABLISHED (SCOPED: 24 GENERATED ONE-TASK CASES)
+N14-C GENERATED CROSS-MODEL VALIDATION — VERIFIED (SCOPED)
+N14-D ADVERSARIAL INTEGRITY — VERIFIED (SCOPED)
+N14-E EVIDENCE — IN PROGRESS
+```
+
+Two-task canonical execution is `NOT_REPRESENTABLE` in the current single-repair-group
+canonical engine; two-task evidence is external-only and is not claimed as
+cross-model two-task validity.

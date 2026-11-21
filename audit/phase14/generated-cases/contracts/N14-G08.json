@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "duration_s": 7200.0,
+      "requires_tool": false
+    }
+  ],
+  "robot_count": 1,
+  "horizon_s": 72000.0,
+  "failures": [
+    {
+      "failure_id": 0,
+      "time_s": 3600,
+      "target": "bus-2",
+      "kind": 3,
+      "target_id": 6
+    }
+  ]
+}

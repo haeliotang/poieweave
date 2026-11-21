@@ -1,0 +1,11 @@
+{
+  "schema":"poie.s5v-n14-claim-status/1",
+  "claims":[
+    {"id":"N14-0","status":"VERIFIED","scope":"contract-independent time, state history, failure identity, outcomes"},
+    {"id":"N14-A","status":"ESTABLISHED","scope":"external 2 tasks, 4 failures, 2 robots"},
+    {"id":"N14-B","status":"ESTABLISHED","scope":"24 generated one-task cross-model cases"},
+    {"id":"N14-C","status":"VERIFIED","scope":"shared-contract generator and independent oracles"},
+    {"id":"N14-D","status":"VERIFIED","scope":"7 native mutations"},
+    {"id":"N14-E","status":"ESTABLISHED","scope":"manifest/CI evidence"}
+  ]
+}

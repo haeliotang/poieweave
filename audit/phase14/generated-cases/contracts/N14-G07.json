@@ -1,0 +1,11 @@
+{
+  "tasks": [
+    {
+      "duration_s": 7200.0,
+      "requires_tool": false
+    }
+  ],
+  "robot_count": 1,
+  "horizon_s": 72000.0,
+  "failures": []
+}

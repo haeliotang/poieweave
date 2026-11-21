@@ -1,0 +1,72 @@
+{
+  "schema": "poie.s5v-n14-negative/1",
+  "results": [
+    {
+      "control": "shared-wrong-time",
+      "expected": "CONTRACT_EVENT_TIME_VIOLATION",
+      "detected": true,
+      "findings": [
+        "CONTRACT_EVENT_TIME_VIOLATION",
+        "CONTRACT_EVENT_TIME_VIOLATION"
+      ]
+    },
+    {
+      "control": "second-failure-missing",
+      "expected": "EVENT_MISSING",
+      "detected": true,
+      "findings": [
+        "EVENT_MISSING",
+        "CONTRACT_EVENT_TIME_VIOLATION",
+        "EVENT_TARGET_IDENTITY_MISMATCH",
+        "FAILURE_IDENTITY_MISMATCH",
+        "CONTRACT_EVENT_TIME_VIOLATION",
+        "EVENT_TARGET_IDENTITY_MISMATCH",
+        "FAILURE_IDENTITY_MISMATCH",
+        "STATE_HISTORY_LOSS"
+      ]
+    },
+    {
+      "control": "state-history-loss",
+      "expected": "STATE_HISTORY_LOSS",
+      "detected": true,
+      "findings": [
+        "STATE_HISTORY_LOSS"
+      ]
+    },
+    {
+      "control": "failure-id-swap",
+      "expected": "FAILURE_IDENTITY_MISMATCH",
+      "detected": true,
+      "findings": [
+        "FAILURE_IDENTITY_MISMATCH",
+        "FAILURE_IDENTITY_MISMATCH"
+      ]
+    },
+    {
+      "control": "post-termination-event",
+      "expected": "EVENT_EXTRA",
+      "detected": true,
+      "findings": [
+        "EVENT_EXTRA",
+        "STATE_HISTORY_LOSS",
+        "STATE_HISTORY_CORRUPTION"
+      ]
+    },
+    {
+      "control": "task2-resource",
+      "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
+      "detected": true,
+      "findings": [
+        "N14-T04 ACCEPTED 4 {'t1': 1, 't2': 2} []"
+      ]
+    },
+    {
+      "control": "failure-count-capacity",
+      "expected": "INVALID_FAILURE_COUNT",
+      "detected": true,
+      "findings": [
+        ""
+      ]
+    }
+  ]
+}

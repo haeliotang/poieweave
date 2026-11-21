@@ -1,0 +1,79 @@
+{
+  "schema": "poie.s5v-n14-composition-cases/1",
+  "cases": {
+    "N14-T00": {
+      "failures": [],
+      "journal": "audit/phase14/external/N14-T00.csv.journal.json"
+    },
+    "N14-T01": {
+      "failures": [
+        {
+          "time": 3600,
+          "kind": 3,
+          "target": "sensor-x"
+        },
+        {
+          "time": 5400,
+          "kind": 3,
+          "target": "bus-2"
+        }
+      ],
+      "journal": "audit/phase14/external/N14-T01.csv.journal.json"
+    },
+    "N14-T02": {
+      "failures": [
+        {
+          "time": 3600,
+          "kind": 3,
+          "target": "sensor-x"
+        },
+        {
+          "time": 3600,
+          "kind": 3,
+          "target": "bus-2"
+        }
+      ],
+      "journal": "audit/phase14/external/N14-T02.csv.journal.json"
+    },
+    "N14-T03": {
+      "failures": [
+        {
+          "time": 3600,
+          "kind": 1,
+          "target": "robot-m1"
+        },
+        {
+          "time": 3600,
+          "kind": 2,
+          "target": "tool-t1"
+        }
+      ],
+      "journal": "audit/phase14/external/N14-T03.csv.journal.json"
+    },
+    "N14-T04": {
+      "failures": [
+        {
+          "time": 3600,
+          "kind": 3,
+          "target": "sensor-x"
+        },
+        {
+          "time": 3600,
+          "kind": 3,
+          "target": "bus-2"
+        },
+        {
+          "time": 5400,
+          "kind": 1,
+          "target": "robot-m1"
+        },
+        {
+          "time": 5400,
+          "kind": 2,
+          "target": "tool-t1"
+        }
+      ],
+      "journal": "audit/phase14/external/N14-T04.csv.journal.json"
+    }
+  }
+}

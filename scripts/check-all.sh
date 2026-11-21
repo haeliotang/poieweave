@@ -66,6 +66,8 @@ python3 audit/phase13/validate_metamorphic.py
 python3 audit/phase13/check.py
 python3 audit/phase13/verify_evidence.py --frozen --claim
 python3 audit/phase13/negative_evidence.py
+python3 audit/phase14/validate_composition.py
+python3 audit/phase14/check.py
 python3 audit/phase10/check.py --frozen
 python3 audit/phase7/negative_controls.py
 python3 audit/certificates/verify_v1.py
