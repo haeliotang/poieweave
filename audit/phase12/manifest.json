@@ -2,9 +2,9 @@
   "baseline": "7b7a8373a6ca5e5065d921035e438c82368a0e58",
   "files": [
     {
-      "bytes": 732,
+      "bytes": 724,
       "path": "audit/phase12/CLAIMS.json",
-      "sha256": "18b2e8f5a9c503944c85f8fbba670c8fbb06fff7284004ccdb3565ec9ec0487e"
+      "sha256": "dd021c1455e81d17dbfa2aa391bfd2a8d8d63a8ed3100c6b1d3abbe05b672b36"
     },
     {
       "bytes": 353,
@@ -22,9 +22,9 @@
       "sha256": "9fd35b3345f26551516786a8f17267e6b3330bec5a257b5a9838a1cd81610497"
     },
     {
-      "bytes": 1775,
+      "bytes": 1877,
       "path": "audit/phase12/REPORT.zh-CN.md",
-      "sha256": "826fb1d2cc596d00a701d7c88de121c483f775d9ec994917f78c8ad69ba52552"
+      "sha256": "9de9a6888d420fbb2be467decdc8975496606344cb52fb1f269e301f287f7fed"
     },
     {
       "bytes": 3692,
@@ -167,9 +167,9 @@
       "sha256": "9a88be908b2c55cf0b1f596cf34b0eedaecdce5f51c77b0316409df8df040412"
     },
     {
-      "bytes": 1768,
+      "bytes": 2051,
       "path": "audit/phase12/check.py",
-      "sha256": "b9d99165b134ad2fca052ae6a9db240e9a6e1a89b2b239078f285f04500da513"
+      "sha256": "ab651408718e228c2a72ee1e25c2cbb118e713a925457969dd6f03e5c02ad140"
     },
     {
       "bytes": 42672,

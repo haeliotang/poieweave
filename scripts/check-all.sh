@@ -56,7 +56,10 @@ python3 audit/phase11/check.py
 python3 audit/phase12/validate_identity.py
 python3 audit/phase12/validate_projection.py
 python3 audit/phase12/negative_projection.py
+python3 audit/phase12/validate_stress.py
 python3 audit/phase12/check.py
+python3 audit/phase12/verify_evidence.py --frozen --claim
+python3 audit/phase12/negative_evidence.py
 python3 audit/phase10/check.py --frozen
 python3 audit/phase7/negative_controls.py
 python3 audit/certificates/verify_v1.py

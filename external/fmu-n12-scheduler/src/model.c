@@ -11,6 +11,9 @@
 #include <string.h>
 
 #define MAXT 3
+#ifndef JOURNAL_CAPACITY
+#define JOURNAL_CAPACITY 32
+#endif
 #define MAXR 2
 #define VR_TASK_COUNT 2
 #define VR_T1_DUR 3
@@ -184,7 +187,7 @@ static void resolve_failure_target(Component *x) {
 static void append_event(Component *x, const char *kind, const char *target,
                          int rb, int hb, int db, int fb, int pb, int sb, int tb,
                          int ra, int ha, int da, int fa, int pa, int sa, int ta) {
-    if (x->journal_count >= 32) { x->journal_overflow = 1; return; }
+    if (x->journal_count >= JOURNAL_CAPACITY) { x->journal_overflow = 1; return; }
     x->journal_count += 1;
     int n = (int)x->journal_count;
     size_t used = strlen(x->journal);
@@ -371,8 +374,8 @@ fmi3Status fmi3GetString(fmi3Instance i, const fmi3ValueReference vr[], size_t n
     for (size_t k = 0; k < n; ++k) {
         if (vr[k] == 100) {
             snprintf(x->journal_output, sizeof(x->journal_output),
-                     "{\"schema\":\"poie.s5v-n11-native-events/1\",\"capacity\":32,\"count\":%d,\"overflow\":%s,\"events\":[%s]}",
-                     (int)x->journal_count, x->journal_overflow > 0.5 ? "true" : "false", x->journal);
+                     "{\"schema\":\"poie.s5v-n11-native-events/1\",\"capacity\":%d,\"count\":%d,\"overflow\":%s,\"events\":[%s]}",
+                     JOURNAL_CAPACITY, (int)x->journal_count, x->journal_overflow > 0.5 ? "true" : "false", x->journal);
             v[k] = x->journal_output;
         } else {
             v[k] = "";

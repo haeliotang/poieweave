@@ -18,10 +18,10 @@ N12-C BIDIRECTIONAL CAUSAL STATE-TRANSITION
   ESTABLISHED (SCOPED: 14 cases; target identity/time/order/asset health)
 
 N12-D ADVERSARIAL AND STRESS VALIDITY
-  NOT ESTABLISHED
+  ESTABLISHED (SCOPED: native mutations, overflow=3 execution, 1/900/1000 step invariance, multi-instance journal)
 
 N12-E EVIDENCE AND CERTIFICATE INTEGRITY
-  NOT ESTABLISHED
+  ESTABLISHED (SCOPED)
 ```
 
 ## 本轮完成
