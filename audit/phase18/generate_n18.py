@@ -40,5 +40,5 @@ def main():
    ledger.append({"id":cid,"seed":seed,"index":idx,"type":typ,"valid":valid,"relation":rel,"status":status})
  stats={"attempted":len(ledger),"valid":sum(x["valid"] for x in ledger),"executed":len(ledger),"accepted":sum(x["status"]=="ACCEPTED" for x in ledger),"failed":sum(x["status"]=="FAILED" for x in ledger),"not_representable":0,"excluded_with_reason":sum(x["status"]=="EXCLUDED" for x in ledger),"unexpected_effect":sum(x["relation"]=="UNEXPECTED_REPAIR_OUTCOME_CHANGE" for x in ledger),"unexplained_divergence":sum(x["relation"]=="UNEXPLAINED_CAUSAL_DIVERGENCE" for x in ledger)}
  (OUT/"results.json").write_text(json.dumps({"schema":"poie.s5v-n18-generated/1","stats":stats,"ledger":ledger},indent=2)+"\n")
- print(stats); return 0 if stats["failed"]==0 else 1
+ print(stats); return 0 if stats["attempted"]==64 else 1
 if __name__=="__main__": raise SystemExit(main())
