@@ -96,10 +96,16 @@ fn main() {
         let process_id = if index == 0 { "n10-repair-a-lathe".to_string() } else { "n14-task-b".to_string() };
         let duration = task["duration_s"].as_f64().unwrap();
         let mask = task["robot_mask"].as_u64().unwrap_or(1);
+        let robot_alternatives = task["robot_alternatives"]
+            .as_array()
+            .map(|a| a.iter().filter_map(|v| v.as_str().map(str::to_string)).collect::<Vec<_>>())
+            .unwrap_or_default();
         let mut occupies = Vec::new();
-        for bit in 0..robots {
-            if mask & (1u64 << bit) != 0 {
-                occupies.push(format!("robot-m{}", bit + 1));
+        if robot_alternatives.is_empty() {
+            for bit in 0..robots {
+                if mask & (1u64 << bit) != 0 {
+                    occupies.push(format!("robot-m{}", bit + 1));
+                }
             }
         }
         if task["requires_tool"].as_bool().unwrap_or(false) {
@@ -120,6 +126,7 @@ fn main() {
             task_id: task["task_id"].as_str().unwrap_or("task").to_string(),
             process: process_id,
             duration_s: duration,
+            robot_alternatives,
         });
     }
     let failures: Vec<FailureEvent> = c["failures"]

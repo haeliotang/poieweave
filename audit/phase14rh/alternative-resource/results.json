@@ -1,0 +1,101 @@
+{
+  "schema": "poie.s5v-n14rh-or/1",
+  "cases": [
+    {
+      "case": "OR-01",
+      "canonical_robots": [
+        "robot-m1",
+        "robot-m2"
+      ],
+      "external_robots": [
+        "robot-m1",
+        "robot-m2"
+      ],
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "classification": "SAME_DECISION",
+      "problems": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "OR-02",
+      "canonical_robots": [
+        "robot-m1",
+        "robot-m2"
+      ],
+      "external_robots": [
+        "robot-m1",
+        "robot-m2"
+      ],
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "classification": "SAME_DECISION",
+      "problems": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "OR-03",
+      "canonical_robots": [
+        "robot-m1",
+        "robot-m2"
+      ],
+      "external_robots": [
+        "robot-m2",
+        "robot-m2"
+      ],
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "classification": "DIFFERENT_POLICY_VALID_DECISIONS",
+      "problems": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "OR-04",
+      "canonical_robots": [
+        "robot-m1",
+        "robot-m2"
+      ],
+      "external_robots": [
+        "robot-m2",
+        "robot-m2"
+      ],
+      "canonical_interrupted": true,
+      "external_interrupted": false,
+      "classification": "VALID_POLICY_DEPENDENT_DIVERGENCE",
+      "problems": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "OR-05",
+      "canonical_robots": [
+        "robot-m1",
+        "robot-m2"
+      ],
+      "external_robots": [
+        "robot-m1",
+        "robot-m2"
+      ],
+      "canonical_interrupted": true,
+      "external_interrupted": true,
+      "classification": "SAME_DECISION",
+      "problems": [],
+      "status": "ACCEPTED"
+    },
+    {
+      "case": "OR-06",
+      "canonical_robots": [
+        "robot-m1",
+        "robot-m2"
+      ],
+      "external_robots": [
+        "robot-m1",
+        "robot-m2"
+      ],
+      "canonical_interrupted": false,
+      "external_interrupted": false,
+      "classification": "SAME_DECISION",
+      "problems": [],
+      "status": "ACCEPTED"
+    }
+  ]
+}
