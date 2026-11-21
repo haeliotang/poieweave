@@ -2112,6 +2112,46 @@ jobs:
           name: s5v-n14r-linux-evidence
           path: ${{ runner.temp }}/s5v-n14r/evidence
 
+  s5v-n14rh-linux:
+    name: S5-V N14RH historical replay and importer independence Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install fmpy
+        run: python3 -m pip install --disable-pip-version-check fmpy==0.3.32
+      - name: Historical v6 replay
+        run: |
+          git worktree add --detach /tmp/n14rh-v6 161273d4599ff07fdd90f7a4be9e3bd6e221a94f
+          cd /tmp/n14rh-v6
+          cargo build --locked --offline --bins
+          cd "$GITHUB_WORKSPACE"
+          python3 audit/phase14rh/historical_v6_replay.py
+      - name: Current v7 attestations
+        run: |
+          cargo build --locked --offline --bins
+          python3 audit/phase14rh/v7_attestation.py
+      - name: Dual importer and reducer
+        run: |
+          external/fmu-n14-scheduler/build.sh
+          python3 audit/phase14rh/compare_importers.py
+          python3 audit/phase14rh/reducer/reduce.py
+          python3 audit/phase14rh/check.py
+      - name: Save N14RH evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n14rh/evidence"
+          cp -R audit/phase14rh "$RUNNER_TEMP/s5v-n14rh/evidence/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n14rh-linux-evidence
+          path: ${{ runner.temp }}/s5v-n14rh/evidence
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest

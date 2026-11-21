@@ -1,0 +1,11 @@
+{
+  "claim_id": "C85",
+  "certificate_id": "poie-s2-canonical-c85-v7",
+  "runner": "poie-migration-aux-batch9",
+  "runner_sha256": "3dc6fe750219718b4c05a114b1fa2d657b3328ab86342a858e1b04b0f19b9cf4",
+  "expected_sha256": "1520df5fbd60adcffb9419dce02fa3d99a92eafeeb961d3df60783603cc736f2",
+  "actual_output_sha256": "1520df5fbd60adcffb9419dce02fa3d99a92eafeeb961d3df60783603cc736f2",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-aux-batch9"
+}

@@ -1,0 +1,11 @@
+{
+  "claim_id": "C86",
+  "certificate_id": "poie-s2-canonical-c86-v7",
+  "runner": "poie-migration-aux-batch10",
+  "runner_sha256": "1c74d06e355ab309d7058661cd0a990804352fc476e9c55745212c2f8d6e6263",
+  "expected_sha256": "599757518fe04588d82fe907f354cff8d64db568fff1127e4087510c39aa5720",
+  "actual_output_sha256": "599757518fe04588d82fe907f354cff8d64db568fff1127e4087510c39aa5720",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-aux-batch10"
+}

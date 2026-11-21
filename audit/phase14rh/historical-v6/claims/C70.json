@@ -1,0 +1,16 @@
+{
+  "claim_id": "C70",
+  "certificate_id": "poie-s2-canonical-c70-v6",
+  "experiment": "experiments/s2-canonical-regen-horizon",
+  "historical_commit": "161273d4599ff07fdd90f7a4be9e3bd6e221a94f",
+  "runner": "poie-migration-s2-regen-horizon",
+  "runner_sha256": "463f68d5f540b27d523a4f8f97eb8300e0354ebf12900cd32998c406bc6261ba",
+  "model": "scenarios/base-05/model.toml",
+  "expected_sha256": "e9a787b1d9d4705c5aaf3e9ef0158ea76c826faddc5ae41f392b06cfc2e227c9",
+  "actual_output_sha256": "e9a787b1d9d4705c5aaf3e9ef0158ea76c826faddc5ae41f392b06cfc2e227c9",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "stdout_stderr_sha256": "e9a787b1d9d4705c5aaf3e9ef0158ea76c826faddc5ae41f392b06cfc2e227c9",
+  "replay_command": "cd /tmp/n14rh-v6 && target/debug/poie-migration-s2-regen-horizon",
+  "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+}

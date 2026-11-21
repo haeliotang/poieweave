@@ -1,0 +1,16 @@
+{
+  "claim_id": "C79",
+  "certificate_id": "poie-s2-canonical-c79-v6",
+  "experiment": "experiments/s2-canonical-aux-batch3",
+  "historical_commit": "161273d4599ff07fdd90f7a4be9e3bd6e221a94f",
+  "runner": "poie-migration-aux-batch3",
+  "runner_sha256": "2e1d994025e5bd869a28ac2a19b6d73625d28034fba4bc85e5ded71bd6d5b856",
+  "model": "scenarios/base-08/model.toml",
+  "expected_sha256": "36b81a4eb6d88b6bd81c9c38fd62d58b7ba88c25ef70c6a40e69200923c3e837",
+  "actual_output_sha256": "36b81a4eb6d88b6bd81c9c38fd62d58b7ba88c25ef70c6a40e69200923c3e837",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "stdout_stderr_sha256": "36b81a4eb6d88b6bd81c9c38fd62d58b7ba88c25ef70c6a40e69200923c3e837",
+  "replay_command": "cd /tmp/n14rh-v6 && target/debug/poie-migration-aux-batch3",
+  "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+}

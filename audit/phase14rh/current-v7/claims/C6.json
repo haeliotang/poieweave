@@ -1,0 +1,11 @@
+{
+  "claim_id": "C6",
+  "certificate_id": "poie-s2-canonical-c6-v7",
+  "runner": "poie-joint-coverage",
+  "runner_sha256": "da29ab243235fbc7e23b46e955fe713ee07710762d3335b8fa51c23bb0257dc4",
+  "expected_sha256": "78c1e3e02edd7a36453236f7881d43750d9d768862b23edd7caac73471186efc",
+  "actual_output_sha256": "78c1e3e02edd7a36453236f7881d43750d9d768862b23edd7caac73471186efc",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-joint-coverage"
+}

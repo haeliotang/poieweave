@@ -1,0 +1,38 @@
+{
+  "schema": "poie.s5v-n14rh-supplementary-attestation/1",
+  "kind": "SUPPLEMENTARY_EXECUTION_ATTESTATION",
+  "claim_id": "C70",
+  "v7_certificate": "experiments/certificate-canonical-c70-v7/certificate.json",
+  "v7_certificate_sha256": "45d221cb121f79e6221c3edb1f059c14b29dc517aa9322910c70b0f034bd3ccf",
+  "v6_predecessor": "experiments/certificate-canonical-c70-v6/certificate.json",
+  "v6_predecessor_sha256": "11178324a35b8670523be6a2ae5829cf7bc1b55cf333b86147bf8653b6c8625f",
+  "historical_v6_replay": {
+    "claim_id": "C70",
+    "certificate_id": "poie-s2-canonical-c70-v6",
+    "experiment": "experiments/s2-canonical-regen-horizon",
+    "historical_commit": "161273d4599ff07fdd90f7a4be9e3bd6e221a94f",
+    "runner": "poie-migration-s2-regen-horizon",
+    "runner_sha256": "463f68d5f540b27d523a4f8f97eb8300e0354ebf12900cd32998c406bc6261ba",
+    "model": "scenarios/base-05/model.toml",
+    "expected_sha256": "e9a787b1d9d4705c5aaf3e9ef0158ea76c826faddc5ae41f392b06cfc2e227c9",
+    "actual_output_sha256": "e9a787b1d9d4705c5aaf3e9ef0158ea76c826faddc5ae41f392b06cfc2e227c9",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "stdout_stderr_sha256": "e9a787b1d9d4705c5aaf3e9ef0158ea76c826faddc5ae41f392b06cfc2e227c9",
+    "replay_command": "cd /tmp/n14rh-v6 && target/debug/poie-migration-s2-regen-horizon",
+    "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+  },
+  "current_v7_replay": {
+    "claim_id": "C70",
+    "certificate_id": "poie-s2-canonical-c70-v7",
+    "runner": "poie-migration-s2-regen-horizon",
+    "runner_sha256": "854da73439ec4ee77df934f74d192a5d8277408a604e2b158e965f9d1257a6a6",
+    "expected_sha256": "e9a787b1d9d4705c5aaf3e9ef0158ea76c826faddc5ae41f392b06cfc2e227c9",
+    "actual_output_sha256": "e9a787b1d9d4705c5aaf3e9ef0158ea76c826faddc5ae41f392b06cfc2e227c9",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "replay_command": "target/debug/poie-migration-s2-regen-horizon"
+  },
+  "legacy_expected_unchanged": true,
+  "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+}

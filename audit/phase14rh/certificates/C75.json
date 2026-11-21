@@ -1,0 +1,38 @@
+{
+  "schema": "poie.s5v-n14rh-supplementary-attestation/1",
+  "kind": "SUPPLEMENTARY_EXECUTION_ATTESTATION",
+  "claim_id": "C75",
+  "v7_certificate": "experiments/certificate-canonical-c75-v7/certificate.json",
+  "v7_certificate_sha256": "468afa1061146b490ebd2e7b5cf235ffc8a83b5db9579ddded5d19d6088ff4d6",
+  "v6_predecessor": "experiments/certificate-canonical-c75-v6/certificate.json",
+  "v6_predecessor_sha256": "2c1316d5c8f464725bc81de42eb401b87d09390b43d3a06e83aafa6445b34c1c",
+  "historical_v6_replay": {
+    "claim_id": "C75",
+    "certificate_id": "poie-s2-canonical-c75-v6",
+    "experiment": "experiments/s2-canonical-energy-interventions",
+    "historical_commit": "161273d4599ff07fdd90f7a4be9e3bd6e221a94f",
+    "runner": "poie-migration-energy-interventions",
+    "runner_sha256": "c40160557cb8963f6502584da2630d6a98e33600c35528283bd5fd7ba9003fc6",
+    "model": "scenarios/base-08/model.toml",
+    "expected_sha256": "35c8a021a7b0fd891ab2606826218902dd5224e8cdc350958e06606860982c9f",
+    "actual_output_sha256": "35c8a021a7b0fd891ab2606826218902dd5224e8cdc350958e06606860982c9f",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "stdout_stderr_sha256": "35c8a021a7b0fd891ab2606826218902dd5224e8cdc350958e06606860982c9f",
+    "replay_command": "cd /tmp/n14rh-v6 && target/debug/poie-migration-energy-interventions",
+    "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+  },
+  "current_v7_replay": {
+    "claim_id": "C75",
+    "certificate_id": "poie-s2-canonical-c75-v7",
+    "runner": "poie-migration-energy-interventions",
+    "runner_sha256": "4969423954f8f4a5b7939173a77df7992c3d9162ec705af3363a5a819fc9f0ee",
+    "expected_sha256": "35c8a021a7b0fd891ab2606826218902dd5224e8cdc350958e06606860982c9f",
+    "actual_output_sha256": "35c8a021a7b0fd891ab2606826218902dd5224e8cdc350958e06606860982c9f",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "replay_command": "target/debug/poie-migration-energy-interventions"
+  },
+  "legacy_expected_unchanged": true,
+  "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+}

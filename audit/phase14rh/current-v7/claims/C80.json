@@ -1,0 +1,11 @@
+{
+  "claim_id": "C80",
+  "certificate_id": "poie-s2-canonical-c80-v7",
+  "runner": "poie-migration-aux-batch4",
+  "runner_sha256": "12731b115825658412268e51883dba881c8fd56b94be7aac007f2c0673937b04",
+  "expected_sha256": "eaf6096488e4364207c9fd0aaaaad00b72e132b33e742ff99d8ad22d3fd063bd",
+  "actual_output_sha256": "eaf6096488e4364207c9fd0aaaaad00b72e132b33e742ff99d8ad22d3fd063bd",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-aux-batch4"
+}

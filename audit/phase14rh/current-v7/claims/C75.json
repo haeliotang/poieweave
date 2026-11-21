@@ -1,0 +1,11 @@
+{
+  "claim_id": "C75",
+  "certificate_id": "poie-s2-canonical-c75-v7",
+  "runner": "poie-migration-energy-interventions",
+  "runner_sha256": "4969423954f8f4a5b7939173a77df7992c3d9162ec705af3363a5a819fc9f0ee",
+  "expected_sha256": "35c8a021a7b0fd891ab2606826218902dd5224e8cdc350958e06606860982c9f",
+  "actual_output_sha256": "35c8a021a7b0fd891ab2606826218902dd5224e8cdc350958e06606860982c9f",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-energy-interventions"
+}

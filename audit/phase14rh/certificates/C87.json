@@ -1,0 +1,38 @@
+{
+  "schema": "poie.s5v-n14rh-supplementary-attestation/1",
+  "kind": "SUPPLEMENTARY_EXECUTION_ATTESTATION",
+  "claim_id": "C87",
+  "v7_certificate": "experiments/certificate-canonical-c87-v7/certificate.json",
+  "v7_certificate_sha256": "0778e6f4127b77ad1117885da4ea0440be68c4892b04b54cac5f5b27b8b6cca4",
+  "v6_predecessor": "experiments/certificate-canonical-c87-v6/certificate.json",
+  "v6_predecessor_sha256": "41663e19335a20f20a5a61e9c3d229702b8aeecb859b9e69065a4c7d6b1de063",
+  "historical_v6_replay": {
+    "claim_id": "C87",
+    "certificate_id": "poie-s2-canonical-c87-v6",
+    "experiment": "experiments/s2-canonical-aux-batch11",
+    "historical_commit": "161273d4599ff07fdd90f7a4be9e3bd6e221a94f",
+    "runner": "poie-migration-aux-batch11",
+    "runner_sha256": "aa571af37abd0ec6ccbfc29e0be61c35db6392cb09f283af572ad6fc3e4dd366",
+    "model": "scenarios/base-08/model.toml",
+    "expected_sha256": "6c5733b824401f4f2b98a981ab7267dffe98f68028ea6c47b45ba9d5c0be5e6e",
+    "actual_output_sha256": "6c5733b824401f4f2b98a981ab7267dffe98f68028ea6c47b45ba9d5c0be5e6e",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "stdout_stderr_sha256": "6c5733b824401f4f2b98a981ab7267dffe98f68028ea6c47b45ba9d5c0be5e6e",
+    "replay_command": "cd /tmp/n14rh-v6 && target/debug/poie-migration-aux-batch11",
+    "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+  },
+  "current_v7_replay": {
+    "claim_id": "C87",
+    "certificate_id": "poie-s2-canonical-c87-v7",
+    "runner": "poie-migration-aux-batch11",
+    "runner_sha256": "8b380e5f68252a4448b9755c127fde0b686b360dc530ae8230e71605b8ee6c49",
+    "expected_sha256": "6c5733b824401f4f2b98a981ab7267dffe98f68028ea6c47b45ba9d5c0be5e6e",
+    "actual_output_sha256": "6c5733b824401f4f2b98a981ab7267dffe98f68028ea6c47b45ba9d5c0be5e6e",
+    "exit_code": 0,
+    "assertion_result": "PASS",
+    "replay_command": "target/debug/poie-migration-aux-batch11"
+  },
+  "legacy_expected_unchanged": true,
+  "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+}

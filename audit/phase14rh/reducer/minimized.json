@@ -1,0 +1,16 @@
+{
+  "group_id": "reduce",
+  "restoration_target": "a-lathe",
+  "horizon_s": 72000,
+  "robot_count": 2,
+  "tasks": [
+    {
+      "task_id": "A",
+      "duration_s": 1.0,
+      "priority": 1,
+      "robot_mask": 0,
+      "requires_tool": true
+    }
+  ],
+  "failures": []
+}

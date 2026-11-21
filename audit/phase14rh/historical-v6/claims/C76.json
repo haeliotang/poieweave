@@ -1,0 +1,16 @@
+{
+  "claim_id": "C76",
+  "certificate_id": "poie-s2-canonical-c76-v6",
+  "experiment": "experiments/s2-canonical-redundancy-restorers",
+  "historical_commit": "161273d4599ff07fdd90f7a4be9e3bd6e221a94f",
+  "runner": "poie-migration-redundancy-restorers",
+  "runner_sha256": "94e66b3290e3dffc9c24c99351d28fad25f4bd4459086c233557a0348b91a30d",
+  "model": "scenarios/base-08/model.toml",
+  "expected_sha256": "9eb6f040c4a0bff21809ff5753c7daf23d44a8581a6b8449c47e9dc2c9c36a8d",
+  "actual_output_sha256": "9eb6f040c4a0bff21809ff5753c7daf23d44a8581a6b8449c47e9dc2c9c36a8d",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "stdout_stderr_sha256": "9eb6f040c4a0bff21809ff5753c7daf23d44a8581a6b8449c47e9dc2c9c36a8d",
+  "replay_command": "cd /tmp/n14rh-v6 && target/debug/poie-migration-redundancy-restorers",
+  "classification": "CLAIM_SPECIFIC_EXPERIMENT_REPLAY"
+}

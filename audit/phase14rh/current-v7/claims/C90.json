@@ -1,0 +1,11 @@
+{
+  "claim_id": "C90",
+  "certificate_id": "poie-s2-canonical-c90-v7",
+  "runner": "poie-migration-aux-batch14",
+  "runner_sha256": "af158fd1770801aee52ee420404f84076a027cfb97b0d9a7954d3149901076a3",
+  "expected_sha256": "54a6e160707c3b03640a169f0aa612fcb63b44fee744c4cf5cf6ecee2a327ed9",
+  "actual_output_sha256": "54a6e160707c3b03640a169f0aa612fcb63b44fee744c4cf5cf6ecee2a327ed9",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-aux-batch14"
+}

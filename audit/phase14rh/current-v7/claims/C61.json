@@ -1,0 +1,11 @@
+{
+  "claim_id": "C61",
+  "certificate_id": "poie-s2-canonical-c61-v7",
+  "runner": "poie-migration-c10",
+  "runner_sha256": "feff57fda5277b17385ca6f06f54648950da6a8ed6901278a0ed082d1902f72c",
+  "expected_sha256": "7c6db8108a6e2b744a9cf6b108bb6da90a94c03dd5ff67fc2428bd6c2859c824",
+  "actual_output_sha256": "7c6db8108a6e2b744a9cf6b108bb6da90a94c03dd5ff67fc2428bd6c2859c824",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-c10"
+}

@@ -1,0 +1,12 @@
+{
+  "schema":"poie.s5v-n14rh-claim-status/1",
+  "claims":[
+    {"id":"N14RH-0","status":"VERIFIED","scope":"main history audit, v7 freeze, PR workflow restoration"},
+    {"id":"N14RH-A","status":"VERIFIED","scope":"41/41 v6 claims replayed from historical source"},
+    {"id":"N14RH-B","status":"VERIFIED","scope":"41/41 claim-specific v7 attestations"},
+    {"id":"N14RH-C","status":"VERIFIED","scope":"C harness + fmpy, 10 N14R cases"},
+    {"id":"N14RH-D","status":"VERIFIED","scope":"auto reducer, RESOURCE_ELIGIBILITY signature"},
+    {"id":"N14RH-E","status":"NOT_ESTABLISHED","scope":"task-specific OR + tool AND requires v8 extension"},
+    {"id":"N14RH-F","status":"IN_PROGRESS","scope":"CI/clean check-all"}
+  ]
+}

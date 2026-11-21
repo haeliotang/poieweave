@@ -1,0 +1,11 @@
+{
+  "claim_id": "C71",
+  "certificate_id": "poie-s2-canonical-c71-v7",
+  "runner": "poie-migration-metrics-groups",
+  "runner_sha256": "589930da3f18094b7d9ee45be99a5d1dcfbddf491aacc8efd68240bb132e1297",
+  "expected_sha256": "4490e853bed84dbeabf600129a0a61566dbe404b80f8f6f5a353f886e05f2ec8",
+  "actual_output_sha256": "4490e853bed84dbeabf600129a0a61566dbe404b80f8f6f5a353f886e05f2ec8",
+  "exit_code": 0,
+  "assertion_result": "PASS",
+  "replay_command": "target/debug/poie-migration-metrics-groups"
+}
