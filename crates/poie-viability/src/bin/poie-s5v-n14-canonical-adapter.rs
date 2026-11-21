@@ -144,7 +144,7 @@ fn main() {
         failures,
         resupplies: Vec::new(),
         resources: resources.clone(),
-        alternative_pool: Vec::new(),
+        alternative_pool: if tasks.len() == 1 { resources.clone() } else { Vec::new() },
         battery: None,
         load_kw: 0.0,
     };
