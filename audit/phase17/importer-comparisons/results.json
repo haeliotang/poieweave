@@ -1,0 +1,436 @@
+{
+  "schema": "poie.s5v-n17-importer/1",
+  "cases": [
+    {
+      "case": "N17-C1-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C10-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C2-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C3-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C4-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C6-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C7-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C8a-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C8b-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C9-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-00-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-01-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-02-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-03-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-04-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-05-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-06-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-07-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-08-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-09-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-10-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-11-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-12-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-13-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-14-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-15-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-00-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-01-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-02-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-03-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-04-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-05-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-06-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-07-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-08-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-09-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-10-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-11-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-12-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-13-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-14-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-15-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-P7-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-P7b-baseline",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C1-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C10-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C2-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C3-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C4-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C6-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C7-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C8a-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C8b-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-C9-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-00-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-01-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-02-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-03-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-04-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-05-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-06-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-07-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-08-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-09-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-10-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-11-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-12-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-13-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-14-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G17-15-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-00-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-01-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-02-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-03-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-04-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-05-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-06-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-07-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-08-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-09-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-10-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-11-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-12-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-13-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-14-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N17-G2026-15-intervention",
+      "field_differences": [],
+      "journal_equal": true
+    }
+  ],
+  "problems": []
+}

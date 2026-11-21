@@ -1,0 +1,1245 @@
+{
+  "schema": "poie.s5v-n17-generated/1",
+  "stats": {
+    "generated_pairs": 32,
+    "valid_pairs": 32,
+    "invalid_pairs": 0,
+    "not_representable_pairs": 0,
+    "executed_canonical_runs": 64,
+    "executed_external_runs": 64,
+    "accepted_pairs": 32,
+    "failed_pairs": 0,
+    "unexplained_pairs": 0
+  },
+  "pairs": [
+    {
+      "seed": 17,
+      "index": 0,
+      "intervention_id": "N17-G17-00",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 7200,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 7200,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 1,
+      "intervention_id": "N17-G17-01",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          [
+            "robot-m1"
+          ],
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          [
+            "robot-m2"
+          ],
+          null
+        ],
+        "pref": 2
+      }
+    },
+    {
+      "seed": 17,
+      "index": 2,
+      "intervention_id": "N17-G17-02",
+      "type": "FAILURE_TIME_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 5400,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 9000,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 3,
+      "intervention_id": "N17-G17-03",
+      "type": "FAILURE_REMOVAL",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 9000,
+            "target": "tool-t1",
+            "kind": 2,
+            "target_id": 7
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": true,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 4,
+      "intervention_id": "N17-G17-04",
+      "type": "FAILURE_REMOVAL",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 3600,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 5,
+      "intervention_id": "N17-G17-05",
+      "type": "FAILURE_INSERTION",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 3600,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 6,
+      "intervention_id": "N17-G17-06",
+      "type": "FAILURE_TARGET_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 9000,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 9000,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 7,
+      "intervention_id": "N17-G17-07",
+      "type": "FAILURE_TIME_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 3600,
+            "target": "bus-2",
+            "kind": 3,
+            "target_id": 6
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 7199,
+            "target": "bus-2",
+            "kind": 3,
+            "target_id": 6
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 8,
+      "intervention_id": "N17-G17-08",
+      "type": "FAILURE_REMOVAL",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7199,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 9,
+      "intervention_id": "N17-G17-09",
+      "type": "FAILURE_REMOVAL",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 3600,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 10,
+      "intervention_id": "N17-G17-10",
+      "type": "FAILURE_REMOVAL",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7201,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 11,
+      "intervention_id": "N17-G17-11",
+      "type": "FAILURE_TIME_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 7201,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 10801,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 12,
+      "intervention_id": "N17-G17-12",
+      "type": "FAILURE_TIME_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7199,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7201,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 13,
+      "intervention_id": "N17-G17-13",
+      "type": "FAILURE_TIME_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7201,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 10801,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 14,
+      "intervention_id": "N17-G17-14",
+      "type": "FAILURE_TARGET_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 3600,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 3600,
+            "target": "bus-2",
+            "kind": 3,
+            "target_id": 6
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 17,
+      "index": 15,
+      "intervention_id": "N17-G17-15",
+      "type": "FAILURE_INSERTION",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": true,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 7201,
+            "target": "bus-2",
+            "kind": 3,
+            "target_id": 6
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 0,
+      "intervention_id": "N17-G2026-00",
+      "type": "FAILURE_TARGET_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7201,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7201,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 1,
+      "intervention_id": "N17-G2026-01",
+      "type": "FAILURE_TARGET_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7201,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7201,
+            "target": "bus-2",
+            "kind": 3,
+            "target_id": 6
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 2,
+      "intervention_id": "N17-G2026-02",
+      "type": "FAILURE_INSERTION",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": true,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 9000,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 3,
+      "intervention_id": "N17-G2026-03",
+      "type": "FAILURE_INSERTION",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7199,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 4,
+      "intervention_id": "N17-G2026-04",
+      "type": "FAILURE_TIME_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 3600,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 7199,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 5,
+      "intervention_id": "N17-G2026-05",
+      "type": "FAILURE_REMOVAL",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 9000,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 6,
+      "intervention_id": "N17-G2026-06",
+      "type": "FAILURE_INSERTION",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": true,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 9000,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 7,
+      "intervention_id": "N17-G2026-07",
+      "type": "FAILURE_REMOVAL",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7201,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 8,
+      "intervention_id": "N17-G2026-08",
+      "type": "FAILURE_REMOVAL",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7199,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 9,
+      "intervention_id": "N17-G2026-09",
+      "type": "FAILURE_TARGET_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7199,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7199,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 10,
+      "intervention_id": "N17-G2026-10",
+      "type": "FAILURE_INSERTION",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7199,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 11,
+      "intervention_id": "N17-G2026-11",
+      "type": "FAILURE_REMOVAL",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 9000,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 12,
+      "intervention_id": "N17-G2026-12",
+      "type": "FAILURE_TARGET_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 9000,
+            "target": "sensor-x",
+            "kind": 3,
+            "target_id": 5
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 9000,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 13,
+      "intervention_id": "N17-G2026-13",
+      "type": "FAILURE_TIME_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "split",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 5400,
+            "target": "bus-2",
+            "kind": 3,
+            "target_id": 6
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "split",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 9000,
+            "target": "bus-2",
+            "kind": 3,
+            "target_id": 6
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 14,
+      "intervention_id": "N17-G2026-14",
+      "type": "FAILURE_TIME_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 7199,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": true,
+        "failures": [
+          {
+            "time_s": 7201,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    },
+    {
+      "seed": 2026,
+      "index": 15,
+      "intervention_id": "N17-G2026-15",
+      "type": "FAILURE_TIME_CHANGE",
+      "relation": "CHANGED_OUTCOME_EXPLAINED",
+      "status": "ACCEPTED",
+      "baseline": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 3600,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      },
+      "intervention": {
+        "profile": "shared",
+        "tool": false,
+        "failures": [
+          {
+            "time_s": 7199,
+            "target": "bus-1",
+            "kind": 3,
+            "target_id": 3
+          }
+        ],
+        "alts": [
+          null,
+          null
+        ],
+        "pref": 0
+      }
+    }
+  ]
+}

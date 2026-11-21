@@ -1,0 +1,24 @@
+{
+  "schema": "poie.s5v-n17-negative/1",
+  "controls": [
+    {
+      "control": "POLICY_FALSE_PASS",
+      "pass": true,
+      "detail": [
+        "('policy+bad-closure', 'FAIL', ['EXTERNAL_SHARED_DEPENDENCY_LOSS'])",
+        "('policy+missing-failure', 'FAIL', ['EXTERNAL_FAILURE_MISSING_0'])",
+        "('policy+early-restoration', 'FAIL', ['PREMATURE_GROUP_COMMIT_EXTERNAL'])"
+      ]
+    },
+    {
+      "control": "INTERVENTION_NOT_APPLIED",
+      "pass": true,
+      "detail": "baseline and intervention external journals differ"
+    },
+    {
+      "control": "EVENT_ORDER_SWAP_DETECTABLE",
+      "pass": true,
+      "detail": "same-time pair reordered"
+    }
+  ]
+}

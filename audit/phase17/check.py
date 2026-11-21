@@ -5,16 +5,22 @@ from __future__ import annotations
 import json,subprocess,sys
 from pathlib import Path
 P=Path(__file__).resolve().parent; problems=[]
-# 1. false-pass controls must be rejected by formal validator
-r=subprocess.run([sys.executable,str(P/"false_pass_controls.py")],capture_output=True,text=True)
-if r.returncode!=0: problems.append("false pass controls")
-# 2. N16 claims/report consistency
-cl=json.loads((P.parent/"phase16"/"CLAIMS.json").read_text())["claims"]; rep=(P.parent/"phase16"/"REPORT.zh-CN.md").read_text()
-for c in cl:
- if c["status"] in ("VERIFIED","ESTABLISHED") and c["id"] not in rep: problems.append(c["id"])
- if c["id"]=="N16-F" and c["status"]!="VERIFIED": problems.append("N16-F")
-# 3. generated oracle checks
-g=json.loads((P.parent/"phase16"/"generated-cases"/"results.json").read_text())
-if g["failed_cases"]!=0: problems.append("generated")
-if problems: print("N17-0 FAIL: "+", ".join(problems)); sys.exit(1)
-print("ok N17-0 historical causal oracle integrity")
+fixed=json.loads((P/"oracle-results/fixed-pairs.json").read_text())["pairs"]
+if len(fixed)<10: problems.append("fixed pairs")
+for p in fixed:
+ if p["status"]!="ACCEPTED": problems.append(p["intervention_id"])
+ for side in ("baseline","intervention"):
+  for model in ("canonical","external"):
+   if not p[side][model]["valid"]: problems.append(p["intervention_id"]+":"+side+":"+model)
+gen=json.loads((P/"generated-pairs/results.json").read_text())["stats"]
+if gen["generated_pairs"]!=32 or gen["accepted_pairs"]!=32 or gen["failed_pairs"]!=0 or gen["invalid_pairs"]!=0: problems.append("generated")
+meta=json.loads((P/"causal-comparisons/metamorphic.json").read_text())["properties"]
+if not all(x["pass"] for x in meta): problems.append("metamorphic")
+mut=json.loads((P/"minimized-counterexamples/mutant/failure_signature.json").read_text())
+if mut["failure_class"]!="SHARED_DEPENDENCY_LOSS": problems.append("mutant")
+neg=json.loads((P/"negative-controls/results.json").read_text())["controls"]
+if not all(x["pass"] for x in neg): problems.append("negative")
+imp=json.loads((P/"importer-comparisons/results.json").read_text())
+if imp["problems"] or len(imp["cases"])<20 or any(not c["journal_equal"] or c["field_differences"] for c in imp["cases"]): problems.append("importer")
+if problems: print("N17 FAIL: "+", ".join(problems[:6])); sys.exit(1)
+print("ok N17 counterfactual interventions")

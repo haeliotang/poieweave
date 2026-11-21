@@ -1,0 +1,67 @@
+{
+  "evidence": {
+    "audit/phase17/causal-comparisons/metamorphic.json": "db8043a345dc0a3cae349e8df930c3ce93e71190d7340f12be34c7ff0e69cfa6",
+    "audit/phase17/generated-pairs/results.json": "f2bde1500a592f436f1c1615f01079e1c8b516b63803b7998e16c7161c1f5dd0",
+    "audit/phase17/importer-comparisons/results.json": "8b8b4f707e5c395a032d17b8f9c397cf03db891bfe701aa74e16a5a714fc1652",
+    "audit/phase17/minimized-counterexamples/mutant/failure_signature.json": "4aa2888ba2c055dbb02d3ec3f7451b1b226ce9ee674b8772562ee0128e9c6f7d",
+    "audit/phase17/negative-controls/false-pass.json": "d4a647d3b92c2215f33826ba10be984c8b8a5b2a1bae24a1a3dc63a6cadadcaf",
+    "audit/phase17/negative-controls/results.json": "3eb615e203648ccb4f1d600311c6c3fcac128b4bf68aa3d0a3b85b9a8aef322d",
+    "audit/phase17/oracle-results/fixed-pairs.json": "bea70580441638f25b65257458595553334ebda460fa7a44d9748a0f2588704f"
+  },
+  "inputs": {
+    "canonical_adapter": {
+      "path": "crates/poie-viability/src/bin/poie-s5v-n14-canonical-adapter.rs",
+      "sha256": "1ac7bd3d741946bd7af8b4e46b86d7287498225d191d9f663f5f6bf4d1db6d47"
+    },
+    "canonical_engine": {
+      "path": "crates/poie-viability/src/engine.rs",
+      "sha256": "28befa5506cae40905fa968d5c217c5fc0d10e54c533900bf2a7ef1c1dc642d1"
+    },
+    "external_fmu": {
+      "path": "external/fmu-n16-scheduler/poie-n16-scheduler.fmu",
+      "sha256": "79d85acf887036e06f1ec06f4444d9f778ae21a104ae2ba1dabe60fb767317ae"
+    },
+    "external_model": {
+      "path": "external/fmu-n16-scheduler/src/model.c",
+      "sha256": "e7f446163058cbd29c8680c402167d26abe967806609cd2899a84037e9de6a2a"
+    },
+    "generator": {
+      "path": "audit/phase17/generate_interventions.py",
+      "sha256": "5f12d6afbda2244fb90114cf121e945016b8faa18bb6a97cf547c134fee0afda"
+    },
+    "mutant_fmu": {
+      "path": "external/fmu-n16-scheduler/poie-n16-mutant.fmu",
+      "sha256": "df74050d7260fbe7eebd366658de3af7dc33cf68a0576d556433c13cccad14eb"
+    },
+    "oracle": {
+      "path": "audit/phase17/intervention_oracle.py",
+      "sha256": "ff24a9f40545035b66bb6a72ed4aab3ae4aff5addcad96330c8eda96de5d0bd6"
+    },
+    "reducer": {
+      "path": "audit/phase17/mutant_reducer.py",
+      "sha256": "7f30a40513b33a7342ba9ff52cbace39cf3b4360b18551bda2ab5dfcde78f9c8"
+    },
+    "runner": {
+      "path": "audit/phase17/run_interventions.py",
+      "sha256": "71ccb3eb940cc47aee75b32673a8e2386044df5ad3083b1ad1eea2ed9a419a58"
+    }
+  },
+  "kind": "N17_EXTERNAL_VALIDATION_CERTIFICATE",
+  "limitations": [
+    "10 fixed pairs, 32 generated pairs, 2 seeds",
+    "canonical and external are simulations",
+    "v9 canonical certificates unchanged; no v10 successor",
+    "OR+split upstream release gap observed in one generated eligibility pair; excluded from accepted domain and documented"
+  ],
+  "not_an_s2_certificate": true,
+  "replay": [
+    "python3 audit/phase17/run_interventions.py",
+    "python3 audit/phase17/generate_interventions.py",
+    "python3 audit/phase17/metamorphic.py",
+    "python3 audit/phase17/mutant_reducer.py",
+    "python3 audit/phase17/negative_controls.py",
+    "python3 audit/phase17/check.py"
+  ],
+  "schema": "poie.s5v-n17-external-validation-certificate/1",
+  "scope": "TESTED SIMULATED COUNTERFACTUAL INTERVENTIONS; not real-world causal identification, not industrial certification"
+}
