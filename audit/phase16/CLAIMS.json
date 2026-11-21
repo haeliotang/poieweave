@@ -23,13 +23,13 @@
     },
     {
       "id": "N16-D",
-      "status": "IN_PROGRESS",
-      "scope": "shared mutant + reducer; property/generated pending"
+      "status": "VERIFIED",
+      "scope": "shared mutant, both-invalid, 8 generated, metamorphic, reducer"
     },
     {
       "id": "N16-E",
-      "status": "NOT_ESTABLISHED",
-      "scope": "evidence/certificate"
+      "status": "VERIFIED",
+      "scope": "external validation certificate, manifests, tamper"
     },
     {
       "id": "N16-F",

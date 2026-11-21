@@ -1,0 +1,38 @@
+{
+  "schema": "poie.s5v-n16-metamorphic/1",
+  "properties": [
+    {
+      "property": "P1_SHARED_DEPENDENCY_PERSISTENCE",
+      "case": "N16-06",
+      "pass": true
+    },
+    {
+      "property": "P2_IRRELEVANT_FAILURE_INVARIANCE",
+      "cases": [
+        "N16-00",
+        "N16-13"
+      ],
+      "pass": true
+    },
+    {
+      "property": "P3_RELEASED_DEPENDENCY_NONINTERFERENCE",
+      "cases": [
+        "N16-04",
+        "N16-03"
+      ],
+      "pass": true
+    },
+    {
+      "property": "P4_ACTIVE_DEPENDENCY_MONOTONICITY",
+      "cases": [
+        "N16-01"
+      ],
+      "pass": true
+    },
+    {
+      "property": "P5_LEGAL_OR_POLICY_DIVERGENCE",
+      "case": "N16-09",
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "schema": "poie.s5v-n16-importer/1",
+  "cases": [
+    {
+      "case": "N16-00",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-01",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-02",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-03",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-04",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-05",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-06",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-08",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-09",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-10",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-11",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-12",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-13",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    },
+    {
+      "case": "N16-14",
+      "field_differences": [],
+      "journal_equal": true,
+      "status": "MATCH"
+    }
+  ],
+  "problems": []
+}

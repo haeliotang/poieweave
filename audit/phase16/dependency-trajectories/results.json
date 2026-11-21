@@ -3,6 +3,8 @@
   "cases": [
     {
       "case": "N16-00",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -26,6 +28,8 @@
     },
     {
       "case": "N16-01",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -49,6 +53,8 @@
     },
     {
       "case": "N16-02",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -72,6 +78,8 @@
     },
     {
       "case": "N16-03",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -95,6 +103,8 @@
     },
     {
       "case": "N16-04",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -118,6 +128,8 @@
     },
     {
       "case": "N16-05",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -141,6 +153,8 @@
     },
     {
       "case": "N16-06",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -162,6 +176,8 @@
     },
     {
       "case": "N16-08",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -182,7 +198,37 @@
       "status": "ACCEPTED"
     },
     {
+      "case": "N16-09",
+      "classification": "VALID_POLICY_DEPENDENT_DIVERGENCE",
+      "policy": [
+        {
+          "task": "A",
+          "canonical": "robot-m1",
+          "external": "robot-m2"
+        }
+      ],
+      "initial_canonical_closure": [
+        "bat-1",
+        "bus-1",
+        "bus-2",
+        "charger-1"
+      ],
+      "initial_external_closure": [
+        "bus-2"
+      ],
+      "canonical_events": 2,
+      "external_events": 6,
+      "canonical_interrupted": true,
+      "external_interrupted": false,
+      "findings": [],
+      "first_closure_divergence": null,
+      "first_event_divergence": null,
+      "status": "ACCEPTED"
+    },
+    {
       "case": "N16-10",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -206,6 +252,8 @@
     },
     {
       "case": "N16-11",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -229,6 +277,8 @@
     },
     {
       "case": "N16-12",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -252,6 +302,8 @@
     },
     {
       "case": "N16-13",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -275,6 +327,8 @@
     },
     {
       "case": "N16-14",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -298,6 +352,8 @@
     },
     {
       "case": "N16-MUT-SHARED",
+      "classification": "SAME_POLICY",
+      "policy": [],
       "initial_canonical_closure": [
         "bat-1",
         "bus-1",
@@ -316,6 +372,7 @@
         "EVENT_STREAM_DIVERGENCE:7200.0:ResourceReleased:DependencyDeactivated",
         "CLOSURE_AT_7200.0",
         "CLOSURE_AT_7201.0",
+        "SHARED_DEPENDENCY_LOSS_EXTERNAL",
         "INTERRUPTION_DIVERGENCE",
         "GROUP_COMMIT_DIVERGENCE"
       ],
