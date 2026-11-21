@@ -17,7 +17,7 @@ def main():
   out=subprocess.run([str(g.CANON),str(P/"contracts"/f"{cid}.json")],cwd=ROOT,capture_output=True,text=True,check=True).stdout
   (P/"canonical"/f"{cid}.jsonl").write_text(out)
   subprocess.run([str(g.HARNESS),str(g.FMU),"900",str(P/"contracts"/f"{cid}.contract"),str(P/"external"/f"{cid}.csv")],cwd=ROOT,check=True,capture_output=True)
-  r=g.compare(cid,tasks,failures); r["contract"]=str((P/"contracts"/f"{cid}.json")); r["seed"]=20261123; results.append(r)
+  r=g.compare(cid,tasks,failures); r["contract"]=str((P/"contracts"/f"{cid}.json").relative_to(ROOT)); r["seed"]=20261123; results.append(r)
  (OUT/"results.json").write_text(json.dumps({"schema":"poie.s5v-n14r-generated/1","seed":20261123,"count":len(results),"cases":results},indent=2)+"\n")
  bad=[r for r in results if r["status"]!="ACCEPTED"]
  print("generated",len(results),"accepted",len(results)-len(bad),"failed",len(bad))
