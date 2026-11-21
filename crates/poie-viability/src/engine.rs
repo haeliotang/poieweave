@@ -313,6 +313,7 @@ fn repair_observation(repair: &RunningRepair, at_s: f64) -> RepairObservation {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn record_event(
     sequence: usize,
     batch: usize,
