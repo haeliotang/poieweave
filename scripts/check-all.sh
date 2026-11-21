@@ -17,9 +17,10 @@ python3 scripts/check-certificate-invariants.py
 python3 scripts/build-certificate-impact.py --check
 python3 scripts/build-metrics-split.py --check
 python3 scripts/verify-canonical-claim-certificates-v6-historical.py
-python3 scripts/build-canonical-claim-certificates-v7.py --check
-python3 scripts/verify-canonical-claim-certificates-v7.py
-python3 scripts/check-canonical-claim-certificate-tamper-v7.py
+python3 scripts/verify-canonical-claim-certificates-v7-historical.py
+python3 scripts/build-canonical-claim-certificates-v8.py --check
+python3 scripts/verify-canonical-claim-certificates-v8.py
+python3 scripts/check-canonical-claim-certificate-tamper-v8.py
 python3 scripts/build-claim-certificate-coverage.py --check
 python3 audit/phase1/check.py
 python3 audit/phase2/check.py

@@ -1,0 +1,12 @@
+{
+  "schema": "poie.s5v-n14rh-or-negative/1",
+  "control": "task-level-illegal-selection",
+  "expected": "RESOURCE_ELIGIBILITY_VIOLATION",
+  "detected": true,
+  "allowed": [
+    "robot-m1"
+  ],
+  "actual": [
+    "robot-m2"
+  ]
+}

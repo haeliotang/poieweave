@@ -15,7 +15,9 @@ use poie_ontology::model::{Asset, AssetStatus, Model, Service};
 
 use crate::clock::EventClock;
 use crate::closure::{analyze, ClosureOutcome, Plan, Step, StepAction};
-use crate::scheduler::{schedule_plans, schedule_plans_with_alternatives};
+use crate::scheduler::{
+    schedule_plans, schedule_plans_with_alternatives, schedule_tasks, ResourceRequirement, SchedulableTask,
+};
 use crate::survival::{
     apply_energy_interval_ledger, apply_plans, energy, initial_inventory, model_with_inventory, BatteryLimits,
     EnergyFlow, FailureEvent, Resupply,
@@ -474,6 +476,9 @@ pub struct ExplicitRepairTask {
     pub task_id: String,
     pub process: String,
     pub duration_s: f64,
+    /// Optional task-specific robot alternative group. When non-empty the
+    /// scheduler chooses exactly one of these resources for this task.
+    pub robot_alternatives: Vec<String>,
 }
 
 /// Versioned explicit repair-group input. Tasks are scheduled by the canonical
@@ -684,6 +689,8 @@ fn start_explicit_repair(
     let mut plans = Vec::new();
     let mut execution_dependencies = BTreeSet::new();
     let mut restoration_targets = BTreeSet::new();
+    let mut schedulable = Vec::new();
+    let mut has_task_alternatives = false;
     for task in &group.tasks {
         let process = current
             .processes
@@ -705,6 +712,22 @@ fn start_explicit_repair(
             total_duration_s: task.duration_s,
             remaining_inventory: planning_base.clone(),
         });
+        let required = process
+            .occupies
+            .iter()
+            .filter(|asset| !task.robot_alternatives.contains(asset))
+            .cloned()
+            .collect::<Vec<_>>();
+        let alternatives =
+            if task.robot_alternatives.is_empty() { Vec::new() } else { vec![task.robot_alternatives.clone()] };
+        has_task_alternatives |= !alternatives.is_empty();
+        schedulable.push(SchedulableTask {
+            plan_index: plans.len() - 1,
+            step_index: 0,
+            process: process.id.clone(),
+            duration_s: task.duration_s,
+            requirement: ResourceRequirement { required, alternatives },
+        });
     }
     let mut pool = resources.to_vec();
     for asset in &execution_dependencies {
@@ -712,7 +735,12 @@ fn start_explicit_repair(
             pool.push(asset.clone());
         }
     }
-    let schedule = if alternative_pool.is_empty() {
+    let schedule = if has_task_alternatives {
+        match schedule_tasks(&schedulable, &pool) {
+            Ok(schedule) => schedule,
+            Err(error) => return Err(StartError::Blocked(format!("schedule failed: {error:?}"))),
+        }
+    } else if alternative_pool.is_empty() {
         match schedule_plans(current, &plans, &pool) {
             Ok(schedule) => schedule,
             Err(error) => return Err(StartError::Blocked(format!("schedule failed: {error:?}"))),
