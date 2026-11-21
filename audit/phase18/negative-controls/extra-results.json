@@ -1,0 +1,79 @@
+{
+  "schema": "poie.s5v-n18-negative-extra/1",
+  "controls": [
+    {
+      "control": "FUTURE_DEPENDENCY_LOSS",
+      "expected": "INITIAL_CLOSURE_MISSING",
+      "detected": true,
+      "detail": [
+        "INITIAL_CLOSURE_MISSING"
+      ]
+    },
+    {
+      "control": "ACTIVE_UPSTREAM_FAILURE_IGNORED",
+      "expected": "ACTIVE_DEPENDENCY_FAILURE_IGNORED",
+      "detected": true,
+      "detail": [
+        "ACTIVE_DEPENDENCY_FAILURE_IGNORED"
+      ]
+    },
+    {
+      "control": "RELEASED_DEPENDENCY_FALSE_INTERRUPTION",
+      "expected": "FALSE_INTERRUPTION",
+      "detected": true,
+      "detail": [
+        "FALSE_INTERRUPTION"
+      ]
+    },
+    {
+      "control": "REQUIRED_TOOL_BYPASS",
+      "expected": "TOOL",
+      "detected": true,
+      "detail": [
+        "TOOL_A",
+        "TOOL_B"
+      ]
+    },
+    {
+      "control": "INVALID_ROBOT_MASK",
+      "expected": "ROBOT_MASK",
+      "detected": true,
+      "detail": [
+        "ROBOT_MASK_A",
+        "CONTENTION",
+        "FALSE_INTERRUPTION",
+        "MISSING_GROUP_COMMIT"
+      ]
+    },
+    {
+      "control": "FAILURE_TARGET_MISMATCH",
+      "expected": "FAILURE_MISSING",
+      "detected": true,
+      "detail": [
+        "FAILURE_MISSING_0"
+      ]
+    },
+    {
+      "control": "DUPLICATE_FAILURE",
+      "expected": "DUPLICATE_FAILURE",
+      "detected": true,
+      "detail": [
+        "DUPLICATE_FAILURE"
+      ]
+    },
+    {
+      "control": "POST_TERMINATION_EVENT",
+      "expected": "POST_TERMINATION_EVENT",
+      "detected": true,
+      "detail": [
+        "POST_TERMINATION_EVENT"
+      ]
+    },
+    {
+      "control": "SHARED_DEPENDENCY_DEACTIVATION_MUTANT",
+      "expected": "OR_DEPENDENCY_PATH_MISMATCH",
+      "detected": true,
+      "detail": "OR_DEPENDENCY_PATH_MISMATCH"
+    }
+  ]
+}
