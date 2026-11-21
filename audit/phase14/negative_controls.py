@@ -51,5 +51,6 @@ r=subprocess.run(["external/fmu-n14-scheduler/build/harness","external/fmu-n14-s
 detected=r.returncode!=0
 results.append({"control":"failure-count-capacity","expected":"INVALID_FAILURE_COUNT","detected":detected,"findings":[r.stderr.strip() or r.stdout.strip()]})
 print("failure-count-capacity","PASS" if detected else "FAIL")
+subprocess.run([sys.executable,str(P/"validate_composition.py")],check=True,capture_output=True)
 (P/"negative-controls/cross-model-results.json").write_text(json.dumps({"schema":"poie.s5v-n14-negative/1","results":results},indent=2)+"\n")
 raise SystemExit(0 if all(x["detected"] for x in results) else 1)

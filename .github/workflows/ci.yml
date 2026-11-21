@@ -2054,6 +2054,7 @@ jobs:
           python3 audit/phase14/validate_composition.py
           python3 audit/phase14/generate_cross_model.py
           python3 audit/phase14/negative_controls.py
+          python3 audit/phase14/validate_composition.py
           python3 audit/phase14/check.py
       - name: Save N14 evidence
         run: |
