@@ -1,0 +1,26 @@
+{
+  "schema": "poie.s5v-n17-false-pass/1",
+  "controls": [
+    {
+      "name": "policy+bad-closure",
+      "status": "FAIL",
+      "findings": [
+        "EXTERNAL_SHARED_DEPENDENCY_LOSS"
+      ]
+    },
+    {
+      "name": "policy+missing-failure",
+      "status": "FAIL",
+      "findings": [
+        "EXTERNAL_FAILURE_MISSING_0"
+      ]
+    },
+    {
+      "name": "policy+early-restoration",
+      "status": "FAIL",
+      "findings": [
+        "PREMATURE_GROUP_COMMIT_EXTERNAL"
+      ]
+    }
+  ]
+}

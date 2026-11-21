@@ -39,10 +39,7 @@
         "robot-m2"
       ],
       "external_closure_after_A": [
-        "bat-1",
-        "bus-1",
-        "bus-2",
-        "charger-1"
+        "bus-2"
       ],
       "findings": [],
       "status": "ACCEPTED"
@@ -93,10 +90,7 @@
         "robot-m2"
       ],
       "external_closure_after_A": [
-        "bat-1",
-        "bus-1",
-        "bus-2",
-        "charger-1"
+        "bus-2"
       ],
       "findings": [],
       "status": "ACCEPTED"
@@ -124,10 +118,7 @@
         "robot-m2"
       ],
       "external_closure_after_A": [
-        "bat-1",
-        "bus-1",
-        "bus-2",
-        "charger-1"
+        "bus-2"
       ],
       "findings": [],
       "status": "ACCEPTED"
@@ -154,10 +145,7 @@
         "tool-t1"
       ],
       "external_closure_after_A": [
-        "bat-1",
-        "bus-1",
-        "bus-2",
-        "charger-1"
+        "bus-2"
       ],
       "findings": [],
       "status": "ACCEPTED"
@@ -254,10 +242,7 @@
         "tool-t1"
       ],
       "external_closure_after_A": [
-        "bat-1",
-        "bus-1",
-        "bus-2",
-        "charger-1"
+        "bus-2"
       ],
       "findings": [],
       "status": "ACCEPTED"

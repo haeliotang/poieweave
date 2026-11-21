@@ -369,15 +369,16 @@
       "canonical_interrupted": true,
       "external_interrupted": false,
       "findings": [
-        "EVENT_STREAM_DIVERGENCE:7200.0:ResourceReleased:DependencyDeactivated",
-        "CLOSURE_AT_7200.0",
-        "CLOSURE_AT_7201.0",
+        "EVENT_SET_DIVERGENCE_7200.0",
+        "EVENT_SET_DIVERGENCE_7201.0",
+        "EVENT_SET_DIVERGENCE_9000.0",
+        "EVENT_SET_DIVERGENCE_10800.0",
         "SHARED_DEPENDENCY_LOSS_EXTERNAL",
         "INTERRUPTION_DIVERGENCE",
         "GROUP_COMMIT_DIVERGENCE"
       ],
-      "first_closure_divergence": "CLOSURE_AT_7200.0",
-      "first_event_divergence": "EVENT_STREAM_DIVERGENCE:7200.0:ResourceReleased:DependencyDeactivated",
+      "first_closure_divergence": null,
+      "first_event_divergence": "EVENT_SET_DIVERGENCE_7200.0",
       "status": "FAIL"
     }
   ]

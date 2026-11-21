@@ -8,7 +8,7 @@ P=Path(__file__).resolve().parent; ROOT=P.parents[1]; OUT=P/"generated-cases"; O
 for d in (C,E,CAN): d.mkdir(exist_ok=True)
 CANON=ROOT/"target/debug/poie-s5v-n14-canonical-adapter"; HARNESS=ROOT/"external/fmu-n16-scheduler/build/harness"; FMU=ROOT/"external/fmu-n16-scheduler/poie-n16-scheduler.fmu"
 T={0:"robot-m1",1:"robot-m2",3:"bus-1",5:"sensor-x",6:"bus-2",7:"tool-t1"}; TK={0:1,1:1,7:2}
-def bits(mask): return {n for b,n in {2:"charger-1",3:"bus-1",4:"bat-1",5:"sensor-x",6:"bus-2",7:"tool-t1"}.items() if mask&(1<<b)}
+def bits(mask): return ({n for b,n in {2:"charger-1",3:"bus-1",4:"bat-1",5:"sensor-x",6:"bus-2"}.items() if mask&(1<<b)})
 def run(cid,profile,tool,failures,pref=0):
  dep2=64 if profile=="split" else 28
  js={"group_id":cid,"restoration_target":"a-lathe","horizon_s":72000,"robot_count":2,"release_mode":"task_release","dependency_profile":"split" if profile=="split" else "default","preferred_robot":pref,
@@ -28,9 +28,16 @@ def run(cid,profile,tool,failures,pref=0):
  c_comp=any(e["event_kind"]=="RepairCompleted" for e in ce); x_comp=any(e["kind"]=="RepairCompleted" for e in ev)
  # closure immediately after A completion
  a_time=tr[0]["end_s"]; c_after=set(next((e["running_repair"]["execution_dependencies"] for e in ce if e["event_kind"]=="ResourceReleased" and abs(e["at_s"]-a_time)<1e-9 and e["target_asset"].startswith("robot")), []))
- x_after=next((e.get("dep_after") for e in ev if e.get("at",-1)>=a_time-1e-9 and "dep_after" in e),0)
+ xev=[e for e in ev if abs(e.get("at",-1)-a_time)<1e-9 and "dep_after" in e]
+ x_after=xev[-1]["dep_after"] if xev else 0
  # expected invariants
  expected={}; findings=[]
+ expected_after={"bus-2"} if profile=="split" else {"bus-1","bat-1","charger-1"}
+ c_up={x for x in c_after if x in {"bus-1","bus-2","bat-1","charger-1"}}
+ a_done=any(e["event_kind"]=="TaskCompleted" and e["target_asset"]=="A" for e in ce)
+ if a_done:
+  if c_up!=expected_after: findings.append(f"CANONICAL_CLOSURE_AFTER_A:{sorted(c_up)}")
+  if bits(x_after)!=expected_after: findings.append(f"EXTERNAL_CLOSURE_AFTER_A:{sorted(bits(x_after))}")
  if not failures:
   expected["completed"]=True
   if not (c_comp and x_comp): findings.append("NO_FAIL_COMPLETION")

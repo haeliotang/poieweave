@@ -27,14 +27,14 @@ def main():
  def wrong_target(ce,ev):
   for e in ev:
    if e["kind"]=="DependencyDeactivated" and e.get("target")=="bus-1": e["target"]="bus-2"
- results.append(mutate("N16-04",wrong_target,"EVENT_STREAM_DIVERGENCE"))
+ results.append(mutate("N16-04",wrong_target,"EVENT_SET_DIVERGENCE"))
  def extra_event(ce,ev):
   src=next(e for e in ev if e["kind"]=="DependencyDeactivated")
   extra=dict(src); extra["at"]=src["at"]; ev.insert(ev.index(src)+1,extra)
- results.append(mutate("N16-04",extra_event,"EVENT_STREAM_DIVERGENCE"))
+ results.append(mutate("N16-04",extra_event,"EVENT_SET_DIVERGENCE"))
  def stale_hit(ce,ev):
   ev.append({"kind":"RepairInterrupted","at":7201.0,"target":"a-lathe","origin":"NATIVE_EXTERNAL_FMU"})
- results.append(mutate("N16-04",stale_hit,"EVENT_STREAM_DIVERGENCE"))
+ results.append(mutate("N16-04",stale_hit,"EVENT_SET_DIVERGENCE"))
  (P/"negative-controls").mkdir(exist_ok=True)
  (P/"negative-controls/results.json").write_text(json.dumps({"schema":"poie.s5v-n16-negative/1","results":results},indent=2)+"\n")
  for r in results: print(r["expected"],"PASS" if r["detected"] else "FAIL",r["findings"])

@@ -12,30 +12,31 @@
       ]
     },
     {
-      "control": "EVENT_STREAM_DIVERGENCE",
+      "control": "EVENT_SET_DIVERGENCE",
       "case": "N16-04",
-      "expected": "EVENT_STREAM_DIVERGENCE",
+      "expected": "EVENT_SET_DIVERGENCE",
       "detected": true,
       "findings": [
-        "EVENT_STREAM_DIVERGENCE:7200.0:DependencyDeactivated:DependencyDeactivated"
+        "EVENT_SET_DIVERGENCE_7200.0"
       ]
     },
     {
-      "control": "EVENT_STREAM_DIVERGENCE",
+      "control": "EVENT_SET_DIVERGENCE",
       "case": "N16-04",
-      "expected": "EVENT_STREAM_DIVERGENCE",
+      "expected": "EVENT_SET_DIVERGENCE",
       "detected": true,
       "findings": [
-        "EVENT_STREAM_DIVERGENCE:7200.0:ResourceReleased:DependencyDeactivated"
+        "EVENT_SET_DIVERGENCE_7200.0"
       ]
     },
     {
-      "control": "EVENT_STREAM_DIVERGENCE",
+      "control": "EVENT_SET_DIVERGENCE",
       "case": "N16-04",
-      "expected": "EVENT_STREAM_DIVERGENCE",
+      "expected": "EVENT_SET_DIVERGENCE",
       "detected": true,
       "findings": [
-        "EVENT_STREAM_DIVERGENCE:10800.0:DependencyDeactivated:RepairInterrupted",
+        "EVENT_SET_DIVERGENCE_7201.0",
+        "INTERRUPTED_RESTORED",
         "INTERRUPTION_DIVERGENCE"
       ]
     }
