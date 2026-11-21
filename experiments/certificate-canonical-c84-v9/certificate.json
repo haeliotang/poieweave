@@ -7,7 +7,7 @@
   ],
   "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
   "engine": {
-    "sha256": "1f20cc0edcd23791ea476878156b50c14b3ab028e49ced3bf824b7f2cddc981f",
+    "sha256": "28befa5506cae40905fa968d5c217c5fc0d10e54c533900bf2a7ef1c1dc642d1",
     "source": "crates/poie-viability/src/engine.rs"
   },
   "experiment": {
@@ -55,7 +55,7 @@
     "files": [
       {
         "path": "crates/poie-viability/src/engine.rs",
-        "sha256": "1f20cc0edcd23791ea476878156b50c14b3ab028e49ced3bf824b7f2cddc981f"
+        "sha256": "28befa5506cae40905fa968d5c217c5fc0d10e54c533900bf2a7ef1c1dc642d1"
       },
       {
         "path": "crates/poie-viability/src/survival.rs",
