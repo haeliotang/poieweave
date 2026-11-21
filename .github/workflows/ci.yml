@@ -1951,6 +1951,8 @@ jobs:
       - name: Build N12 FMU and execute identity cases
         run: |
           external/fmu-n12-scheduler/build.sh
+          cargo run --locked -q -p poie-viability --bin poie-s5v-n12-boundary
+          cargo run --locked -q -p poie-viability --bin poie-s5v-n12-causal
           for c in N10-00 N10-01 N10-02 N10-03 N10-04 N10-05 N10-06; do
             external/fmu-n12-scheduler/build/harness external/fmu-n12-scheduler/poie-n12-scheduler.fmu 1 "audit/phase12/contracts/$c.contract" "audit/phase12/external/N12-$c.csv"
             python3 audit/phase12/fmpy_import.py --contract "audit/phase12/contracts/$c.contract" --step 1 --output "audit/phase12/external/N12-$c-fmpy.csv" --log "audit/phase12/external/N12-$c.log"
@@ -1963,6 +1965,8 @@ jobs:
         run: |
           python3 audit/phase12/reproduce_identity_false_pass.py
           python3 audit/phase12/validate_identity.py
+          python3 audit/phase12/validate_projection.py
+          python3 audit/phase12/negative_projection.py
           python3 audit/phase12/check.py
       - name: Save N12 evidence
         run: |

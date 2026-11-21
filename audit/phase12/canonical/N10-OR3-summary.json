@@ -1,0 +1,10 @@
+{
+ "case":"N10-OR3",
+ "resources":["tool-t1","robot-m1"],
+ "task_resources":["0:tool-t1+robot-m1"],
+ "witness":[],
+ "completion_s":7200.000,
+ "interruption_s":null,
+ "restoration_committed":true,
+ "termination":"completed"
+}

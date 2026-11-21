@@ -17,5 +17,12 @@ for c in idn["cases"]:
 if idn.get("problems"): problems.append("identity problems")
 n11=json.loads((P.parent/"phase11"/"CLAIMS.json").read_text())
 if next(c for c in n11["claims"] if c["id"]=="N11-0")["status"]!="VERIFIED": problems.append("N11-0 claim")
+proj=json.loads((P/"comparisons/projection.json").read_text())
+if len(proj["cases"])!=14: problems.append("projection case count")
+for c in proj["cases"]:
+    if c["status"]!="ACCEPTED": problems.append(f"{c['case']}: projection")
+    if c.get("dimensions",{}).get("repair_state_before",{}).get("status")!="NOT_COMPARABLE": problems.append(f"{c['case']}: unobserved repair state")
+controls=json.loads((P/"negative-controls/projection-results.json").read_text())["results"]
+if not all(e["detected"] for e in controls): problems.append("projection controls")
 if problems: print("N12 FAIL: "+", ".join(problems),file=sys.stderr); raise SystemExit(1)
 print("ok N12 event identity and historical false-pass correction")
