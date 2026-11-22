@@ -1,0 +1,152 @@
+{
+  "case_id": "N18-G1817-05",
+  "original_hash": "f3fbdc627979db4b67b6c0a1c2853c4a7793384bcde40723dd35bc9394d17c06",
+  "historical_status": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+  "reproduced_status": "REPRODUCED",
+  "model_results": {},
+  "intervention_type": "FAILURE_REMOVAL",
+  "independently_derived_expected_effect": {
+    "baseline_hit": true,
+    "intervention_hit": false,
+    "direction": "HIT->NO_HIT"
+  },
+  "canonical_observed_effect": {
+    "baseline_interrupted": true,
+    "intervention_interrupted": false
+  },
+  "external_observed_effect": {
+    "baseline_interrupted": true,
+    "intervention_interrupted": false
+  },
+  "first_causal_divergence": "none; N18 classification differed only in expected-effect direction",
+  "root_cause_classification": "ORACLE_FALSE_POSITIVE",
+  "secondary_reason": "EXPECTED_EFFECT_DIRECTION_ERROR",
+  "expected_effect_before": {
+    "generator_rule": "NO_HIT->HIT only",
+    "baseline_expected_changed": false
+  },
+  "supporting_evidence": [
+    "audit/phase18/baseline-runs/N18-G1817-05",
+    "audit/phase18/intervention-runs/N18-G1817-05"
+  ],
+  "final_adjudication": "ORACLE_FALSE_POSITIVE",
+  "remaining_uncertainty": "none within tested contract",
+  "pair": {
+    "baseline": {
+      "canonical_match": true,
+      "external_match": true,
+      "canonical_hash": "661012ee418c0bf7dec211f91c99910938d7630c46509403efcebf4843952c6f",
+      "external_hash": "fff9a176c3549aba8d5846aa289d4567374f3d9c104b6578a4917f13d933079e",
+      "canonical": {
+        "side": "canonical",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [
+            "robot-m1"
+          ],
+          "B": [
+            "robot-m2"
+          ]
+        },
+        "makespan": 10800.0,
+        "failures": [
+          [
+            3600.0,
+            "bus-2"
+          ]
+        ],
+        "interruption": 3600.0,
+        "completed": false,
+        "restoration": null,
+        "termination": 3600.0,
+        "expected_first_hit": [
+          3600.0,
+          "bus-2"
+        ]
+      },
+      "external": {
+        "side": "external",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [],
+          "B": []
+        },
+        "makespan": 10800.0,
+        "failures": [
+          [
+            3600.0,
+            "bus-2"
+          ]
+        ],
+        "interruption": 3600.0,
+        "completed": false,
+        "restoration": null,
+        "termination": 3600.0,
+        "expected_first_hit": [
+          3600.0,
+          "bus-2"
+        ]
+      }
+    },
+    "intervention": {
+      "canonical_match": true,
+      "external_match": true,
+      "canonical_hash": "120d503b5d09c05b47c34e329e223262b9011d30555a6c98943574344b865f47",
+      "external_hash": "379a093b868e1cd39778654aa0b3fa860bcf583a71c9c4f9f9ed6901ec5519e2",
+      "canonical": {
+        "side": "canonical",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [
+            "robot-m1"
+          ],
+          "B": [
+            "robot-m2"
+          ]
+        },
+        "makespan": 10800.0,
+        "failures": [],
+        "interruption": null,
+        "completed": true,
+        "restoration": null,
+        "termination": 10800.0,
+        "expected_first_hit": null
+      },
+      "external": {
+        "side": "external",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [],
+          "B": []
+        },
+        "makespan": 10800.0,
+        "failures": [],
+        "interruption": null,
+        "completed": true,
+        "restoration": 10800.0,
+        "termination": 10800.0,
+        "expected_first_hit": null
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "poie.s5v-n19-soundness/1",
+  "controls": [
+    {
+      "control": "VALID_RELATIONS_ACCEPTED",
+      "detected": true,
+      "detail": "10 pairs"
+    },
+    {
+      "control": "WRONG_EXPLANATION",
+      "detected": true,
+      "detail": "WRONG_CAUSAL_EXPLANATION"
+    },
+    {
+      "control": "REVERSE_EFFECT_MISCLASSIFICATION",
+      "detected": true,
+      "detail": "WRONG_CAUSAL_EXPLANATION"
+    },
+    {
+      "control": "REVERSE_EFFECT_CORRECT_ACCEPTED",
+      "detected": true,
+      "detail": "ACCEPTED"
+    },
+    {
+      "control": "INVALID_EVENT_ORDER",
+      "detected": true,
+      "detail": "formal rank validator"
+    },
+    {
+      "control": "BOTH_MODELS_INVALID",
+      "detected": true,
+      "detail": [
+        [
+          "INITIAL_CLOSURE_MISSING"
+        ],
+        [
+          "INITIAL_CLOSURE_MISSING"
+        ]
+      ]
+    },
+    {
+      "control": "EVIDENCE_TAMPER",
+      "detected": true,
+      "detail": "raw hash mismatch after mutation"
+    }
+  ]
+}

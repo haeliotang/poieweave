@@ -1,0 +1,214 @@
+{
+  "certificate_count": 41,
+  "certificates": [
+    {
+      "claim": "C56",
+      "path": "experiments/certificate-canonical-c56-v10/certificate.json",
+      "sha256": "798ac6469d2052003081bbc812df9f87acab24a3f4f9fe487661d791f9f31683"
+    },
+    {
+      "claim": "C57",
+      "path": "experiments/certificate-canonical-c57-v10/certificate.json",
+      "sha256": "228dba0bcb1ba67b492b9391c4c6a5e9d4d97b55d4aefe4d6a1589233c49bf84"
+    },
+    {
+      "claim": "C58",
+      "path": "experiments/certificate-canonical-c58-v10/certificate.json",
+      "sha256": "252e8c7ab31114bde1f1e41cfdc0f6d87dfba46318026e7d3b47ba8a84459d0b"
+    },
+    {
+      "claim": "C59",
+      "path": "experiments/certificate-canonical-c59-v10/certificate.json",
+      "sha256": "30ad813f10e989472237b26531d7dd58cfe17031d64e08e692e0f4fd4d687dc2"
+    },
+    {
+      "claim": "C6",
+      "path": "experiments/certificate-canonical-c6-v10/certificate.json",
+      "sha256": "a180eb7bc776acbd603c2855e8902f27b5e9f86e8b10dcacf5ea48cc61a40ce9"
+    },
+    {
+      "claim": "C60",
+      "path": "experiments/certificate-canonical-c60-v10/certificate.json",
+      "sha256": "aa2c12fd2d7bbc95115341b413dcff467ba8dc55b3d0a83cde861004cf4893d1"
+    },
+    {
+      "claim": "C61",
+      "path": "experiments/certificate-canonical-c61-v10/certificate.json",
+      "sha256": "bf83fc16f8c0ddadecb3fd4a09a4b6ee934af28de7f03a2d0924791f30cec4a3"
+    },
+    {
+      "claim": "C62",
+      "path": "experiments/certificate-canonical-c62-v10/certificate.json",
+      "sha256": "5d367c724981c0fff61e6f7c0230af418dd052f51a1e7f6edd038d649d97ef18"
+    },
+    {
+      "claim": "C63",
+      "path": "experiments/certificate-canonical-c63-v10/certificate.json",
+      "sha256": "08c1d7602229e1995438fa93bfdadfe081a66d78b431d10904edcaee6d6b95f8"
+    },
+    {
+      "claim": "C64",
+      "path": "experiments/certificate-canonical-c64-v10/certificate.json",
+      "sha256": "425754868cf3491ef3e0e9dd190b513390a6c20a8bf532dd590297dcd15f1163"
+    },
+    {
+      "claim": "C65",
+      "path": "experiments/certificate-canonical-c65-v10/certificate.json",
+      "sha256": "500c1a555e0b914a8d23733c2c4fdf6fcb0b9486b088caf3586b03823f56b48f"
+    },
+    {
+      "claim": "C66",
+      "path": "experiments/certificate-canonical-c66-v10/certificate.json",
+      "sha256": "3be64315cc94f56d2bed9e4eb3708da3184ec853c82b5bfafe7972673318d2c5"
+    },
+    {
+      "claim": "C67",
+      "path": "experiments/certificate-canonical-c67-v10/certificate.json",
+      "sha256": "dec16d16352c995deb45104f4cfb394a94becfb3417569784af195f8fef55e7f"
+    },
+    {
+      "claim": "C69",
+      "path": "experiments/certificate-canonical-c69-v10/certificate.json",
+      "sha256": "fe2a6684896396840579bf57e7737e1e888305981083aa0ef49f3fdf953f0c15"
+    },
+    {
+      "claim": "C70",
+      "path": "experiments/certificate-canonical-c70-v10/certificate.json",
+      "sha256": "dae96e2dc86338b30cfb66d3d0e65947501a38be0985c52b4273fc8bd097cd59"
+    },
+    {
+      "claim": "C71",
+      "path": "experiments/certificate-canonical-c71-v10/certificate.json",
+      "sha256": "62cf626d42841a99210adf3853f1491d81d5db8f98df477110ab52ace698f025"
+    },
+    {
+      "claim": "C72",
+      "path": "experiments/certificate-canonical-c72-v10/certificate.json",
+      "sha256": "be15570ea23451dd0dac1abdaa1a08f0858d9e543ee8bb4da38fd28b1748f4d4"
+    },
+    {
+      "claim": "C73",
+      "path": "experiments/certificate-canonical-c73-v10/certificate.json",
+      "sha256": "748c833adc81bd58ce9c1cb78218c1b8af172b05cbb2c60470959fdd33fb98bb"
+    },
+    {
+      "claim": "C74",
+      "path": "experiments/certificate-canonical-c74-v10/certificate.json",
+      "sha256": "138897f51d61eaf38745b9a095ec18e1f65bc6e9febfb7d88b4a0be041562071"
+    },
+    {
+      "claim": "C75",
+      "path": "experiments/certificate-canonical-c75-v10/certificate.json",
+      "sha256": "06e03d5505eb75c9b17a7a1d3fd2166eff0d97845cd6fe4e87b1631c2e4bec44"
+    },
+    {
+      "claim": "C76",
+      "path": "experiments/certificate-canonical-c76-v10/certificate.json",
+      "sha256": "b89adfa3c3139a19338d0390c21b8f5eb3b69370379a94254216d77de339713d"
+    },
+    {
+      "claim": "C77",
+      "path": "experiments/certificate-canonical-c77-v10/certificate.json",
+      "sha256": "8fcc5863210488d62fd9f76e39244a203d4f82eb740bded12098250f663eb921"
+    },
+    {
+      "claim": "C78",
+      "path": "experiments/certificate-canonical-c78-v10/certificate.json",
+      "sha256": "3277b0fe4864e9d9c33da1ef800d5d78092450c95fb6007ff10fc735fe6d484b"
+    },
+    {
+      "claim": "C79",
+      "path": "experiments/certificate-canonical-c79-v10/certificate.json",
+      "sha256": "88032fb2cd653c170e8219ceb893e8ac38c2ec5cd6f4ec9562fc9500d2ca950d"
+    },
+    {
+      "claim": "C80",
+      "path": "experiments/certificate-canonical-c80-v10/certificate.json",
+      "sha256": "814cd66d951eee9aa20c7782e924ef18303baf78511b2560268f58611f4a92f6"
+    },
+    {
+      "claim": "C81",
+      "path": "experiments/certificate-canonical-c81-v10/certificate.json",
+      "sha256": "ef68cbfb50866cf11c091671b00c8a64fe45668a07856502edf76cb93b0947fc"
+    },
+    {
+      "claim": "C82",
+      "path": "experiments/certificate-canonical-c82-v10/certificate.json",
+      "sha256": "59a1ac7f74b7a26d994b1a344fd9d3ff9215088ff2dc8384d4d3827b009b16a7"
+    },
+    {
+      "claim": "C83",
+      "path": "experiments/certificate-canonical-c83-v10/certificate.json",
+      "sha256": "d0d79edfade34d1f9490d6bb212f01759b9eee84d1925f9dd8565ff189040ce8"
+    },
+    {
+      "claim": "C84",
+      "path": "experiments/certificate-canonical-c84-v10/certificate.json",
+      "sha256": "9c183585b415ddb7813a307666abea49c1b1889b1fb47bd8203cf5bb02c90251"
+    },
+    {
+      "claim": "C85",
+      "path": "experiments/certificate-canonical-c85-v10/certificate.json",
+      "sha256": "563764332448067d72d69f56af99cf35284cb96eec3c3f85a5ebada895a9d215"
+    },
+    {
+      "claim": "C86",
+      "path": "experiments/certificate-canonical-c86-v10/certificate.json",
+      "sha256": "4df21ed51a3e23f3831a03da45f5357e75c298e0e970281834b771e646a93800"
+    },
+    {
+      "claim": "C87",
+      "path": "experiments/certificate-canonical-c87-v10/certificate.json",
+      "sha256": "0774e03d1fa7d8686fe72227b8b9c27dcc653ab4b8afa7a0a25ccbbdf6cbbd93"
+    },
+    {
+      "claim": "C88",
+      "path": "experiments/certificate-canonical-c88-v10/certificate.json",
+      "sha256": "e51bdcb4e7b0ff10e058d494109b87842d5474f0b911da9a689f35019e5e60de"
+    },
+    {
+      "claim": "C89",
+      "path": "experiments/certificate-canonical-c89-v10/certificate.json",
+      "sha256": "6ac9c7a9c929260ca7ecb412f0da3a70f5f7b4127fb17fa8127fa4f80663e27c"
+    },
+    {
+      "claim": "C90",
+      "path": "experiments/certificate-canonical-c90-v10/certificate.json",
+      "sha256": "b3c2b14efd75b5c06ef4b9242d10f63a78a9110c776fda66610838bd68ee7aa3"
+    },
+    {
+      "claim": "C91",
+      "path": "experiments/certificate-canonical-c91-v10/certificate.json",
+      "sha256": "3b1f4145f4b5007f415f754cc55e4a2e5c14b29d84b7c6913baaadb82fc604bc"
+    },
+    {
+      "claim": "C92",
+      "path": "experiments/certificate-canonical-c92-v10/certificate.json",
+      "sha256": "d90d10f46802f18ed5e0bb7826b3729fa20b3230824086526b8fc101264cd7fc"
+    },
+    {
+      "claim": "C93",
+      "path": "experiments/certificate-canonical-c93-v10/certificate.json",
+      "sha256": "b34bb7229dda8a7cdf5b4251f57603c351ab3bfb40d87c8bfb0ff623ab08d945"
+    },
+    {
+      "claim": "C94",
+      "path": "experiments/certificate-canonical-c94-v10/certificate.json",
+      "sha256": "bd447b359594ae55bac1edf6d5b236ea1fa0f6984821011a17fa47d487d6cbd3"
+    },
+    {
+      "claim": "C95",
+      "path": "experiments/certificate-canonical-c95-v10/certificate.json",
+      "sha256": "6afc2809583c4e5256057d4eae70a71f2bd25960748005426c76d9841c5f8226"
+    },
+    {
+      "claim": "C96",
+      "path": "experiments/certificate-canonical-c96-v10/certificate.json",
+      "sha256": "2396acd93ccb063640d33d836f6993d52bb984bb7664bb5ecec3c6c03cb6294b"
+    }
+  ],
+  "clarification": "task-level execution dependency release, not physical resource release",
+  "index_sha256": "bd5d8ee74c59aa2de993de6ea331823afcd2e087f872f403f3cb8b078ba123ac",
+  "resigned": false,
+  "schema": "poie.s5v-n19-v10-errata/1"
+}

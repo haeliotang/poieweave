@@ -1,0 +1,162 @@
+{
+  "case_id": "N18-G1801-19",
+  "original_hash": "f3fbdc627979db4b67b6c0a1c2853c4a7793384bcde40723dd35bc9394d17c06",
+  "historical_status": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+  "reproduced_status": "REPRODUCED",
+  "model_results": {},
+  "intervention_type": "FAILURE_TIME_CHANGE",
+  "independently_derived_expected_effect": {
+    "baseline_hit": true,
+    "intervention_hit": false,
+    "direction": "HIT->NO_HIT"
+  },
+  "canonical_observed_effect": {
+    "baseline_interrupted": true,
+    "intervention_interrupted": false
+  },
+  "external_observed_effect": {
+    "baseline_interrupted": true,
+    "intervention_interrupted": false
+  },
+  "first_causal_divergence": "none; N18 classification differed only in expected-effect direction",
+  "root_cause_classification": "ORACLE_FALSE_POSITIVE",
+  "secondary_reason": "EXPECTED_EFFECT_DIRECTION_ERROR",
+  "expected_effect_before": {
+    "generator_rule": "NO_HIT->HIT only",
+    "baseline_expected_changed": false
+  },
+  "supporting_evidence": [
+    "audit/phase18/baseline-runs/N18-G1801-19",
+    "audit/phase18/intervention-runs/N18-G1801-19"
+  ],
+  "final_adjudication": "ORACLE_FALSE_POSITIVE",
+  "remaining_uncertainty": "none within tested contract",
+  "pair": {
+    "baseline": {
+      "canonical_match": true,
+      "external_match": true,
+      "canonical_hash": "b55c5446cc766ff584b39d8d5b8b095f9d486caaff041fe0903f7886e0e8d1b9",
+      "external_hash": "3fa81aa4b27722bd6e33528e89f57e54f5d3babf240ed24ad8a6b32600fb44ae",
+      "canonical": {
+        "side": "canonical",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [
+            "robot-m1"
+          ],
+          "B": [
+            "robot-m2"
+          ]
+        },
+        "makespan": 10800.0,
+        "failures": [
+          [
+            7201.0,
+            "bus-2"
+          ]
+        ],
+        "interruption": 7201.0,
+        "completed": false,
+        "restoration": null,
+        "termination": 7201.0,
+        "expected_first_hit": [
+          7201.0,
+          "bus-2"
+        ]
+      },
+      "external": {
+        "side": "external",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [],
+          "B": []
+        },
+        "makespan": 10800.0,
+        "failures": [
+          [
+            7201.0,
+            "bus-2"
+          ]
+        ],
+        "interruption": 7201.0,
+        "completed": false,
+        "restoration": null,
+        "termination": 7201.0,
+        "expected_first_hit": [
+          7201.0,
+          "bus-2"
+        ]
+      }
+    },
+    "intervention": {
+      "canonical_match": true,
+      "external_match": true,
+      "canonical_hash": "0bfc9b584ed3b3878b07367f4184d778f8a50afa7891a1fd334d6144dcf5049f",
+      "external_hash": "fdbd7ecbbac174a6c0080831402236753f4bf1877c52884d8c0b33b9139a2998",
+      "canonical": {
+        "side": "canonical",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [
+            "robot-m1"
+          ],
+          "B": [
+            "robot-m2"
+          ]
+        },
+        "makespan": 10800.0,
+        "failures": [
+          [
+            10801.0,
+            "bus-2"
+          ]
+        ],
+        "interruption": null,
+        "completed": true,
+        "restoration": null,
+        "termination": 10800.0,
+        "expected_first_hit": null
+      },
+      "external": {
+        "side": "external",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [],
+          "B": []
+        },
+        "makespan": 10800.0,
+        "failures": [
+          [
+            10801.0,
+            "bus-2"
+          ]
+        ],
+        "interruption": null,
+        "completed": true,
+        "restoration": 10800.0,
+        "termination": 10800.0,
+        "expected_first_hit": null
+      }
+    }
+  }
+}

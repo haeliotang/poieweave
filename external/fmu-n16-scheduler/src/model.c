@@ -434,6 +434,15 @@ fmi3Status fmi3DoStep(fmi3Instance i, fmi3Float64 current, fmi3Float64 step, fmi
         }
         fmi3Float64 piece = boundary - x->time;
         x->time += piece; remaining -= piece;
+#ifdef MUTANT_SPURIOUS_INTERRUPTION
+        if (!x->interrupted && x->completed < 0.5 && x->time >= 3600.0 - 1e-9) {
+            int rb, hb, db, fb, pb, sb, tb; event_states(x, &rb, &hb, &db, &fb, &pb, &sb, &tb);
+            x->interrupted = 1; x->completed = 0;
+            record_transition(x, "RepairInterrupted", "a-lathe", rb, hb, db, fb, pb, sb, tb);
+            if (term) *term = true; if (last) *last = x->time;
+            return fmi3OK;
+        }
+#endif
         int completion_due = x->completed < 0.5 && x->time >= x->makespan - 1e-9;
         /* Horizon boundary wins over exogenous events at the same timestamp;
            canonical processes completion before the horizon check. */

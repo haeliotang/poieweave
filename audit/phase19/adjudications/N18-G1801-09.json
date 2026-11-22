@@ -1,0 +1,162 @@
+{
+  "case_id": "N18-G1801-09",
+  "original_hash": "f3fbdc627979db4b67b6c0a1c2853c4a7793384bcde40723dd35bc9394d17c06",
+  "historical_status": "UNEXPECTED_REPAIR_OUTCOME_CHANGE",
+  "reproduced_status": "REPRODUCED",
+  "model_results": {},
+  "intervention_type": "FAILURE_TARGET_CHANGE",
+  "independently_derived_expected_effect": {
+    "baseline_hit": true,
+    "intervention_hit": false,
+    "direction": "HIT->NO_HIT"
+  },
+  "canonical_observed_effect": {
+    "baseline_interrupted": true,
+    "intervention_interrupted": false
+  },
+  "external_observed_effect": {
+    "baseline_interrupted": true,
+    "intervention_interrupted": false
+  },
+  "first_causal_divergence": "none; N18 classification differed only in expected-effect direction",
+  "root_cause_classification": "ORACLE_FALSE_POSITIVE",
+  "secondary_reason": "EXPECTED_EFFECT_DIRECTION_ERROR",
+  "expected_effect_before": {
+    "generator_rule": "NO_HIT->HIT only",
+    "baseline_expected_changed": false
+  },
+  "supporting_evidence": [
+    "audit/phase18/baseline-runs/N18-G1801-09",
+    "audit/phase18/intervention-runs/N18-G1801-09"
+  ],
+  "final_adjudication": "ORACLE_FALSE_POSITIVE",
+  "remaining_uncertainty": "none within tested contract",
+  "pair": {
+    "baseline": {
+      "canonical_match": true,
+      "external_match": true,
+      "canonical_hash": "319c02f5cbafc517c0b4ca985f326d8af335920a1dbd6f475e24110b3da0b2ed",
+      "external_hash": "108720c5c30811eb69aff6b8c29448abd3ae91614489410259662577b1c02853",
+      "canonical": {
+        "side": "canonical",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [
+            "robot-m1"
+          ],
+          "B": [
+            "robot-m2"
+          ]
+        },
+        "makespan": 10800.0,
+        "failures": [
+          [
+            3600.0,
+            "bus-1"
+          ]
+        ],
+        "interruption": 3600.0,
+        "completed": false,
+        "restoration": null,
+        "termination": 3600.0,
+        "expected_first_hit": [
+          3600.0,
+          "bus-1"
+        ]
+      },
+      "external": {
+        "side": "external",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [],
+          "B": []
+        },
+        "makespan": 10800.0,
+        "failures": [
+          [
+            3600.0,
+            "bus-1"
+          ]
+        ],
+        "interruption": 3600.0,
+        "completed": false,
+        "restoration": null,
+        "termination": 3600.0,
+        "expected_first_hit": [
+          3600.0,
+          "bus-1"
+        ]
+      }
+    },
+    "intervention": {
+      "canonical_match": true,
+      "external_match": true,
+      "canonical_hash": "96bc7204c8be7944b34426ada1e37dbcc11a0e6cddc015bf844084ed3ea03495",
+      "external_hash": "99ed570eb514859b0112294f09cc1df29261c17a716d6b20569d5e837df2c683",
+      "canonical": {
+        "side": "canonical",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [
+            "robot-m1"
+          ],
+          "B": [
+            "robot-m2"
+          ]
+        },
+        "makespan": 10800.0,
+        "failures": [
+          [
+            3600.0,
+            "sensor-x"
+          ]
+        ],
+        "interruption": null,
+        "completed": true,
+        "restoration": null,
+        "termination": 10800.0,
+        "expected_first_hit": null
+      },
+      "external": {
+        "side": "external",
+        "valid": true,
+        "findings": [],
+        "selected_robots": [
+          "robot-m1",
+          "robot-m2"
+        ],
+        "selected_resources": {
+          "A": [],
+          "B": []
+        },
+        "makespan": 10800.0,
+        "failures": [
+          [
+            3600.0,
+            "sensor-x"
+          ]
+        ],
+        "interruption": null,
+        "completed": true,
+        "restoration": 10800.0,
+        "termination": 10800.0,
+        "expected_first_hit": null
+      }
+    }
+  }
+}

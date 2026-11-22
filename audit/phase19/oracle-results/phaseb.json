@@ -1,0 +1,285 @@
+{
+  "schema": "poie.s5v-n19-phaseb/1",
+  "cases": [
+    {
+      "case_id": "N19-00",
+      "type": "FAILURE_INSERTION",
+      "kind": "UNCHANGED",
+      "valid": true,
+      "expected_direction": {
+        "canonical": [
+          "COMPLETE",
+          "COMPLETE"
+        ],
+        "external": [
+          "COMPLETE",
+          "COMPLETE"
+        ]
+      },
+      "actual_direction": {
+        "canonical": [
+          "COMPLETE",
+          "COMPLETE"
+        ],
+        "external": [
+          "COMPLETE",
+          "COMPLETE"
+        ]
+      },
+      "relation": "REPAIR_OUTCOME_UNCHANGED",
+      "status": "ACCEPTED"
+    },
+    {
+      "case_id": "N19-01",
+      "type": "FAILURE_INSERTION",
+      "kind": "INSERTION",
+      "valid": true,
+      "expected_direction": {
+        "canonical": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ],
+        "external": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ]
+      },
+      "actual_direction": {
+        "canonical": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ],
+        "external": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ]
+      },
+      "relation": "FAILURE_INDUCED_INTERRUPTION",
+      "status": "ACCEPTED"
+    },
+    {
+      "case_id": "N19-02",
+      "type": "FAILURE_REMOVAL",
+      "kind": "REMOVAL",
+      "valid": true,
+      "expected_direction": {
+        "canonical": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ],
+        "external": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ]
+      },
+      "actual_direction": {
+        "canonical": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ],
+        "external": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ]
+      },
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "case_id": "N19-03",
+      "type": "FAILURE_TIME_CHANGE",
+      "kind": "TIME",
+      "valid": true,
+      "expected_direction": {
+        "canonical": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ],
+        "external": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ]
+      },
+      "actual_direction": {
+        "canonical": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ],
+        "external": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ]
+      },
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "case_id": "N19-04",
+      "type": "FAILURE_TIME_CHANGE",
+      "kind": "TIME",
+      "valid": true,
+      "expected_direction": {
+        "canonical": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ],
+        "external": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ]
+      },
+      "actual_direction": {
+        "canonical": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ],
+        "external": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ]
+      },
+      "relation": "FAILURE_INDUCED_INTERRUPTION",
+      "status": "ACCEPTED"
+    },
+    {
+      "case_id": "N19-05",
+      "type": "FAILURE_TARGET_CHANGE",
+      "kind": "TARGET",
+      "valid": true,
+      "expected_direction": {
+        "canonical": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ],
+        "external": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ]
+      },
+      "actual_direction": {
+        "canonical": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ],
+        "external": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ]
+      },
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "case_id": "N19-06",
+      "type": "FAILURE_TARGET_CHANGE",
+      "kind": "TARGET",
+      "valid": true,
+      "expected_direction": {
+        "canonical": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ],
+        "external": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ]
+      },
+      "actual_direction": {
+        "canonical": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ],
+        "external": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ]
+      },
+      "relation": "FAILURE_INDUCED_INTERRUPTION",
+      "status": "ACCEPTED"
+    },
+    {
+      "case_id": "N19-07",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "kind": "EDGE",
+      "valid": true,
+      "expected_direction": {
+        "canonical": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ],
+        "external": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ]
+      },
+      "actual_direction": {
+        "canonical": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ],
+        "external": [
+          "COMPLETE",
+          "INTERRUPTED"
+        ]
+      },
+      "relation": "FAILURE_INDUCED_INTERRUPTION",
+      "status": "ACCEPTED"
+    },
+    {
+      "case_id": "N19-08",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "kind": "EDGE",
+      "valid": true,
+      "expected_direction": {
+        "canonical": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ],
+        "external": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ]
+      },
+      "actual_direction": {
+        "canonical": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ],
+        "external": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ]
+      },
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "status": "ACCEPTED"
+    },
+    {
+      "case_id": "N19-11",
+      "type": "FAILURE_REMOVAL",
+      "kind": "TOOL_REMOVAL",
+      "valid": true,
+      "expected_direction": {
+        "canonical": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ],
+        "external": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ]
+      },
+      "actual_direction": {
+        "canonical": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ],
+        "external": [
+          "INTERRUPTED",
+          "COMPLETE"
+        ]
+      },
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "status": "ACCEPTED"
+    }
+  ]
+}

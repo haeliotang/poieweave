@@ -1,0 +1,21 @@
+{
+  "run_id": "N19-04-baseline-canonical",
+  "case": "N19-04",
+  "label": "baseline",
+  "model_id": "canonical",
+  "input_json": "counterfactual-pairs/N19-04/baseline/canonical/N19-04-baseline-canonical.json",
+  "contract": "counterfactual-pairs/N19-04/baseline/canonical/N19-04-baseline-canonical.contract",
+  "contract_sha256": "871252b629c7969a9464f46e69a62584850ff3abaa5bc3164092e467245cce82",
+  "binary": {
+    "path": "target/debug/poie-s5v-n14-canonical-adapter",
+    "sha256": "1944a3692646ea13389a7aab71c756f6eac815026e049ca80ebd70a6104e83c0"
+  },
+  "started_at": "2026-11-22T12:10:25.774129+00:00",
+  "completed_at": "2026-11-22T12:10:25.786216+00:00",
+  "exit_status": 0,
+  "raw_output": "counterfactual-pairs/N19-04/baseline/canonical/N19-04-baseline-canonical.jsonl",
+  "raw_output_sha256": "df60d08cff254e65bc3bc05dc9254931b539b948e6dc333882cd0427b948017a",
+  "event_journal": null,
+  "event_journal_sha256": null,
+  "stderr": "termination=CompletedHorizon events=12\n"
+}

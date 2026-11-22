@@ -1,0 +1,21 @@
+{
+  "run_id": "N19-00-baseline-external",
+  "case": "N19-00",
+  "label": "baseline",
+  "model_id": "external",
+  "input_json": "counterfactual-pairs/N19-00/baseline/external/N19-00-baseline-external.json",
+  "contract": "counterfactual-pairs/N19-00/baseline/external/N19-00-baseline-external.contract",
+  "contract_sha256": "4b42ea21ae77b78d950ce93c57403ef85d454aa9b933561f15ce768615ffdb6b",
+  "binary": {
+    "path": "external/fmu-n16-scheduler/poie-n16-scheduler.fmu",
+    "sha256": "9b0688bfcfd1ba74c8301899fc50063e5a0bd832a8eb1b2109cc54c18147cae6"
+  },
+  "started_at": "2026-11-22T12:10:23.890381+00:00",
+  "completed_at": "2026-11-22T12:10:24.054148+00:00",
+  "exit_status": 0,
+  "raw_output": "counterfactual-pairs/N19-00/baseline/external/N19-00-baseline-external.csv",
+  "raw_output_sha256": "0b9e9d7935a6a10f692f16ce2a8c0c13734d26bc7714b01eaf8fc46ce2440a72",
+  "event_journal": "counterfactual-pairs/N19-00/baseline/external/N19-00-baseline-external.csv.journal.json",
+  "event_journal_sha256": "379a093b868e1cd39778654aa0b3fa860bcf583a71c9c4f9f9ed6901ec5519e2",
+  "stderr": ""
+}
