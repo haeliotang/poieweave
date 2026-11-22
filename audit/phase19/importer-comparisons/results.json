@@ -1,0 +1,106 @@
+{
+  "schema": "poie.s5v-n19-importer/1",
+  "cases": [
+    {
+      "case": "N19-00-baseline-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-00-intervention-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-01-baseline-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-01-intervention-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-02-baseline-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-02-intervention-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-03-baseline-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-03-intervention-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-04-baseline-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-04-intervention-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-05-baseline-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-05-intervention-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-06-baseline-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-06-intervention-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-07-baseline-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-07-intervention-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-08-baseline-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-08-intervention-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-11-baseline-external",
+      "field_differences": [],
+      "journal_equal": true
+    },
+    {
+      "case": "N19-11-intervention-external",
+      "field_differences": [],
+      "journal_equal": true
+    }
+  ],
+  "problems": []
+}

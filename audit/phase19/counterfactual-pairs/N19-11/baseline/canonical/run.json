@@ -1,0 +1,21 @@
+{
+  "run_id": "N19-11-baseline-canonical",
+  "case": "N19-11",
+  "label": "baseline",
+  "model_id": "canonical",
+  "input_json": "counterfactual-pairs/N19-11/baseline/canonical/N19-11-baseline-canonical.json",
+  "contract": "counterfactual-pairs/N19-11/baseline/canonical/N19-11-baseline-canonical.contract",
+  "contract_sha256": "54ae72e50adfa110cf172bef0ec9dee51b3b807a4f931f1594e18d4df20b47aa",
+  "binary": {
+    "path": "target/debug/poie-s5v-n14-canonical-adapter",
+    "sha256": "1944a3692646ea13389a7aab71c756f6eac815026e049ca80ebd70a6104e83c0"
+  },
+  "started_at": "2026-11-22T12:10:27.998032+00:00",
+  "completed_at": "2026-11-22T12:10:28.013017+00:00",
+  "exit_status": 0,
+  "raw_output": "counterfactual-pairs/N19-11/baseline/canonical/N19-11-baseline-canonical.jsonl",
+  "raw_output_sha256": "cb807faa29e1974cc6517dd265152b488af539c85cce86f0b71ae01af8588ff0",
+  "event_journal": null,
+  "event_journal_sha256": null,
+  "stderr": "termination=Blocked(\"repair interrupted at 3600s: tool-t1 failed\") events=3\n"
+}

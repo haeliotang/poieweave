@@ -1,0 +1,1797 @@
+{
+  "baseline": "7644886e15e9404bfdf3ab9672a5025a0a3d3a08",
+  "files": [
+    {
+      "bytes": 8247,
+      "path": "audit/phase19/CERTIFICATE_ERRATA.json",
+      "sha256": "4b802144f0cdba707bc000e9527e3136a2ef5924e78cb0705736badd54de4392"
+    },
+    {
+      "bytes": 774,
+      "path": "audit/phase19/CERTIFICATE_ERRATA.md",
+      "sha256": "fb4ca9793aad0e858191334ab879e4d02fdc13d3496d511a59630bda5f8cce10"
+    },
+    {
+      "bytes": 252,
+      "path": "audit/phase19/CERTIFICATE_IMPACT.md",
+      "sha256": "2164eaf01dbab8d27d6f757fa72a5c3b8ef849c4a33ea236774434cfa79dedd9"
+    },
+    {
+      "bytes": 861,
+      "path": "audit/phase19/CLAIMS.json",
+      "sha256": "721c14dc01a94bd4a23ce5764c993425e5405c963659d631e97dc57e25491a21"
+    },
+    {
+      "bytes": 257,
+      "path": "audit/phase19/EVIDENCE.md",
+      "sha256": "0f0237b6038f09b4ebd627e84014b0b719d3b4df723c258acdb656e881feab70"
+    },
+    {
+      "bytes": 504,
+      "path": "audit/phase19/FAILURE_ADJUDICATION_CONTRACT.md",
+      "sha256": "4021c23ecd8ee511ff1a78b8aa3e6380bcd6913a46a8e5f704f8759a0ed93b0e"
+    },
+    {
+      "bytes": 365,
+      "path": "audit/phase19/FOUR_RUN_PROVENANCE.md",
+      "sha256": "4eb20deaa8bcd7c223065a21d983595238abac3f9c5ab92898b3974e80fbf482"
+    },
+    {
+      "bytes": 166,
+      "path": "audit/phase19/HELD_OUT_GENERATION_PLAN.md",
+      "sha256": "e3b47d364b5b8056f09faa351759a1e1285a03949d635faa75dcb279fd9a4875"
+    },
+    {
+      "bytes": 319,
+      "path": "audit/phase19/MODEL_INDEPENDENCE_AUDIT.md",
+      "sha256": "3f70ccc083569e417b7c7fa19e0d2ab35e95190c69e11f1341891981e6f4a9bb"
+    },
+    {
+      "bytes": 851,
+      "path": "audit/phase19/N18_REVALIDATION.md",
+      "sha256": "79c8042a26266a76c8b2e2c8039d4912e7923c092b95f682b0ecd66b20acfde4"
+    },
+    {
+      "bytes": 3867,
+      "path": "audit/phase19/N19_EXTERNAL_VALIDATION_CERTIFICATE.json",
+      "sha256": "eb124f8bb17f6b505f1e5a06eaf7aa3e178506e01bd52465abb714128c72e882"
+    },
+    {
+      "bytes": 350,
+      "path": "audit/phase19/ORACLE_SOUNDNESS_CONTRACT.md",
+      "sha256": "1c8c20e87af639b6c041092e4cc37391425b1c6f4072c68c27263b94a4e13c4a"
+    },
+    {
+      "bytes": 555,
+      "path": "audit/phase19/PREREG.md",
+      "sha256": "15955f94d816999948fb0247d2788957fcb08aa7ce03cc8f2247334164a79fb9"
+    },
+    {
+      "bytes": 1818,
+      "path": "audit/phase19/REPORT.zh-CN.md",
+      "sha256": "0d2d1d13a7cbf0b119723bcb571f02c521f41f0a2f1a2ad5fd9c03d596321633"
+    },
+    {
+      "bytes": 357,
+      "path": "audit/phase19/SYMMETRIC_EFFECT_SEMANTICS.md",
+      "sha256": "6b276194326446b92a7272c55a59d7471c95d446e75895892ac4549363aaab65"
+    },
+    {
+      "bytes": 7637,
+      "path": "audit/phase19/adjudicate.py",
+      "sha256": "4593df0328af92f05c03164a9769142384fb74d3a4377dee8968fabced3e8366"
+    },
+    {
+      "bytes": 4189,
+      "path": "audit/phase19/adjudications/N18-G1801-09.json",
+      "sha256": "e72e9e6f68b34f4bdacad4998fe2cd76d11ea171ba2ed48a08b6a55fd15f0710"
+    },
+    {
+      "bytes": 4281,
+      "path": "audit/phase19/adjudications/N18-G1801-17.json",
+      "sha256": "5271782811a193c6ae86930290a7b3cad4d35f1fe581109de9fb0e636d770d80"
+    },
+    {
+      "bytes": 4183,
+      "path": "audit/phase19/adjudications/N18-G1801-19.json",
+      "sha256": "65dfdb34d819652ea8898e5647123ef93de614e0f9994a3279d73d48f500b86e"
+    },
+    {
+      "bytes": 4183,
+      "path": "audit/phase19/adjudications/N18-G1801-25.json",
+      "sha256": "04972bb4fd9d1de24a1e2b9963f153afb546cebac3a705395590c59bd0b0148f"
+    },
+    {
+      "bytes": 4181,
+      "path": "audit/phase19/adjudications/N18-G1817-00.json",
+      "sha256": "e49b6ea07faa894b00121f16bb798e1cb88ee8373d73cf16d38bf8172e252238"
+    },
+    {
+      "bytes": 4031,
+      "path": "audit/phase19/adjudications/N18-G1817-05.json",
+      "sha256": "4e0a8c268db45e23c97c9b550b357a92ec8fa9f7c35fefaebfacb98fc250ca8b"
+    },
+    {
+      "bytes": 4183,
+      "path": "audit/phase19/adjudications/N18-G1817-16.json",
+      "sha256": "79649948441a643651eaabf9a76b390a16f64b0121d4f287d23675b180f214e4"
+    },
+    {
+      "bytes": 4031,
+      "path": "audit/phase19/adjudications/N18-G1817-23.json",
+      "sha256": "46e6f35501236c812099f722fbb75611e1a38147ca58ac02991e967b8b1d868d"
+    },
+    {
+      "bytes": 4281,
+      "path": "audit/phase19/adjudications/N18-G1817-24.json",
+      "sha256": "5e049c54346b26a093c7bfabc591df558d17079042f6c488aa05c9163f3b9307"
+    },
+    {
+      "bytes": 3246,
+      "path": "audit/phase19/adjudications/summary.json",
+      "sha256": "7a580e7779e6e9f1b1a0a4e5e1c358c318eccf30b4846b39d1e18311e914e177"
+    },
+    {
+      "bytes": 1475,
+      "path": "audit/phase19/check.py",
+      "sha256": "366b2cad0b61936a01da52bb98cc4d497a4e38e66db6a39072392dee94a0229b"
+    },
+    {
+      "bytes": 684,
+      "path": "audit/phase19/check_certificate.py",
+      "sha256": "25f2d2efd0d70c20af99e57936f3797532fa79ad5fec7f79bc68d9792b044f53"
+    },
+    {
+      "bytes": 1565,
+      "path": "audit/phase19/compare_importers.py",
+      "sha256": "f5ad6f6087d7a2da51f652c593bf182aab2b40c4c2c8553ccf09f738759444e9"
+    },
+    {
+      "bytes": 319,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/canonical/N19-00-baseline-canonical.contract",
+      "sha256": "4b42ea21ae77b78d950ce93c57403ef85d454aa9b933561f15ce768615ffdb6b"
+    },
+    {
+      "bytes": 572,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/canonical/N19-00-baseline-canonical.json",
+      "sha256": "86e9edcacc1c1c1981581e41f3e84180473e18076779784a7d83de0e336f11b1"
+    },
+    {
+      "bytes": 12922,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/canonical/N19-00-baseline-canonical.jsonl",
+      "sha256": "120d503b5d09c05b47c34e329e223262b9011d30555a6c98943574344b865f47"
+    },
+    {
+      "bytes": 12922,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/canonical/canonical/N19-00-baseline-canonical.jsonl",
+      "sha256": "120d503b5d09c05b47c34e329e223262b9011d30555a6c98943574344b865f47"
+    },
+    {
+      "bytes": 986,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/canonical/run.json",
+      "sha256": "4fa01cccce828163d3251e1bbcd4e21ea51f457d2421af7eb960f8138c410f21"
+    },
+    {
+      "bytes": 319,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/external/N19-00-baseline-external.contract",
+      "sha256": "4b42ea21ae77b78d950ce93c57403ef85d454aa9b933561f15ce768615ffdb6b"
+    },
+    {
+      "bytes": 33571,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/external/N19-00-baseline-external.csv",
+      "sha256": "0b9e9d7935a6a10f692f16ce2a8c0c13734d26bc7714b01eaf8fc46ce2440a72"
+    },
+    {
+      "bytes": 3506,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/external/N19-00-baseline-external.csv.journal.json",
+      "sha256": "379a093b868e1cd39778654aa0b3fa860bcf583a71c9c4f9f9ed6901ec5519e2"
+    },
+    {
+      "bytes": 572,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/external/N19-00-baseline-external.json",
+      "sha256": "86e9edcacc1c1c1981581e41f3e84180473e18076779784a7d83de0e336f11b1"
+    },
+    {
+      "bytes": 33571,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/external/external/N19-00-baseline-external.csv",
+      "sha256": "0b9e9d7935a6a10f692f16ce2a8c0c13734d26bc7714b01eaf8fc46ce2440a72"
+    },
+    {
+      "bytes": 3506,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/external/external/N19-00-baseline-external.csv.journal.json",
+      "sha256": "379a093b868e1cd39778654aa0b3fa860bcf583a71c9c4f9f9ed6901ec5519e2"
+    },
+    {
+      "bytes": 1089,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/baseline/external/run.json",
+      "sha256": "1c396cc88ee2c713d22986a1bdb21aa90e5c29227831ec38d57a5a4bb504094f"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/canonical/N19-00-intervention-canonical.contract",
+      "sha256": "b8adeae3b0fcecdb97919f66e64f2863bc47d995d3fa22e756d5112e25819aed"
+    },
+    {
+      "bytes": 702,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/canonical/N19-00-intervention-canonical.json",
+      "sha256": "a84efa2246979e7a376d170b74f20c62f0353fc1f2094e8c63a360caf27270e9"
+    },
+    {
+      "bytes": 14122,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/canonical/N19-00-intervention-canonical.jsonl",
+      "sha256": "660b8976faccd1b586251795cb5abec9167762a48af38c794a125ba35a87e439"
+    },
+    {
+      "bytes": 14122,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/canonical/canonical/N19-00-intervention-canonical.jsonl",
+      "sha256": "660b8976faccd1b586251795cb5abec9167762a48af38c794a125ba35a87e439"
+    },
+    {
+      "bytes": 1018,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/canonical/run.json",
+      "sha256": "f5b627046cbca4b82eb78a105541c6137c32e3c48fcd460e784fa28aeedaa8a1"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/external/N19-00-intervention-external.contract",
+      "sha256": "b8adeae3b0fcecdb97919f66e64f2863bc47d995d3fa22e756d5112e25819aed"
+    },
+    {
+      "bytes": 33648,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/external/N19-00-intervention-external.csv",
+      "sha256": "f638a92a00e3c6b8f5c3f807ec4d7305375cd204f00ccab8c5ddab725dd3442f"
+    },
+    {
+      "bytes": 3798,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/external/N19-00-intervention-external.csv.journal.json",
+      "sha256": "aaf8d58254d44836cf9fe6c56516ab8120dba9c2e1dbfd41d8c1a9339bc31256"
+    },
+    {
+      "bytes": 702,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/external/N19-00-intervention-external.json",
+      "sha256": "a84efa2246979e7a376d170b74f20c62f0353fc1f2094e8c63a360caf27270e9"
+    },
+    {
+      "bytes": 33648,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/external/external/N19-00-intervention-external.csv",
+      "sha256": "f638a92a00e3c6b8f5c3f807ec4d7305375cd204f00ccab8c5ddab725dd3442f"
+    },
+    {
+      "bytes": 3798,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/external/external/N19-00-intervention-external.csv.journal.json",
+      "sha256": "aaf8d58254d44836cf9fe6c56516ab8120dba9c2e1dbfd41d8c1a9339bc31256"
+    },
+    {
+      "bytes": 1129,
+      "path": "audit/phase19/counterfactual-pairs/N19-00/intervention/external/run.json",
+      "sha256": "ac40150e9ede85dd5f5dfdc186647e713cc48d6e12df61b7e74d85fc7fed8d0d"
+    },
+    {
+      "bytes": 319,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/canonical/N19-01-baseline-canonical.contract",
+      "sha256": "4b42ea21ae77b78d950ce93c57403ef85d454aa9b933561f15ce768615ffdb6b"
+    },
+    {
+      "bytes": 572,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/canonical/N19-01-baseline-canonical.json",
+      "sha256": "6cabbe542db7bcef5d0b5e6efad5da4bb8edd704875e6e364a027aabb7601678"
+    },
+    {
+      "bytes": 12922,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/canonical/N19-01-baseline-canonical.jsonl",
+      "sha256": "120d503b5d09c05b47c34e329e223262b9011d30555a6c98943574344b865f47"
+    },
+    {
+      "bytes": 12922,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/canonical/canonical/N19-01-baseline-canonical.jsonl",
+      "sha256": "120d503b5d09c05b47c34e329e223262b9011d30555a6c98943574344b865f47"
+    },
+    {
+      "bytes": 319,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/canonical/replays/N19-01-baseline-canonical-replay/N19-01-baseline-canonical-replay.contract",
+      "sha256": "4b42ea21ae77b78d950ce93c57403ef85d454aa9b933561f15ce768615ffdb6b"
+    },
+    {
+      "bytes": 572,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/canonical/replays/N19-01-baseline-canonical-replay/N19-01-baseline-canonical-replay.json",
+      "sha256": "6cabbe542db7bcef5d0b5e6efad5da4bb8edd704875e6e364a027aabb7601678"
+    },
+    {
+      "bytes": 12922,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/canonical/replays/N19-01-baseline-canonical-replay/N19-01-baseline-canonical-replay.jsonl",
+      "sha256": "120d503b5d09c05b47c34e329e223262b9011d30555a6c98943574344b865f47"
+    },
+    {
+      "bytes": 1137,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/canonical/replays/N19-01-baseline-canonical-replay/run.json",
+      "sha256": "0bd6437c04884d33f151b31f04942db1465687ff530f5efaecb56101c45b2382"
+    },
+    {
+      "bytes": 986,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/canonical/run.json",
+      "sha256": "a30f9a58f5c535e42178c4325e70690b285056110b9c41d507da212b7260d67a"
+    },
+    {
+      "bytes": 319,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/external/N19-01-baseline-external.contract",
+      "sha256": "4b42ea21ae77b78d950ce93c57403ef85d454aa9b933561f15ce768615ffdb6b"
+    },
+    {
+      "bytes": 33571,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/external/N19-01-baseline-external.csv",
+      "sha256": "0b9e9d7935a6a10f692f16ce2a8c0c13734d26bc7714b01eaf8fc46ce2440a72"
+    },
+    {
+      "bytes": 3506,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/external/N19-01-baseline-external.csv.journal.json",
+      "sha256": "379a093b868e1cd39778654aa0b3fa860bcf583a71c9c4f9f9ed6901ec5519e2"
+    },
+    {
+      "bytes": 572,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/external/N19-01-baseline-external.json",
+      "sha256": "6cabbe542db7bcef5d0b5e6efad5da4bb8edd704875e6e364a027aabb7601678"
+    },
+    {
+      "bytes": 33571,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/external/external/N19-01-baseline-external.csv",
+      "sha256": "0b9e9d7935a6a10f692f16ce2a8c0c13734d26bc7714b01eaf8fc46ce2440a72"
+    },
+    {
+      "bytes": 3506,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/external/external/N19-01-baseline-external.csv.journal.json",
+      "sha256": "379a093b868e1cd39778654aa0b3fa860bcf583a71c9c4f9f9ed6901ec5519e2"
+    },
+    {
+      "bytes": 1089,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/baseline/external/run.json",
+      "sha256": "29bf54bf64225e2eda641d120c5abffae5b7a0706574f6135c10f1552777300a"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/canonical/N19-01-intervention-canonical.contract",
+      "sha256": "80f44e563b175e04bcd8ca430875a0b80e43c50bf6ca4a200bd550e7f45353dc"
+    },
+    {
+      "bytes": 699,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/canonical/N19-01-intervention-canonical.json",
+      "sha256": "c3219c84da58b9e416deb51ce4b9ca6e7a091610949fd3ef56056043353aa99a"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/canonical/N19-01-intervention-canonical.jsonl",
+      "sha256": "c0eec696b5f1bafba6062feb1d077c5757444cdd35245610c651bc9453125541"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/canonical/canonical/N19-01-intervention-canonical.jsonl",
+      "sha256": "c0eec696b5f1bafba6062feb1d077c5757444cdd35245610c651bc9453125541"
+    },
+    {
+      "bytes": 1055,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/canonical/run.json",
+      "sha256": "52431554d94ee565c29b082ab7ab263da511597cd137261f1d85e119c0aef99b"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/external/N19-01-intervention-external.contract",
+      "sha256": "80f44e563b175e04bcd8ca430875a0b80e43c50bf6ca4a200bd550e7f45353dc"
+    },
+    {
+      "bytes": 2487,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/external/N19-01-intervention-external.csv",
+      "sha256": "e6effc1c68f819791ce945c34c5a0043f214d41ec894ce956646e41876e9e879"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/external/N19-01-intervention-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 699,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/external/N19-01-intervention-external.json",
+      "sha256": "c3219c84da58b9e416deb51ce4b9ca6e7a091610949fd3ef56056043353aa99a"
+    },
+    {
+      "bytes": 2487,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/external/external/N19-01-intervention-external.csv",
+      "sha256": "e6effc1c68f819791ce945c34c5a0043f214d41ec894ce956646e41876e9e879"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/external/external/N19-01-intervention-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 1129,
+      "path": "audit/phase19/counterfactual-pairs/N19-01/intervention/external/run.json",
+      "sha256": "d7862c57f88499f3e9842264073e167db4f96a4d8fda926e56a6a608a9a47014"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/canonical/N19-02-baseline-canonical.contract",
+      "sha256": "80f44e563b175e04bcd8ca430875a0b80e43c50bf6ca4a200bd550e7f45353dc"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/canonical/N19-02-baseline-canonical.json",
+      "sha256": "520e40f03afd0f093e7b3f738d1f7d121486c250d685cc170a0e12b66b57a6e1"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/canonical/N19-02-baseline-canonical.jsonl",
+      "sha256": "c0eec696b5f1bafba6062feb1d077c5757444cdd35245610c651bc9453125541"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/canonical/canonical/N19-02-baseline-canonical.jsonl",
+      "sha256": "c0eec696b5f1bafba6062feb1d077c5757444cdd35245610c651bc9453125541"
+    },
+    {
+      "bytes": 1023,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/canonical/run.json",
+      "sha256": "c1bd38680e1b4b16f19e9e76f5b36a84018892826ae75c52b32dedb45a3550fb"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/external/N19-02-baseline-external.contract",
+      "sha256": "80f44e563b175e04bcd8ca430875a0b80e43c50bf6ca4a200bd550e7f45353dc"
+    },
+    {
+      "bytes": 2487,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/external/N19-02-baseline-external.csv",
+      "sha256": "e6effc1c68f819791ce945c34c5a0043f214d41ec894ce956646e41876e9e879"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/external/N19-02-baseline-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/external/N19-02-baseline-external.json",
+      "sha256": "520e40f03afd0f093e7b3f738d1f7d121486c250d685cc170a0e12b66b57a6e1"
+    },
+    {
+      "bytes": 2487,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/external/external/N19-02-baseline-external.csv",
+      "sha256": "e6effc1c68f819791ce945c34c5a0043f214d41ec894ce956646e41876e9e879"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/external/external/N19-02-baseline-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 1089,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/baseline/external/run.json",
+      "sha256": "89ea91e5076385a338f1d1dc7ebb7c96ea2258010fef66eca2d86cf77884f20e"
+    },
+    {
+      "bytes": 319,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/canonical/N19-02-intervention-canonical.contract",
+      "sha256": "4b42ea21ae77b78d950ce93c57403ef85d454aa9b933561f15ce768615ffdb6b"
+    },
+    {
+      "bytes": 576,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/canonical/N19-02-intervention-canonical.json",
+      "sha256": "d5399dee84baec8233be2762b87ab14389ffa998efcb7ebb9545ebd591a3c3a4"
+    },
+    {
+      "bytes": 12922,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/canonical/N19-02-intervention-canonical.jsonl",
+      "sha256": "120d503b5d09c05b47c34e329e223262b9011d30555a6c98943574344b865f47"
+    },
+    {
+      "bytes": 12922,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/canonical/canonical/N19-02-intervention-canonical.jsonl",
+      "sha256": "120d503b5d09c05b47c34e329e223262b9011d30555a6c98943574344b865f47"
+    },
+    {
+      "bytes": 1018,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/canonical/run.json",
+      "sha256": "c34d80804619027d30088801bd2536e59afaa821205c7f03e22c79c312006399"
+    },
+    {
+      "bytes": 319,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/external/N19-02-intervention-external.contract",
+      "sha256": "4b42ea21ae77b78d950ce93c57403ef85d454aa9b933561f15ce768615ffdb6b"
+    },
+    {
+      "bytes": 33571,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/external/N19-02-intervention-external.csv",
+      "sha256": "0b9e9d7935a6a10f692f16ce2a8c0c13734d26bc7714b01eaf8fc46ce2440a72"
+    },
+    {
+      "bytes": 3506,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/external/N19-02-intervention-external.csv.journal.json",
+      "sha256": "379a093b868e1cd39778654aa0b3fa860bcf583a71c9c4f9f9ed6901ec5519e2"
+    },
+    {
+      "bytes": 576,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/external/N19-02-intervention-external.json",
+      "sha256": "d5399dee84baec8233be2762b87ab14389ffa998efcb7ebb9545ebd591a3c3a4"
+    },
+    {
+      "bytes": 33571,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/external/external/N19-02-intervention-external.csv",
+      "sha256": "0b9e9d7935a6a10f692f16ce2a8c0c13734d26bc7714b01eaf8fc46ce2440a72"
+    },
+    {
+      "bytes": 3506,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/external/external/N19-02-intervention-external.csv.journal.json",
+      "sha256": "379a093b868e1cd39778654aa0b3fa860bcf583a71c9c4f9f9ed6901ec5519e2"
+    },
+    {
+      "bytes": 1129,
+      "path": "audit/phase19/counterfactual-pairs/N19-02/intervention/external/run.json",
+      "sha256": "08660f51e4b5abcedc5a5ee3315b9bb24cdd5770d4f96e38219f7ffa42c0f8c4"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/canonical/N19-03-baseline-canonical.contract",
+      "sha256": "def711214e70d1d0ed610da395a9f9f7ca4aaa7e0a012e726e3611a14500521a"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/canonical/N19-03-baseline-canonical.json",
+      "sha256": "c204f317ca1dba4199b4add8b0140a96d0242e90d9b45469e208865204c967f6"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/canonical/N19-03-baseline-canonical.jsonl",
+      "sha256": "097d2849a27ceef93fab2a2b55113dba47a5912968568d83fc5739e7049fdfa6"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/canonical/canonical/N19-03-baseline-canonical.jsonl",
+      "sha256": "097d2849a27ceef93fab2a2b55113dba47a5912968568d83fc5739e7049fdfa6"
+    },
+    {
+      "bytes": 1023,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/canonical/run.json",
+      "sha256": "cf43367c93ffef31b0738ce8d171ee2216c88ccd4eff701be5b512a60e8aa170"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/external/N19-03-baseline-external.contract",
+      "sha256": "def711214e70d1d0ed610da395a9f9f7ca4aaa7e0a012e726e3611a14500521a"
+    },
+    {
+      "bytes": 4123,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/external/N19-03-baseline-external.csv",
+      "sha256": "3f5bdc7cfbc56342bb9bce594eb563219e7c0be6f6961c086474ae7dd1a330a6"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/external/N19-03-baseline-external.csv.journal.json",
+      "sha256": "4c5ba402692dce485ebdcfaccb5385f0eb66f8cdbb793e85abdaf12424a36bc9"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/external/N19-03-baseline-external.json",
+      "sha256": "c204f317ca1dba4199b4add8b0140a96d0242e90d9b45469e208865204c967f6"
+    },
+    {
+      "bytes": 4123,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/external/external/N19-03-baseline-external.csv",
+      "sha256": "3f5bdc7cfbc56342bb9bce594eb563219e7c0be6f6961c086474ae7dd1a330a6"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/external/external/N19-03-baseline-external.csv.journal.json",
+      "sha256": "4c5ba402692dce485ebdcfaccb5385f0eb66f8cdbb793e85abdaf12424a36bc9"
+    },
+    {
+      "bytes": 1089,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/baseline/external/run.json",
+      "sha256": "9c279fc4977dec9801558adee76f43836382d746b248fb0f106ffe07d9bae88a"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/canonical/N19-03-intervention-canonical.contract",
+      "sha256": "871252b629c7969a9464f46e69a62584850ff3abaa5bc3164092e467245cce82"
+    },
+    {
+      "bytes": 699,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/canonical/N19-03-intervention-canonical.json",
+      "sha256": "7051833ba38c0e490e905a9c58cfae74c3b554beb4c69d737ce7a471eeba5e44"
+    },
+    {
+      "bytes": 14140,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/canonical/N19-03-intervention-canonical.jsonl",
+      "sha256": "df60d08cff254e65bc3bc05dc9254931b539b948e6dc333882cd0427b948017a"
+    },
+    {
+      "bytes": 14140,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/canonical/canonical/N19-03-intervention-canonical.jsonl",
+      "sha256": "df60d08cff254e65bc3bc05dc9254931b539b948e6dc333882cd0427b948017a"
+    },
+    {
+      "bytes": 1018,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/canonical/run.json",
+      "sha256": "ab336d7bbd5bf4ea4f3b34f25a12efa80033bb20c13b13d5ce30bc8ba8eeb164"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/external/N19-03-intervention-external.contract",
+      "sha256": "871252b629c7969a9464f46e69a62584850ff3abaa5bc3164092e467245cce82"
+    },
+    {
+      "bytes": 33643,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/external/N19-03-intervention-external.csv",
+      "sha256": "09775524347118134e2a7289f0250143a4ff015635cb3b41129aab7e98431665"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/external/N19-03-intervention-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 699,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/external/N19-03-intervention-external.json",
+      "sha256": "7051833ba38c0e490e905a9c58cfae74c3b554beb4c69d737ce7a471eeba5e44"
+    },
+    {
+      "bytes": 33643,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/external/external/N19-03-intervention-external.csv",
+      "sha256": "09775524347118134e2a7289f0250143a4ff015635cb3b41129aab7e98431665"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/external/external/N19-03-intervention-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 1129,
+      "path": "audit/phase19/counterfactual-pairs/N19-03/intervention/external/run.json",
+      "sha256": "e6c9ed46096c94cbca0e9cd9f69f0ffa10509be0fdfce31af5e5cdcfe9fe8dd8"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/canonical/N19-04-baseline-canonical.contract",
+      "sha256": "871252b629c7969a9464f46e69a62584850ff3abaa5bc3164092e467245cce82"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/canonical/N19-04-baseline-canonical.json",
+      "sha256": "7915e0ed8266620f88cb483a830cf7fd11060d3f0bf64b7ae23db4626c47e578"
+    },
+    {
+      "bytes": 14140,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/canonical/N19-04-baseline-canonical.jsonl",
+      "sha256": "df60d08cff254e65bc3bc05dc9254931b539b948e6dc333882cd0427b948017a"
+    },
+    {
+      "bytes": 14140,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/canonical/canonical/N19-04-baseline-canonical.jsonl",
+      "sha256": "df60d08cff254e65bc3bc05dc9254931b539b948e6dc333882cd0427b948017a"
+    },
+    {
+      "bytes": 986,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/canonical/run.json",
+      "sha256": "4382f182ccddc8596c60b1172e6b8044c936d8e3542cc28d3bef35928e8820f2"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/external/N19-04-baseline-external.contract",
+      "sha256": "871252b629c7969a9464f46e69a62584850ff3abaa5bc3164092e467245cce82"
+    },
+    {
+      "bytes": 33643,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/external/N19-04-baseline-external.csv",
+      "sha256": "09775524347118134e2a7289f0250143a4ff015635cb3b41129aab7e98431665"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/external/N19-04-baseline-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/external/N19-04-baseline-external.json",
+      "sha256": "7915e0ed8266620f88cb483a830cf7fd11060d3f0bf64b7ae23db4626c47e578"
+    },
+    {
+      "bytes": 33643,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/external/external/N19-04-baseline-external.csv",
+      "sha256": "09775524347118134e2a7289f0250143a4ff015635cb3b41129aab7e98431665"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/external/external/N19-04-baseline-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 1089,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/baseline/external/run.json",
+      "sha256": "3b850fef00b34c3d32471bf9c39e366c82840b67374d1ed331c1ef31ab870cbe"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/canonical/N19-04-intervention-canonical.contract",
+      "sha256": "def711214e70d1d0ed610da395a9f9f7ca4aaa7e0a012e726e3611a14500521a"
+    },
+    {
+      "bytes": 699,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/canonical/N19-04-intervention-canonical.json",
+      "sha256": "9261609dd6ae81f26458d895d5121e1ae3a27e90cbf646c5c035b24d4ebbb27e"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/canonical/N19-04-intervention-canonical.jsonl",
+      "sha256": "097d2849a27ceef93fab2a2b55113dba47a5912968568d83fc5739e7049fdfa6"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/canonical/canonical/N19-04-intervention-canonical.jsonl",
+      "sha256": "097d2849a27ceef93fab2a2b55113dba47a5912968568d83fc5739e7049fdfa6"
+    },
+    {
+      "bytes": 1055,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/canonical/run.json",
+      "sha256": "b3e1fd61fc0fc84bbe47f68abaa7174700f1d02843682cf6e741233c6360c46f"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/external/N19-04-intervention-external.contract",
+      "sha256": "def711214e70d1d0ed610da395a9f9f7ca4aaa7e0a012e726e3611a14500521a"
+    },
+    {
+      "bytes": 4123,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/external/N19-04-intervention-external.csv",
+      "sha256": "3f5bdc7cfbc56342bb9bce594eb563219e7c0be6f6961c086474ae7dd1a330a6"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/external/N19-04-intervention-external.csv.journal.json",
+      "sha256": "4c5ba402692dce485ebdcfaccb5385f0eb66f8cdbb793e85abdaf12424a36bc9"
+    },
+    {
+      "bytes": 699,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/external/N19-04-intervention-external.json",
+      "sha256": "9261609dd6ae81f26458d895d5121e1ae3a27e90cbf646c5c035b24d4ebbb27e"
+    },
+    {
+      "bytes": 4123,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/external/external/N19-04-intervention-external.csv",
+      "sha256": "3f5bdc7cfbc56342bb9bce594eb563219e7c0be6f6961c086474ae7dd1a330a6"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/external/external/N19-04-intervention-external.csv.journal.json",
+      "sha256": "4c5ba402692dce485ebdcfaccb5385f0eb66f8cdbb793e85abdaf12424a36bc9"
+    },
+    {
+      "bytes": 1129,
+      "path": "audit/phase19/counterfactual-pairs/N19-04/intervention/external/run.json",
+      "sha256": "2cf395e658ebc77e76795aa772e4a05d88f38e04c84bea5fb4f0ab05f59bcb9c"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/canonical/N19-05-baseline-canonical.contract",
+      "sha256": "80f44e563b175e04bcd8ca430875a0b80e43c50bf6ca4a200bd550e7f45353dc"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/canonical/N19-05-baseline-canonical.json",
+      "sha256": "e1560a6fbc2943fe26935b4e0e72b46b2a0505e308f47c98e036d6cd078e9c7f"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/canonical/N19-05-baseline-canonical.jsonl",
+      "sha256": "c0eec696b5f1bafba6062feb1d077c5757444cdd35245610c651bc9453125541"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/canonical/canonical/N19-05-baseline-canonical.jsonl",
+      "sha256": "c0eec696b5f1bafba6062feb1d077c5757444cdd35245610c651bc9453125541"
+    },
+    {
+      "bytes": 1023,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/canonical/run.json",
+      "sha256": "2e4afd7b8f274f13cb231134374d0062c392083f786491214ce0a7ead21215c3"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/external/N19-05-baseline-external.contract",
+      "sha256": "80f44e563b175e04bcd8ca430875a0b80e43c50bf6ca4a200bd550e7f45353dc"
+    },
+    {
+      "bytes": 2487,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/external/N19-05-baseline-external.csv",
+      "sha256": "e6effc1c68f819791ce945c34c5a0043f214d41ec894ce956646e41876e9e879"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/external/N19-05-baseline-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/external/N19-05-baseline-external.json",
+      "sha256": "e1560a6fbc2943fe26935b4e0e72b46b2a0505e308f47c98e036d6cd078e9c7f"
+    },
+    {
+      "bytes": 2487,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/external/external/N19-05-baseline-external.csv",
+      "sha256": "e6effc1c68f819791ce945c34c5a0043f214d41ec894ce956646e41876e9e879"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/external/external/N19-05-baseline-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 1089,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/baseline/external/run.json",
+      "sha256": "dec57f26255a27bbf6560a542aabafd6ce569a5afc97ff097c859d512609559f"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/canonical/N19-05-intervention-canonical.contract",
+      "sha256": "b8adeae3b0fcecdb97919f66e64f2863bc47d995d3fa22e756d5112e25819aed"
+    },
+    {
+      "bytes": 702,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/canonical/N19-05-intervention-canonical.json",
+      "sha256": "605e54b82d609a801beb9ab9879d2aec561b5ca35e85c183882f925685b23287"
+    },
+    {
+      "bytes": 14122,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/canonical/N19-05-intervention-canonical.jsonl",
+      "sha256": "660b8976faccd1b586251795cb5abec9167762a48af38c794a125ba35a87e439"
+    },
+    {
+      "bytes": 14122,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/canonical/canonical/N19-05-intervention-canonical.jsonl",
+      "sha256": "660b8976faccd1b586251795cb5abec9167762a48af38c794a125ba35a87e439"
+    },
+    {
+      "bytes": 1018,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/canonical/run.json",
+      "sha256": "aede60033b8975a63598f3b13631cf1322dab6a822389f405d9ca6686ed5024b"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/external/N19-05-intervention-external.contract",
+      "sha256": "b8adeae3b0fcecdb97919f66e64f2863bc47d995d3fa22e756d5112e25819aed"
+    },
+    {
+      "bytes": 33648,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/external/N19-05-intervention-external.csv",
+      "sha256": "f638a92a00e3c6b8f5c3f807ec4d7305375cd204f00ccab8c5ddab725dd3442f"
+    },
+    {
+      "bytes": 3798,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/external/N19-05-intervention-external.csv.journal.json",
+      "sha256": "aaf8d58254d44836cf9fe6c56516ab8120dba9c2e1dbfd41d8c1a9339bc31256"
+    },
+    {
+      "bytes": 702,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/external/N19-05-intervention-external.json",
+      "sha256": "605e54b82d609a801beb9ab9879d2aec561b5ca35e85c183882f925685b23287"
+    },
+    {
+      "bytes": 33648,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/external/external/N19-05-intervention-external.csv",
+      "sha256": "f638a92a00e3c6b8f5c3f807ec4d7305375cd204f00ccab8c5ddab725dd3442f"
+    },
+    {
+      "bytes": 3798,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/external/external/N19-05-intervention-external.csv.journal.json",
+      "sha256": "aaf8d58254d44836cf9fe6c56516ab8120dba9c2e1dbfd41d8c1a9339bc31256"
+    },
+    {
+      "bytes": 1129,
+      "path": "audit/phase19/counterfactual-pairs/N19-05/intervention/external/run.json",
+      "sha256": "5f8223fc0792be65dd6b6526cf257f23ecac41aded0a4c8a11d1373a860c3882"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/canonical/N19-06-baseline-canonical.contract",
+      "sha256": "b8adeae3b0fcecdb97919f66e64f2863bc47d995d3fa22e756d5112e25819aed"
+    },
+    {
+      "bytes": 698,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/canonical/N19-06-baseline-canonical.json",
+      "sha256": "72747da7ac351837da40fc8a5ba387d6f02d2c93dd3e17d466d65da854cf7ebc"
+    },
+    {
+      "bytes": 14122,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/canonical/N19-06-baseline-canonical.jsonl",
+      "sha256": "660b8976faccd1b586251795cb5abec9167762a48af38c794a125ba35a87e439"
+    },
+    {
+      "bytes": 14122,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/canonical/canonical/N19-06-baseline-canonical.jsonl",
+      "sha256": "660b8976faccd1b586251795cb5abec9167762a48af38c794a125ba35a87e439"
+    },
+    {
+      "bytes": 986,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/canonical/run.json",
+      "sha256": "808a2d977debea38115668e82cf97c8f9ac95425270075f37bf5cd1a5be1b318"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/external/N19-06-baseline-external.contract",
+      "sha256": "b8adeae3b0fcecdb97919f66e64f2863bc47d995d3fa22e756d5112e25819aed"
+    },
+    {
+      "bytes": 33648,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/external/N19-06-baseline-external.csv",
+      "sha256": "f638a92a00e3c6b8f5c3f807ec4d7305375cd204f00ccab8c5ddab725dd3442f"
+    },
+    {
+      "bytes": 3798,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/external/N19-06-baseline-external.csv.journal.json",
+      "sha256": "aaf8d58254d44836cf9fe6c56516ab8120dba9c2e1dbfd41d8c1a9339bc31256"
+    },
+    {
+      "bytes": 698,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/external/N19-06-baseline-external.json",
+      "sha256": "72747da7ac351837da40fc8a5ba387d6f02d2c93dd3e17d466d65da854cf7ebc"
+    },
+    {
+      "bytes": 33648,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/external/external/N19-06-baseline-external.csv",
+      "sha256": "f638a92a00e3c6b8f5c3f807ec4d7305375cd204f00ccab8c5ddab725dd3442f"
+    },
+    {
+      "bytes": 3798,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/external/external/N19-06-baseline-external.csv.journal.json",
+      "sha256": "aaf8d58254d44836cf9fe6c56516ab8120dba9c2e1dbfd41d8c1a9339bc31256"
+    },
+    {
+      "bytes": 1089,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/baseline/external/run.json",
+      "sha256": "3bd893a6ac73791deb24bddfb11025a3fff1636735505890f3a5ae75b5e3adff"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/canonical/N19-06-intervention-canonical.contract",
+      "sha256": "80f44e563b175e04bcd8ca430875a0b80e43c50bf6ca4a200bd550e7f45353dc"
+    },
+    {
+      "bytes": 699,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/canonical/N19-06-intervention-canonical.json",
+      "sha256": "7c1a03d89fe324660e93f2f60c473f4ba25f8183ed596aaed722edebc8ff3f06"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/canonical/N19-06-intervention-canonical.jsonl",
+      "sha256": "c0eec696b5f1bafba6062feb1d077c5757444cdd35245610c651bc9453125541"
+    },
+    {
+      "bytes": 3788,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/canonical/canonical/N19-06-intervention-canonical.jsonl",
+      "sha256": "c0eec696b5f1bafba6062feb1d077c5757444cdd35245610c651bc9453125541"
+    },
+    {
+      "bytes": 1055,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/canonical/run.json",
+      "sha256": "db8f49122216f8ce36ea1a22df7836d87b4a56a9738be15e3ac2dd1e5a0d524d"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/external/N19-06-intervention-external.contract",
+      "sha256": "80f44e563b175e04bcd8ca430875a0b80e43c50bf6ca4a200bd550e7f45353dc"
+    },
+    {
+      "bytes": 2487,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/external/N19-06-intervention-external.csv",
+      "sha256": "e6effc1c68f819791ce945c34c5a0043f214d41ec894ce956646e41876e9e879"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/external/N19-06-intervention-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 699,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/external/N19-06-intervention-external.json",
+      "sha256": "7c1a03d89fe324660e93f2f60c473f4ba25f8183ed596aaed722edebc8ff3f06"
+    },
+    {
+      "bytes": 2487,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/external/external/N19-06-intervention-external.csv",
+      "sha256": "e6effc1c68f819791ce945c34c5a0043f214d41ec894ce956646e41876e9e879"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/external/external/N19-06-intervention-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 1129,
+      "path": "audit/phase19/counterfactual-pairs/N19-06/intervention/external/run.json",
+      "sha256": "e89bef2cfd4e543b7a55e1cf6c9f6f85123d762a57f1087c6deb970a68719545"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/canonical/N19-07-baseline-canonical.contract",
+      "sha256": "871252b629c7969a9464f46e69a62584850ff3abaa5bc3164092e467245cce82"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/canonical/N19-07-baseline-canonical.json",
+      "sha256": "faec97b99f9f59bcc965ec640beaa3ffe8bbff62a6af1e5b719aeea79c70f7e0"
+    },
+    {
+      "bytes": 14140,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/canonical/N19-07-baseline-canonical.jsonl",
+      "sha256": "df60d08cff254e65bc3bc05dc9254931b539b948e6dc333882cd0427b948017a"
+    },
+    {
+      "bytes": 14140,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/canonical/canonical/N19-07-baseline-canonical.jsonl",
+      "sha256": "df60d08cff254e65bc3bc05dc9254931b539b948e6dc333882cd0427b948017a"
+    },
+    {
+      "bytes": 986,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/canonical/run.json",
+      "sha256": "20f7e5d4e2fe2bf8d069230621e3752417e407d652fa9e45044b9e41dc594e8f"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/external/N19-07-baseline-external.contract",
+      "sha256": "871252b629c7969a9464f46e69a62584850ff3abaa5bc3164092e467245cce82"
+    },
+    {
+      "bytes": 33643,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/external/N19-07-baseline-external.csv",
+      "sha256": "09775524347118134e2a7289f0250143a4ff015635cb3b41129aab7e98431665"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/external/N19-07-baseline-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/external/N19-07-baseline-external.json",
+      "sha256": "faec97b99f9f59bcc965ec640beaa3ffe8bbff62a6af1e5b719aeea79c70f7e0"
+    },
+    {
+      "bytes": 33643,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/external/external/N19-07-baseline-external.csv",
+      "sha256": "09775524347118134e2a7289f0250143a4ff015635cb3b41129aab7e98431665"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/external/external/N19-07-baseline-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 1089,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/baseline/external/run.json",
+      "sha256": "ea2051e8b8bf7a162db99adf37e2a4d8081a6602a0dbdc558272b743281b4c0e"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/canonical/N19-07-intervention-canonical.contract",
+      "sha256": "c13aaf83b37d3a5d67f4e165c1bfb03a9b6b35d8f4caff60dd314977dc43c990"
+    },
+    {
+      "bytes": 701,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/canonical/N19-07-intervention-canonical.json",
+      "sha256": "6e98c06be8c664b0806863527179710e3425f42d76e9167e6eef68a10761918a"
+    },
+    {
+      "bytes": 6234,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/canonical/N19-07-intervention-canonical.jsonl",
+      "sha256": "dafeb55029f52c6dc36ae30cdaf1847393934ac93c4526bb87e081a36a863d10"
+    },
+    {
+      "bytes": 6234,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/canonical/canonical/N19-07-intervention-canonical.jsonl",
+      "sha256": "dafeb55029f52c6dc36ae30cdaf1847393934ac93c4526bb87e081a36a863d10"
+    },
+    {
+      "bytes": 1055,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/canonical/run.json",
+      "sha256": "7c4ef874a8461b6ca281aba720e2c96a75cef37cb2f12d7c3ed0c8c5b1ee4f36"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/external/N19-07-intervention-external.contract",
+      "sha256": "c13aaf83b37d3a5d67f4e165c1bfb03a9b6b35d8f4caff60dd314977dc43c990"
+    },
+    {
+      "bytes": 4532,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/external/N19-07-intervention-external.csv",
+      "sha256": "20020304247441560cb01c807a78f65869cafacac6dc327c2649c2d401f80086"
+    },
+    {
+      "bytes": 1764,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/external/N19-07-intervention-external.csv.journal.json",
+      "sha256": "e045af35e7b2bd228dce3c3f3b5f3f387b1a270233794fae0c138a9cdb40264b"
+    },
+    {
+      "bytes": 701,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/external/N19-07-intervention-external.json",
+      "sha256": "6e98c06be8c664b0806863527179710e3425f42d76e9167e6eef68a10761918a"
+    },
+    {
+      "bytes": 4532,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/external/external/N19-07-intervention-external.csv",
+      "sha256": "20020304247441560cb01c807a78f65869cafacac6dc327c2649c2d401f80086"
+    },
+    {
+      "bytes": 1764,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/external/external/N19-07-intervention-external.csv.journal.json",
+      "sha256": "e045af35e7b2bd228dce3c3f3b5f3f387b1a270233794fae0c138a9cdb40264b"
+    },
+    {
+      "bytes": 1129,
+      "path": "audit/phase19/counterfactual-pairs/N19-07/intervention/external/run.json",
+      "sha256": "e39ad97311105b8b68e89b54346c614c8ec87440696a294e75824b943ccdad10"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/canonical/N19-08-baseline-canonical.contract",
+      "sha256": "c13aaf83b37d3a5d67f4e165c1bfb03a9b6b35d8f4caff60dd314977dc43c990"
+    },
+    {
+      "bytes": 697,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/canonical/N19-08-baseline-canonical.json",
+      "sha256": "d9c1d79e90ed59aa148582b28f711dd6a3a53dd2f4be209e75870451a246be79"
+    },
+    {
+      "bytes": 6234,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/canonical/N19-08-baseline-canonical.jsonl",
+      "sha256": "dafeb55029f52c6dc36ae30cdaf1847393934ac93c4526bb87e081a36a863d10"
+    },
+    {
+      "bytes": 6234,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/canonical/canonical/N19-08-baseline-canonical.jsonl",
+      "sha256": "dafeb55029f52c6dc36ae30cdaf1847393934ac93c4526bb87e081a36a863d10"
+    },
+    {
+      "bytes": 1023,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/canonical/run.json",
+      "sha256": "594f305500cf8824a70d1be046ad805414bd916739f4077c7604bbc2493a2d63"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/external/N19-08-baseline-external.contract",
+      "sha256": "c13aaf83b37d3a5d67f4e165c1bfb03a9b6b35d8f4caff60dd314977dc43c990"
+    },
+    {
+      "bytes": 4532,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/external/N19-08-baseline-external.csv",
+      "sha256": "20020304247441560cb01c807a78f65869cafacac6dc327c2649c2d401f80086"
+    },
+    {
+      "bytes": 1764,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/external/N19-08-baseline-external.csv.journal.json",
+      "sha256": "e045af35e7b2bd228dce3c3f3b5f3f387b1a270233794fae0c138a9cdb40264b"
+    },
+    {
+      "bytes": 697,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/external/N19-08-baseline-external.json",
+      "sha256": "d9c1d79e90ed59aa148582b28f711dd6a3a53dd2f4be209e75870451a246be79"
+    },
+    {
+      "bytes": 4532,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/external/external/N19-08-baseline-external.csv",
+      "sha256": "20020304247441560cb01c807a78f65869cafacac6dc327c2649c2d401f80086"
+    },
+    {
+      "bytes": 1764,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/external/external/N19-08-baseline-external.csv.journal.json",
+      "sha256": "e045af35e7b2bd228dce3c3f3b5f3f387b1a270233794fae0c138a9cdb40264b"
+    },
+    {
+      "bytes": 1089,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/baseline/external/run.json",
+      "sha256": "a287ffa94a97be1a4c0fffa1c3023c328d33b1ee4dcb471e81ee4069e14daf08"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/canonical/N19-08-intervention-canonical.contract",
+      "sha256": "871252b629c7969a9464f46e69a62584850ff3abaa5bc3164092e467245cce82"
+    },
+    {
+      "bytes": 699,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/canonical/N19-08-intervention-canonical.json",
+      "sha256": "9c8d3f760cd141742e2a040079ca0aa038d0d2cb1538a3af1ae37628ba2eaa93"
+    },
+    {
+      "bytes": 14140,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/canonical/N19-08-intervention-canonical.jsonl",
+      "sha256": "df60d08cff254e65bc3bc05dc9254931b539b948e6dc333882cd0427b948017a"
+    },
+    {
+      "bytes": 14140,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/canonical/canonical/N19-08-intervention-canonical.jsonl",
+      "sha256": "df60d08cff254e65bc3bc05dc9254931b539b948e6dc333882cd0427b948017a"
+    },
+    {
+      "bytes": 1018,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/canonical/run.json",
+      "sha256": "cd433ba68278d308e315df754d6ffbbcb231e26a6aff19a0848dfd3ea3297261"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/external/N19-08-intervention-external.contract",
+      "sha256": "871252b629c7969a9464f46e69a62584850ff3abaa5bc3164092e467245cce82"
+    },
+    {
+      "bytes": 33643,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/external/N19-08-intervention-external.csv",
+      "sha256": "09775524347118134e2a7289f0250143a4ff015635cb3b41129aab7e98431665"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/external/N19-08-intervention-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 699,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/external/N19-08-intervention-external.json",
+      "sha256": "9c8d3f760cd141742e2a040079ca0aa038d0d2cb1538a3af1ae37628ba2eaa93"
+    },
+    {
+      "bytes": 33643,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/external/external/N19-08-intervention-external.csv",
+      "sha256": "09775524347118134e2a7289f0250143a4ff015635cb3b41129aab7e98431665"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/external/external/N19-08-intervention-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 1129,
+      "path": "audit/phase19/counterfactual-pairs/N19-08/intervention/external/run.json",
+      "sha256": "7e5d770e94060f1741294de708f87c9ec6a8124e38154f666877eea4699812f4"
+    },
+    {
+      "bytes": 352,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/canonical/N19-11-baseline-canonical.contract",
+      "sha256": "54ae72e50adfa110cf172bef0ec9dee51b3b807a4f931f1594e18d4df20b47aa"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/canonical/N19-11-baseline-canonical.json",
+      "sha256": "164d698b98ecf97714b41bd989e4f4eb462f82f74933fc9c323d28663e36ab1b"
+    },
+    {
+      "bytes": 4138,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/canonical/N19-11-baseline-canonical.jsonl",
+      "sha256": "cb807faa29e1974cc6517dd265152b488af539c85cce86f0b71ae01af8588ff0"
+    },
+    {
+      "bytes": 4138,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/canonical/canonical/N19-11-baseline-canonical.jsonl",
+      "sha256": "cb807faa29e1974cc6517dd265152b488af539c85cce86f0b71ae01af8588ff0"
+    },
+    {
+      "bytes": 1025,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/canonical/run.json",
+      "sha256": "f942920398590b9ce440179a137a4f59328ac26dada7351eab42218e6bc95fbc"
+    },
+    {
+      "bytes": 352,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/external/N19-11-baseline-external.contract",
+      "sha256": "54ae72e50adfa110cf172bef0ec9dee51b3b807a4f931f1594e18d4df20b47aa"
+    },
+    {
+      "bytes": 2514,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/external/N19-11-baseline-external.csv",
+      "sha256": "a3d65cf0dd0cdcd29b4a6ea8d31c0cd746e2ad8aa0d37103e5446b0d8581cf0e"
+    },
+    {
+      "bytes": 1216,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/external/N19-11-baseline-external.csv.journal.json",
+      "sha256": "e68ec24ab2713a5a82c1bdc1a9cad8f1b10dda0d6ca1b38d9320c57486856e32"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/external/N19-11-baseline-external.json",
+      "sha256": "164d698b98ecf97714b41bd989e4f4eb462f82f74933fc9c323d28663e36ab1b"
+    },
+    {
+      "bytes": 2514,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/external/external/N19-11-baseline-external.csv",
+      "sha256": "a3d65cf0dd0cdcd29b4a6ea8d31c0cd746e2ad8aa0d37103e5446b0d8581cf0e"
+    },
+    {
+      "bytes": 1216,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/external/external/N19-11-baseline-external.csv.journal.json",
+      "sha256": "e68ec24ab2713a5a82c1bdc1a9cad8f1b10dda0d6ca1b38d9320c57486856e32"
+    },
+    {
+      "bytes": 1089,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/baseline/external/run.json",
+      "sha256": "f095f60d6418f05bc01a1eb0c3c05ad372219d38a17360c8c3635524eb7b1941"
+    },
+    {
+      "bytes": 319,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/canonical/N19-11-intervention-canonical.contract",
+      "sha256": "7eff9cc72c7da151c739028527aa8f1cb4de8022d6ae6318f7c7b5adf8185cc6"
+    },
+    {
+      "bytes": 574,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/canonical/N19-11-intervention-canonical.json",
+      "sha256": "52eb1b6a2e536e15a070806241ec15e998828d43885d8c0db0a1ccb90de360dd"
+    },
+    {
+      "bytes": 15302,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/canonical/N19-11-intervention-canonical.jsonl",
+      "sha256": "e508a839c20104c7181b1a1f550aa7b99cd68427792b2afaf87c32b57d1d4927"
+    },
+    {
+      "bytes": 15302,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/canonical/canonical/N19-11-intervention-canonical.jsonl",
+      "sha256": "e508a839c20104c7181b1a1f550aa7b99cd68427792b2afaf87c32b57d1d4927"
+    },
+    {
+      "bytes": 1018,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/canonical/run.json",
+      "sha256": "898a0b275be0718c237daac500b7a9b41a5ca3409210877f55979f6903858cda"
+    },
+    {
+      "bytes": 319,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/external/N19-11-intervention-external.contract",
+      "sha256": "7eff9cc72c7da151c739028527aa8f1cb4de8022d6ae6318f7c7b5adf8185cc6"
+    },
+    {
+      "bytes": 33996,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/external/N19-11-intervention-external.csv",
+      "sha256": "cf2620a12043b199bf3735fac73550ef6732e3985b935e087caf032fddd9b2f3"
+    },
+    {
+      "bytes": 4414,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/external/N19-11-intervention-external.csv.journal.json",
+      "sha256": "b5f4d21ab97b3b0fef98b59c0f3727690341f547d921d27ec14736c59c730f6c"
+    },
+    {
+      "bytes": 574,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/external/N19-11-intervention-external.json",
+      "sha256": "52eb1b6a2e536e15a070806241ec15e998828d43885d8c0db0a1ccb90de360dd"
+    },
+    {
+      "bytes": 33996,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/external/external/N19-11-intervention-external.csv",
+      "sha256": "cf2620a12043b199bf3735fac73550ef6732e3985b935e087caf032fddd9b2f3"
+    },
+    {
+      "bytes": 4414,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/external/external/N19-11-intervention-external.csv.journal.json",
+      "sha256": "b5f4d21ab97b3b0fef98b59c0f3727690341f547d921d27ec14736c59c730f6c"
+    },
+    {
+      "bytes": 1129,
+      "path": "audit/phase19/counterfactual-pairs/N19-11/intervention/external/run.json",
+      "sha256": "e2286930b4ade30c13384b7be57f4b07305255b4e55aa868d52118c7a4bae0bb"
+    },
+    {
+      "bytes": 369,
+      "path": "audit/phase19/executable-mutants/M1/N19-M1-baseline/N19-M1-baseline.contract",
+      "sha256": "80f44e563b175e04bcd8ca430875a0b80e43c50bf6ca4a200bd550e7f45353dc"
+    },
+    {
+      "bytes": 695,
+      "path": "audit/phase19/executable-mutants/M1/N19-M1-baseline/N19-M1-baseline.json",
+      "sha256": "e9d8a3c0a8f0c3b83e19d94cabfad665e3b061278aab885e0224a5988c4f59a8"
+    },
+    {
+      "bytes": 2487,
+      "path": "audit/phase19/executable-mutants/M1/N19-M1-baseline/external/N19-M1-baseline.csv",
+      "sha256": "356aa3e37ab3a1057f2a1fe82744e3684186c8c24b056e45914acefc8a89db5a"
+    },
+    {
+      "bytes": 654,
+      "path": "audit/phase19/executable-mutants/M1/N19-M1-baseline/external/N19-M1-baseline.csv.journal.json",
+      "sha256": "31e50f31bc2cb974fc742e4863bb216be13344445788cd44f88cfc00d98a0faa"
+    },
+    {
+      "bytes": 319,
+      "path": "audit/phase19/executable-mutants/M1/N19-M1-intervention/N19-M1-intervention.contract",
+      "sha256": "4b42ea21ae77b78d950ce93c57403ef85d454aa9b933561f15ce768615ffdb6b"
+    },
+    {
+      "bytes": 576,
+      "path": "audit/phase19/executable-mutants/M1/N19-M1-intervention/N19-M1-intervention.json",
+      "sha256": "4b82acf57cddbb148948356b9b1b1aaeeda279ce76861e9bef2931b94ae4b134"
+    },
+    {
+      "bytes": 2487,
+      "path": "audit/phase19/executable-mutants/M1/N19-M1-intervention/external/N19-M1-intervention.csv",
+      "sha256": "356aa3e37ab3a1057f2a1fe82744e3684186c8c24b056e45914acefc8a89db5a"
+    },
+    {
+      "bytes": 656,
+      "path": "audit/phase19/executable-mutants/M1/N19-M1-intervention/external/N19-M1-intervention.csv.journal.json",
+      "sha256": "aeb9bcc09789fde9cef9eec17ec181f2832ab14b020b0a9bc78fa30e457382b5"
+    },
+    {
+      "bytes": 559,
+      "path": "audit/phase19/executable-mutants/M1/minimized.json",
+      "sha256": "69c8a9f84ca6dafb2a3a733d318f2a8ec8fb89d3d1b66ba7325bb0b7ff765d48"
+    },
+    {
+      "bytes": 824,
+      "path": "audit/phase19/executable-mutants/results.json",
+      "sha256": "d82b5ea112606d2f22ab77029d0529510d5f2b5c7354b40cc02ddd4ea19ef1e0"
+    },
+    {
+      "bytes": 2790,
+      "path": "audit/phase19/four_run.py",
+      "sha256": "08a47ef8604cbd8deb3d6d55d4004700c7c4ea499016834bdf66f0bea07c988b"
+    },
+    {
+      "bytes": 14539,
+      "path": "audit/phase19/generated-pairs/results.json",
+      "sha256": "face1e9cdbb26ed48e08139b89bdbf8e1d90106d97c0f8a3edd7c2da431f4878"
+    },
+    {
+      "bytes": 3614,
+      "path": "audit/phase19/held_out.py",
+      "sha256": "05cfc91a0a0c67dfd6a8b8ae909487ad274a47b34ad5b672c9575fa941c0bada"
+    },
+    {
+      "bytes": 9945,
+      "path": "audit/phase19/historical-failures/n18-freeze.json",
+      "sha256": "abe5e90c97e27a442ef6a11cfb78d8b9b3f4aaf86d2b3c16125021bd8f906bc6"
+    },
+    {
+      "bytes": 34381,
+      "path": "audit/phase19/importer-comparisons/N19-00-baseline-external.csv",
+      "sha256": "98aecc027eb2228b0cdafd0833d205214eec14eee8b2e90eae770d0ea1b1046f"
+    },
+    {
+      "bytes": 3506,
+      "path": "audit/phase19/importer-comparisons/N19-00-baseline-external.csv.journal.json",
+      "sha256": "379a093b868e1cd39778654aa0b3fa860bcf583a71c9c4f9f9ed6901ec5519e2"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase19/importer-comparisons/N19-00-baseline-external.log",
+      "sha256": "c2c4059f0b1331bdcb291f304e8cf80e65c872c602eedcaef238368566c57ba0"
+    },
+    {
+      "bytes": 34458,
+      "path": "audit/phase19/importer-comparisons/N19-00-intervention-external.csv",
+      "sha256": "ad2a9afd171a9e346bfae1628ec55afcbc116a87ff9ccb6e74a47a17dd645549"
+    },
+    {
+      "bytes": 3798,
+      "path": "audit/phase19/importer-comparisons/N19-00-intervention-external.csv.journal.json",
+      "sha256": "aaf8d58254d44836cf9fe6c56516ab8120dba9c2e1dbfd41d8c1a9339bc31256"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase19/importer-comparisons/N19-00-intervention-external.log",
+      "sha256": "c2c4059f0b1331bdcb291f304e8cf80e65c872c602eedcaef238368566c57ba0"
+    },
+    {
+      "bytes": 34381,
+      "path": "audit/phase19/importer-comparisons/N19-01-baseline-external.csv",
+      "sha256": "98aecc027eb2228b0cdafd0833d205214eec14eee8b2e90eae770d0ea1b1046f"
+    },
+    {
+      "bytes": 3506,
+      "path": "audit/phase19/importer-comparisons/N19-01-baseline-external.csv.journal.json",
+      "sha256": "379a093b868e1cd39778654aa0b3fa860bcf583a71c9c4f9f9ed6901ec5519e2"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase19/importer-comparisons/N19-01-baseline-external.log",
+      "sha256": "c2c4059f0b1331bdcb291f304e8cf80e65c872c602eedcaef238368566c57ba0"
+    },
+    {
+      "bytes": 2537,
+      "path": "audit/phase19/importer-comparisons/N19-01-intervention-external.csv",
+      "sha256": "ab671146f4e006f3b56d2a70fe1218a18929d20e89d16f8009e1440681352e36"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/importer-comparisons/N19-01-intervention-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 175,
+      "path": "audit/phase19/importer-comparisons/N19-01-intervention-external.log",
+      "sha256": "93b1016fe00c9eb010ad5da9a0681447f680be450ebfffc4e1651b75cd4bb24f"
+    },
+    {
+      "bytes": 2537,
+      "path": "audit/phase19/importer-comparisons/N19-02-baseline-external.csv",
+      "sha256": "ab671146f4e006f3b56d2a70fe1218a18929d20e89d16f8009e1440681352e36"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/importer-comparisons/N19-02-baseline-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 175,
+      "path": "audit/phase19/importer-comparisons/N19-02-baseline-external.log",
+      "sha256": "93b1016fe00c9eb010ad5da9a0681447f680be450ebfffc4e1651b75cd4bb24f"
+    },
+    {
+      "bytes": 34381,
+      "path": "audit/phase19/importer-comparisons/N19-02-intervention-external.csv",
+      "sha256": "98aecc027eb2228b0cdafd0833d205214eec14eee8b2e90eae770d0ea1b1046f"
+    },
+    {
+      "bytes": 3506,
+      "path": "audit/phase19/importer-comparisons/N19-02-intervention-external.csv.journal.json",
+      "sha256": "379a093b868e1cd39778654aa0b3fa860bcf583a71c9c4f9f9ed6901ec5519e2"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase19/importer-comparisons/N19-02-intervention-external.log",
+      "sha256": "c2c4059f0b1331bdcb291f304e8cf80e65c872c602eedcaef238368566c57ba0"
+    },
+    {
+      "bytes": 4213,
+      "path": "audit/phase19/importer-comparisons/N19-03-baseline-external.csv",
+      "sha256": "0e46b67daa1019a57080e3c503846c85803b414cbfe3431b8b1140ee70177ea8"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/importer-comparisons/N19-03-baseline-external.csv.journal.json",
+      "sha256": "4c5ba402692dce485ebdcfaccb5385f0eb66f8cdbb793e85abdaf12424a36bc9"
+    },
+    {
+      "bytes": 175,
+      "path": "audit/phase19/importer-comparisons/N19-03-baseline-external.log",
+      "sha256": "d7b1d98196c41601559ab172efb6e092dbcb884a7d359092adc1df6f1168a8d7"
+    },
+    {
+      "bytes": 34453,
+      "path": "audit/phase19/importer-comparisons/N19-03-intervention-external.csv",
+      "sha256": "096138e5831186611765cbaf5bd064321552d926b738b2d92883380fd3614657"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/importer-comparisons/N19-03-intervention-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase19/importer-comparisons/N19-03-intervention-external.log",
+      "sha256": "c2c4059f0b1331bdcb291f304e8cf80e65c872c602eedcaef238368566c57ba0"
+    },
+    {
+      "bytes": 34453,
+      "path": "audit/phase19/importer-comparisons/N19-04-baseline-external.csv",
+      "sha256": "096138e5831186611765cbaf5bd064321552d926b738b2d92883380fd3614657"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/importer-comparisons/N19-04-baseline-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase19/importer-comparisons/N19-04-baseline-external.log",
+      "sha256": "c2c4059f0b1331bdcb291f304e8cf80e65c872c602eedcaef238368566c57ba0"
+    },
+    {
+      "bytes": 4213,
+      "path": "audit/phase19/importer-comparisons/N19-04-intervention-external.csv",
+      "sha256": "0e46b67daa1019a57080e3c503846c85803b414cbfe3431b8b1140ee70177ea8"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/importer-comparisons/N19-04-intervention-external.csv.journal.json",
+      "sha256": "4c5ba402692dce485ebdcfaccb5385f0eb66f8cdbb793e85abdaf12424a36bc9"
+    },
+    {
+      "bytes": 175,
+      "path": "audit/phase19/importer-comparisons/N19-04-intervention-external.log",
+      "sha256": "d7b1d98196c41601559ab172efb6e092dbcb884a7d359092adc1df6f1168a8d7"
+    },
+    {
+      "bytes": 2537,
+      "path": "audit/phase19/importer-comparisons/N19-05-baseline-external.csv",
+      "sha256": "ab671146f4e006f3b56d2a70fe1218a18929d20e89d16f8009e1440681352e36"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/importer-comparisons/N19-05-baseline-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 175,
+      "path": "audit/phase19/importer-comparisons/N19-05-baseline-external.log",
+      "sha256": "93b1016fe00c9eb010ad5da9a0681447f680be450ebfffc4e1651b75cd4bb24f"
+    },
+    {
+      "bytes": 34458,
+      "path": "audit/phase19/importer-comparisons/N19-05-intervention-external.csv",
+      "sha256": "ad2a9afd171a9e346bfae1628ec55afcbc116a87ff9ccb6e74a47a17dd645549"
+    },
+    {
+      "bytes": 3798,
+      "path": "audit/phase19/importer-comparisons/N19-05-intervention-external.csv.journal.json",
+      "sha256": "aaf8d58254d44836cf9fe6c56516ab8120dba9c2e1dbfd41d8c1a9339bc31256"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase19/importer-comparisons/N19-05-intervention-external.log",
+      "sha256": "c2c4059f0b1331bdcb291f304e8cf80e65c872c602eedcaef238368566c57ba0"
+    },
+    {
+      "bytes": 34458,
+      "path": "audit/phase19/importer-comparisons/N19-06-baseline-external.csv",
+      "sha256": "ad2a9afd171a9e346bfae1628ec55afcbc116a87ff9ccb6e74a47a17dd645549"
+    },
+    {
+      "bytes": 3798,
+      "path": "audit/phase19/importer-comparisons/N19-06-baseline-external.csv.journal.json",
+      "sha256": "aaf8d58254d44836cf9fe6c56516ab8120dba9c2e1dbfd41d8c1a9339bc31256"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase19/importer-comparisons/N19-06-baseline-external.log",
+      "sha256": "c2c4059f0b1331bdcb291f304e8cf80e65c872c602eedcaef238368566c57ba0"
+    },
+    {
+      "bytes": 2537,
+      "path": "audit/phase19/importer-comparisons/N19-06-intervention-external.csv",
+      "sha256": "ab671146f4e006f3b56d2a70fe1218a18929d20e89d16f8009e1440681352e36"
+    },
+    {
+      "bytes": 1204,
+      "path": "audit/phase19/importer-comparisons/N19-06-intervention-external.csv.journal.json",
+      "sha256": "f7054ba3ebed21b7d4cfb26d221e4b8582daf69420c35870840cee88ccbd3580"
+    },
+    {
+      "bytes": 175,
+      "path": "audit/phase19/importer-comparisons/N19-06-intervention-external.log",
+      "sha256": "93b1016fe00c9eb010ad5da9a0681447f680be450ebfffc4e1651b75cd4bb24f"
+    },
+    {
+      "bytes": 34453,
+      "path": "audit/phase19/importer-comparisons/N19-07-baseline-external.csv",
+      "sha256": "096138e5831186611765cbaf5bd064321552d926b738b2d92883380fd3614657"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/importer-comparisons/N19-07-baseline-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase19/importer-comparisons/N19-07-baseline-external.log",
+      "sha256": "c2c4059f0b1331bdcb291f304e8cf80e65c872c602eedcaef238368566c57ba0"
+    },
+    {
+      "bytes": 4632,
+      "path": "audit/phase19/importer-comparisons/N19-07-intervention-external.csv",
+      "sha256": "fa77b37b87b26a1e192c5119c86568da58004ed2a359ad383f685274ae8c1c8a"
+    },
+    {
+      "bytes": 1764,
+      "path": "audit/phase19/importer-comparisons/N19-07-intervention-external.csv.journal.json",
+      "sha256": "e045af35e7b2bd228dce3c3f3b5f3f387b1a270233794fae0c138a9cdb40264b"
+    },
+    {
+      "bytes": 176,
+      "path": "audit/phase19/importer-comparisons/N19-07-intervention-external.log",
+      "sha256": "b235e59c5d42a45d8b12d19623e671fb0c440fdb58aee9c46bda27e7e069e74c"
+    },
+    {
+      "bytes": 4632,
+      "path": "audit/phase19/importer-comparisons/N19-08-baseline-external.csv",
+      "sha256": "fa77b37b87b26a1e192c5119c86568da58004ed2a359ad383f685274ae8c1c8a"
+    },
+    {
+      "bytes": 1764,
+      "path": "audit/phase19/importer-comparisons/N19-08-baseline-external.csv.journal.json",
+      "sha256": "e045af35e7b2bd228dce3c3f3b5f3f387b1a270233794fae0c138a9cdb40264b"
+    },
+    {
+      "bytes": 176,
+      "path": "audit/phase19/importer-comparisons/N19-08-baseline-external.log",
+      "sha256": "b235e59c5d42a45d8b12d19623e671fb0c440fdb58aee9c46bda27e7e069e74c"
+    },
+    {
+      "bytes": 34453,
+      "path": "audit/phase19/importer-comparisons/N19-08-intervention-external.csv",
+      "sha256": "096138e5831186611765cbaf5bd064321552d926b738b2d92883380fd3614657"
+    },
+    {
+      "bytes": 3773,
+      "path": "audit/phase19/importer-comparisons/N19-08-intervention-external.csv.journal.json",
+      "sha256": "f72f762e0b3edebb81b34a13964c95b92ecab468fb5d481e946b0a98d0b893f4"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase19/importer-comparisons/N19-08-intervention-external.log",
+      "sha256": "c2c4059f0b1331bdcb291f304e8cf80e65c872c602eedcaef238368566c57ba0"
+    },
+    {
+      "bytes": 2564,
+      "path": "audit/phase19/importer-comparisons/N19-11-baseline-external.csv",
+      "sha256": "dead31c5a44ea7cec1169af76b37fbee76348e0e06d1d35feca170ff5f9f618f"
+    },
+    {
+      "bytes": 1216,
+      "path": "audit/phase19/importer-comparisons/N19-11-baseline-external.csv.journal.json",
+      "sha256": "e68ec24ab2713a5a82c1bdc1a9cad8f1b10dda0d6ca1b38d9320c57486856e32"
+    },
+    {
+      "bytes": 175,
+      "path": "audit/phase19/importer-comparisons/N19-11-baseline-external.log",
+      "sha256": "fc771f2f9ea966b25113f45d7c9fdb2451e4a902dfec7724ab971c3948ae8c18"
+    },
+    {
+      "bytes": 34806,
+      "path": "audit/phase19/importer-comparisons/N19-11-intervention-external.csv",
+      "sha256": "927c7da6f4ad1322a6e8b636adb6ee1a954b88ea2f0bb7629302f957efc98ffc"
+    },
+    {
+      "bytes": 4414,
+      "path": "audit/phase19/importer-comparisons/N19-11-intervention-external.csv.journal.json",
+      "sha256": "b5f4d21ab97b3b0fef98b59c0f3727690341f547d921d27ec14736c59c730f6c"
+    },
+    {
+      "bytes": 177,
+      "path": "audit/phase19/importer-comparisons/N19-11-intervention-external.log",
+      "sha256": "6236982b124ca965b9d25dc32dd5e7d6313b1d2cfb6159ce4645c148d975afee"
+    },
+    {
+      "bytes": 2397,
+      "path": "audit/phase19/importer-comparisons/results.json",
+      "sha256": "d2c0dc79895d9f1f29f85e7d21913d50bd7a375a7e341f15368fa42c052565c6"
+    },
+    {
+      "bytes": 2482,
+      "path": "audit/phase19/make_certificate.py",
+      "sha256": "16f777392dea57cb1ae073a1290f21260ed05e66759ef940604c5c86601af95a"
+    },
+    {
+      "bytes": 1083,
+      "path": "audit/phase19/manifest.py",
+      "sha256": "16883c52ba4dbd8fbae688a1bee9c8f44a85f812f0013a7e9d56f0888f8d0c04"
+    },
+    {
+      "bytes": 2825,
+      "path": "audit/phase19/mutants.py",
+      "sha256": "1baa7b389f4c07b927ffbca8ad9d50349fca2551ecee3751a8d6254a56cb4f59"
+    },
+    {
+      "bytes": 996,
+      "path": "audit/phase19/negative-controls/soundness.json",
+      "sha256": "d8940d1da5849c15a033477591e8630916e7f8ced995103b030f14b9ff8d002d"
+    },
+    {
+      "bytes": 5989,
+      "path": "audit/phase19/oracle-results/phaseb.json",
+      "sha256": "27bf5845e36e44248cc926c21cd46ccac696231e477b22f35a87bc5110948b20"
+    },
+    {
+      "bytes": 108,
+      "path": "audit/phase19/oracle-results/provenance.json",
+      "sha256": "3805155f49ee0686e5e312bace1a1da1f3faf40c6c1af96c15c726d34b6ea6ae"
+    },
+    {
+      "bytes": 1656,
+      "path": "audit/phase19/provenance.py",
+      "sha256": "285f743568e7e7c232ed04529599c9903d2823a38981759461d3b54f6f9dfc9e"
+    },
+    {
+      "bytes": 5205,
+      "path": "audit/phase19/run_phaseb.py",
+      "sha256": "aeadcfa08ecfa8e75be30e451a7370522e882913fed51b7f77aa58af1dacc9b2"
+    },
+    {
+      "bytes": 5339,
+      "path": "audit/phase19/soundness.py",
+      "sha256": "028ed82662d3d4cb5c4fa2aed637ecc11101406b2499efbde854c7b51cf0abc8"
+    },
+    {
+      "bytes": 663,
+      "path": "audit/phase19/tamper_certificate.py",
+      "sha256": "f459c7135b7431b454f0d8ede00f2bea1fedaad44517eee5ddf623a509eb0f21"
+    }
+  ],
+  "kind": "FROZEN_TRACKED_EVIDENCE",
+  "schema": "poie.s5v-n19-evidence/1"
+}

@@ -1,0 +1,21 @@
+{
+  "run_id": "N19-07-intervention-canonical",
+  "case": "N19-07",
+  "label": "intervention",
+  "model_id": "canonical",
+  "input_json": "counterfactual-pairs/N19-07/intervention/canonical/N19-07-intervention-canonical.json",
+  "contract": "counterfactual-pairs/N19-07/intervention/canonical/N19-07-intervention-canonical.contract",
+  "contract_sha256": "c13aaf83b37d3a5d67f4e165c1bfb03a9b6b35d8f4caff60dd314977dc43c990",
+  "binary": {
+    "path": "target/debug/poie-s5v-n14-canonical-adapter",
+    "sha256": "1944a3692646ea13389a7aab71c756f6eac815026e049ca80ebd70a6104e83c0"
+  },
+  "started_at": "2026-11-22T12:10:27.280834+00:00",
+  "completed_at": "2026-11-22T12:10:27.292545+00:00",
+  "exit_status": 0,
+  "raw_output": "counterfactual-pairs/N19-07/intervention/canonical/N19-07-intervention-canonical.jsonl",
+  "raw_output_sha256": "dafeb55029f52c6dc36ae30cdaf1847393934ac93c4526bb87e081a36a863d10",
+  "event_journal": null,
+  "event_journal_sha256": null,
+  "stderr": "termination=Blocked(\"repair interrupted at 7201s: bus-1 failed\") events=5\n"
+}

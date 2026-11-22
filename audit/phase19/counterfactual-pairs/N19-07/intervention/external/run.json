@@ -1,0 +1,21 @@
+{
+  "run_id": "N19-07-intervention-external",
+  "case": "N19-07",
+  "label": "intervention",
+  "model_id": "external",
+  "input_json": "counterfactual-pairs/N19-07/intervention/external/N19-07-intervention-external.json",
+  "contract": "counterfactual-pairs/N19-07/intervention/external/N19-07-intervention-external.contract",
+  "contract_sha256": "c13aaf83b37d3a5d67f4e165c1bfb03a9b6b35d8f4caff60dd314977dc43c990",
+  "binary": {
+    "path": "external/fmu-n16-scheduler/poie-n16-scheduler.fmu",
+    "sha256": "9b0688bfcfd1ba74c8301899fc50063e5a0bd832a8eb1b2109cc54c18147cae6"
+  },
+  "started_at": "2026-11-22T12:10:27.298345+00:00",
+  "completed_at": "2026-11-22T12:10:27.495438+00:00",
+  "exit_status": 0,
+  "raw_output": "counterfactual-pairs/N19-07/intervention/external/N19-07-intervention-external.csv",
+  "raw_output_sha256": "20020304247441560cb01c807a78f65869cafacac6dc327c2649c2d401f80086",
+  "event_journal": "counterfactual-pairs/N19-07/intervention/external/N19-07-intervention-external.csv.journal.json",
+  "event_journal_sha256": "e045af35e7b2bd228dce3c3f3b5f3f387b1a270233794fae0c138a9cdb40264b",
+  "stderr": ""
+}

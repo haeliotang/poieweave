@@ -1,0 +1,82 @@
+{
+  "canonical_version": "v10 (unchanged)",
+  "evidence": {
+    "audit/phase19/adjudications/summary.json": "7a580e7779e6e9f1b1a0a4e5e1c358c318eccf30b4846b39d1e18311e914e177",
+    "audit/phase19/executable-mutants/results.json": "d82b5ea112606d2f22ab77029d0529510d5f2b5c7354b40cc02ddd4ea19ef1e0",
+    "audit/phase19/generated-pairs/results.json": "face1e9cdbb26ed48e08139b89bdbf8e1d90106d97c0f8a3edd7c2da431f4878",
+    "audit/phase19/historical-failures/n18-freeze.json": "abe5e90c97e27a442ef6a11cfb78d8b9b3f4aaf86d2b3c16125021bd8f906bc6",
+    "audit/phase19/importer-comparisons/results.json": "d2c0dc79895d9f1f29f85e7d21913d50bd7a375a7e341f15368fa42c052565c6",
+    "audit/phase19/negative-controls/soundness.json": "d8940d1da5849c15a033477591e8630916e7f8ced995103b030f14b9ff8d002d",
+    "audit/phase19/oracle-results/phaseb.json": "27bf5845e36e44248cc926c21cd46ccac696231e477b22f35a87bc5110948b20",
+    "audit/phase19/oracle-results/provenance.json": "3805155f49ee0686e5e312bace1a1da1f3faf40c6c1af96c15c726d34b6ea6ae"
+  },
+  "inputs": {
+    "adjudicator": {
+      "path": "audit/phase19/adjudicate.py",
+      "sha256": "4593df0328af92f05c03164a9769142384fb74d3a4377dee8968fabced3e8366"
+    },
+    "canonical_adapter": {
+      "path": "crates/poie-viability/src/bin/poie-s5v-n14-canonical-adapter.rs",
+      "sha256": "1ac7bd3d741946bd7af8b4e46b86d7287498225d191d9f663f5f6bf4d1db6d47"
+    },
+    "canonical_engine": {
+      "path": "crates/poie-viability/src/engine.rs",
+      "sha256": "713ba9fde93b9c8f9d72bf111479cb1f0718d33f9409ce48ab687755cb845471"
+    },
+    "external_fmu": {
+      "path": "external/fmu-n16-scheduler/poie-n16-scheduler.fmu",
+      "sha256": "ab9196380bab8d0a0e1c7335a63d133034a8e038714415fb6a2fb563e3a69450"
+    },
+    "external_model": {
+      "path": "external/fmu-n16-scheduler/src/model.c",
+      "sha256": "4028cbf0a5c6bad87d7b571ddcb7d248e2e81ed4050478eb67808c9587169cb2"
+    },
+    "four_run": {
+      "path": "audit/phase19/four_run.py",
+      "sha256": "08a47ef8604cbd8deb3d6d55d4004700c7c4ea499016834bdf66f0bea07c988b"
+    },
+    "mutants": {
+      "path": "audit/phase19/mutants.py",
+      "sha256": "1baa7b389f4c07b927ffbca8ad9d50349fca2551ecee3751a8d6254a56cb4f59"
+    },
+    "or_mutant": {
+      "path": "external/fmu-n16-scheduler/poie-n16-or-mutant.fmu",
+      "sha256": "04f8cf32af1e11b47c421164c525f12f589cd90b8f2d84eaeb7f86c3822b4dd2"
+    },
+    "oracle": {
+      "path": "audit/phase17/intervention_oracle.py",
+      "sha256": "165bd9d14776b04ce1d2e343b546cfae289d845abe412feb481d47a9d7631dcb"
+    },
+    "shared_mutant": {
+      "path": "external/fmu-n16-scheduler/poie-n16-mutant.fmu",
+      "sha256": "4d44ee8d6e8b3c82f7cf038cf01dca6fddc14d26a7bc1f55591254dc6ac08d2e"
+    },
+    "soundness": {
+      "path": "audit/phase19/soundness.py",
+      "sha256": "028ed82662d3d4cb5c4fa2aed637ecc11101406b2499efbde854c7b51cf0abc8"
+    },
+    "spurious_mutant": {
+      "path": "external/fmu-n16-scheduler/poie-n16-spurious-mutant.fmu",
+      "sha256": "85a5dc4012f0670416c65bf568408d350f99de4560937c3f47610c084707c5c5"
+    }
+  },
+  "kind": "N19_EXTERNAL_VALIDATION_CERTIFICATE",
+  "limitations": [
+    "9/9 historical failures classified ORACLE_FALSE_POSITIVE",
+    "10 bidirectional fixed pairs, not all 18 IDs",
+    "held-out 64 attempted, 50 accepted, 14 unexpected recorded",
+    "model-internal counterfactuals only"
+  ],
+  "not_an_s2_certificate": true,
+  "replay": [
+    "python3 audit/phase19/adjudicate.py",
+    "python3 audit/phase19/run_phaseb.py",
+    "python3 audit/phase19/soundness.py",
+    "python3 audit/phase19/provenance.py",
+    "python3 audit/phase19/mutants.py",
+    "python3 audit/phase19/compare_importers.py",
+    "python3 audit/phase19/check.py"
+  ],
+  "schema": "poie.s5v-n19-external-validation-certificate/1",
+  "scope": "tested simulated counterfactual failure adjudication and oracle soundness"
+}

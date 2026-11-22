@@ -1,0 +1,34 @@
+{
+  "schema": "poie.s5v-n19-mutants/1",
+  "mutants": [
+    {
+      "mutant": "M1_WRONG_FAILURE_DIRECTION",
+      "signature": "FAILURE_REMOVAL_EFFECT_MISMATCH",
+      "detected": true,
+      "findings": [
+        "FALSE_INTERRUPTION",
+        "MISSING_GROUP_COMMIT"
+      ]
+    },
+    {
+      "mutant": "M2_WRONG_DEPENDENCY_PATH",
+      "signature": "SELECTED_PATH_IDENTITY_MISMATCH",
+      "detected": true,
+      "findings": [
+        "CLOSURE_7200.0",
+        "ACTIVE_DEPENDENCY_FAILURE_IGNORED",
+        "RESTORED_AFTER_INTERRUPTION"
+      ]
+    },
+    {
+      "mutant": "M3_PREMATURE_SHARED_RELEASE",
+      "signature": "SHARED_DEPENDENCY_LOSS",
+      "detected": true,
+      "findings": [
+        "CLOSURE_7200.0",
+        "ACTIVE_DEPENDENCY_FAILURE_IGNORED",
+        "RESTORED_AFTER_INTERRUPTION"
+      ]
+    }
+  ]
+}

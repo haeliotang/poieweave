@@ -1,0 +1,40 @@
+{
+  "schema": "poie.s5v-n19-claim-status/1",
+  "claims": [
+    {
+      "id": "N19-0",
+      "status": "VERIFIED",
+      "scope": "N18 freeze, revalidation addendum, v10 semantic errata"
+    },
+    {
+      "id": "N19-A",
+      "status": "VERIFIED",
+      "scope": "9/9 historical failures replayed and adjudicated ORACLE_FALSE_POSITIVE"
+    },
+    {
+      "id": "N19-B",
+      "status": "VERIFIED",
+      "scope": "symmetric counterfactual relations"
+    },
+    {
+      "id": "N19-C",
+      "status": "VERIFIED",
+      "scope": "oracle soundness"
+    },
+    {
+      "id": "N19-D",
+      "status": "VERIFIED",
+      "scope": "four-run provenance"
+    },
+    {
+      "id": "N19-E",
+      "status": "VERIFIED",
+      "scope": "held-out/mutants/reducer"
+    },
+    {
+      "id": "N19-F",
+      "status": "VERIFIED",
+      "scope": "certificate/CI/clean"
+    }
+  ]
+}
