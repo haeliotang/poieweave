@@ -1,0 +1,20 @@
+{
+  "external_completed": true,
+  "external_survived": 19800,
+  "external_failed_m1": true,
+  "external_A_rerun": false,
+  "external_inventory": 1.0,
+  "external_inventory_conserved": true,
+  "unauthorized_rejected": true,
+  "canonical": {
+    "completed": true,
+    "survived_s": 19800,
+    "failed_robot_m1": true,
+    "task_A_rerun": false,
+    "inventory_j": 166500000,
+    "checkpoint_inventory": 166500000,
+    "robot_B": "robot-m2"
+  },
+  "match": true,
+  "status": "CROSS_MODEL_MATCH"
+}

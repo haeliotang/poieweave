@@ -47,6 +47,20 @@ final inventory conserved
   predecessor 指向 v10，v11 verifier 与 tamper controls 通过。
 - v10 source environment 通过冻结基线校验。
 
+## 独立 C99 外部状态机（非 FMI）
+
+`external/fmu-n21r-replanning/external_replan` 是独立 C99 checkpoint/resume
+状态机，不读取 canonical checkpoint。决定性案例：
+
+```text
+external: A completed, B robot-m1 interrupted @9000, checkpoint, valid auth,
+B -> robot-m2, completion @19800, robot-m1 Failed, A not rerun,
+inventory conserved
+```
+
+`audit/phase21r/comparisons/canonical-vs-external.json` 显示
+`CROSS_MODEL_MATCH`。但该程序不是 FMI 3.0 模型，N21R-D 仍不成立。
+
 ## 部分 adversarial 控制
 
 Rust 测试已覆盖：

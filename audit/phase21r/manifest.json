@@ -22,9 +22,9 @@
       "sha256": "15014bae500b0c0b857283117f56093b0fbe0a6a4c89d02af088948a7a562ded"
     },
     {
-      "bytes": 378,
+      "bytes": 484,
       "path": "audit/phase21r/EVIDENCE.md",
-      "sha256": "91ac3ad836e8856013e7f4d02c9d2ebbea2965f4001056a9dcda078a8940fd50"
+      "sha256": "25af0e8f56ce5fbe3bcddc3869f0ff2ca993b06f37b8d3f1fa5728701156a2fc"
     },
     {
       "bytes": 275,
@@ -37,9 +37,49 @@
       "sha256": "a1a9fc4ae0e408e88d35fa98b81a8eca275f76aa65065ed814045fe244a0513b"
     },
     {
-      "bytes": 2112,
+      "bytes": 2944,
       "path": "audit/phase21r/REPORT.zh-CN.md",
-      "sha256": "a62641647ea7cb5e01576e65fb584db21fcd5e3534a775c892ebe917b29a541b"
+      "sha256": "0d940bf250701508f8ab21c60c4b88f7f8da04ccc856b31f8a689259ede2103b"
+    },
+    {
+      "bytes": 2498,
+      "path": "audit/phase21r/compare_external.py",
+      "sha256": "e2bd96b33587ff667b2868201bd5c4df83e31f45eefda77debea0405e4d1a292"
+    },
+    {
+      "bytes": 495,
+      "path": "audit/phase21r/comparisons/canonical-vs-external.json",
+      "sha256": "8c71fc9066b6504cb52eb09ffc3b973013e89a53f6a164a53435b7a3ea2c3e08"
+    },
+    {
+      "bytes": 150,
+      "path": "audit/phase21r/external/checkpoint.json",
+      "sha256": "5f392bc36d9d18e30c53e59a92bfaf2f71a482b0cf5200c54b9b7cf04a0eb8c4"
+    },
+    {
+      "bytes": 158,
+      "path": "audit/phase21r/external/decisive.contract",
+      "sha256": "95132bbb603b299d429da41a5e6a4f8243e474b65bd83e9885269584299edcbd"
+    },
+    {
+      "bytes": 315,
+      "path": "audit/phase21r/external/run.events.jsonl",
+      "sha256": "0e0e4d1e7ec9e9aac601337738d35d6c4cc91ba8e00a8423f8ff7f45f011810f"
+    },
+    {
+      "bytes": 121,
+      "path": "audit/phase21r/external/run.result.json",
+      "sha256": "a6e9e0dc8d00b7a2705e991268ce3216440608108b76d75d8df0fc65da552eac"
+    },
+    {
+      "bytes": 51,
+      "path": "audit/phase21r/external/run_unauth.events.jsonl",
+      "sha256": "bbeef0d9843156fe2e938211628bf7172a50080f28e6bd882fc549609c58ae3a"
+    },
+    {
+      "bytes": 11,
+      "path": "audit/phase21r/external/valid.auth",
+      "sha256": "d6aef033675f8c0d93ea51a36e6b2e0e5db4d0cd97d1849609011877a90b7d30"
     },
     {
       "bytes": 941,
