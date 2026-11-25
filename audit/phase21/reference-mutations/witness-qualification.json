@@ -1,0 +1,15 @@
+{
+  "canonical": {
+    "validity": "VALID",
+    "first_invalid_event": null,
+    "first_invalid_state": null,
+    "error_class": null
+  },
+  "external": {
+    "validity": "VALID",
+    "first_invalid_event": null,
+    "first_invalid_state": null,
+    "error_class": null
+  },
+  "reference_status": "DETERMINISTIC"
+}

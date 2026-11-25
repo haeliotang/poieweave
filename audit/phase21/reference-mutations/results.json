@@ -1,0 +1,113 @@
+{
+  "schema": "poie.s5v-n21-reference-mutations/1",
+  "mutations": [
+    {
+      "mutation": "VALID_BASELINE",
+      "expected": "VALID",
+      "detected": true,
+      "result": {
+        "validity": "VALID",
+        "first_invalid_event": null,
+        "first_invalid_state": null,
+        "error_class": null
+      }
+    },
+    {
+      "mutation": "EVENT_ORDER_SWAP",
+      "expected": "EVENT_ORDER_VIOLATION",
+      "detected": true,
+      "result": {
+        "validity": "INVALID",
+        "first_invalid_event": null,
+        "first_invalid_state": "event_order",
+        "error_class": "EVENT_ORDER_VIOLATION"
+      }
+    },
+    {
+      "mutation": "SHARED_TOOL_PARALLEL",
+      "expected": "INVALID_EXECUTION",
+      "detected": true,
+      "result": {
+        "validity": "INVALID",
+        "first_invalid_event": null,
+        "first_invalid_state": "schedule",
+        "error_class": "INVALID_EXECUTION"
+      }
+    },
+    {
+      "mutation": "SHARED_DEPENDENCY_LOSS",
+      "expected": "SHARED_DEPENDENCY_LOSS",
+      "detected": true,
+      "result": {
+        "validity": "INVALID",
+        "first_invalid_event": "TaskCompleted",
+        "first_invalid_state": null,
+        "error_class": "SHARED_DEPENDENCY_LOSS"
+      }
+    },
+    {
+      "mutation": "FUTURE_DEPENDENCY_LOSS",
+      "expected": "SHARED_DEPENDENCY_LOSS",
+      "detected": true,
+      "result": {
+        "validity": "INVALID",
+        "first_invalid_event": "TaskCompleted",
+        "first_invalid_state": null,
+        "error_class": "SHARED_DEPENDENCY_LOSS"
+      }
+    },
+    {
+      "mutation": "REQUIRED_TOOL_MISSING",
+      "expected": "REQUIRED_TOOL_MISSING",
+      "detected": true,
+      "result": {
+        "validity": "INVALID",
+        "first_invalid_event": "A",
+        "first_invalid_state": null,
+        "error_class": "REQUIRED_TOOL_MISSING"
+      }
+    },
+    {
+      "mutation": "PREMATURE_GROUP_COMMIT",
+      "expected": "PREMATURE_GROUP_COMMIT",
+      "detected": true,
+      "result": {
+        "validity": "INVALID",
+        "first_invalid_event": "RepairCompleted",
+        "first_invalid_state": null,
+        "error_class": "PREMATURE_GROUP_COMMIT"
+      }
+    },
+    {
+      "mutation": "FORGED_VALID_FLAG",
+      "expected": "INVALID_EXECUTION",
+      "detected": true,
+      "result": {
+        "validity": "INVALID",
+        "first_invalid_event": null,
+        "first_invalid_state": "schedule",
+        "error_class": "INVALID_EXECUTION"
+      }
+    },
+    {
+      "mutation": "EVIDENCE_HASH_FORGED",
+      "expected": "EVIDENCE_INTEGRITY_FAILURE",
+      "detected": true,
+      "result": {
+        "validity": "INVALID",
+        "first_invalid_event": null,
+        "first_invalid_state": null,
+        "error_class": "EVIDENCE_INTEGRITY_FAILURE"
+      }
+    },
+    {
+      "mutation": "COUNTERFACTUAL_DIRECTION_ERROR",
+      "expected": "COUNTERFACTUAL_DIRECTION_ERROR",
+      "detected": true,
+      "result": {
+        "validity": "INVALID",
+        "error_class": "COUNTERFACTUAL_DIRECTION_ERROR"
+      }
+    }
+  ]
+}
