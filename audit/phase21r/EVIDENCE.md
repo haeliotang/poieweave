@@ -12,3 +12,6 @@
 
 - external/fmu-n21r-replanning/external_replan.c
 - audit/phase21r/comparisons/canonical-vs-external.json
+
+- external/fmu-n21r-replanning/
+- audit/phase21r/comparisons/fmi-c-fmpy-canonical.json

@@ -7,7 +7,7 @@ N21R-0 ADR / CERT IMPACT        VERIFIED
 N21R-A NATIVE CHECKPOINT        VERIFIED (CANONICAL)
 N21R-B NATIVE RESUME            VERIFIED (CANONICAL)
 N21R-C ONE-SHOT REPLANNING      VERIFIED (CANONICAL, SCOPED)
-N21R-D CROSS-MODEL              NOT ESTABLISHED
+N21R-D CROSS-MODEL              VERIFIED (SINGLE DECISIVE CASE, FMI)
 N21R-E ADVERSARIAL              NOT ESTABLISHED
 N21R-F V11 MIGRATION            VERIFIED (41 SUCCESSORS)
 ```
@@ -46,6 +46,28 @@ final inventory conserved
 - v11 41 个 `EXECUTION_SEMANTIC_EXTENSION_SUCCESSOR` 证书已签发，
   predecessor 指向 v10，v11 verifier 与 tamper controls 通过。
 - v10 source environment 通过冻结基线校验。
+
+## 独立 FMI 3.0 模型
+
+新增 `external/fmu-n21r-replanning/poie-n21r-replanning.fmu`，由独立 C99
+modelDescription/model.c 实现，输入 checkpoint authorization/proposal，
+自己保存中断状态并执行一次 continuation。
+
+C harness 与 fmpy 分别执行同一 FMU，结果一致：
+
+```text
+checkpointAt_s = 9000
+completedA = 1
+unfinishedB = 1
+taskBRobot = 2
+failedRobotM1 = 1
+restored = 1
+resumed = 1
+unauthorized resume rejected
+survived_s = 19800
+```
+
+证据：`audit/phase21r/comparisons/fmi-c-fmpy-canonical.json`。
 
 ## 独立 C99 外部状态机（非 FMI）
 
