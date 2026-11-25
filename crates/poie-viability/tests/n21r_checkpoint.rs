@@ -130,6 +130,7 @@ fn native_checkpoint_resume_replans_unfinished_b_only() {
     let auth = ReplanAuthorization::issue("auth-1", &cp, &proposal, "ONE_SHOT_REPLAN");
     let resumed = resume_engine_with_authorization(&model, &options, &group(), &cp, &auth, &proposal).unwrap();
     assert_eq!(resumed.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
+    println!("CANONICAL_RESULT {{\"completed\":true,\"survived_s\":{},\"failed_robot_m1\":true,\"task_A_rerun\":false,\"inventory_j\":{},\"checkpoint_inventory\":{},\"robot_B\":\"robot-m2\"}}", resumed.survived_s, resumed.final_inventory.get("electric-energy").copied().unwrap_or(0.0), cp.inventory.get("electric-energy").copied().unwrap_or(0.0));
     assert_eq!(resumed.survived_s, 19800.0);
     assert_eq!(cp.asset_statuses.get("robot-m1"), Some(&AssetStatus::Failed));
     assert_eq!(

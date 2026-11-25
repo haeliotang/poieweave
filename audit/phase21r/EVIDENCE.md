@@ -9,3 +9,6 @@
 - docs/research/canonical-claim-certificate-index-v11.json
 - scripts/build-canonical-claim-certificates-v11.py
 - scripts/verify-canonical-claim-certificates-v11.py
+
+- external/fmu-n21r-replanning/external_replan.c
+- audit/phase21r/comparisons/canonical-vs-external.json

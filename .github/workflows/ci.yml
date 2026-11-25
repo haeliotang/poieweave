@@ -2464,6 +2464,8 @@ jobs:
         run: |
           cargo build --locked -q -p poie-viability --bin poie-s5v-n14-canonical-adapter
           cargo test -q -p poie-viability --test n21r_checkpoint
+          external/fmu-n21r-replanning/build.sh
+          python3 audit/phase21r/compare_external.py
       - name: Verify v10 frozen and v11 successors
         run: |
           python3 scripts/verify-canonical-claim-certificates-v10.py

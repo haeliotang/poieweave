@@ -1,0 +1,6 @@
+{"at":9000,"kind":"ReplanAuthorized","asset":"auth"}
+{"at":9000,"kind":"RepairResumed","asset":"repair"}
+{"at":9000,"kind":"TaskRestarted","asset":"B"}
+{"at":19800,"kind":"TaskCompleted","asset":"B"}
+{"at":19800,"kind":"RepairCompleted","asset":"group"}
+{"at":19800,"kind":"RestorationCommitted","asset":"a-lathe"}

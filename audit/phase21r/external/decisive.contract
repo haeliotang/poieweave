@@ -1,0 +1,9 @@
+t1Duration_s=7200
+t2Duration_s=10800
+t1RobotMask=2
+t2RobotMask=1
+t1RequiresTool=0
+t2RequiresTool=0
+failureTime_s=9000
+failure_target=robot-m1
+horizon_s=72000
