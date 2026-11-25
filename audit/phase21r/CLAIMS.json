@@ -1,0 +1,33 @@
+{
+  "schema": "poie.s5v-n21r-claim-status/1",
+  "claims": [
+    {
+      "id": "N21R-0",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "N21R-A",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "N21R-B",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "N21R-C",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "N21R-D",
+      "status": "NOT_ESTABLISHED"
+    },
+    {
+      "id": "N21R-E",
+      "status": "NOT_ESTABLISHED"
+    },
+    {
+      "id": "N21R-F",
+      "status": "VERIFIED"
+    }
+  ]
+}

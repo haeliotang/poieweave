@@ -149,6 +149,12 @@ pub enum EventKind {
     HorizonReached,
     TaskCompleted,
     ResourceReleased,
+    CheckpointCreated,
+    ReplanAuthorized,
+    ReplanRejected,
+    RepairResumed,
+    TaskRestarted,
+    RestorationCommitted,
 }
 
 impl EventKind {
@@ -164,6 +170,12 @@ impl EventKind {
             EventKind::HorizonReached => "HorizonReached",
             EventKind::TaskCompleted => "TaskCompleted",
             EventKind::ResourceReleased => "ResourceReleased",
+            EventKind::CheckpointCreated => "CheckpointCreated",
+            EventKind::ReplanAuthorized => "ReplanAuthorized",
+            EventKind::ReplanRejected => "ReplanRejected",
+            EventKind::RepairResumed => "RepairResumed",
+            EventKind::TaskRestarted => "TaskRestarted",
+            EventKind::RestorationCommitted => "RestorationCommitted",
         }
     }
 }
@@ -488,6 +500,117 @@ pub struct EngineOptions<'a> {
     pub alternative_pool: Vec<String>,
     pub battery: Option<BatteryLimits>,
     pub load_kw: f64,
+}
+
+/// Native v11 checkpoint captured at a repair interruption.
+#[derive(Clone, Debug, PartialEq)]
+pub struct RepairCheckpoint {
+    pub execution_id: String,
+    pub group_id: String,
+    pub checkpoint_sequence: u64,
+    pub at_s: f64,
+    pub asset_statuses: BTreeMap<String, AssetStatus>,
+    pub inventory: BTreeMap<String, f64>,
+    pub completed_tasks: Vec<String>,
+    pub unfinished_tasks: Vec<String>,
+    pub selected_resources: BTreeMap<String, Vec<String>>,
+    pub active_dependencies: Vec<String>,
+    pub applied_failures: Vec<FailureEvent>,
+    pub pending_failures: Vec<FailureEvent>,
+    pub remaining_failures: Vec<FailureEvent>,
+    pub group_status: String,
+    pub restoration_target: String,
+    pub event_sequence: usize,
+    pub event_batch_sequence: usize,
+    pub remaining_horizon_s: f64,
+    pub trace_history: Vec<EngineTrace>,
+    pub completed_plans: Vec<Plan>,
+    pub completed_planning_base: BTreeMap<String, f64>,
+    pub state_hash: String,
+    pub predecessor_hash: String,
+}
+
+impl RepairCheckpoint {
+    pub fn compute_state_hash(&self) -> String {
+        let mut text = format!(
+            "v11|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}",
+            self.execution_id,
+            self.group_id,
+            self.checkpoint_sequence,
+            self.at_s,
+            self.completed_tasks.join(","),
+            self.unfinished_tasks.join(","),
+            self.active_dependencies.join(","),
+            self.group_status,
+            self.restoration_target,
+            self.event_sequence,
+            self.event_batch_sequence,
+            self.remaining_horizon_s
+        );
+        for (asset, status) in &self.asset_statuses {
+            text.push_str(&format!("|a:{asset}:{status:?}"));
+        }
+        for (resource, amount) in &self.inventory {
+            text.push_str(&format!("|i:{resource}:{amount:.6}"));
+        }
+        for failure in &self.remaining_failures {
+            text.push_str(&format!("|f:{:.6}:{}", failure.at_s, failure.asset));
+        }
+        let mut hasher = std::collections::hash_map::DefaultHasher::new();
+        use std::hash::{Hash, Hasher};
+        text.hash(&mut hasher);
+        format!("{:016x}", hasher.finish())
+    }
+}
+
+/// One bounded replan proposal: replacement robots for unfinished tasks.
+#[derive(Clone, Debug, PartialEq)]
+pub struct ReplanProposal {
+    pub proposal_id: String,
+    pub task_robots: BTreeMap<String, Vec<String>>,
+}
+
+impl ReplanProposal {
+    pub fn compute_hash(&self) -> String {
+        let text = format!(
+            "{}|{}",
+            self.proposal_id,
+            self.task_robots.iter().map(|(k, v)| format!("{k}={}", v.join(","))).collect::<Vec<_>>().join(";")
+        );
+        let mut hasher = std::collections::hash_map::DefaultHasher::new();
+        use std::hash::{Hash, Hasher};
+        text.hash(&mut hasher);
+        format!("{:016x}", hasher.finish())
+    }
+}
+
+/// Checkpoint-bound one-shot authorization for research simulation control.
+#[derive(Clone, Debug, PartialEq)]
+pub struct ReplanAuthorization {
+    pub authorization_id: String,
+    pub execution_id: String,
+    pub checkpoint_hash: String,
+    pub proposal_hash: String,
+    pub scope: String,
+    pub max_attempts: u32,
+}
+
+impl ReplanAuthorization {
+    pub fn issue(
+        authorization_id: &str,
+        checkpoint: &RepairCheckpoint,
+        proposal: &ReplanProposal,
+        scope: &str,
+    ) -> Self {
+        Self {
+            authorization_id: authorization_id.into(),
+            execution_id: checkpoint.execution_id.clone(),
+            checkpoint_hash: checkpoint.state_hash.clone(),
+            proposal_hash: proposal.compute_hash(),
+            scope: scope.into(),
+            max_attempts: 1,
+        }
+    }
 }
 
 /// One explicit task in a canonical repair group.
@@ -867,7 +990,7 @@ fn plan_summary(plans: &[Plan]) -> Vec<String> {
 
 /// Runs the canonical kernel.
 pub fn run_engine(model: &Model, options: &EngineOptions<'_>) -> Result<EngineOutcome, EngineError> {
-    run_engine_inner(model, options, None)
+    run_engine_inner(model, options, None, None)
 }
 
 /// Runs the canonical kernel with one explicit multi-task repair group while
@@ -877,7 +1000,7 @@ pub fn run_engine_with_repair_group(
     options: &EngineOptions<'_>,
     group: &ExplicitRepairGroup,
 ) -> Result<EngineOutcome, EngineError> {
-    run_engine_inner(model, options, Some(group))
+    run_engine_inner(model, options, Some(group), None)
 }
 
 pub fn run_engine_with_repair_group_event_observed(
@@ -886,16 +1009,343 @@ pub fn run_engine_with_repair_group_event_observed(
     group: &ExplicitRepairGroup,
 ) -> Result<EventObservedOutcome, EngineError> {
     let guard = EventGuard::install()?;
-    let outcome = run_engine_inner(model, options, Some(group));
+    let outcome = run_engine_inner(model, options, Some(group), None);
     let events = EVENT_COLLECTOR.with(|cell| cell.borrow_mut().take()).unwrap_or_default();
     drop(guard);
     outcome.map(|outcome| EventObservedOutcome { outcome, events })
+}
+
+/// Opt-in v11: run an explicit repair group and capture a native checkpoint at
+/// the first repair interruption. Default `run_engine*` behavior is unchanged.
+pub fn run_engine_with_repair_group_to_checkpoint(
+    model: &Model,
+    options: &EngineOptions<'_>,
+    group: &ExplicitRepairGroup,
+    execution_id: &str,
+) -> Result<(EngineOutcome, Option<RepairCheckpoint>), EngineError> {
+    let mut checkpoint = None;
+    let outcome = run_engine_inner(model, options, Some(group), Some((execution_id, &mut checkpoint)))?;
+    Ok((outcome, checkpoint))
+}
+
+/// Opt-in v11: resume the same execution from a checkpoint under one valid,
+/// checkpoint-bound one-shot authorization and a bounded replan proposal.
+pub fn resume_engine_with_authorization(
+    model: &Model,
+    options: &EngineOptions<'_>,
+    group: &ExplicitRepairGroup,
+    checkpoint: &RepairCheckpoint,
+    authorization: &ReplanAuthorization,
+    proposal: &ReplanProposal,
+) -> Result<EngineOutcome, EngineError> {
+    if authorization.execution_id != checkpoint.execution_id
+        || authorization.checkpoint_hash != checkpoint.compute_state_hash()
+        || authorization.proposal_hash != proposal.compute_hash()
+        || authorization.max_attempts != 1
+        || authorization.scope != "ONE_SHOT_REPLAN"
+    {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked("replan_rejected: invalid authorization".into()),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: checkpoint.inventory.clone(),
+        });
+    }
+    if group.group_id != checkpoint.group_id {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked("replan_rejected: group mismatch".into()),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: checkpoint.inventory.clone(),
+        });
+    }
+    let mut current = model.clone();
+    for (asset, status) in &checkpoint.asset_statuses {
+        if let Some(item) = current.assets.get_mut(asset) {
+            item.status = *status;
+        }
+    }
+    let mut inventory = checkpoint.inventory.clone();
+    let remaining_tasks: Vec<ExplicitRepairTask> = group
+        .tasks
+        .iter()
+        .filter(|task| checkpoint.unfinished_tasks.contains(&task.task_id))
+        .map(|task| {
+            let mut task = task.clone();
+            if let Some(robots) = proposal.task_robots.get(&task.task_id) {
+                task.robot_alternatives = robots.clone();
+            }
+            task
+        })
+        .collect();
+    if remaining_tasks.is_empty() {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked("replan_rejected: no unfinished tasks".into()),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: inventory,
+        });
+    }
+    let subgroup = ExplicitRepairGroup {
+        group_id: group.group_id.clone(),
+        restoration_target: group.restoration_target.clone(),
+        tasks: remaining_tasks,
+        lifecycle: group.lifecycle,
+    };
+    let running = match start_explicit_repair(
+        &current,
+        &subgroup,
+        &inventory,
+        checkpoint.at_s,
+        checkpoint.remaining_horizon_s,
+        &options.resources,
+        &options.alternative_pool,
+    ) {
+        Ok(repair) => repair,
+        Err(StartError::Blocked(reason)) => {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::Blocked(format!("replan_rejected: {reason}")),
+                survived_s: checkpoint.at_s,
+                trace: checkpoint.trace_history.clone(),
+                final_inventory: inventory,
+            })
+        }
+        Err(StartError::Incomplete) => {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::IncompleteAtHorizon("replan".into()),
+                survived_s: checkpoint.at_s + checkpoint.remaining_horizon_s,
+                trace: checkpoint.trace_history.clone(),
+                final_inventory: inventory,
+            })
+        }
+    };
+    let end_s = running.end_s;
+    let horizon_s = checkpoint.at_s + checkpoint.remaining_horizon_s;
+    if end_s > horizon_s + 1e-9 {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::IncompleteAtHorizon("replan at horizon".into()),
+            survived_s: horizon_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: inventory,
+        });
+    }
+    let mut trace = checkpoint.trace_history.clone();
+    let mut event_sequence = checkpoint.event_sequence;
+    let mut event_batch = checkpoint.event_batch_sequence;
+    let snapshot = asset_status_snapshot(&current.assets);
+    event_sequence += 1;
+    event_batch += 1;
+    record_event(
+        event_sequence,
+        event_batch,
+        checkpoint.at_s,
+        EventKind::ReplanAuthorized,
+        EventOrigin::Exogenous,
+        Some(authorization.authorization_id.clone()),
+        EventStatus::Committed,
+        &snapshot,
+        &snapshot,
+        &inventory,
+        &inventory,
+        Some(&running),
+    );
+    event_sequence += 1;
+    event_batch += 1;
+    record_event(
+        event_sequence,
+        event_batch,
+        checkpoint.at_s,
+        EventKind::RepairResumed,
+        EventOrigin::Endogenous,
+        Some(group.group_id.clone()),
+        EventStatus::Committed,
+        &snapshot,
+        &snapshot,
+        &inventory,
+        &inventory,
+        Some(&running),
+    );
+    for task in &running.task_resources {
+        if let Some(task_id) = &task.task_id {
+            event_sequence += 1;
+            event_batch += 1;
+            record_event(
+                event_sequence,
+                event_batch,
+                checkpoint.at_s,
+                EventKind::TaskRestarted,
+                EventOrigin::Endogenous,
+                Some(task_id.clone()),
+                EventStatus::Committed,
+                &snapshot,
+                &snapshot,
+                &inventory,
+                &inventory,
+                Some(&running),
+            );
+        }
+    }
+    let mut failures = checkpoint.remaining_failures.clone();
+    failures.sort_by(|a, b| a.at_s.total_cmp(&b.at_s));
+    for failure in failures {
+        if failure.at_s < end_s - 1e-9 {
+            let before = asset_status_snapshot(&current.assets);
+            if let Some(asset) = current.assets.get_mut(&failure.asset) {
+                asset.status = AssetStatus::Failed;
+            }
+            event_sequence += 1;
+            event_batch += 1;
+            let after = asset_status_snapshot(&current.assets);
+            record_event(
+                event_sequence,
+                event_batch,
+                failure.at_s,
+                EventKind::AssetFailure,
+                EventOrigin::Exogenous,
+                Some(failure.asset.clone()),
+                EventStatus::Committed,
+                &before,
+                &after,
+                &inventory,
+                &inventory,
+                Some(&running),
+            );
+            if running.execution_dependencies.contains(&failure.asset)
+                || running.restoration_targets.contains(&failure.asset)
+            {
+                event_sequence += 1;
+                event_batch += 1;
+                record_event(
+                    event_sequence,
+                    event_batch,
+                    failure.at_s,
+                    EventKind::RepairInterrupted,
+                    EventOrigin::Endogenous,
+                    Some("repair".into()),
+                    EventStatus::Committed,
+                    &after,
+                    &after,
+                    &inventory,
+                    &inventory,
+                    Some(&running),
+                );
+                return Ok(EngineOutcome {
+                    termination: EngineTermination::Blocked(format!(
+                        "continuation interrupted at {:.0}s: {} failed",
+                        failure.at_s, failure.asset
+                    )),
+                    survived_s: failure.at_s,
+                    trace,
+                    final_inventory: inventory,
+                });
+            }
+        }
+    }
+    let mut committed = current.clone();
+    let mut committed_inventory = inventory.clone();
+    if let Err(reason) = apply_plans(
+        &mut committed,
+        &mut committed_inventory,
+        &checkpoint.completed_plans,
+        &checkpoint.completed_planning_base,
+    ) {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked(format!("replan_commit_failed: {reason}")),
+            survived_s: checkpoint.at_s,
+            trace,
+            final_inventory: inventory,
+        });
+    }
+    if let Err(reason) = apply_plans(&mut committed, &mut committed_inventory, &running.plans, &running.planning_base) {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked(format!("replan_commit_failed: {reason}")),
+            survived_s: checkpoint.at_s,
+            trace,
+            final_inventory: inventory,
+        });
+    }
+    current = committed;
+    inventory = committed_inventory;
+    let after = asset_status_snapshot(&current.assets);
+    for task in &running.task_resources {
+        if let Some(task_id) = &task.task_id {
+            event_sequence += 1;
+            event_batch += 1;
+            record_event(
+                event_sequence,
+                event_batch,
+                end_s,
+                EventKind::TaskCompleted,
+                EventOrigin::Endogenous,
+                Some(task_id.clone()),
+                EventStatus::Committed,
+                &after,
+                &after,
+                &inventory,
+                &inventory,
+                None,
+            );
+        }
+    }
+    event_sequence += 1;
+    event_batch += 1;
+    record_event(
+        event_sequence,
+        event_batch,
+        end_s,
+        EventKind::RepairCompleted,
+        EventOrigin::Endogenous,
+        Some(group.group_id.clone()),
+        EventStatus::Committed,
+        &after,
+        &after,
+        &inventory,
+        &inventory,
+        None,
+    );
+    event_sequence += 1;
+    event_batch += 1;
+    record_event(
+        event_sequence,
+        event_batch,
+        end_s,
+        EventKind::RestorationCommitted,
+        EventOrigin::Endogenous,
+        Some(group.restoration_target.clone()),
+        EventStatus::Committed,
+        &after,
+        &after,
+        &inventory,
+        &inventory,
+        None,
+    );
+    trace.push(EngineTrace {
+        at_s: end_s,
+        kind: format!("replan_completed:{}", group.group_id),
+        inventory_before: checkpoint.inventory.clone(),
+        inventory_after: inventory.clone(),
+        plans: plan_summary(&running.plans),
+        resources: running.resources.clone(),
+        witness: running.witness.clone(),
+        energy_generated_j: 0.0,
+        energy_resupply_j: 0.0,
+        energy_load_j: 0.0,
+        energy_repair_j: 0.0,
+        energy_curtailed_j: 0.0,
+    });
+    Ok(EngineOutcome {
+        termination: EngineTermination::CompletedHorizon,
+        survived_s: end_s,
+        trace,
+        final_inventory: inventory,
+    })
 }
 
 fn run_engine_inner(
     model: &Model,
     options: &EngineOptions<'_>,
     explicit_group: Option<&ExplicitRepairGroup>,
+    mut capture: Option<(&str, &mut Option<RepairCheckpoint>)>,
 ) -> Result<EngineOutcome, EngineError> {
     let mut services: Vec<&Service> = Vec::new();
     for service_id in &options.services {
@@ -1509,6 +1959,99 @@ fn run_engine_inner(
                     &inventory,
                     running.as_ref(),
                 );
+                let interrupted_trace = trace;
+                if let Some((execution_id, slot)) = capture.as_mut() {
+                    let repair = running.as_ref().expect("running repair");
+                    let completed_tasks: Vec<String> = repair
+                        .task_resources
+                        .iter()
+                        .enumerate()
+                        .filter(|(index, _)| repair.completed_tasks.contains(index))
+                        .filter_map(|(_, task)| task.task_id.clone())
+                        .collect();
+                    let unfinished_tasks: Vec<String> = repair
+                        .task_resources
+                        .iter()
+                        .enumerate()
+                        .filter(|(index, _)| !repair.completed_tasks.contains(index))
+                        .filter_map(|(_, task)| task.task_id.clone())
+                        .collect();
+                    let mut selected_resources = BTreeMap::new();
+                    for task in &repair.task_resources {
+                        selected_resources
+                            .insert(task.task_id.clone().unwrap_or_else(|| "task".into()), task.resources.clone());
+                    }
+                    let applied_failures: Vec<FailureEvent> = timeline[..index]
+                        .iter()
+                        .filter_map(|(_, item)| {
+                            if let TimelineItem::Failure(failure) = item {
+                                Some(failure.clone())
+                            } else {
+                                None
+                            }
+                        })
+                        .collect();
+                    let remaining_failures: Vec<FailureEvent> = timeline[index..]
+                        .iter()
+                        .filter_map(|(_, item)| {
+                            if let TimelineItem::Failure(failure) = item {
+                                Some(failure.clone())
+                            } else {
+                                None
+                            }
+                        })
+                        .collect();
+                    let mut checkpoint = RepairCheckpoint {
+                        execution_id: execution_id.to_string(),
+                        group_id: explicit_group.map(|g| g.group_id.clone()).unwrap_or_default(),
+                        checkpoint_sequence: 1,
+                        at_s: clock.now_s(),
+                        asset_statuses: asset_status_snapshot(&current.assets),
+                        inventory: inventory.clone(),
+                        completed_tasks,
+                        unfinished_tasks,
+                        selected_resources,
+                        active_dependencies: repair.execution_dependencies.iter().cloned().collect(),
+                        applied_failures,
+                        pending_failures: pending.clone(),
+                        remaining_failures,
+                        group_status: "INTERRUPTED".into(),
+                        restoration_target: repair.restoration_targets.iter().next().cloned().unwrap_or_default(),
+                        event_sequence: event_sequence + 1,
+                        event_batch_sequence: event_batch + 1,
+                        remaining_horizon_s: clock.remaining_s(),
+                        trace_history: interrupted_trace.clone(),
+                        completed_plans: repair
+                            .task_resources
+                            .iter()
+                            .enumerate()
+                            .filter(|(index, _)| repair.completed_tasks.contains(index))
+                            .filter_map(|(index, _)| repair.plans.get(index).cloned())
+                            .collect(),
+                        completed_planning_base: repair.planning_base.clone(),
+                        state_hash: String::new(),
+                        predecessor_hash: String::new(),
+                    };
+                    checkpoint.state_hash = checkpoint.compute_state_hash();
+                    **slot = Some(checkpoint);
+                    event_sequence += 1;
+                    event_batch += 1;
+                    let assets = asset_status_snapshot(&current.assets);
+                    record_event(
+                        event_sequence,
+                        event_batch,
+                        clock.now_s(),
+                        EventKind::CheckpointCreated,
+                        EventOrigin::Endogenous,
+                        Some("checkpoint".into()),
+                        EventStatus::Committed,
+                        &assets,
+                        &assets,
+                        &inventory,
+                        &inventory,
+                        Some(running.as_ref().expect("running repair")),
+                    );
+                }
                 return Ok(EngineOutcome {
                     termination: EngineTermination::Blocked(format!(
                         "repair interrupted at {:.0}s: {} failed",
@@ -1516,7 +2059,7 @@ fn run_engine_inner(
                         hit.asset
                     )),
                     survived_s: clock.now_s(),
-                    trace,
+                    trace: interrupted_trace,
                     final_inventory: inventory,
                 });
             }

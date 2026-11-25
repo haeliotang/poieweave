@@ -1,0 +1,118 @@
+{
+  "canonical_classification": "SEMANTIC_CORRECTION",
+  "certificate_id": "poie-s2-canonical-c84-v11",
+  "claim_statement": "aux batch8\uff1aregen-long \u8bed\u4e49\u4fee\u6b63\uff1bjoint double-failure 10\u219210.25",
+  "claims": [
+    "C84"
+  ],
+  "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
+  "engine": {
+    "sha256": "e846287942f2616c2974c882bab0ff557af4524b0196fdb63240480c990365bc",
+    "source": "crates/poie-viability/src/engine.rs"
+  },
+  "experiment": {
+    "expected": "experiments/s2-canonical-aux-batch8/expected.txt",
+    "expected_sha256": "d11289a94cb05f204d362054111c5453e25661c012ca31cbc4fd46eab5630863",
+    "path": "experiments/s2-canonical-aux-batch8"
+  },
+  "models": [
+    {
+      "path": "scenarios/base-05/model.toml",
+      "sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150"
+    },
+    {
+      "path": "scenarios/base-06/model.toml",
+      "sha256": "09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c"
+    },
+    {
+      "path": "scenarios/base-08/model.toml",
+      "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+    }
+  ],
+  "native_task_resource_observatory": {
+    "path": "audit/phase15/manifest.json",
+    "sha256": "57e07036af3cf376566e66314872bfd369459da1b993d1a8ed1d144bc1a8716a"
+  },
+  "predecessor": {
+    "path": "experiments/certificate-canonical-c84-v10/certificate.json",
+    "relation": "EXECUTION_SEMANTIC_EXTENSION_SUCCESSOR",
+    "sha256": "9c183585b415ddb7813a307666abea49c1b1889b1fb47bd8203cf5bb02c90251"
+  },
+  "replay": {
+    "command": "python3 scripts/check-experiment-replays.py",
+    "exit_code": 0,
+    "output_sha256": "1930f31941128dd308a7e17a440f9877b54adc690c49c555b9cf9676050c773c"
+  },
+  "runner": {
+    "binary": "poie-migration-aux-batch8",
+    "sha256": "f8dde73d11fb11f8846f963aa904827ef72fc7cc03062e101e2c862f1395cffe",
+    "source": "crates/poie-viability/src/bin/poie-migration-aux-batch8.rs"
+  },
+  "schema": "poie.canonical-s2-certificate/12",
+  "scope": "model/simulation evidence only; canonical claim C84; explicit group extension does not alter legacy execution",
+  "semantics": "canonical event engine with observed legacy semantics; explicit same-target repair-group extension reuses the same event loop, scheduler, dependency closure, inventory ledger and atomic commit; legacy run_engine outcomes unchanged; step-level release, replanning and autonomous recovery are not implemented; v11 adds opt-in native RepairCheckpoint and checkpoint-bound one-shot authorized resume; default run_engine behavior unchanged",
+  "source_environment": {
+    "files": [
+      {
+        "path": "crates/poie-viability/src/engine.rs",
+        "sha256": "e846287942f2616c2974c882bab0ff557af4524b0196fdb63240480c990365bc"
+      },
+      {
+        "path": "crates/poie-viability/src/survival.rs",
+        "sha256": "ddad0fbd5b6e31b5ac88eca29435588454723810d96207c2d4e29d3be673fced"
+      },
+      {
+        "path": "crates/poie-viability/src/clock.rs",
+        "sha256": "4b8f2394da2feab5aeb9601f7fa8bd209bc436bfa3554b3338de62519ed05212"
+      },
+      {
+        "path": "crates/poie-viability/src/closure.rs",
+        "sha256": "f8ccb5f5596382f357f7cc12a6441e66b35b5dc3644e00026dace661ae513179"
+      },
+      {
+        "path": "crates/poie-viability/src/scheduler.rs",
+        "sha256": "c6c5618b78f20f1a1a18b3d594ac4ab4c8bf4dcbcf44fe99b7051835d6ef85f7"
+      },
+      {
+        "path": "Cargo.toml",
+        "sha256": "e50b40a6b80c3c45f851ac3fdeb5267c78eb21efd63dc91fea0eaea86e1a9957"
+      },
+      {
+        "path": "Cargo.lock",
+        "sha256": "b0abd0572bc06734d0b3253a27308d6013d3a4859c36cf8c818b50426cc9a5d1"
+      },
+      {
+        "path": "crates/poie-viability/src/bin/poie-migration-aux-batch8.rs",
+        "sha256": "f8dde73d11fb11f8846f963aa904827ef72fc7cc03062e101e2c862f1395cffe"
+      },
+      {
+        "path": "scenarios/base-05/model.toml",
+        "sha256": "83b96a0293fb4bf5cc306158bd26bdd15899a8c09251ab746c2b544d5ca57150"
+      },
+      {
+        "path": "scenarios/base-06/model.toml",
+        "sha256": "09c637fc4bc3bb8fa7b493d1718e153d5463a18f1b85e96f4e493f6155e4e95c"
+      },
+      {
+        "path": "scenarios/base-08/model.toml",
+        "sha256": "4739959d5766b2be79276137ac50cbeda2129cbbb1397dcdc962b6d6b35e330c"
+      },
+      {
+        "path": "experiments/s2-canonical-aux-batch8/expected.txt",
+        "sha256": "d11289a94cb05f204d362054111c5453e25661c012ca31cbc4fd46eab5630863"
+      },
+      {
+        "path": "experiments/s2-canonical-aux-batch8/REPORT.md",
+        "sha256": "bf8f526d80bf408d7765092b367d9c06151a725682fb099afcd8922b40a35b4e"
+      },
+      {
+        "path": "experiments/s2-canonical-aux-batch8/PREREG.md",
+        "sha256": "e48e620d5c64113c6d14baca4aa46772babbb18cd45a3ac83947a13acd5473f3"
+      }
+    ]
+  },
+  "status": "CANONICAL_ISSUED_V11",
+  "successor_classification": "EXECUTION_SEMANTIC_EXTENSION_SUCCESSOR",
+  "verifier": "poie-canonical-s2-certificate/12",
+  "version": 11
+}

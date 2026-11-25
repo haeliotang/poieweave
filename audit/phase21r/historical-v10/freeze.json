@@ -1,0 +1,13 @@
+{
+  "baseline": "e052f010fe8d4023fc2004793dbab7941341b75c",
+  "files": {
+    "audit/phase21/CLAIMS.json": "733d871a24bcffbfaebf6eb7b1f011b547b6b2762dab7a7e5acfe6918de82e2e",
+    "audit/phase21/REPLANNING_REPRESENTABILITY_AUDIT.md": "e6eaf5bd378e85c894804def6b07cf122646e9e17eb49c976a42a3f1d174da61",
+    "audit/phase21/REPORT.zh-CN.md": "81050dbaff4da4c2a5bb8b9ab605227dac4b82b89258d09142d46794955f02fb",
+    "crates/poie-viability/src/bin/poie-s5v-n14-canonical-adapter.rs": "1ac7bd3d741946bd7af8b4e46b86d7287498225d191d9f663f5f6bf4d1db6d47",
+    "crates/poie-viability/src/engine.rs": "713ba9fde93b9c8f9d72bf111479cb1f0718d33f9409ce48ab687755cb845471",
+    "external/fmu-n16-scheduler/poie-n16-scheduler.fmu": "ab9196380bab8d0a0e1c7335a63d133034a8e038714415fb6a2fb563e3a69450",
+    "external/fmu-n16-scheduler/src/model.c": "4028cbf0a5c6bad87d7b571ddcb7d248e2e81ed4050478eb67808c9587169cb2"
+  },
+  "schema": "poie.s5v-n21r-v10-freeze/1"
+}
