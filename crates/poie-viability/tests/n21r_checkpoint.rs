@@ -127,7 +127,7 @@ fn native_checkpoint_resume_replans_unfinished_b_only() {
     assert_eq!(cp.asset_statuses.get("robot-m1"), Some(&AssetStatus::Failed));
     let mut proposal = ReplanProposal { proposal_id: "p".into(), task_robots: Default::default() };
     proposal.task_robots.insert("B".into(), vec!["robot-m2".into()]);
-    let auth = ReplanAuthorization::issue("auth-1", &cp, &proposal, "ONE_SHOT_REPLAN");
+    let auth = unique_auth(&cp, &proposal);
     let resumed = resume_engine_with_authorization(&model, &options, &group(), &cp, &auth, &proposal).unwrap();
     assert_eq!(resumed.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
     println!("CANONICAL_RESULT {{\"completed\":true,\"survived_s\":{},\"failed_robot_m1\":true,\"task_A_rerun\":false,\"inventory_j\":{},\"checkpoint_inventory\":{},\"robot_B\":\"robot-m2\"}}", resumed.survived_s, resumed.final_inventory.get("electric-energy").copied().unwrap_or(0.0), cp.inventory.get("electric-energy").copied().unwrap_or(0.0));
@@ -137,6 +137,16 @@ fn native_checkpoint_resume_replans_unfinished_b_only() {
         resumed.final_inventory.get("electric-energy").copied().unwrap_or(0.0),
         cp.inventory.get("electric-energy").copied().unwrap_or(0.0)
     );
+}
+fn unique_auth(cp: &RepairCheckpoint, proposal: &ReplanProposal) -> ReplanAuthorization {
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    static NEXT: AtomicUsize = AtomicUsize::new(0);
+    ReplanAuthorization::issue(
+        &format!("auth-{}", NEXT.fetch_add(1, Ordering::Relaxed)),
+        cp,
+        proposal,
+        "ONE_SHOT_REPLAN",
+    )
 }
 fn fixtures() -> (Model, EngineOptions<'static>, ExplicitRepairGroup, RepairCheckpoint, ReplanProposal) {
     let model = model();
@@ -159,7 +169,7 @@ fn fixtures() -> (Model, EngineOptions<'static>, ExplicitRepairGroup, RepairChec
 #[test]
 fn forged_authorization_is_rejected() {
     let (model, options, group, cp, proposal) = fixtures();
-    let mut auth = ReplanAuthorization::issue("a", &cp, &proposal, "ONE_SHOT_REPLAN");
+    let mut auth = unique_auth(&cp, &proposal);
     auth.checkpoint_hash = "0".repeat(16);
     let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
     assert!(
@@ -169,7 +179,7 @@ fn forged_authorization_is_rejected() {
 #[test]
 fn checkpoint_state_tamper_invalidates_authorization() {
     let (model, options, group, mut cp, proposal) = fixtures();
-    let auth = ReplanAuthorization::issue("a", &cp, &proposal, "ONE_SHOT_REPLAN");
+    let auth = unique_auth(&cp, &proposal);
     cp.asset_statuses.insert("robot-m1".into(), AssetStatus::Available);
     let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
     assert!(matches!(out.termination, poie_viability::engine::EngineTermination::Blocked(_)));
@@ -179,7 +189,7 @@ fn failed_robot_alternative_is_rejected() {
     let (model, options, group, cp, _) = fixtures();
     let mut proposal = ReplanProposal { proposal_id: "bad".into(), task_robots: Default::default() };
     proposal.task_robots.insert("B".into(), vec!["robot-m1".into()]);
-    let auth = ReplanAuthorization::issue("a", &cp, &proposal, "ONE_SHOT_REPLAN");
+    let auth = unique_auth(&cp, &proposal);
     let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
     assert!(matches!(out.termination, poie_viability::engine::EngineTermination::Blocked(_)));
 }
@@ -189,7 +199,7 @@ fn horizon_insufficient_blocks_continuation() {
     options.horizon_s = 15000.0;
     let (_, cp) = run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "exec-h").unwrap();
     let cp = cp.unwrap();
-    let auth = ReplanAuthorization::issue("a", &cp, &proposal, "ONE_SHOT_REPLAN");
+    let auth = unique_auth(&cp, &proposal);
     let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
     assert!(matches!(
         out.termination,
@@ -203,9 +213,32 @@ fn failure_during_continuation_blocks_second_replan() {
     options.failures.push(FailureEvent { at_s: 15000.0, asset: "robot-m2".into() });
     let (_, cp) = run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "exec-f").unwrap();
     let cp = cp.unwrap();
-    let auth = ReplanAuthorization::issue("a", &cp, &proposal, "ONE_SHOT_REPLAN");
+    let auth = unique_auth(&cp, &proposal);
     let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
     assert!(
         matches!(out.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("continuation interrupted"))
+    );
+}
+
+#[test]
+fn duplicate_authorization_is_rejected() {
+    let (model, options, group, cp, proposal) = fixtures();
+    let auth = ReplanAuthorization::issue("dup-auth", &cp, &proposal, "ONE_SHOT_REPLAN");
+    let first = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(matches!(first.termination, poie_viability::engine::EngineTermination::CompletedHorizon));
+    let second = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(
+        matches!(second.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("already consumed"))
+    );
+}
+#[test]
+fn forgotten_failed_asset_with_reissued_authorization_is_rejected() {
+    let (model, options, group, mut cp, proposal) = fixtures();
+    cp.asset_statuses.insert("robot-m1".into(), AssetStatus::Available);
+    cp.state_hash = cp.compute_state_hash();
+    let auth = ReplanAuthorization::issue("tamper-auth", &cp, &proposal, "ONE_SHOT_REPLAN");
+    let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(
+        matches!(out.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("lost failure history"))
     );
 }

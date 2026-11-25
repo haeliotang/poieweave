@@ -10,6 +10,7 @@
 //! implementation for S5-T.
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::sync::Mutex;
 
 use poie_ontology::model::{Asset, AssetStatus, Model, Service};
 
@@ -584,6 +585,8 @@ impl ReplanProposal {
     }
 }
 
+static CONSUMED_AUTHORIZATIONS: Mutex<BTreeSet<String>> = Mutex::new(BTreeSet::new());
+
 /// Checkpoint-bound one-shot authorization for research simulation control.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ReplanAuthorization {
@@ -1050,6 +1053,31 @@ pub fn resume_engine_with_authorization(
             trace: checkpoint.trace_history.clone(),
             final_inventory: checkpoint.inventory.clone(),
         });
+    }
+    for failure in &checkpoint.applied_failures {
+        if checkpoint.asset_statuses.get(&failure.asset) != Some(&AssetStatus::Failed) {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::Blocked(format!(
+                    "replan_rejected: checkpoint lost failure history for {}",
+                    failure.asset
+                )),
+                survived_s: checkpoint.at_s,
+                trace: checkpoint.trace_history.clone(),
+                final_inventory: checkpoint.inventory.clone(),
+            });
+        }
+    }
+    {
+        let mut consumed =
+            CONSUMED_AUTHORIZATIONS.lock().map_err(|_| EngineError("authorization registry poisoned".into()))?;
+        if !consumed.insert(authorization.authorization_id.clone()) {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::Blocked("replan_rejected: authorization already consumed".into()),
+                survived_s: checkpoint.at_s,
+                trace: checkpoint.trace_history.clone(),
+                final_inventory: checkpoint.inventory.clone(),
+            });
+        }
     }
     if group.group_id != checkpoint.group_id {
         return Ok(EngineOutcome {
