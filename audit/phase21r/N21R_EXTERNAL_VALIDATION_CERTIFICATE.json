@@ -4,6 +4,7 @@
     "audit/phase21r/comparisons/canonical-vs-external.json": "8c71fc9066b6504cb52eb09ffc3b973013e89a53f6a164a53435b7a3ea2c3e08",
     "audit/phase21r/comparisons/fmi-c-fmpy-canonical.json": "6132ac00678a1bd3eed101de6f2e4c483faab6a706a8bc72f39fa745e73e04c8",
     "audit/phase21r/executable-mutants/results.json": "37d8318890947930d9f26deca8e5ab49d8da8fa3c31a1b8deba6a2ad705af225",
+    "audit/phase21r/minimized-counterexamples/reducer.json": "a6e1f2b6dbcb8a629cc65bdf2fbf98edda3b8e9df6b8540bcdfd237194e333d4",
     "docs/research/canonical-claim-certificate-index-v11.json": "1783c043897fc9089b1490a71ce57e3b9d6916c670aaa6e1a53dc45bf4e78224"
   },
   "inputs": {

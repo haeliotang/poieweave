@@ -2470,6 +2470,7 @@ jobs:
           python3 audit/phase21r/compare_external.py
           python3 audit/phase21r/cross_model_fmi.py
           python3 audit/phase21r/fmi_mutants.py
+          python3 audit/phase21r/reducer.py
           python3 audit/phase21r/make_certificate.py
           python3 audit/phase21r/check_certificate.py
           python3 audit/phase21r/tamper_certificate.py

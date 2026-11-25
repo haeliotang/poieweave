@@ -93,6 +93,11 @@ M2 FAILED_ASSET_FORGOTTEN   FAILED_ASSET_REUSED
 M3 COMPLETED_TASK_REPLAY    COMPLETED_TASK_ERASURE
 ```
 
+## Reducer
+
+`audit/phase21r/reducer.py` 对 M3 完成签名运行候选削减；当前决定性场景
+`MINIMAL_BY_CONSTRUCTION`，保留 `COMPLETED_TASK_ERASURE` 签名并记录重放命令。
+
 ## 部分 adversarial 控制
 
 Rust 测试已覆盖：

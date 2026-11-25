@@ -1,0 +1,33 @@
+{
+  "schema": "poie.s5v-n21r-reducer/1",
+  "original_signature": true,
+  "original_contract": {
+    "taskA": "robot-m2 7200",
+    "taskB": "robot-m1 10800",
+    "failure": "robot-m1@9000"
+  },
+  "candidates": [
+    {
+      "unit": "remove_task_A",
+      "result": "NOT_APPLICABLE",
+      "reason": "FMI model requires A/B checkpoint shape"
+    },
+    {
+      "unit": "remove_task_B",
+      "result": "NOT_APPLICABLE",
+      "reason": "B is the interrupted task under test"
+    },
+    {
+      "unit": "remove_failure",
+      "result": "SIGNATURE_LOST",
+      "reason": "without failure no checkpoint/replay"
+    }
+  ],
+  "reduced_units": [],
+  "status": "MINIMAL_BY_CONSTRUCTION",
+  "replay": [
+    "external/fmu-n21r-replanning/build_fmu.sh",
+    "external/fmu-n21r-replanning/harness poie-n21r-replanning.fmu x 1 2",
+    "EXTRA_CFLAGS=-DMUT_REPLAY_A FMU_NAME=poie-n21r-m3.fmu external/fmu-n21r-replanning/build_fmu.sh"
+  ]
+}
