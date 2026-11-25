@@ -1,0 +1,332 @@
+{
+  "schema": "poie.s5v-n21-n20-revalidation/1",
+  "stats": {
+    "historical_accepted": 64,
+    "revalidated_accepted": 64,
+    "revalidated_rejected": 0,
+    "under_specified": 0,
+    "not_representable": 0
+  },
+  "cases": [
+    {
+      "case": "N18-G2001-00",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-01",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-02",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-03",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-04",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-05",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-06",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-07",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-08",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-09",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-10",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-11",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-12",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-13",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-14",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2001-15",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-00",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-01",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-02",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-03",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-04",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-05",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-06",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-07",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-08",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-09",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-10",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-11",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-12",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-13",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-14",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2017-15",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-00",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-01",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-02",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-03",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-04",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-05",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-06",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-07",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-08",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-09",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-10",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-11",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-12",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-13",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-14",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2033-15",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-00",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-01",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-02",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-03",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-04",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-05",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-06",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-07",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-08",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-09",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-10",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-11",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-12",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-13",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-14",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    },
+    {
+      "case": "N18-G2049-15",
+      "status": "REVALIDATED_ACCEPTED",
+      "reasons": []
+    }
+  ]
+}

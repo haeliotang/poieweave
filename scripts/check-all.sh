@@ -81,6 +81,7 @@ python3 audit/phase16/check.py
 python3 audit/phase18/check.py
 python3 audit/phase19/check.py
 python3 audit/phase20/check.py
+python3 audit/phase21/check.py
 python3 audit/phase14rh/check.py
 python3 audit/phase10/check.py --frozen
 python3 audit/phase7/negative_controls.py

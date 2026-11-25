@@ -1,0 +1,8 @@
+{
+  "schema": "poie.s5v-n21-shared-tool-witness/1",
+  "v1_parallel_candidate": true,
+  "v1_schedule_count": 3,
+  "v2_parallel_candidate": false,
+  "v2_schedule_count": 2,
+  "classification": "REFERENCE_FALSE_PASS_CORRECTED"
+}
