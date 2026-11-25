@@ -1,0 +1,149 @@
+{
+  "schema": "poie.s5v-n20-heldout-adjudication/1",
+  "case_count": 14,
+  "counts": {
+    "ORACLE_FALSE_POSITIVE": 14
+  },
+  "cases": [
+    {
+      "case_id": "N18-G1901-01",
+      "type": "FAILURE_TARGET_CHANGE",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1901-06",
+      "type": "FAILURE_REMOVAL",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1901-10",
+      "type": "FAILURE_REMOVAL",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1901-11",
+      "type": "FAILURE_REMOVAL",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1901-16",
+      "type": "FAILURE_REMOVAL",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1901-18",
+      "type": "FAILURE_TIME_CHANGE",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1901-28",
+      "type": "FAILURE_REMOVAL",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1919-03",
+      "type": "FAILURE_REMOVAL",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1919-04",
+      "type": "FAILURE_TARGET_CHANGE",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1919-15",
+      "type": "FAILURE_REMOVAL",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1919-17",
+      "type": "FAILURE_TARGET_CHANGE",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1919-20",
+      "type": "FAILURE_REMOVAL",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1919-25",
+      "type": "FAILURE_REMOVAL",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    },
+    {
+      "case_id": "N18-G1919-30",
+      "type": "FAILURE_REMOVAL",
+      "expected_hit": [
+        true,
+        false
+      ],
+      "adjudication": "ORACLE_FALSE_POSITIVE",
+      "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR"
+    }
+  ]
+}

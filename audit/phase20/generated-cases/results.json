@@ -1,0 +1,914 @@
+{
+  "schema": "poie.s5v-n20-heldout/1",
+  "stats": {
+    "attempted": 64,
+    "unique": 64,
+    "valid": 64,
+    "invalid": 0,
+    "executed": 64,
+    "accepted": 64,
+    "rejected": 0,
+    "unresolved": 0,
+    "under_specified": 0,
+    "not_representable": 0,
+    "excluded_with_reason": 0
+  },
+  "ledger": [
+    {
+      "id": "N18-G2001-00",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-01",
+      "type": "FAILURE_REMOVAL",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-02",
+      "type": "FAILURE_INSERTION",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-03",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-04",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        false,
+        false
+      ],
+      "actual_completed": [
+        false,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-05",
+      "type": "FAILURE_REMOVAL",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-06",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-07",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-08",
+      "type": "FAILURE_TIME_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-09",
+      "type": "FAILURE_REMOVAL",
+      "reference_relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "expected_completed": [
+        false,
+        true
+      ],
+      "actual_completed": [
+        false,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-10",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-11",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        false,
+        false
+      ],
+      "actual_completed": [
+        false,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-12",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-13",
+      "type": "FAILURE_REMOVAL",
+      "reference_relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "expected_completed": [
+        false,
+        true
+      ],
+      "actual_completed": [
+        false,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-14",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        false,
+        false
+      ],
+      "actual_completed": [
+        false,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2001-15",
+      "type": "FAILURE_INSERTION",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-00",
+      "type": "FAILURE_INSERTION",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-01",
+      "type": "FAILURE_REMOVAL",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-02",
+      "type": "FAILURE_INSERTION",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-03",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-04",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-05",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-06",
+      "type": "FAILURE_TIME_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        false,
+        false
+      ],
+      "actual_completed": [
+        false,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-07",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-08",
+      "type": "FAILURE_TIME_CHANGE",
+      "reference_relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "expected_completed": [
+        false,
+        true
+      ],
+      "actual_completed": [
+        false,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-09",
+      "type": "FAILURE_REMOVAL",
+      "reference_relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "expected_completed": [
+        false,
+        true
+      ],
+      "actual_completed": [
+        false,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-10",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "expected_completed": [
+        false,
+        true
+      ],
+      "actual_completed": [
+        false,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-11",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-12",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-13",
+      "type": "FAILURE_REMOVAL",
+      "reference_relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "expected_completed": [
+        false,
+        true
+      ],
+      "actual_completed": [
+        false,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-14",
+      "type": "FAILURE_INSERTION",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2017-15",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-00",
+      "type": "FAILURE_REMOVAL",
+      "reference_relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "expected_completed": [
+        false,
+        true
+      ],
+      "actual_completed": [
+        false,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-01",
+      "type": "FAILURE_TIME_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-02",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-03",
+      "type": "FAILURE_TIME_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-04",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-05",
+      "type": "FAILURE_INSERTION",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-06",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-07",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-08",
+      "type": "FAILURE_TIME_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        false,
+        false
+      ],
+      "actual_completed": [
+        false,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-09",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-10",
+      "type": "FAILURE_REMOVAL",
+      "reference_relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "expected_completed": [
+        false,
+        true
+      ],
+      "actual_completed": [
+        false,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-11",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-12",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-13",
+      "type": "FAILURE_TIME_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-14",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "expected_completed": [
+        false,
+        true
+      ],
+      "actual_completed": [
+        false,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2033-15",
+      "type": "FAILURE_TIME_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-00",
+      "type": "FAILURE_INSERTION",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-01",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-02",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-03",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-04",
+      "type": "FAILURE_INSERTION",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-05",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-06",
+      "type": "DEPENDENCY_EDGE_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-07",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-08",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-09",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        false,
+        false
+      ],
+      "actual_completed": [
+        false,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-10",
+      "type": "RESOURCE_ELIGIBILITY_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-11",
+      "type": "FAILURE_REMOVAL",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-12",
+      "type": "FAILURE_INSERTION",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-13",
+      "type": "FAILURE_TIME_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-14",
+      "type": "FAILURE_TARGET_CHANGE",
+      "reference_relation": "REPAIR_OUTCOME_UNCHANGED",
+      "expected_completed": [
+        true,
+        true
+      ],
+      "actual_completed": [
+        true,
+        true
+      ],
+      "status": "ACCEPTED"
+    },
+    {
+      "id": "N18-G2049-15",
+      "type": "FAILURE_INSERTION",
+      "reference_relation": "FAILURE_INDUCED_INTERRUPTION",
+      "expected_completed": [
+        true,
+        false
+      ],
+      "actual_completed": [
+        true,
+        false
+      ],
+      "status": "ACCEPTED"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "run_id": "N18-G1919-03-baseline-canonical",
+  "case": "N18-G1919-03",
+  "label": "baseline",
+  "model_id": "canonical",
+  "input_json": "counterfactual-pairs/N18-G1919-03/baseline/canonical/N18-G1919-03-baseline-canonical.json",
+  "contract": "counterfactual-pairs/N18-G1919-03/baseline/canonical/N18-G1919-03-baseline-canonical.contract",
+  "contract_sha256": "15d9e15fbed062a36939a46ba6b99c60081c153a36fe33f62620280dd29813a5",
+  "binary": {
+    "path": "target/debug/poie-s5v-n14-canonical-adapter",
+    "sha256": "1944a3692646ea13389a7aab71c756f6eac815026e049ca80ebd70a6104e83c0"
+  },
+  "started_at": "2026-11-25T19:43:32.305383+00:00",
+  "completed_at": "2026-11-25T19:43:32.314269+00:00",
+  "exit_status": 0,
+  "raw_output": "counterfactual-pairs/N18-G1919-03/baseline/canonical/N18-G1919-03-baseline-canonical.jsonl",
+  "raw_output_sha256": "319c02f5cbafc517c0b4ca985f326d8af335920a1dbd6f475e24110b3da0b2ed",
+  "event_journal": null,
+  "event_journal_sha256": null,
+  "stderr": "termination=Blocked(\"repair interrupted at 3600s: bus-1 failed\") events=3\n"
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "poie.s5v-n20-soundness/1",
+  "controls": [
+    {
+      "control": "VALID_RELATIONS_ACCEPTED",
+      "detected": true,
+      "detail": "10 pairs"
+    },
+    {
+      "control": "WRONG_EXPLANATION",
+      "detected": true,
+      "detail": "WRONG_CAUSAL_EXPLANATION"
+    },
+    {
+      "control": "REVERSE_EFFECT_REJECTED",
+      "detected": true,
+      "detail": "WRONG_CAUSAL_EXPLANATION"
+    },
+    {
+      "control": "REVERSE_EFFECT_ACCEPTED",
+      "detected": true,
+      "detail": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME"
+    },
+    {
+      "control": "BOTH_MODELS_INVALID",
+      "detected": true,
+      "detail": "INVALID_EXECUTION"
+    },
+    {
+      "control": "EVENT_ORDER_ERROR",
+      "detected": true,
+      "detail": "EVENT_ORDER_VIOLATION"
+    },
+    {
+      "control": "EVIDENCE_TAMPER",
+      "detected": true,
+      "detail": "EVIDENCE_INTEGRITY_FAILURE"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "run_id": "N18-G1919-25-baseline-external",
+  "case": "N18-G1919-25",
+  "label": "baseline",
+  "model_id": "external",
+  "input_json": "counterfactual-pairs/N18-G1919-25/baseline/external/N18-G1919-25-baseline-external.json",
+  "contract": "counterfactual-pairs/N18-G1919-25/baseline/external/N18-G1919-25-baseline-external.contract",
+  "contract_sha256": "185c64a2d3884953482d8ea7ecbddbe6599b49e2dc28efa8b06653b0e0444293",
+  "binary": {
+    "path": "external/fmu-n16-scheduler/poie-n16-scheduler.fmu",
+    "sha256": "ab9196380bab8d0a0e1c7335a63d133034a8e038714415fb6a2fb563e3a69450"
+  },
+  "started_at": "2026-11-25T19:43:35.156111+00:00",
+  "completed_at": "2026-11-25T19:43:35.364033+00:00",
+  "exit_status": 0,
+  "raw_output": "counterfactual-pairs/N18-G1919-25/baseline/external/N18-G1919-25-baseline-external.csv",
+  "raw_output_sha256": "1f5fa3b1a5d39436a7571e09329739682a2e11dcd26e12da8e79671feba6b356",
+  "event_journal": "counterfactual-pairs/N18-G1919-25/baseline/external/N18-G1919-25-baseline-external.csv.journal.json",
+  "event_journal_sha256": "033e43c0068af7168af9023fa98fc998dc4c4c5dfb2920e9ae1793eb9c7384b5",
+  "stderr": ""
+}

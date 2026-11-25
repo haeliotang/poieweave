@@ -1,0 +1,51 @@
+{
+  "case_id": "N18-G1901-01",
+  "type": "FAILURE_TARGET_CHANGE",
+  "reference_hash": {
+    "baseline": "1909d06c4a1331331d0ee75538945ac1124bbf365ddf971c474ef000ca8d74ed",
+    "intervention": "81e7d8a12f715808d3d3c543b0fafa3a6ad8321fdf65191072fa60310f7aebcf"
+  },
+  "reference_status": {
+    "baseline": "DETERMINISTIC",
+    "intervention": "DETERMINISTIC"
+  },
+  "models": {
+    "canonical": {
+      "baseline_match": "MATCH",
+      "intervention_match": "MATCH",
+      "baseline_completed": false,
+      "intervention_completed": true,
+      "baseline_interruption": 3600.0,
+      "intervention_interruption": null,
+      "valid": true
+    },
+    "external": {
+      "baseline_match": "MATCH",
+      "intervention_match": "MATCH",
+      "baseline_completed": false,
+      "intervention_completed": true,
+      "baseline_interruption": 3600.0,
+      "intervention_interruption": null,
+      "valid": true
+    }
+  },
+  "expected_direction": {
+    "baseline_completed": false,
+    "intervention_completed": true
+  },
+  "expected_hit": [
+    true,
+    false
+  ],
+  "canonical_actual": [
+    true,
+    false
+  ],
+  "external_actual": {
+    "baseline_interrupted": true,
+    "intervention_interrupted": false
+  },
+  "final_adjudication": "ORACLE_FALSE_POSITIVE",
+  "secondary": "EXPECTED_EFFECT_DIRECTION_ERROR",
+  "remaining_uncertainty": "none within bounded reference domain"
+}
