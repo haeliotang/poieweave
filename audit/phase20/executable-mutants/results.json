@@ -1,0 +1,34 @@
+{
+  "schema": "poie.s5v-n20-mutants/1",
+  "current_run": true,
+  "mutants": [
+    {
+      "mutant": "M1_SPURIOUS_INTERRUPTION",
+      "signature": "FAILURE_REMOVAL_EFFECT_MISMATCH",
+      "detected": true,
+      "findings": [
+        "FALSE_INTERRUPTION",
+        "MISSING_GROUP_COMMIT"
+      ],
+      "fmu_sha256": "85a5dc4012f0670416c65bf568408d350f99de4560937c3f47610c084707c5c5"
+    },
+    {
+      "mutant": "M2_OR_PATH_MISBINDING",
+      "signature": "SELECTED_PATH_IDENTITY_MISMATCH",
+      "detected": true,
+      "findings": [
+        "CLOSURE_7200.0"
+      ],
+      "fmu_sha256": "04f8cf32af1e11b47c421164c525f12f589cd90b8f2d84eaeb7f86c3822b4dd2"
+    },
+    {
+      "mutant": "M3_PREMATURE_SHARED_RELEASE",
+      "signature": "SHARED_DEPENDENCY_LOSS",
+      "detected": true,
+      "findings": [
+        "CLOSURE_7200.0"
+      ],
+      "fmu_sha256": "4d44ee8d6e8b3c82f7cf038cf01dca6fddc14d26a7bc1f55591254dc6ac08d2e"
+    }
+  ]
+}

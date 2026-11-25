@@ -1,0 +1,28 @@
+{
+  "baseline": "8e582125f3a2418e3d0d726f93e7ea88df044680",
+  "files": {
+    "audit/phase19/N19_EXTERNAL_VALIDATION_CERTIFICATE.json": "eb124f8bb17f6b505f1e5a06eaf7aa3e178506e01bd52465abb714128c72e882",
+    "audit/phase19/adjudications/summary.json": "7a580e7779e6e9f1b1a0a4e5e1c358c318eccf30b4846b39d1e18311e914e177",
+    "audit/phase19/executable-mutants/results.json": "d82b5ea112606d2f22ab77029d0529510d5f2b5c7354b40cc02ddd4ea19ef1e0",
+    "audit/phase19/generated-pairs/results.json": "face1e9cdbb26ed48e08139b89bdbf8e1d90106d97c0f8a3edd7c2da431f4878",
+    "audit/phase19/manifest.json": "156513b2aa35140d96a171b2b57dc15eadbbc6e86eef09f3781cd5be5416c7aa",
+    "audit/phase19/oracle-results/phaseb.json": "27bf5845e36e44248cc926c21cd46ccac696231e477b22f35a87bc5110948b20"
+  },
+  "held_out_failure_ids": [
+    "N18-G1901-01",
+    "N18-G1901-06",
+    "N18-G1901-10",
+    "N18-G1901-11",
+    "N18-G1901-16",
+    "N18-G1901-18",
+    "N18-G1901-28",
+    "N18-G1919-03",
+    "N18-G1919-04",
+    "N18-G1919-15",
+    "N18-G1919-17",
+    "N18-G1919-20",
+    "N18-G1919-25",
+    "N18-G1919-30"
+  ],
+  "schema": "poie.s5v-n20-n19-freeze/1"
+}

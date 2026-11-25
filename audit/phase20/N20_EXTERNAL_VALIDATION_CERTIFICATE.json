@@ -1,0 +1,67 @@
+{
+  "canonical_version": "v10 unchanged",
+  "evidence": {
+    "audit/phase20/adjudications/summary.json": "3a14116fac360ada0f73690c111ae961c898d572ff4f935f050ea1a3e03a30dd",
+    "audit/phase20/executable-mutants/results.json": "4bd9e02e3a22e7798e779fed1b6dd407a2c5d49940665bbb204395b9cf9e6820",
+    "audit/phase20/generated-cases/results.json": "959e5565a41769c7e750dbc0ae6ab58ba03955d268593c4770ff454971e63b28",
+    "audit/phase20/historical-held-out/n19-freeze.json": "547d2e80f14278a40108c6dd36271d5436d27c13ae0e96fc0ce6d3071eb79446",
+    "audit/phase20/importer-comparisons/results.json": "2768e5e89ab03c55622c346014332d3f173d09bae10e3f9a8ae1412c3146670d",
+    "audit/phase20/negative-controls/soundness20.json": "6163eaabedaf976e6df34347b5fab86ff341fd305be8ab6ba563034b81eb2ab7",
+    "audit/phase20/oracle-results/reference-pairs.json": "cd878ec1d9cf228cdb4f3d3ddbc60eedb777b30b1a54ef8cf5aac26577331085"
+  },
+  "inputs": {
+    "canonical_adapter": {
+      "path": "crates/poie-viability/src/bin/poie-s5v-n14-canonical-adapter.rs",
+      "sha256": "1ac7bd3d741946bd7af8b4e46b86d7287498225d191d9f663f5f6bf4d1db6d47"
+    },
+    "canonical_engine": {
+      "path": "crates/poie-viability/src/engine.rs",
+      "sha256": "713ba9fde93b9c8f9d72bf111479cb1f0718d33f9409ce48ab687755cb845471"
+    },
+    "external_fmu": {
+      "path": "external/fmu-n16-scheduler/poie-n16-scheduler.fmu",
+      "sha256": "ab9196380bab8d0a0e1c7335a63d133034a8e038714415fb6a2fb563e3a69450"
+    },
+    "external_model": {
+      "path": "external/fmu-n16-scheduler/src/model.c",
+      "sha256": "4028cbf0a5c6bad87d7b571ddcb7d248e2e81ed4050478eb67808c9587169cb2"
+    },
+    "mutants": {
+      "path": "audit/phase20/mutants.py",
+      "sha256": "5614a5f5d6f242a07aa86edc94fd5f0f56c692845dd792c424171f60274aa396"
+    },
+    "reference": {
+      "path": "audit/phase20/reference_oracle/reference.py",
+      "sha256": "f9e3f6ac85d00231c3973057448d9d61f5f5b9c8ef527d6d8a39839106980f84"
+    },
+    "run_pair": {
+      "path": "audit/phase20/run_pair.py",
+      "sha256": "08a47ef8604cbd8deb3d6d55d4004700c7c4ea499016834bdf66f0bea07c988b"
+    },
+    "validator": {
+      "path": "audit/phase20/reference_oracle/validator.py",
+      "sha256": "52c1283ea4373a0632beab2dee093823f19b5d27d09df3338dd4f7a600ada1d3"
+    }
+  },
+  "kind": "N20_EXTERNAL_VALIDATION_CERTIFICATE",
+  "limitations": [
+    "bounded 1-2 task/2 robot/named upstream domain",
+    "14 historical held-out failures adjudicated ORACLE_FALSE_POSITIVE",
+    "64 new held-out attempts from 4 seeds; 64 accepted under bounded reference",
+    "reference oracle is not a physical-world ground truth",
+    "v10 canonical unchanged; no v11"
+  ],
+  "not_an_s2_certificate": true,
+  "not_physical_world_causal_identification": true,
+  "replay": [
+    "python3 audit/phase20/adjudicate14.py",
+    "python3 audit/phase20/heldout20.py",
+    "python3 audit/phase20/reference_audit.py",
+    "python3 audit/phase20/soundness20.py",
+    "python3 audit/phase20/mutants.py",
+    "python3 audit/phase20/compare_importers.py",
+    "python3 audit/phase20/check.py"
+  ],
+  "schema": "poie.s5v-n20-external-validation-certificate/1",
+  "scope": "bounded independent reference oracle, 14 held-out adjudications, 64 new held-out pairs"
+}

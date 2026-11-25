@@ -1,0 +1,145 @@
+{
+  "admissible_schedules": [
+    {
+      "applied_failures": [
+        {
+          "kind": 3,
+          "target": "sensor-x",
+          "target_id": 5,
+          "time_s": 7199
+        }
+      ],
+      "completed": true,
+      "dependency_closure": {
+        "A": [
+          "bat-1",
+          "bus-1",
+          "charger-1",
+          "robot-m1"
+        ],
+        "B": [
+          "bus-2",
+          "robot-m2"
+        ]
+      },
+      "end_s": {
+        "A": 7200.0,
+        "B": 10800.0
+      },
+      "interruption": null,
+      "makespan_s": 10800.0,
+      "robots": {
+        "A": "robot-m1",
+        "B": "robot-m2"
+      },
+      "selected_resources": {
+        "A": [
+          "robot-m1"
+        ],
+        "B": [
+          "robot-m2"
+        ]
+      },
+      "start_s": {
+        "A": 0.0,
+        "B": 0.0
+      },
+      "termination": 10800.0
+    },
+    {
+      "applied_failures": [
+        {
+          "kind": 3,
+          "target": "sensor-x",
+          "target_id": 5,
+          "time_s": 7199
+        }
+      ],
+      "completed": true,
+      "dependency_closure": {
+        "A": [
+          "bat-1",
+          "bus-1",
+          "charger-1",
+          "robot-m1"
+        ],
+        "B": [
+          "bus-2",
+          "robot-m2"
+        ]
+      },
+      "end_s": {
+        "A": 7200.0,
+        "B": 18000.0
+      },
+      "interruption": null,
+      "makespan_s": 18000.0,
+      "robots": {
+        "A": "robot-m1",
+        "B": "robot-m2"
+      },
+      "selected_resources": {
+        "A": [
+          "robot-m1"
+        ],
+        "B": [
+          "robot-m2"
+        ]
+      },
+      "start_s": {
+        "A": 0.0,
+        "B": 7200.0
+      },
+      "termination": 18000.0
+    },
+    {
+      "applied_failures": [
+        {
+          "kind": 3,
+          "target": "sensor-x",
+          "target_id": 5,
+          "time_s": 7199
+        }
+      ],
+      "completed": true,
+      "dependency_closure": {
+        "A": [
+          "bat-1",
+          "bus-1",
+          "charger-1",
+          "robot-m1"
+        ],
+        "B": [
+          "bus-2",
+          "robot-m2"
+        ]
+      },
+      "end_s": {
+        "A": 7200.0,
+        "B": 21600.0
+      },
+      "interruption": null,
+      "makespan_s": 21600.0,
+      "robots": {
+        "A": "robot-m1",
+        "B": "robot-m2"
+      },
+      "selected_resources": {
+        "A": [
+          "robot-m1"
+        ],
+        "B": [
+          "robot-m2"
+        ]
+      },
+      "start_s": {
+        "A": 0.0,
+        "B": 10800.0
+      },
+      "termination": 21600.0
+    }
+  ],
+  "schema": "poie.s5v-n20-reference-prediction/1",
+  "spec_hash": "c32350ed0b1db757c7334ffa844da9ef191b579b457abd4b944f3ec25864f784",
+  "status": "DETERMINISTIC"
+}

@@ -1,0 +1,187 @@
+{
+  "schema": "poie.s5v-n20-reference-pairs/1",
+  "pairs": [
+    {
+      "case": "N18-G1901-01",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1901-06",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1901-10",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1901-11",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1901-16",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1901-18",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1901-28",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1919-03",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1919-04",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1919-15",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1919-17",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1919-20",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1919-25",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    },
+    {
+      "case": "N18-G1919-30",
+      "reference_expected_hit": [
+        true,
+        false
+      ],
+      "actual_interrupted": [
+        true,
+        false
+      ],
+      "relation": "FAILURE_REMOVAL_RECOVERY_OF_OUTCOME",
+      "accepted": true
+    }
+  ]
+}

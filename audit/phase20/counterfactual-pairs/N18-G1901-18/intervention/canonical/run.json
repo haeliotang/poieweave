@@ -1,0 +1,21 @@
+{
+  "run_id": "N18-G1901-18-intervention-canonical",
+  "case": "N18-G1901-18",
+  "label": "intervention",
+  "model_id": "canonical",
+  "input_json": "counterfactual-pairs/N18-G1901-18/intervention/canonical/N18-G1901-18-intervention-canonical.json",
+  "contract": "counterfactual-pairs/N18-G1901-18/intervention/canonical/N18-G1901-18-intervention-canonical.contract",
+  "contract_sha256": "52270c6fc8c92c7369b9160daa646826ccb56913842173d67e027427e763045e",
+  "binary": {
+    "path": "target/debug/poie-s5v-n14-canonical-adapter",
+    "sha256": "1944a3692646ea13389a7aab71c756f6eac815026e049ca80ebd70a6104e83c0"
+  },
+  "started_at": "2026-11-25T19:43:31.319845+00:00",
+  "completed_at": "2026-11-25T19:43:31.333175+00:00",
+  "exit_status": 0,
+  "raw_output": "counterfactual-pairs/N18-G1901-18/intervention/canonical/N18-G1901-18-intervention-canonical.jsonl",
+  "raw_output_sha256": "0bfc9b584ed3b3878b07367f4184d778f8a50afa7891a1fd334d6144dcf5049f",
+  "event_journal": null,
+  "event_journal_sha256": null,
+  "stderr": "termination=CompletedHorizon events=12\n"
+}

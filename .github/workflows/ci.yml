@@ -2402,6 +2402,52 @@ jobs:
           name: s5v-n19-linux-evidence
           path: ${{ runner.temp }}/s5v-n19/evidence
 
+  s5v-n20-linux:
+    name: S5-V N20 reference oracle and held-out generalization Linux conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - uses: Swatinem/rust-cache@v2
+      - name: Install fmpy
+        run: python3 -m pip install -q fmpy==0.3.32
+      - name: Build canonical and mutants
+        run: |
+          external/fmu-n16-scheduler/build.sh
+          external/fmu-n16-scheduler/build_mutant.sh
+          external/fmu-n16-scheduler/build_or_mutant.sh
+          external/fmu-n16-scheduler/build_spurious_mutant.sh
+          cargo build --locked -q -p poie-viability --bin poie-s5v-n14-canonical-adapter
+      - name: Validate reference and held-out
+        run: |
+          rm -rf audit/phase20/counterfactual-pairs audit/phase20/baseline-runs audit/phase20/intervention-runs audit/phase20/reference-predictions audit/phase20/generated-cases
+          python3 audit/phase20/adjudicate14.py
+          python3 audit/phase20/heldout20.py
+          python3 audit/phase20/reference_audit.py
+          python3 audit/phase20/soundness20.py
+          python3 audit/phase20/mutants.py
+          python3 audit/phase20/compare_importers.py
+          python3 audit/phase20/make_certificate.py
+          python3 audit/phase20/check_certificate.py
+          python3 audit/phase20/tamper_certificate.py
+          python3 audit/phase20/check.py
+          python3 scripts/verify-canonical-claim-certificates-v9-historical.py
+          python3 scripts/verify-canonical-claim-certificates-v10.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v10.py
+      - name: Save N20 evidence
+        run: |
+          mkdir -p "$RUNNER_TEMP/s5v-n20/evidence"
+          cp -R audit/phase20 "$RUNNER_TEMP/s5v-n20/evidence/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: s5v-n20-linux-evidence
+          path: ${{ runner.temp }}/s5v-n20/evidence
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest

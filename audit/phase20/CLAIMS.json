@@ -1,0 +1,40 @@
+{
+  "schema": "poie.s5v-n20-claim-status/1",
+  "claims": [
+    {
+      "id": "N20-0",
+      "status": "VERIFIED",
+      "scope": "N19 freeze/revalidation, held-out classifier audit, mutant provenance audit"
+    },
+    {
+      "id": "N20-A",
+      "status": "VERIFIED",
+      "scope": "14/14 held-out failures replayed and adjudicated ORACLE_FALSE_POSITIVE"
+    },
+    {
+      "id": "N20-B",
+      "status": "ESTABLISHED",
+      "scope": "bounded independent reference oracle"
+    },
+    {
+      "id": "N20-C",
+      "status": "VERIFIED",
+      "scope": "reference-based counterfactual soundness"
+    },
+    {
+      "id": "N20-D",
+      "status": "VERIFIED",
+      "scope": "current-run mutants"
+    },
+    {
+      "id": "N20-E",
+      "status": "VERIFIED",
+      "scope": "held-out generalization"
+    },
+    {
+      "id": "N20-F",
+      "status": "VERIFIED",
+      "scope": "certificate/CI/clean"
+    }
+  ]
+}

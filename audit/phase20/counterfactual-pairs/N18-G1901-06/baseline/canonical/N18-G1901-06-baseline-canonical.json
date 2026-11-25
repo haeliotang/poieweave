@@ -1,0 +1,36 @@
+{
+  "group_id": "N18-G1901-06-baseline",
+  "restoration_target": "a-lathe",
+  "horizon_s": 72000,
+  "robot_count": 2,
+  "release_mode": "task_release",
+  "dependency_profile": "default",
+  "preferred_robot": 0,
+  "tasks": [
+    {
+      "task_id": "A",
+      "duration_s": 7200,
+      "priority": 1,
+      "robot_mask": 1,
+      "requires_tool": true,
+      "robot_alternatives": []
+    },
+    {
+      "task_id": "B",
+      "duration_s": 10800,
+      "priority": 2,
+      "robot_mask": 2,
+      "requires_tool": true,
+      "robot_alternatives": []
+    }
+  ],
+  "failures": [
+    {
+      "time_s": 7201,
+      "target": "tool-t1",
+      "kind": 2,
+      "target_id": 7,
+      "failure_id": 0
+    }
+  ]
+}
