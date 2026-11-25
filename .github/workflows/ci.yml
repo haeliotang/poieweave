@@ -2460,12 +2460,15 @@ jobs:
           python-version: "3.12"
       - uses: dtolnay/rust-toolchain@1.94.0
       - uses: Swatinem/rust-cache@v2
+      - name: Install fmpy and numpy
+        run: python3 -m pip install -q fmpy==0.3.32 numpy
       - name: Build and test canonical v11 checkpoint/resume
         run: |
           cargo build --locked -q -p poie-viability --bin poie-s5v-n14-canonical-adapter
           cargo test -q -p poie-viability --test n21r_checkpoint
           external/fmu-n21r-replanning/build.sh
           python3 audit/phase21r/compare_external.py
+          python3 audit/phase21r/cross_model_fmi.py
       - name: Verify v10 frozen and v11 successors
         run: |
           python3 scripts/verify-canonical-claim-certificates-v10.py

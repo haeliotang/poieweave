@@ -1,0 +1,25 @@
+{
+  "schema": "poie.s5v-n21r-fmpy/1",
+  "last": {
+    "completed": 1.0,
+    "failedRobotM1": 1.0,
+    "interrupted": 1.0,
+    "checkpointAt_s": 9000.0,
+    "completedA": 1.0,
+    "unfinishedB": 1.0,
+    "taskBRobot": 2.0,
+    "restored": 1.0,
+    "resumed": 1.0,
+    "rejected": 0.0
+  },
+  "steps": 397,
+  "completed": true,
+  "checkpoint_at": 9000.0,
+  "restored": true,
+  "failed_m1": true,
+  "completed_A": true,
+  "unfinished_B": true,
+  "resumed": true,
+  "unauthorized_rejected": true,
+  "unauthorized_completed": false
+}

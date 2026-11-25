@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription fmiVersion="3.0" modelName="poie_n21r_replanning" instantiationToken="{e9f4d1b5-6c7a-4d2e-9f5b-n21rreplan001}" description="Independent checkpoint/resume scheduler" generationTool="hand-written C99" generationDateAndTime="2026-11-26T00:00:00Z">
+  <CoSimulation modelIdentifier="poie_n21r_replanning" canHandleVariableCommunicationStepSize="true" hasEventMode="false"/>
+  <ModelVariables>
+    <Float64 name="time" valueReference="1" causality="independent" variability="continuous"/>
+    <Float64 name="t1Duration_s" valueReference="3" causality="input" variability="discrete" start="7200"/>
+    <Float64 name="t2Duration_s" valueReference="4" causality="input" variability="discrete" start="10800"/>
+    <Float64 name="failureTime_s" valueReference="5" causality="input" variability="discrete" start="9000"/>
+    <Float64 name="authorizationValid" valueReference="10" causality="input" variability="discrete" start="0"/>
+    <Float64 name="proposalRobot" valueReference="11" causality="input" variability="discrete" start="1"/>
+    <Float64 name="resumeRequest" valueReference="12" causality="input" variability="discrete" start="0"/>
+    <Float64 name="completed" valueReference="20" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="failedRobotM1" valueReference="22" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="interrupted" valueReference="23" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="checkpointAt_s" valueReference="24" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="completedA" valueReference="25" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="unfinishedB" valueReference="26" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="taskBRobot" valueReference="27" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="restored" valueReference="28" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="resumed" valueReference="29" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="rejected" valueReference="30" causality="output" variability="discrete" initial="calculated"/>
+  </ModelVariables>
+  <ModelStructure>
+    <Output valueReference="20"/><Output valueReference="22"/><Output valueReference="23"/><Output valueReference="24"/>
+    <Output valueReference="25"/><Output valueReference="26"/><Output valueReference="27"/><Output valueReference="28"/>
+    <Output valueReference="29"/><Output valueReference="30"/>
+  </ModelStructure>
+</fmiModelDescription>
