@@ -10,5 +10,9 @@ if not (w["v1_parallel_candidate"] and not w["v2_parallel_candidate"]): problems
 r=json.loads((P/"historical-revalidation/n20-revalidation.json").read_text())["stats"]
 if r["revalidated_accepted"]!=64 or r["revalidated_rejected"]!=0: problems.append("n20 revalidation")
 if "BLOCKED" not in (P/"REPLANNING_REPRESENTABILITY_AUDIT.md").read_text(): problems.append("blocked audit")
+mut=json.loads((P/"reference-mutations/results.json").read_text())["mutations"]
+if not all(x["detected"] for x in mut): problems.append("reference mutations")
+q=json.loads((P/"reference-mutations/witness-qualification.json").read_text())
+if q["canonical"]["validity"]!="VALID" or q["external"]["validity"]!="VALID": problems.append("raw witness")
 if problems: print("N21 FAIL: "+", ".join(problems)); sys.exit(1)
 print("ok N21 phase0/shared-tool/revalidation; replanning BLOCKED")
