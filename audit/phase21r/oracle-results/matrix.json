@@ -1,0 +1,101 @@
+{
+  "schema": "poie.s5v-n21r-matrix/1",
+  "cases": [
+    {
+      "id": "N21-00",
+      "scenario": "no failure / unauthorized replan",
+      "status": "NOT_TESTED"
+    },
+    {
+      "id": "N21-01",
+      "scenario": "robot-m1 failure, no authorization",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-02",
+      "scenario": "robot-m1 failure, valid robot-m2",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-03",
+      "scenario": "robot-m2 unavailable",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-04",
+      "scenario": "robot-m2 upstream failure",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-05",
+      "scenario": "tool-t1 failure / Tool AND bypass",
+      "status": "NOT_REPRESENTABLE_IN_FMI"
+    },
+    {
+      "id": "N21-06",
+      "scenario": "A completed, B interrupted",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-07",
+      "scenario": "A interrupted, restart A from zero",
+      "status": "NOT_TESTED"
+    },
+    {
+      "id": "N21-08",
+      "scenario": "stale checkpoint",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-09",
+      "scenario": "forged authorization",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-10",
+      "scenario": "duplicate authorization",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-11",
+      "scenario": "checkpoint hash tamper",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-12",
+      "scenario": "completed task replay",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-13",
+      "scenario": "failure state forgotten",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-14",
+      "scenario": "illegal parallel resource overlap",
+      "status": "NOT_TESTED"
+    },
+    {
+      "id": "N21-15",
+      "scenario": "insufficient horizon",
+      "status": "PASS"
+    },
+    {
+      "id": "N21-16",
+      "scenario": "insufficient inventory/energy",
+      "status": "NOT_TESTED"
+    },
+    {
+      "id": "N21-17",
+      "scenario": "atomic restoration",
+      "status": "PASS"
+    }
+  ],
+  "counts": {
+    "NOT_TESTED": 4,
+    "PASS": 13,
+    "NOT_REPRESENTABLE_IN_FMI": 1
+  },
+  "gate": "N21R-E NOT ESTABLISHED"
+}
