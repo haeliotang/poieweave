@@ -1,0 +1,40 @@
+{
+  "schema": "poie.s5v-n21-claim-status/1",
+  "claims": [
+    {
+      "id": "N21-0",
+      "status": "VERIFIED",
+      "scope": "N20 freeze/revalidation, shared-tool false pass"
+    },
+    {
+      "id": "N21-A",
+      "status": "IN_PROGRESS",
+      "scope": "raw-evidence/reference mutation qualification"
+    },
+    {
+      "id": "N21-B",
+      "status": "BLOCKED",
+      "scope": "post-interruption representability"
+    },
+    {
+      "id": "N21-C",
+      "status": "NOT_ESTABLISHED",
+      "scope": "native one-shot replanning"
+    },
+    {
+      "id": "N21-D",
+      "status": "NOT_ESTABLISHED",
+      "scope": "cross-model replanning"
+    },
+    {
+      "id": "N21-E",
+      "status": "NOT_ESTABLISHED",
+      "scope": "adversarial integrity"
+    },
+    {
+      "id": "N21-F",
+      "status": "IN_PROGRESS",
+      "scope": "certificate/CI/clean"
+    }
+  ]
+}

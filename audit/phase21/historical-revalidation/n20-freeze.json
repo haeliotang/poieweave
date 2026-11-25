@@ -1,0 +1,16 @@
+{
+  "baseline": "503f72074cc66d58b6b6af9b5086f97990045e66",
+  "files": {
+    "audit/phase20/CLAIMS.json": "fc734f96b0e68c52b4f11ec300ac0fcfe52e304a3d260cecba9006939c4fa4f9",
+    "audit/phase20/N20_EXTERNAL_VALIDATION_CERTIFICATE.json": "1e3fb6a3e71a8714eb59dc936756da5e1ccb8a05c0d6aee91229e4d7deaab7d1",
+    "audit/phase20/REPORT.zh-CN.md": "d6838a9151f3a52064afbd03bd3b31eee3125f99ff8dfe77bdb0e61e09e4c3fc",
+    "audit/phase20/adjudications/summary.json": "3a14116fac360ada0f73690c111ae961c898d572ff4f935f050ea1a3e03a30dd",
+    "audit/phase20/executable-mutants/results.json": "4bd9e02e3a22e7798e779fed1b6dd407a2c5d49940665bbb204395b9cf9e6820",
+    "audit/phase20/generated-cases/results.json": "959e5565a41769c7e750dbc0ae6ab58ba03955d268593c4770ff454971e63b28",
+    "audit/phase20/negative-controls/soundness20.json": "6163eaabedaf976e6df34347b5fab86ff341fd305be8ab6ba563034b81eb2ab7",
+    "audit/phase20/reference_oracle/reference.py": "f9e3f6ac85d00231c3973057448d9d61f5f5b9c8ef527d6d8a39839106980f84",
+    "audit/phase20/reference_oracle/validator.py": "52c1283ea4373a0632beab2dee093823f19b5d27d09df3338dd4f7a600ada1d3"
+  },
+  "main_ci": 45690219290,
+  "schema": "poie.s5v-n21-n20-freeze/1"
+}
