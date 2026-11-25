@@ -2469,6 +2469,10 @@ jobs:
           external/fmu-n21r-replanning/build.sh
           python3 audit/phase21r/compare_external.py
           python3 audit/phase21r/cross_model_fmi.py
+          python3 audit/phase21r/fmi_mutants.py
+          python3 audit/phase21r/make_certificate.py
+          python3 audit/phase21r/check_certificate.py
+          python3 audit/phase21r/tamper_certificate.py
       - name: Verify v10 frozen and v11 successors
         run: |
           python3 scripts/verify-canonical-claim-certificates-v10.py

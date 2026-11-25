@@ -1,0 +1,47 @@
+{
+  "canonical_version": "v11 (v10 frozen)",
+  "evidence": {
+    "audit/phase21r/comparisons/canonical-vs-external.json": "8c71fc9066b6504cb52eb09ffc3b973013e89a53f6a164a53435b7a3ea2c3e08",
+    "audit/phase21r/comparisons/fmi-c-fmpy-canonical.json": "6132ac00678a1bd3eed101de6f2e4c483faab6a706a8bc72f39fa745e73e04c8",
+    "audit/phase21r/executable-mutants/results.json": "37d8318890947930d9f26deca8e5ab49d8da8fa3c31a1b8deba6a2ad705af225",
+    "docs/research/canonical-claim-certificate-index-v11.json": "1783c043897fc9089b1490a71ce57e3b9d6916c670aaa6e1a53dc45bf4e78224"
+  },
+  "inputs": {
+    "engine": {
+      "path": "crates/poie-viability/src/engine.rs",
+      "sha256": "3ee8ed0b9935cf571003b578359b182c66fd02d5372db4707db7a50d886b29d5"
+    },
+    "fmi_model": {
+      "path": "external/fmu-n21r-replanning/model.c",
+      "sha256": "33afbd584d3d535b27e21f3368251d8b717aecac66e63c4973aae6ffbff8dbc9"
+    },
+    "fmi_xml": {
+      "path": "external/fmu-n21r-replanning/modelDescription.xml",
+      "sha256": "94b149703569049db6ac634b881a8d526c834b30a99b5792a868313aa5329ab5"
+    },
+    "harness": {
+      "path": "external/fmu-n21r-replanning/harness.c",
+      "sha256": "c8d7713a4552bf39a5008f6e3604768ab3edd471d3b39b663e9cb6ea8359bee0"
+    },
+    "v11_verifier": {
+      "path": "scripts/verify-canonical-claim-certificates-v11.py",
+      "sha256": "34bc4bda5c2cc0f3bf54d1385df83f8012151d921ce9edfbc29af9149f5b9af6"
+    }
+  },
+  "kind": "N21R_EXTERNAL_VALIDATION_CERTIFICATE",
+  "limitations": [
+    "single decisive scenario",
+    "full 17-item state mutation matrix not complete",
+    "automatic reducer not implemented",
+    "FMI model is research state machine, not industrial safety certification"
+  ],
+  "not_an_s2_certificate": true,
+  "not_physical_world_causal_identification": true,
+  "results": {
+    "canonical_test": "n21r_checkpoint 6/6",
+    "fmi_cross_model": "FMI_CROSS_MODEL_MATCH",
+    "fmi_mutants": 3
+  },
+  "schema": "poie.s5v-n21r-external-validation-certificate/1",
+  "scope": "bounded canonical+FMI one-shot authorized replanning, single decisive case and FMI mutants"
+}

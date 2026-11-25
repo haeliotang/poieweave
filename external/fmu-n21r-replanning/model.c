@@ -55,8 +55,25 @@ fmi3Status fmi3DoStep(fmi3Instance i, fmi3Float64 current, fmi3Float64 step, fmi
     } else if (s->phase == 1) {
         s->time = current;
         if (val(s,12) >= 0.5) {
-            if (val(s,10) < 0.5 || val(s,11) < 1.5) { set(s,30,1); s->phase = 3; }
-            else { double t2 = val(s,4) > 0 ? val(s,4) : 10800.0; s->end_b = current + t2; set(s,29,1); s->phase = 2; }
+#ifdef MUT_IGNORE_AUTH
+            int authorized = 1;
+#else
+            int authorized = val(s,10) >= 0.5;
+#endif
+#ifdef MUT_FORGOT_FAILED
+            int proposal_ok = 1;
+#else
+            int proposal_ok = val(s,11) >= 1.5;
+#endif
+            if (!authorized || !proposal_ok) { set(s,30,1); s->phase = 3; }
+            else { double t2 = val(s,4) > 0 ? val(s,4) : 10800.0; s->end_b = current + t2; set(s,29,1);
+#ifdef MUT_FORGOT_FAILED
+                set(s,27, val(s,11) >= 1.5 ? 2 : 1);
+#endif
+#ifdef MUT_REPLAY_A
+                set(s,25,0);
+#endif
+                s->phase = 2; }
         }
     } else if (s->phase == 2) {
         double target = current + step; if (target > s->end_b) target = s->end_b; s->time = target;

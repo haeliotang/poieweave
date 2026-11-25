@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 case "$(uname -s)" in Darwin) platform=darwin; lib=poie_n21r_replanning.dylib; link="-dynamiclib";; Linux) platform=linux; lib=poie_n21r_replanning.so; link="-shared";; *) exit 1;; esac
 case "$(uname -m)" in arm64|aarch64) arch=aarch64;; x86_64|amd64) arch=x86_64;; *) exit 1;; esac
 rm -rf build; mkdir -p "build/binaries/$arch-$platform"
-cc -O2 -fPIC "$link" -Iinclude -o "build/binaries/$arch-$platform/$lib" model.c stubs.c -lm
+cc -O2 -fPIC ${EXTRA_CFLAGS:-} "$link" -Iinclude -o "build/binaries/$arch-$platform/$lib" model.c stubs.c -lm
 cp modelDescription.xml build/
-( cd build && zip -q -r ../poie-n21r-replanning.fmu modelDescription.xml binaries )
+( cd build && zip -q -r ../${FMU_NAME:-poie-n21r-replanning.fmu} modelDescription.xml binaries )
 echo built
