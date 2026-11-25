@@ -1066,6 +1066,28 @@ pub fn resume_engine_with_authorization(
         }
     }
     let mut inventory = checkpoint.inventory.clone();
+    for (task_id, robots) in &proposal.task_robots {
+        if !checkpoint.unfinished_tasks.contains(task_id) {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::Blocked(format!(
+                    "replan_rejected: completed task {task_id} cannot be replayed"
+                )),
+                survived_s: checkpoint.at_s,
+                trace: checkpoint.trace_history.clone(),
+                final_inventory: inventory,
+            });
+        }
+        for robot in robots {
+            if current.assets.get(robot).is_none_or(|asset| asset.status != AssetStatus::Available) {
+                return Ok(EngineOutcome {
+                    termination: EngineTermination::Blocked(format!("replan_rejected: robot {robot} is not available")),
+                    survived_s: checkpoint.at_s,
+                    trace: checkpoint.trace_history.clone(),
+                    final_inventory: inventory,
+                });
+            }
+        }
+    }
     let remaining_tasks: Vec<ExplicitRepairTask> = group
         .tasks
         .iter()
