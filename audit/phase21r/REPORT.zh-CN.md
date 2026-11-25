@@ -47,8 +47,19 @@ final inventory conserved
   predecessor 指向 v10，v11 verifier 与 tamper controls 通过。
 - v10 source environment 通过冻结基线校验。
 
+## 部分 adversarial 控制
+
+Rust 测试已覆盖：
+
+- forged authorization rejected
+- checkpoint state tamper invalidates authorization
+- failed robot alternative rejected
+- horizon insufficient blocks continuation
+- failure during continuation blocks second replan
+- completed task replay rejected by scope check
+
 ## 未完成
 
 - 独立 C99 FMI checkpoint/resume 外部模型与跨模型比较。
-- 17 项 adversarial 状态变异、三个 executable mutants、reducer。
+- 完整 17 项 adversarial 状态变异、三个 executable mutants、reducer。
 - N21R external validation certificate / check-all clean run。

@@ -4,7 +4,7 @@ use poie_ontology::model::{AssetStatus, Model, Service};
 use poie_viability::engine::{
     resume_engine_with_authorization, run_engine_with_repair_group_event_observed,
     run_engine_with_repair_group_to_checkpoint, EngineOptions, ExplicitRepairGroup, ExplicitRepairTask,
-    RepairLifecycleMode, ReplanAuthorization, ReplanProposal,
+    RepairCheckpoint, RepairLifecycleMode, ReplanAuthorization, ReplanProposal,
 };
 use poie_viability::survival::FailureEvent;
 use std::path::Path;
@@ -135,5 +135,76 @@ fn native_checkpoint_resume_replans_unfinished_b_only() {
     assert_eq!(
         resumed.final_inventory.get("electric-energy").copied().unwrap_or(0.0),
         cp.inventory.get("electric-energy").copied().unwrap_or(0.0)
+    );
+}
+fn fixtures() -> (Model, EngineOptions<'static>, ExplicitRepairGroup, RepairCheckpoint, ReplanProposal) {
+    let model = model();
+    let options = EngineOptions {
+        services: vec!["svc"],
+        horizon_s: 72000.0,
+        failures: vec![FailureEvent { at_s: 9000.0, asset: "robot-m1".into() }],
+        resupplies: vec![],
+        resources: vec!["robot-m1".into(), "robot-m2".into()],
+        alternative_pool: vec!["robot-m1".into(), "robot-m2".into()],
+        battery: None,
+        load_kw: 0.0,
+    };
+    let (_, checkpoint) = run_engine_with_repair_group_to_checkpoint(&model, &options, &group(), "exec-neg").unwrap();
+    let cp = checkpoint.unwrap();
+    let mut proposal = ReplanProposal { proposal_id: "p".into(), task_robots: Default::default() };
+    proposal.task_robots.insert("B".into(), vec!["robot-m2".into()]);
+    (model, options, group(), cp, proposal)
+}
+#[test]
+fn forged_authorization_is_rejected() {
+    let (model, options, group, cp, proposal) = fixtures();
+    let mut auth = ReplanAuthorization::issue("a", &cp, &proposal, "ONE_SHOT_REPLAN");
+    auth.checkpoint_hash = "0".repeat(16);
+    let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(
+        matches!(out.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("replan_rejected"))
+    );
+}
+#[test]
+fn checkpoint_state_tamper_invalidates_authorization() {
+    let (model, options, group, mut cp, proposal) = fixtures();
+    let auth = ReplanAuthorization::issue("a", &cp, &proposal, "ONE_SHOT_REPLAN");
+    cp.asset_statuses.insert("robot-m1".into(), AssetStatus::Available);
+    let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(matches!(out.termination, poie_viability::engine::EngineTermination::Blocked(_)));
+}
+#[test]
+fn failed_robot_alternative_is_rejected() {
+    let (model, options, group, cp, _) = fixtures();
+    let mut proposal = ReplanProposal { proposal_id: "bad".into(), task_robots: Default::default() };
+    proposal.task_robots.insert("B".into(), vec!["robot-m1".into()]);
+    let auth = ReplanAuthorization::issue("a", &cp, &proposal, "ONE_SHOT_REPLAN");
+    let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(matches!(out.termination, poie_viability::engine::EngineTermination::Blocked(_)));
+}
+#[test]
+fn horizon_insufficient_blocks_continuation() {
+    let (model, mut options, group, _, proposal) = fixtures();
+    options.horizon_s = 15000.0;
+    let (_, cp) = run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "exec-h").unwrap();
+    let cp = cp.unwrap();
+    let auth = ReplanAuthorization::issue("a", &cp, &proposal, "ONE_SHOT_REPLAN");
+    let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(matches!(
+        out.termination,
+        poie_viability::engine::EngineTermination::IncompleteAtHorizon(_)
+            | poie_viability::engine::EngineTermination::Blocked(_)
+    ));
+}
+#[test]
+fn failure_during_continuation_blocks_second_replan() {
+    let (model, mut options, group, _, proposal) = fixtures();
+    options.failures.push(FailureEvent { at_s: 15000.0, asset: "robot-m2".into() });
+    let (_, cp) = run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "exec-f").unwrap();
+    let cp = cp.unwrap();
+    let auth = ReplanAuthorization::issue("a", &cp, &proposal, "ONE_SHOT_REPLAN");
+    let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(
+        matches!(out.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("continuation interrupted"))
     );
 }
