@@ -1,0 +1,74 @@
+{
+  "schema": "poie.s5v-n21r-fmi-mutants/1",
+  "baseline": {
+    "completed": 1,
+    "failedRobotM1": 1,
+    "checkpointAt_s": 9000,
+    "completedA": 1,
+    "unfinishedB": 1,
+    "taskBRobot": 2,
+    "restored": 1,
+    "resumed": 1,
+    "rejected": 0,
+    "survived_s": 19800
+  },
+  "mutants": [
+    {
+      "mutant": "M1_UNAUTHORIZED_RESUME",
+      "signature": "UNAUTHORIZED_CONTINUATION",
+      "baseline_rejected": true,
+      "mutant_accepted": true,
+      "detected": true,
+      "evidence": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 9000,
+        "completedA": 1,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 19800
+      }
+    },
+    {
+      "mutant": "M2_FAILED_ASSET_FORGOTTEN",
+      "signature": "FAILED_ASSET_REUSED",
+      "baseline_rejected": true,
+      "mutant_accepted": true,
+      "detected": true,
+      "evidence": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 9000,
+        "completedA": 1,
+        "unfinishedB": 1,
+        "taskBRobot": 1,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 19800
+      }
+    },
+    {
+      "mutant": "M3_COMPLETED_TASK_REPLAY",
+      "signature": "COMPLETED_TASK_ERASURE",
+      "baseline_completed_A": true,
+      "mutant_completed_A": 0,
+      "detected": true,
+      "evidence": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 9000,
+        "completedA": 0,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 19800
+      }
+    }
+  ]
+}

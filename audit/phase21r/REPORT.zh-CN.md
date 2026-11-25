@@ -83,6 +83,16 @@ inventory conserved
 `audit/phase21r/comparisons/canonical-vs-external.json` 显示
 `CROSS_MODEL_MATCH`。但该程序不是 FMI 3.0 模型，N21R-D 仍不成立。
 
+## FMI executable mutants
+
+三个测试专用 FMI mutant 均产生真实错误状态并被检测：
+
+```text
+M1 UNAUTHORIZED_RESUME      UNAUTHORIZED_CONTINUATION
+M2 FAILED_ASSET_FORGOTTEN   FAILED_ASSET_REUSED
+M3 COMPLETED_TASK_REPLAY    COMPLETED_TASK_ERASURE
+```
+
 ## 部分 adversarial 控制
 
 Rust 测试已覆盖：

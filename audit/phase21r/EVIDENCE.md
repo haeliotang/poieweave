@@ -15,3 +15,6 @@
 
 - external/fmu-n21r-replanning/
 - audit/phase21r/comparisons/fmi-c-fmpy-canonical.json
+
+- audit/phase21r/executable-mutants/results.json
+- audit/phase21r/N21R_EXTERNAL_VALIDATION_CERTIFICATE.json
