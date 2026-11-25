@@ -242,3 +242,21 @@ fn forgotten_failed_asset_with_reissued_authorization_is_rejected() {
         matches!(out.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("lost failure history"))
     );
 }
+#[test]
+fn no_failure_path_creates_no_checkpoint() {
+    let model = model();
+    let options = EngineOptions {
+        services: vec!["svc"],
+        horizon_s: 72000.0,
+        failures: vec![],
+        resupplies: vec![],
+        resources: vec!["robot-m1".into(), "robot-m2".into()],
+        alternative_pool: vec!["robot-m1".into(), "robot-m2".into()],
+        battery: None,
+        load_kw: 0.0,
+    };
+    let (outcome, checkpoint) =
+        run_engine_with_repair_group_to_checkpoint(&model, &options, &group(), "exec-nofail").unwrap();
+    assert_eq!(outcome.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
+    assert!(checkpoint.is_none());
+}

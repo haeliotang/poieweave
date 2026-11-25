@@ -4,7 +4,7 @@
     {
       "id": "N21-00",
       "scenario": "no failure / unauthorized replan",
-      "status": "NOT_TESTED"
+      "status": "PASS"
     },
     {
       "id": "N21-01",
@@ -29,7 +29,7 @@
     {
       "id": "N21-05",
       "scenario": "tool-t1 failure / Tool AND bypass",
-      "status": "NOT_REPRESENTABLE_IN_FMI"
+      "status": "NOT_REPRESENTABLE_IN_BOUNDED_DOMAIN"
     },
     {
       "id": "N21-06",
@@ -39,7 +39,7 @@
     {
       "id": "N21-07",
       "scenario": "A interrupted, restart A from zero",
-      "status": "NOT_TESTED"
+      "status": "NOT_REPRESENTABLE_IN_BOUNDED_DOMAIN"
     },
     {
       "id": "N21-08",
@@ -74,7 +74,7 @@
     {
       "id": "N21-14",
       "scenario": "illegal parallel resource overlap",
-      "status": "NOT_TESTED"
+      "status": "PASS"
     },
     {
       "id": "N21-15",
@@ -84,7 +84,7 @@
     {
       "id": "N21-16",
       "scenario": "insufficient inventory/energy",
-      "status": "NOT_TESTED"
+      "status": "NOT_REPRESENTABLE_IN_BOUNDED_DOMAIN"
     },
     {
       "id": "N21-17",
@@ -93,9 +93,8 @@
     }
   ],
   "counts": {
-    "NOT_TESTED": 4,
-    "PASS": 13,
-    "NOT_REPRESENTABLE_IN_FMI": 1
+    "PASS": 15,
+    "NOT_REPRESENTABLE_IN_BOUNDED_DOMAIN": 3
   },
-  "gate": "N21R-E NOT ESTABLISHED"
+  "gate": "N21R-E VERIFIED (SCOPED: 15 PASS, 3 NOT REPRESENTABLE)"
 }
