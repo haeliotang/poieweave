@@ -34,7 +34,7 @@ pub enum EngineTermination {
 }
 
 /// One capability choice and the assets it depends on during the repair.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct WitnessEntry {
     pub capability: String,
     pub provider: String,
@@ -42,7 +42,7 @@ pub struct WitnessEntry {
 }
 
 /// One committed event.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct EngineTrace {
     pub at_s: f64,
     pub kind: String,
@@ -505,7 +505,7 @@ pub struct EngineOptions<'a> {
 }
 
 /// Native v11 checkpoint captured at a repair interruption.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct RepairCheckpoint {
     pub execution_id: String,
     pub group_id: String,
@@ -651,27 +651,61 @@ pub fn verify_trusted_checkpoint(checkpoint: &RepairCheckpoint, trusted: &BTreeS
     }
 }
 
-/// Atomically persist the canonical checkpoint state. This is a content
-/// record; resume still uses the in-memory checkpoint.
+#[derive(serde::Serialize, serde::Deserialize)]
+struct CheckpointFile {
+    schema: String,
+    checkpoint: RepairCheckpoint,
+}
+
+/// Atomically persist a checkpoint as a versioned JSON envelope.
 pub fn save_checkpoint(path: &std::path::Path, checkpoint: &RepairCheckpoint) -> Result<(), String> {
-    let bytes = checkpoint.canonical_state_bytes()?;
+    checkpoint.canonical_state_bytes()?;
+    let envelope = CheckpointFile { schema: "poie.repair-checkpoint-file/v12".into(), checkpoint: checkpoint.clone() };
+    let bytes = serde_json::to_vec(&envelope).map_err(|e| e.to_string())?;
     let tmp = path.with_extension("tmp");
     std::fs::write(&tmp, bytes).map_err(|e| e.to_string())?;
     std::fs::rename(&tmp, path).map_err(|e| e.to_string())
 }
 
-/// Verify that a persisted checkpoint file's content commitment is trusted.
+/// Load a checkpoint, enforcing schema, identity, complete commitment and trusted provenance.
+pub fn load_checkpoint(
+    path: &std::path::Path,
+    expected_execution_id: &str,
+    trusted: &BTreeSet<String>,
+) -> Result<RepairCheckpoint, String> {
+    let bytes = std::fs::read(path).map_err(|e| e.to_string())?;
+    let envelope: CheckpointFile = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+    if envelope.schema != "poie.repair-checkpoint-file/v12" {
+        return Err("checkpoint schema mismatch".into());
+    }
+    let checkpoint = envelope.checkpoint;
+    if checkpoint.execution_id != expected_execution_id {
+        return Err("checkpoint execution identity mismatch".into());
+    }
+    if checkpoint.state_hash != checkpoint.compute_state_hash() {
+        return Err("checkpoint commitment mismatch".into());
+    }
+    if !trusted.contains(&checkpoint.state_hash) {
+        return Err("checkpoint not in trusted provenance ledger".into());
+    }
+    Ok(checkpoint)
+}
+
+/// Verify that a persisted checkpoint file is loadable and trusted.
 pub fn verify_checkpoint_file(path: &std::path::Path, trusted: &BTreeSet<String>) -> Result<(), String> {
     let bytes = std::fs::read(path).map_err(|e| e.to_string())?;
-    let mut hasher = Sha256::new();
-    hasher.update(b"poie.repair-checkpoint/v12\x1f");
-    hasher.update(bytes);
-    let commitment = format!("{:x}", hasher.finalize());
-    if trusted.contains(&commitment) {
-        Ok(())
-    } else {
-        Err("checkpoint file not in trusted provenance ledger".into())
+    let envelope: CheckpointFile = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+    let checkpoint = envelope.checkpoint;
+    if envelope.schema != "poie.repair-checkpoint-file/v12" {
+        return Err("checkpoint schema mismatch".into());
     }
+    if checkpoint.state_hash != checkpoint.compute_state_hash() {
+        return Err("checkpoint commitment mismatch".into());
+    }
+    if !trusted.contains(&checkpoint.state_hash) {
+        return Err("checkpoint file not in trusted provenance ledger".into());
+    }
+    Ok(())
 }
 
 /// One bounded replan proposal: replacement robots for unfinished tasks.

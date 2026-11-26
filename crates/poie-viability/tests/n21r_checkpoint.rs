@@ -262,7 +262,7 @@ fn no_failure_path_creates_no_checkpoint() {
 }
 #[test]
 fn every_recovery_relevant_field_changes_commitment_and_trusted_verifier_rejects_forgery() {
-    use poie_viability::engine::{save_checkpoint, verify_checkpoint_file, verify_trusted_checkpoint};
+    use poie_viability::engine::{load_checkpoint, save_checkpoint, verify_checkpoint_file, verify_trusted_checkpoint};
     use poie_viability::survival::FailureEvent;
     use std::collections::BTreeSet;
     let (_, _, _, cp, _) = fixtures();
@@ -328,6 +328,9 @@ fn every_recovery_relevant_field_changes_commitment_and_trusted_verifier_rejects
     let path = std::env::temp_dir().join(format!("poie-n21rh-{}.ckpt", std::process::id()));
     save_checkpoint(&path, &cp).unwrap();
     assert!(verify_checkpoint_file(&path, &trusted).is_ok());
+    let loaded = load_checkpoint(&path, &cp.execution_id, &trusted).unwrap();
+    assert_eq!(loaded.compute_state_hash(), cp.compute_state_hash());
+    assert!(load_checkpoint(&path, "wrong-exec", &trusted).is_err());
     std::fs::write(&path, b"tampered").unwrap();
     assert!(verify_checkpoint_file(&path, &trusted).is_err());
     std::fs::remove_file(&path).ok();

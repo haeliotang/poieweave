@@ -33,7 +33,7 @@ macro_rules! bail {
     ($($arg:tt)*) => { return Err(ModelError(format!($($arg)*))) };
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Deserialize)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, serde::Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum AssetStatus {
     Available,

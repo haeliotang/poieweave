@@ -7,7 +7,7 @@
   ],
   "claims_sha256": "b5a41a8dac2f4a5199683a45b49e68393d9d185a3b3358d276f83e808c69b881",
   "engine": {
-    "sha256": "75c826de07044ba4236f191cc862f7990a295723b95dfa17e449b391cac02328",
+    "sha256": "74e3e42f416ec5c9cb66bbf18e2e317cd48598c8b060ed4fa74d3317efde3051",
     "source": "crates/poie-viability/src/engine.rs"
   },
   "experiment": {
@@ -55,11 +55,11 @@
     "files": [
       {
         "path": "crates/poie-viability/src/engine.rs",
-        "sha256": "75c826de07044ba4236f191cc862f7990a295723b95dfa17e449b391cac02328"
+        "sha256": "74e3e42f416ec5c9cb66bbf18e2e317cd48598c8b060ed4fa74d3317efde3051"
       },
       {
         "path": "crates/poie-viability/src/survival.rs",
-        "sha256": "ddad0fbd5b6e31b5ac88eca29435588454723810d96207c2d4e29d3be673fced"
+        "sha256": "dd381901f288ece4109d0f6dfe1ea0fd7870ff16de59901c443060b39083e5d1"
       },
       {
         "path": "crates/poie-viability/src/clock.rs",
@@ -67,7 +67,7 @@
       },
       {
         "path": "crates/poie-viability/src/closure.rs",
-        "sha256": "f8ccb5f5596382f357f7cc12a6441e66b35b5dc3644e00026dace661ae513179"
+        "sha256": "f2e113d9bbf256bf1f6d89b6945b5f365d3685d54043c3a7d37ecb6e95097dd2"
       },
       {
         "path": "crates/poie-viability/src/scheduler.rs",

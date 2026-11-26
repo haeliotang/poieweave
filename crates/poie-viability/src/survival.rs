@@ -157,7 +157,7 @@ fn combinations(items: &[String], size: usize) -> Vec<Vec<String>> {
     result
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct FailureEvent {
     pub at_s: f64,
     pub asset: String,

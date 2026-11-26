@@ -34,20 +34,20 @@ fn apply_process_outputs(process: &Process, inventory: &mut BTreeMap<String, f64
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum StepAction {
     Restore(String),
     Produce(String),
 }
 
-#[derive(Clone, Debug, PartialEq, serde::Serialize)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct Step {
     pub process: String,
     pub action: StepAction,
     pub duration_s: f64,
 }
 
-#[derive(Clone, Debug, PartialEq, serde::Serialize)]
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct Plan {
     pub steps: Vec<Step>,
     pub total_duration_s: f64,
