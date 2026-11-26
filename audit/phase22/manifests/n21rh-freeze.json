@@ -1,0 +1,13 @@
+{
+  "baseline": "6fa4e047e9fe30919412d25122169e7db6ec366b",
+  "files": {
+    "audit/phase21rh/N21RH_EXTERNAL_VALIDATION_CERTIFICATE.json": "0b5664f99299c2ef54c24ef312e0624a3a5300af20a2016d926ac9e39f15c2ac",
+    "audit/phase21rh/authorization-replay/results.json": "f5210e4a49bc87b65f4ae4bde98a4622747deb8bd0a564392a7faf055c3dc975",
+    "audit/phase21rh/checkpoint-mutations/results.json": "a0584236cc1a005c9e1eb75e0eedcd9297f2ca24fa937182dcc4ea72bd41bf74",
+    "audit/phase21rh/importer-comparisons/strict.json": "71f85d68ab72d8c36484015391b1a1e413fa13b22e0f504a945f7e97c0e93a10",
+    "audit/phase21rh/reducer/results.json": "6829ad3cd2e87da34fbb74617703ca635538c17ae34b122fa0df4fc537c7bbfb",
+    "crates/poie-viability/src/engine.rs": "74e3e42f416ec5c9cb66bbf18e2e317cd48598c8b060ed4fa74d3317efde3051",
+    "docs/research/canonical-claim-certificate-index-v12.json": "5a66a4978ba983f8beaf0a1a078e000be1f804eed499d4259d4f650f30fc018d"
+  },
+  "schema": "poie.s5v-n22-n21rh-freeze/1"
+}

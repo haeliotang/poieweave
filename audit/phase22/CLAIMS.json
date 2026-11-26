@@ -1,0 +1,5 @@
+{"schema":"poie.s5v-n22-claim-status/1","claims":[
+{"id":"N22-0","status":"IN_PROGRESS"},{"id":"N22-A","status":"IN_PROGRESS"},
+{"id":"N22-B","status":"IN_PROGRESS"},{"id":"N22-C","status":"IN_PROGRESS"},
+{"id":"N22-D","status":"IN_PROGRESS"},{"id":"N22-E","status":"IN_PROGRESS"},
+{"id":"N22-F","status":"IN_PROGRESS"}]}
