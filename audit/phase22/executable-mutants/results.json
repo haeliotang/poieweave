@@ -1,0 +1,86 @@
+{
+  "schema": "poie.s5v-n22-mutants/1",
+  "mutants": [
+    {
+      "mutant": "M1_OMITTED_BETTER_CANDIDATE",
+      "result": "CHOICE_SET_INCOMPLETE",
+      "detected": true
+    },
+    {
+      "mutant": "M2_UNAUTHORIZED_CANDIDATE_SUBSTITUTION",
+      "result": "AUTHORIZATION_FOR_DIFFERENT_CANDIDATE",
+      "detected": true
+    },
+    {
+      "mutant": "M3_INVALID_DEPENDENCY_PATH",
+      "result": "SELECTED_PATH_IDENTITY_MISMATCH",
+      "detected": true
+    }
+  ],
+  "negatives": {
+    "INVALID_TOOL": "INVALID_TOOL",
+    "FAILED_ROBOT": "REJECTED",
+    "CHECKPOINT_SWAP": "CHECKPOINT_CHANGED_AFTER_SELECTION",
+    "STALE_CHOICE_SET": "STALE_CHOICE_SET",
+    "DUPLICATE_AUTHORIZATION": "REJECTED",
+    "SECOND_UNAUTHORIZED_ATTEMPT": "REJECTED_BY_ONE_SHOT"
+  },
+  "reducer": {
+    "schema": "poie.s5v-n22-reducer/1",
+    "original_complexity": 5,
+    "minimized_complexity": 3,
+    "attempts": [
+      {
+        "removed_index": 3,
+        "complexity": 4,
+        "signature_preserved": true
+      },
+      {
+        "removed_index": 4,
+        "complexity": 4,
+        "signature_preserved": true
+      },
+      {
+        "removed_index": 2,
+        "complexity": 3,
+        "signature_preserved": true
+      }
+    ],
+    "signature": "CHOICE_SET_INCOMPLETE",
+    "signature_preserved": true,
+    "minimized_contract": {
+      "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+      "task_duration_s": 10800.0,
+      "horizon_s": 72000.0,
+      "tools": {
+        "tool-t1": "failed"
+      },
+      "robot_options": [
+        {
+          "robot": "robot-m2",
+          "start_offset_s": 0.0,
+          "upstream": [
+            "bus-2"
+          ],
+          "requires_tool": false
+        },
+        {
+          "robot": "robot-m3",
+          "start_offset_s": 1000.0,
+          "upstream": [
+            "bus-3"
+          ],
+          "requires_tool": false
+        },
+        {
+          "robot": "robot-m3",
+          "start_offset_s": 63000.0,
+          "upstream": [
+            "bus-3"
+          ],
+          "requires_tool": false
+        }
+      ]
+    }
+  }
+}
