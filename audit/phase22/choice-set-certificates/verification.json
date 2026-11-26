@@ -1,0 +1,23 @@
+{
+  "schema": "poie.s5v-n22-choice-verification/1",
+  "checks": {
+    "certificate_hash": "VERIFIED",
+    "bounded_optimality": "VERIFIED",
+    "selected_nonoptimal": "AUTHORIZED_NON_OPTIMAL_CHOICE",
+    "selection": "AUTHORIZED"
+  },
+  "negatives": {
+    "STALE_CHOICE_SET": "STALE_CHOICE_SET",
+    "CHECKPOINT_SWAP": "CHECKPOINT_CHANGED_AFTER_SELECTION",
+    "CANDIDATE_NOT_IN_SET": "AUTHORIZATION_FOR_DIFFERENT_CANDIDATE",
+    "AUTHORIZATION_FOR_DIFFERENT_CANDIDATE": "AUTHORIZATION_FOR_DIFFERENT_CANDIDATE"
+  },
+  "no_feasible_recovery_plan": true,
+  "generated": 2,
+  "distinct": 2,
+  "feasible": 2,
+  "rejected": 3,
+  "reference_size": 2,
+  "soundness": true,
+  "completeness": true
+}
