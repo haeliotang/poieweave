@@ -1,0 +1,619 @@
+{
+  "schema": "poie.s5v-n22-strict-comparator/1",
+  "cases": {
+    "candidate_2_auth_1": {
+      "fields": {
+        "completed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "failedRobotM1": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "checkpointAt_s": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "completedA": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "unfinishedB": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "taskBRobot": {
+          "c": 2,
+          "fmpy": 2.0,
+          "match": true
+        },
+        "restored": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "resumed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "rejected": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "executedRobot": {
+          "c": 2,
+          "fmpy": 2.0,
+          "match": true
+        },
+        "candidateAccepted": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "rejectionReason": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventCount": {
+          "c": 8,
+          "fmpy": 8.0,
+          "match": true
+        },
+        "eventKind0": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "eventKind1": {
+          "c": 7,
+          "fmpy": 7.0,
+          "match": true
+        },
+        "eventKind2": {
+          "c": 3,
+          "fmpy": 3.0,
+          "match": true
+        },
+        "eventKind3": {
+          "c": 4,
+          "fmpy": 4.0,
+          "match": true
+        },
+        "eventKind4": {
+          "c": 5,
+          "fmpy": 5.0,
+          "match": true
+        },
+        "eventKind5": {
+          "c": 6,
+          "fmpy": 6.0,
+          "match": true
+        },
+        "eventKind6": {
+          "c": 9,
+          "fmpy": 9.0,
+          "match": true
+        },
+        "eventKind7": {
+          "c": 8,
+          "fmpy": 8.0,
+          "match": true
+        },
+        "eventTime0": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime1": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime2": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime3": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime4": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime5": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime6": {
+          "c": 19800,
+          "fmpy": 19800.0,
+          "match": true
+        },
+        "eventTime7": {
+          "c": 19800,
+          "fmpy": 19800.0,
+          "match": true
+        }
+      },
+      "match": true
+    },
+    "candidate_3_auth_1": {
+      "fields": {
+        "completed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "failedRobotM1": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "checkpointAt_s": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "completedA": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "unfinishedB": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "taskBRobot": {
+          "c": 2,
+          "fmpy": 2.0,
+          "match": true
+        },
+        "restored": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "resumed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "rejected": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "executedRobot": {
+          "c": 3,
+          "fmpy": 3.0,
+          "match": true
+        },
+        "candidateAccepted": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "rejectionReason": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventCount": {
+          "c": 8,
+          "fmpy": 8.0,
+          "match": true
+        },
+        "eventKind0": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "eventKind1": {
+          "c": 7,
+          "fmpy": 7.0,
+          "match": true
+        },
+        "eventKind2": {
+          "c": 3,
+          "fmpy": 3.0,
+          "match": true
+        },
+        "eventKind3": {
+          "c": 4,
+          "fmpy": 4.0,
+          "match": true
+        },
+        "eventKind4": {
+          "c": 5,
+          "fmpy": 5.0,
+          "match": true
+        },
+        "eventKind5": {
+          "c": 6,
+          "fmpy": 6.0,
+          "match": true
+        },
+        "eventKind6": {
+          "c": 9,
+          "fmpy": 9.0,
+          "match": true
+        },
+        "eventKind7": {
+          "c": 8,
+          "fmpy": 8.0,
+          "match": true
+        },
+        "eventTime0": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime1": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime2": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime3": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime4": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime5": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime6": {
+          "c": 19800,
+          "fmpy": 19800.0,
+          "match": true
+        },
+        "eventTime7": {
+          "c": 19800,
+          "fmpy": 19800.0,
+          "match": true
+        }
+      },
+      "match": true
+    },
+    "candidate_2_auth_0": {
+      "fields": {
+        "completed": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "failedRobotM1": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "checkpointAt_s": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "completedA": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "unfinishedB": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "taskBRobot": {
+          "c": 2,
+          "fmpy": 2.0,
+          "match": true
+        },
+        "restored": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "resumed": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "rejected": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "executedRobot": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "candidateAccepted": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "rejectionReason": {
+          "c": 2,
+          "fmpy": 2.0,
+          "match": true
+        },
+        "eventCount": {
+          "c": 3,
+          "fmpy": 3.0,
+          "match": true
+        },
+        "eventKind0": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "eventKind1": {
+          "c": 7,
+          "fmpy": 7.0,
+          "match": true
+        },
+        "eventKind2": {
+          "c": 3,
+          "fmpy": 3.0,
+          "match": true
+        },
+        "eventKind3": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventKind4": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventKind5": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventKind6": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventKind7": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventTime0": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime1": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime2": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime3": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventTime4": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventTime5": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventTime6": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventTime7": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        }
+      },
+      "match": true
+    },
+    "candidate_9_auth_1": {
+      "fields": {
+        "completed": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "failedRobotM1": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "checkpointAt_s": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "completedA": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "unfinishedB": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "taskBRobot": {
+          "c": 2,
+          "fmpy": 2.0,
+          "match": true
+        },
+        "restored": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "resumed": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "rejected": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "executedRobot": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "candidateAccepted": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "rejectionReason": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "eventCount": {
+          "c": 3,
+          "fmpy": 3.0,
+          "match": true
+        },
+        "eventKind0": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "eventKind1": {
+          "c": 7,
+          "fmpy": 7.0,
+          "match": true
+        },
+        "eventKind2": {
+          "c": 3,
+          "fmpy": 3.0,
+          "match": true
+        },
+        "eventKind3": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventKind4": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventKind5": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventKind6": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventKind7": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventTime0": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime1": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime2": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime3": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventTime4": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventTime5": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventTime6": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventTime7": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        }
+      },
+      "match": true
+    }
+  },
+  "negatives": {
+    "WRONG_EXECUTED_ROBOT": true,
+    "WRONG_CHECKPOINT_TIME": true,
+    "WRONG_TERMINATION": true,
+    "FALSE_RESTORATION": true,
+    "MISSING_EVENT": true,
+    "EVENT_ORDER_MISMATCH": true,
+    "DUPLICATE_EVENT": true,
+    "POST_TERMINATION_EVENT": true,
+    "MISSING_OBSERVED_FIELD": true
+  },
+  "accepted": true,
+  "all_negatives_rejected": true,
+  "fallback_used": false
+}

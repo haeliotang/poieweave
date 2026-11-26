@@ -1,0 +1,74 @@
+{
+  "canonical_version": "v13 (v12 frozen)",
+  "evidence": {
+    "audit/phase22/authorization-tests/proposal-commitment.json": "1ffb5e1a2c84bd8e061ea0228bbf8d63e5ea7ab6536c39fbc4c051b4e2230185",
+    "audit/phase22/choice-set-certificates/decisive.json": "505a36880ddf5fc20703155462f83bd9c631ef67e94e49ef88d84c4ab1712a2f",
+    "audit/phase22/choice-set-certificates/verification.json": "ff02340602dd438589c7242e10be772d4aaa7760a636e69d1d9f1fa7bfe9ace9",
+    "audit/phase22/executable-mutants/results.json": "e1a7798cdd05d57b1a8af64d27a4f7796a62ce0c2b87871e9f5f77e6b329d89f",
+    "audit/phase22/fixed-cases/results.json": "30c7a6e9f3ffa8f442597c71b53e9f72304746ef3bbebe259a0c55ddc9d5c3b8",
+    "audit/phase22/importer-comparisons/strict.json": "1abd148e0ff5d6c519c851756688e7ab8f4e769b94e923a475ab18b382e73a35"
+  },
+  "inputs": {
+    "checkpoint_engine": {
+      "path": "crates/poie-viability/src/engine.rs",
+      "sha256": "d1cccc8538437d274b0fe99eb44375a1a310c7f2f6b733cd66d18cd57a49f4a9"
+    },
+    "fmi_harness": {
+      "path": "external/fmu-n22-recovery-choice/harness.c",
+      "sha256": "59a5ce85e576cf81ad4d6faf4d3af981ee728712185dcc4825da9d20cb493433"
+    },
+    "fmi_model": {
+      "path": "external/fmu-n22-recovery-choice/model.c",
+      "sha256": "475847759127cb5493982be2b87a3162e42b5d2f3b898196b28928c081f7e770"
+    },
+    "generator": {
+      "path": "audit/phase22/candidate_generator/generator.py",
+      "sha256": "60bf29bee40daffcef318ff8fd1f95e2af7919104a67626783a8cfae6a2c7a20"
+    },
+    "oracle": {
+      "path": "audit/phase22/oracle.py",
+      "sha256": "684ff8b8697d2cf0f0884ec267dfbc713caf3893cdf5fcb95626b620fb1c49e7"
+    },
+    "proposal": {
+      "path": "audit/phase22/proposal_commitment.py",
+      "sha256": "5025c45753450f3f87c5288cd013e8566249cb844cb34e29b2fef117bdbb5680"
+    },
+    "reference": {
+      "path": "audit/phase22/reference-oracle/reference.py",
+      "sha256": "f882c1027a64aec0499a11affb939537f4e054f1a437f9bb568d6d28cf8681b2"
+    },
+    "strict_comparator": {
+      "path": "audit/phase22/strict_n22.py",
+      "sha256": "af009d1c982cd860e8f17584a63c21a1ff1ca679a236fa33e52c7168c18628f7"
+    },
+    "v13_index": {
+      "path": "docs/research/canonical-claim-certificate-index-v13.json",
+      "sha256": "2468e1801cf9c127ae95bf3af37ca01466f43da0b874278444d79c3b6c367b8a"
+    }
+  },
+  "kind": "N22_EXTERNAL_VALIDATION_CERTIFICATE",
+  "limitations": [
+    "bounded one-task/one-attempt domain",
+    "FMI journal covers eight fixed event kinds only",
+    "no general planning or industrial safety claim"
+  ],
+  "not_s2_certificate": true,
+  "results": {
+    "authorized_non_optimal": "robot-m3",
+    "completeness": true,
+    "distinct": 2,
+    "event_journal": "NATIVE_OBSERVABLE",
+    "feasible": 2,
+    "fmi_cases": 4,
+    "generated": 2,
+    "mutants": 3,
+    "native_outcome": "CompletedHorizon",
+    "preferred": "robot-m2",
+    "reducer": "5->3",
+    "reference_size": 2,
+    "rejected": 3,
+    "soundness": true,
+    "strict_field_match": true
+  },
+  "schema": "poie.s5v-n22-external-validation-certificate/1"
+}
