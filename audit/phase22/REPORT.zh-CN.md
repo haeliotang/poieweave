@@ -79,3 +79,14 @@ candidate 9 invalid  match
 
 9 个 false-pass 负例全部拒绝，包括 wrong executed robot、event order、
 missing/duplicate/post-termination event。
+
+### 固定实验矩阵
+
+```text
+total 18
+PASS 16
+NOT_REPRESENTABLE 2  (N22-07 two-task contention, N22-14 second failure)
+FAIL 0
+```
+
+证据：`fixed-cases/matrix.json`、`EVIDENCE.md`、`manifests/evidence.json`。

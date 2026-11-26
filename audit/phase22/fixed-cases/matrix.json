@@ -1,0 +1,117 @@
+{
+  "schema": "poie.s5v-n22-fixed-matrix/1",
+  "total": 18,
+  "pass": 16,
+  "fail": 0,
+  "not_representable": 2,
+  "cases": [
+    {
+      "id": "N22-00",
+      "expected": "NO_FEASIBLE_RECOVERY_PLAN",
+      "actual": "NO_FEASIBLE_RECOVERY_PLAN",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-01",
+      "expected": "SINGLE_CANDIDATE",
+      "actual": "1 candidate",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-02",
+      "expected": "TWO_DISTINCT_CANDIDATES",
+      "actual": "2 candidates",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-03",
+      "expected": "FASTEST_FIRST",
+      "actual": "19800.0 <= 20800.0",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-04",
+      "expected": "STABLE_TIE_BREAK",
+      "actual": "stable",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-05",
+      "expected": "FASTEST_INVALID_FILTERED",
+      "actual": "1 feasible; 1 rejected",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-06",
+      "expected": "TOOL_AND_REJECTED",
+      "actual": "TOOL_AND_UNAVAILABLE",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-07",
+      "expected": "SERIAL_VS_PARALLEL",
+      "actual": "NOT_REPRESENTABLE_IN_ONE_TASK_BOUNDED_DOMAIN",
+      "status": "NOT_REPRESENTABLE"
+    },
+    {
+      "id": "N22-08",
+      "expected": "COMPLETED_TASK_REPLANNED_REJECTED",
+      "actual": "COMPLETED_TASK_REPLANNED",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-09",
+      "expected": "HORIZON_SHRINK",
+      "actual": "0 feasible",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-10",
+      "expected": "AUTHORIZED_NON_OPTIMAL_CHOICE",
+      "actual": "AUTHORIZED_NON_OPTIMAL_CHOICE",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-11",
+      "expected": "INVALID_CANDIDATE_REJECTED",
+      "actual": "REJECTED",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-12",
+      "expected": "TAMPERED_CANDIDATE_REJECTED",
+      "actual": "REJECTED",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-13",
+      "expected": "NO_AUTHORIZATION_NO_EXECUTION",
+      "actual": "MATCH",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-14",
+      "expected": "BLOCK_NO_AUTO_SWITCH",
+      "actual": "NOT_REPRESENTABLE_IN_SINGLE_FAILURE_FMI",
+      "status": "NOT_REPRESENTABLE"
+    },
+    {
+      "id": "N22-15",
+      "expected": "C_FMPY_OBSERVABLE_MATCH",
+      "actual": "4/4 cases match",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-16",
+      "expected": "REFERENCE_ORACLE_REJECTS_COMMON_MODE",
+      "actual": "CANDIDATE_NOT_IN_SET",
+      "status": "PASS"
+    },
+    {
+      "id": "N22-17",
+      "expected": "CHOICE_SET_INCOMPLETE",
+      "actual": "CHOICE_SET_INCOMPLETE",
+      "status": "PASS"
+    }
+  ]
+}
