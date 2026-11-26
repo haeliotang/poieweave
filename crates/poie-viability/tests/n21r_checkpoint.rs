@@ -260,3 +260,75 @@ fn no_failure_path_creates_no_checkpoint() {
     assert_eq!(outcome.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
     assert!(checkpoint.is_none());
 }
+#[test]
+fn every_recovery_relevant_field_changes_commitment_and_trusted_verifier_rejects_forgery() {
+    use poie_viability::engine::{save_checkpoint, verify_checkpoint_file, verify_trusted_checkpoint};
+    use poie_viability::survival::FailureEvent;
+    use std::collections::BTreeSet;
+    let (_, _, _, cp, _) = fixtures();
+    let original = cp.compute_state_hash();
+    let mut mutations: Vec<(&str, RepairCheckpoint)> = Vec::new();
+    let mut m = cp.clone();
+    m.completed_tasks.push("B".into());
+    mutations.push(("completed_tasks", m));
+    let mut m = cp.clone();
+    m.unfinished_tasks.clear();
+    mutations.push(("unfinished_tasks", m));
+    let mut m = cp.clone();
+    m.selected_resources.insert("A".into(), vec!["robot-m1".into()]);
+    mutations.push(("selected_resources", m));
+    let mut m = cp.clone();
+    m.active_dependencies.push("bus-2".into());
+    mutations.push(("active_dependencies", m));
+    let mut m = cp.clone();
+    m.applied_failures.push(FailureEvent { at_s: 1.0, asset: "fake".into() });
+    mutations.push(("applied_failures", m));
+    let mut m = cp.clone();
+    m.pending_failures.push(FailureEvent { at_s: 1.0, asset: "fake".into() });
+    mutations.push(("pending_failures", m));
+    let mut m = cp.clone();
+    m.remaining_failures.push(FailureEvent { at_s: 1.0, asset: "fake".into() });
+    mutations.push(("remaining_failures", m));
+    let mut m = cp.clone();
+    m.inventory.insert("fake".into(), 1.0);
+    mutations.push(("inventory", m));
+    let mut m = cp.clone();
+    m.asset_statuses.insert("robot-m2".into(), AssetStatus::Degraded);
+    mutations.push(("asset_statuses", m));
+    let mut m = cp.clone();
+    m.completed_plans[0].total_duration_s += 1.0;
+    mutations.push(("completed_plans", m));
+    let mut m = cp.clone();
+    m.completed_planning_base.insert("fake".into(), 1.0);
+    mutations.push(("completed_planning_base", m));
+    let mut m = cp.clone();
+    m.trace_history[0].kind = "mutated".into();
+    mutations.push(("trace_history", m));
+    let mut m = cp.clone();
+    m.predecessor_hash = "forged".into();
+    mutations.push(("predecessor_hash", m));
+    let mut m = cp.clone();
+    m.event_sequence += 1;
+    mutations.push(("event_sequence", m));
+    let mut m = cp.clone();
+    m.event_batch_sequence += 1;
+    mutations.push(("event_batch_sequence", m));
+    let mut m = cp.clone();
+    m.source_environment = "forged".into();
+    mutations.push(("source_environment", m));
+    for (name, mutated) in mutations {
+        assert_ne!(mutated.compute_state_hash(), original, "field omission: {name}");
+    }
+    let trusted: BTreeSet<String> = BTreeSet::from([original.clone()]);
+    assert!(verify_trusted_checkpoint(&cp, &trusted).is_ok());
+    let mut forged = cp.clone();
+    forged.inventory.insert("fake".into(), 1.0);
+    forged.state_hash = forged.compute_state_hash();
+    assert!(verify_trusted_checkpoint(&forged, &trusted).is_err(), "recomputed untrusted hash accepted");
+    let path = std::env::temp_dir().join(format!("poie-n21rh-{}.ckpt", std::process::id()));
+    save_checkpoint(&path, &cp).unwrap();
+    assert!(verify_checkpoint_file(&path, &trusted).is_ok());
+    std::fs::write(&path, b"tampered").unwrap();
+    assert!(verify_checkpoint_file(&path, &trusted).is_err());
+    std::fs::remove_file(&path).ok();
+}

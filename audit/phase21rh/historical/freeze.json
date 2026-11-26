@@ -1,0 +1,14 @@
+{
+  "baseline": "3332755f431da1ac9e9d117ae5474abc5d27942c",
+  "files": {
+    "audit/phase21r/N21R_EXTERNAL_VALIDATION_CERTIFICATE.json": "f56d3b21f33030e2aea0c947b34a3583d7cdc2499f4c018fb296ef6a2512a991",
+    "audit/phase21r/comparisons/fmi-c-fmpy-canonical.json": "6132ac00678a1bd3eed101de6f2e4c483faab6a706a8bc72f39fa745e73e04c8",
+    "audit/phase21r/executable-mutants/results.json": "37d8318890947930d9f26deca8e5ab49d8da8fa3c31a1b8deba6a2ad705af225",
+    "audit/phase21r/minimized-counterexamples/reducer.json": "a6e1f2b6dbcb8a629cc65bdf2fbf98edda3b8e9df6b8540bcdfd237194e333d4",
+    "audit/phase21r/oracle-results/matrix.json": "409c2a734bc1af230327270febef2a393ebd8d58d54cff87fcf242d4d05406f0",
+    "crates/poie-viability/src/engine.rs": "dd6a4709e10812507ffecdf4d0738bf1bf93c06b81f0425e3fb2edb6574b76e6",
+    "crates/poie-viability/tests/n21r_checkpoint.rs": "a8a7fe12e89e4388e8746d03f995192e5d666c53c0f3dea8b9271ecc58801b1f",
+    "external/fmu-n21r-replanning/model.c": "33afbd584d3d535b27e21f3368251d8b717aecac66e63c4973aae6ffbff8dbc9"
+  },
+  "schema": "poie.s5v-n21rh-baseline-freeze/1"
+}

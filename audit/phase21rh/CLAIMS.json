@@ -1,0 +1,33 @@
+{
+  "schema": "poie.s5v-n21rh-claim-status/1",
+  "claims": [
+    {
+      "id": "N21RH-0",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N21RH-A",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "N21RH-B",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N21RH-C",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N21RH-D",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N21RH-E",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N21RH-F",
+      "status": "PARTIAL"
+    }
+  ]
+}

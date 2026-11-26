@@ -9,6 +9,7 @@
 //! Legacy `survival` entry points are not yet migrated; this is the target
 //! implementation for S5-T.
 
+use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
 use std::sync::Mutex;
 
@@ -527,40 +528,149 @@ pub struct RepairCheckpoint {
     pub trace_history: Vec<EngineTrace>,
     pub completed_plans: Vec<Plan>,
     pub completed_planning_base: BTreeMap<String, f64>,
+    pub source_environment: String,
     pub state_hash: String,
     pub predecessor_hash: String,
 }
 
 impl RepairCheckpoint {
     pub fn compute_state_hash(&self) -> String {
-        let mut text = format!(
-            "v11|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}",
-            self.execution_id,
-            self.group_id,
-            self.checkpoint_sequence,
-            self.at_s,
-            self.completed_tasks.join(","),
-            self.unfinished_tasks.join(","),
-            self.active_dependencies.join(","),
-            self.group_status,
-            self.restoration_target,
-            self.event_sequence,
-            self.event_batch_sequence,
-            self.remaining_horizon_s
-        );
+        let bytes = self.canonical_state_bytes().expect("checkpoint contains non-finite float");
+        let mut hasher = Sha256::new();
+        hasher.update(b"poie.repair-checkpoint/v12\x1f");
+        hasher.update(bytes);
+        format!("{:x}", hasher.finalize())
+    }
+
+    /// Deterministic canonical encoding of every recovery-relevant field.
+    pub fn canonical_state_bytes(&self) -> Result<Vec<u8>, String> {
+        fn f(x: f64) -> Result<String, String> {
+            if !x.is_finite() {
+                return Err("non-finite float in checkpoint".into());
+            }
+            let x = if x == 0.0 { 0.0 } else { x };
+            Ok(format!("{:.17e}", x))
+        }
+        fn s(out: &mut String, tag: &str, value: &str) {
+            out.push_str(&format!("|{tag}:{}:{}", value.len(), value));
+        }
+        let mut out = String::from("poie.repair-checkpoint/v12");
+        s(&mut out, "execution_id", &self.execution_id);
+        s(&mut out, "group_id", &self.group_id);
+        s(&mut out, "sequence", &self.checkpoint_sequence.to_string());
+        s(&mut out, "at_s", &f(self.at_s)?);
         for (asset, status) in &self.asset_statuses {
-            text.push_str(&format!("|a:{asset}:{status:?}"));
+            s(&mut out, "asset", &format!("{asset}:{status:?}"));
         }
         for (resource, amount) in &self.inventory {
-            text.push_str(&format!("|i:{resource}:{amount:.6}"));
+            s(&mut out, "inventory", &format!("{resource}:{}", f(*amount)?));
         }
-        for failure in &self.remaining_failures {
-            text.push_str(&format!("|f:{:.6}:{}", failure.at_s, failure.asset));
+        for task in &self.completed_tasks {
+            s(&mut out, "completed_task", task);
         }
-        let mut hasher = std::collections::hash_map::DefaultHasher::new();
-        use std::hash::{Hash, Hasher};
-        text.hash(&mut hasher);
-        format!("{:016x}", hasher.finish())
+        for task in &self.unfinished_tasks {
+            s(&mut out, "unfinished_task", task);
+        }
+        for (task, resources) in &self.selected_resources {
+            s(&mut out, "selected", &format!("{task}:{}", resources.join(",")));
+        }
+        for dep in &self.active_dependencies {
+            s(&mut out, "active_dependency", dep);
+        }
+        let mut failures = |tag: &str, list: &[FailureEvent]| -> Result<(), String> {
+            s(&mut out, &format!("{tag}_count"), &list.len().to_string());
+            for item in list {
+                s(&mut out, tag, &format!("{}:{}", f(item.at_s)?, item.asset));
+            }
+            Ok(())
+        };
+        failures("applied_failure", &self.applied_failures)?;
+        failures("pending_failure", &self.pending_failures)?;
+        failures("remaining_failure", &self.remaining_failures)?;
+        s(&mut out, "group_status", &self.group_status);
+        s(&mut out, "restoration_target", &self.restoration_target);
+        s(&mut out, "event_sequence", &self.event_sequence.to_string());
+        s(&mut out, "event_batch_sequence", &self.event_batch_sequence.to_string());
+        s(&mut out, "remaining_horizon", &f(self.remaining_horizon_s)?);
+        for trace in &self.trace_history {
+            s(&mut out, "trace_at", &f(trace.at_s)?);
+            s(&mut out, "trace_kind", &trace.kind);
+            for (k, v) in &trace.inventory_before {
+                s(&mut out, "trace_before", &format!("{k}:{}", f(*v)?));
+            }
+            for (k, v) in &trace.inventory_after {
+                s(&mut out, "trace_after", &format!("{k}:{}", f(*v)?));
+            }
+            for plan in &trace.plans {
+                s(&mut out, "trace_plan", plan);
+            }
+            for resource in &trace.resources {
+                s(&mut out, "trace_resource", resource);
+            }
+            for entry in &trace.witness {
+                s(
+                    &mut out,
+                    "witness",
+                    &format!("{}:{}:{}", entry.capability, entry.provider, entry.dependencies.join(",")),
+                );
+            }
+            s(
+                &mut out,
+                "trace_energy",
+                &format!(
+                    "{}:{}:{}:{}:{}",
+                    f(trace.energy_generated_j)?,
+                    f(trace.energy_resupply_j)?,
+                    f(trace.energy_load_j)?,
+                    f(trace.energy_repair_j)?,
+                    f(trace.energy_curtailed_j)?
+                ),
+            );
+        }
+        for plan in &self.completed_plans {
+            s(&mut out, "completed_plan", &serde_json::to_string(plan).map_err(|e| e.to_string())?);
+        }
+        for (k, v) in &self.completed_planning_base {
+            s(&mut out, "planning_base", &format!("{k}:{}", f(*v)?));
+        }
+        s(&mut out, "predecessor_hash", &self.predecessor_hash);
+        s(&mut out, "source_environment", &self.source_environment);
+        Ok(out.into_bytes())
+    }
+}
+
+/// Verify that a checkpoint commitment appears in a trusted provenance ledger.
+/// A modified checkpoint with a recomputed hash is rejected unless its new
+/// commitment was independently admitted to the ledger.
+pub fn verify_trusted_checkpoint(checkpoint: &RepairCheckpoint, trusted: &BTreeSet<String>) -> Result<(), String> {
+    let commitment = checkpoint.compute_state_hash();
+    if trusted.contains(&commitment) {
+        Ok(())
+    } else {
+        Err("checkpoint not in trusted provenance ledger".into())
+    }
+}
+
+/// Atomically persist the canonical checkpoint state. This is a content
+/// record; resume still uses the in-memory checkpoint.
+pub fn save_checkpoint(path: &std::path::Path, checkpoint: &RepairCheckpoint) -> Result<(), String> {
+    let bytes = checkpoint.canonical_state_bytes()?;
+    let tmp = path.with_extension("tmp");
+    std::fs::write(&tmp, bytes).map_err(|e| e.to_string())?;
+    std::fs::rename(&tmp, path).map_err(|e| e.to_string())
+}
+
+/// Verify that a persisted checkpoint file's content commitment is trusted.
+pub fn verify_checkpoint_file(path: &std::path::Path, trusted: &BTreeSet<String>) -> Result<(), String> {
+    let bytes = std::fs::read(path).map_err(|e| e.to_string())?;
+    let mut hasher = Sha256::new();
+    hasher.update(b"poie.repair-checkpoint/v12\x1f");
+    hasher.update(bytes);
+    let commitment = format!("{:x}", hasher.finalize());
+    if trusted.contains(&commitment) {
+        Ok(())
+    } else {
+        Err("checkpoint file not in trusted provenance ledger".into())
     }
 }
 
@@ -2079,6 +2189,7 @@ fn run_engine_inner(
                             .filter_map(|(index, _)| repair.plans.get(index).cloned())
                             .collect(),
                         completed_planning_base: repair.planning_base.clone(),
+                        source_environment: "canonical-v11".into(),
                         state_hash: String::new(),
                         predecessor_hash: String::new(),
                     };
