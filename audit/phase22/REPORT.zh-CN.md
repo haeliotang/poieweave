@@ -53,3 +53,10 @@ Choice-set certificate、bounded optimality、stale/swap/substitution 负例均�
 - resume 强制 execution/checkpoint/group/unfinished-task/candidate 绑定。
 - 测试：授权后修改 candidate、checkpoint、execution id 全部拒绝；合法 proposal 执行完成。
 - v12 41 证书字节冻结；v13 41 个 `AUTHORIZATION_SEMANTIC_CORRECTION` successors 签发并通过 verifier/tamper。
+
+### Native candidate enforcement
+
+- resume 强制 selected_candidate_hash 属于冻结 choice-set 列表。
+- proposal.task_robots 必须等于 selected_candidate_resources。
+- 合法 robot-m3 候选完成 continuation；候选不在集合、资源不匹配均 BLOCKED。
+- 外部推荐 robot-m2，但授权 robot-m3 可执行，记录非最优授权选择。

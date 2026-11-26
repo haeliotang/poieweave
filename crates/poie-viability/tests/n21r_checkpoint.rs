@@ -25,6 +25,18 @@ fn model() -> Model {
         a.provides.clear();
         model.assets.insert(extra.into(), a);
     }
+    let mut third = robot.clone();
+    third.id = "robot-m3".into();
+    model.assets.insert("robot-m3".into(), third);
+    let mut bus3 = model.assets.get("bus-1").unwrap().clone();
+    bus3.id = "bus-3".into();
+    bus3.requires.clear();
+    bus3.requires_any.clear();
+    model.assets.insert("bus-3".into(), bus3);
+    if let Some(r3) = model.assets.get_mut("robot-m3") {
+        r3.requires = vec!["bus-3".into()];
+        r3.requires_any.clear();
+    }
     let mut bus2 = model.assets.get("bus-1").unwrap().clone();
     bus2.id = "bus-2".into();
     bus2.requires.clear();
@@ -149,16 +161,20 @@ fn unique_auth(cp: &RepairCheckpoint, proposal: &ReplanProposal) -> ReplanAuthor
     )
 }
 fn make_proposal(cp: &RepairCheckpoint, id: &str) -> ReplanProposal {
+    let mut task_robots = std::collections::BTreeMap::new();
+    task_robots.insert("B".to_string(), vec!["robot-m2".to_string()]);
     ReplanProposal {
         proposal_id: id.into(),
         execution_id: cp.execution_id.clone(),
         checkpoint_hash: cp.compute_state_hash(),
         group_id: cp.group_id.clone(),
         unfinished_task_ids: cp.unfinished_tasks.clone(),
-        task_robots: Default::default(),
+        task_robots: task_robots.clone(),
         proposal_constraints: vec!["one-shot".into()],
         choice_set_certificate_hash: "cert".into(),
         selected_candidate_hash: "cand".into(),
+        choice_set_candidates: vec!["cand".into()],
+        selected_candidate_resources: task_robots,
     }
 }
 fn fixtures() -> (Model, EngineOptions<'static>, ExplicitRepairGroup, RepairCheckpoint, ReplanProposal) {
@@ -449,4 +465,35 @@ fn proposal_mutations_after_authorization_are_rejected() {
     ));
     let valid = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
     assert_eq!(valid.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
+}
+
+#[test]
+fn native_execution_requires_authorized_candidate_membership() {
+    let (model, mut options, group, cp, _) = fixtures();
+    options.resources.push("robot-m3".into());
+    options.alternative_pool.push("robot-m3".into());
+    let mut proposal = make_proposal(&cp, "proposal-m3");
+    proposal.task_robots.insert("B".into(), vec!["robot-m3".into()]);
+    proposal.selected_candidate_resources.insert("B".into(), vec!["robot-m3".into()]);
+    proposal.selected_candidate_hash = "candidate-m3".into();
+    proposal.choice_set_candidates = vec!["candidate-m2".into(), "candidate-m3".into()];
+    let auth = unique_auth(&cp, &proposal);
+    let ok = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert_eq!(ok.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
+
+    let mut missing = proposal.clone();
+    missing.selected_candidate_hash = "candidate-m9".into();
+    let missing_auth = unique_auth(&cp, &missing);
+    let blocked = resume_engine_with_authorization(&model, &options, &group, &cp, &missing_auth, &missing).unwrap();
+    assert!(
+        matches!(blocked.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("not in frozen choice set"))
+    );
+
+    let mut mismatch = proposal.clone();
+    mismatch.selected_candidate_resources.insert("B".into(), vec!["robot-m2".into()]);
+    let mismatch_auth = unique_auth(&cp, &mismatch);
+    let blocked = resume_engine_with_authorization(&model, &options, &group, &cp, &mismatch_auth, &mismatch).unwrap();
+    assert!(
+        matches!(blocked.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("resources do not match"))
+    );
 }
