@@ -1,0 +1,21 @@
+{
+  "schema": "poie.s5v-n21rh-authorization/1",
+  "issuer": "research-issuer (fixed test key)",
+  "ledger": "file-backed atomic create_new claim",
+  "states": [
+    "UNCONSUMED",
+    "CLAIMED",
+    "COMMITTED",
+    "FAILED_CLOSED"
+  ],
+  "tests": {
+    "same_process_duplicate": "REJECTED",
+    "cross_process_8_workers": "EXACTLY_ONE_WINNER",
+    "crash_before_commit": "FAIL_CLOSED",
+    "durable_resume_replay": "REJECTED",
+    "forged_issuer": "REJECTED",
+    "invalid_signature": "REJECTED",
+    "expired": "REJECTED",
+    "wrong_proposal": "REJECTED"
+  }
+}

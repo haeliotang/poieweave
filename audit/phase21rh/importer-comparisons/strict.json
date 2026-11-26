@@ -1,0 +1,60 @@
+{
+  "schema": "poie.s5v-n21rh-strict-comparator/1",
+  "fields": {
+    "checkpoint_at": {
+      "c": 9000,
+      "fmpy": 9000.0,
+      "match": true
+    },
+    "completed_A": {
+      "c": 1,
+      "fmpy": 1.0,
+      "match": true
+    },
+    "unfinished_B": {
+      "c": 1,
+      "fmpy": 1.0,
+      "match": true
+    },
+    "failed_m1": {
+      "c": 1,
+      "fmpy": 1.0,
+      "match": true
+    },
+    "selected_robot_B": {
+      "c": 2,
+      "fmpy": 2.0,
+      "match": true
+    },
+    "restored": {
+      "c": 1,
+      "fmpy": 1.0,
+      "match": true
+    },
+    "resumed": {
+      "c": 1,
+      "fmpy": 1.0,
+      "match": true
+    },
+    "completed": {
+      "c": 1,
+      "fmpy": 1.0,
+      "match": true
+    },
+    "survived_s": {
+      "c": 19800,
+      "fmpy": 19800.0,
+      "match": true
+    }
+  },
+  "negatives": {
+    "WRONG_CHECKPOINT_TIME": true,
+    "WRONG_SELECTED_ROBOT": true,
+    "FALSE_RESTORATION": true,
+    "WRONG_TERMINATION": true,
+    "MISSING_OBSERVED_FIELD": true
+  },
+  "accepted": true,
+  "all_negatives_rejected": true,
+  "fallback_used": false
+}

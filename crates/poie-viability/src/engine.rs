@@ -701,31 +701,148 @@ static CONSUMED_AUTHORIZATIONS: Mutex<BTreeSet<String>> = Mutex::new(BTreeSet::n
 #[derive(Clone, Debug, PartialEq)]
 pub struct ReplanAuthorization {
     pub authorization_id: String,
+    pub issuer_id: String,
     pub execution_id: String,
     pub checkpoint_hash: String,
     pub proposal_hash: String,
     pub scope: String,
+    pub issued_at_s: f64,
+    pub expiration_s: f64,
     pub max_attempts: u32,
+    pub signature: String,
 }
 
 impl ReplanAuthorization {
+    #[allow(clippy::too_many_arguments)]
+    fn signing_text(
+        id: &str,
+        issuer: &str,
+        exec: &str,
+        cp: &str,
+        prop: &str,
+        scope: &str,
+        issued: f64,
+        expires: f64,
+        attempts: u32,
+    ) -> String {
+        format!("poie.research-authorization/v1|{id}|{issuer}|{exec}|{cp}|{prop}|{scope}|{issued:.6}|{expires:.6}|{attempts}")
+    }
+    fn signature_for(text: &str) -> String {
+        let mut hasher = Sha256::new();
+        hasher.update(b"poie-n21rh-research-issuer-key\x1f");
+        hasher.update(text.as_bytes());
+        format!("{:x}", hasher.finalize())
+    }
     pub fn issue(
         authorization_id: &str,
         checkpoint: &RepairCheckpoint,
         proposal: &ReplanProposal,
         scope: &str,
     ) -> Self {
+        let text = Self::signing_text(
+            authorization_id,
+            "research-issuer",
+            &checkpoint.execution_id,
+            &checkpoint.state_hash,
+            &proposal.compute_hash(),
+            scope,
+            0.0,
+            1.0e12,
+            1,
+        );
         Self {
             authorization_id: authorization_id.into(),
+            issuer_id: "research-issuer".into(),
             execution_id: checkpoint.execution_id.clone(),
             checkpoint_hash: checkpoint.state_hash.clone(),
             proposal_hash: proposal.compute_hash(),
             scope: scope.into(),
+            issued_at_s: 0.0,
+            expiration_s: 1.0e12,
             max_attempts: 1,
+            signature: Self::signature_for(&text),
         }
+    }
+    pub fn verify(&self, checkpoint: &RepairCheckpoint, proposal: &ReplanProposal, now_s: f64) -> Result<(), String> {
+        if self.issuer_id != "research-issuer" {
+            return Err("forged issuer".into());
+        }
+        if self.max_attempts != 1 {
+            return Err("max_attempts must be 1".into());
+        }
+        if self.expiration_s < now_s {
+            return Err("authorization expired".into());
+        }
+        let text = Self::signing_text(
+            &self.authorization_id,
+            &self.issuer_id,
+            &self.execution_id,
+            &self.checkpoint_hash,
+            &self.proposal_hash,
+            &self.scope,
+            self.issued_at_s,
+            self.expiration_s,
+            self.max_attempts,
+        );
+        if Self::signature_for(&text) != self.signature {
+            return Err("invalid authorization signature".into());
+        }
+        if self.execution_id != checkpoint.execution_id || self.checkpoint_hash != checkpoint.compute_state_hash() {
+            return Err("authorization checkpoint mismatch".into());
+        }
+        if self.proposal_hash != proposal.compute_hash() {
+            return Err("authorization proposal mismatch".into());
+        }
+        if self.scope != "ONE_SHOT_REPLAN" {
+            return Err("invalid authorization scope".into());
+        }
+        Ok(())
     }
 }
 
+/// Durable, file-backed one-shot authorization claim ledger.
+#[derive(Clone, Debug)]
+pub struct FileAuthorizationLedger {
+    pub directory: std::path::PathBuf,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum LedgerClaim {
+    Claimed,
+    AlreadyCommitted,
+    InProgressOrFailedClosed,
+}
+impl FileAuthorizationLedger {
+    pub fn new(directory: impl Into<std::path::PathBuf>) -> Self {
+        Self { directory: directory.into() }
+    }
+    pub fn claim_id(&self, authorization_id: &str) -> Result<LedgerClaim, String> {
+        std::fs::create_dir_all(&self.directory).map_err(|e| e.to_string())?;
+        let path = self.directory.join(format!("{authorization_id}.claim"));
+        match std::fs::OpenOptions::new().write(true).create_new(true).open(&path) {
+            Ok(mut file) => {
+                use std::io::Write;
+                file.write_all(b"CLAIMED\n").map_err(|e| e.to_string())?;
+                file.sync_all().map_err(|e| e.to_string())?;
+                Ok(LedgerClaim::Claimed)
+            }
+            Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {
+                let text = std::fs::read_to_string(&path).unwrap_or_default();
+                if text.starts_with("COMMITTED") {
+                    Ok(LedgerClaim::AlreadyCommitted)
+                } else {
+                    Ok(LedgerClaim::InProgressOrFailedClosed)
+                }
+            }
+            Err(e) => Err(e.to_string()),
+        }
+    }
+    pub fn commit_id(&self, authorization_id: &str, result_identity: &str) -> Result<(), String> {
+        let path = self.directory.join(format!("{authorization_id}.claim"));
+        let tmp = path.with_extension("tmp");
+        std::fs::write(&tmp, format!("COMMITTED|{result_identity}\n")).map_err(|e| e.to_string())?;
+        std::fs::rename(&tmp, &path).map_err(|e| e.to_string())
+    }
+}
 /// One explicit task in a canonical repair group.
 #[derive(Clone, Debug, PartialEq)]
 pub struct ExplicitRepairTask {
@@ -1151,12 +1268,7 @@ pub fn resume_engine_with_authorization(
     authorization: &ReplanAuthorization,
     proposal: &ReplanProposal,
 ) -> Result<EngineOutcome, EngineError> {
-    if authorization.execution_id != checkpoint.execution_id
-        || authorization.checkpoint_hash != checkpoint.compute_state_hash()
-        || authorization.proposal_hash != proposal.compute_hash()
-        || authorization.max_attempts != 1
-        || authorization.scope != "ONE_SHOT_REPLAN"
-    {
+    if authorization.verify(checkpoint, proposal, checkpoint.at_s).is_err() {
         return Ok(EngineOutcome {
             termination: EngineTermination::Blocked("replan_rejected: invalid authorization".into()),
             survived_s: checkpoint.at_s,
@@ -1499,6 +1611,44 @@ pub fn resume_engine_with_authorization(
         trace,
         final_inventory: inventory,
     })
+}
+
+/// Durable wrapper: atomically claim the authorization in a file ledger
+/// before resuming, then commit the result identity. A crash after claim but
+/// before commit leaves the authorization fail-closed.
+pub fn resume_engine_with_durable_authorization(
+    model: &Model,
+    options: &EngineOptions<'_>,
+    group: &ExplicitRepairGroup,
+    checkpoint: &RepairCheckpoint,
+    authorization: &ReplanAuthorization,
+    proposal: &ReplanProposal,
+    ledger: &FileAuthorizationLedger,
+) -> Result<EngineOutcome, EngineError> {
+    authorization.verify(checkpoint, proposal, checkpoint.at_s).map_err(EngineError)?;
+    match ledger.claim_id(&authorization.authorization_id).map_err(EngineError)? {
+        LedgerClaim::Claimed => {
+            let outcome = resume_engine_with_authorization(model, options, group, checkpoint, authorization, proposal)?;
+            if matches!(outcome.termination, EngineTermination::CompletedHorizon) {
+                ledger
+                    .commit_id(&authorization.authorization_id, &format!("{:.6}", outcome.survived_s))
+                    .map_err(EngineError)?;
+            }
+            Ok(outcome)
+        }
+        LedgerClaim::AlreadyCommitted => Ok(EngineOutcome {
+            termination: EngineTermination::Blocked("replan_rejected: authorization already committed".into()),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: checkpoint.inventory.clone(),
+        }),
+        LedgerClaim::InProgressOrFailedClosed => Ok(EngineOutcome {
+            termination: EngineTermination::Blocked("replan_rejected: authorization claimed or failed closed".into()),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: checkpoint.inventory.clone(),
+        }),
+    }
 }
 
 fn run_engine_inner(
