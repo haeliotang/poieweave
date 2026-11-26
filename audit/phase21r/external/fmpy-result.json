@@ -13,6 +13,7 @@
     "rejected": 0.0
   },
   "steps": 397,
+  "survived_s": 19800.0,
   "completed": true,
   "checkpoint_at": 9000.0,
   "restored": true,

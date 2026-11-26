@@ -1,0 +1,6 @@
+{
+  "schema": "poie.s5v-n21rh-crash/1",
+  "claim_without_commit": "FAIL_CLOSED_REPLAY_REJECTED",
+  "exactly_once": "NOT_ESTABLISHED",
+  "at_most_once_attempt": "VERIFIED"
+}

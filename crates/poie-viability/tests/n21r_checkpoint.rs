@@ -332,3 +332,74 @@ fn every_recovery_relevant_field_changes_commitment_and_trusted_verifier_rejects
     assert!(verify_checkpoint_file(&path, &trusted).is_err());
     std::fs::remove_file(&path).ok();
 }
+#[test]
+fn durable_ledger_rejects_crash_before_commit_and_second_claim() {
+    use poie_viability::engine::{FileAuthorizationLedger, LedgerClaim};
+    let dir = std::env::temp_dir().join(format!("poie-n21rh-ledger-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let ledger = FileAuthorizationLedger::new(&dir);
+    assert_eq!(ledger.claim_id("auth-crash").unwrap(), LedgerClaim::Claimed);
+    assert_eq!(ledger.claim_id("auth-crash").unwrap(), LedgerClaim::InProgressOrFailedClosed);
+    ledger.commit_id("auth-crash", "result-1").unwrap();
+    assert_eq!(ledger.claim_id("auth-crash").unwrap(), LedgerClaim::AlreadyCommitted);
+    std::fs::remove_dir_all(&dir).ok();
+}
+#[test]
+fn cross_process_concurrent_claim_has_exactly_one_winner() {
+    use std::process::{Command, Stdio};
+    let dir = std::env::temp_dir().join(format!("poie-n21rh-xproc-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    let exe = env!("CARGO_BIN_EXE_poie-s5v-n21rh-ledger-claim");
+    let mut children: Vec<_> = (0..8)
+        .map(|_| {
+            Command::new(exe).arg(&dir).arg("same-auth").stdout(Stdio::null()).stderr(Stdio::null()).spawn().unwrap()
+        })
+        .collect();
+    let mut winners = 0;
+    for child in &mut children {
+        if child.wait().unwrap().success() {
+            winners += 1;
+        }
+    }
+    assert_eq!(winners, 1, "exactly one process may claim the authorization");
+    std::fs::remove_dir_all(&dir).ok();
+}
+#[test]
+fn authorization_signature_issuer_expiry_and_proposal_binding_are_enforced() {
+    let (model, options, group, cp, proposal) = fixtures();
+    let mut auth = unique_auth(&cp, &proposal);
+    auth.issuer_id = "forged-issuer".into();
+    assert!(matches!(
+        resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap().termination,
+        poie_viability::engine::EngineTermination::Blocked(_)
+    ));
+    let mut auth = unique_auth(&cp, &proposal);
+    auth.signature = "00".into();
+    assert!(matches!(
+        resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap().termination,
+        poie_viability::engine::EngineTermination::Blocked(_)
+    ));
+    let mut auth = unique_auth(&cp, &proposal);
+    auth.expiration_s = 0.0;
+    auth.signature = String::new();
+    assert!(auth.verify(&cp, &proposal, cp.at_s).is_err());
+    let auth = unique_auth(&cp, &proposal);
+    let mut other = proposal.clone();
+    other.proposal_id = "other".into();
+    assert!(auth.verify(&cp, &other, cp.at_s).is_err());
+}
+#[test]
+fn durable_resume_commits_and_blocks_replay() {
+    use poie_viability::engine::{resume_engine_with_durable_authorization, FileAuthorizationLedger};
+    let (model, options, group, cp, proposal) = fixtures();
+    let auth = unique_auth(&cp, &proposal);
+    let dir = std::env::temp_dir().join(format!("poie-n21rh-durable-resume-{}", std::process::id()));
+    let ledger = FileAuthorizationLedger::new(&dir);
+    let first =
+        resume_engine_with_durable_authorization(&model, &options, &group, &cp, &auth, &proposal, &ledger).unwrap();
+    assert_eq!(first.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
+    let second =
+        resume_engine_with_durable_authorization(&model, &options, &group, &cp, &auth, &proposal, &ledger).unwrap();
+    assert!(matches!(second.termination, poie_viability::engine::EngineTermination::Blocked(_)));
+    std::fs::remove_dir_all(&dir).ok();
+}
