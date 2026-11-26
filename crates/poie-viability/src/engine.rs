@@ -788,7 +788,6 @@ pub struct ReplanAuthorization {
 
 impl ReplanAuthorization {
     #[allow(clippy::too_many_arguments)]
-    #[allow(clippy::too_many_arguments)]
     fn signing_text(
         id: &str,
         issuer: &str,
