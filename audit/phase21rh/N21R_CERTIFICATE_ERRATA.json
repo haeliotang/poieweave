@@ -1,0 +1,22 @@
+{
+  "original_certificate": "audit/phase21r/N21R_EXTERNAL_VALIDATION_CERTIFICATE.json",
+  "original_limitations": [
+    "automatic reducer not implemented",
+    "full 17-item state mutation matrix not complete"
+  ],
+  "original_sha256": "f56d3b21f33030e2aea0c947b34a3583d7cdc2499f4c018fb296ef6a2512a991",
+  "review_findings": [
+    {
+      "evidence": "audit/phase21rh/reducer/results.json",
+      "limitation": "automatic reducer",
+      "resolution": "actual normal/mutant FMU re-execution, 27000 -> 11400, signature preserved"
+    },
+    {
+      "evidence": "audit/phase21rh/checkpoint-mutations/results.json",
+      "limitation": "state mutation matrix",
+      "resolution": "16-field SHA-256 checkpoint commitment and trusted provenance tests"
+    }
+  ],
+  "schema": "poie.s5v-n21rh-n21r-certificate-errata/1",
+  "status": "SUPPLEMENTED_NOT_REWRITTEN"
+}

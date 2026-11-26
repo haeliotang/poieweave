@@ -1,0 +1,49 @@
+{
+  "canonical_version": "v12 (v11 frozen)",
+  "checkpoint_schema": "poie.repair-checkpoint/v12",
+  "commitment": "SHA-256 domain-separated canonical state",
+  "evidence": {
+    "audit/phase21rh/BOUNDED_DOMAIN_REPRESENTABILITY.json": "b2fcde621697f2a1911128973a6c0a89eec485335c450493b5f429cc919d821a",
+    "audit/phase21rh/authorization-replay/results.json": "f5210e4a49bc87b65f4ae4bde98a4622747deb8bd0a564392a7faf055c3dc975",
+    "audit/phase21rh/checkpoint-mutations/results.json": "a0584236cc1a005c9e1eb75e0eedcd9297f2ca24fa937182dcc4ea72bd41bf74",
+    "audit/phase21rh/crash-tests/results.json": "7c566dd305cfe2433c9c29bd8b777fd3bb5983ff61d90673b2bc220ce4fd2e30",
+    "audit/phase21rh/importer-comparisons/strict.json": "71f85d68ab72d8c36484015391b1a1e413fa13b22e0f504a945f7e97c0e93a10",
+    "audit/phase21rh/reducer/results.json": "6829ad3cd2e87da34fbb74617703ca635538c17ae34b122fa0df4fc537c7bbfb",
+    "docs/research/canonical-claim-certificate-index-v12.json": "5a66a4978ba983f8beaf0a1a078e000be1f804eed499d4259d4f650f30fc018d"
+  },
+  "inputs": {
+    "engine": {
+      "path": "crates/poie-viability/src/engine.rs",
+      "sha256": "74e3e42f416ec5c9cb66bbf18e2e317cd48598c8b060ed4fa74d3317efde3051"
+    },
+    "fmi_harness": {
+      "path": "external/fmu-n21r-replanning/harness.c",
+      "sha256": "a963b43d8f723bb57fdfa28e9986aff8a8173e478c55a1096565cab4afc11da4"
+    },
+    "fmi_model": {
+      "path": "external/fmu-n21r-replanning/model.c",
+      "sha256": "33afbd584d3d535b27e21f3368251d8b717aecac66e63c4973aae6ffbff8dbc9"
+    },
+    "v12_verifier": {
+      "path": "scripts/verify-canonical-claim-certificates-v12.py",
+      "sha256": "c699ace57506b192dc160b45b49732dac24117c56b8cd40848faaa641a019558"
+    }
+  },
+  "kind": "N21RH_EXTERNAL_VALIDATION_CERTIFICATE",
+  "limitations": [
+    "file-based research ledger, not distributed exactly-once",
+    "event-level FMI conformance NOT ESTABLISHED",
+    "checkpoint lineage only one predecessor commitment in trusted set",
+    "3 bounded-domain cases remain not representable"
+  ],
+  "not_an_s2_certificate": true,
+  "results": {
+    "checkpoint_fields": 16,
+    "cross_process_claim": "exactly_one_winner",
+    "domain_still_not_representable": 3,
+    "reducer": "27000->11400",
+    "strict_comparator": "accepted_with_negatives"
+  },
+  "schema": "poie.s5v-n21rh-external-validation-certificate/1",
+  "scope": "checkpoint integrity, durable one-shot claim, strict observable-field conformance, automatic reduction"
+}

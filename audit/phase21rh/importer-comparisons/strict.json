@@ -47,6 +47,114 @@
       "match": true
     }
   },
+  "cases": [
+    {
+      "t1": 7200.0,
+      "t2": 10800.0,
+      "failure": 9000.0,
+      "fields": {
+        "checkpoint_at": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "completed_A": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "unfinished_B": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "failed_m1": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "selected_robot_B": {
+          "c": 2,
+          "fmpy": 2.0,
+          "match": true
+        },
+        "restored": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "resumed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "completed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "survived_s": {
+          "c": 19800,
+          "fmpy": 19800.0,
+          "match": true
+        }
+      },
+      "match": true
+    },
+    {
+      "t1": 7200.0,
+      "t2": 10800.0,
+      "failure": 5000.0,
+      "fields": {
+        "checkpoint_at": {
+          "c": 5000,
+          "fmpy": 5000.0,
+          "match": true
+        },
+        "completed_A": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "unfinished_B": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "failed_m1": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "selected_robot_B": {
+          "c": 2,
+          "fmpy": 2.0,
+          "match": true
+        },
+        "restored": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "resumed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "completed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "survived_s": {
+          "c": 15800,
+          "fmpy": 15800.0,
+          "match": true
+        }
+      },
+      "match": true
+    }
+  ],
   "negatives": {
     "WRONG_CHECKPOINT_TIME": true,
     "WRONG_SELECTED_ROBOT": true,
