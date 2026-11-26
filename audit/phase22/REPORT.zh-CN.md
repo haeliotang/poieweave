@@ -90,3 +90,15 @@ FAIL 0
 ```
 
 证据：`fixed-cases/matrix.json`、`EVIDENCE.md`、`manifests/evidence.json`。
+
+## 最终结论
+
+```text
+S5-V N22 RECOVERY CHOICE-SET INDEPENDENCE
+AND DECISION VALIDITY CHALLENGE
+  ESTABLISHED (SCOPED)
+```
+
+关键边界：single unfinished task / single failure bounded domain；N22-07 双任务共享资源
+与 N22-14 continuation 后再次故障仍 NOT_REPRESENTABLE，未计为 PASS。文件型 research
+ledger 与 8-event FMI journal 均不是工业级安全认证。
