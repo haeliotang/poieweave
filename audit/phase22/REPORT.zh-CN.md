@@ -8,7 +8,7 @@ N22-A CANDIDATE GENERATION    VERIFIED (BOUNDED PYTHON DOMAIN)
 N22-B DECISION VALIDITY       VERIFIED (BOUNDED)
 N22-C CHOICE-SET INTEGRITY    VERIFIED (BOUNDED)
 N22-D AUTHORIZED EXECUTION    PARTIAL — binding verifier only, no native execution
-N22-E CROSS-MODEL             NOT ESTABLISHED
+N22-E CROSS-MODEL             VERIFIED (OBSERVABLE FIELDS + NATIVE JOURNAL)
 N22-F ADVERSARIAL/CERT        PARTIAL — CANDIDATE-PIPELINE MUTANTS + REDUCER
 ```
 
@@ -60,3 +60,22 @@ Choice-set certificate、bounded optimality、stale/swap/substitution 负例均�
 - proposal.task_robots 必须等于 selected_candidate_resources。
 - 合法 robot-m3 候选完成 continuation；候选不在集合、资源不匹配均 BLOCKED。
 - 外部推荐 robot-m2，但授权 robot-m3 可执行，记录非最优授权选择。
+
+### N22 FMI / C-fmpy
+
+`external/fmu-n22-recovery-choice/` 独立模型支持 selectedCandidate 2/3 与 8 事件
+原生 journal（CheckpointObserved, RepairInterrupted, CandidateSelected,
+AuthorizationValidated, RepairResumed, TaskRestarted, TaskCompleted,
+RestorationCommitted）。
+
+4 个 importer cases：
+
+```text
+candidate 2 + auth   match
+candidate 3 + auth   match (AUTHORIZED_NON_OPTIMAL_CHOICE)
+candidate 2 no auth  match
+candidate 9 invalid  match
+```
+
+9 个 false-pass 负例全部拒绝，包括 wrong executed robot、event order、
+missing/duplicate/post-termination event。

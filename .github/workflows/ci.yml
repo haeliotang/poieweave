@@ -2525,12 +2525,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install importer dependencies
+        run: python3 -m pip install -q fmpy==0.3.32 numpy
       - name: Candidate set and choice-set checks
         run: |
+          external/fmu-n22-recovery-choice/build.sh
           python3 audit/phase22/proposal_commitment.py
           python3 audit/phase22/build_choice_set.py
           python3 audit/phase22/verify_choice_set.py
           python3 audit/phase22/mutants_reducer.py
+          python3 audit/phase22/strict_n22.py
+          python3 audit/phase22/make_certificate.py
+          python3 audit/phase22/check_certificate.py
+          python3 audit/phase22/tamper_certificate.py
 
   deny:
     name: cargo-deny (${{ matrix.checks }})

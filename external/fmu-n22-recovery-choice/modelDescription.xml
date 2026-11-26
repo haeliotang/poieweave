@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription fmiVersion="3.0" modelName="poie_n22_recovery_choice" instantiationToken="{e9f4d1b5-6c7a-4d2e-9f5b-n22choice0001}" description="Independent checkpoint/resume scheduler" generationTool="hand-written C99" generationDateAndTime="2026-11-26T00:00:00Z">
+  <CoSimulation modelIdentifier="poie_n22_recovery_choice" canHandleVariableCommunicationStepSize="true" hasEventMode="false"/>
+  <ModelVariables>
+    <Float64 name="time" valueReference="1" causality="independent" variability="continuous"/>
+    <Float64 name="t1Duration_s" valueReference="3" causality="input" variability="discrete" start="7200"/>
+    <Float64 name="t2Duration_s" valueReference="4" causality="input" variability="discrete" start="10800"/>
+    <Float64 name="failureTime_s" valueReference="5" causality="input" variability="discrete" start="9000"/>
+    <Float64 name="authorizationValid" valueReference="10" causality="input" variability="discrete" start="0"/>
+    <Float64 name="proposalRobot" valueReference="11" causality="input" variability="discrete" start="1"/>
+    <Float64 name="resumeRequest" valueReference="12" causality="input" variability="discrete" start="0"/>
+    <Float64 name="completed" valueReference="20" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="failedRobotM1" valueReference="22" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="interrupted" valueReference="23" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="checkpointAt_s" valueReference="24" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="completedA" valueReference="25" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="unfinishedB" valueReference="26" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="taskBRobot" valueReference="27" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="restored" valueReference="28" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="resumed" valueReference="29" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="selectedCandidate" valueReference="31" causality="input" variability="discrete" start="2"/>
+    <Float64 name="executedRobot" valueReference="32" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="candidateAccepted" valueReference="33" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="rejectionReason" valueReference="34" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="rejected" valueReference="30" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventCount" valueReference="40" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventKindLast" valueReference="41" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventTimeLast" valueReference="42" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventKind0" valueReference="50" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventKind1" valueReference="51" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventKind2" valueReference="52" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventKind3" valueReference="53" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventKind4" valueReference="54" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventKind5" valueReference="55" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventKind6" valueReference="56" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventKind7" valueReference="57" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventTime0" valueReference="60" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventTime1" valueReference="61" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventTime2" valueReference="62" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventTime3" valueReference="63" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventTime4" valueReference="64" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventTime5" valueReference="65" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventTime6" valueReference="66" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="eventTime7" valueReference="67" causality="output" variability="discrete" initial="calculated"/>
+  </ModelVariables>
+  <ModelStructure>
+    <Output valueReference="20"/><Output valueReference="22"/><Output valueReference="23"/><Output valueReference="24"/>
+    <Output valueReference="25"/><Output valueReference="26"/><Output valueReference="27"/><Output valueReference="28"/>
+    <Output valueReference="29"/><Output valueReference="30"/><Output valueReference="32"/><Output valueReference="33"/><Output valueReference="34"/><Output valueReference="40"/><Output valueReference="41"/><Output valueReference="42"/>
+    <Output valueReference="50"/><Output valueReference="51"/><Output valueReference="52"/><Output valueReference="53"/><Output valueReference="54"/><Output valueReference="55"/><Output valueReference="56"/><Output valueReference="57"/>
+    <Output valueReference="60"/><Output valueReference="61"/><Output valueReference="62"/><Output valueReference="63"/><Output valueReference="64"/><Output valueReference="65"/><Output valueReference="66"/><Output valueReference="67"/>
+  </ModelStructure>
+</fmiModelDescription>
