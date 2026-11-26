@@ -1,0 +1,239 @@
+{
+  "schema": "poie.s5v-n21rh-reducer/1",
+  "complexity_metric": "t1Duration_s + t2Duration_s + failureTime_s",
+  "original": {
+    "t1": 7200.0,
+    "t2": 10800.0,
+    "failure": 9000.0,
+    "complexity": 27000.0
+  },
+  "minimized": {
+    "t1": 100.0,
+    "t2": 10800.0,
+    "failure": 500.0,
+    "complexity": 11400.0
+  },
+  "accepted_reductions": [
+    "reduce_task_A_duration:3600.0",
+    "reduce_task_A_duration:1000.0",
+    "reduce_task_A_duration:100.0",
+    "reduce_failure_time:5000.0",
+    "reduce_failure_time:1000.0",
+    "reduce_failure_time:500.0"
+  ],
+  "attempts": [
+    {
+      "candidate": "reduce_task_A_duration",
+      "t1": 3600.0,
+      "t2": 10800.0,
+      "failure": 9000.0,
+      "signature_preserved": true,
+      "baseline": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 9000,
+        "completedA": 1,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 19800
+      },
+      "mutant": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 9000,
+        "completedA": 0,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 19800
+      }
+    },
+    {
+      "candidate": "reduce_task_A_duration",
+      "t1": 1000.0,
+      "t2": 10800.0,
+      "failure": 9000.0,
+      "signature_preserved": true,
+      "baseline": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 9000,
+        "completedA": 1,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 19800
+      },
+      "mutant": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 9000,
+        "completedA": 0,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 19800
+      }
+    },
+    {
+      "candidate": "reduce_task_A_duration",
+      "t1": 100.0,
+      "t2": 10800.0,
+      "failure": 9000.0,
+      "signature_preserved": true,
+      "baseline": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 9000,
+        "completedA": 1,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 19800
+      },
+      "mutant": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 9000,
+        "completedA": 0,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 19800
+      }
+    },
+    {
+      "candidate": "reduce_failure_time",
+      "t1": 100.0,
+      "t2": 10800.0,
+      "failure": 5000.0,
+      "signature_preserved": true,
+      "baseline": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 5000,
+        "completedA": 1,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 15800
+      },
+      "mutant": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 5000,
+        "completedA": 0,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 15800
+      }
+    },
+    {
+      "candidate": "reduce_failure_time",
+      "t1": 100.0,
+      "t2": 10800.0,
+      "failure": 1000.0,
+      "signature_preserved": true,
+      "baseline": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 1000,
+        "completedA": 1,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 11800
+      },
+      "mutant": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 1000,
+        "completedA": 0,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 11800
+      }
+    },
+    {
+      "candidate": "reduce_failure_time",
+      "t1": 100.0,
+      "t2": 10800.0,
+      "failure": 500.0,
+      "signature_preserved": true,
+      "baseline": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 500,
+        "completedA": 1,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 11300
+      },
+      "mutant": {
+        "completed": 1,
+        "failedRobotM1": 1,
+        "checkpointAt_s": 500,
+        "completedA": 0,
+        "unfinishedB": 1,
+        "taskBRobot": 2,
+        "restored": 1,
+        "resumed": 1,
+        "rejected": 0,
+        "survived_s": 11300
+      }
+    }
+  ],
+  "signature": "COMPLETED_TASK_ERASURE",
+  "signature_preserved": true,
+  "baseline_output": {
+    "completed": 1,
+    "failedRobotM1": 1,
+    "checkpointAt_s": 500,
+    "completedA": 1,
+    "unfinishedB": 1,
+    "taskBRobot": 2,
+    "restored": 1,
+    "resumed": 1,
+    "rejected": 0,
+    "survived_s": 11300
+  },
+  "mutant_output": {
+    "completed": 1,
+    "failedRobotM1": 1,
+    "checkpointAt_s": 500,
+    "completedA": 0,
+    "unfinishedB": 1,
+    "taskBRobot": 2,
+    "restored": 1,
+    "resumed": 1,
+    "rejected": 0,
+    "survived_s": 11300
+  },
+  "replay": "external/fmu-n21r-replanning/harness poie-n21r-replanning.fmu x 1 2 100.0 10800.0 500.0"
+}
