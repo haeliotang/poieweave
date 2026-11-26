@@ -7,8 +7,8 @@ N21RH-0 HISTORY/FALSE-PASS      IN PROGRESS
 N21RH-A CHECKPOINT INTEGRITY    PARTIAL — SHA-256 COMPLETE COMMITMENT + V12
 N21RH-B AUTHORIZATION DURABILITY PARTIAL — FILE LEDGER, PROCESS AUTH, STRICT RESUME WRAPPER
 N21RH-C FMI CONFORMANCE         PARTIAL — STRICT FIELD COMPARATOR, NO EVENT JOURNAL
-N21RH-D REDUCER                 IN PROGRESS
-N21RH-E DOMAIN BOUNDARY         IN PROGRESS
+N21RH-D REDUCER                 VERIFIED — 27000 -> 11400, SIGNATURE PRESERVED
+N21RH-E DOMAIN BOUNDARY         VERIFIED — 3 STILL NOT REPRESENTABLE
 N21RH-F CERTIFICATE             PARTIAL — V12 SUCCESSORS ISSUED
 ```
 
@@ -43,6 +43,29 @@ N21RH-F CERTIFICATE             PARTIAL — V12 SUCCESSORS ISSUED
 `audit/phase21rh/strict_compare.py` 只比较 C harness 与 fmpy 原生输出字段，
 删除 `or` 与固定 19800 回退。5 个 false-pass 负例均被拒绝；缺失字段视为
 不匹配。FMI 事件 journal 未提供，事件级等价 NOT ESTABLISHED。
+
+### Phase D 自动 reducer
+
+`audit/phase21rh/reducer_auto.py` 真实构建 normal/M3 FMU，并对候选 t1Duration、
+failureTime 重执行：
+
+```text
+original complexity (t1+t2+failure) = 27000
+minimized complexity               = 11400
+t1 7200 -> 100
+failure 9000 -> 500
+signature COMPLETED_TASK_ERASURE preserved
+```
+
+证据：`reducer/results.json`、`minimized_contract.json`、`replay.sh`。
+
+### Phase E 边界
+
+3 个原 NOT_REPRESENTABLE 场景全部重新审计，仍不可表示：
+
+```text
+previously 3 / newly 0 / still 3
+```
 
 ## 未完成
 
