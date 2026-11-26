@@ -1,0 +1,41 @@
+{
+  "schema": "poie.s5v-n22-proposal-commitment/1",
+  "algorithm": "SHA-256",
+  "proposal_schema": "poie.replan-proposal/v13",
+  "base_commitment": "36107abf2f4591f5d66039b7a5ba2178bc7b6295c046b2d68db3a28522f7781c",
+  "mutations": [
+    {
+      "mutation": "MUTATED_SELECTED_ROBOT",
+      "commitment": "ae18c83e4441f4125629198ad94bba26343d783ee2c0b6f14926116b4ba8e219",
+      "changed": true
+    },
+    {
+      "mutation": "MUTATED_TASK_ID",
+      "commitment": "f41b429199f1fd395b07d1555d488768f2159f603a9a60a41afea6f8af6f016b",
+      "changed": true
+    },
+    {
+      "mutation": "MUTATED_CHECKPOINT_BINDING",
+      "commitment": "489e84c19820187a271c07cf6eca64f4d62e8ce5621ab3e416a5ef9913ef2637",
+      "changed": true
+    },
+    {
+      "mutation": "MUTATED_CONSTRAINT",
+      "commitment": "dc7b06b4d62547f8b9950f69fbcdd9893f781bdc8e77c6661a8f23f42816fed3",
+      "changed": true
+    },
+    {
+      "mutation": "INVALID_SCHEMA",
+      "commitment": null,
+      "changed": true
+    }
+  ],
+  "all_mutations_detected": true,
+  "id_only_change_changes_commitment": true,
+  "semantics": {
+    "proposal_id": "label only",
+    "commitment": "content identity",
+    "checkpoint_hash": "trusted checkpoint identity",
+    "authorization_id": "separate authority record"
+  }
+}
