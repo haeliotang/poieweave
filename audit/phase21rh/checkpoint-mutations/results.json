@@ -1,0 +1,90 @@
+{
+  "schema": "poie.s5v-n21rh-checkpoint-mutations/1",
+  "algorithm": "SHA-256",
+  "schema_version": "poie.repair-checkpoint/v12",
+  "mutations": [
+    {
+      "field": "completed_tasks",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "unfinished_tasks",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "selected_resources",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "active_dependencies",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "applied_failures",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "pending_failures",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "remaining_failures",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "inventory",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "asset_statuses",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "completed_plans",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "completed_planning_base",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "trace_history",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "predecessor_hash",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "event_sequence",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "event_batch_sequence",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    },
+    {
+      "field": "source_environment",
+      "commitment_changed": true,
+      "verifier_result": "REJECTED"
+    }
+  ],
+  "recomputed_untrusted_hash": "REJECTED_BY_TRUSTED_LEDGER",
+  "file_tamper": "REJECTED",
+  "old_algorithm": "64-bit DefaultHasher over partial fields (superseded)"
+}
