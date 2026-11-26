@@ -1,0 +1,412 @@
+{
+  "checkpoint": {
+    "state_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "at_s": 9000.0,
+    "failed_assets": [
+      "robot-m1",
+      "bus-1"
+    ],
+    "completed_tasks": [
+      "A"
+    ],
+    "unfinished_tasks": [
+      "B"
+    ],
+    "restoration_target": "a-lathe"
+  },
+  "contract": {
+    "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+    "task_duration_s": 10800.0,
+    "horizon_s": 72000.0,
+    "tools": {
+      "tool-t1": "failed"
+    },
+    "robot_options": [
+      {
+        "robot": "robot-m2",
+        "start_offset_s": 0.0,
+        "upstream": [
+          "bus-2"
+        ],
+        "requires_tool": false
+      },
+      {
+        "robot": "robot-m3",
+        "start_offset_s": 1000.0,
+        "upstream": [
+          "bus-3"
+        ],
+        "requires_tool": false
+      },
+      {
+        "robot": "robot-m1",
+        "start_offset_s": 0.0,
+        "upstream": [
+          "bus-1"
+        ],
+        "requires_tool": false
+      },
+      {
+        "robot": "robot-m2-tool",
+        "start_offset_s": 0.0,
+        "upstream": [
+          "bus-2"
+        ],
+        "requires_tool": true
+      },
+      {
+        "robot": "robot-m3",
+        "start_offset_s": 63000.0,
+        "upstream": [
+          "bus-3"
+        ],
+        "requires_tool": false
+      }
+    ]
+  },
+  "generated": [
+    {
+      "schema": "poie.recovery-candidate/v1",
+      "checkpoint_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+      "unfinished_tasks": [
+        "B"
+      ],
+      "selected_resources": {
+        "B": [
+          "robot-m2"
+        ]
+      },
+      "dependency_paths": {
+        "B": [
+          "bus-2"
+        ]
+      },
+      "required_tools": [],
+      "task_schedule": {
+        "B": {
+          "start_s": 9000.0,
+          "end_s": 19800.0
+        }
+      },
+      "expected_makespan": 19800.0,
+      "remaining_horizon": 63000.0,
+      "feasibility_status": "FEASIBLE",
+      "rejection_reasons": [],
+      "candidate_id": "d8f181e4e3a50c00365812a326702497740b111abecdd5a888083cbaf4272480"
+    },
+    {
+      "schema": "poie.recovery-candidate/v1",
+      "checkpoint_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+      "unfinished_tasks": [
+        "B"
+      ],
+      "selected_resources": {
+        "B": [
+          "robot-m3"
+        ]
+      },
+      "dependency_paths": {
+        "B": [
+          "bus-3"
+        ]
+      },
+      "required_tools": [],
+      "task_schedule": {
+        "B": {
+          "start_s": 10000.0,
+          "end_s": 20800.0
+        }
+      },
+      "expected_makespan": 20800.0,
+      "remaining_horizon": 63000.0,
+      "feasibility_status": "FEASIBLE",
+      "rejection_reasons": [],
+      "candidate_id": "c941a24dd5554c73eca2852e58ecfd074b974f854673a3af25a307cde4962b40"
+    }
+  ],
+  "rejected": [
+    {
+      "schema": "poie.recovery-candidate/v1",
+      "checkpoint_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+      "unfinished_tasks": [
+        "B"
+      ],
+      "selected_resources": {
+        "B": [
+          "robot-m1"
+        ]
+      },
+      "dependency_paths": {
+        "B": [
+          "bus-1"
+        ]
+      },
+      "required_tools": [],
+      "task_schedule": {
+        "B": {
+          "start_s": 9000.0,
+          "end_s": 19800.0
+        }
+      },
+      "expected_makespan": 19800.0,
+      "remaining_horizon": 63000.0,
+      "feasibility_status": "REJECTED",
+      "rejection_reasons": [
+        "FAILED_ASSET",
+        "DEPENDENCY_FAILED"
+      ],
+      "candidate_id": "e42932f315839dc9e92771dd5e1ed2a16d7daddaad08f817829c26b5659af978"
+    },
+    {
+      "schema": "poie.recovery-candidate/v1",
+      "checkpoint_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+      "unfinished_tasks": [
+        "B"
+      ],
+      "selected_resources": {
+        "B": [
+          "robot-m2-tool"
+        ]
+      },
+      "dependency_paths": {
+        "B": [
+          "bus-2"
+        ]
+      },
+      "required_tools": [
+        "tool-t1"
+      ],
+      "task_schedule": {
+        "B": {
+          "start_s": 9000.0,
+          "end_s": 19800.0
+        }
+      },
+      "expected_makespan": 19800.0,
+      "remaining_horizon": 63000.0,
+      "feasibility_status": "REJECTED",
+      "rejection_reasons": [
+        "TOOL_AND_UNAVAILABLE"
+      ],
+      "candidate_id": "722c3cb8735890d948ebdde668ac5115b8651581ffe1fac145a39b726f2f113a"
+    },
+    {
+      "schema": "poie.recovery-candidate/v1",
+      "checkpoint_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+      "unfinished_tasks": [
+        "B"
+      ],
+      "selected_resources": {
+        "B": [
+          "robot-m3"
+        ]
+      },
+      "dependency_paths": {
+        "B": [
+          "bus-3"
+        ]
+      },
+      "required_tools": [],
+      "task_schedule": {
+        "B": {
+          "start_s": 72000.0,
+          "end_s": 82800.0
+        }
+      },
+      "expected_makespan": 82800.0,
+      "remaining_horizon": 63000.0,
+      "feasibility_status": "REJECTED",
+      "rejection_reasons": [
+        "HORIZON"
+      ],
+      "candidate_id": "80ce12f058f397c797430af49123b1d22610836b0fd26500e9cff90c8e674bbe"
+    }
+  ],
+  "feasible": [
+    {
+      "schema": "poie.recovery-candidate/v1",
+      "checkpoint_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+      "unfinished_tasks": [
+        "B"
+      ],
+      "selected_resources": {
+        "B": [
+          "robot-m2"
+        ]
+      },
+      "dependency_paths": {
+        "B": [
+          "bus-2"
+        ]
+      },
+      "required_tools": [],
+      "task_schedule": {
+        "B": {
+          "start_s": 9000.0,
+          "end_s": 19800.0
+        }
+      },
+      "expected_makespan": 19800.0,
+      "remaining_horizon": 63000.0,
+      "feasibility_status": "FEASIBLE",
+      "rejection_reasons": [],
+      "candidate_id": "d8f181e4e3a50c00365812a326702497740b111abecdd5a888083cbaf4272480"
+    },
+    {
+      "schema": "poie.recovery-candidate/v1",
+      "checkpoint_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+      "unfinished_tasks": [
+        "B"
+      ],
+      "selected_resources": {
+        "B": [
+          "robot-m3"
+        ]
+      },
+      "dependency_paths": {
+        "B": [
+          "bus-3"
+        ]
+      },
+      "required_tools": [],
+      "task_schedule": {
+        "B": {
+          "start_s": 10000.0,
+          "end_s": 20800.0
+        }
+      },
+      "expected_makespan": 20800.0,
+      "remaining_horizon": 63000.0,
+      "feasibility_status": "FEASIBLE",
+      "rejection_reasons": [],
+      "candidate_id": "c941a24dd5554c73eca2852e58ecfd074b974f854673a3af25a307cde4962b40"
+    }
+  ],
+  "reference": [
+    {
+      "checkpoint_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+      "unfinished_tasks": [
+        "B"
+      ],
+      "selected_resources": {
+        "B": [
+          "robot-m3"
+        ]
+      },
+      "dependency_paths": {
+        "B": [
+          "bus-3"
+        ]
+      },
+      "required_tools": [],
+      "task_schedule": {
+        "B": {
+          "start_s": 10000.0,
+          "end_s": 20800.0
+        }
+      },
+      "expected_makespan": 20800.0,
+      "remaining_horizon": 63000.0,
+      "candidate_id": "c941a24dd5554c73eca2852e58ecfd074b974f854673a3af25a307cde4962b40"
+    },
+    {
+      "checkpoint_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+      "unfinished_tasks": [
+        "B"
+      ],
+      "selected_resources": {
+        "B": [
+          "robot-m2"
+        ]
+      },
+      "dependency_paths": {
+        "B": [
+          "bus-2"
+        ]
+      },
+      "required_tools": [],
+      "task_schedule": {
+        "B": {
+          "start_s": 9000.0,
+          "end_s": 19800.0
+        }
+      },
+      "expected_makespan": 19800.0,
+      "remaining_horizon": 63000.0,
+      "candidate_id": "d8f181e4e3a50c00365812a326702497740b111abecdd5a888083cbaf4272480"
+    }
+  ],
+  "certificate": {
+    "schema": "poie.recovery-choice-set-certificate/v1",
+    "execution_id": "exec-1",
+    "checkpoint_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "proposal_hash": "808edc26b120162c5b1c9a26c6185a0e9c66a1bffc9073f85b0225ab4ea86127",
+    "generated_candidates": [
+      "d8f181e4e3a50c00365812a326702497740b111abecdd5a888083cbaf4272480",
+      "c941a24dd5554c73eca2852e58ecfd074b974f854673a3af25a307cde4962b40"
+    ],
+    "feasible_candidates": [
+      "d8f181e4e3a50c00365812a326702497740b111abecdd5a888083cbaf4272480",
+      "c941a24dd5554c73eca2852e58ecfd074b974f854673a3af25a307cde4962b40"
+    ],
+    "rejected_candidates": [
+      "e42932f315839dc9e92771dd5e1ed2a16d7daddaad08f817829c26b5659af978",
+      "722c3cb8735890d948ebdde668ac5115b8651581ffe1fac145a39b726f2f113a",
+      "80ce12f058f397c797430af49123b1d22610836b0fd26500e9cff90c8e674bbe"
+    ],
+    "ranking": [
+      {
+        "position": 1,
+        "candidate_id": "d8f181e4e3a50c00365812a326702497740b111abecdd5a888083cbaf4272480",
+        "makespan": 19800.0,
+        "robot": "robot-m2"
+      },
+      {
+        "position": 2,
+        "candidate_id": "c941a24dd5554c73eca2852e58ecfd074b974f854673a3af25a307cde4962b40",
+        "makespan": 20800.0,
+        "robot": "robot-m3"
+      }
+    ],
+    "preferred_candidate_id": "d8f181e4e3a50c00365812a326702497740b111abecdd5a888083cbaf4272480",
+    "completeness_claim": "BOUNDED_EXHAUSTIVE",
+    "reference_set_size": 2,
+    "soundness": true,
+    "completeness": true,
+    "deduplicated": true,
+    "certificate_hash": "778fa089ef0e1415ae621981d3d83b086e3c7b823b02f4298c68e30c97c5559f"
+  },
+  "ranking_mutations": [
+    {
+      "mutation": "MISSING_FEASIBLE_CANDIDATE",
+      "detected": true
+    },
+    {
+      "mutation": "INVALID_CANDIDATE_RANKED_FIRST",
+      "detected": true
+    },
+    {
+      "mutation": "DUPLICATE_CANDIDATE",
+      "detected": true
+    },
+    {
+      "mutation": "INVALID_CANDIDATE_IN_SET",
+      "detected": true
+    },
+    {
+      "mutation": "SCORE_AFTER_EXECUTION",
+      "detected": true
+    }
+  ],
+  "selected_nonoptimal": "c941a24dd5554c73eca2852e58ecfd074b974f854673a3af25a307cde4962b40",
+  "authorized_non_optimal_choice": true
+}

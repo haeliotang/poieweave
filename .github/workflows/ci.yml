@@ -2517,6 +2517,20 @@ jobs:
           python3 audit/phase21rh/check_certificate.py
           python3 audit/phase21rh/tamper_certificate.py
 
+  s5v-n22-choice-linux:
+    name: S5-V N22 candidate choice-set Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Candidate set and choice-set checks
+        run: |
+          python3 audit/phase22/proposal_commitment.py
+          python3 audit/phase22/build_choice_set.py
+          python3 audit/phase22/verify_choice_set.py
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest
