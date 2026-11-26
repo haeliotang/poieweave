@@ -44,3 +44,12 @@ selected  = robot-m3 -> AUTHORIZED_NON_OPTIMAL_CHOICE
 
 Choice-set certificate、bounded optimality、stale/swap/substitution 负例均通过；
 尚无 native canonical/FMI 执行 selected candidate。
+
+### Proposal v13 canonical integration
+
+- `ReplanProposal` schema `poie.replan-proposal/v13`，SHA-256 内容承诺。
+- 字段：proposal_id、execution_id、checkpoint_hash、group_id、unfinished_task_ids、task_robots、constraints、choice_set_certificate_hash、selected_candidate_hash。
+- Authorization v2 签名绑定 proposal_hash、choice_set_certificate_hash、selected_candidate_hash。
+- resume 强制 execution/checkpoint/group/unfinished-task/candidate 绑定。
+- 测试：授权后修改 candidate、checkpoint、execution id 全部拒绝；合法 proposal 执行完成。
+- v12 41 证书字节冻结；v13 41 个 `AUTHORIZATION_SEMANTIC_CORRECTION` successors 签发并通过 verifier/tamper。

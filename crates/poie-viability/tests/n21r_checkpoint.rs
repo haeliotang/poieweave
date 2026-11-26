@@ -125,7 +125,7 @@ fn native_checkpoint_resume_replans_unfinished_b_only() {
     assert_eq!(cp.completed_tasks, vec!["A".to_string()]);
     assert_eq!(cp.unfinished_tasks, vec!["B".to_string()]);
     assert_eq!(cp.asset_statuses.get("robot-m1"), Some(&AssetStatus::Failed));
-    let mut proposal = ReplanProposal { proposal_id: "p".into(), task_robots: Default::default() };
+    let mut proposal = make_proposal(&cp, "p");
     proposal.task_robots.insert("B".into(), vec!["robot-m2".into()]);
     let auth = unique_auth(&cp, &proposal);
     let resumed = resume_engine_with_authorization(&model, &options, &group(), &cp, &auth, &proposal).unwrap();
@@ -148,6 +148,19 @@ fn unique_auth(cp: &RepairCheckpoint, proposal: &ReplanProposal) -> ReplanAuthor
         "ONE_SHOT_REPLAN",
     )
 }
+fn make_proposal(cp: &RepairCheckpoint, id: &str) -> ReplanProposal {
+    ReplanProposal {
+        proposal_id: id.into(),
+        execution_id: cp.execution_id.clone(),
+        checkpoint_hash: cp.compute_state_hash(),
+        group_id: cp.group_id.clone(),
+        unfinished_task_ids: cp.unfinished_tasks.clone(),
+        task_robots: Default::default(),
+        proposal_constraints: vec!["one-shot".into()],
+        choice_set_certificate_hash: "cert".into(),
+        selected_candidate_hash: "cand".into(),
+    }
+}
 fn fixtures() -> (Model, EngineOptions<'static>, ExplicitRepairGroup, RepairCheckpoint, ReplanProposal) {
     let model = model();
     let options = EngineOptions {
@@ -162,7 +175,7 @@ fn fixtures() -> (Model, EngineOptions<'static>, ExplicitRepairGroup, RepairChec
     };
     let (_, checkpoint) = run_engine_with_repair_group_to_checkpoint(&model, &options, &group(), "exec-neg").unwrap();
     let cp = checkpoint.unwrap();
-    let mut proposal = ReplanProposal { proposal_id: "p".into(), task_robots: Default::default() };
+    let mut proposal = make_proposal(&cp, "p");
     proposal.task_robots.insert("B".into(), vec!["robot-m2".into()]);
     (model, options, group(), cp, proposal)
 }
@@ -187,7 +200,7 @@ fn checkpoint_state_tamper_invalidates_authorization() {
 #[test]
 fn failed_robot_alternative_is_rejected() {
     let (model, options, group, cp, _) = fixtures();
-    let mut proposal = ReplanProposal { proposal_id: "bad".into(), task_robots: Default::default() };
+    let mut proposal = make_proposal(&cp, "p");
     proposal.task_robots.insert("B".into(), vec!["robot-m1".into()]);
     let auth = unique_auth(&cp, &proposal);
     let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
@@ -195,10 +208,12 @@ fn failed_robot_alternative_is_rejected() {
 }
 #[test]
 fn horizon_insufficient_blocks_continuation() {
-    let (model, mut options, group, _, proposal) = fixtures();
+    let (model, mut options, group, _, _) = fixtures();
     options.horizon_s = 15000.0;
     let (_, cp) = run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "exec-h").unwrap();
     let cp = cp.unwrap();
+    let mut proposal = make_proposal(&cp, "p");
+    proposal.task_robots.insert("B".into(), vec!["robot-m2".into()]);
     let auth = unique_auth(&cp, &proposal);
     let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
     assert!(matches!(
@@ -209,10 +224,12 @@ fn horizon_insufficient_blocks_continuation() {
 }
 #[test]
 fn failure_during_continuation_blocks_second_replan() {
-    let (model, mut options, group, _, proposal) = fixtures();
+    let (model, mut options, group, _, _proposal) = fixtures();
     options.failures.push(FailureEvent { at_s: 15000.0, asset: "robot-m2".into() });
     let (_, cp) = run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "exec-f").unwrap();
     let cp = cp.unwrap();
+    let mut proposal = make_proposal(&cp, "p");
+    proposal.task_robots.insert("B".into(), vec!["robot-m2".into()]);
     let auth = unique_auth(&cp, &proposal);
     let out = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
     assert!(
@@ -405,4 +422,31 @@ fn durable_resume_commits_and_blocks_replay() {
         resume_engine_with_durable_authorization(&model, &options, &group, &cp, &auth, &proposal, &ledger).unwrap();
     assert!(matches!(second.termination, poie_viability::engine::EngineTermination::Blocked(_)));
     std::fs::remove_dir_all(&dir).ok();
+}
+#[test]
+fn proposal_mutations_after_authorization_are_rejected() {
+    let (model, options, group, cp, _) = fixtures();
+    let mut proposal = make_proposal(&cp, "proposal-v13");
+    proposal.task_robots.insert("B".into(), vec!["robot-m2".into()]);
+    let auth = unique_auth(&cp, &proposal);
+    let mut changed = proposal.clone();
+    changed.selected_candidate_hash = "other-candidate".into();
+    assert!(matches!(
+        resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &changed).unwrap().termination,
+        poie_viability::engine::EngineTermination::Blocked(_)
+    ));
+    let mut changed = proposal.clone();
+    changed.checkpoint_hash = "0".repeat(64);
+    assert!(matches!(
+        resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &changed).unwrap().termination,
+        poie_viability::engine::EngineTermination::Blocked(_)
+    ));
+    let mut changed = proposal.clone();
+    changed.execution_id = "other-exec".into();
+    assert!(matches!(
+        resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &changed).unwrap().termination,
+        poie_viability::engine::EngineTermination::Blocked(_)
+    ));
+    let valid = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert_eq!(valid.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
 }

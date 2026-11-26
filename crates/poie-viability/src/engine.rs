@@ -712,20 +712,46 @@ pub fn verify_checkpoint_file(path: &std::path::Path, trusted: &BTreeSet<String>
 #[derive(Clone, Debug, PartialEq)]
 pub struct ReplanProposal {
     pub proposal_id: String,
+    pub execution_id: String,
+    pub checkpoint_hash: String,
+    pub group_id: String,
+    pub unfinished_task_ids: Vec<String>,
     pub task_robots: BTreeMap<String, Vec<String>>,
+    pub proposal_constraints: Vec<String>,
+    pub choice_set_certificate_hash: String,
+    pub selected_candidate_hash: String,
 }
 
 impl ReplanProposal {
     pub fn compute_hash(&self) -> String {
-        let text = format!(
-            "{}|{}",
-            self.proposal_id,
-            self.task_robots.iter().map(|(k, v)| format!("{k}={}", v.join(","))).collect::<Vec<_>>().join(";")
-        );
-        let mut hasher = std::collections::hash_map::DefaultHasher::new();
-        use std::hash::{Hash, Hasher};
-        text.hash(&mut hasher);
-        format!("{:016x}", hasher.finish())
+        let mut text = String::from("poie.replan-proposal/v13");
+        let mut push = |tag: &str, value: &str| {
+            text.push_str(&format!("|{tag}:{}:{}", value.len(), value));
+        };
+        push("proposal_id", &self.proposal_id);
+        push("execution_id", &self.execution_id);
+        push("checkpoint_hash", &self.checkpoint_hash);
+        push("group_id", &self.group_id);
+        let mut tasks = self.unfinished_task_ids.clone();
+        tasks.sort();
+        for task in tasks {
+            push("unfinished_task", &task);
+        }
+        for (task, robots) in &self.task_robots {
+            let mut robots = robots.clone();
+            robots.sort();
+            push("task_robots", &format!("{task}={}", robots.join(",")));
+        }
+        let mut constraints = self.proposal_constraints.clone();
+        constraints.sort();
+        for constraint in constraints {
+            push("constraint", &constraint);
+        }
+        push("choice_set_certificate_hash", &self.choice_set_certificate_hash);
+        push("selected_candidate_hash", &self.selected_candidate_hash);
+        let mut hasher = Sha256::new();
+        hasher.update(text.as_bytes());
+        format!("{:x}", hasher.finalize())
     }
 }
 
@@ -739,6 +765,8 @@ pub struct ReplanAuthorization {
     pub execution_id: String,
     pub checkpoint_hash: String,
     pub proposal_hash: String,
+    pub choice_set_certificate_hash: String,
+    pub selected_candidate_hash: String,
     pub scope: String,
     pub issued_at_s: f64,
     pub expiration_s: f64,
@@ -748,18 +776,21 @@ pub struct ReplanAuthorization {
 
 impl ReplanAuthorization {
     #[allow(clippy::too_many_arguments)]
+    #[allow(clippy::too_many_arguments)]
     fn signing_text(
         id: &str,
         issuer: &str,
         exec: &str,
         cp: &str,
         prop: &str,
+        cert: &str,
+        candidate: &str,
         scope: &str,
         issued: f64,
         expires: f64,
         attempts: u32,
     ) -> String {
-        format!("poie.research-authorization/v1|{id}|{issuer}|{exec}|{cp}|{prop}|{scope}|{issued:.6}|{expires:.6}|{attempts}")
+        format!("poie.research-authorization/v2|{id}|{issuer}|{exec}|{cp}|{prop}|{cert}|{candidate}|{scope}|{issued:.6}|{expires:.6}|{attempts}")
     }
     fn signature_for(text: &str) -> String {
         let mut hasher = Sha256::new();
@@ -779,6 +810,8 @@ impl ReplanAuthorization {
             &checkpoint.execution_id,
             &checkpoint.state_hash,
             &proposal.compute_hash(),
+            &proposal.choice_set_certificate_hash,
+            &proposal.selected_candidate_hash,
             scope,
             0.0,
             1.0e12,
@@ -790,6 +823,8 @@ impl ReplanAuthorization {
             execution_id: checkpoint.execution_id.clone(),
             checkpoint_hash: checkpoint.state_hash.clone(),
             proposal_hash: proposal.compute_hash(),
+            choice_set_certificate_hash: proposal.choice_set_certificate_hash.clone(),
+            selected_candidate_hash: proposal.selected_candidate_hash.clone(),
             scope: scope.into(),
             issued_at_s: 0.0,
             expiration_s: 1.0e12,
@@ -813,6 +848,8 @@ impl ReplanAuthorization {
             &self.execution_id,
             &self.checkpoint_hash,
             &self.proposal_hash,
+            &self.choice_set_certificate_hash,
+            &self.selected_candidate_hash,
             &self.scope,
             self.issued_at_s,
             self.expiration_s,
@@ -1350,6 +1387,54 @@ pub fn resume_engine_with_authorization(
         }
     }
     let mut inventory = checkpoint.inventory.clone();
+    if !proposal.execution_id.is_empty() && proposal.execution_id != checkpoint.execution_id {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked("replan_rejected: proposal execution mismatch".into()),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: inventory,
+        });
+    }
+    if !proposal.checkpoint_hash.is_empty() && proposal.checkpoint_hash != checkpoint.compute_state_hash() {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked("replan_rejected: proposal checkpoint mismatch".into()),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: inventory,
+        });
+    }
+    if !proposal.group_id.is_empty() && proposal.group_id != checkpoint.group_id {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked("replan_rejected: proposal group mismatch".into()),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: inventory,
+        });
+    }
+    if !proposal.unfinished_task_ids.is_empty() && {
+        let mut a = proposal.unfinished_task_ids.clone();
+        a.sort();
+        let mut b = checkpoint.unfinished_tasks.clone();
+        b.sort();
+        a != b
+    } {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked("replan_rejected: proposal unfinished tasks mismatch".into()),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: inventory,
+        });
+    }
+    if proposal.selected_candidate_hash.is_empty() || proposal.choice_set_certificate_hash.is_empty() {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked(
+                "replan_rejected: proposal not bound to choice-set candidate".into(),
+            ),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: inventory,
+        });
+    }
     for (task_id, robots) in &proposal.task_robots {
         if !checkpoint.unfinished_tasks.contains(task_id) {
             return Ok(EngineOutcome {
