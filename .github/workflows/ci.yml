@@ -2530,6 +2530,7 @@ jobs:
           python3 audit/phase22/proposal_commitment.py
           python3 audit/phase22/build_choice_set.py
           python3 audit/phase22/verify_choice_set.py
+          python3 audit/phase22/mutants_reducer.py
 
   deny:
     name: cargo-deny (${{ matrix.checks }})
