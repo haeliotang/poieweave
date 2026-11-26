@@ -720,6 +720,8 @@ pub struct ReplanProposal {
     pub proposal_constraints: Vec<String>,
     pub choice_set_certificate_hash: String,
     pub selected_candidate_hash: String,
+    pub choice_set_candidates: Vec<String>,
+    pub selected_candidate_resources: BTreeMap<String, Vec<String>>,
 }
 
 impl ReplanProposal {
@@ -749,6 +751,16 @@ impl ReplanProposal {
         }
         push("choice_set_certificate_hash", &self.choice_set_certificate_hash);
         push("selected_candidate_hash", &self.selected_candidate_hash);
+        let mut candidates = self.choice_set_candidates.clone();
+        candidates.sort();
+        for candidate in candidates {
+            push("choice_set_candidate", &candidate);
+        }
+        for (task, resources) in &self.selected_candidate_resources {
+            let mut resources = resources.clone();
+            resources.sort();
+            push("candidate_resource", &format!("{task}={}", resources.join(",")));
+        }
         let mut hasher = Sha256::new();
         hasher.update(text.as_bytes());
         format!("{:x}", hasher.finalize())
@@ -1429,6 +1441,26 @@ pub fn resume_engine_with_authorization(
         return Ok(EngineOutcome {
             termination: EngineTermination::Blocked(
                 "replan_rejected: proposal not bound to choice-set candidate".into(),
+            ),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: inventory,
+        });
+    }
+    if !proposal.choice_set_candidates.iter().any(|candidate| candidate == &proposal.selected_candidate_hash) {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked(
+                "replan_rejected: selected candidate not in frozen choice set".into(),
+            ),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: inventory,
+        });
+    }
+    if proposal.task_robots != proposal.selected_candidate_resources {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked(
+                "replan_rejected: selected candidate resources do not match proposal".into(),
             ),
             survived_s: checkpoint.at_s,
             trace: checkpoint.trace_history.clone(),
