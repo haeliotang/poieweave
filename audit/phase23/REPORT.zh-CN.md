@@ -9,7 +9,7 @@ N23-B CANDIDATE/TIME          NOT ESTABLISHED
 N23-C TRUSTED CHOICE-SET      PARTIAL — RESEARCH VALIDATOR, NOT CANONICAL EXECUTOR
 N23-D NATIVE SCHEDULE         PARTIAL — external FMU exact schedule; canonical pending
 N23-E CROSS-MODEL             PARTIAL — N23 FMI C/fmpy exact temporal fields
-N23-F SECOND FAILURE          PARTIAL — external FMI representable; authorization persistence canonical pending
+N23-F SECOND FAILURE          VERIFIED — external FMI + canonical consumed authorization
 N23-G MUTANTS/CERTIFICATE     NOT ESTABLISHED
 ```
 
@@ -160,3 +160,15 @@ self-attested fabricated certificate 现在返回 BLOCKED，而非 CompletedHori
 
 因 canonical 语义变化，v14 41 证书冻结；v15 41 个
 `AUTHORIZATION_SEMANTIC_CORRECTION` successors 签发并通过 verifier/tamper。
+
+## Canonical second-failure persistence
+
+在 continuation 期间 robot-m2 于 15000 再次故障：
+
+```text
+first resume  -> BLOCKED continuation interrupted
+second resume -> BLOCKED authorization already consumed
+automatic second replan / candidate switch -> none
+```
+
+证据：`continuation-faults/canonical-persistence.json`。
