@@ -674,3 +674,51 @@ fn n24_canonical_two_unfinished_tasks_can_resume() {
     assert!((completion("C").unwrap() - 12600.0).abs() < 1e-9);
     assert!((completion("B").unwrap() - 19800.0).abs() < 1e-9);
 }
+#[test]
+fn n24_same_robot_two_tasks_do_not_overlap() {
+    use poie_viability::engine::resume_engine_with_authorization_event_observed;
+    let (model, mut options, base_group, _cp, _) = fixtures();
+    options.resources = vec!["robot-m1".into(), "robot-m2".into()];
+    options.alternative_pool = vec!["robot-m1".into(), "robot-m2".into()];
+    let group = ExplicitRepairGroup {
+        group_id: base_group.group_id.clone(),
+        restoration_target: base_group.restoration_target.clone(),
+        lifecycle: base_group.lifecycle,
+        tasks: vec![
+            base_group.tasks[0].clone(),
+            base_group.tasks[1].clone(),
+            ExplicitRepairTask {
+                task_id: "C".into(),
+                process: "n24-task-c".into(),
+                duration_s: 3600.0,
+                robot_alternatives: vec!["robot-m2".into()],
+            },
+        ],
+    };
+    let (_, checkpoint) =
+        run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "n24-same-robot").unwrap();
+    let cp = checkpoint.unwrap();
+    let mut proposal = make_proposal(&cp, "same-robot");
+    proposal.task_robots.insert("B".into(), vec!["robot-m2".into()]);
+    proposal.task_robots.insert("C".into(), vec!["robot-m2".into()]);
+    proposal.selected_candidate_resources = proposal.task_robots.clone();
+    proposal.unfinished_task_ids = cp.unfinished_tasks.clone();
+    refresh_choice_set_certificate(&cp, &mut proposal);
+    let auth = unique_auth(&cp, &proposal);
+    let observed =
+        resume_engine_with_authorization_event_observed(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    let interval = |task: &str, kind: &str| {
+        observed
+            .events
+            .iter()
+            .find(|e| e.target_asset.as_deref() == Some(task) && format!("{:?}", e.kind) == kind)
+            .map(|e| e.at_s)
+    };
+    let b_start = interval("B", "TaskRestarted").unwrap();
+    let b_end = interval("B", "TaskCompleted").unwrap();
+    let c_start = interval("C", "TaskRestarted").unwrap();
+    let c_end = interval("C", "TaskCompleted").unwrap();
+    println!("N24_SAME_ROBOT B={b_start}-{b_end} C={c_start}-{c_end}");
+    let overlap = b_start < c_end - 1e-9 && c_start < b_end - 1e-9;
+    assert!(!overlap, "same robot tasks overlapped: B={b_start}-{b_end} C={c_start}-{c_end}");
+}
