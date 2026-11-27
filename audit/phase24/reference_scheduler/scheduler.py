@@ -51,6 +51,14 @@ def main():
  optimal=min(g,key=lambda c:c["makespan"])
  out={"schema":"poie.s5v-n24-scheduler/1","shared_tool":True,"generated":len(g),"reference":len(r),"soundness":gids<=rids,"completeness":gids==rids,"serial":len(serial),"parallel":len(parallel),"optimal_makespan":optimal["makespan"],"candidates":g}
  (OUT/"two-task-shared-tool.json").write_text(json.dumps(out,indent=2)+"\n")
- print("gen",len(g),"ref",len(r),"serial",len(serial),"parallel",len(parallel),"sound",gids<=rids,"complete",gids==rids,"opt",optimal["makespan"])
- return 0 if gids==rids and len(serial)>=2 and len(parallel)==0 else 1
+ # independent-resource parallel control
+ tools2={"B":None,"C":None}; elig2={"B":["robot-m2","robot-m3"],"C":["robot-m3"]}
+ g2=enumerate_schedules(tasks,elig2,dur,tools2,9000); r2=reference(tasks,elig2,dur,tools2,9000)
+ g2ids={c["candidate_id"] for c in g2}; r2ids={c["candidate_id"] for c in r2}
+ par2=[c for c in g2 if len(set(c["start"].values()))==1]
+ out2={"schema":"poie.s5v-n24-scheduler/1","shared_tool":False,"generated":len(g2),"reference":len(r2),"soundness":g2ids<=r2ids,"completeness":g2ids==r2ids,"parallel":len(par2),"optimal_makespan":min(c["makespan"] for c in g2),"candidates":g2}
+ (OUT/"two-task-independent.json").write_text(json.dumps(out2,indent=2)+"\n")
+ print("shared gen",len(g),"ref",len(r),"serial",len(serial),"parallel",len(parallel),"sound",gids<=rids,"complete",gids==rids,"opt",optimal["makespan"])
+ print("independent gen",len(g2),"ref",len(r2),"parallel",len(par2),"sound",g2ids<=r2ids,"complete",g2ids==r2ids)
+ return 0 if gids==rids and len(serial)>=2 and len(parallel)==0 and g2ids==r2ids and len(par2)>=1 else 1
 if __name__=="__main__": raise SystemExit(main())
