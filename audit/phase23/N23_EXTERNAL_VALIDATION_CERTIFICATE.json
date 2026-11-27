@@ -35,9 +35,9 @@
       "path": "audit/phase22/reference-oracle/reference.py",
       "sha256": "f882c1027a64aec0499a11affb939537f4e054f1a437f9bb568d6d28cf8681b2"
     },
-    "v16_index": {
-      "path": "docs/research/canonical-claim-certificate-index-v16.json",
-      "sha256": "d8da769910f1c63247be3cfbe4a36a8d807d4f380a195d7c72adde2fa5d84fa4"
+    "v17_index": {
+      "path": "docs/research/canonical-claim-certificate-index-v17.json",
+      "sha256": "fe8f2f13e9f7a05280b43f262713af2e1ecd599f625f79b55d93c7ace5baa28e"
     }
   },
   "kind": "N23_EXTERNAL_VALIDATION_CERTIFICATE",
