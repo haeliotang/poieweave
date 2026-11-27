@@ -67,7 +67,7 @@ fn model() -> Model {
     let ai = model.processes.len();
     model.processes.push(a);
     model.restorers.insert("a-lathe".into(), vec![ai]);
-    let mut b = template;
+    let mut b = template.clone();
     b.id = "n14-task-b".into();
     b.inputs.clear();
     b.outputs.clear();
@@ -76,6 +76,15 @@ fn model() -> Model {
     b.restores = vec!["a-lathe".into()];
     b.duration_s = Some(10800.0);
     model.processes.push(b);
+    let mut c = template.clone();
+    c.id = "n24-task-c".into();
+    c.inputs.clear();
+    c.outputs.clear();
+    c.requires_capabilities.clear();
+    c.occupies = vec!["robot-m2".into()];
+    c.restores = vec!["a-lathe".into()];
+    c.duration_s = Some(3600.0);
+    model.processes.push(c);
     model
         .services
         .insert("svc".into(), Service { id: "svc".into(), requires: vec!["a-lathe".into()], requires_any: Vec::new() });
@@ -613,4 +622,42 @@ fn n23_canonical_native_events_match_committed_schedule() {
             && (restarted_at - 10000.0).abs() < 1e-9
             && (completed_at - 20800.0).abs() < 1e-9
     );
+}
+
+#[test]
+fn n24_canonical_two_unfinished_tasks_can_resume() {
+    let (model, mut options, base_group, _cp, _) = fixtures();
+    options.resources.push("robot-m3".into());
+    options.alternative_pool.push("robot-m3".into());
+    let group = ExplicitRepairGroup {
+        group_id: base_group.group_id.clone(),
+        restoration_target: base_group.restoration_target.clone(),
+        lifecycle: base_group.lifecycle,
+        tasks: vec![
+            base_group.tasks[0].clone(),
+            base_group.tasks[1].clone(),
+            ExplicitRepairTask {
+                task_id: "C".into(),
+                process: "n24-task-c".into(),
+                duration_s: 3600.0,
+                robot_alternatives: vec!["robot-m2".into()],
+            },
+        ],
+    };
+    // Produce a real checkpoint with B interrupted while C has not started.
+    let (_, checkpoint) = run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "n24-two-task").unwrap();
+    let cp = checkpoint.expect("checkpoint");
+    assert!(cp.completed_tasks.contains(&"A".to_string()));
+    assert!(cp.unfinished_tasks.contains(&"B".to_string()));
+    assert!(cp.unfinished_tasks.contains(&"C".to_string()));
+    let mut proposal = make_proposal(&cp, "two-task");
+    proposal.task_robots.insert("B".into(), vec!["robot-m3".into()]);
+    proposal.task_robots.insert("C".into(), vec!["robot-m2".into()]);
+    proposal.selected_candidate_resources = proposal.task_robots.clone();
+    proposal.unfinished_task_ids = cp.unfinished_tasks.clone();
+    refresh_choice_set_certificate(&cp, &mut proposal);
+    let auth = unique_auth(&cp, &proposal);
+    let outcome = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    println!("N24_TWO_TASK {:?} survived={}", outcome.termination, outcome.survived_s);
+    assert_eq!(outcome.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
 }
