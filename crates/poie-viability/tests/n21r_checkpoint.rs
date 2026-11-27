@@ -160,10 +160,28 @@ fn unique_auth(cp: &RepairCheckpoint, proposal: &ReplanProposal) -> ReplanAuthor
         "ONE_SHOT_REPLAN",
     )
 }
+fn refresh_choice_set_certificate(cp: &RepairCheckpoint, proposal: &mut ReplanProposal) {
+    let feasible = serde_json::json!([proposal.selected_candidate_hash]);
+    let payload = serde_json::json!({
+        "schema": "poie.recovery-choice-set-certificate/v2",
+        "checkpoint_hash": cp.compute_state_hash(),
+        "execution_id": cp.execution_id,
+        "feasible_candidates": feasible,
+    })
+    .to_string();
+    use sha2::{Digest, Sha256};
+    let mut hasher = Sha256::new();
+    hasher.update(b"poie.choice-set-certificate/v1\x1f");
+    hasher.update(payload.as_bytes());
+    let certificate_hash = format!("{:x}", hasher.finalize());
+    proposal.choice_set_certificate_hash = certificate_hash.clone();
+    proposal.choice_set_certificate_payload = payload;
+    poie_viability::engine::register_trusted_choice_set_for_research(&certificate_hash);
+}
 fn make_proposal(cp: &RepairCheckpoint, id: &str) -> ReplanProposal {
     let mut task_robots = std::collections::BTreeMap::new();
     task_robots.insert("B".to_string(), vec!["robot-m2".to_string()]);
-    ReplanProposal {
+    let mut proposal = ReplanProposal {
         proposal_id: id.into(),
         execution_id: cp.execution_id.clone(),
         checkpoint_hash: cp.compute_state_hash(),
@@ -176,7 +194,22 @@ fn make_proposal(cp: &RepairCheckpoint, id: &str) -> ReplanProposal {
         choice_set_candidates: vec!["cand".into()],
         selected_candidate_resources: task_robots,
         planned_start_s: 0.0,
-    }
+        choice_set_certificate_payload: String::new(),
+    };
+    let payload = format!(
+        "{{\"schema\":\"poie.recovery-choice-set-certificate/v2\",\"checkpoint_hash\":\"{}\",\"execution_id\":\"{}\",\"feasible_candidates\":[\"cand\"]}}",
+        cp.compute_state_hash(),
+        cp.execution_id
+    );
+    use sha2::{Digest, Sha256};
+    let mut hasher = Sha256::new();
+    hasher.update(b"poie.choice-set-certificate/v1\x1f");
+    hasher.update(payload.as_bytes());
+    let certificate_hash = format!("{:x}", hasher.finalize());
+    proposal.choice_set_certificate_hash = certificate_hash.clone();
+    proposal.choice_set_certificate_payload = payload;
+    poie_viability::engine::register_trusted_choice_set_for_research(&certificate_hash);
+    proposal
 }
 fn fixtures() -> (Model, EngineOptions<'static>, ExplicitRepairGroup, RepairCheckpoint, ReplanProposal) {
     let model = model();
@@ -478,12 +511,14 @@ fn native_execution_requires_authorized_candidate_membership() {
     proposal.selected_candidate_resources.insert("B".into(), vec!["robot-m3".into()]);
     proposal.selected_candidate_hash = "candidate-m3".into();
     proposal.choice_set_candidates = vec!["candidate-m2".into(), "candidate-m3".into()];
+    refresh_choice_set_certificate(&cp, &mut proposal);
     let auth = unique_auth(&cp, &proposal);
     let ok = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
     assert_eq!(ok.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
 
     let mut missing = proposal.clone();
     missing.selected_candidate_hash = "candidate-m9".into();
+    refresh_choice_set_certificate(&cp, &mut missing);
     let missing_auth = unique_auth(&cp, &missing);
     let blocked = resume_engine_with_authorization(&model, &options, &group, &cp, &missing_auth, &missing).unwrap();
     assert!(
@@ -492,6 +527,7 @@ fn native_execution_requires_authorized_candidate_membership() {
 
     let mut mismatch = proposal.clone();
     mismatch.selected_candidate_resources.insert("B".into(), vec!["robot-m2".into()]);
+    refresh_choice_set_certificate(&cp, &mut mismatch);
     let mismatch_auth = unique_auth(&cp, &mismatch);
     let blocked = resume_engine_with_authorization(&model, &options, &group, &cp, &mismatch_auth, &mismatch).unwrap();
     assert!(
@@ -511,8 +547,8 @@ fn n23_repro_self_attested_choice_set_is_accepted() {
     proposal.selected_candidate_resources.insert("B".into(), vec!["robot-m3".into()]);
     let auth = unique_auth(&cp, &proposal);
     let outcome = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
-    println!("N23_SELF_ATTESTED_EVIDENCE {:?}", outcome.termination);
-    assert_eq!(outcome.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
+    println!("N23_SELF_ATTESTED_EVIDENCE_FIXED {:?}", outcome.termination);
+    assert!(matches!(outcome.termination, poie_viability::engine::EngineTermination::Blocked(_)));
 }
 #[test]
 fn canonical_committed_planned_start_is_enforced() {

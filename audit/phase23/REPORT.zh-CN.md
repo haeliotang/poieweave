@@ -145,3 +145,18 @@ at completion @20800        -> no interruption
 证据：`continuation-faults/results.json`。
 
 canonical 侧消费授权持久性与 no-auto-fallback 仍待验证。
+
+## Trusted certificate enforcement in canonical
+
+`resume_engine_with_authorization` 现在要求：
+
+- proposal 携带 choice-set certificate payload；
+- certificate hash = SHA256(domain || payload) 与 proposal 一致；
+- certificate hash 在 research trusted ledger 中；
+- certificate checkpoint/execution identity 匹配；
+- selected candidate 属于证书 feasible set。
+
+self-attested fabricated certificate 现在返回 BLOCKED，而非 CompletedHorizon。
+
+因 canonical 语义变化，v14 41 证书冻结；v15 41 个
+`AUTHORIZATION_SEMANTIC_CORRECTION` successors 签发并通过 verifier/tamper。
