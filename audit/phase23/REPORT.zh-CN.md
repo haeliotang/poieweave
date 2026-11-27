@@ -9,7 +9,7 @@ N23-B CANDIDATE/TIME          NOT ESTABLISHED
 N23-C TRUSTED CHOICE-SET      PARTIAL — RESEARCH VALIDATOR, NOT CANONICAL EXECUTOR
 N23-D NATIVE SCHEDULE         PARTIAL — external FMU exact schedule; canonical pending
 N23-E CROSS-MODEL             PARTIAL — N23 FMI C/fmpy exact temporal fields
-N23-F SECOND FAILURE          NOT ESTABLISHED (gate order: A-E first)
+N23-F SECOND FAILURE          PARTIAL — external FMI representable; authorization persistence canonical pending
 N23-G MUTANTS/CERTIFICATE     NOT ESTABLISHED
 ```
 
@@ -129,3 +129,19 @@ robot-m3 planned_start 10000 -> survived 20800 (committed)
 测试：`canonical_committed_planned_start_is_enforced`。
 v13 41 证书字节冻结；v14 41 个 `EXECUTION_SEMANTIC_EXTENSION` successors
 签发并通过 verifier/tamper。
+
+## Continuation second failure (external FMI)
+
+独立 N23 FMU 现在支持 `continuationFailureTime` / `continuationFailureTarget`：
+
+```text
+relevant@15000 + robot-m3  -> interrupted, no restoration, executed robot remains 3
+irrelevant@12000            -> observed, completion 20800 continues
+before start @9500          -> no interruption
+at completion @20800        -> no interruption
+```
+
+4 个 case C/fmpy 字段全部匹配；未发生自动候选切换（executedRobot 始终为 3）。
+证据：`continuation-faults/results.json`。
+
+canonical 侧消费授权持久性与 no-auto-fallback 仍待验证。
