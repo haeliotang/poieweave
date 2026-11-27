@@ -1,0 +1,303 @@
+{
+  "schema": "poie.s5v-n23-temporal-comparator/1",
+  "cases": {
+    "m2_zero_wait": {
+      "fields": {
+        "completed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "checkpointAt_s": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "executedRobot": {
+          "c": 2,
+          "fmpy": 2.0,
+          "match": true
+        },
+        "actualStart_s": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "actualCompletion_s": {
+          "c": 19800,
+          "fmpy": 19800.0,
+          "match": true
+        },
+        "survived_s": {
+          "c": 19800,
+          "fmpy": 19800.0,
+          "match": true
+        },
+        "restored": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "resumed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "rejected": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventCount": {
+          "c": 8,
+          "fmpy": 8.0,
+          "match": true
+        },
+        "eventKind0": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "eventKind1": {
+          "c": 7,
+          "fmpy": 7.0,
+          "match": true
+        },
+        "eventKind2": {
+          "c": 3,
+          "fmpy": 3.0,
+          "match": true
+        },
+        "eventKind3": {
+          "c": 4,
+          "fmpy": 4.0,
+          "match": true
+        },
+        "eventKind4": {
+          "c": 5,
+          "fmpy": 5.0,
+          "match": true
+        },
+        "eventKind5": {
+          "c": 6,
+          "fmpy": 6.0,
+          "match": true
+        },
+        "eventKind6": {
+          "c": 9,
+          "fmpy": 9.0,
+          "match": true
+        },
+        "eventKind7": {
+          "c": 8,
+          "fmpy": 8.0,
+          "match": true
+        },
+        "eventTime0": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime1": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime2": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime3": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime4": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime5": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime6": {
+          "c": 19800,
+          "fmpy": 19800.0,
+          "match": true
+        },
+        "eventTime7": {
+          "c": 19800,
+          "fmpy": 19800.0,
+          "match": true
+        }
+      },
+      "match": true,
+      "temporal": {
+        "start": true,
+        "completion": true,
+        "survived": true
+      },
+      "accepted": true
+    },
+    "m3_committed_wait": {
+      "fields": {
+        "completed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "checkpointAt_s": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "executedRobot": {
+          "c": 3,
+          "fmpy": 3.0,
+          "match": true
+        },
+        "actualStart_s": {
+          "c": 10000,
+          "fmpy": 10000.0,
+          "match": true
+        },
+        "actualCompletion_s": {
+          "c": 20800,
+          "fmpy": 20800.0,
+          "match": true
+        },
+        "survived_s": {
+          "c": 20800,
+          "fmpy": 20800.0,
+          "match": true
+        },
+        "restored": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "resumed": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "rejected": {
+          "c": 0,
+          "fmpy": 0.0,
+          "match": true
+        },
+        "eventCount": {
+          "c": 8,
+          "fmpy": 8.0,
+          "match": true
+        },
+        "eventKind0": {
+          "c": 1,
+          "fmpy": 1.0,
+          "match": true
+        },
+        "eventKind1": {
+          "c": 7,
+          "fmpy": 7.0,
+          "match": true
+        },
+        "eventKind2": {
+          "c": 3,
+          "fmpy": 3.0,
+          "match": true
+        },
+        "eventKind3": {
+          "c": 4,
+          "fmpy": 4.0,
+          "match": true
+        },
+        "eventKind4": {
+          "c": 5,
+          "fmpy": 5.0,
+          "match": true
+        },
+        "eventKind5": {
+          "c": 6,
+          "fmpy": 6.0,
+          "match": true
+        },
+        "eventKind6": {
+          "c": 9,
+          "fmpy": 9.0,
+          "match": true
+        },
+        "eventKind7": {
+          "c": 8,
+          "fmpy": 8.0,
+          "match": true
+        },
+        "eventTime0": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime1": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime2": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime3": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime4": {
+          "c": 9000,
+          "fmpy": 9000.0,
+          "match": true
+        },
+        "eventTime5": {
+          "c": 10000,
+          "fmpy": 10000.0,
+          "match": true
+        },
+        "eventTime6": {
+          "c": 20800,
+          "fmpy": 20800.0,
+          "match": true
+        },
+        "eventTime7": {
+          "c": 20800,
+          "fmpy": 20800.0,
+          "match": true
+        }
+      },
+      "match": true,
+      "temporal": {
+        "start": true,
+        "completion": true,
+        "survived": true
+      },
+      "accepted": true
+    }
+  },
+  "negatives": {
+    "ROBOT_M3_COMPLETES_AT_19800": true,
+    "WRONG_TASK_START": true,
+    "WRONG_TASK_DURATION": true,
+    "MISSING_WAIT_INTERVAL": true,
+    "WRONG_SURVIVED_TIME": true,
+    "WRONG_SELECTED_CANDIDATE": true,
+    "MISSING_TASK_STARTED_EVENT": true,
+    "PREMATURE_RESTORATION": true,
+    "EVENT_ORDER_MISMATCH": true,
+    "DUPLICATE_EVENT": true,
+    "POST_TERMINATION_EVENT": true
+  },
+  "accepted": true,
+  "all_negatives_rejected": true,
+  "fallback_used": false
+}
