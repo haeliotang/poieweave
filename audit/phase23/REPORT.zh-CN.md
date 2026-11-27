@@ -190,3 +190,16 @@ M4 hidden second replan   -> no automatic switch, executed robot remains 3
 ```
 
 证据：`executable-mutants/results.json`。reducer 仍为 NOT_ESTABLISHED。
+
+## Real reducer M2
+
+从 5 个 resource options 的复杂 contract 自动删除无关 tool/horizon/failed 选项，
+每个候选都重新运行 generator + reference oracle + trust verifier：
+
+```text
+original complexity = 5
+minimized complexity = 2
+signature AUTHORIZED_CANDIDATE_PAYLOAD_MISMATCH preserved
+```
+
+证据：`minimized-counterexamples/m2-reducer.json`。
