@@ -1,0 +1,31 @@
+{
+  "schema": "poie.s5v-n23-comparator-coverage/1",
+  "observed_and_compared": [
+    "completed",
+    "failedRobotM1",
+    "checkpointAt_s",
+    "completedA",
+    "unfinishedB",
+    "taskBRobot",
+    "restored",
+    "resumed",
+    "rejected",
+    "executedRobot",
+    "candidateAccepted",
+    "rejectionReason",
+    "eventCount"
+  ],
+  "observed_but_not_compared": [
+    "survived_s"
+  ],
+  "not_observed": [
+    "actual_task_start_s",
+    "actual_task_duration_s",
+    "actual_task_completion_s",
+    "candidate_full_payload",
+    "authorization_id",
+    "choice_set_certificate_hash",
+    "checkpoint_identity"
+  ],
+  "note": "eventKind*/eventTime* are compared"
+}
