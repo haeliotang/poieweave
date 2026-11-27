@@ -1,0 +1,26 @@
+{
+  "limitations": [
+    {
+      "detail": "N22 choice-set input used checkpoint hash 'a'*64; states bounded algorithmic validity, not trusted native-checkpoint validity.",
+      "id": "SYNTHETIC_CHECKPOINT_INPUT"
+    },
+    {
+      "detail": "N22 candidate robot-m3 committed 20800 but FMI native output 19800.",
+      "id": "TEMPORAL_CONTRACT_MISMATCH"
+    },
+    {
+      "detail": "C/fmpy agreement only proves importer consistency, not candidate-to-execution temporal conformance.",
+      "id": "C_FMPY_NOT_EXECUTION_CONFORMANCE"
+    }
+  ],
+  "n23_evidence": [
+    "audit/phase23/native-checkpoints/native.json",
+    "audit/phase23/failing-witness/N22_TEMPORAL_CONTRACT_MISMATCH/mismatch.json",
+    "audit/phase23/temporal-comparisons/strict.json",
+    "audit/phase23/choice-set-certificates/trust.json"
+  ],
+  "original_certificate": "audit/phase22/N22_EXTERNAL_VALIDATION_CERTIFICATE.json",
+  "original_sha256": "9f1b74a7550d28461ef31ea63b846c2b4852f6088d56e16aa053db088aeaab82",
+  "schema": "poie.s5v-n23-n22-certificate-errata/1",
+  "status": "SUPPLEMENTED_NOT_REWRITTEN"
+}
