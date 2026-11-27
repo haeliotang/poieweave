@@ -22,5 +22,57 @@
     }
   },
   "all_detected": true,
-  "reducer": "NOT_ESTABLISHED"
+  "reducer": {
+    "schema": "poie.s5v-n23-reducer/1",
+    "signature": "AUTHORIZED_CANDIDATE_PAYLOAD_MISMATCH",
+    "original_complexity": 5,
+    "minimized_complexity": 2,
+    "attempts": [
+      {
+        "removed": 4,
+        "complexity": 4,
+        "signature": "AUTHORIZED_CANDIDATE_PAYLOAD_MISMATCH",
+        "preserved": true
+      },
+      {
+        "removed": 3,
+        "complexity": 3,
+        "signature": "AUTHORIZED_CANDIDATE_PAYLOAD_MISMATCH",
+        "preserved": true
+      },
+      {
+        "removed": 2,
+        "complexity": 2,
+        "signature": "AUTHORIZED_CANDIDATE_PAYLOAD_MISMATCH",
+        "preserved": true
+      }
+    ],
+    "signature_preserved": true,
+    "minimized_contract": {
+      "proposal_hash": "11249af3efdd02d1bba11d755df0c79d055df65a276883b5bc16b53396a48eb1",
+      "task_duration_s": 10800.0,
+      "horizon_s": 72000.0,
+      "tools": {
+        "tool-t1": "failed"
+      },
+      "robot_options": [
+        {
+          "robot": "robot-m2",
+          "start_offset_s": 0.0,
+          "upstream": [
+            "bus-2"
+          ],
+          "requires_tool": false
+        },
+        {
+          "robot": "robot-m3",
+          "start_offset_s": 1000.0,
+          "upstream": [
+            "bus-3"
+          ],
+          "requires_tool": false
+        }
+      ]
+    }
+  }
 }
