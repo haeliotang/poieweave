@@ -1548,6 +1548,28 @@ pub fn resume_engine_with_authorization(
                 final_inventory: inventory,
             });
         }
+        let payload = certificate.get("payloads").and_then(|v| v.get(proposal.selected_candidate_hash.as_str()));
+        let payload_ok = payload.is_some_and(|payload| {
+            payload
+                .get("resources")
+                .and_then(|v| serde_json::from_value::<BTreeMap<String, Vec<String>>>(v.clone()).ok())
+                .as_ref()
+                == Some(&proposal.task_robots)
+                && payload
+                    .get("planned_start_s")
+                    .and_then(|v| v.as_f64())
+                    .is_some_and(|v| (v - proposal.planned_start_s).abs() < 1e-9)
+        });
+        if !payload_ok {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::Blocked(
+                    "replan_rejected: authorized candidate payload mismatch".into(),
+                ),
+                survived_s: checkpoint.at_s,
+                trace: checkpoint.trace_history.clone(),
+                final_inventory: inventory,
+            });
+        }
     }
     for (task_id, robots) in &proposal.task_robots {
         if !checkpoint.unfinished_tasks.contains(task_id) {
