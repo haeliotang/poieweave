@@ -114,3 +114,15 @@ overlap = false
 ```
 
 v18 冻结；v19 41 个 `EXECUTION_SEMANTIC_EXTENSION` successors 签发并通过 verifier/tamper。
+
+## 共享工具独占
+
+两个任务都 `occupies` tool-t1、使用不同 robot：
+
+```text
+B 9000-19800
+C 19800-23400
+overlap = false
+```
+
+canonical scheduler 已能表达 tool 独占占用与顺序执行。

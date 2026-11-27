@@ -28,6 +28,13 @@ fn model() -> Model {
     let mut third = robot.clone();
     third.id = "robot-m3".into();
     model.assets.insert("robot-m3".into(), third);
+    let mut tool = robot.clone();
+    tool.id = "tool-t1".into();
+    tool.kind = "tool".into();
+    tool.requires.clear();
+    tool.requires_any.clear();
+    tool.provides.clear();
+    model.assets.insert("tool-t1".into(), tool);
     let mut bus3 = model.assets.get("bus-1").unwrap().clone();
     bus3.id = "bus-3".into();
     bus3.requires.clear();
@@ -85,6 +92,24 @@ fn model() -> Model {
     c.restores = vec!["a-lathe".into()];
     c.duration_s = Some(3600.0);
     model.processes.push(c);
+    let mut bt = template.clone();
+    bt.id = "n24-task-b-tool".into();
+    bt.inputs.clear();
+    bt.outputs.clear();
+    bt.requires_capabilities.clear();
+    bt.occupies = vec!["robot-m1".into(), "tool-t1".into()];
+    bt.restores = vec!["a-lathe".into()];
+    bt.duration_s = Some(10800.0);
+    model.processes.push(bt);
+    let mut ct = template.clone();
+    ct.id = "n24-task-c-tool".into();
+    ct.inputs.clear();
+    ct.outputs.clear();
+    ct.requires_capabilities.clear();
+    ct.occupies = vec!["robot-m2".into(), "tool-t1".into()];
+    ct.restores = vec!["a-lathe".into()];
+    ct.duration_s = Some(3600.0);
+    model.processes.push(ct);
     model
         .services
         .insert("svc".into(), Service { id: "svc".into(), requires: vec!["a-lathe".into()], requires_any: Vec::new() });
@@ -721,4 +746,58 @@ fn n24_same_robot_two_tasks_do_not_overlap() {
     println!("N24_SAME_ROBOT B={b_start}-{b_end} C={c_start}-{c_end}");
     let overlap = b_start < c_end - 1e-9 && c_start < b_end - 1e-9;
     assert!(!overlap, "same robot tasks overlapped: B={b_start}-{b_end} C={c_start}-{c_end}");
+}
+
+#[test]
+fn n24_shared_tool_two_tasks_do_not_overlap() {
+    use poie_viability::engine::resume_engine_with_authorization_event_observed;
+    let (model, mut options, base_group, _cp, _) = fixtures();
+    options.resources.push("robot-m3".into());
+    options.alternative_pool.push("robot-m3".into());
+    let group = ExplicitRepairGroup {
+        group_id: base_group.group_id.clone(),
+        restoration_target: base_group.restoration_target.clone(),
+        lifecycle: base_group.lifecycle,
+        tasks: vec![
+            base_group.tasks[0].clone(),
+            ExplicitRepairTask {
+                task_id: "B".into(),
+                process: "n24-task-b-tool".into(),
+                duration_s: 10800.0,
+                robot_alternatives: vec!["robot-m3".into()],
+            },
+            ExplicitRepairTask {
+                task_id: "C".into(),
+                process: "n24-task-c-tool".into(),
+                duration_s: 3600.0,
+                robot_alternatives: vec!["robot-m2".into()],
+            },
+        ],
+    };
+    let (_, checkpoint) =
+        run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "n24-shared-tool").unwrap();
+    let cp = checkpoint.unwrap();
+    let mut proposal = make_proposal(&cp, "shared-tool");
+    proposal.task_robots.insert("B".into(), vec!["robot-m3".into()]);
+    proposal.task_robots.insert("C".into(), vec!["robot-m2".into()]);
+    proposal.selected_candidate_resources = proposal.task_robots.clone();
+    proposal.unfinished_task_ids = cp.unfinished_tasks.clone();
+    refresh_choice_set_certificate(&cp, &mut proposal);
+    let auth = unique_auth(&cp, &proposal);
+    let observed =
+        resume_engine_with_authorization_event_observed(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    let interval = |task: &str, kind: &str| {
+        observed
+            .events
+            .iter()
+            .find(|e| e.target_asset.as_deref() == Some(task) && format!("{:?}", e.kind) == kind)
+            .map(|e| e.at_s)
+    };
+    let b_start = interval("B", "TaskRestarted").unwrap();
+    let b_end = interval("B", "TaskCompleted").unwrap();
+    let c_start = interval("C", "TaskRestarted").unwrap();
+    let c_end = interval("C", "TaskCompleted").unwrap();
+    println!("N24_SHARED_TOOL B={b_start}-{b_end} C={c_start}-{c_end}");
+    let overlap = b_start < c_end - 1e-9 && c_start < b_end - 1e-9;
+    assert!(!overlap, "shared tool overlapped: B={b_start}-{b_end} C={c_start}-{c_end}");
 }
