@@ -203,3 +203,16 @@ signature AUTHORIZED_CANDIDATE_PAYLOAD_MISMATCH preserved
 ```
 
 证据：`minimized-counterexamples/m2-reducer.json`。
+
+## Resource-derived candidates
+
+`resource_discovery.py` 从可信资产模型（availability / requires / ready_at / failure）
+派生 robot options，不再依赖预填 `robot_options`：
+
+```text
+derived robots = [robot-m2, robot-m3]
+soundness = true
+completeness = true
+```
+
+证据：`candidate-generation/resource-discovery.json`。
