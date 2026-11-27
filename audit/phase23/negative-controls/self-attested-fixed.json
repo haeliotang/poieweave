@@ -1,0 +1,6 @@
+{
+  "schema": "poie.s5v-n23-self-attested-fixed/1",
+  "historical": "SELF_ATTESTED_CHOICE_SET_FALSE_PASS",
+  "current": "BLOCKED_MISSING_TRUSTED_CHOICE_SET_CERTIFICATE",
+  "fixed": true
+}

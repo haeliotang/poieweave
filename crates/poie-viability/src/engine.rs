@@ -723,6 +723,7 @@ pub struct ReplanProposal {
     pub choice_set_candidates: Vec<String>,
     pub selected_candidate_resources: BTreeMap<String, Vec<String>>,
     pub planned_start_s: f64,
+    pub choice_set_certificate_payload: String,
 }
 
 impl ReplanProposal {
@@ -769,6 +770,14 @@ impl ReplanProposal {
 }
 
 static CONSUMED_AUTHORIZATIONS: Mutex<BTreeSet<String>> = Mutex::new(BTreeSet::new());
+static TRUSTED_CHOICE_SETS: Mutex<BTreeSet<String>> = Mutex::new(BTreeSet::new());
+
+/// Research trust boundary: register a choice-set certificate commitment.
+pub fn register_trusted_choice_set_for_research(certificate_hash: &str) {
+    if let Ok(mut trusted) = TRUSTED_CHOICE_SETS.lock() {
+        trusted.insert(certificate_hash.to_string());
+    }
+}
 
 /// Checkpoint-bound one-shot authorization for research simulation control.
 #[derive(Clone, Debug, PartialEq)]
@@ -1477,6 +1486,68 @@ pub fn resume_engine_with_authorization(
             trace: checkpoint.trace_history.clone(),
             final_inventory: inventory,
         });
+    }
+    if proposal.choice_set_certificate_payload.is_empty() {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked("replan_rejected: missing trusted choice-set certificate".into()),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: inventory,
+        });
+    }
+    {
+        let mut hasher = Sha256::new();
+        hasher.update(b"poie.choice-set-certificate/v1\x1f");
+        hasher.update(proposal.choice_set_certificate_payload.as_bytes());
+        let certificate_hash = format!("{:x}", hasher.finalize());
+        if certificate_hash != proposal.choice_set_certificate_hash {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::Blocked(
+                    "replan_rejected: choice-set certificate commitment mismatch".into(),
+                ),
+                survived_s: checkpoint.at_s,
+                trace: checkpoint.trace_history.clone(),
+                final_inventory: inventory,
+            });
+        }
+        let trusted =
+            TRUSTED_CHOICE_SETS.lock().map_err(|_| EngineError("choice-set trust registry poisoned".into()))?;
+        if !trusted.contains(&certificate_hash) {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::Blocked("replan_rejected: untrusted choice-set certificate".into()),
+                survived_s: checkpoint.at_s,
+                trace: checkpoint.trace_history.clone(),
+                final_inventory: inventory,
+            });
+        }
+        let certificate: serde_json::Value =
+            serde_json::from_str(&proposal.choice_set_certificate_payload).map_err(|e| EngineError(e.to_string()))?;
+        if certificate.get("checkpoint_hash").and_then(|v| v.as_str()) != Some(checkpoint.compute_state_hash().as_str())
+            || certificate.get("execution_id").and_then(|v| v.as_str()) != Some(checkpoint.execution_id.as_str())
+        {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::Blocked(
+                    "replan_rejected: choice-set certificate identity mismatch".into(),
+                ),
+                survived_s: checkpoint.at_s,
+                trace: checkpoint.trace_history.clone(),
+                final_inventory: inventory,
+            });
+        }
+        let selected_ok = certificate
+            .get("feasible_candidates")
+            .and_then(|v| v.as_array())
+            .is_some_and(|items| items.iter().any(|v| v.as_str() == Some(proposal.selected_candidate_hash.as_str())));
+        if !selected_ok {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::Blocked(
+                    "replan_rejected: selected candidate not in verified certificate".into(),
+                ),
+                survived_s: checkpoint.at_s,
+                trace: checkpoint.trace_history.clone(),
+                final_inventory: inventory,
+            });
+        }
     }
     for (task_id, robots) in &proposal.task_robots {
         if !checkpoint.unfinished_tasks.contains(task_id) {
