@@ -4,7 +4,7 @@
 
 ```text
 N23-0 HISTORY/FALSE-PASS      IN PROGRESS
-N23-A NATIVE CHECKPOINT       NOT ESTABLISHED
+N23-A NATIVE CHECKPOINT       VERIFIED — REAL PROJECTION + IDENTITY + SYNTHETIC REJECT
 N23-B CANDIDATE/TIME          NOT ESTABLISHED
 N23-C TRUSTED CHOICE-SET      NOT ESTABLISHED
 N23-D NATIVE SCHEDULE         NOT ESTABLISHED
@@ -52,3 +52,19 @@ SELF_ATTESTED_CHOICE_SET_FALSE_PASS
 observed_but_not_compared = survived_s
 not_observed = task start/duration/completion, candidate payload, authorization id, choice-set hash, checkpoint identity
 ```
+
+## Phase A — Native checkpoint binding
+
+Native projection `native-checkpoints/native.json`, commitment
+`94df8c4a...a8b7`, trusted provenance verified.
+
+End-to-end identity:
+
+```text
+native checkpoint hash
+  = candidate input checkpoint hash
+  = choice-set certificate checkpoint hash
+```
+
+2 feasible candidates generated from real checkpoint; synthetic/untrusted/wrong
+execution/missing asset/omitted completed/horizon mutations rejected.

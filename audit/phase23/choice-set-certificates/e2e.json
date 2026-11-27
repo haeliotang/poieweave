@@ -1,0 +1,111 @@
+{
+  "schema": "poie.s5v-n23-e2e-choice-set/1",
+  "native_checkpoint_hash": "94df8c4a7a5a383c9ebfd9fb26f0d9695fbc74163a065dc848faa073833aa8b7",
+  "candidate_input_checkpoint_hash": "94df8c4a7a5a383c9ebfd9fb26f0d9695fbc74163a065dc848faa073833aa8b7",
+  "choice_set_checkpoint_hash": "94df8c4a7a5a383c9ebfd9fb26f0d9695fbc74163a065dc848faa073833aa8b7",
+  "identity_preserved": true,
+  "generated": 2,
+  "feasible": 2,
+  "rejected": 0,
+  "reference": 2,
+  "certificate": {
+    "schema": "poie.recovery-choice-set-certificate/v2",
+    "execution_id": "n23-exec",
+    "checkpoint_hash": "94df8c4a7a5a383c9ebfd9fb26f0d9695fbc74163a065dc848faa073833aa8b7",
+    "checkpoint_projection_sha256": "f4fc76f7d4285b3751f71ad935f75c41019251bddd96f75b22ed17a5389342fd",
+    "proposal_hash": "18b8309dbe19f583d888e4aaca6a57cdd71310ba6820257e6c17cf7dc28258fa",
+    "generated_candidates": [
+      "8bca90095779a0b8a1158b33c49de09759f17267565280cd8dc9714a109746d8",
+      "eaa15a459a5d978e69bd863704c63ec2b9486920cb70149325a6e6e00128e33b"
+    ],
+    "feasible_candidates": [
+      "8bca90095779a0b8a1158b33c49de09759f17267565280cd8dc9714a109746d8",
+      "eaa15a459a5d978e69bd863704c63ec2b9486920cb70149325a6e6e00128e33b"
+    ],
+    "rejected_candidates": [],
+    "ranking": [
+      {
+        "position": 1,
+        "candidate_id": "8bca90095779a0b8a1158b33c49de09759f17267565280cd8dc9714a109746d8",
+        "makespan": 19800.0,
+        "robot": "robot-m2"
+      },
+      {
+        "position": 2,
+        "candidate_id": "eaa15a459a5d978e69bd863704c63ec2b9486920cb70149325a6e6e00128e33b",
+        "makespan": 20800.0,
+        "robot": "robot-m3"
+      }
+    ],
+    "preferred_candidate_id": "8bca90095779a0b8a1158b33c49de09759f17267565280cd8dc9714a109746d8",
+    "completeness_claim": "BOUNDED_EXHAUSTIVE",
+    "reference_set_size": 2,
+    "soundness": true,
+    "completeness": true,
+    "payloads": {
+      "generated": [
+        {
+          "schema": "poie.recovery-candidate/v1",
+          "checkpoint_hash": "94df8c4a7a5a383c9ebfd9fb26f0d9695fbc74163a065dc848faa073833aa8b7",
+          "proposal_hash": "18b8309dbe19f583d888e4aaca6a57cdd71310ba6820257e6c17cf7dc28258fa",
+          "unfinished_tasks": [
+            "B"
+          ],
+          "selected_resources": {
+            "B": [
+              "robot-m2"
+            ]
+          },
+          "dependency_paths": {
+            "B": [
+              "bus-2"
+            ]
+          },
+          "required_tools": [],
+          "task_schedule": {
+            "B": {
+              "start_s": 9000.0,
+              "end_s": 19800.0
+            }
+          },
+          "expected_makespan": 19800.0,
+          "remaining_horizon": 63000.0,
+          "feasibility_status": "FEASIBLE",
+          "rejection_reasons": [],
+          "candidate_id": "8bca90095779a0b8a1158b33c49de09759f17267565280cd8dc9714a109746d8"
+        },
+        {
+          "schema": "poie.recovery-candidate/v1",
+          "checkpoint_hash": "94df8c4a7a5a383c9ebfd9fb26f0d9695fbc74163a065dc848faa073833aa8b7",
+          "proposal_hash": "18b8309dbe19f583d888e4aaca6a57cdd71310ba6820257e6c17cf7dc28258fa",
+          "unfinished_tasks": [
+            "B"
+          ],
+          "selected_resources": {
+            "B": [
+              "robot-m3"
+            ]
+          },
+          "dependency_paths": {
+            "B": [
+              "bus-3"
+            ]
+          },
+          "required_tools": [],
+          "task_schedule": {
+            "B": {
+              "start_s": 10000.0,
+              "end_s": 20800.0
+            }
+          },
+          "expected_makespan": 20800.0,
+          "remaining_horizon": 63000.0,
+          "feasibility_status": "FEASIBLE",
+          "rejection_reasons": [],
+          "candidate_id": "eaa15a459a5d978e69bd863704c63ec2b9486920cb70149325a6e6e00128e33b"
+        }
+      ]
+    },
+    "certificate_hash": "e4da6cf4198f5c551bb9a8ed84196fc0d1039e92fb1e564e3399664602280579"
+  }
+}
