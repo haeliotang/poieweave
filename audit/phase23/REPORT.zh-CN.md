@@ -216,3 +216,17 @@ completeness = true
 ```
 
 证据：`candidate-generation/resource-discovery.json`。
+
+## Canonical native event conformance
+
+新增 `resume_engine_with_authorization_event_observed`，真实观察：
+
+```text
+ReplanAuthorized @9000
+RepairResumed @10000
+TaskRestarted @10000
+TaskCompleted @20800
+```
+
+与 certificate committed schedule 逐项相等。v16 冻结，v17 41 个
+`EXECUTION_SEMANTIC_EXTENSION` successors 签发并通过 verifier/tamper。

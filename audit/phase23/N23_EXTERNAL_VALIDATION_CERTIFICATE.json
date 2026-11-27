@@ -17,7 +17,7 @@
     },
     "engine": {
       "path": "crates/poie-viability/src/engine.rs",
-      "sha256": "3051b9de5f960c8a03b0e580b89eae31f80a2744d12308bd1525642305e316b5"
+      "sha256": "1b7d8378d97470da2672a7c20016ffbb547fc3aa639ebf4517f9ec1f81391ac1"
     },
     "fmi_harness": {
       "path": "external/fmu-n23-recovery-execution/harness.c",
