@@ -1,0 +1,26 @@
+{
+  "schema": "poie.s5v-n23-mutants/1",
+  "mutants": {
+    "M1_SYNTHETIC_CHECKPOINT": {
+      "observed": "SYNTHETIC_CHECKPOINT",
+      "detected": true
+    },
+    "M2_SCHEDULE_SUBSTITUTION": {
+      "observed": true,
+      "detected": true
+    },
+    "M3_CANDIDATE_SUBSTITUTION": {
+      "observed": "AUTHORIZATION_FOR_DIFFERENT_CANDIDATE",
+      "detected": true
+    },
+    "M4_HIDDEN_SECOND_REPLAN": {
+      "observed": {
+        "canonical": false,
+        "executed_robot": 3
+      },
+      "detected": true
+    }
+  },
+  "all_detected": true,
+  "reducer": "NOT_ESTABLISHED"
+}
