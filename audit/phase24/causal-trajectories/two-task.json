@@ -241,8 +241,8 @@
       "event_id": "ev-0010-TaskCompleted",
       "kind": "TaskCompleted",
       "sequence": 10,
-      "target": "B",
-      "time": 19800.0
+      "target": "C",
+      "time": 12600.0
     },
     {
       "asset_after": {
@@ -265,7 +265,7 @@
       "event_id": "ev-0011-TaskCompleted",
       "kind": "TaskCompleted",
       "sequence": 11,
-      "target": "C",
+      "target": "B",
       "time": 19800.0
     },
     {

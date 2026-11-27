@@ -657,7 +657,20 @@ fn n24_canonical_two_unfinished_tasks_can_resume() {
     proposal.unfinished_task_ids = cp.unfinished_tasks.clone();
     refresh_choice_set_certificate(&cp, &mut proposal);
     let auth = unique_auth(&cp, &proposal);
-    let outcome = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    let observed = poie_viability::engine::resume_engine_with_authorization_event_observed(
+        &model, &options, &group, &cp, &auth, &proposal,
+    )
+    .unwrap();
+    let outcome = observed.outcome;
     println!("N24_TWO_TASK {:?} survived={}", outcome.termination, outcome.survived_s);
     assert_eq!(outcome.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
+    let completion = |task: &str| {
+        observed
+            .events
+            .iter()
+            .find(|e| e.target_asset.as_deref() == Some(task) && format!("{:?}", e.kind) == "TaskCompleted")
+            .map(|e| e.at_s)
+    };
+    assert!((completion("C").unwrap() - 12600.0).abs() < 1e-9);
+    assert!((completion("B").unwrap() - 19800.0).abs() < 1e-9);
 }

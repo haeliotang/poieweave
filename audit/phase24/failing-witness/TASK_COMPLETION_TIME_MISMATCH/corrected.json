@@ -1,0 +1,37 @@
+{
+  "schema": "poie.s5v-n24-completion-time-corrected/1",
+  "actual_task_events": [
+    {
+      "kind": "TaskRestarted",
+      "target": "B",
+      "time": 9000.0
+    },
+    {
+      "kind": "TaskRestarted",
+      "target": "C",
+      "time": 9000.0
+    },
+    {
+      "kind": "TaskCompleted",
+      "target": "C",
+      "time": 12600.0
+    },
+    {
+      "kind": "TaskCompleted",
+      "target": "B",
+      "time": 19800.0
+    }
+  ],
+  "committed": {
+    "B": [
+      9000,
+      19800
+    ],
+    "C": [
+      9000,
+      12600
+    ]
+  },
+  "conclusion": "PER_TASK_COMPLETION_TIME_REPRESENTED",
+  "corrected_by": "engine records TaskCompleted at planned_start_base + task.end_s"
+}

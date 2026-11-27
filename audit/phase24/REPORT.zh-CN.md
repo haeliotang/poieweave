@@ -4,7 +4,7 @@
 
 ```text
 N24-0 HISTORY/BOUNDARY        IN PROGRESS — pre-start false pass corrected in N24 FMU
-N24-A CAUSAL TRAJECTORY       PARTIAL — two-task initial+resume event chain and checkpoint bridge
+N24-A CAUSAL TRAJECTORY       PARTIAL — per-task completion times + bridge
 N24-B MULTI-TASK              PARTIAL — real canonical checkpoint with B,C unfinished
 N24-C SCHEDULING              PARTIAL — shared-tool + independent parallel oracle
 N24-D AUTHORIZED SCHEDULE     NOT ESTABLISHED
@@ -89,3 +89,16 @@ event id/sequence/time order = validated
 ```
 
 证据：`causal-trajectories/two-task.json` 与 `two-task-validation.json`。
+
+### 每任务完成时间缺口已修复
+
+engine 之前把 B/C 都记录在 group end。改为按 task end 记录后：
+
+```text
+TaskCompleted C @12600
+TaskCompleted B @19800
+committed C 12600, B 19800 -> exact match
+```
+
+v17 41 证书冻结；v18 41 个 `EXECUTION_SEMANTIC_EXTENSION` successors
+签发并通过 verifier/tamper。
