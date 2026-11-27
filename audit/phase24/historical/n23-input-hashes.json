@@ -1,0 +1,13 @@
+{
+  "baseline": "3048e3af",
+  "schema": "poie.s5v-n24-n23-input-freeze/1",
+  "sha256": {
+    "audit/phase22/candidate_generator/generator.py": "60bf29bee40daffcef318ff8fd1f95e2af7919104a67626783a8cfae6a2c7a20",
+    "audit/phase22/reference-oracle/reference.py": "f882c1027a64aec0499a11affb939537f4e054f1a437f9bb568d6d28cf8681b2",
+    "crates/poie-viability/examples/n23_checkpoint_export.rs": "c8082c13834734483005d9262e1684fa103c468a919d7bbd4aa5740bbc7edc1a",
+    "crates/poie-viability/src/engine.rs": "1b7d8378d97470da2672a7c20016ffbb547fc3aa639ebf4517f9ec1f81391ac1",
+    "docs/research/canonical-claim-certificate-index-v17.json": "fe8f2f13e9f7a05280b43f262713af2e1ecd599f625f79b55d93c7ace5baa28e",
+    "external/fmu-n23-recovery-execution/harness.c": "54dddb0b7300dab3983cd5e0dc615a6afdb8701e4ca3ed2db9559c49bc04c023",
+    "external/fmu-n23-recovery-execution/model.c": "81c3be5b2bc676b8b6eab3617630247c088d8881332cc3b55de0273d1f1f4b3a"
+  }
+}
