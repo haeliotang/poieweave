@@ -1,0 +1,66 @@
+{
+  "canonical_version": "v16 (v13/v14/v15 frozen)",
+  "evidence": {
+    "audit/phase23/choice-set-certificates/e2e.json": "d06639f587a0b8571ac7f72a9d7c48c7e87cdce198991998bbbec532d7e25bbd",
+    "audit/phase23/choice-set-certificates/trust.json": "e7f8483ffcdbf16fa1a12898bbacbcead1d44c60c44d2ccaf55ee767736ec430",
+    "audit/phase23/continuation-faults/canonical-persistence.json": "6229c4898cc650d81eed6caad234b1967eac1de4e4b2c217c84f2e5c8f572f18",
+    "audit/phase23/continuation-faults/results.json": "e2dd44649ccd961f606017c0297134a4032110214872eacb2fabb6f229612224",
+    "audit/phase23/native-checkpoints/native.json": "14fee41fc940d0e4f43da9c344f3d9e0fd764dfe9823fabd284fa1c21ed3588c",
+    "audit/phase23/negative-controls/projection.json": "0268d6a29846e107e5011810d02224c2db98cf2b85a87b1025cce2371a86456f",
+    "audit/phase23/negative-controls/self-attested-fixed.json": "aba3b7498eea5dfa2e05c39f584585bedb71d000b070155eb35876d04cc71316",
+    "audit/phase23/temporal-comparisons/strict.json": "f04a62920c5f164cb4bc6dd520f1469c947f0cb1394cfd73250d4349407d31e0"
+  },
+  "inputs": {
+    "checkpoint_example": {
+      "path": "crates/poie-viability/examples/n23_checkpoint_export.rs",
+      "sha256": "c8082c13834734483005d9262e1684fa103c468a919d7bbd4aa5740bbc7edc1a"
+    },
+    "engine": {
+      "path": "crates/poie-viability/src/engine.rs",
+      "sha256": "3051b9de5f960c8a03b0e580b89eae31f80a2744d12308bd1525642305e316b5"
+    },
+    "fmi_harness": {
+      "path": "external/fmu-n23-recovery-execution/harness.c",
+      "sha256": "54dddb0b7300dab3983cd5e0dc615a6afdb8701e4ca3ed2db9559c49bc04c023"
+    },
+    "fmi_model": {
+      "path": "external/fmu-n23-recovery-execution/model.c",
+      "sha256": "81c3be5b2bc676b8b6eab3617630247c088d8881332cc3b55de0273d1f1f4b3a"
+    },
+    "generator": {
+      "path": "audit/phase22/candidate_generator/generator.py",
+      "sha256": "60bf29bee40daffcef318ff8fd1f95e2af7919104a67626783a8cfae6a2c7a20"
+    },
+    "reference": {
+      "path": "audit/phase22/reference-oracle/reference.py",
+      "sha256": "f882c1027a64aec0499a11affb939537f4e054f1a437f9bb568d6d28cf8681b2"
+    },
+    "v16_index": {
+      "path": "docs/research/canonical-claim-certificate-index-v16.json",
+      "sha256": "d8da769910f1c63247be3cfbe4a36a8d807d4f380a195d7c72adde2fa5d84fa4"
+    }
+  },
+  "kind": "N23_EXTERNAL_VALIDATION_CERTIFICATE",
+  "limitations": [
+    "canonical native event journal not fully compared",
+    "reducer evidence bounded to external temporal/fault cases",
+    "single-task single-connection bounded domain"
+  ],
+  "not_s2_certificate": true,
+  "results": {
+    "candidates": 2,
+    "canonical_m2_completion": 19800,
+    "canonical_m3_committed_completion": 20800,
+    "fmi_temporal_cases": 2,
+    "mutants": [
+      "M1 synthetic checkpoint",
+      "M2 schedule substitution",
+      "M3 candidate substitution",
+      "M4 hidden second replan"
+    ],
+    "real_checkpoint": "94df8c4a7a5a383c9ebfd9fb26f0d9695fbc74163a065dc848faa073833aa8b7",
+    "second_failure_cases": 4,
+    "trusted_payload": "resources+planned_start"
+  },
+  "schema": "poie.s5v-n23-external-validation-certificate/1"
+}
