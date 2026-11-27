@@ -12,7 +12,7 @@ HARNESS=str(ROOT/"external/fmu-n24-multitask-recovery/harness")
 def run(cf):
  dtype=[("time",np.double),("t1Duration_s",np.double),("t2Duration_s",np.double),("failureTime_s",np.double),("authorizationValid",np.double),("proposalRobot",np.double),("selectedCandidate",np.double),("taskStartConstraint",np.double),("taskDuration",np.double),("continuationFailureTime",np.double),("continuationFailureTarget",np.double),("resumeRequest",np.double),("taskCDuration",np.double)]
  signals=np.array([(0.0,7200.0,10800.0,9000.0,0.0,2.0,3.0,9000.0,10800.0,cf,1.0,0.0,0.0),(9000.0,7200.0,10800.0,9000.0,1.0,2.0,3.0,9000.0,10800.0,cf,1.0,1.0,3600.0),(25000.0,7200.0,10800.0,9000.0,1.0,2.0,3.0,9000.0,10800.0,cf,1.0,1.0,3600.0)],dtype=dtype)
- out=["completedB","completedC","taskBStart","taskBEnd","taskCStart","taskCEnd","restored","survived_s"]
+ out=["completedB","completedC","taskBStart","taskBEnd","taskCStart","taskCEnd","restored","eventKind0","eventKind1","eventKind2","eventKind3","eventKind4","eventKind5","eventKind6","eventKind7","eventTime0","eventTime1","eventTime2","eventTime3","eventTime4","eventTime5","eventTime6","eventTime7","survived_s"]
  res=simulate_fmu(FMU,stop_time=25000.0,step_size=1000.0,output=out,input=signals)
  last={k:float(res[k][-1]) for k in out if k!="survived_s"}; last["survived_s"]=float(res["time"][-1])
  return last
@@ -23,7 +23,9 @@ def main():
   f=run(cf)
   args=[HARNESS,FMU,"x","1","2","7200","10800","9000","3","9000","10800",str(cf),"1","3600"]
   c=json.loads(subprocess.check_output(args,text=True).strip().splitlines()[-1])
-  fields=["taskBStart","taskBEnd","taskCStart","taskCEnd","completedB","completedC","restored"]
+  for i in range(8):
+   c[f"eventKind{i}"]=c["eventKinds"][i]; c[f"eventTime{i}"]=c["eventTimes"][i]
+  fields=["taskBStart","taskBEnd","taskCStart","taskCEnd","completedB","completedC","restored","eventKind0","eventKind1","eventKind2","eventKind3","eventKind4","eventKind5","eventKind6","eventKind7","eventTime0","eventTime1","eventTime2","eventTime3","eventTime4","eventTime5","eventTime6","eventTime7"]
   div=[k for k in fields if abs(f[k]-c[k])>1e-6]
   cases[name]={"fmpy":f,"harness":{k:c[k] for k in fields},"divergence":div}
   ok&= not div

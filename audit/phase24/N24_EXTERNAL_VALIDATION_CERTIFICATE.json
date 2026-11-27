@@ -3,13 +3,13 @@
   "canonical_version": "v20",
   "claims": {
     "c_fmpy": "VERIFIED",
-    "canonical_two_task": "PARTIAL-VERIFIED",
+    "canonical_two_task": "VERIFIED (SCOPED)",
     "continuation_failure": "VERIFIED",
     "dependency_closure": "VERIFIED",
     "fixed_matrix": "VERIFIED (22 cases)",
-    "full_schedule_commitment": "RESEARCH_LAYER",
+    "full_schedule_commitment": "VERIFIED (RESEARCH AUTHORIZATION LAYER)",
     "held_out": "ACCOUNTED (64 contracts)",
-    "independent_multitask_fmi": "VERIFIED (bounded to B/C shared-tool scenarios)",
+    "independent_multitask_fmi": "VERIFIED (SCOPED)",
     "mutants": "VERIFIED",
     "reducer": "VERIFIED",
     "resource_ownership": "VERIFIED"
@@ -24,8 +24,8 @@
     "audit/phase24/causal-trajectories/two-task-validation.json": "4be9cf8551c00488d89866a6aca801b8ffa3231b11b7d4ae66c8b004ff823b8f",
     "audit/phase24/causal-trajectories/two-task.json": "e3c164cb1f774979020ce50c17311f1aac9066ac85c39b3191d849b35e240cdc",
     "audit/phase24/executable-mutants/results.json": "3691955fad63dd350233636a38b0be97d09571f0b4dc3321a29422e8fab7706d",
-    "audit/phase24/external/conformance.json": "14feb9f3c2f7cd3ee8f26ce7a6e7161b4bcde8068491e618ef87d0eafecb23f7",
-    "audit/phase24/external/fmpy-n24.json": "89ed66c1d3a30f6970e5b80b7f1e81129df8fc3ec2bd3fcf77e25a4ffa3424ff",
+    "audit/phase24/external/conformance.json": "cb6f5a888d79fbb2ab0b57a994c1001cc379b5897ddebc81092cfa7393415de1",
+    "audit/phase24/external/fmpy-n24.json": "be7757afce9da274707405a2927ce842a50a2fcd22e2ca6847ae873f4e1b9ee2",
     "audit/phase24/minimized-counterexamples/shared-tool-reducer.json": "c381a971da0e1875fb3542e1852ffe592a031e6be1e73085bc8145d29cbf2eae",
     "audit/phase24/resource-ownership/same-robot.json": "f649d53fbe48f68143d0d3c7edca2b3eddb9a825eefa78d59f7be1675ddf5ad7",
     "audit/phase24/resource-ownership/shared-tool.json": "ae4e1025e844fd37d188bb58d112082b869d969361590ac4165fb3ba99457c2b",
@@ -49,5 +49,5 @@
     "python3 audit/phase24/external/fmpy_n24.py"
   ],
   "schema": "poie.s5v-n24-external-validation-certificate/1",
-  "status": "SCOPED_ISSUED"
+  "status": "SCOPED_ESTABLISHED"
 }
