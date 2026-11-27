@@ -1,0 +1,25 @@
+{
+  "schema": "poie.s5v-n24-canonical-two-task/1",
+  "checkpoint": {
+    "completed": [
+      "A"
+    ],
+    "unfinished": [
+      "B",
+      "C"
+    ],
+    "failed": [
+      "robot-m1"
+    ],
+    "at_s": 9000
+  },
+  "authorized": {
+    "B": "robot-m3",
+    "C": "robot-m2"
+  },
+  "outcome": "CompletedHorizon",
+  "survived_s": 19800,
+  "tasks_total": 3,
+  "tasks_completed_before_checkpoint": 1,
+  "tasks_unfinished_at_checkpoint": 2
+}
