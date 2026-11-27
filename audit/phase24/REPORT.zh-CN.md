@@ -47,3 +47,20 @@ survived_s  = 19800
 
 测试：`n24_canonical_two_unfinished_tasks_can_resume`。
 证据：`canonical/two-task.json`。共享工具冲突、串行/并行独立 oracle、FMI 与 v18 尚未完成。
+
+## 独立双任务调度 oracle（initial）
+
+共享 tool-t1 的有限域：
+
+```text
+generated = 4
+reference = 4
+soundness = true
+completeness = true
+serial = 4
+parallel = 0 (shared tool correctly forbids overlap)
+optimal makespan = 23400
+```
+
+证据：`candidate-generation/two-task-shared-tool.json`。
+独立资源并行 control、完整固定矩阵、shared resource ownership 尚未完成。
