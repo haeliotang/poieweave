@@ -4,7 +4,7 @@
 
 ```text
 N24-0 HISTORY/BOUNDARY        IN PROGRESS — pre-start false pass corrected in N24 FMU
-N24-A CAUSAL TRAJECTORY       PARTIAL — single-task initial+resume event chain
+N24-A CAUSAL TRAJECTORY       PARTIAL — two-task initial+resume event chain and checkpoint bridge
 N24-B MULTI-TASK              PARTIAL — real canonical checkpoint with B,C unfinished
 N24-C SCHEDULING              PARTIAL — shared-tool + independent parallel oracle
 N24-D AUTHORIZED SCHEDULE     NOT ESTABLISHED
@@ -71,3 +71,21 @@ optimal makespan = 23400
   checkpoint bridge 前后连续；validation 无问题（单任务 scoped）。
 - `candidate-generation/two-task-shared-tool.json` 与 `two-task-independent.json`：
   shared tool 时 4 个串行候选、0 并行；独立资源时允许并行，soundness/completeness true。
+
+### 双任务 causal trajectory
+
+真实 canonical 双任务 checkpoint 轨迹：
+
+```text
+initial_events = 4
+resume_events  = 8
+TaskRestarted B, C
+TaskCompleted B, C
+RepairCompleted
+RestorationCommitted
+canonical outcome = CompletedHorizon @19800
+checkpoint state bridge = validated
+event id/sequence/time order = validated
+```
+
+证据：`causal-trajectories/two-task.json` 与 `two-task-validation.json`。

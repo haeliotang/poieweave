@@ -1,0 +1,8 @@
+{
+  "schema": "poie.s5v-n24-trajectory-validation/1",
+  "initial_events": 4,
+  "resume_events": 8,
+  "problems": [],
+  "valid": true,
+  "scoped": "1 completed + 2 unfinished tasks; initial->resume event chain validated"
+}

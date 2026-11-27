@@ -110,6 +110,12 @@ fn group() -> ExplicitRepairGroup {
                 duration_s: 10800.0,
                 robot_alternatives: vec!["robot-m1".into()],
             },
+            ExplicitRepairTask {
+                task_id: "C".into(),
+                process: "n24-task-c".into(),
+                duration_s: 3600.0,
+                robot_alternatives: vec!["robot-m2".into()],
+            },
         ],
     }
 }
@@ -136,6 +142,7 @@ fn main() {
     let initial = run_engine_with_repair_group_event_observed(&model, &options, &group).unwrap();
     let mut task_robots = std::collections::BTreeMap::new();
     task_robots.insert("B".to_string(), vec!["robot-m3".to_string()]);
+    task_robots.insert("C".to_string(), vec!["robot-m2".to_string()]);
     let checkpoint_hash = checkpoint.compute_state_hash();
     let mut proposal = ReplanProposal {
         proposal_id: "n24-two-task".into(),
@@ -179,7 +186,7 @@ fn main() {
                 serde_json::json!({
                     "event_id": e.event_id, "sequence": e.event_sequence, "time": e.at_s,
                     "kind": format!("{:?}", e.kind), "target": e.target_asset,
-                    "asset_after": e.asset_statuses_after.keys().collect::<Vec<_>>()
+                    "asset_after": e.asset_statuses_after
                 })
             })
             .collect::<Vec<_>>()
@@ -197,7 +204,8 @@ fn main() {
         "initial_events": to_json(&initial.events),
         "resume_events": to_json(&resumed.events),
         "canonical_outcome": format!("{:?}", resumed.outcome.termination),
-        "survived_s": resumed.outcome.survived_s
+        "survived_s": resumed.outcome.survived_s,
+        "checkpoint_asset_statuses": checkpoint.asset_statuses
     });
     println!("{}", serde_json::to_string_pretty(&out).unwrap());
 }
