@@ -1,0 +1,69 @@
+{
+  "schema": "poie.s5v-n24-external-conformance/1",
+  "fmpy_vs_harness_divergence": 0,
+  "canonical": {
+    "accepted": {
+      "B": [
+        9000,
+        19800
+      ],
+      "C": [
+        19800,
+        23400
+      ]
+    },
+    "c_interrupted": {
+      "B_completed": 19800,
+      "C_completed": null,
+      "restored": false
+    }
+  },
+  "fmi": {
+    "accepted": {
+      "fmpy": {
+        "completedB": 1.0,
+        "completedC": 1.0,
+        "taskBStart": 9000.0,
+        "taskBEnd": 19800.0,
+        "taskCStart": 19800.0,
+        "taskCEnd": 23400.0,
+        "restored": 1.0,
+        "survived_s": 23400.0
+      },
+      "harness": {
+        "taskBStart": 9000,
+        "taskBEnd": 19800,
+        "taskCStart": 19800,
+        "taskCEnd": 23400,
+        "completedB": 1,
+        "completedC": 1,
+        "restored": 1
+      },
+      "divergence": []
+    },
+    "c_interrupted": {
+      "fmpy": {
+        "completedB": 1.0,
+        "completedC": 0.0,
+        "taskBStart": 9000.0,
+        "taskBEnd": 19800.0,
+        "taskCStart": 19800.0,
+        "taskCEnd": 23400.0,
+        "restored": 0.0,
+        "survived_s": 21000.0
+      },
+      "harness": {
+        "taskBStart": 9000,
+        "taskBEnd": 19800,
+        "taskCStart": 19800,
+        "taskCEnd": 23400,
+        "completedB": 1,
+        "completedC": 0,
+        "restored": 0
+      },
+      "divergence": []
+    }
+  },
+  "reference_canonical_fmi_agree": true,
+  "notes": "canonical shared-tool and B-completed/C-interrupted scenarios match FMU; tool and interruption timing verified"
+}

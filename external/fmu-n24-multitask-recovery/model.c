@@ -14,6 +14,9 @@ typedef struct {
     double time;
     int phase; /* 0 initial, 1 checkpointed, 2 resumed, 3 terminal */
     double end_b;
+    double start_b;
+    double start_c;
+    double end_c;
     int ev_count;
 } Instance;
 
@@ -71,7 +74,7 @@ fmi3Status fmi3DoStep(fmi3Instance i, fmi3Float64 current, fmi3Float64 step, fmi
             int candidate_ok = ((int)candidate == 2 || (int)candidate == 3);
             event(s,3);
             if (!authorized || !proposal_ok || !candidate_ok) { set(s,30,1); set(s,33,0); set(s,34, authorized ? (proposal_ok ? 1 : 3) : 2); s->phase = 3; }
-            else { event(s,4); event(s,5); event(s,6); set(s,32,candidate); set(s,33,1); double start = val(s,35) > current ? val(s,35) : current; double duration = val(s,36) > 0 ? val(s,36) : (val(s,4) > 0 ? val(s,4) : 10800.0); set(s,37,start); s->end_b = start + duration; set(s,29,1);
+            else { event(s,4); event(s,5); event(s,6); set(s,32,candidate); set(s,33,1); double start = val(s,35) > current ? val(s,35) : current; double duration = val(s,36) > 0 ? val(s,36) : (val(s,4) > 0 ? val(s,4) : 10800.0); set(s,37,start); s->start_b = start; s->end_b = start + duration; set(s,29,1);
 #ifdef MUT_FORGOT_FAILED
                 set(s,27, val(s,11) >= 1.5 ? 2 : 1);
 #endif
@@ -81,6 +84,30 @@ fmi3Status fmi3DoStep(fmi3Instance i, fmi3Float64 current, fmi3Float64 step, fmi
                 s->phase = 2; }
         }
     } else if (s->phase == 2) {
+        double cdur = val(s, 49);
+        if (cdur > 0) {
+            double bstart = val(s, 35) > 0 ? val(s, 35) : current;
+            double bend = bstart + (val(s, 36) > 0 ? val(s, 36) : 10800.0);
+            double cstart = bend;
+            double cend = cstart + cdur;
+            double cf = val(s, 39);
+            double target = current + step;
+            if (target > cend) target = cend;
+            if (cf > current + 1e-9 && cf < target) target = cf;
+            s->time = target;
+            if (cf > 0 && s->time >= cf - 1e-9 && cf < cend - 1e-9) {
+                set(s, 20, 0); set(s, 28, 0); set(s, 46, 1); event(s, 7);
+                if (cf >= bend - 1e-9) { set(s, 105, 1); set(s, 100, 0); set(s, 103, cstart); }
+                s->phase = 3;
+            }
+            if (s->time >= bstart - 1e-9) { set(s, 101, bstart); set(s, 102, bend); }
+            if (s->time >= cstart - 1e-9) { set(s, 103, cstart); set(s, 104, cend); }
+            if (s->phase == 2 && s->time >= cend - 1e-9) {
+                set(s, 105, 1); set(s, 100, 1); set(s, 20, 1); set(s, 28, 1); set(s, 38, cend); event(s, 9); event(s, 8); s->phase = 3;
+            }
+            if (term) *term = (s->phase == 3); if (eh) *eh = 0; if (early) *early = 0; if (last) *last = s->time;
+            return fmi3OK;
+        }
         double target = current + step; if (target > s->end_b) target = s->end_b;
         double cf = val(s,39); int ctarget = (int)val(s,47);
         if (cf > current + 1e-9 && cf < target) target = cf;
