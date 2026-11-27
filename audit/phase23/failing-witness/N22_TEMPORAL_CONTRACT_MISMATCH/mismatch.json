@@ -1,0 +1,48 @@
+{
+  "schema": "poie.s5v-n23-temporal-witness/1",
+  "candidate_completion": 20800.0,
+  "fmi_survived_s": 19800,
+  "first_divergence_s": 1000.0,
+  "candidate": {
+    "position": 2,
+    "candidate_id": "c941a24dd5554c73eca2852e58ecfd074b974f854673a3af25a307cde4962b40",
+    "makespan": 20800.0,
+    "robot": "robot-m3"
+  },
+  "fmi_output": {
+    "completed": 1,
+    "failedRobotM1": 1,
+    "checkpointAt_s": 9000,
+    "completedA": 1,
+    "unfinishedB": 1,
+    "taskBRobot": 2,
+    "restored": 1,
+    "resumed": 1,
+    "rejected": 0,
+    "executedRobot": 3,
+    "candidateAccepted": 1,
+    "rejectionReason": 0,
+    "eventCount": 8,
+    "eventKinds": [
+      1,
+      7,
+      3,
+      4,
+      5,
+      6,
+      9,
+      8
+    ],
+    "eventTimes": [
+      9000,
+      9000,
+      9000,
+      9000,
+      9000,
+      9000,
+      19800,
+      19800
+    ],
+    "survived_s": 19800
+  }
+}

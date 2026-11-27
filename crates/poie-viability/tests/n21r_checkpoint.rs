@@ -497,3 +497,19 @@ fn native_execution_requires_authorized_candidate_membership() {
         matches!(blocked.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("resources do not match"))
     );
 }
+#[test]
+fn n23_repro_self_attested_choice_set_is_accepted() {
+    let (model, mut options, group, cp, _) = fixtures();
+    options.resources.push("robot-m3".into());
+    options.alternative_pool.push("robot-m3".into());
+    let mut proposal = make_proposal(&cp, "self-attested");
+    proposal.choice_set_certificate_hash = "fabricated-certificate".into();
+    proposal.selected_candidate_hash = "fabricated-candidate".into();
+    proposal.choice_set_candidates = vec!["fabricated-candidate".into()];
+    proposal.task_robots.insert("B".into(), vec!["robot-m3".into()]);
+    proposal.selected_candidate_resources.insert("B".into(), vec!["robot-m3".into()]);
+    let auth = unique_auth(&cp, &proposal);
+    let outcome = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    println!("N23_SELF_ATTESTED_EVIDENCE {:?}", outcome.termination);
+    assert_eq!(outcome.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
+}

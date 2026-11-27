@@ -1,0 +1,18 @@
+{
+  "baseline": "2dcbd4a9902d795838989dbbc40d036b9668a3e1",
+  "files": {
+    "audit/phase22/N22_EXTERNAL_VALIDATION_CERTIFICATE.json": "9f1b74a7550d28461ef31ea63b846c2b4852f6088d56e16aa053db088aeaab82",
+    "audit/phase22/build_choice_set.py": "799d00c8dfd8b72d2843922d3188675c30f98e977445708b31de9fd8c0f511dc",
+    "audit/phase22/candidate_generator/generator.py": "60bf29bee40daffcef318ff8fd1f95e2af7919104a67626783a8cfae6a2c7a20",
+    "audit/phase22/choice-set-certificates/decisive.json": "505a36880ddf5fc20703155462f83bd9c631ef67e94e49ef88d84c4ab1712a2f",
+    "audit/phase22/fixed-cases/matrix.json": "30cf34e1370845532caa9038abb6a8f384d5c0e6e8fdf759c49250520f7f3a70",
+    "audit/phase22/importer-comparisons/strict.json": "1abd148e0ff5d6c519c851756688e7ab8f4e769b94e923a475ab18b382e73a35",
+    "audit/phase22/reference-oracle/reference.py": "f882c1027a64aec0499a11affb939537f4e054f1a437f9bb568d6d28cf8681b2",
+    "crates/poie-viability/src/engine.rs": "e8c44e34a70b736551661e7d4414444dad674f474023c7c420e1da7f604062ae",
+    "docs/research/canonical-claim-certificate-index-v13.json": "2468e1801cf9c127ae95bf3af37ca01466f43da0b874278444d79c3b6c367b8a",
+    "external/fmu-n22-recovery-choice/harness.c": "59a5ce85e576cf81ad4d6faf4d3af981ee728712185dcc4825da9d20cb493433",
+    "external/fmu-n22-recovery-choice/model.c": "475847759127cb5493982be2b87a3162e42b5d2f3b898196b28928c081f7e770",
+    "external/fmu-n22-recovery-choice/poie-n22-recovery-choice.fmu": "52e1a8c9b1acb8f2351f13ee9196e43e7c211801b5dab68af5a076552e60d557"
+  },
+  "schema": "poie.s5v-n23-n22-freeze/1"
+}

@@ -1,0 +1,7 @@
+{
+  "schema": "poie.s5v-n23-self-attested-repro/1",
+  "evidence": "CompletedHorizon",
+  "conclusion": "SELF_ATTESTED_CHOICE_SET_FALSE_PASS",
+  "executor_checks": "proposal-supplied candidate list and resources only",
+  "certificate_loaded": false
+}

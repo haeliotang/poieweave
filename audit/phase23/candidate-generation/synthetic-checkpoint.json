@@ -1,0 +1,9 @@
+{
+  "schema": "poie.s5v-n23-synthetic-checkpoint-repro/1",
+  "input_checkpoint_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "accepted": true,
+  "generated": 2,
+  "reference": 2,
+  "conclusion": "SYNTHETIC_CHECKPOINT_ACCEPTED_BY_CHOICE_SET_PIPELINE",
+  "boundary": "BOUNDED ALGORITHMIC CHOICE-SET VALIDITY only; TRUSTED NATIVE CHECKPOINT-BOUND VALIDITY NOT ESTABLISHED"
+}
