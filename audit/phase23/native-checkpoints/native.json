@@ -1,0 +1,65 @@
+{
+  "projection": {
+    "active_dependencies": [
+      "bat-1",
+      "bus-1",
+      "charger-1",
+      "robot-m1"
+    ],
+    "available_assets": [
+      "bat-1",
+      "bus-1",
+      "bus-2",
+      "bus-3",
+      "charger-1",
+      "filter-1",
+      "gauge-1",
+      "lathe-1",
+      "pv-1",
+      "robot-m2",
+      "robot-m3",
+      "sensor-x"
+    ],
+    "checkpoint_commitment": "94df8c4a7a5a383c9ebfd9fb26f0d9695fbc74163a065dc848faa073833aa8b7",
+    "checkpoint_sequence": 1,
+    "checkpoint_time": 9000.0,
+    "completed_tasks": [
+      "A"
+    ],
+    "execution_id": "n23-exec",
+    "failed_assets": [
+      "a-lathe",
+      "robot-m1"
+    ],
+    "group_id": "g",
+    "inventory": {
+      "breaker-b1": 1.0,
+      "bronze-bar": 3.0,
+      "bronze-swarf": 1.2,
+      "cutting-insert": 4.0,
+      "electric-energy": 166500000.0,
+      "grease": 1.0,
+      "lathe-nut": 1.0,
+      "sleeve-p1": 2.0
+    },
+    "remaining_horizon": 63000.0,
+    "restoration_target": "a-lathe",
+    "schema": "poie.s5v-n23-checkpoint-projection/1",
+    "selected_resources": {
+      "A": [
+        "robot-m2"
+      ],
+      "B": [
+        "robot-m1"
+      ]
+    },
+    "source_environment": "canonical-v11",
+    "trusted_provenance_verified": true,
+    "unfinished_tasks": [
+      "B"
+    ]
+  },
+  "projection_sha256": "f4fc76f7d4285b3751f71ad935f75c41019251bddd96f75b22ed17a5389342fd",
+  "schema": "poie.s5v-n23-native-checkpoint-run/1",
+  "trusted_verified": true
+}

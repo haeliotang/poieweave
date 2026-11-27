@@ -1,1 +1,37 @@
-{"schema":"poie.s5v-n23-claim-status/1","claims":[{"id":"N23-0","status":"IN_PROGRESS"},{"id":"N23-A","status":"IN_PROGRESS"},{"id":"N23-B","status":"IN_PROGRESS"},{"id":"N23-C","status":"IN_PROGRESS"},{"id":"N23-D","status":"IN_PROGRESS"},{"id":"N23-E","status":"IN_PROGRESS"},{"id":"N23-F","status":"IN_PROGRESS"},{"id":"N23-G","status":"IN_PROGRESS"}]}
+{
+  "schema": "poie.s5v-n23-claim-status/1",
+  "claims": [
+    {
+      "id": "N23-0",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N23-A",
+      "status": "VERIFIED"
+    },
+    {
+      "id": "N23-B",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N23-C",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N23-D",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N23-E",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N23-F",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N23-G",
+      "status": "IN_PROGRESS"
+    }
+  ]
+}
