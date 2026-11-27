@@ -102,3 +102,15 @@ committed C 12600, B 19800 -> exact match
 
 v17 41 证书冻结；v18 41 个 `EXECUTION_SEMANTIC_EXTENSION` successors
 签发并通过 verifier/tamper。
+
+## 每任务开始时间与共享机器人独占
+
+修复任务重启事件使用实际调度 start：
+
+```text
+B 9000-19800
+C 19800-23400  (同一 robot-m2)
+overlap = false
+```
+
+v18 冻结；v19 41 个 `EXECUTION_SEMANTIC_EXTENSION` successors 签发并通过 verifier/tamper。

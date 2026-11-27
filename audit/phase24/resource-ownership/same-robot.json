@@ -1,0 +1,16 @@
+{
+  "schema": "poie.s5v-n24-resource-ownership/1",
+  "resource": "robot-m2",
+  "tasks": {
+    "B": [
+      9000,
+      19800
+    ],
+    "C": [
+      19800,
+      23400
+    ]
+  },
+  "overlap": false,
+  "conclusion": "SHARED_ROBOT_EXCLUSIVITY_VERIFIED"
+}

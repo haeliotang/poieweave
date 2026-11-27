@@ -1699,7 +1699,7 @@ pub fn resume_engine_with_authorization(
             record_event(
                 event_sequence,
                 event_batch,
-                proposal.planned_start_s.max(checkpoint.at_s),
+                proposal.planned_start_s.max(checkpoint.at_s) + task.start_s,
                 EventKind::TaskRestarted,
                 EventOrigin::Endogenous,
                 Some(task_id.clone()),
