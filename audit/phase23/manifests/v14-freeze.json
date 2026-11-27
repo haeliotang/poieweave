@@ -1,0 +1,10 @@
+{
+  "files": {
+    "audit/phase23/N22_CERTIFICATE_ERRATA.json": "528c1d142880a9c5009ff718f6015a858b94f585bc46d0f1ae8d805d104e0901",
+    "audit/phase23/choice-set-certificates/trust.json": "e7f8483ffcdbf16fa1a12898bbacbcead1d44c60c44d2ccaf55ee767736ec430",
+    "audit/phase23/temporal-comparisons/strict.json": "f04a62920c5f164cb4bc6dd520f1469c947f0cb1394cfd73250d4349407d31e0",
+    "crates/poie-viability/src/engine.rs": "4e90e7350c970bf65ec6990b913640f7926604d935bcbc894cd096c8daf119cd",
+    "docs/research/canonical-claim-certificate-index-v14.json": "87917f2d5eafec2f6ff49f769ac7d073b33aafe6cd6c9580be670a81bf285dd4"
+  },
+  "schema": "poie.s5v-n23-v14-freeze/1"
+}
