@@ -175,6 +175,7 @@ fn make_proposal(cp: &RepairCheckpoint, id: &str) -> ReplanProposal {
         selected_candidate_hash: "cand".into(),
         choice_set_candidates: vec!["cand".into()],
         selected_candidate_resources: task_robots,
+        planned_start_s: 0.0,
     }
 }
 fn fixtures() -> (Model, EngineOptions<'static>, ExplicitRepairGroup, RepairCheckpoint, ReplanProposal) {
@@ -512,4 +513,24 @@ fn n23_repro_self_attested_choice_set_is_accepted() {
     let outcome = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
     println!("N23_SELF_ATTESTED_EVIDENCE {:?}", outcome.termination);
     assert_eq!(outcome.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
+}
+#[test]
+fn canonical_committed_planned_start_is_enforced() {
+    let (model, mut options, group, cp, _) = fixtures();
+    options.resources.push("robot-m3".into());
+    options.alternative_pool.push("robot-m3".into());
+    let mut proposal = make_proposal(&cp, "planned-start");
+    proposal.task_robots.insert("B".into(), vec!["robot-m3".into()]);
+    proposal.selected_candidate_resources.insert("B".into(), vec!["robot-m3".into()]);
+    proposal.planned_start_s = 10000.0;
+    let auth = unique_auth(&cp, &proposal);
+    let outcome = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert_eq!(outcome.termination, poie_viability::engine::EngineTermination::CompletedHorizon);
+    assert!((outcome.survived_s - 20800.0).abs() < 1e-9, "committed completion {}", outcome.survived_s);
+
+    let mut legacy = make_proposal(&cp, "legacy");
+    legacy.planned_start_s = 0.0;
+    let auth = unique_auth(&cp, &legacy);
+    let outcome = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &legacy).unwrap();
+    assert!((outcome.survived_s - 19800.0).abs() < 1e-9);
 }

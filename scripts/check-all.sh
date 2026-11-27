@@ -21,13 +21,15 @@ python3 scripts/verify-canonical-claim-certificates-v7-historical.py
 python3 scripts/verify-canonical-claim-certificates-v8-historical.py
 python3 scripts/verify-canonical-claim-certificates-v9-historical.py
 python3 scripts/verify-canonical-claim-certificates-v10.py
-python3 scripts/build-canonical-claim-certificates-v13.py --check
+python3 scripts/build-canonical-claim-certificates-v14.py --check
 python3 scripts/verify-canonical-claim-certificates-v11.py
 python3 scripts/verify-canonical-claim-certificates-v12.py
 python3 scripts/verify-canonical-claim-certificates-v13.py
+python3 scripts/verify-canonical-claim-certificates-v14.py
 python3 scripts/check-canonical-claim-certificate-tamper-v11.py
 python3 scripts/check-canonical-claim-certificate-tamper-v12.py
 python3 scripts/check-canonical-claim-certificate-tamper-v13.py
+python3 scripts/check-canonical-claim-certificate-tamper-v14.py
 python3 scripts/check-canonical-claim-certificate-tamper-v10.py
 python3 scripts/build-claim-certificate-coverage.py --check
 python3 audit/phase1/check.py
