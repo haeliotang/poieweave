@@ -1,0 +1,12 @@
+{
+  "files": {
+    "audit/phase24/N23_CERTIFICATE_ERRATA.json": "caebfffe5363af59fa807d5a343c161c28e9a50ea0665cb53ff56ac0e57c4b2f",
+    "audit/phase24/failing-witness/PRESTART_FAILURE_FALSE_PASS/c-output.json": "39a95544e5ec1503bce61481868f405468fe7c8c71671c4f05c380e52d2e726f",
+    "audit/phase24/failing-witness/PRESTART_FAILURE_FALSE_PASS/corrected.json": "a2cc29debf69cedb03de5b5c234536b9eb61897c84b94fb27024accb7781559c",
+    "audit/phase24/failing-witness/PRESTART_FAILURE_FALSE_PASS/failure-audit.json": "f2bbaf0bcece6c56cfe77c18b090b912882057c23249036a9abee754d28b49bf",
+    "audit/phase24/manifests/n23-freeze.json": "94309120e8c3d45d4721477478a0629e4c2ee0d9d81c7645c1f8a19b85fd0989",
+    "external/fmu-n24-multitask-recovery/model.c": "4c29398b6ef2d75c9310a8e083df1b96b44aec725816438a0bf7deac4701c111",
+    "external/fmu-n24-multitask-recovery/poie-n24-multitask-recovery.fmu": "6956698171d23f0ba2b59cc359b1fb5799aa071b8c2b8c05532d5ccc2a39c32d"
+  },
+  "schema": "poie.s5v-n24-phase0-manifest/1"
+}

@@ -2539,6 +2539,31 @@ jobs:
           python3 audit/phase22/check_certificate.py
           python3 audit/phase22/tamper_certificate.py
 
+  s5v-n23-replay-linux:
+    name: S5-V N23 dedicated replay and certificate verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - name: Install importer dependencies
+        run: python3 -m pip install -q fmpy==0.3.32 numpy
+      - name: Rebuild and replay N23
+        run: |
+          external/fmu-n23-recovery-execution/build.sh
+          python3 audit/phase23/temporal_compare.py
+          python3 audit/phase23/continuation_compare.py
+          python3 audit/phase23/mutants.py
+          python3 audit/phase23/reducer.py
+      - name: Verify historical certificates and external certificate
+        run: |
+          python3 scripts/verify-canonical-claim-certificates-v17.py
+          python3 scripts/check-canonical-claim-certificate-tamper-v17.py
+          python3 audit/phase23/check_certificate.py
+          python3 audit/phase23/tamper_certificate.py
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest
