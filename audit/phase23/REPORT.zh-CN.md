@@ -6,7 +6,7 @@
 N23-0 HISTORY/FALSE-PASS      IN PROGRESS
 N23-A NATIVE CHECKPOINT       VERIFIED — REAL PROJECTION + IDENTITY + SYNTHETIC REJECT
 N23-B CANDIDATE/TIME          NOT ESTABLISHED
-N23-C TRUSTED CHOICE-SET      NOT ESTABLISHED
+N23-C TRUSTED CHOICE-SET      PARTIAL — RESEARCH VALIDATOR, NOT CANONICAL EXECUTOR
 N23-D NATIVE SCHEDULE         PARTIAL — external FMU exact schedule; canonical pending
 N23-E CROSS-MODEL             PARTIAL — N23 FMI C/fmpy exact temporal fields
 N23-F SECOND FAILURE          NOT ESTABLISHED
@@ -93,3 +93,25 @@ wrong survived time、event order、duplicate 和 post-termination event。
 证据：`temporal-comparisons/strict.json`、`external/fmpy-n23.json`。
 
 尚未完成 canonical 侧 committed schedule 执行，因此 N23-D/E 仍为 PARTIAL。
+
+## Trusted choice-set certificate verifier
+
+`choice_set_trust.py` 从 e2e certificate 取 feasible set 与完整 payload，验证：
+
+- schema、certificate commitment；
+- checkpoint identity、execution identity；
+- selected candidate ∈ feasible；
+- candidate payload hash 重新计算等于 selected hash；
+- authorization 的 certificate/checkpoint/candidate binding。
+
+负例：
+
+```text
+SELF_ATTESTED_FABRICATED_CANDIDATE -> CANDIDATE_NOT_IN_SET
+STALE_CHOICE_SET                  -> STALE_CHOICE_SET
+CHECKPOINT_SWAP                   -> CHECKPOINT_CHANGED_AFTER_SELECTION
+AUTHORIZATION_FOR_DIFFERENT       -> AUTHORIZATION_FOR_DIFFERENT_CANDIDATE
+AUTHORIZED_SCHEDULE_MISMATCH      -> AUTHORIZED_CANDIDATE_PAYLOAD_MISMATCH
+```
+
+该验证器尚未接入 canonical `resume_engine_with_authorization`；Gate N23-C 仍未成立。
