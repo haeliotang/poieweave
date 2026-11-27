@@ -179,3 +179,14 @@ Certificate payload now includes selected candidate `resources` + `planned_start
 canonical resume rejects `authorized candidate payload mismatch`. v15 41
 certificates frozen; v16 41 `AUTHORIZATION_SEMANTIC_CORRECTION` successors issued
 with verifier/tamper.
+
+## Executable mutants M1–M4
+
+```text
+M1 synthetic checkpoint   -> SYNTHETIC_CHECKPOINT
+M2 schedule substitution  -> ROBOT_M3_COMPLETES_AT_19800 rejected
+M3 candidate substitution -> AUTHORIZATION_FOR_DIFFERENT_CANDIDATE
+M4 hidden second replan   -> no automatic switch, executed robot remains 3
+```
+
+证据：`executable-mutants/results.json`。reducer 仍为 NOT_ESTABLISHED。
