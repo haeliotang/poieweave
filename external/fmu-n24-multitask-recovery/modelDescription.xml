@@ -28,6 +28,13 @@
     <Float64 name="irrelevantFailureObserved" valueReference="45" causality="output" variability="discrete" initial="calculated"/>
     <Float64 name="appliedFailureCount" valueReference="46" causality="output" variability="discrete" initial="calculated"/>
     <Float64 name="preStartInvalidated" valueReference="48" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="taskCDuration" valueReference="49" causality="input" variability="continuous" initial="exact" start="0"/>
+    <Float64 name="completedC" valueReference="100" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="taskBStart" valueReference="101" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="taskBEnd" valueReference="102" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="taskCStart" valueReference="103" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="taskCEnd" valueReference="104" causality="output" variability="discrete" initial="calculated"/>
+    <Float64 name="completedB" valueReference="105" causality="output" variability="discrete" initial="calculated"/>
     <Float64 name="selectedCandidate" valueReference="31" causality="input" variability="discrete" start="2"/>
     <Float64 name="executedRobot" valueReference="32" causality="output" variability="discrete" initial="calculated"/>
     <Float64 name="candidateAccepted" valueReference="33" causality="output" variability="discrete" initial="calculated"/>
@@ -57,7 +64,7 @@
     <Output valueReference="20"/><Output valueReference="22"/><Output valueReference="23"/><Output valueReference="24"/>
     <Output valueReference="25"/><Output valueReference="26"/><Output valueReference="27"/><Output valueReference="28"/>
     <Output valueReference="29"/><Output valueReference="30"/><Output valueReference="32"/><Output valueReference="33"/><Output valueReference="34"/><Output valueReference="37"/><Output valueReference="38"/><Output valueReference="44"/><Output valueReference="45"/><Output valueReference="46"/><Output valueReference="40"/><Output valueReference="44"/><Output valueReference="45"/>
-    <Output valueReference="50"/><Output valueReference="51"/><Output valueReference="52"/><Output valueReference="53"/><Output valueReference="54"/><Output valueReference="55"/><Output valueReference="56"/><Output valueReference="57"/>
+    <Output valueReference="50"/><Output valueReference="51"/><Output valueReference="52"/><Output valueReference="53"/><Output valueReference="100"/><Output valueReference="101"/><Output valueReference="102"/><Output valueReference="103"/>
     <Output valueReference="60"/><Output valueReference="61"/><Output valueReference="62"/><Output valueReference="63"/><Output valueReference="64"/><Output valueReference="65"/><Output valueReference="66"/><Output valueReference="67"/>
   </ModelStructure>
 </fmiModelDescription>

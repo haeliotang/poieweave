@@ -183,3 +183,23 @@ reducer 将 3 failures / 5 candidates / 3 dependencies / 3 waits 缩减为
 
 证据：`executable-mutants/results.json`，`minimized-counterexamples/shared-tool-reducer.json`。
 固定矩阵与 held-out 尚未完成。
+
+## N24 多任务独立 FMI
+
+`external/fmu-n24-multitask-recovery` 现支持两个任务：
+
+```text
+accepted:
+  B 9000-19800, C 19800-23400, restored
+c_interrupted @21000:
+  B completed 19800, C not completed, restored = 0
+```
+
+fmpy 与 C harness 逐字段比较：
+
+```text
+divergence_count = 0
+```
+
+canonical 共享 tool 场景与 FMU 时间表一致。
+证据：`external/fmpy-n24.json` 与 `external/conformance.json`。

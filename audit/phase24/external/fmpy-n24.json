@@ -1,0 +1,51 @@
+{
+  "schema": "poie.s5v-n24-fmpy/1",
+  "cases": {
+    "accepted": {
+      "fmpy": {
+        "completedB": 1.0,
+        "completedC": 1.0,
+        "taskBStart": 9000.0,
+        "taskBEnd": 19800.0,
+        "taskCStart": 19800.0,
+        "taskCEnd": 23400.0,
+        "restored": 1.0,
+        "survived_s": 23400.0
+      },
+      "harness": {
+        "taskBStart": 9000,
+        "taskBEnd": 19800,
+        "taskCStart": 19800,
+        "taskCEnd": 23400,
+        "completedB": 1,
+        "completedC": 1,
+        "restored": 1
+      },
+      "divergence": []
+    },
+    "c_interrupted": {
+      "fmpy": {
+        "completedB": 1.0,
+        "completedC": 0.0,
+        "taskBStart": 9000.0,
+        "taskBEnd": 19800.0,
+        "taskCStart": 19800.0,
+        "taskCEnd": 23400.0,
+        "restored": 0.0,
+        "survived_s": 21000.0
+      },
+      "harness": {
+        "taskBStart": 9000,
+        "taskBEnd": 19800,
+        "taskCStart": 19800,
+        "taskCEnd": 23400,
+        "completedB": 1,
+        "completedC": 0,
+        "restored": 0
+      },
+      "divergence": []
+    }
+  },
+  "divergence_count": 0,
+  "conforms": true
+}
