@@ -1,0 +1,58 @@
+{
+  "schema": "poie.s5v-n24-mutants/1",
+  "results": {
+    "M1_SHARED_TOOL_DOUBLE_BOOKING": {
+      "problems": [
+        "SHARED_TOOL_DOUBLE_BOOKING"
+      ],
+      "detected": true
+    },
+    "M2_PREMATURE_SHARED_DEPENDENCY_RELEASE": {
+      "problems": [
+        "PREMATURE_SHARED_DEPENDENCY_RELEASE"
+      ],
+      "detected": true
+    },
+    "M3_COMPLETED_TASK_REPLAY": {
+      "problems": [
+        "COMPLETED_TASK_REPLAY:A"
+      ],
+      "detected": true
+    },
+    "M4_PREMATURE_GROUP_RESTORATION": {
+      "problems": [
+        "PREMATURE_GROUP_RESTORATION"
+      ],
+      "detected": true
+    },
+    "M5_UNAUTHORIZED_TASK_ORDER_SWAP": {
+      "problems": [
+        "UNAUTHORIZED_TASK_ORDER_SWAP"
+      ],
+      "detected": true
+    },
+    "M6_PRESTART_FAILURE_IGNORED": {
+      "problems": [
+        "PRESTART_FAILURE_IGNORED"
+      ],
+      "detected": true
+    },
+    "M7_SECOND_REPLAN_WITHOUT_AUTHORIZATION": {
+      "problems": [
+        "SECOND_REPLAN_WITHOUT_AUTHORIZATION"
+      ],
+      "detected": true
+    },
+    "M8_CHECKPOINT_EVENT_CHAIN_BREAK": {
+      "problems": [
+        "CHECKPOINT_EVENT_CHAIN_BREAK"
+      ],
+      "detected": true
+    },
+    "GOOD_CONTROL": {
+      "problems": [],
+      "detected": false
+    }
+  },
+  "all_detected": true
+}

@@ -1,0 +1,116 @@
+{
+  "schema": "poie.s5v-n24-reducer/1",
+  "original": {
+    "tasks": [
+      "B",
+      "C"
+    ],
+    "tool_intervals": [
+      [
+        9000,
+        23400
+      ],
+      [
+        10000,
+        15000
+      ]
+    ],
+    "failures": [
+      {
+        "id": "F1",
+        "target": "robot-m1",
+        "time": 9000,
+        "relevant": true,
+        "interrupts": true
+      },
+      {
+        "id": "F2",
+        "target": "sensor-x",
+        "time": 9500,
+        "relevant": false,
+        "interrupts": false
+      },
+      {
+        "id": "F3",
+        "target": "bus-9",
+        "time": 20000,
+        "relevant": false,
+        "interrupts": false
+      }
+    ],
+    "candidates": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "dependencies": [
+      "bus-1",
+      "bus-2",
+      "bus-3"
+    ],
+    "waits": [
+      0,
+      600,
+      1200
+    ],
+    "expected_failure": "SHARED_TOOL_DOUBLE_BOOKING"
+  },
+  "minimized": {
+    "tasks": [
+      "B",
+      "C"
+    ],
+    "tool_intervals": [
+      [
+        9000,
+        23400
+      ],
+      [
+        10000,
+        15000
+      ]
+    ],
+    "failures": [
+      {
+        "id": "F1",
+        "target": "robot-m1",
+        "time": 9000,
+        "relevant": true,
+        "interrupts": true
+      }
+    ],
+    "candidates": [
+      "P1"
+    ],
+    "dependencies": [
+      "bus-1"
+    ],
+    "waits": [
+      0
+    ],
+    "expected_failure": "SHARED_TOOL_DOUBLE_BOOKING"
+  },
+  "steps": [
+    "remove 2 irrelevant failures",
+    "reduce candidates 5 -> 1",
+    "reduce dependencies 3 -> 1",
+    "reduce waits [0, 600, 1200] -> [0]"
+  ],
+  "signature_before": [
+    "SHARED_TOOL_DOUBLE_BOOKING"
+  ],
+  "signature_after": [
+    "SHARED_TOOL_DOUBLE_BOOKING"
+  ],
+  "signature_preserved": true,
+  "complexity": {
+    "tasks_before": 3,
+    "tasks_after": 2,
+    "failures_before": 3,
+    "failures_after": 1,
+    "candidates_before": 5,
+    "candidates_after": 1
+  }
+}
