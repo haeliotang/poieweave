@@ -1,0 +1,14 @@
+{
+  "baseline": "2dcbd4a9902d795838989dbbc40d036b9668a3e1",
+  "files": {
+    "audit/phase23/N23_EXTERNAL_VALIDATION_CERTIFICATE.json": "01e37a69ff24735ad407ec924c888b5d850bad430dd1f3243b3b5dbf54ee859c",
+    "audit/phase23/choice-set-certificates/e2e.json": "d06639f587a0b8571ac7f72a9d7c48c7e87cdce198991998bbbec532d7e25bbd",
+    "audit/phase23/choice-set-certificates/trust.json": "e7f8483ffcdbf16fa1a12898bbacbcead1d44c60c44d2ccaf55ee767736ec430",
+    "audit/phase23/continuation-faults/canonical-persistence.json": "6229c4898cc650d81eed6caad234b1967eac1de4e4b2c217c84f2e5c8f572f18",
+    "audit/phase23/continuation-faults/results.json": "e2dd44649ccd961f606017c0297134a4032110214872eacb2fabb6f229612224",
+    "audit/phase23/native-checkpoints/native.json": "14fee41fc940d0e4f43da9c344f3d9e0fd764dfe9823fabd284fa1c21ed3588c",
+    "audit/phase23/temporal-comparisons/strict.json": "f04a62920c5f164cb4bc6dd520f1469c947f0cb1394cfd73250d4349407d31e0",
+    "docs/research/canonical-claim-certificate-index-v16.json": "d8da769910f1c63247be3cfbe4a36a8d807d4f380a195d7c72adde2fa5d84fa4"
+  },
+  "schema": "poie.s5v-n23-evidence-manifest/1"
+}

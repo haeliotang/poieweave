@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+import hashlib,json
+from pathlib import Path
+P=Path(__file__).resolve().parent; ROOT=P.parents[1]
+def sha(p): return hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
+inputs={"checkpoint_example":"crates/poie-viability/examples/n23_checkpoint_export.rs","engine":"crates/poie-viability/src/engine.rs","generator":"audit/phase22/candidate_generator/generator.py","reference":"audit/phase22/reference-oracle/reference.py","fmi_model":"external/fmu-n23-recovery-execution/model.c","fmi_harness":"external/fmu-n23-recovery-execution/harness.c","v16_index":"docs/research/canonical-claim-certificate-index-v16.json"}
+evidence={p:sha(p) for p in ["audit/phase23/native-checkpoints/native.json","audit/phase23/choice-set-certificates/e2e.json","audit/phase23/choice-set-certificates/trust.json","audit/phase23/temporal-comparisons/strict.json","audit/phase23/continuation-faults/results.json","audit/phase23/continuation-faults/canonical-persistence.json","audit/phase23/negative-controls/projection.json","audit/phase23/negative-controls/self-attested-fixed.json"]}
+cert={"schema":"poie.s5v-n23-external-validation-certificate/1","kind":"N23_EXTERNAL_VALIDATION_CERTIFICATE","not_s2_certificate":True,"canonical_version":"v16 (v13/v14/v15 frozen)","results":{"real_checkpoint":"94df8c4a7a5a383c9ebfd9fb26f0d9695fbc74163a065dc848faa073833aa8b7","candidates":2,"canonical_m2_completion":19800,"canonical_m3_committed_completion":20800,"fmi_temporal_cases":2,"second_failure_cases":4,"trusted_payload":"resources+planned_start","mutants":["M1 synthetic checkpoint","M2 schedule substitution","M3 candidate substitution","M4 hidden second replan"]},"inputs":{k:{"path":v,"sha256":sha(v)} for k,v in inputs.items()},"evidence":evidence,"limitations":["canonical native event journal not fully compared","reducer evidence bounded to external temporal/fault cases","single-task single-connection bounded domain"]}
+(P/"N23_EXTERNAL_VALIDATION_CERTIFICATE.json").write_text(json.dumps(cert,indent=2,sort_keys=True)+'\n')
