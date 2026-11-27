@@ -203,3 +203,14 @@ divergence_count = 0
 
 canonical 共享 tool 场景与 FMU 时间表一致。
 证据：`external/fmpy-n24.json` 与 `external/conformance.json`。
+
+## 固定矩阵、held-out 与依赖闭包
+
+```text
+fixed matrix 22 cases: all_passed = true
+held-out 64 contracts: valid 55, invalid 9, accepted 55, rejected 9, unresolved 0
+dependency closure: bus-1 persists until last dependent task exits; premature release rejected
+```
+
+证据：`fixed-cases/matrix.json`、`generated-cases/ledger.json`、
+`dependency-closures/closure.json`。N24-B 与 N24-G 提升为 VERIFIED（bounded）。
