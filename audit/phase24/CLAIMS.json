@@ -3,11 +3,11 @@
   "claims": [
     {
       "id": "N24-0",
-      "status": "IN_PROGRESS"
+      "status": "VERIFIED"
     },
     {
       "id": "N24-A",
-      "status": "PARTIAL"
+      "status": "VERIFIED"
     },
     {
       "id": "N24-B",
@@ -15,19 +15,19 @@
     },
     {
       "id": "N24-C",
-      "status": "PARTIAL"
+      "status": "VERIFIED"
     },
     {
       "id": "N24-D",
-      "status": "PARTIAL"
+      "status": "VERIFIED"
     },
     {
       "id": "N24-E",
-      "status": "PARTIAL"
+      "status": "VERIFIED"
     },
     {
       "id": "N24-F",
-      "status": "PARTIAL"
+      "status": "VERIFIED"
     },
     {
       "id": "N24-G",

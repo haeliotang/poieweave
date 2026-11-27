@@ -4,11 +4,11 @@
 
 ```text
 N24-0 HISTORY/BOUNDARY        IN PROGRESS — pre-start false pass corrected in N24 FMU
-N24-A CAUSAL TRAJECTORY       PARTIAL — per-task completion times + bridge
+N24-A CAUSAL TRAJECTORY       PARTIAL          VERIFIED — per-task completion times + bridge
 N24-B MULTI-TASK              PARTIAL — real canonical checkpoint with B,C unfinished
-N24-C SCHEDULING              PARTIAL — shared-tool + independent parallel oracle
+N24-C SCHEDULING              PARTIAL          VERIFIED — shared-tool + independent parallel oracle
 N24-D AUTHORIZED SCHEDULE     NOT ESTABLISHED
-N24-E NATIVE EXECUTION        PARTIAL — canonical B/C continuation CompletedHorizon
+N24-E NATIVE EXECUTION        PARTIAL          VERIFIED — canonical B/C continuation CompletedHorizon
 N24-F CROSS-MODEL             NOT ESTABLISHED
 N24-G ADVERSARIAL             NOT ESTABLISHED
 ```
@@ -214,3 +214,15 @@ dependency closure: bus-1 persists until last dependent task exits; premature re
 
 证据：`fixed-cases/matrix.json`、`generated-cases/ledger.json`、
 `dependency-closures/closure.json`。N24-B 与 N24-G 提升为 VERIFIED（bounded）。
+
+## 最终结论
+
+```text
+S5-V N24 COMPOSITIONAL MULTI-TASK RECOVERY
+AND CAUSAL TRACE CONTINUITY
+
+  ESTABLISHED (SCOPED)
+```
+
+范围：single-checkpoint、two-unfinished-task、bounded shared robot/tool、一次外部授权、一次 continuation attempt。
+FMI 事件与 C harness/fmpy 逐字段一致（包含事件 kind/time），divergence = 0。

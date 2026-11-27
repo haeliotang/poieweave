@@ -65,5 +65,7 @@
     }
   },
   "reference_canonical_fmi_agree": true,
-  "notes": "canonical shared-tool and B-completed/C-interrupted scenarios match FMU; tool and interruption timing verified"
+  "notes": "canonical shared-tool and B-completed/C-interrupted scenarios match FMU; tool and interruption timing verified",
+  "event_conformance": true,
+  "fields_compared": 23
 }
