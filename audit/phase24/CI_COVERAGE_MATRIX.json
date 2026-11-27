@@ -1,0 +1,8 @@
+{"schema":"poie.s5v-n24-n23-ci-coverage/1","before":{"dedicated_n23_job":false,"rows":[
+{"item":"N23 cargo checkpoint tests","status":"executed in CI"},
+{"item":"N23 FMU build","status":"executed locally only"},
+{"item":"N23 temporal comparator","status":"executed locally only"},
+{"item":"N23 continuation comparator","status":"executed locally only"},
+{"item":"N23 mutants/reducer","status":"verified from frozen JSON only"},
+{"item":"N23 external certificate","status":"executed locally only"}]},
+"after":{"dedicated_n23_job":true,"job":"s5v-n23-replay-linux"}}

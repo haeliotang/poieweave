@@ -1,0 +1,24 @@
+{
+  "issues": [
+    {
+      "detail": "certificate canonical_version field said v16 while inputs bound v17 index",
+      "id": "VERSION_LABEL"
+    },
+    {
+      "detail": "certificate limitations retained canonical native event journal not fully compared, although v17 event-observed resume was added",
+      "id": "EVENT_JOURNAL_LIMITATION"
+    },
+    {
+      "detail": "event-observed function covers resume events only; initial repair events use existing event-observed API",
+      "id": "RANGE_OF_EVENT_API"
+    }
+  ],
+  "n23_evidence": [
+    "docs/research/canonical-claim-certificate-index-v17.json",
+    "crates/poie-viability/src/engine.rs"
+  ],
+  "original_certificate": "audit/phase23/N23_EXTERNAL_VALIDATION_CERTIFICATE.json",
+  "original_sha256": "da4cf8e7d7a7e192cd8271660228a7f37b47ba79994a407ff74a2db411317c4f",
+  "schema": "poie.s5v-n24-n23-certificate-errata/1",
+  "status": "SUPPLEMENTED_NOT_REWRITTEN"
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "poie.s5v-n24-claim-status/1",
+  "claims": [
+    {
+      "id": "N24-0",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N24-A",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N24-B",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N24-C",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N24-D",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N24-E",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N24-F",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "N24-G",
+      "status": "IN_PROGRESS"
+    }
+  ]
+}

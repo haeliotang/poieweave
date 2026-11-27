@@ -1,0 +1,16 @@
+{
+  "baseline": "3048e3af673bd60ac9023ab65cebb5fa2a96c229",
+  "files": {
+    "audit/phase23/CLAIMS.json": "692b245f4ee8debffba9b6d2084f6809683ac24b73aa665bf7b295cc02b5bfa5",
+    "audit/phase23/N23_EXTERNAL_VALIDATION_CERTIFICATE.json": "da4cf8e7d7a7e192cd8271660228a7f37b47ba79994a407ff74a2db411317c4f",
+    "audit/phase23/REPORT.zh-CN.md": "c7e398be7beeb2a92348299127d2aa2a5bbacabc0d86612c7cfd0d22ff9cdf36",
+    "audit/phase23/continuation-faults/results.json": "e2dd44649ccd961f606017c0297134a4032110214872eacb2fabb6f229612224",
+    "audit/phase23/executable-mutants/results.json": "0587564f8ec78135af7db04f012b2aea6fbefdde005df46e45907039534c6a59",
+    "audit/phase23/temporal-comparisons/strict.json": "f04a62920c5f164cb4bc6dd520f1469c947f0cb1394cfd73250d4349407d31e0",
+    "crates/poie-viability/src/engine.rs": "1b7d8378d97470da2672a7c20016ffbb547fc3aa639ebf4517f9ec1f81391ac1",
+    "docs/research/canonical-claim-certificate-index-v17.json": "fe8f2f13e9f7a05280b43f262713af2e1ecd599f625f79b55d93c7ace5baa28e",
+    "external/fmu-n23-recovery-execution/model.c": "81c3be5b2bc676b8b6eab3617630247c088d8881332cc3b55de0273d1f1f4b3a",
+    "external/fmu-n23-recovery-execution/poie-n23-recovery-execution.fmu": "a20db7a2c99b0f9fedb114ab461dbc2a8ef829b0d9e290acd99d78c0caaae429"
+  },
+  "schema": "poie.s5v-n24-n23-freeze/1"
+}
