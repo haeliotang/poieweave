@@ -1,0 +1,46 @@
+{
+  "schema": "poie.s5v-n24-completion-time-witness/1",
+  "committed": {
+    "schema": "poie.n24-committed-schedule/1",
+    "checkpoint_time": 9000,
+    "tasks": {
+      "B": {
+        "robot": "robot-m3",
+        "start": 9000,
+        "duration": 10800,
+        "end": 19800
+      },
+      "C": {
+        "robot": "robot-m2",
+        "start": 9000,
+        "duration": 3600,
+        "end": 12600
+      }
+    },
+    "expected_makespan": 19800
+  },
+  "actual_task_events": [
+    {
+      "kind": "TaskRestarted",
+      "target": "B",
+      "time": 9000.0
+    },
+    {
+      "kind": "TaskRestarted",
+      "target": "C",
+      "time": 9000.0
+    },
+    {
+      "kind": "TaskCompleted",
+      "target": "B",
+      "time": 19800.0
+    },
+    {
+      "kind": "TaskCompleted",
+      "target": "C",
+      "time": 19800.0
+    }
+  ],
+  "divergence": "TaskCompleted C actual @19800, committed @12600; engine records task completion at group end rather than task end",
+  "conclusion": "CANONICAL_TASK_COMPLETION_TIME_NOT_REPRESENTED"
+}
