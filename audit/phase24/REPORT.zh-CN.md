@@ -126,3 +126,24 @@ overlap = false
 ```
 
 canonical scheduler 已能表达 tool 独占占用与顺序执行。
+
+## Full schedule commitment（研究授权层）
+
+真实双任务 committed schedule：
+
+```text
+B robot-m3 9000-19800
+C robot-m2 9000-12600
+makespan 19800
+```
+
+candidate hash = SHA-256(full schedule)。与 native TaskRestarted/TaskCompleted
+逐项相等；交换 B/C 顺序的 mutated schedule 被拒绝：
+
+```text
+valid = true
+order_swap_rejected = true
+```
+
+证据：`authorizations/full-schedule-authorization.json` 与
+`full-schedule-verification.json`。canonical 尚未原生强制该 commitment，故 N24-D 保持 PARTIAL。

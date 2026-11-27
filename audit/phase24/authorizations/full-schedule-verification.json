@@ -1,0 +1,43 @@
+{
+  "schema": "poie.s5v-n24-full-schedule-verification/1",
+  "authorization": {
+    "schema": "poie.s5v-n24-authorization/1",
+    "checkpoint_hash": "3966ce174960a8e21a0fc92d9bf912db25949e1a492668047f62c9d9325c4ab8",
+    "execution_id": "n24-trajectory",
+    "authorization_id": "n24-auth",
+    "selected_candidate_hash": "d4dffac834b595c44f38ae1cddf534f881b1869e3a2900080276a64d0b6c9d9a",
+    "full_schedule": {
+      "checkpoint_hash": "3966ce174960a8e21a0fc92d9bf912db25949e1a492668047f62c9d9325c4ab8",
+      "tasks": {
+        "B": {
+          "robot": "robot-m3",
+          "start": 9000.0,
+          "end": 19800.0
+        },
+        "C": {
+          "robot": "robot-m2",
+          "start": 9000.0,
+          "end": 12600.0
+        }
+      },
+      "makespan": 19800.0,
+      "schedule_commitment": "d4dffac834b595c44f38ae1cddf534f881b1869e3a2900080276a64d0b6c9d9a"
+    },
+    "scope": "research authorization binding; canonical enforcement remains partial"
+  },
+  "actual_starts": {
+    "B": 9000.0,
+    "C": 9000.0
+  },
+  "actual_ends": {
+    "C": 12600.0,
+    "B": 19800.0
+  },
+  "problems": [],
+  "valid": true,
+  "order_swap_rejected": true,
+  "order_swap_problems": [
+    "WRONG_TASK_START:B",
+    "WRONG_TASK_END:B"
+  ]
+}
