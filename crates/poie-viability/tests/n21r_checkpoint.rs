@@ -587,3 +587,30 @@ fn n23_second_failure_keeps_authorization_consumed() {
     );
     println!("N23_SECOND_FAILURE_AUTH_PERSISTENCE consumed");
 }
+#[test]
+fn n23_canonical_native_events_match_committed_schedule() {
+    use poie_viability::engine::resume_engine_with_authorization_event_observed;
+    let (model, mut options, group, cp, _) = fixtures();
+    options.resources.push("robot-m3".into());
+    options.alternative_pool.push("robot-m3".into());
+    let mut proposal = make_proposal(&cp, "native-events");
+    proposal.task_robots.insert("B".into(), vec!["robot-m3".into()]);
+    proposal.selected_candidate_resources.insert("B".into(), vec!["robot-m3".into()]);
+    proposal.planned_start_s = 10000.0;
+    refresh_choice_set_certificate(&cp, &mut proposal);
+    let auth = unique_auth(&cp, &proposal);
+    let observed =
+        resume_engine_with_authorization_event_observed(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    let find = |kind: &str| observed.events.iter().find(|e| format!("{:?}", e.kind) == kind).map(|e| e.at_s);
+    let auth_at = find("ReplanAuthorized").unwrap();
+    let resumed_at = find("RepairResumed").unwrap();
+    let restarted_at = find("TaskRestarted").unwrap();
+    let completed_at = find("TaskCompleted").unwrap();
+    println!("N23_NATIVE_EVENTS auth={auth_at} resumed={resumed_at} restarted={restarted_at} completed={completed_at}");
+    assert!(
+        (auth_at - 9000.0).abs() < 1e-9
+            && (resumed_at - 10000.0).abs() < 1e-9
+            && (restarted_at - 10000.0).abs() < 1e-9
+            && (completed_at - 20800.0).abs() < 1e-9
+    );
+}

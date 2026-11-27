@@ -1681,7 +1681,7 @@ pub fn resume_engine_with_authorization(
     record_event(
         event_sequence,
         event_batch,
-        checkpoint.at_s,
+        proposal.planned_start_s.max(checkpoint.at_s),
         EventKind::RepairResumed,
         EventOrigin::Endogenous,
         Some(group.group_id.clone()),
@@ -1699,7 +1699,7 @@ pub fn resume_engine_with_authorization(
             record_event(
                 event_sequence,
                 event_batch,
-                checkpoint.at_s,
+                proposal.planned_start_s.max(checkpoint.at_s),
                 EventKind::TaskRestarted,
                 EventOrigin::Endogenous,
                 Some(task_id.clone()),
@@ -1866,6 +1866,22 @@ pub fn resume_engine_with_authorization(
         trace,
         final_inventory: inventory,
     })
+}
+
+/// Resume while recording every committed native event.
+pub fn resume_engine_with_authorization_event_observed(
+    model: &Model,
+    options: &EngineOptions<'_>,
+    group: &ExplicitRepairGroup,
+    checkpoint: &RepairCheckpoint,
+    authorization: &ReplanAuthorization,
+    proposal: &ReplanProposal,
+) -> Result<EventObservedOutcome, EngineError> {
+    let guard = EventGuard::install()?;
+    let outcome = resume_engine_with_authorization(model, options, group, checkpoint, authorization, proposal);
+    let events = EVENT_COLLECTOR.with(|cell| cell.borrow_mut().take()).unwrap_or_default();
+    drop(guard);
+    outcome.map(|outcome| EventObservedOutcome { outcome, events })
 }
 
 /// Durable wrapper: atomically claim the authorization in a file ledger
