@@ -167,6 +167,12 @@ fn refresh_choice_set_certificate(cp: &RepairCheckpoint, proposal: &mut ReplanPr
         "checkpoint_hash": cp.compute_state_hash(),
         "execution_id": cp.execution_id,
         "feasible_candidates": feasible,
+        "payloads": {
+            proposal.selected_candidate_hash.clone(): {
+                "resources": proposal.task_robots.clone(),
+                "planned_start_s": proposal.planned_start_s,
+            }
+        },
     })
     .to_string();
     use sha2::{Digest, Sha256};
@@ -196,19 +202,7 @@ fn make_proposal(cp: &RepairCheckpoint, id: &str) -> ReplanProposal {
         planned_start_s: 0.0,
         choice_set_certificate_payload: String::new(),
     };
-    let payload = format!(
-        "{{\"schema\":\"poie.recovery-choice-set-certificate/v2\",\"checkpoint_hash\":\"{}\",\"execution_id\":\"{}\",\"feasible_candidates\":[\"cand\"]}}",
-        cp.compute_state_hash(),
-        cp.execution_id
-    );
-    use sha2::{Digest, Sha256};
-    let mut hasher = Sha256::new();
-    hasher.update(b"poie.choice-set-certificate/v1\x1f");
-    hasher.update(payload.as_bytes());
-    let certificate_hash = format!("{:x}", hasher.finalize());
-    proposal.choice_set_certificate_hash = certificate_hash.clone();
-    proposal.choice_set_certificate_payload = payload;
-    poie_viability::engine::register_trusted_choice_set_for_research(&certificate_hash);
+    refresh_choice_set_certificate(cp, &mut proposal);
     proposal
 }
 fn fixtures() -> (Model, EngineOptions<'static>, ExplicitRepairGroup, RepairCheckpoint, ReplanProposal) {
@@ -559,6 +553,7 @@ fn canonical_committed_planned_start_is_enforced() {
     proposal.task_robots.insert("B".into(), vec!["robot-m3".into()]);
     proposal.selected_candidate_resources.insert("B".into(), vec!["robot-m3".into()]);
     proposal.planned_start_s = 10000.0;
+    refresh_choice_set_certificate(&cp, &mut proposal);
     let auth = unique_auth(&cp, &proposal);
     let outcome = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
     assert_eq!(outcome.termination, poie_viability::engine::EngineTermination::CompletedHorizon);

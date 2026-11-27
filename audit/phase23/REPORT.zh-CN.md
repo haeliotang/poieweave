@@ -172,3 +172,10 @@ automatic second replan / candidate switch -> none
 ```
 
 证据：`continuation-faults/canonical-persistence.json`。
+
+## Full candidate payload binding
+
+Certificate payload now includes selected candidate `resources` + `planned_start_s`;
+canonical resume rejects `authorized candidate payload mismatch`. v15 41
+certificates frozen; v16 41 `AUTHORIZATION_SEMANTIC_CORRECTION` successors issued
+with verifier/tamper.
