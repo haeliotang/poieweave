@@ -1,0 +1,157 @@
+{
+  "schema": "poie.s5v-n24-scheduler/1",
+  "shared_tool": false,
+  "generated": 5,
+  "reference": 5,
+  "soundness": true,
+  "completeness": true,
+  "parallel": 1,
+  "optimal_makespan": 19800,
+  "candidates": [
+    {
+      "checkpoint_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "unfinished_task_set": [
+        "B",
+        "C"
+      ],
+      "task_to_robot": {
+        "B": "robot-m2",
+        "C": "robot-m3"
+      },
+      "tool": {
+        "B": null,
+        "C": null
+      },
+      "order": [
+        "B",
+        "C"
+      ],
+      "start": {
+        "B": 9000,
+        "C": 9000
+      },
+      "end": {
+        "B": 19800,
+        "C": 12600
+      },
+      "makespan": 19800,
+      "candidate_id": "3c3da057428597717ffd651bd890e73d94734b68a235a7886949afe4f7635d5e"
+    },
+    {
+      "checkpoint_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "unfinished_task_set": [
+        "B",
+        "C"
+      ],
+      "task_to_robot": {
+        "C": "robot-m3",
+        "B": "robot-m3"
+      },
+      "tool": {
+        "B": null,
+        "C": null
+      },
+      "order": [
+        "C",
+        "B"
+      ],
+      "start": {
+        "C": 9000,
+        "B": 12600
+      },
+      "end": {
+        "C": 12600,
+        "B": 23400
+      },
+      "makespan": 23400,
+      "candidate_id": "472b6957de6dd0d2cdf3a6bd17f5de4802072b6972edf62457a5a4f1be11e7df"
+    },
+    {
+      "checkpoint_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "unfinished_task_set": [
+        "B",
+        "C"
+      ],
+      "task_to_robot": {
+        "B": "robot-m2",
+        "C": "robot-m3"
+      },
+      "tool": {
+        "B": null,
+        "C": null
+      },
+      "order": [
+        "B",
+        "C"
+      ],
+      "start": {
+        "B": 9000,
+        "C": 19800
+      },
+      "end": {
+        "B": 19800,
+        "C": 23400
+      },
+      "makespan": 23400,
+      "candidate_id": "949986f8cd84e71c6c8c5cc175d97186f30282a5f4b29a3612b19bc35ce2628c"
+    },
+    {
+      "checkpoint_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "unfinished_task_set": [
+        "B",
+        "C"
+      ],
+      "task_to_robot": {
+        "C": "robot-m3",
+        "B": "robot-m2"
+      },
+      "tool": {
+        "B": null,
+        "C": null
+      },
+      "order": [
+        "C",
+        "B"
+      ],
+      "start": {
+        "C": 9000,
+        "B": 12600
+      },
+      "end": {
+        "C": 12600,
+        "B": 23400
+      },
+      "makespan": 23400,
+      "candidate_id": "c1fe5e570c88cc64294955c93178f11601666a87bb0d23a83e498d0057579069"
+    },
+    {
+      "checkpoint_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "unfinished_task_set": [
+        "B",
+        "C"
+      ],
+      "task_to_robot": {
+        "B": "robot-m3",
+        "C": "robot-m3"
+      },
+      "tool": {
+        "B": null,
+        "C": null
+      },
+      "order": [
+        "B",
+        "C"
+      ],
+      "start": {
+        "B": 9000,
+        "C": 19800
+      },
+      "end": {
+        "B": 19800,
+        "C": 23400
+      },
+      "makespan": 23400,
+      "candidate_id": "cc8842253a9e2e2b94f231a017232f4f7bdccd4b115528c9cbc55bdf10b86dc1"
+    }
+  ]
+}

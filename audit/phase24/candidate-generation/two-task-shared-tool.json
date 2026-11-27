@@ -125,22 +125,5 @@
       "makespan": 23400,
       "candidate_id": "e410e57b29de4e776aa6988f90c123885179fd05b03a3db527c5992e47add08b"
     }
-  ],
-  "independent_resource_control": {
-    "tasks": [
-      "B",
-      "C"
-    ],
-    "eligible": {
-      "B": [
-        "robot-m2",
-        "robot-m3"
-      ],
-      "C": [
-        "robot-m3"
-      ]
-    },
-    "tools": {},
-    "expected": "parallel allowed"
-  }
+  ]
 }

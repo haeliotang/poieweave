@@ -1,0 +1,8 @@
+{
+  "schema": "poie.s5v-n24-trajectory-validation/1",
+  "initial_events": 6,
+  "resume_events": 6,
+  "problems": [],
+  "valid": true,
+  "scoped": "single initial task set; two-task trajectory pending"
+}

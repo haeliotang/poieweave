@@ -4,9 +4,9 @@
 
 ```text
 N24-0 HISTORY/BOUNDARY        IN PROGRESS — pre-start false pass corrected in N24 FMU
-N24-A CAUSAL TRAJECTORY       NOT ESTABLISHED
+N24-A CAUSAL TRAJECTORY       PARTIAL — single-task initial+resume event chain
 N24-B MULTI-TASK              PARTIAL — real canonical checkpoint with B,C unfinished
-N24-C SCHEDULING              NOT ESTABLISHED
+N24-C SCHEDULING              PARTIAL — shared-tool + independent parallel oracle
 N24-D AUTHORIZED SCHEDULE     NOT ESTABLISHED
 N24-E NATIVE EXECUTION        PARTIAL — canonical B/C continuation CompletedHorizon
 N24-F CROSS-MODEL             NOT ESTABLISHED
@@ -64,3 +64,10 @@ optimal makespan = 23400
 
 证据：`candidate-generation/two-task-shared-tool.json`。
 独立资源并行 control、完整固定矩阵、shared resource ownership 尚未完成。
+
+## Causal trajectory and independent-resource scheduling
+
+- `causal-trajectories/n23-style.json`：真实 canonical initial 6 events + resume 6 events，
+  checkpoint bridge 前后连续；validation 无问题（单任务 scoped）。
+- `candidate-generation/two-task-shared-tool.json` 与 `two-task-independent.json`：
+  shared tool 时 4 个串行候选、0 并行；独立资源时允许并行，soundness/completeness true。
