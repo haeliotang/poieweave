@@ -161,3 +161,25 @@ second resume = BLOCKED authorization already consumed
 测试：`n24_b_done_c_interrupted_no_restoration_no_second_replan`。
 证据：`canonical/b-then-c-failure.json`。
 v19 冻结；v20 41 successors 签发并通过 verifier/tamper。
+
+## Executable mutants 与 reducer
+
+8 个 executable mutants 全部被正式 validator 拒绝，good control 通过：
+
+```text
+M1 SHARED_TOOL_DOUBLE_BOOKING
+M2 PREMATURE_SHARED_DEPENDENCY_RELEASE
+M3 COMPLETED_TASK_REPLAY
+M4 PREMATURE_GROUP_RESTORATION
+M5 UNAUTHORIZED_TASK_ORDER_SWAP
+M6 PRESTART_FAILURE_IGNORED
+M7 SECOND_REPLAN_WITHOUT_AUTHORIZATION
+M8 CHECKPOINT_EVENT_CHAIN_BREAK
+all_detected = true
+```
+
+reducer 将 3 failures / 5 candidates / 3 dependencies / 3 waits 缩减为
+1/1/1/[0]，失败签名 `SHARED_TOOL_DOUBLE_BOOKING` 保持。
+
+证据：`executable-mutants/results.json`，`minimized-counterexamples/shared-tool-reducer.json`。
+固定矩阵与 held-out 尚未完成。
