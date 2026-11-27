@@ -81,10 +81,17 @@ fmi3Status fmi3DoStep(fmi3Instance i, fmi3Float64 current, fmi3Float64 step, fmi
                 s->phase = 2; }
         }
     } else if (s->phase == 2) {
-        double target = current + step; if (target > s->end_b) target = s->end_b; s->time = target;
+        double target = current + step; if (target > s->end_b) target = s->end_b;
+        double cf = val(s,39); int ctarget = (int)val(s,47);
+        if (cf > current + 1e-9 && cf < target) target = cf;
+        s->time = target;
         double start = val(s,37);
+        if (cf > 0 && s->time >= cf - 1e-9 && cf >= start - 1e-9 && cf < s->end_b - 1e-9) {
+            if (ctarget == 1) { set(s,44,1); set(s,20,0); set(s,28,0); set(s,46,1); event(s,7); s->phase = 3; }
+            else { set(s,45,1); }
+        }
         if (s->time >= start - 1e-9) { set(s,60+5, start); set(s,60+6, start); }
-        if (s->time >= s->end_b - 1e-9) { set(s,20,1); set(s,28,1); set(s,38,s->end_b); event(s,9); event(s,8); s->phase = 3; }
+        if (s->phase == 2 && s->time >= s->end_b - 1e-9) { set(s,20,1); set(s,28,1); set(s,38,s->end_b); event(s,9); event(s,8); s->phase = 3; }
     } else s->time = current;
     if (term) *term = (s->phase == 3); if (eh) *eh = 0; if (early) *early = 0; if (last) *last = s->time;
     return fmi3OK;

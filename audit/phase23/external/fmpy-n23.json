@@ -11,6 +11,8 @@
     "resumed": 1.0,
     "actualStart_s": 10000.0,
     "actualCompletion_s": 20800.0,
+    "secondInterrupted": 0.0,
+    "irrelevantFailureObserved": 0.0,
     "executedRobot": 3.0,
     "candidateAccepted": 1.0,
     "rejectionReason": 0.0,
