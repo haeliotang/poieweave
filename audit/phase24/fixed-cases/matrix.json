@@ -1,0 +1,94 @@
+{
+  "schema": "poie.s5v-n24-fixed-matrix/1",
+  "cases": {
+    "N24-00_legacy": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-01_two_unfinished": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-02_B_then_C": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-03_C_then_B": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-04_tool_parallel_reject": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-05_independent_parallel_accept": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-06_premature_release_reject": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-07_OR_path": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-08_replay_completed_reject": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-09_restore_early_reject": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-10_C_failure_blocked": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-11_second_replan_reject": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-12_tool_handoff_accept": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-13_same_completion_order": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-14_failure_at_completion": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-15_prestart_invalidated": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-16_irrelevant_failure": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-17_horizon": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-18_nonoptimal_order": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-19_missing_order_reject": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-20_trajectory_discontinuity_reject": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    },
+    "N24-21_journal_overflow": {
+      "passed": true,
+      "outcome": "ACCEPT"
+    }
+  },
+  "all_passed": true
+}

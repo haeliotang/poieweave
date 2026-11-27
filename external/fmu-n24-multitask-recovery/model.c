@@ -95,7 +95,9 @@ fmi3Status fmi3DoStep(fmi3Instance i, fmi3Float64 current, fmi3Float64 step, fmi
             if (target > cend) target = cend;
             if (cf > current + 1e-9 && cf < target) target = cf;
             s->time = target;
-            if (cf > 0 && s->time >= cf - 1e-9 && cf < cend - 1e-9) {
+            if (cf > 0 && s->time >= cf - 1e-9 && cf < bstart - 1e-9) {
+                set(s, 48, 1); set(s, 20, 0); set(s, 28, 0); set(s, 59, 0); set(s, 54, 0); event(s, 7); s->phase = 3;
+            } else if (cf > 0 && s->time >= cf - 1e-9 && cf < cend - 1e-9) {
                 set(s, 20, 0); set(s, 28, 0); set(s, 46, 1); event(s, 7);
                 if (cf >= bend - 1e-9) { set(s, 105, 1); set(s, 100, 0); set(s, 103, cstart); }
                 s->phase = 3;

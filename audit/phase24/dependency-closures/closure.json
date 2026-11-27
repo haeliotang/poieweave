@@ -1,0 +1,71 @@
+{
+  "schema": "poie.s5v-n24-dependency-closure/1",
+  "closure_before_B_done": [
+    "bus-1"
+  ],
+  "closure_after_B_done": [
+    "bus-1"
+  ],
+  "closure_after_last": [],
+  "cases": {
+    "after_B_then_C_pending": {
+      "before": [
+        "B",
+        "C"
+      ],
+      "after": [
+        "C"
+      ],
+      "released": [
+        "bus-1"
+      ],
+      "valid": false,
+      "closure_before": [
+        "bus-1"
+      ],
+      "closure_after": [
+        "bus-1"
+      ],
+      "actual_valid": false,
+      "passed": true
+    },
+    "after_C_last": {
+      "before": [
+        "C"
+      ],
+      "after": [],
+      "released": [
+        "bus-1"
+      ],
+      "valid": true,
+      "closure_before": [
+        "bus-1"
+      ],
+      "closure_after": [],
+      "actual_valid": true,
+      "passed": true
+    },
+    "independent_buses": {
+      "before": [
+        "B",
+        "C"
+      ],
+      "after": [
+        "C"
+      ],
+      "released": [
+        "bus-2"
+      ],
+      "valid": true,
+      "closure_before": [
+        "bus-1"
+      ],
+      "closure_after": [
+        "bus-1"
+      ],
+      "actual_valid": true,
+      "passed": true
+    }
+  },
+  "all_passed": true
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "poie.s5v-n24-heldout/1",
+  "seeds": [
+    24024,
+    24025
+  ],
+  "counts": {
+    "attempted": 64,
+    "valid": 55,
+    "invalid": 9,
+    "accepted": 55,
+    "rejected": 9,
+    "unresolved": 0,
+    "not_representable": 0
+  }
+}
