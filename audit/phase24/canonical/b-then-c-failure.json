@@ -1,0 +1,16 @@
+{
+  "schema": "poie.s5v-n24-continuation-failure/1",
+  "authorized": {
+    "B": "robot-m3",
+    "C": "robot-m2"
+  },
+  "shared_tool": "tool-t1",
+  "B_completed": 19800,
+  "C_started": 19800,
+  "C_interrupted": 21000,
+  "C_completed": null,
+  "restoration_committed": false,
+  "automatic_candidate_switch": false,
+  "second_resume": "BLOCKED authorization already consumed",
+  "canonical_outcome": "Blocked continuation interrupted"
+}
