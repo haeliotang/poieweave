@@ -722,6 +722,7 @@ pub struct ReplanProposal {
     pub selected_candidate_hash: String,
     pub choice_set_candidates: Vec<String>,
     pub selected_candidate_resources: BTreeMap<String, Vec<String>>,
+    pub planned_start_s: f64,
 }
 
 impl ReplanProposal {
@@ -1466,6 +1467,17 @@ pub fn resume_engine_with_authorization(
             final_inventory: inventory,
         });
     }
+    if proposal.planned_start_s != 0.0
+        && (proposal.planned_start_s < checkpoint.at_s - 1e-9
+            || proposal.planned_start_s > checkpoint.at_s + checkpoint.remaining_horizon_s + 1e-9)
+    {
+        return Ok(EngineOutcome {
+            termination: EngineTermination::Blocked("replan_rejected: planned start outside checkpoint horizon".into()),
+            survived_s: checkpoint.at_s,
+            trace: checkpoint.trace_history.clone(),
+            final_inventory: inventory,
+        });
+    }
     for (task_id, robots) in &proposal.task_robots {
         if !checkpoint.unfinished_tasks.contains(task_id) {
             return Ok(EngineOutcome {
@@ -1518,8 +1530,8 @@ pub fn resume_engine_with_authorization(
         &current,
         &subgroup,
         &inventory,
-        checkpoint.at_s,
-        checkpoint.remaining_horizon_s,
+        proposal.planned_start_s.max(checkpoint.at_s),
+        checkpoint.at_s + checkpoint.remaining_horizon_s - proposal.planned_start_s.max(checkpoint.at_s),
         &options.resources,
         &options.alternative_pool,
     ) {

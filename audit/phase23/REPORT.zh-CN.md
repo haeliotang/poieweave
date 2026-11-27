@@ -115,3 +115,17 @@ AUTHORIZED_SCHEDULE_MISMATCH      -> AUTHORIZED_CANDIDATE_PAYLOAD_MISMATCH
 ```
 
 该验证器尚未接入 canonical `resume_engine_with_authorization`；Gate N23-C 仍未成立。
+
+## Canonical committed schedule + v14
+
+`ReplanProposal.planned_start_s` 纳入 v13 proposal commitment；resume 使用
+`max(checkpoint.at_s, planned_start_s)` 调度：
+
+```text
+robot-m2 planned_start 0     -> survived 19800 (legacy preserved)
+robot-m3 planned_start 10000 -> survived 20800 (committed)
+```
+
+测试：`canonical_committed_planned_start_is_enforced`。
+v13 41 证书字节冻结；v14 41 个 `EXECUTION_SEMANTIC_EXTENSION` successors
+签发并通过 verifier/tamper。
