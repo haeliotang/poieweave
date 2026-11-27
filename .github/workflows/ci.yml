@@ -2564,6 +2564,29 @@ jobs:
           python3 audit/phase23/check_certificate.py
           python3 audit/phase23/tamper_certificate.py
 
+  s5v-n24-replay-linux:
+    name: S5-V N24 dedicated replay
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - name: Install dependencies
+        run: python3 -m pip install -q fmpy==0.3.32 numpy
+      - name: Replay N24 evidence
+        run: |
+          cargo test -q -p poie-viability --test n21r_checkpoint
+          external/fmu-n24-multitask-recovery/build.sh
+          python3 audit/phase24/reference_scheduler/scheduler.py
+          python3 audit/phase24/causal-trajectories/validate_trajectory.py two-task.json
+          python3 audit/phase24/authorizations/full_schedule.py
+          python3 audit/phase24/executable-mutants/mutants.py
+          python3 audit/phase24/executable-mutants/reducer.py
+          python3 audit/phase24/external/fmpy_n24.py
+          python3 audit/phase24/make_certificate.py
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest
