@@ -1,0 +1,7 @@
+{
+  "schema": "poie.s5v-n23-canonical-persistence/1",
+  "first_attempt": "BLOCKED_CONTINUATION_INTERRUPTED",
+  "second_attempt": "BLOCKED_ALREADY_CONSUMED",
+  "automatic_second_replan": false,
+  "automatic_candidate_switch": false
+}

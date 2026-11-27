@@ -570,3 +570,25 @@ fn canonical_committed_planned_start_is_enforced() {
     let outcome = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &legacy).unwrap();
     assert!((outcome.survived_s - 19800.0).abs() < 1e-9);
 }
+#[test]
+fn n23_second_failure_keeps_authorization_consumed() {
+    let (model, mut options, group, _, _) = fixtures();
+    options.failures.push(FailureEvent { at_s: 15000.0, asset: "robot-m2".into() });
+    let (_, checkpoint) =
+        run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "exec-second-failure").unwrap();
+    let cp = checkpoint.unwrap();
+    let mut proposal = make_proposal(&cp, "second-failure");
+    proposal.task_robots.insert("B".into(), vec!["robot-m2".into()]);
+    proposal.selected_candidate_resources.insert("B".into(), vec!["robot-m2".into()]);
+    refresh_choice_set_certificate(&cp, &mut proposal);
+    let auth = unique_auth(&cp, &proposal);
+    let first = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(
+        matches!(first.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("continuation interrupted"))
+    );
+    let second = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(
+        matches!(second.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("already consumed"))
+    );
+    println!("N23_SECOND_FAILURE_AUTH_PERSISTENCE consumed");
+}
