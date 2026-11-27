@@ -3,7 +3,7 @@
   "claims": [
     {
       "id": "N23-0",
-      "status": "IN_PROGRESS"
+      "status": "VERIFIED"
     },
     {
       "id": "N23-A",
@@ -15,11 +15,11 @@
     },
     {
       "id": "N23-C",
-      "status": "IN_PROGRESS"
+      "status": "VERIFIED"
     },
     {
       "id": "N23-D",
-      "status": "IN_PROGRESS"
+      "status": "VERIFIED"
     },
     {
       "id": "N23-E",
@@ -27,7 +27,7 @@
     },
     {
       "id": "N23-F",
-      "status": "IN_PROGRESS"
+      "status": "VERIFIED"
     },
     {
       "id": "N23-G",
