@@ -1,0 +1,53 @@
+{
+  "baseline": "3048e3af673bd60ac9023ab65cebb5fa2a96c229",
+  "canonical_version": "v20",
+  "claims": {
+    "c_fmpy": "VERIFIED",
+    "canonical_two_task": "PARTIAL-VERIFIED",
+    "continuation_failure": "VERIFIED",
+    "dependency_closure": "NOT ESTABLISHED",
+    "fixed_matrix": "NOT ESTABLISHED",
+    "full_schedule_commitment": "RESEARCH_LAYER",
+    "held_out": "NOT ESTABLISHED",
+    "independent_multitask_fmi": "VERIFIED (bounded to B/C shared-tool scenarios)",
+    "mutants": "VERIFIED",
+    "reducer": "VERIFIED",
+    "resource_ownership": "VERIFIED"
+  },
+  "inputs": {
+    "audit/phase24/authorizations/full-schedule-authorization.json": "9b19c68aeed64ee464d2da608cef812240168a9976a57477ed781269a280dd86",
+    "audit/phase24/authorizations/full-schedule-verification.json": "f51787168d3d6b32366da3da6acfbd4e6bb6b9f441fb2bb8959637ebec0a2c65",
+    "audit/phase24/candidate-generation/two-task-independent.json": "2446c9d7439ff16e389d00da21aab3cb5a1f5cba0ce4efcfd748297e455e9eff",
+    "audit/phase24/candidate-generation/two-task-shared-tool.json": "100bfb75e18486c680a31e50857b1a63f903619141f81b86356b8974c536b187",
+    "audit/phase24/canonical/b-then-c-failure.json": "5a3e6d5508c1d98469f5b52733dc77afcbafbd536bd50acf467d340059e06a49",
+    "audit/phase24/canonical/two-task.json": "ef8ba35293768e33e741d9da542ba022256dee784729fa4f73d780424565d2c6",
+    "audit/phase24/causal-trajectories/two-task-validation.json": "4be9cf8551c00488d89866a6aca801b8ffa3231b11b7d4ae66c8b004ff823b8f",
+    "audit/phase24/causal-trajectories/two-task.json": "e3c164cb1f774979020ce50c17311f1aac9066ac85c39b3191d849b35e240cdc",
+    "audit/phase24/executable-mutants/results.json": "3691955fad63dd350233636a38b0be97d09571f0b4dc3321a29422e8fab7706d",
+    "audit/phase24/external/conformance.json": "14feb9f3c2f7cd3ee8f26ce7a6e7161b4bcde8068491e618ef87d0eafecb23f7",
+    "audit/phase24/external/fmpy-n24.json": "89ed66c1d3a30f6970e5b80b7f1e81129df8fc3ec2bd3fcf77e25a4ffa3424ff",
+    "audit/phase24/minimized-counterexamples/shared-tool-reducer.json": "c381a971da0e1875fb3542e1852ffe592a031e6be1e73085bc8145d29cbf2eae",
+    "audit/phase24/resource-ownership/same-robot.json": "f649d53fbe48f68143d0d3c7edca2b3eddb9a825eefa78d59f7be1675ddf5ad7",
+    "audit/phase24/resource-ownership/shared-tool.json": "ae4e1025e844fd37d188bb58d112082b869d969361590ac4165fb3ba99457c2b",
+    "crates/poie-viability/src/engine.rs": "e8229ddb599d07a007a65489fc575360752b7f3bf95836783d8dfd53a2d2c10a",
+    "docs/research/canonical-claim-certificate-index-v20.json": "6eeb6fca9d19fcff9fe2b13694b09490fc649e32ded2aff77bcde9316bb9e86a"
+  },
+  "issued_at_head": null,
+  "limitations": [
+    "NOT S2 CANONICAL CERTIFICATE",
+    "NOT INDUSTRIAL SAFETY CERTIFICATION",
+    "N24 overall NOT ESTABLISHED until fixed matrix, held-out and dependency closure pass",
+    "full schedule commitment not yet engine-enforced"
+  ],
+  "replay": [
+    "cargo test -q -p poie-viability --test n21r_checkpoint",
+    "python3 audit/phase24/reference_scheduler/scheduler.py",
+    "python3 audit/phase24/causal-trajectories/validate_trajectory.py two-task.json",
+    "python3 audit/phase24/authorizations/full_schedule.py",
+    "python3 audit/phase24/executable-mutants/mutants.py",
+    "python3 audit/phase24/executable-mutants/reducer.py",
+    "python3 audit/phase24/external/fmpy_n24.py"
+  ],
+  "schema": "poie.s5v-n24-external-validation-certificate/1",
+  "status": "SCOPED_ISSUED"
+}
