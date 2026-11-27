@@ -1794,14 +1794,17 @@ pub fn resume_engine_with_authorization(
     current = committed;
     inventory = committed_inventory;
     let after = asset_status_snapshot(&current.assets);
-    for task in &running.task_resources {
+    let mut completed_tasks: Vec<&TaskResourceObservation> =
+        running.task_resources.iter().filter(|task| task.task_id.is_some()).collect();
+    completed_tasks.sort_by(|a, b| a.end_s.total_cmp(&b.end_s));
+    for task in completed_tasks {
         if let Some(task_id) = &task.task_id {
             event_sequence += 1;
             event_batch += 1;
             record_event(
                 event_sequence,
                 event_batch,
-                end_s,
+                proposal.planned_start_s.max(checkpoint.at_s) + task.end_s,
                 EventKind::TaskCompleted,
                 EventOrigin::Endogenous,
                 Some(task_id.clone()),
