@@ -1,0 +1,34 @@
+{
+  "schema": "poie.s5v-n23-resource-discovery/1",
+  "input_asset_model_sha256": "b4ed3e0fd2608335610512bcb8500aa451f0699a17d41560207bfc96ad680dfd",
+  "derived_options": [
+    {
+      "robot": "robot-m2",
+      "start_offset_s": 0.0,
+      "upstream": [
+        "bus-2"
+      ],
+      "requires_tool": false
+    },
+    {
+      "robot": "robot-m3",
+      "start_offset_s": 1000.0,
+      "upstream": [
+        "bus-3"
+      ],
+      "requires_tool": false
+    }
+  ],
+  "generated": 2,
+  "reference": 2,
+  "soundness": true,
+  "completeness": true,
+  "expected_robot_options": [
+    "robot-m2",
+    "robot-m3"
+  ],
+  "derived_robots": [
+    "robot-m2",
+    "robot-m3"
+  ]
+}
