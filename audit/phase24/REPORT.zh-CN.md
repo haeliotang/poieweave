@@ -147,3 +147,17 @@ order_swap_rejected = true
 
 证据：`authorizations/full-schedule-authorization.json` 与
 `full-schedule-verification.json`。canonical 尚未原生强制该 commitment，故 N24-D 保持 PARTIAL。
+
+## Continuation 故障：B 完成、C 中断
+
+```text
+B completed @19800
+C started @19800, interrupted @21000
+RestorationCommitted = false
+automatic candidate switch = false
+second resume = BLOCKED authorization already consumed
+```
+
+测试：`n24_b_done_c_interrupted_no_restoration_no_second_replan`。
+证据：`canonical/b-then-c-failure.json`。
+v19 冻结；v20 41 successors 签发并通过 verifier/tamper。

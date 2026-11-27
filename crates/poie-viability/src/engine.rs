@@ -1740,6 +1740,33 @@ pub fn resume_engine_with_authorization(
             if running.execution_dependencies.contains(&failure.asset)
                 || running.restoration_targets.contains(&failure.asset)
             {
+                let base = proposal.planned_start_s.max(checkpoint.at_s);
+                let mut done: Vec<&TaskResourceObservation> = running
+                    .task_resources
+                    .iter()
+                    .filter(|task| task.task_id.is_some() && base + task.end_s <= failure.at_s + 1e-9)
+                    .collect();
+                done.sort_by(|a, b| a.end_s.total_cmp(&b.end_s));
+                for task in done {
+                    if let Some(task_id) = &task.task_id {
+                        event_sequence += 1;
+                        event_batch += 1;
+                        record_event(
+                            event_sequence,
+                            event_batch,
+                            base + task.end_s,
+                            EventKind::TaskCompleted,
+                            EventOrigin::Endogenous,
+                            Some(task_id.clone()),
+                            EventStatus::Committed,
+                            &after,
+                            &after,
+                            &inventory,
+                            &inventory,
+                            Some(&running),
+                        );
+                    }
+                }
                 event_sequence += 1;
                 event_batch += 1;
                 record_event(

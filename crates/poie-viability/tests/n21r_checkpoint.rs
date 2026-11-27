@@ -801,3 +801,66 @@ fn n24_shared_tool_two_tasks_do_not_overlap() {
     let overlap = b_start < c_end - 1e-9 && c_start < b_end - 1e-9;
     assert!(!overlap, "shared tool overlapped: B={b_start}-{b_end} C={c_start}-{c_end}");
 }
+#[test]
+fn n24_b_done_c_interrupted_no_restoration_no_second_replan() {
+    use poie_viability::engine::resume_engine_with_authorization_event_observed;
+    let (model, mut options, base_group, _cp, _) = fixtures();
+    options.resources.push("robot-m3".into());
+    options.alternative_pool.push("robot-m3".into());
+    options.failures.push(FailureEvent { at_s: 21000.0, asset: "robot-m2".into() });
+    let group = ExplicitRepairGroup {
+        group_id: base_group.group_id.clone(),
+        restoration_target: base_group.restoration_target.clone(),
+        lifecycle: base_group.lifecycle,
+        tasks: vec![
+            base_group.tasks[0].clone(),
+            ExplicitRepairTask {
+                task_id: "B".into(),
+                process: "n24-task-b-tool".into(),
+                duration_s: 10800.0,
+                robot_alternatives: vec!["robot-m3".into()],
+            },
+            ExplicitRepairTask {
+                task_id: "C".into(),
+                process: "n24-task-c-tool".into(),
+                duration_s: 3600.0,
+                robot_alternatives: vec!["robot-m2".into()],
+            },
+        ],
+    };
+    let (_, checkpoint) =
+        run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "n24-b-then-c-fail").unwrap();
+    let cp = checkpoint.unwrap();
+    let mut proposal = make_proposal(&cp, "b-then-c-fail");
+    proposal.task_robots.insert("B".into(), vec!["robot-m3".into()]);
+    proposal.task_robots.insert("C".into(), vec!["robot-m2".into()]);
+    proposal.selected_candidate_resources = proposal.task_robots.clone();
+    proposal.unfinished_task_ids = cp.unfinished_tasks.clone();
+    refresh_choice_set_certificate(&cp, &mut proposal);
+    let auth = unique_auth(&cp, &proposal);
+    let first =
+        resume_engine_with_authorization_event_observed(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(
+        matches!(first.outcome.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("continuation interrupted")),
+        "got {:?}",
+        first.outcome.termination
+    );
+    let completed = |task: &str| {
+        first
+            .events
+            .iter()
+            .find(|e| e.target_asset.as_deref() == Some(task) && format!("{:?}", e.kind) == "TaskCompleted")
+            .map(|e| e.at_s)
+    };
+    assert!((completed("B").unwrap() - 19800.0).abs() < 1e-9, "B not completed before C failure");
+    assert!(completed("C").is_none(), "C should be interrupted, not completed");
+    assert!(
+        !first.events.iter().any(|e| format!("{:?}", e.kind) == "RestorationCommitted"),
+        "restoration must not commit"
+    );
+    let second = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(
+        matches!(second.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("already consumed")),
+        "second replan must be rejected"
+    );
+}
