@@ -1,0 +1,157 @@
+{
+  "schema": "poie.s5v-n25-external-conformance/1",
+  "checks": {
+    "shared": {
+      "reference": {
+        "B": [
+          9000,
+          19800
+        ],
+        "C": [
+          19800,
+          23400
+        ],
+        "restored": true
+      },
+      "canonical": {
+        "B": [
+          9000,
+          19800
+        ],
+        "C": [
+          19800,
+          23400
+        ]
+      },
+      "fmi": {
+        "taskBStart": 9000,
+        "taskBEnd": 19800,
+        "taskCStart": 19800,
+        "taskCEnd": 23400,
+        "completedB": 1,
+        "completedC": 1,
+        "restored": 1
+      }
+    },
+    "independent": {
+      "reference": {
+        "B": [
+          9000,
+          19800
+        ],
+        "C": [
+          9000,
+          12600
+        ],
+        "restored_at": 19800
+      },
+      "canonical": [
+        {
+          "kind": "TaskRestarted",
+          "task": "B",
+          "time": 9000.0,
+          "restoration": "failed"
+        },
+        {
+          "kind": "TaskRestarted",
+          "task": "C",
+          "time": 9000.0,
+          "restoration": "failed"
+        },
+        {
+          "kind": "TaskCompleted",
+          "task": "C",
+          "time": 12600.0,
+          "restoration": "failed"
+        },
+        {
+          "kind": "TaskCompleted",
+          "task": "B",
+          "time": 19800.0,
+          "restoration": "failed"
+        },
+        {
+          "kind": "RepairCompleted",
+          "task": "g",
+          "time": 19800.0,
+          "restoration": "available"
+        },
+        {
+          "kind": "RestorationCommitted",
+          "task": "a-lathe",
+          "time": 19800.0,
+          "restoration": "available"
+        }
+      ],
+      "fmi": {
+        "taskBStart": 9000,
+        "taskBEnd": 19800,
+        "taskCStart": 9000,
+        "taskCEnd": 12600,
+        "completedB": 1,
+        "completedC": 1,
+        "restored": 1
+      }
+    },
+    "c_interrupted": {
+      "reference": {
+        "B_completed": 19800,
+        "C_completed": null,
+        "restored": false
+      },
+      "canonical": {
+        "B_completed": 19800,
+        "C_completed": null,
+        "restored": false
+      },
+      "fmi": {
+        "taskBStart": 9000,
+        "taskBEnd": 19800,
+        "completedB": 0,
+        "completedC": 0,
+        "restored": 0
+      }
+    }
+  },
+  "c_fmpy_divergence": 0,
+  "unexplained_critical_divergence": 0,
+  "canonical_restoration_state": [
+    {
+      "kind": "TaskRestarted",
+      "task": "B",
+      "time": 9000.0,
+      "restoration": "failed"
+    },
+    {
+      "kind": "TaskRestarted",
+      "task": "C",
+      "time": 9000.0,
+      "restoration": "failed"
+    },
+    {
+      "kind": "TaskCompleted",
+      "task": "C",
+      "time": 12600.0,
+      "restoration": "failed"
+    },
+    {
+      "kind": "TaskCompleted",
+      "task": "B",
+      "time": 19800.0,
+      "restoration": "failed"
+    },
+    {
+      "kind": "RepairCompleted",
+      "task": "g",
+      "time": 19800.0,
+      "restoration": "available"
+    },
+    {
+      "kind": "RestorationCommitted",
+      "task": "a-lathe",
+      "time": 19800.0,
+      "restoration": "available"
+    }
+  ],
+  "accepted": true
+}

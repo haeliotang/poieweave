@@ -1,0 +1,132 @@
+{
+  "schema": "poie.s5v-n25-mutants/1",
+  "base_execution": {
+    "taskBStart": 9000,
+    "taskBEnd": 19800,
+    "taskCStart": 19800,
+    "taskCEnd": 23400,
+    "completedB": 1,
+    "completedC": 1,
+    "completed": 1,
+    "failedRobotM1": 1,
+    "checkpointAt_s": 9000,
+    "completedA": 1,
+    "unfinishedB": 1,
+    "taskBRobot": 2,
+    "restored": 1,
+    "resumed": 1,
+    "rejected": 0,
+    "executedRobot": 3,
+    "candidateAccepted": 1,
+    "rejectionReason": 0,
+    "eventCount": 8,
+    "actualStart_s": 9000,
+    "actualCompletion_s": 23400,
+    "secondInterrupted": 0,
+    "irrelevantFailureObserved": 0,
+    "preStartInvalidated": 0,
+    "eventKinds": [
+      1,
+      7,
+      3,
+      4,
+      5,
+      6,
+      9,
+      8
+    ],
+    "eventTimes": [
+      9000,
+      9000,
+      9000,
+      9000,
+      9000,
+      9000,
+      23400,
+      23400
+    ],
+    "survived_s": 23400
+  },
+  "parallel_execution": {
+    "taskBStart": 9000,
+    "taskBEnd": 19800,
+    "taskCStart": 9000,
+    "taskCEnd": 12600,
+    "completedB": 1,
+    "completedC": 1,
+    "completed": 1,
+    "failedRobotM1": 1,
+    "checkpointAt_s": 9000,
+    "completedA": 1,
+    "unfinishedB": 1,
+    "taskBRobot": 2,
+    "restored": 1,
+    "resumed": 1,
+    "rejected": 0,
+    "executedRobot": 3,
+    "candidateAccepted": 1,
+    "rejectionReason": 0,
+    "eventCount": 8,
+    "actualStart_s": 9000,
+    "actualCompletion_s": 19800,
+    "secondInterrupted": 0,
+    "irrelevantFailureObserved": 0,
+    "preStartInvalidated": 0,
+    "eventKinds": [
+      1,
+      7,
+      3,
+      4,
+      5,
+      6,
+      9,
+      8
+    ],
+    "eventTimes": [
+      9000,
+      9000,
+      9000,
+      9000,
+      9000,
+      9000,
+      19800,
+      19800
+    ],
+    "survived_s": 19800
+  },
+  "results": {
+    "M1_SHARED_TOOL_DOUBLE_BOOKING": {
+      "detected": true,
+      "detail": "overlap detected"
+    },
+    "M2_PREMATURE_DEPENDENCY_RELEASE": {
+      "detected": true,
+      "detail": "bus-1 released while C pending (N24 closure oracle rejects)"
+    },
+    "M3_COMPLETED_TASK_REPLAY": {
+      "detected": true,
+      "detail": "completed A marked unfinished"
+    },
+    "M4_PREMATURE_RESTORATION": {
+      "detected": true,
+      "detail": "restored with C incomplete"
+    },
+    "M5_UNAUTHORIZED_SCHEDULE_SWAP": {
+      "detected": true,
+      "detail": "actual parallel != authorized serial"
+    },
+    "M6_WRONG_FAILURE_TIMESTAMP": {
+      "detected": true,
+      "detail": "prestart failure ignored"
+    },
+    "M7_UNAUTHORIZED_SECOND_REPLAN": {
+      "detected": true,
+      "detail": "second resume blocked: authorization already consumed"
+    },
+    "M8_CHECKPOINT_EVENT_CHAIN_BREAK": {
+      "detected": true,
+      "detail": "missing checkpoint event detected by state_oracle sequence gap"
+    }
+  },
+  "all_detected": true
+}

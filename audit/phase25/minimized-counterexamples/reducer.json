@@ -1,0 +1,71 @@
+{
+  "schema": "poie.s5v-n25-reducer/1",
+  "before": {
+    "case": {
+      "failures": [
+        {
+          "id": "F1",
+          "relevant": true
+        },
+        {
+          "id": "F2",
+          "relevant": false
+        },
+        {
+          "id": "F3",
+          "relevant": false
+        }
+      ],
+      "candidates": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "waits": [
+        0,
+        600,
+        1200
+      ],
+      "cf": 21000.0,
+      "par": 0.0
+    },
+    "signature": [
+      "B_COMPLETED",
+      "C_INCOMPLETE",
+      0
+    ]
+  },
+  "after": {
+    "case": {
+      "failures": [
+        {
+          "id": "F1",
+          "relevant": true
+        }
+      ],
+      "candidates": [
+        "P1"
+      ],
+      "waits": [
+        0
+      ],
+      "cf": 21000.0,
+      "par": 0.0
+    },
+    "signature": [
+      "B_COMPLETED",
+      "C_INCOMPLETE",
+      0
+    ]
+  },
+  "signature_preserved": true,
+  "complexity_reduced": true,
+  "steps": [
+    "remove 2 irrelevant failures",
+    "5 candidates -> 1",
+    "waits -> [0]",
+    "re-execute FMU and compare signature"
+  ]
+}

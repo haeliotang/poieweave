@@ -1,7 +1,7 @@
 {
   "schema": "poie.s5v-n24-fmpy/1",
   "cases": {
-    "accepted": {
+    "shared_accepted": {
       "fmpy": {
         "completedB": 1.0,
         "completedC": 1.0,
@@ -52,6 +52,60 @@
         "eventTime5": 9000,
         "eventTime6": 23400,
         "eventTime7": 23400
+      },
+      "divergence": []
+    },
+    "independent_accepted": {
+      "fmpy": {
+        "completedB": 1.0,
+        "completedC": 1.0,
+        "taskBStart": 9000.0,
+        "taskBEnd": 19800.0,
+        "taskCStart": 9000.0,
+        "taskCEnd": 12600.0,
+        "restored": 1.0,
+        "eventKind0": 1.0,
+        "eventKind1": 7.0,
+        "eventKind2": 3.0,
+        "eventKind3": 4.0,
+        "eventKind4": 5.0,
+        "eventKind5": 6.0,
+        "eventKind6": 9.0,
+        "eventKind7": 8.0,
+        "eventTime0": 9000.0,
+        "eventTime1": 9000.0,
+        "eventTime2": 9000.0,
+        "eventTime3": 9000.0,
+        "eventTime4": 9000.0,
+        "eventTime5": 9000.0,
+        "eventTime6": 19800.0,
+        "eventTime7": 19800.0,
+        "survived_s": 19800.0
+      },
+      "harness": {
+        "taskBStart": 9000,
+        "taskBEnd": 19800,
+        "taskCStart": 9000,
+        "taskCEnd": 12600,
+        "completedB": 1,
+        "completedC": 1,
+        "restored": 1,
+        "eventKind0": 1,
+        "eventKind1": 7,
+        "eventKind2": 3,
+        "eventKind3": 4,
+        "eventKind4": 5,
+        "eventKind5": 6,
+        "eventKind6": 9,
+        "eventKind7": 8,
+        "eventTime0": 9000,
+        "eventTime1": 9000,
+        "eventTime2": 9000,
+        "eventTime3": 9000,
+        "eventTime4": 9000,
+        "eventTime5": 9000,
+        "eventTime6": 19800,
+        "eventTime7": 19800
       },
       "divergence": []
     },

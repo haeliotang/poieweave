@@ -1,0 +1,118 @@
+{
+  "schema": "poie.s5v-n25-fixed-matrix/1",
+  "rows": {
+    "N24-00": {
+      "source": "FMI",
+      "status": "PASS",
+      "detail": "legacy single task completion 19800"
+    },
+    "N24-01": {
+      "source": "FMI",
+      "status": "PASS",
+      "detail": "B/C both completed"
+    },
+    "N24-02": {
+      "source": "FMI",
+      "status": "PASS",
+      "detail": "shared serial B->C"
+    },
+    "N24-03": {
+      "source": "FMI",
+      "status": "PASS",
+      "detail": "serial ordering native"
+    },
+    "N24-04": {
+      "source": "REFERENCE",
+      "status": "PASS",
+      "detail": "shared tool forbids parallel"
+    },
+    "N24-05": {
+      "source": "FMI",
+      "status": "PASS",
+      "detail": "independent parallel, restore at 19800"
+    },
+    "N24-10": {
+      "source": "FMI",
+      "status": "PASS",
+      "detail": "C failure preserves B, no restore"
+    },
+    "N24-14": {
+      "source": "FMI",
+      "status": "PASS",
+      "detail": "failure at completion does not interrupt"
+    },
+    "N24-15": {
+      "source": "FMI",
+      "status": "PASS",
+      "detail": "prestart invalidated"
+    },
+    "N24-12": {
+      "source": "FMI",
+      "status": "PASS",
+      "detail": "tool handed to C"
+    },
+    "N24-18": {
+      "source": "FMI",
+      "status": "PASS",
+      "detail": "authorized non-optimal order executes"
+    },
+    "N24-06": {
+      "source": "NOT_ESTABLISHED",
+      "status": "NOT_ESTABLISHED",
+      "detail": "no real canonical/FMI execution in N25 yet"
+    },
+    "N24-07": {
+      "source": "NOT_ESTABLISHED",
+      "status": "NOT_ESTABLISHED",
+      "detail": "no real canonical/FMI execution in N25 yet"
+    },
+    "N24-08": {
+      "source": "NOT_ESTABLISHED",
+      "status": "NOT_ESTABLISHED",
+      "detail": "no real canonical/FMI execution in N25 yet"
+    },
+    "N24-09": {
+      "source": "NOT_ESTABLISHED",
+      "status": "NOT_ESTABLISHED",
+      "detail": "no real canonical/FMI execution in N25 yet"
+    },
+    "N24-11": {
+      "source": "NOT_ESTABLISHED",
+      "status": "NOT_ESTABLISHED",
+      "detail": "no real canonical/FMI execution in N25 yet"
+    },
+    "N24-13": {
+      "source": "NOT_ESTABLISHED",
+      "status": "NOT_ESTABLISHED",
+      "detail": "no real canonical/FMI execution in N25 yet"
+    },
+    "N24-16": {
+      "source": "NOT_ESTABLISHED",
+      "status": "NOT_ESTABLISHED",
+      "detail": "no real canonical/FMI execution in N25 yet"
+    },
+    "N24-17": {
+      "source": "NOT_ESTABLISHED",
+      "status": "NOT_ESTABLISHED",
+      "detail": "no real canonical/FMI execution in N25 yet"
+    },
+    "N24-19": {
+      "source": "NOT_ESTABLISHED",
+      "status": "NOT_ESTABLISHED",
+      "detail": "no real canonical/FMI execution in N25 yet"
+    },
+    "N24-20": {
+      "source": "NOT_ESTABLISHED",
+      "status": "NOT_ESTABLISHED",
+      "detail": "no real canonical/FMI execution in N25 yet"
+    },
+    "N24-21": {
+      "source": "NOT_ESTABLISHED",
+      "status": "NOT_ESTABLISHED",
+      "detail": "no real canonical/FMI execution in N25 yet"
+    }
+  },
+  "executed": 11,
+  "not_established": 11,
+  "all_real_pass": true
+}
