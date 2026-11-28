@@ -1,0 +1,10 @@
+{"schema":"poie.s5v-n25-full-schedule-enforcement/1",
+ "authorized":{"B":{"start_s":9000,"end_s":19800},"C":{"start_s":19800,"end_s":23400}},
+ "authorized_outcome":"CompletedHorizon",
+ "unauthorized_parallel":{"B":{"start_s":9000,"end_s":19800},"C":{"start_s":9000,"end_s":12600}},
+ "unauthorized_outcome":"Blocked(replan_rejected: authorized full schedule mismatch for task C)",
+ "clock_after_rejection_s":9000,
+ "state_changed_on_rejection":false,
+ "test":"n25_canonical_rejects_unauthorized_full_schedule",
+ "payload_binding":"choice-set certificate payload payloads[selected].task_schedule",
+ "trusted_certificate_required":true}
