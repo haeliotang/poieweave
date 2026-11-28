@@ -1,0 +1,48 @@
+{
+  "baseline": "0633a728cb2bf02e429d474f19a5e6401d17cdba",
+  "canonical_version": "v22",
+  "claims": {
+    "c_fmpy": "VERIFIED (0 divergence)",
+    "certificate": "v22",
+    "ci": "PENDING",
+    "fixed_matrix": "PARTIAL (11 executed / 11 NOT_ESTABLISHED)",
+    "full_schedule_enforcement": "VERIFIED",
+    "held_out": "EXECUTED (64)",
+    "independent_fmi": "VERIFIED (SCOPED)",
+    "mutants": "DETECTED (8/8)",
+    "premature_restoration": "REPRODUCED_AND_FIXED",
+    "reducer": "VERIFIED",
+    "state_oracle": "VERIFIED",
+    "two_task_native": "VERIFIED (SCOPED)"
+  },
+  "inputs": {
+    "audit/phase24/external/fmpy-n24.json": "9d22df5c511b25e2c64b5daead3128c8565c0d6cd80271aa9bed1555d1ea7d4c",
+    "audit/phase25/canonical/baseline-trajectory.json": "35106a215019b68134258cd2e2fed20969fbfa6c054701c9a7466963ac4e1cf3",
+    "audit/phase25/canonical/full-schedule-enforced.json": "16ae22d560485ba36c4c4ef034670d1016a7b9771e712fc4df06dea945fc712d",
+    "audit/phase25/external/conformance.json": "77ba404e28cfd2b9c807cd5bde15601ca7631cde3d0723d8bf45f98afa562498",
+    "audit/phase25/failing-witness/PREMATURE_RESTORATION_STATE/witness.json": "3977da28dfc979d38cba5cceefe5acfe1cdae54622c0545ec3e9c448e2aea6d0",
+    "audit/phase25/fixed-cases/matrix.json": "351f6d07d7ad3d8dd246ab85597d0201d54c7e0a4c38121de63cd23d7c794bc6",
+    "audit/phase25/held-out/ledger.json": "453f5ffdfd3033d0738fe241e30e17099dd104ad14ab693f4c8d639177723e8a",
+    "audit/phase25/minimized-counterexamples/reducer.json": "8de990c316b345141c1233884aedcb816f8827475e05dbb8991e5d17fd2dcc00",
+    "audit/phase25/mutants/results.json": "c2d991070a6f19e46d2a76b141dc63400a5eebcb60abb7705b93dedc82661514",
+    "crates/poie-viability/src/engine.rs": "9bcfecfc9177cf1ab69904f17c425160effb1045830f9e27f240d787b919b8bc",
+    "docs/research/canonical-claim-certificate-index-v22.json": "189cf44c2ba91d2b57363607b3d42ec9cb276f72f311b7061361aa2a23e18f24"
+  },
+  "limitations": [
+    "NOT S2 CANONICAL CERTIFICATE",
+    "NOT INDUSTRIAL SAFETY CERTIFICATION",
+    "Gate 4 partial: 11 matrix cases not yet executed",
+    "final clean check-all pending"
+  ],
+  "replay": [
+    "cargo test -q -p poie-viability --test n21r_checkpoint",
+    "python3 audit/phase25/state_oracle.py audit/phase25/canonical/baseline-trajectory.json",
+    "python3 audit/phase24/external/fmpy_n24.py",
+    "python3 audit/phase25/external/build_conformance.py",
+    "python3 audit/phase25/fixed-cases/run_matrix.py",
+    "python3 audit/phase25/held-out/run_heldout.py",
+    "python3 audit/phase25/mutants/run_mutants.py",
+    "python3 audit/phase25/minimized-counterexamples/reducer.py"
+  ],
+  "schema": "poie.s5v-n25-external-validation-certificate/1"
+}

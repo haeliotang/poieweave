@@ -29,6 +29,7 @@
     <Float64 name="appliedFailureCount" valueReference="46" causality="output" variability="discrete" initial="calculated"/>
     <Float64 name="preStartInvalidated" valueReference="48" causality="output" variability="discrete" initial="calculated"/>
     <Float64 name="taskCDuration" valueReference="49" causality="input" variability="continuous" initial="exact" start="0"/>
+    <Float64 name="parallelTasks" valueReference="110" causality="input" variability="continuous" initial="exact" start="0"/>
     <Float64 name="completedC" valueReference="100" causality="output" variability="discrete" initial="calculated"/>
     <Float64 name="taskBStart" valueReference="101" causality="output" variability="discrete" initial="calculated"/>
     <Float64 name="taskBEnd" valueReference="102" causality="output" variability="discrete" initial="calculated"/>

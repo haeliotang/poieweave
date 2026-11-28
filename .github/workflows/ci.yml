@@ -2587,6 +2587,31 @@ jobs:
           python3 audit/phase24/external/fmpy_n24.py
           python3 audit/phase24/check_certificate.py
 
+  s5v-n25-replay-linux:
+    name: S5-V N25 dedicated replay
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: dtolnay/rust-toolchain@1.94.0
+      - name: Install dependencies
+        run: python3 -m pip install -q fmpy==0.3.32 numpy
+      - name: Replay N25 core
+        run: |
+          cargo test -q -p poie-viability --test n21r_checkpoint
+          external/fmu-n24-multitask-recovery/build.sh
+          python3 audit/phase25/state_oracle.py audit/phase25/canonical/baseline-trajectory.json
+          python3 audit/phase24/external/fmpy_n24.py
+          python3 audit/phase25/external/build_conformance.py
+          python3 audit/phase25/fixed-cases/run_matrix.py
+          python3 audit/phase25/held-out/run_heldout.py
+          python3 audit/phase25/mutants/run_mutants.py
+          python3 audit/phase25/minimized-counterexamples/reducer.py
+          python3 audit/phase25/make_certificate.py
+          python3 audit/phase25/check_certificate.py
+
   deny:
     name: cargo-deny (${{ matrix.checks }})
     runs-on: ubuntu-latest

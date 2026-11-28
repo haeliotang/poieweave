@@ -88,24 +88,27 @@ fmi3Status fmi3DoStep(fmi3Instance i, fmi3Float64 current, fmi3Float64 step, fmi
         if (cdur > 0) {
             double bstart = val(s, 35) > 0 ? val(s, 35) : current;
             double bend = bstart + (val(s, 36) > 0 ? val(s, 36) : 10800.0);
-            double cstart = bend;
+            int par = val(s, 110) >= 0.5;
+            double cstart = par ? bstart : bend;
             double cend = cstart + cdur;
+            double overall_end = fmax(bend, cend);
             double cf = val(s, 39);
             double target = current + step;
-            if (target > cend) target = cend;
+            if (target > overall_end) target = overall_end;
             if (cf > current + 1e-9 && cf < target) target = cf;
             s->time = target;
-            if (cf > 0 && s->time >= cf - 1e-9 && cf < bstart - 1e-9) {
-                set(s, 48, 1); set(s, 20, 0); set(s, 28, 0); set(s, 59, 0); set(s, 54, 0); event(s, 7); s->phase = 3;
-            } else if (cf > 0 && s->time >= cf - 1e-9 && cf < cend - 1e-9) {
-                set(s, 20, 0); set(s, 28, 0); set(s, 46, 1); event(s, 7);
-                if (cf >= bend - 1e-9) { set(s, 105, 1); set(s, 100, 0); set(s, 103, cstart); }
-                s->phase = 3;
-            }
             if (s->time >= bstart - 1e-9) { set(s, 101, bstart); set(s, 102, bend); }
             if (s->time >= cstart - 1e-9) { set(s, 103, cstart); set(s, 104, cend); }
-            if (s->phase == 2 && s->time >= cend - 1e-9) {
-                set(s, 105, 1); set(s, 100, 1); set(s, 20, 1); set(s, 28, 1); set(s, 38, cend); event(s, 9); event(s, 8); s->phase = 3;
+            if (cf > 0 && s->time >= cf - 1e-9 && cf < bstart - 1e-9) {
+                set(s, 48, 1); set(s, 20, 0); set(s, 28, 0); set(s, 105, 0); set(s, 100, 0); event(s, 7); s->phase = 3;
+            } else if (cf > 0 && s->time >= cf - 1e-9 && cf < overall_end - 1e-9) {
+                int b_done = cf >= bend - 1e-9;
+                int c_done = cf >= cend - 1e-9;
+                set(s, 105, b_done); set(s, 100, c_done);
+                set(s, 20, 0); set(s, 28, 0); set(s, 46, 1); event(s, 7); s->phase = 3;
+            }
+            if (s->phase == 2 && s->time >= overall_end - 1e-9) {
+                set(s, 105, 1); set(s, 100, 1); set(s, 20, 1); set(s, 28, 1); set(s, 38, overall_end); event(s, 9); event(s, 8); s->phase = 3;
             }
             if (term) *term = (s->phase == 3); if (eh) *eh = 0; if (early) *early = 0; if (last) *last = s->time;
             return fmi3OK;
