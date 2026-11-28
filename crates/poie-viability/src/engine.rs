@@ -1509,6 +1509,7 @@ pub fn resume_engine_with_authorization(
             final_inventory: inventory,
         });
     }
+    let mut authorized_schedule: Option<BTreeMap<String, (f64, f64)>> = None;
     {
         let mut hasher = Sha256::new();
         hasher.update(b"poie.choice-set-certificate/v1\x1f");
@@ -1583,6 +1584,29 @@ pub fn resume_engine_with_authorization(
                 trace: checkpoint.trace_history.clone(),
                 final_inventory: inventory,
             });
+        }
+        if let Some(schedule) = payload.and_then(|payload| payload.get("task_schedule")).and_then(|v| v.as_object()) {
+            let mut parsed = BTreeMap::new();
+            for (task_id, window) in schedule {
+                let start = window.get("start_s").and_then(|v| v.as_f64());
+                let end = window.get("end_s").and_then(|v| v.as_f64());
+                match (start, end) {
+                    (Some(start), Some(end)) => {
+                        parsed.insert(task_id.clone(), (start, end));
+                    }
+                    _ => {
+                        return Ok(EngineOutcome {
+                            termination: EngineTermination::Blocked(
+                                "replan_rejected: authorized full schedule malformed".into(),
+                            ),
+                            survived_s: checkpoint.at_s,
+                            trace: checkpoint.trace_history.clone(),
+                            final_inventory: inventory,
+                        })
+                    }
+                }
+            }
+            authorized_schedule = Some(parsed);
         }
     }
     for (task_id, robots) in &proposal.task_robots {
@@ -1660,6 +1684,43 @@ pub fn resume_engine_with_authorization(
             })
         }
     };
+    if let Some(schedule) = &authorized_schedule {
+        let base = proposal.planned_start_s.max(checkpoint.at_s);
+        for task in &running.task_resources {
+            let Some(task_id) = task.task_id.as_ref() else { continue };
+            let Some((committed_start, committed_end)) = schedule.get(task_id) else {
+                return Ok(EngineOutcome {
+                    termination: EngineTermination::Blocked(format!(
+                        "replan_rejected: authorized full schedule missing task {task_id}"
+                    )),
+                    survived_s: checkpoint.at_s,
+                    trace: checkpoint.trace_history.clone(),
+                    final_inventory: inventory,
+                });
+            };
+            if (base + task.start_s - committed_start).abs() > 1e-9 || (base + task.end_s - committed_end).abs() > 1e-9
+            {
+                return Ok(EngineOutcome {
+                    termination: EngineTermination::Blocked(format!(
+                        "replan_rejected: authorized full schedule mismatch for task {task_id}"
+                    )),
+                    survived_s: checkpoint.at_s,
+                    trace: checkpoint.trace_history.clone(),
+                    final_inventory: inventory,
+                });
+            }
+        }
+        if running.task_resources.iter().filter(|task| task.task_id.is_some()).count() != schedule.len() {
+            return Ok(EngineOutcome {
+                termination: EngineTermination::Blocked(
+                    "replan_rejected: authorized full schedule task-set mismatch".into(),
+                ),
+                survived_s: checkpoint.at_s,
+                trace: checkpoint.trace_history.clone(),
+                final_inventory: inventory,
+            });
+        }
+    }
     let end_s = running.end_s;
     let horizon_s = checkpoint.at_s + checkpoint.remaining_horizon_s;
     if end_s > horizon_s + 1e-9 {

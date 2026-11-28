@@ -864,3 +864,77 @@ fn n24_b_done_c_interrupted_no_restoration_no_second_replan() {
         "second replan must be rejected"
     );
 }
+fn set_authorized_schedule(proposal: &mut ReplanProposal, schedule: serde_json::Value) {
+    use sha2::{Digest, Sha256};
+    let mut payload: serde_json::Value = serde_json::from_str(&proposal.choice_set_certificate_payload).unwrap();
+    payload["payloads"][proposal.selected_candidate_hash.clone()]["task_schedule"] = schedule;
+    let payload = payload.to_string();
+    let mut hasher = Sha256::new();
+    hasher.update(b"poie.choice-set-certificate/v1\x1f");
+    hasher.update(payload.as_bytes());
+    let certificate_hash = format!("{:x}", hasher.finalize());
+    proposal.choice_set_certificate_hash = certificate_hash.clone();
+    proposal.choice_set_certificate_payload = payload;
+    poie_viability::engine::register_trusted_choice_set_for_research(&certificate_hash);
+}
+
+#[test]
+fn n25_canonical_rejects_unauthorized_full_schedule() {
+    let (model, mut options, base_group, _cp, _) = fixtures();
+    options.resources = vec!["robot-m1".into(), "robot-m2".into()];
+    options.alternative_pool = vec!["robot-m1".into(), "robot-m2".into()];
+    let group = ExplicitRepairGroup {
+        group_id: base_group.group_id.clone(),
+        restoration_target: base_group.restoration_target.clone(),
+        lifecycle: base_group.lifecycle,
+        tasks: vec![
+            base_group.tasks[0].clone(),
+            base_group.tasks[1].clone(),
+            ExplicitRepairTask {
+                task_id: "C".into(),
+                process: "n24-task-c".into(),
+                duration_s: 3600.0,
+                robot_alternatives: vec!["robot-m2".into()],
+            },
+        ],
+    };
+    let (_, checkpoint) =
+        run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "n25-full-schedule").unwrap();
+    let cp = checkpoint.unwrap();
+    let mut proposal = make_proposal(&cp, "full-schedule");
+    proposal.task_robots.insert("B".into(), vec!["robot-m2".into()]);
+    proposal.task_robots.insert("C".into(), vec!["robot-m2".into()]);
+    proposal.selected_candidate_resources = proposal.task_robots.clone();
+    proposal.unfinished_task_ids = cp.unfinished_tasks.clone();
+    refresh_choice_set_certificate(&cp, &mut proposal);
+    // Authorized serial schedule: B 9000-19800, C 19800-23400.
+    let committed = serde_json::json!({
+        "B": {"start_s": 9000.0, "end_s": 19800.0},
+        "C": {"start_s": 19800.0, "end_s": 23400.0}
+    });
+    set_authorized_schedule(&mut proposal, committed.clone());
+    let auth = unique_auth(&cp, &proposal);
+    let ok = resume_engine_with_authorization(&model, &options, &group, &cp, &auth, &proposal).unwrap();
+    assert!(
+        matches!(ok.termination, poie_viability::engine::EngineTermination::CompletedHorizon),
+        "authorized schedule should execute: {:?}",
+        ok.termination
+    );
+    // Re-authorize an illegal parallel schedule for the same robot.
+    let mut proposal2 = proposal.clone();
+    set_authorized_schedule(
+        &mut proposal2,
+        serde_json::json!({
+            "B": {"start_s": 9000.0, "end_s": 19800.0},
+            "C": {"start_s": 9000.0, "end_s": 12600.0}
+        }),
+    );
+    let auth2 = unique_auth(&cp, &proposal2);
+    let rejected = resume_engine_with_authorization(&model, &options, &group, &cp, &auth2, &proposal2).unwrap();
+    assert!(
+        matches!(rejected.termination, poie_viability::engine::EngineTermination::Blocked(ref r) if r.contains("full schedule mismatch")),
+        "illegal schedule must be rejected before execution: {:?}",
+        rejected.termination
+    );
+    assert!((rejected.survived_s - 9000.0).abs() < 1e-9, "rejection must not advance the clock");
+}
