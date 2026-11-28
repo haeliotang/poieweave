@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 use poie_ontology::model::{AssetStatus, Model, Service};
 use poie_viability::engine::{
-    resume_engine_with_authorization_event_observed, run_engine_with_repair_group_event_observed,
-    run_engine_with_repair_group_to_checkpoint, verify_trusted_checkpoint, EngineOptions, ExplicitRepairGroup,
-    ExplicitRepairTask, RepairLifecycleMode, ReplanAuthorization, ReplanProposal,
+    resume_engine_with_authorization_event_observed, run_engine_with_repair_group_to_checkpoint_event_observed,
+    verify_trusted_checkpoint, EngineOptions, ExplicitRepairGroup, ExplicitRepairTask, RepairLifecycleMode,
+    ReplanAuthorization, ReplanProposal,
 };
 use poie_viability::survival::FailureEvent;
 use std::collections::BTreeSet;
@@ -133,13 +133,12 @@ fn main() {
         load_kw: 0.0,
     };
     let group = group();
-    let (_, checkpoint) =
-        run_engine_with_repair_group_to_checkpoint(&model, &options, &group, "n24-trajectory").unwrap();
+    let (_, checkpoint, initial_events) =
+        run_engine_with_repair_group_to_checkpoint_event_observed(&model, &options, &group, "n24-trajectory").unwrap();
     let checkpoint = checkpoint.expect("checkpoint");
     let mut trusted = BTreeSet::new();
     trusted.insert(checkpoint.compute_state_hash());
     verify_trusted_checkpoint(&checkpoint, &trusted).unwrap();
-    let initial = run_engine_with_repair_group_event_observed(&model, &options, &group).unwrap();
     let mut task_robots = std::collections::BTreeMap::new();
     task_robots.insert("B".to_string(), vec!["robot-m3".to_string()]);
     task_robots.insert("C".to_string(), vec!["robot-m2".to_string()]);
@@ -201,7 +200,7 @@ fn main() {
         "unfinished_tasks": checkpoint.unfinished_tasks,
         "authorization_id": auth.authorization_id,
         "selected_candidate_hash": proposal.selected_candidate_hash,
-        "initial_events": to_json(&initial.events),
+        "initial_events": to_json(&initial_events),
         "resume_events": to_json(&resumed.events),
         "canonical_outcome": format!("{:?}", resumed.outcome.termination),
         "survived_s": resumed.outcome.survived_s,

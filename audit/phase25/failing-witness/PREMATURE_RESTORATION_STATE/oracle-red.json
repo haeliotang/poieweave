@@ -1,0 +1,9 @@
+{
+  "schema": "poie.s5v-n25-oracle-before/1",
+  "valid": false,
+  "problems": [
+    "EVENT_SEQUENCE_GAP",
+    "PREMATURE_RESTORATION_STATE@12600:C"
+  ],
+  "note": "independent state oracle rejected N24 baseline before fix"
+}
