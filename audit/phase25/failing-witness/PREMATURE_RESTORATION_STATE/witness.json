@@ -1,0 +1,64 @@
+{
+  "schema": "poie.s5v-n25-premature-restoration-witness/1",
+  "source": "audit/phase24/causal-trajectories/two-task.json",
+  "events": [
+    {
+      "sequence": 6,
+      "kind": "ReplanAuthorized",
+      "target": "n24-auth",
+      "time": 9000.0,
+      "asset_after_restoration_target": "failed"
+    },
+    {
+      "sequence": 7,
+      "kind": "RepairResumed",
+      "target": "g",
+      "time": 9000.0,
+      "asset_after_restoration_target": "failed"
+    },
+    {
+      "sequence": 8,
+      "kind": "TaskRestarted",
+      "target": "B",
+      "time": 9000.0,
+      "asset_after_restoration_target": "failed"
+    },
+    {
+      "sequence": 9,
+      "kind": "TaskRestarted",
+      "target": "C",
+      "time": 9000.0,
+      "asset_after_restoration_target": "failed"
+    },
+    {
+      "sequence": 10,
+      "kind": "TaskCompleted",
+      "target": "C",
+      "time": 12600.0,
+      "asset_after_restoration_target": "available"
+    },
+    {
+      "sequence": 11,
+      "kind": "TaskCompleted",
+      "target": "B",
+      "time": 19800.0,
+      "asset_after_restoration_target": "available"
+    },
+    {
+      "sequence": 12,
+      "kind": "RepairCompleted",
+      "target": "g",
+      "time": 19800.0,
+      "asset_after_restoration_target": "available"
+    },
+    {
+      "sequence": 13,
+      "kind": "RestorationCommitted",
+      "target": "a-lathe",
+      "time": 19800.0,
+      "asset_after_restoration_target": "available"
+    }
+  ],
+  "violation": "TaskCompleted C @12600 reports a-lathe available while B is unfinished until 19800 and RestorationCommitted occurs at 19800",
+  "replay": "cargo run -q -p poie-viability --example n24_trajectory_export > audit/phase25/canonical/baseline-trajectory.json"
+}

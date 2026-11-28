@@ -1339,6 +1339,20 @@ pub fn run_engine_with_repair_group_event_observed(
 
 /// Opt-in v11: run an explicit repair group and capture a native checkpoint at
 /// the first repair interruption. Default `run_engine*` behavior is unchanged.
+/// Event-observed variant of the checkpoint-producing run.
+pub fn run_engine_with_repair_group_to_checkpoint_event_observed(
+    model: &Model,
+    options: &EngineOptions<'_>,
+    group: &ExplicitRepairGroup,
+    execution_id: &str,
+) -> Result<(EngineOutcome, Option<RepairCheckpoint>, Vec<EventRecord>), EngineError> {
+    let guard = EventGuard::install()?;
+    let outcome = run_engine_with_repair_group_to_checkpoint(model, options, group, execution_id);
+    let events = EVENT_COLLECTOR.with(|cell| cell.borrow_mut().take()).unwrap_or_default();
+    drop(guard);
+    outcome.map(|(outcome, checkpoint)| (outcome, checkpoint, events))
+}
+
 pub fn run_engine_with_repair_group_to_checkpoint(
     model: &Model,
     options: &EngineOptions<'_>,
@@ -1741,6 +1755,8 @@ pub fn resume_engine_with_authorization(
                 || running.restoration_targets.contains(&failure.asset)
             {
                 let base = proposal.planned_start_s.max(checkpoint.at_s);
+                let mut before_group_commit = after.clone();
+                before_group_commit.insert(group.restoration_target.clone(), AssetStatus::Failed);
                 let mut done: Vec<&TaskResourceObservation> = running
                     .task_resources
                     .iter()
@@ -1759,8 +1775,8 @@ pub fn resume_engine_with_authorization(
                             EventOrigin::Endogenous,
                             Some(task_id.clone()),
                             EventStatus::Committed,
-                            &after,
-                            &after,
+                            &before_group_commit,
+                            &before_group_commit,
                             &inventory,
                             &inventory,
                             Some(&running),
@@ -1821,6 +1837,8 @@ pub fn resume_engine_with_authorization(
     current = committed;
     inventory = committed_inventory;
     let after = asset_status_snapshot(&current.assets);
+    let mut before_group_commit = after.clone();
+    before_group_commit.insert(group.restoration_target.clone(), AssetStatus::Failed);
     let mut completed_tasks: Vec<&TaskResourceObservation> =
         running.task_resources.iter().filter(|task| task.task_id.is_some()).collect();
     completed_tasks.sort_by(|a, b| a.end_s.total_cmp(&b.end_s));
@@ -1836,8 +1854,8 @@ pub fn resume_engine_with_authorization(
                 EventOrigin::Endogenous,
                 Some(task_id.clone()),
                 EventStatus::Committed,
-                &after,
-                &after,
+                &before_group_commit,
+                &before_group_commit,
                 &inventory,
                 &inventory,
                 None,
